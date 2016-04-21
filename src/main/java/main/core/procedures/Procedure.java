@@ -1,7 +1,6 @@
-package main.functions;
+package main.core.procedures;
 
-import main.Main;
-import main.ast.Node;
+import main.core.IEvaluator;
 import main.environment.Environment;
 
 import java.util.*;
@@ -10,10 +9,12 @@ import java.util.*;
 public class Procedure implements IFn {
 
   private List<Object> params;
-  private Node body;
+  private Object body;
   private Environment env;
 
-  public Procedure(List<Object> params, Node body, Environment env) {
+  private IEvaluator evaluator;
+
+  public Procedure(List<Object> params, Object body, Environment env, IEvaluator evaluator) {
     this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.env = env;
@@ -29,7 +30,7 @@ public class Procedure implements IFn {
       values.put(params.get(i), args.get(i));
     }
     // FIXME
-    return Main.eval(body, new Environment(values, env));
+    return evaluator.eval(body, new Environment(values, env));
   }
 
   public Object invoke(Object... args) {

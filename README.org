@@ -1,0 +1,321 @@
+*PL*
+----
+
+* TODO: [0/7]
+** TODO Primitives [0/8]
+*** TODO Number
+*** TODO Boolean
+*** TODO String
+*** TODO Char
+*** TODO List
+*** TODO Vector
+*** TODO Symbol
+*** TODO Procedure
+** TODO Standard forms [0/2]
+*** TODO Fundamental forms: [5/12]
+**** DONE define
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE lambda
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE if
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE quote
+CLOSED: [2016-04-21 Thu 21:36]
+**** TODO unquote
+**** TODO unquote-splicing
+**** TODO quasiquote
+**** TODO define-syntax
+**** TODO let-syntax
+**** TODO letrec-syntax
+**** TODO syntax-rules
+**** DONE set!
+CLOSED: [2016-04-21 Thu 21:36]
+
+*** TODO Library forms: [7/11]
+**** TODO do
+**** DONE let
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE let*
+CLOSED: [2016-04-21 Thu 21:37]
+**** TODO letrec
+**** DONE cond
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE case
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE and
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE or
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE begin
+CLOSED: [2016-04-21 Thu 21:37]
+**** TODO named let [?]
+**** TODO delay
+** TODO Standard procedures [0/17]
+*** TODO Construction [0/4]
+**** TODO vector
+**** TODO make-vector
+**** TODO make-string
+**** TODO list
+*** TODO Equivalence predicates [3/7]
+**** DONE eq?
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE eqv?
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE equal?
+CLOSED: [2016-04-21 Thu 22:03]
+**** TODO string=?
+**** TODO string-ci=?
+**** TODO char=?
+**** TODO char-ci=?
+*** TODO Type conversion [0/10]
+**** TODO vector->list
+**** TODO list->vector
+**** TODO number->string
+**** TODO string->number
+**** TODO symbol->string
+**** TODO string->symbol
+**** TODO char->integer
+**** TODO integer->char
+**** TODO string->list
+**** TODO list->string
+*** TODO Numbers [1/12]
+**** TODO Basic arithmetic operators [4/12]
+***** DONE +
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE -
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE *
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE /
+CLOSED: [2016-04-21 Thu 22:04]
+***** TODO abs
+***** TODO quotient
+***** TODO remainder
+***** TODO modulo
+***** TODO gcd
+***** TODO lcm
+***** TODO expt
+***** TODO sqrt
+**** TODO Rational numbers [0/4]
+***** TODO numerator
+***** TODO denominator
+***** TODO rational?
+***** TODO rationalize
+**** TODO Approximation [0/4]
+***** TODO floor
+***** TODO ceiling
+***** TODO truncate
+***** TODO round
+**** TODO Exactness [0/4]
+***** TODO inexact->exact
+***** TODO exact->inexact
+***** TODO exact?
+***** TODO inexact?
+**** DONE Inequalities [5/5]
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE <
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE <=
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE >
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE >=
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE =
+CLOSED: [2016-04-21 Thu 22:03]
+**** TODO Miscellaneous predicates [0/5]
+***** TODO zero?
+***** TODO negative?
+***** TODO positive?
+***** TODO odd?
+***** TODO even?
+**** TODO Maximum and minimum [0/2]
+***** TODO max
+***** TODO min
+**** TODO Trigonometry [0/6]
+***** TODO sin
+***** TODO cos
+***** TODO tan
+***** TODO asin
+***** TODO acos
+***** TODO atan
+**** TODO Exponentials [0/2]
+***** TODO exp
+***** TODO log
+**** TODO Complex numbers [0/7]
+***** TODO make-rectangular
+***** TODO make-polar
+***** TODO real-part
+***** TODO imag-part
+***** TODO magnitude
+***** TODO angle
+***** TODO complex?
+**** TODO Input-output [0/2]
+***** TODO number->string
+***** TODO string->number
+**** TODO Type predicates [0/5]
+***** TODO integer?
+***** TODO rational?
+***** TODO real?
+***** TODO complex?
+***** TODO number?
+*** TODO Strings [0/18]
+**** TODO string?
+**** TODO make-string
+**** TODO string
+**** TODO string-length
+**** TODO string-ref
+**** TODO string-set!
+**** TODO string=?
+**** TODO string-ci=?
+**** TODO string<? string-ci<?
+**** TODO string<=? string-ci<=?
+**** TODO string>? string-ci>?
+**** TODO string>=? string-ci>=?
+**** TODO substring
+**** TODO string-append
+**** TODO string->list
+**** TODO list->string
+**** TODO string-copy
+**** TODO string-fill!
+*** TODO Characters [0/16]
+**** TODO char?
+**** TODO char=?
+**** TODO char-ci=?
+**** TODO char<? char-ci<?
+**** TODO char<=? char-ci<=?
+**** TODO char>? char-ci>?
+**** TODO char>=? char-ci>=?
+**** TODO char-alphabetic?
+**** TODO char-numeric?
+**** TODO char-whitespace?
+**** TODO char-upper-case?
+**** TODO char-lower-case?
+**** TODO char->integer
+**** TODO integer->char
+**** TODO char-upcase
+**** TODO char-downcase
+*** TODO Vectors [0/9]
+**** TODO make-vector
+**** TODO vector
+**** TODO vector?
+**** TODO vector-length
+**** TODO vector-ref
+**** TODO vector-set!
+**** TODO vector->list
+**** TODO list->vector
+**** TODO vector-fill!
+*** TODO Symbols [0/3]
+**** TODO symbol->string
+**** TODO string->symbol
+**** TODO symbol?
+*** TODO Pairs and lists [0/22]
+**** TODO pair?
+**** TODO cons
+**** TODO car
+**** TODO cdr
+**** TODO set-car!
+**** TODO set-cdr!
+**** TODO null?
+**** TODO list?
+**** TODO list
+**** TODO length
+**** TODO append
+**** TODO reverse
+**** TODO list-tail
+**** TODO list-ref
+**** TODO memq. memv. member
+**** TODO assq
+**** TODO assv
+**** TODO assoc
+**** TODO list->vector
+**** TODO vector->list
+**** TODO list->string
+**** TODO string->list
+*** TODO Identity predicates [0/9]
+**** TODO boolean?
+**** TODO pair?
+**** TODO symbol?
+**** TODO number?
+**** TODO char?
+**** TODO string?
+**** TODO vector?
+**** TODO port?
+**** TODO procedure?
+*** TODO Continuations [0/4]
+**** TODO call-with-current-continuation (call/cc)
+**** TODO values
+**** TODO call-with-values
+**** TODO dynamic-wind
+*** TODO Environments [0/4]
+**** TODO eval
+**** TODO scheme-report-environment
+**** TODO null-environment
+**** TODO interaction-environment (optional)
+*** TODO Input/output [0/20]
+**** TODO display
+**** TODO newline
+**** TODO read
+**** TODO write
+**** TODO read-char
+**** TODO write-char
+**** TODO peek-char
+**** TODO char-ready?
+**** TODO eof-object? open-input-file
+**** TODO open-output-file
+**** TODO close-input-port
+**** TODO close-output-port
+**** TODO input-port?
+**** TODO output-port?
+**** TODO current-input-port
+**** TODO current-output-port
+**** TODO call-with-input-file
+**** TODO call-with-output-file
+**** TODO with-input-from-file(optional)
+**** TODO with-output-to-file(optional)
+*** TODO System interface [0/3]
+**** TODO load (optional)
+**** TODO transcript-on (optional)
+**** TODO transcript-off (optional)
+*** TODO Delayed evaluation [0/1]
+**** TODO force
+*** TODO Functional programming [0/4]
+**** TODO procedure?
+**** TODO apply
+**** TODO map
+**** TODO for-each
+*** TODO Booleans [1/2]
+**** TODO boolean?
+**** DONE not
+CLOSED: [2016-04-21 Thu 22:05]
+
+** TODO Bugs [1/2]
+*** DONE [#A] Recursive functions are not working
+CLOSED: [2016-04-21 Thu 16:59]
+*** TODO [#A] REPL is not handling newlines/empty lines properly
+
+** TODO General [0/7]
+*** TODO [#A] Clojure or Scheme syntax? Or custom?
+*** TODO [#A] *Special Forms, Symbols -> Functions etc.*
+*** TODO [#B] Clean up code
+*** TODO [#B] Error handling
+*** TODO [#B] Separate classes (Reader[s], Tokenizer, Evaluator etc.)
+*** TODO [#B] Test coverage
+*** TODO [#C] String functions
+
+** TODO Performance [0/2]
+*** TODO [#B] Caching
+
+** TODO Features [0/5]
+*** TODO [#B] Trampolining (explicit recur)
+*** TODO [#C] Shortcuts for lambda (fn/defn)
+*** TODO [#C] Shortcut for lambda definition (define (name args) body)
+*** TODO [#C] User-friendly REPL
+*** TODO [#C] Automatic conversion to BigDecimal
+
+* Useful links:
+
+** https://en.wikipedia.org/wiki/Scheme_(programming_language)
+** https://en.wikipedia.org/wiki/Scheme_(programming_language)#Review_of_standard_forms_and_procedures
+** http://sicp.ai.mit.edu/Fall-2003/manuals/scheme-7.5.5/doc/scheme_3.html
+** http://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Numerical-operations.html

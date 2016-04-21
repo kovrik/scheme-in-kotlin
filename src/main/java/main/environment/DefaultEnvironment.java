@@ -1,44 +1,51 @@
 package main.environment;
 
-import main.expressions.Keywords;
-import main.functions.equality.*;
-import main.functions.math.*;
+import main.ast.SCMSymbol;
+import main.core.math.bool.Eq;
+import main.core.math.bool.Equal;
+import main.core.math.bool.Eqv;
+import main.core.math.bool.Negation;
+import main.core.math.numeric.*;
+import main.core.specialforms.SpecialForm;
 
-public class DefaultEnvironment {
+public final class DefaultEnvironment {
+
+  private DefaultEnvironment() {
+    // default
+  }
 
   private static final Environment ENV = new Environment(null);
   static {
-    // boolean
-//    for (SCMBoolean scmBoolean : SCMBoolean.values()) {
-//      ENV.put(scmBoolean.getValue(), scmBoolean.getResult());
-//    }
-    ENV.put("#t", true);
-    ENV.put("#f", false);
+    /* Special Forms */
+    for (SpecialForm specialForm : SpecialForm.values()) {
+      ENV.put(specialForm, specialForm);
+    }
 
-    ENV.put(Keywords.AND, new Conjunction());
-    ENV.put(Keywords.OR,  new Disjunction());
-    ENV.put(Keywords.NOT, new Negation());
+    /* Boolean */
+    ENV.put(new SCMSymbol("#t"), true);
+    ENV.put(new SCMSymbol("#f"), false);
 
-    // nil
-    ENV.put("#nil", null);
+    ENV.put(new SCMSymbol("not"), new Negation());
 
-    // math
-    ENV.put("+", new Addition());
-    ENV.put("-", new Subtraction());
-    ENV.put("*", new Multiplication());
-    ENV.put("/", new Division());
+    /* nil */
+    ENV.put(new SCMSymbol("#nil"), null);
 
-    // equality
-    ENV.put(Keywords.NUM_EQUALITY, new NumericalComparison(NumericalComparison.Type.EQUAL));
-    ENV.put(Keywords.LESS, new NumericalComparison(NumericalComparison.Type.LESS));
-    ENV.put(Keywords.LESS_EQUAL, new NumericalComparison(NumericalComparison.Type.LESS_EQUAL));
-    ENV.put(Keywords.GREATER, new NumericalComparison(NumericalComparison.Type.GREATER));
-    ENV.put(Keywords.GREATER_EQUAL, new NumericalComparison(NumericalComparison.Type.GREATER_EQUAL));
-    ENV.put(Keywords.EQ, new Eq());
-    ENV.put(Keywords.EQV, new Eqv());
-    ENV.put(Keywords.EQUAL, new Equal());
+    /* math */
+    ENV.put(new SCMSymbol("+"), new Addition());
+    ENV.put(new SCMSymbol("-"), new Subtraction());
+    ENV.put(new SCMSymbol("*"), new Multiplication());
+    ENV.put(new SCMSymbol("/"), new Division());
 
-//    ENV.put(Keywords.COND, new Cond());
+    /* Comparison & Equality */
+    ENV.put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));
+    ENV.put(new SCMSymbol("<"),  new NumericalComparison(NumericalComparison.Type.LESS));
+    ENV.put(new SCMSymbol("<="), new NumericalComparison(NumericalComparison.Type.LESS_EQUAL));
+    ENV.put(new SCMSymbol(">"),  new NumericalComparison(NumericalComparison.Type.GREATER));
+    ENV.put(new SCMSymbol(">="), new NumericalComparison(NumericalComparison.Type.GREATER_EQUAL));
+
+    ENV.put(new SCMSymbol("eq?"),    new Eq());
+    ENV.put(new SCMSymbol("eqv?"),   new Eqv());
+    ENV.put(new SCMSymbol("equal?"), new Equal());
   }
 
   public static Environment getEnv() {

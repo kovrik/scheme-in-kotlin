@@ -1,11 +1,10 @@
-package main.functions.math;
+package main.core.math.bool;
 
-import main.expressions.Keywords;
-import main.functions.IFn;
+import main.core.procedures.IFn;
 
 public class Negation implements IBooleanOperation, IFn {
 
-  private static final String UNSUPPORTED_OPERATION = "Wrong number of arguments to `" + Keywords.NOT.getValue() + "`";
+  private static final String UNSUPPORTED_OPERATION = "Wrong number of arguments to `" ;//+ Keywords.NOT.getValue() + "`";
 
   public Object invoke(Object... args) {
     if (args != null && args.length == 1) {

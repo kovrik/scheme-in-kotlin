@@ -1,4 +1,4 @@
-package main.functions.math;
+package main.core.math;
 
 public interface IOperation<T> {
 

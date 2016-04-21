@@ -1,4 +1,6 @@
-package main.functions.math;
+package main.core.math.numeric;
+
+import main.core.math.IOperation;
 
 public interface INumericalOperation<T extends Number> extends IOperation<T> {
 

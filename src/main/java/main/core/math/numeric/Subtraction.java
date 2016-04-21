@@ -1,6 +1,6 @@
-package main.functions.math;
+package main.core.math.numeric;
 
-import main.functions.IFn;
+import main.core.procedures.IFn;
 
 public class Subtraction implements INumericalOperation, IFn {
 
