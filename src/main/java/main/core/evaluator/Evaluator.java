@@ -1,18 +1,16 @@
-package main.core;
+package main.core.evaluator;
 
-import main.ast.SCMList;
-import main.ast.SCMSymbol;
-import main.core.specialforms.SpecialForm;
-import main.environment.Environment;
+import main.core.ast.SCMList;
+import main.core.ast.SCMSymbol;
 import main.core.procedures.IFn;
+import main.core.specialforms.SpecialForm;
+import main.environment.IEnvironment;
 
 import java.util.List;
 
 public class Evaluator implements IEvaluator {
 
-  private static final Evaluator INSTANCE = new Evaluator();
-
-  public Object eval(Object sexp, Environment env) {
+  public Object eval(Object sexp, IEnvironment env) {
 
     if (sexp instanceof SCMSymbol) {
       return env.find(sexp);
@@ -26,6 +24,9 @@ public class Evaluator implements IEvaluator {
     } else if (sexp instanceof SCMList) {
 
       SCMList<Object> list = (SCMList<Object>) sexp;
+      if (list.isEmpty()) {
+        throw new IllegalArgumentException("Unexpected syntax in form " + list);
+      }
       Object op = list.get(0);
       if (op instanceof SpecialForm) {
         return ((SpecialForm)op).eval(list, env, this);
@@ -39,13 +40,8 @@ public class Evaluator implements IEvaluator {
       for (int i = 1; i < list.size(); i++) {
         args[i - 1] = eval(list.get(i), env);
       }
-      return ((IFn) fn).invoke(args);
+      return ((IFn)fn).invoke(args);
     }
     throw new IllegalArgumentException("Evaluation error: " + sexp);
   }
-
-  public static Evaluator getInstance() {
-    return INSTANCE;
-  }
-
 }

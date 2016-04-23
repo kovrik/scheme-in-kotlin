@@ -1,4 +1,4 @@
-package main.ast;
+package main.core.ast;
 
 public class SCMSymbol {
 

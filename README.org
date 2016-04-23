@@ -2,6 +2,14 @@
 ----
 
 * TODO: [0/7]
+** TODO [#A] Recursive Descent Parser
+** TODO [#A] Decouple Evaluator, Environment and Procedure
+
+** TODO Basics [0/4]
+*** TODO Reader
+*** TODO Tokenizer
+*** TODO Evaluator
+*** TODO Printer
 ** TODO Primitives [0/8]
 *** TODO Number
 *** TODO Boolean

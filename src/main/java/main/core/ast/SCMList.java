@@ -1,4 +1,4 @@
-package main.ast;
+package main.core.ast;
 
 import java.util.Collection;
 import java.util.Iterator;

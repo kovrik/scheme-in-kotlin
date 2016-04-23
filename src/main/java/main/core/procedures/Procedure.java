@@ -1,7 +1,8 @@
 package main.core.procedures;
 
-import main.core.IEvaluator;
+import main.core.evaluator.IEvaluator;
 import main.environment.Environment;
+import main.environment.IEnvironment;
 
 import java.util.*;
 
@@ -10,14 +11,16 @@ public class Procedure implements IFn {
 
   private List<Object> params;
   private Object body;
-  private Environment env;
+  private IEnvironment env;
 
+  // FIXME Decouple
   private IEvaluator evaluator;
 
-  public Procedure(List<Object> params, Object body, Environment env, IEvaluator evaluator) {
+  public Procedure(List<Object> params, Object body, IEnvironment env) {
     this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.env = env;
+    this.evaluator = null;
   }
 
   public Object call(List<Object> args) {
@@ -30,7 +33,9 @@ public class Procedure implements IFn {
       values.put(params.get(i), args.get(i));
     }
     // FIXME
-    return evaluator.eval(body, new Environment(values, env));
+    Environment localEnvironment = new Environment(env);
+    localEnvironment.putAll(values);
+    return evaluator.eval(body, localEnvironment);
   }
 
   public Object invoke(Object... args) {
@@ -43,5 +48,13 @@ public class Procedure implements IFn {
 
   public void run() {
     invoke();
+  }
+
+  public Object getBody() {
+    return body;
+  }
+
+  public List<Object> getParams() {
+    return params;
   }
 }

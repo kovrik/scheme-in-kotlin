@@ -1,6 +1,7 @@
 package main.environment;
 
-import main.ast.SCMSymbol;
+import main.core.ast.SCMSymbol;
+import main.core.evaluator.IEvaluator;
 import main.core.math.bool.Eq;
 import main.core.math.bool.Equal;
 import main.core.math.bool.Eqv;
@@ -8,47 +9,41 @@ import main.core.math.bool.Negation;
 import main.core.math.numeric.*;
 import main.core.specialforms.SpecialForm;
 
-public final class DefaultEnvironment {
+public final class DefaultEnvironment extends Environment {
 
-  private DefaultEnvironment() {
-    // default
-  }
+  public DefaultEnvironment(IEvaluator evaluator) {
 
-  private static final Environment ENV = new Environment(null);
-  static {
+    super(null);
+
     /* Special Forms */
     for (SpecialForm specialForm : SpecialForm.values()) {
-      ENV.put(specialForm, specialForm);
+      this.put(specialForm, specialForm);
     }
 
     /* Boolean */
-    ENV.put(new SCMSymbol("#t"), true);
-    ENV.put(new SCMSymbol("#f"), false);
+    this.put(new SCMSymbol("#t"), true);
+    this.put(new SCMSymbol("#f"), false);
 
-    ENV.put(new SCMSymbol("not"), new Negation());
+    this.put(new SCMSymbol("not"), new Negation());
 
     /* nil */
-    ENV.put(new SCMSymbol("#nil"), null);
+    this.put(new SCMSymbol("#nil"), null);
 
     /* math */
-    ENV.put(new SCMSymbol("+"), new Addition());
-    ENV.put(new SCMSymbol("-"), new Subtraction());
-    ENV.put(new SCMSymbol("*"), new Multiplication());
-    ENV.put(new SCMSymbol("/"), new Division());
+    this.put(new SCMSymbol("+"), new Addition());
+    this.put(new SCMSymbol("-"), new Subtraction());
+    this.put(new SCMSymbol("*"), new Multiplication());
+    this.put(new SCMSymbol("/"), new Division());
 
     /* Comparison & Equality */
-    ENV.put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));
-    ENV.put(new SCMSymbol("<"),  new NumericalComparison(NumericalComparison.Type.LESS));
-    ENV.put(new SCMSymbol("<="), new NumericalComparison(NumericalComparison.Type.LESS_EQUAL));
-    ENV.put(new SCMSymbol(">"),  new NumericalComparison(NumericalComparison.Type.GREATER));
-    ENV.put(new SCMSymbol(">="), new NumericalComparison(NumericalComparison.Type.GREATER_EQUAL));
+    this.put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));
+    this.put(new SCMSymbol("<"),  new NumericalComparison(NumericalComparison.Type.LESS));
+    this.put(new SCMSymbol("<="), new NumericalComparison(NumericalComparison.Type.LESS_EQUAL));
+    this.put(new SCMSymbol(">"),  new NumericalComparison(NumericalComparison.Type.GREATER));
+    this.put(new SCMSymbol(">="), new NumericalComparison(NumericalComparison.Type.GREATER_EQUAL));
 
-    ENV.put(new SCMSymbol("eq?"),    new Eq());
-    ENV.put(new SCMSymbol("eqv?"),   new Eqv());
-    ENV.put(new SCMSymbol("equal?"), new Equal());
-  }
-
-  public static Environment getEnv() {
-    return ENV;
+    this.put(new SCMSymbol("eq?"),    new Eq());
+    this.put(new SCMSymbol("eqv?"),   new Eqv());
+    this.put(new SCMSymbol("equal?"), new Equal());
   }
 }

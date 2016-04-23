@@ -1,10 +1,11 @@
 package main.core.specialforms;
 
-import main.ast.SCMList;
-import main.core.IEvaluator;
-import main.environment.Environment;
-import main.core.procedures.Procedure;
+import main.core.ast.SCMList;
+import main.core.evaluator.IEvaluator;
 import main.core.math.bool.Eqv;
+import main.core.procedures.Procedure;
+import main.environment.Environment;
+import main.environment.IEnvironment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,25 +15,25 @@ public enum SpecialForm implements ISpecialForm {
 
   /* Fundamental forms */
   DEFINE("define") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       // TODO define procedure syntax
       env.put(expression.get(1), evaluator.eval(expression.get(2), env));
       return DEFINE;
     }
   },
   LAMBDA("lambda") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       // TODO Optimize
       List<Object> paramsObjects = (List<Object>) expression.get(1);
       List<Object> params = new SCMList<Object>();
       for (Object n : paramsObjects) {
         params.add(n);
       }
-      return new Procedure(params, expression.get(2), env, evaluator);
+      return new Procedure(params, expression.get(2), env);
     }
   },
   IF("if") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object test = expression.get(1);
       Object consequence = expression.get(2);
       Object alternative = expression.get(3);
@@ -44,54 +45,54 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   QUOTE("quote") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return expression.get(1);
     }
   },
   UNQUOTE("unquote") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   UNQUOTE_SPLICING("unquote-splicing") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   QUASIQUOTE("quasiquote") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   DEFINE_SYNTAX("define-syntax") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LET_SYNTAX("let-syntax") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LETREC_SYNTAX("letrec-syntax") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   SYNTAX_RULES("syntax-rules") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   SET("set!") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       env.find(expression.get(1));
       env.put(expression.get(1), evaluator.eval(expression.get(2), env));
       return SET;
@@ -99,17 +100,17 @@ public enum SpecialForm implements ISpecialForm {
   },
   /* Library forms */
   DO("do") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LET("let") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("let: bad let in form");
       }
 
-      Environment localEnv = new Environment(env);
+      IEnvironment localEnv = new Environment(env);
       for (Object node : ((List<Object>) expression.get(1))) {
         Object var = ((List<Object>) node).get(0);
         Object init = ((List<Object>) node).get(1);
@@ -123,12 +124,12 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   LET_S("let*") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("let*: bad let* in form");
       }
 
-      Environment localEnv = new Environment(env);
+      IEnvironment localEnv = new Environment(env);
       for (Object node : ((List<Object>) expression.get(1))) {
         Object var = ((List<Object>) node).get(0);
         Object init = ((List<Object>) node).get(1);
@@ -143,12 +144,12 @@ public enum SpecialForm implements ISpecialForm {
   },
   LETREC("letrec") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   COND("cond") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalArgumentException("Source expression failed to match any pattern in form (cond)");
       }
@@ -179,7 +180,7 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   CASE("case") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalArgumentException("Source expression failed to match any pattern in form (case)");
       }
@@ -219,7 +220,7 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   AND("and") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Boolean result = Boolean.TRUE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
@@ -233,7 +234,7 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   OR("or") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Boolean result = Boolean.FALSE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
@@ -247,7 +248,7 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   BEGIN("begin") {
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       for (int i = 1; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), env);
       }
@@ -256,13 +257,13 @@ public enum SpecialForm implements ISpecialForm {
   },
   NAMED_LET("named let") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   DELAY("delay") {
     // TODO
-    public Object eval(SCMList<Object> expression, Environment env, IEvaluator evaluator) {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   };

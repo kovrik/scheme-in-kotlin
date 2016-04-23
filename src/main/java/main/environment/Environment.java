@@ -3,18 +3,18 @@ package main.environment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Environment {
+public class Environment implements IEnvironment {
 
   private Map<Object, Object> parameters = new HashMap<Object, Object>();
 
-  private Environment outer = null;
+  private IEnvironment outer = null;
 
-  public Environment(Environment outer) {
+  public Environment(IEnvironment outer) {
     this.outer = outer;
   }
 
-  public Environment(Map<Object, Object> values, Environment outer) {
-    this.parameters.putAll(values);
+  public Environment(Map<?, ?> params, IEnvironment outer) {
+    this.parameters.putAll(params);
     this.outer = outer;
   }
 
@@ -31,5 +31,9 @@ public class Environment {
 
   public Object put(Object key, Object value) {
     return parameters.put(key, value);
+  }
+
+  public void putAll(Map<?, ?> params) {
+    parameters.putAll(params);
   }
 }
