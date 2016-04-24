@@ -23,13 +23,7 @@ public enum SpecialForm implements ISpecialForm {
   },
   LAMBDA("lambda") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      // TODO Optimize
-      List<Object> paramsObjects = (List<Object>) expression.get(1);
-      List<Object> params = new SCMList<Object>();
-      for (Object n : paramsObjects) {
-        params.add(n);
-      }
-      return new Procedure(params, expression.get(2), env);
+      return new Procedure((List<Object>)expression.get(1), expression.get(2));
     }
   },
   IF("if") {
@@ -180,22 +174,22 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   CASE("case") {
+    private final String ELSE = "else";
+    private final Eqv eqv = new Eqv();
+
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalArgumentException("Source expression failed to match any pattern in form (case)");
       }
       Object key = evaluator.eval(expression.get(1), env);
-      // FIXME
-//          Eqv eqv = (Eqv) env.find(Procedures.EQV);
-      Eqv eqv = null;
       for (int i = 2; i < expression.size(); i++) {
         Object node = expression.get(i);
         if (!(node instanceof List)) {
           throw new IllegalArgumentException("Invalid clause in subform " + node);
         }
-        List<Object> subform = (List<Object>) node;
+        List<Object> subform = (List<Object>)node;
         Object datum = subform.get(0);
-        if ("else".equals(datum)) {
+        if (ELSE.equals(datum)) {
           if (i == expression.size() - 1) {
             for (int s = 1; s < subform.size() - 1; s++) {
               evaluator.eval(subform.get(s), env);
@@ -207,7 +201,7 @@ public enum SpecialForm implements ISpecialForm {
         if (!(datum instanceof List)) {
           throw new IllegalArgumentException("Invalid clause in subform " + datum);
         }
-        for (Object n : ((List<Object>) datum)) {
+        for (Object n : ((List<Object>)datum)) {
           if (eqv.apply(key, n)) {
             for (int s = 1; i < subform.size() - 1; i++) {
               evaluator.eval(subform.get(s), env);

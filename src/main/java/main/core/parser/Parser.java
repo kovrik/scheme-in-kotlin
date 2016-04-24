@@ -93,7 +93,7 @@ public class Parser implements IParser {
       throw new UnmatchedParenException("Unmatched left `(`");
     }
     SCMList<Object> nodes = new SCMList<Object>();
-    while (!")".equals(tokens.get(0))) {
+    while (!")".equals(tokens.getFirst())) {
       nodes.add(readFromTokens(tokens));
       if (tokens.isEmpty()) {
         throw new UnmatchedParenException("Unmatched left `(`");

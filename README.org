@@ -2,8 +2,12 @@
 ----
 
 * TODO: [0/7]
+
 ** TODO [#A] Recursive Descent Parser
-** TODO [#A] Decouple Evaluator, Environment and Procedure
+** TODO [#A] Decouple Procedure and Evaluator
+** TODO Get rid of `node`s
+** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
+** TODO Function overriding (dispatching)?
 
 ** TODO Basics [0/4]
 *** TODO Reader
