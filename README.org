@@ -9,6 +9,30 @@
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Function overriding (dispatching)?
 
+** TODO Bugs [1/2]
+*** DONE [#A] Recursive functions are not working
+CLOSED: [2016-04-21 Thu 16:59]
+*** TODO [#A] REPL is not handling newlines/empty lines properly
+
+** TODO General [0/7]
+*** TODO [#A] Clojure or Scheme syntax? Or custom?
+*** TODO [#A] *Special Forms, Symbols -> Functions etc.*
+*** TODO [#B] Clean up code
+*** TODO [#B] Error handling
+*** TODO [#B] Separate classes (Reader, Parser, Evaluator etc.)
+*** TODO [#B] Test coverage
+*** TODO [#C] String functions
+
+** TODO Performance [0/2]
+*** TODO [#B] Caching
+
+** TODO Features [0/5]
+*** TODO [#B] Trampolining (explicit recur)
+*** TODO [#C] Shortcuts for lambda (fn/defn)
+*** TODO [#C] Shortcut for lambda definition (define (name args) body)
+*** TODO [#C] User-friendly REPL
+*** TODO [#C] Automatic conversion to BigDecimal
+
 ** TODO Basics [0/4]
 *** TODO Reader
 *** TODO Tokenizer
@@ -300,30 +324,6 @@ CLOSED: [2016-04-21 Thu 22:03]
 **** TODO boolean?
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
-
-** TODO Bugs [1/2]
-*** DONE [#A] Recursive functions are not working
-CLOSED: [2016-04-21 Thu 16:59]
-*** TODO [#A] REPL is not handling newlines/empty lines properly
-
-** TODO General [0/7]
-*** TODO [#A] Clojure or Scheme syntax? Or custom?
-*** TODO [#A] *Special Forms, Symbols -> Functions etc.*
-*** TODO [#B] Clean up code
-*** TODO [#B] Error handling
-*** TODO [#B] Separate classes (Reader[s], Tokenizer, Evaluator etc.)
-*** TODO [#B] Test coverage
-*** TODO [#C] String functions
-
-** TODO Performance [0/2]
-*** TODO [#B] Caching
-
-** TODO Features [0/5]
-*** TODO [#B] Trampolining (explicit recur)
-*** TODO [#C] Shortcuts for lambda (fn/defn)
-*** TODO [#C] Shortcut for lambda definition (define (name args) body)
-*** TODO [#C] User-friendly REPL
-*** TODO [#C] Automatic conversion to BigDecimal
 
 * Useful links:
 

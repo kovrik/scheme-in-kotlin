@@ -3,10 +3,12 @@ package main;
 import main.core.ast.SCMSymbol;
 import main.core.evaluator.Evaluator;
 import main.core.evaluator.IEvaluator;
-import main.core.parser.Parser;
+import main.core.parser.IParser;
+import main.core.parser.Tokenizer;
 import main.environment.DefaultEnvironment;
 import main.environment.IEnvironment;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -20,10 +22,10 @@ public class Main {
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "scheme@(user)> ";
 
-  private static final Parser parser = new Parser();
+  private static final IParser parser = new Tokenizer();
   private static final IEvaluator evaluator = new Evaluator();
 
-  public static void main(String[] args) throws ParseException {
+  public static void main(String[] args) throws ParseException, IOException {
     repl(WELCOME, PROMPT, new DefaultEnvironment(evaluator));
   }
 
@@ -31,7 +33,7 @@ public class Main {
     return new SCMSymbol("$" + SYM_COUNTER.incrementAndGet());
   }
 
-  private static void repl(String welcomeMessage, String prompt, IEnvironment env) {
+  private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
 
     System.out.println(welcomeMessage);
     while (true) {
@@ -44,7 +46,7 @@ public class Main {
 
         // Eval
         Object result = evaluator.eval(sexp, env);
-        if (result != DEFINE && result != SET) {
+        if (result != null && result != DEFINE && result != SET) {
           // Put result into environment
           SCMSymbol id = getNextID();
           env.put(id, result);
@@ -52,12 +54,10 @@ public class Main {
           // Print
           System.out.println(id + " = " + result.toString());
         }
-        // FIXME
-      } catch (UnsupportedOperationException e) {
         // TODO Proper Error handling
+      } catch (UnsupportedOperationException e) {
         System.err.println(e.getMessage());
       } catch (IllegalArgumentException e) {
-        // TODO Proper Error handling
         System.err.println(e.getMessage());
       }
     }

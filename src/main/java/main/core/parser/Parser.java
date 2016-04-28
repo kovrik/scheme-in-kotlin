@@ -12,31 +12,32 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Scanner;
 
+@Deprecated
 public class Parser implements IParser {
 
   public Object parse(InputStream inputStream) {
 
     // TODO BufferedReader?
-    Scanner scanner = new Scanner(System.in);
-    Object sexp = null;
+    // TODO Decouple
+    Scanner scanner = new Scanner(inputStream);
 
-    // TODO Clean up
     SCMList<String> tokens = new SCMList<String>();
     boolean read = true;
     boolean unmatched = false;
     String previousInput = "";
+    Object sexp = null;
     while (read) {
 
-      // Read
+      /* Read */
       String input = scanner.nextLine();
       if (unmatched) {
         input = previousInput + input;
       }
       try {
-        // Tokenize
+        /* Tokenize */
         tokens.addAll(tokenize(input));
 
-        // Parse
+        /* Parse */
         sexp = readFromTokens(tokens);
         read = false;
       } catch (UnmatchedParenException e) {
@@ -52,13 +53,6 @@ public class Parser implements IParser {
     return sexp;
   }
 
-  // TODO Recursive Descent Parser
-  private Object parseRD(InputStream inputStream) {
-
-    return null;
-  }
-
-  // TODO Replace with Recursive Descent Parser
   private SCMList<String> tokenize(String input) {
 
     return new SCMList<String>(Arrays.asList(input.replaceAll("\\(", " ( ")
@@ -73,16 +67,16 @@ public class Parser implements IParser {
     }
     String token = tokens.pop();
     if ("(".equals(token)) {
-      // Process list
+      /* Process list */
       return readList(tokens);
     } else if (")".equals(token)) {
       throw new IllegalArgumentException("Unexpected )");
     } else if (token.startsWith("\"")) {
-      // String
-      // FIXME TODO
+      // TODO
+      /* String */
       return readString(tokens);
     } else {
-      // Atom
+      /* Atom */
       return atom(token);
     }
   }
@@ -103,6 +97,7 @@ public class Parser implements IParser {
     return nodes;
   }
 
+  // TODO
   private Object readString(SCMList<String> tokens) {
 
     if (tokens.isEmpty()) {
@@ -125,11 +120,11 @@ public class Parser implements IParser {
   // FIXME Performance
   private Object atom(String token) {
 
-    if (token.startsWith(",")) {
-      // Meta
+    if (token.charAt(0) == ',') {
+      /* Meta */
       return token;
     } else if (token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"') {
-      // String
+      /* String */
       return token;
     }
     try {
@@ -139,7 +134,6 @@ public class Parser implements IParser {
     } catch (ParseException e) {
       SpecialForm specialForm = SpecialForm.get(token);
       if (specialForm != null) {
-        // FIXME Create static Objects for all KEYWORDS
         return specialForm;
       }
       return new SCMSymbol(token);
