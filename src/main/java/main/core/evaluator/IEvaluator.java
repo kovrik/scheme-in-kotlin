@@ -1,6 +1,6 @@
 package main.core.evaluator;
 
-import main.environment.IEnvironment;
+import main.core.environment.IEnvironment;
 
 public interface IEvaluator {
 

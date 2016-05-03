@@ -5,8 +5,8 @@ import main.core.evaluator.Evaluator;
 import main.core.evaluator.IEvaluator;
 import main.core.parser.IParser;
 import main.core.parser.Tokenizer;
-import main.environment.DefaultEnvironment;
-import main.environment.IEnvironment;
+import main.core.environment.DefaultEnvironment;
+import main.core.environment.IEnvironment;
 
 import java.io.IOException;
 import java.text.ParseException;

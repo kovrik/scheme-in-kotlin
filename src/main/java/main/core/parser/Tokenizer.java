@@ -13,7 +13,6 @@ public class Tokenizer implements IParser {
 
   /* R5RS Grammar
 
-
   <token> -->
          [ ]  <identifier> |
          [V]  <boolean>    |
@@ -84,52 +83,52 @@ public class Tokenizer implements IParser {
   */
 
   // TODO Create Reader for each Type
-  public enum Type {
-    // This Scheme-like language has three token types:  open parens, close parens, and an "atom" type
-    LIST,
-    NUMBER,
-    STRING,
-    CHARACTER,
-    BOOLEAN,
-    COMMENT,
-    IDENTIFIER,
-    WHITESPACE,
-    KEYWORD
-  }
-
-  public static class Token {
-
-    public final Type type;
-
-    public final Object value; // contents mainly for atom tokens
-    // could have column and line number fields too, for reporting errors later
-    public Token(Type t, Object v) {
-      this.type = t;
-      this.value = v;
-    }
-
-    public String toString() {
-
-      switch (type) {
-        case NUMBER:
-          return "NUMBER<" + value + ">";
-        case STRING:
-          return "STRING<" + value + ">";
-        case CHARACTER:
-          return "CHARACTER<" + value + ">";
-        case BOOLEAN:
-          return "BOOLEAN<" + value + ">";
-        case IDENTIFIER:
-          return "IDENTIFIER<" + value + ">";
-        case COMMENT:
-          return "COMMENT<" + value + ">";
-        case LIST:
-          return "LIST[" + value + "]";
-        default:
-          return type.toString();
-      }
-    }
-  }
+//  public enum Type {
+//    // This Scheme-like language has three token types:  open parens, close parens, and an "atom" type
+//    LIST,
+//    NUMBER,
+//    STRING,
+//    CHARACTER,
+//    BOOLEAN,
+//    COMMENT,
+//    IDENTIFIER,
+//    WHITESPACE,
+//    KEYWORD
+//  }
+//
+//  public static class Token {
+//
+//    public final Type type;
+//
+//    public final Object value; // contents mainly for atom tokens
+//    // could have column and line number fields too, for reporting errors later
+//    public Token(Type t, Object v) {
+//      this.type = t;
+//      this.value = v;
+//    }
+//
+//    public String toString() {
+//
+//      switch (type) {
+//        case NUMBER:
+//          return "NUMBER<" + value + ">";
+//        case STRING:
+//          return "STRING<" + value + ">";
+//        case CHARACTER:
+//          return "CHARACTER<" + value + ">";
+//        case BOOLEAN:
+//          return "BOOLEAN<" + value + ">";
+//        case IDENTIFIER:
+//          return "IDENTIFIER<" + value + ">";
+//        case COMMENT:
+//          return "COMMENT<" + value + ">";
+//        case LIST:
+//          return "LIST[" + value + "]";
+//        default:
+//          return type.toString();
+//      }
+//    }
+//  }
 
   private static final String LINE_BREAKS = "\n\f\r";
 
@@ -140,7 +139,7 @@ public class Tokenizer implements IParser {
   private static final String DELIMITERS = WHITESPACES + "()\";";
 
   /* Given a String, and an index, get the atom starting at that index */
-  private static Token readAtom(PushbackReader reader) throws IOException, ParseException {
+  private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
 
     char c = (char) reader.read();
     char next = (char) reader.read();
@@ -153,20 +152,23 @@ public class Tokenizer implements IParser {
       String number = readNumber(reader);
       if ((number.indexOf(".") != number.lastIndexOf(".")) ||
           (number.length() == 1 && (number.charAt(0) == '+' || number.charAt(0) == '-'))) {
-        return new Token(Type.IDENTIFIER, number);
+        // not a number
+        return new SCMSymbol(number);
       }
-      return new Token(Type.NUMBER, NumberFormat.getInstance().parse(number));
+      return NumberFormat.getInstance().parse(number);
     } else if (c == ';') {
-      return readComment(reader);
+//      return readComment(reader);
+      String comment = readComment(reader);
+      return null;
     } else if (c == '"') {
       return readString(reader);
     } else if (c == '#') {
-
       if (next == '\\') {
+        reader.read();
         return readCharacter(reader);
       } else if (next == 't' || next == 'f') {
         //   <boolean> --> #t | #f
-        return new Token(Type.BOOLEAN, "#" + (char)reader.read());
+        return new SCMSymbol("#" + (char)reader.read());
       } else if (next == 'i' || next == 'e') {
         char exactness = (char) reader.read();
 //        String number = "#" + exactness + readNumber(reader);
@@ -175,9 +177,9 @@ public class Tokenizer implements IParser {
           throw new IllegalArgumentException("Error: illegal number syntax: \"" + number + "\"");
         }
         if (exactness == 'e') {
-          return new Token(Type.NUMBER, NumberFormat.getInstance().parse(number).longValue());
+          return NumberFormat.getInstance().parse(number).longValue();
         } else {
-          return new Token(Type.NUMBER, NumberFormat.getInstance().parse(number).doubleValue());
+          return NumberFormat.getInstance().parse(number).doubleValue();
         }
       }
     } else {
@@ -188,7 +190,7 @@ public class Tokenizer implements IParser {
     throw new IllegalArgumentException("Unknown atom!");
   }
 
-  private static Token readIdentifier(PushbackReader reader) throws IOException {
+  private static Object readIdentifier(PushbackReader reader) throws IOException {
 
     StringBuilder identifier = new StringBuilder();
     char c = (char)reader.read();
@@ -199,13 +201,13 @@ public class Tokenizer implements IParser {
     reader.unread(c);
     SpecialForm specialForm = SpecialForm.get(identifier.toString());
     if (specialForm != null) {
-      return new Token(Type.IDENTIFIER, specialForm);
+      return specialForm;
     } else {
-      return new Token(Type.IDENTIFIER, new SCMSymbol(identifier.toString()));
+      return new SCMSymbol(identifier.toString());
     }
   }
 
-  private static Token readComment(PushbackReader reader) throws IOException {
+  private static String readComment(PushbackReader reader) throws IOException {
 
     StringBuilder comment = new StringBuilder();
     char c = (char)reader.read();
@@ -213,7 +215,7 @@ public class Tokenizer implements IParser {
       comment.append(c);
       c = (char)reader.read();
     }
-    return new Token(Type.COMMENT, comment.toString());
+    return comment.toString();
   }
 
   // TODO Radix
@@ -240,7 +242,7 @@ public class Tokenizer implements IParser {
 
   //   <string> --> " <string element>* "
   //   <string element> --> <any character other than " or \> | \" | \\
-  private static Token readString(PushbackReader reader) throws ParseException, IOException {
+  private static String readString(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder string = new StringBuilder();
     string.append('"');
@@ -259,12 +261,12 @@ public class Tokenizer implements IParser {
       string.append(c);
     }
     string.append(c);
-    return new Token(Type.STRING, string.toString());
+    return string.toString();
   }
 
   //   <character> --> #\ <any character> | #\ <character name>
   //   <character name> --> space | newline
-  private static Token readCharacter(PushbackReader reader) throws ParseException, IOException {
+  private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder character = new StringBuilder();
     char c;
@@ -274,28 +276,32 @@ public class Tokenizer implements IParser {
     reader.unread(c);
     // <character name>
     if (character.length() > 1) {
-      if (!"space".equals(character.toString()) && !"newline".equals(character.toString())) {
+      if ("space".equals(character.toString())) {
+        return ' ';
+      } else  if ("newline".equals(character.toString())) {
+        return '\n';
+      } else {
         throw new IllegalArgumentException("Error: unknown named character: \"" + character + "\"");
       }
     }
-    return new Token(Type.CHARACTER, "#\\" + character.toString());
+    return character.charAt(0);
   }
 
-  private static Token readList(PushbackReader reader) throws ParseException, IOException {
+  private static Object readList(PushbackReader reader) throws ParseException, IOException {
 
-    List<Token> list = new SCMList<Token>();
+    List<Object> list = new SCMList<Object>();
     char c;
     while ((c = (char)reader.read()) != ')') {
       reader.unread(c);
-      Token token = nextToken(reader);
+      Object token = nextToken(reader);
       if (token != null) {
         list.add(token);
       }
     }
-    return new Token(Type.LIST, list);
+    return list;
   }
 
-  public static Token nextToken(PushbackReader reader) throws IOException, ParseException {
+  public static Object nextToken(PushbackReader reader) throws IOException, ParseException {
 
     int i;
     if ((i = reader.read()) == -1) {
@@ -331,27 +337,5 @@ public class Tokenizer implements IParser {
       e.printStackTrace();
     }
     return null;
-  }
-
-
-  public static void main(String[] args) throws IOException, ParseException {
-
-    PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(System.in)), 2);
-    try {
-
-      List<Token> tokens = new SCMList<Token>();
-      Token token = nextToken(reader);
-      while (token != null) {
-        if (token.type != Type.WHITESPACE) {
-          tokens.add(token);
-        }
-        token = nextToken(reader);
-      }
-      if (!tokens.isEmpty()) {
-        System.out.println(tokens);
-      }
-    } finally {
-      reader.close();
-    }
   }
 }

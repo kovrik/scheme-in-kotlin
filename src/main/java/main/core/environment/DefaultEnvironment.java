@@ -1,4 +1,4 @@
-package main.environment;
+package main.core.environment;
 
 import main.core.ast.SCMSymbol;
 import main.core.evaluator.IEvaluator;

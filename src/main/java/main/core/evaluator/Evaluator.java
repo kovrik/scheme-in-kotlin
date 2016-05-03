@@ -5,8 +5,8 @@ import main.core.ast.SCMSymbol;
 import main.core.procedures.IFn;
 import main.core.procedures.Procedure;
 import main.core.specialforms.SpecialForm;
-import main.environment.Environment;
-import main.environment.IEnvironment;
+import main.core.environment.Environment;
+import main.core.environment.IEnvironment;
 
 import java.util.HashMap;
 import java.util.List;

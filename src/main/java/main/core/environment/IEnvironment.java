@@ -1,6 +1,8 @@
-package main.environment;
+package main.core.environment;
 
 public interface IEnvironment {
+
+  Object get(Object key);
 
   Object find(Object key);
 

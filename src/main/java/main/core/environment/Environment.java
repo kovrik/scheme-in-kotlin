@@ -1,4 +1,4 @@
-package main.environment;
+package main.core.environment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,10 @@ public class Environment implements IEnvironment {
   public Environment(Map<?, ?> params, IEnvironment outer) {
     this.parameters.putAll(params);
     this.outer = outer;
+  }
+
+  public Object get(Object key) {
+    return parameters.get(key);
   }
 
   public Object find(Object key) {

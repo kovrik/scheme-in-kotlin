@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Deprecated
 public class RDParser extends PushbackReader {
 
   public RDParser(Reader in) {

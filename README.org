@@ -1,21 +1,26 @@
 *PL*
 ----
 
-* TODO: [0/7]
+* TODO: [4/13]
 
-** TODO [#A] Recursive Descent Parser
+** DONE [#A] Recursive Descent Parser
+CLOSED: [2016-04-28 Thu 19:44]
 ** TODO [#A] Decouple Procedure and Evaluator
-** TODO Get rid of `node`s
+** DONE Get rid of `node`s
+CLOSED: [2016-04-28 Thu 19:44]
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Function overriding (dispatching)?
 
-** TODO Bugs [1/2]
+** DONE Bugs [2/2]
+CLOSED: [2016-05-04 Wed 07:09]
 *** DONE [#A] Recursive functions are not working
 CLOSED: [2016-04-21 Thu 16:59]
-*** TODO [#A] REPL is not handling newlines/empty lines properly
+*** DONE [#A] REPL is not handling newlines/empty lines properly
+CLOSED: [2016-04-28 Thu 19:44]
 
-** TODO General [0/7]
-*** TODO [#A] Clojure or Scheme syntax? Or custom?
+** TODO General [1/7]
+*** DONE [#A] Clojure or ***Scheme*** syntax? Or custom?
+CLOSED: [2016-04-28 Thu 19:45]
 *** TODO [#A] *Special Forms, Symbols -> Functions etc.*
 *** TODO [#B] Clean up code
 *** TODO [#B] Error handling
@@ -26,18 +31,23 @@ CLOSED: [2016-04-21 Thu 16:59]
 ** TODO Performance [0/2]
 *** TODO [#B] Caching
 
-** TODO Features [0/5]
+** TODO Features [1/4]
 *** TODO [#B] Trampolining (explicit recur)
-*** TODO [#C] Shortcuts for lambda (fn/defn)
-*** TODO [#C] Shortcut for lambda definition (define (name args) body)
+*** DONE [#C] Shortcut for lambda definition (define (name args) body)
+CLOSED: [2016-04-28 Thu 21:14]
 *** TODO [#C] User-friendly REPL
 *** TODO [#C] Automatic conversion to BigDecimal
 
-** TODO Basics [0/4]
-*** TODO Reader
-*** TODO Tokenizer
-*** TODO Evaluator
-*** TODO Printer
+** DONE Basics [4/4]
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Reader
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Tokenizer
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Evaluator
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Printer
+CLOSED: [2016-04-28 Thu 19:45]
 ** TODO Primitives [0/8]
 *** TODO Number
 *** TODO Boolean
@@ -67,13 +77,14 @@ CLOSED: [2016-04-21 Thu 21:36]
 **** DONE set!
 CLOSED: [2016-04-21 Thu 21:36]
 
-*** TODO Library forms: [7/11]
+*** TODO Library forms: [8/11]
 **** TODO do
 **** DONE let
 CLOSED: [2016-04-21 Thu 21:37]
 **** DONE let*
 CLOSED: [2016-04-21 Thu 21:37]
-**** TODO letrec
+**** DONE letrec
+CLOSED: [2016-05-04 Wed 07:39]
 **** DONE cond
 CLOSED: [2016-04-21 Thu 21:37]
 **** DONE case

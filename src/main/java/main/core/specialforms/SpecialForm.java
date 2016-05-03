@@ -1,11 +1,12 @@
 package main.core.specialforms;
 
 import main.core.ast.SCMList;
+import main.core.ast.SCMSymbol;
 import main.core.evaluator.IEvaluator;
 import main.core.math.bool.Eqv;
 import main.core.procedures.Procedure;
-import main.environment.Environment;
-import main.environment.IEnvironment;
+import main.core.environment.Environment;
+import main.core.environment.IEnvironment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,27 @@ import java.util.Map;
 
 public enum SpecialForm implements ISpecialForm {
 
+  // FIXME
+  UNDEFINED("UNDEFINED") {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      throw new IllegalArgumentException("Can't evaluate UNDEFINED form!");
+    }
+  },
   /* Fundamental forms */
   DEFINE("define") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      // TODO define procedure syntax
-      env.put(expression.get(1), evaluator.eval(expression.get(2), env));
+      Object definition = expression.get(1);
+      Object value = expression.get(2);
+      if (definition instanceof SCMSymbol) {
+        env.put(definition, evaluator.eval(value, env));
+      } else if (definition instanceof SCMList) {
+        if (((SCMList) definition).isEmpty()) {
+          throw new IllegalArgumentException("Wrong lambda syntax!");
+        }
+        env.put(((SCMList<Object>)definition).pop(), new Procedure((SCMList<Object>)definition, value));
+      } else {
+        throw new IllegalArgumentException("Wrong define syntax!");
+      }
       return DEFINE;
     }
   },
@@ -108,6 +125,9 @@ public enum SpecialForm implements ISpecialForm {
       for (Object node : ((List<Object>) expression.get(1))) {
         Object var = ((List<Object>) node).get(0);
         Object init = ((List<Object>) node).get(1);
+        if (localEnv.get(var) != null) {
+          throw new IllegalArgumentException("let: duplicate bound variable " + var);
+        }
         localEnv.put(var, evaluator.eval(init, env));
       }
 
@@ -137,9 +157,34 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   LETREC("letrec") {
-    // TODO
+    /* TODO
+     *
+     * One restriction on letrec is very important:
+     * it must be possible to evaluate each <init> without assigning or referring to the value of any <variable>.
+     * If this restriction is violated, then it is an error.
+     * The restriction is necessary because Scheme passes arguments by value rather than by name.
+     * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
+     */
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      throw new UnsupportedOperationException("NOT IMPLEMENTED!");
+      if (expression.size() < 3) {
+        throw new IllegalArgumentException("let*: bad let* in form");
+      }
+
+      IEnvironment localEnv = new Environment(env);
+      for (Object node : ((List<Object>) expression.get(1))) {
+        Object var = ((List<Object>) node).get(0);
+        localEnv.put(var, UNDEFINED);
+      }
+      for (Object node : ((List<Object>) expression.get(1))) {
+        Object var = ((List<Object>) node).get(0);
+        Object init = ((List<Object>) node).get(1);
+        localEnv.put(var, evaluator.eval(init, localEnv));
+      }
+
+      for (int i = 2; i < expression.size() - 1; i++) {
+        evaluator.eval(expression.get(i), localEnv);
+      }
+      return evaluator.eval(expression.getLast(), localEnv);
     }
   },
   COND("cond") {
