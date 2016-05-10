@@ -11,6 +11,7 @@ import main.core.environment.IEnvironment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class Evaluator implements IEvaluator {
 
@@ -49,7 +50,6 @@ public class Evaluator implements IEvaluator {
       for (int i = 1; i < list.size(); i++) {
         args[i - 1] = eval(list.get(i), env);
       }
-
       /* Procedure */
       // FIXME Make generic as IFn?
       if (fn instanceof Procedure) {
@@ -66,7 +66,13 @@ public class Evaluator implements IEvaluator {
         return eval(procedure.getBody(), new Environment(values, env));
       }
 
-      return ((IFn)fn).invoke(args);
+      try {
+        return ((IFn)fn).invoke(args);
+      } catch (ExecutionException e) {
+        e.printStackTrace();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
     throw new IllegalArgumentException("Evaluation error: " + sexp);
   }

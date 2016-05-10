@@ -7,6 +7,7 @@ import main.core.math.bool.Equal;
 import main.core.math.bool.Eqv;
 import main.core.math.bool.Negation;
 import main.core.math.numeric.*;
+import main.core.procedures.Force;
 import main.core.specialforms.SpecialForm;
 
 public final class DefaultEnvironment extends Environment {
@@ -45,5 +46,7 @@ public final class DefaultEnvironment extends Environment {
     this.put(new SCMSymbol("eq?"),    new Eq());
     this.put(new SCMSymbol("eqv?"),   new Eqv());
     this.put(new SCMSymbol("equal?"), new Equal());
+
+    this.put(new SCMSymbol("force"), new Force());
   }
 }

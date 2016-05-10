@@ -2,12 +2,14 @@ package main.core.specialforms;
 
 import main.core.ast.SCMList;
 import main.core.ast.SCMSymbol;
+import main.core.environment.Environment;
+import main.core.environment.IEnvironment;
 import main.core.evaluator.IEvaluator;
 import main.core.math.bool.Eqv;
 import main.core.procedures.Procedure;
-import main.core.environment.Environment;
-import main.core.environment.IEnvironment;
+import main.core.procedures.Promise;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +118,9 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   LET("let") {
+
+    // TODO: Named let
+
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("let: bad let in form");
@@ -301,9 +306,8 @@ public enum SpecialForm implements ISpecialForm {
     }
   },
   DELAY("delay") {
-    // TODO
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      throw new UnsupportedOperationException("NOT IMPLEMENTED!");
+      return new Promise(Collections.emptyList(), expression.get(1));
     }
   };
 
