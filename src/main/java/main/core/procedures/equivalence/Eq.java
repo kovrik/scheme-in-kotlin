@@ -1,7 +1,7 @@
-package main.core.math.bool;
+package main.core.procedures.equivalence;
 
 import main.core.procedures.IFn;
-import main.core.math.IOperation;
+import main.core.procedures.math.IOperation;
 
 public class Eq implements IOperation, IFn {
 

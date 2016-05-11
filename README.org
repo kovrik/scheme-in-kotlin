@@ -6,10 +6,12 @@
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
 ** TODO [#A] Decouple Procedure and Evaluator
+** TODO [#A] Properly implement Procedure class
 ** DONE Get rid of `node`s
 CLOSED: [2016-04-28 Thu 19:44]
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Function overriding (dispatching)?
+** TODO Make `force` a Procedure, not Special Form
 
 ** DONE Bugs [2/2]
 CLOSED: [2016-05-04 Wed 07:09]
@@ -77,7 +79,7 @@ CLOSED: [2016-04-21 Thu 21:36]
 **** DONE set!
 CLOSED: [2016-04-21 Thu 21:36]
 
-*** TODO Library forms: [8/11]
+*** TODO Library forms: [9/11]
 **** TODO do
 **** DONE let
 CLOSED: [2016-04-21 Thu 21:37]
@@ -96,22 +98,25 @@ CLOSED: [2016-04-21 Thu 21:37]
 **** DONE begin
 CLOSED: [2016-04-21 Thu 21:37]
 **** TODO named let [?]
-**** TODO delay
-** TODO Standard procedures [0/17]
+**** DONE delay
+CLOSED: [2016-05-11 Wed 17:43]
+** TODO Standard procedures [1/17]
 *** TODO Construction [0/4]
 **** TODO vector
 **** TODO make-vector
 **** TODO make-string
 **** TODO list
-*** TODO Equivalence predicates [3/7]
+*** TODO Equivalence predicates [5/7]
 **** DONE eq?
 CLOSED: [2016-04-21 Thu 22:03]
 **** DONE eqv?
 CLOSED: [2016-04-21 Thu 22:03]
 **** DONE equal?
 CLOSED: [2016-04-21 Thu 22:03]
-**** TODO string=?
-**** TODO string-ci=?
+**** DONE string=?
+CLOSED: [2016-05-11 Wed 17:50]
+**** DONE string-ci=?
+CLOSED: [2016-05-11 Wed 17:51]
 **** TODO char=?
 **** TODO char-ci=?
 *** TODO Type conversion [0/10]
@@ -324,8 +329,10 @@ CLOSED: [2016-04-21 Thu 22:03]
 **** TODO load (optional)
 **** TODO transcript-on (optional)
 **** TODO transcript-off (optional)
-*** TODO Delayed evaluation [0/1]
-**** TODO force
+*** DONE Delayed evaluation [1/1]
+CLOSED: [2016-05-11 Wed 17:43]
+**** DONE force
+CLOSED: [2016-05-11 Wed 17:43]
 *** TODO Functional programming [0/4]
 **** TODO procedure?
 **** TODO apply

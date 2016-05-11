@@ -1,13 +1,13 @@
-package main.core.math.bool;
+package main.core.procedures.equivalence;
 
 import main.core.procedures.IFn;
-import main.core.math.IOperation;
+import main.core.procedures.math.IOperation;
 
-public class Equal implements IOperation, IFn {
+public class CharEq implements IOperation, IFn {
 
   public Boolean invoke(Object... args) {
     Boolean result = zero();
-    if (args.length > 1) {
+    if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         result = result && apply(args[i], args[i + 1]);
       }
@@ -20,7 +20,9 @@ public class Equal implements IOperation, IFn {
   }
 
   public Boolean apply(Object first, Object second) {
-
+    if (!(first instanceof Character) || !(second instanceof Character)) {
+      throw new IllegalArgumentException("Wrong type of argument to `char=?`");
+    }
     return first.equals(second);
   }
 

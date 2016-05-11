@@ -1,9 +1,9 @@
-package main.core.math.bool;
+package main.core.procedures.equivalence;
 
 import main.core.procedures.IFn;
-import main.core.math.IOperation;
+import main.core.procedures.math.IOperation;
 
-public class Eqv implements IOperation, IFn {
+public class CharEqCi implements IOperation, IFn {
 
   public Boolean invoke(Object... args) {
     Boolean result = zero();
@@ -20,13 +20,10 @@ public class Eqv implements IOperation, IFn {
   }
 
   public Boolean apply(Object first, Object second) {
-
-    if (first instanceof Character && second instanceof Character) {
-      return ((Character) first).equals((Character)second);
-    } else if (first instanceof Number && second instanceof Number) {
-      return ((Number) first).equals((Number)second);
+    if (!(first instanceof Character) || !(second instanceof Character)) {
+      throw new IllegalArgumentException("Wrong type of argument to `char-ci=?`");
     }
-    return first == second;
+    return Character.toLowerCase((Character)first) == Character.toLowerCase((Character)second);
   }
 
   public Object call() throws Exception {

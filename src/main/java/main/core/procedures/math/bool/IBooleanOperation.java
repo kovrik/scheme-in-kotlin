@@ -1,6 +1,6 @@
-package main.core.math.bool;
+package main.core.procedures.math.bool;
 
-import main.core.math.IOperation;
+import main.core.procedures.math.IOperation;
 
 public interface IBooleanOperation<T extends Boolean> extends IOperation<T> {
 

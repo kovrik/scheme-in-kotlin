@@ -1,7 +1,7 @@
-package main.core.math.numeric;
+package main.core.procedures.math.numeric;
 
 import main.core.procedures.IFn;
-import main.core.math.IOperation;
+import main.core.procedures.math.IOperation;
 
 public class NumericalComparison implements IOperation, IFn {
 

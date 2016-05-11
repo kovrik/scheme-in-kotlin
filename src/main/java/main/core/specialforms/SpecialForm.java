@@ -5,7 +5,7 @@ import main.core.ast.SCMSymbol;
 import main.core.environment.Environment;
 import main.core.environment.IEnvironment;
 import main.core.evaluator.IEvaluator;
-import main.core.math.bool.Eqv;
+import main.core.procedures.equivalence.Eqv;
 import main.core.procedures.Procedure;
 import main.core.procedures.Promise;
 

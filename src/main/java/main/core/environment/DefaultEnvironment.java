@@ -1,11 +1,9 @@
 package main.core.environment;
 
 import main.core.ast.SCMSymbol;
-import main.core.math.bool.Eq;
-import main.core.math.bool.Equal;
-import main.core.math.bool.Eqv;
-import main.core.math.bool.Negation;
-import main.core.math.numeric.*;
+import main.core.procedures.equivalence.*;
+import main.core.procedures.math.bool.Negation;
+import main.core.procedures.math.numeric.*;
 import main.core.specialforms.SpecialForm;
 
 public final class DefaultEnvironment extends Environment {
@@ -44,5 +42,11 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("eq?"),    new Eq());
     put(new SCMSymbol("eqv?"),   new Eqv());
     put(new SCMSymbol("equal?"), new Equal());
+
+    put(new SCMSymbol("string=?"), new StringEq());
+    put(new SCMSymbol("string-ci=?"), new StringEqCi());
+
+    put(new SCMSymbol("char=?"), new CharEq());
+    put(new SCMSymbol("char-ci=?"), new CharEqCi());
   }
 }

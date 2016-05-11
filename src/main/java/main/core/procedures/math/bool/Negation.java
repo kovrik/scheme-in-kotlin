@@ -1,4 +1,4 @@
-package main.core.math.bool;
+package main.core.procedures.math.bool;
 
 import main.core.procedures.IFn;
 
