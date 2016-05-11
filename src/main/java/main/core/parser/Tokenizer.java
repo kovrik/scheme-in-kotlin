@@ -138,6 +138,50 @@ public class Tokenizer implements IParser {
   //   <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + "()\";";
 
+  public Object parse(InputStream inputStream) {
+
+    PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
+    try {
+      return nextToken(reader);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public static Object nextToken(PushbackReader reader) throws IOException, ParseException {
+
+    int i;
+    if ((i = reader.read()) == -1) {
+      return null;
+    }
+    char c = (char) i;
+    switch (c) {
+      case '\'': {
+        List<Object> quote = new SCMList<Object>();
+        quote.add(SpecialForm.QUOTE);
+        quote.add(nextToken(reader));
+        return quote;
+      }
+      case '(':
+        return readList(reader);
+      case ')':
+        throw new IllegalArgumentException("Unexpected list terminator: ')'");
+      default:
+        if (LINE_BREAKS.indexOf(c) > -1) {
+          return null;
+        } else if (Character.isWhitespace(c)) {
+          // skip
+        } else {
+          reader.unread(c);
+          return readAtom(reader);
+        }
+    }
+    return null;
+  }
+
   /* Given a String, and an index, get the atom starting at that index */
   private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
 
@@ -298,49 +342,5 @@ public class Tokenizer implements IParser {
       }
     }
     return list;
-  }
-
-  public static Object nextToken(PushbackReader reader) throws IOException, ParseException {
-
-    int i;
-    if ((i = reader.read()) == -1) {
-      return null;
-    }
-    char c = (char) i;
-    switch (c) {
-      case '\'': {
-        List<Object> quote = new SCMList<Object>();
-        quote.add(SpecialForm.QUOTE);
-        quote.add(nextToken(reader));
-        return quote;
-      }
-      case '(':
-        return readList(reader);
-      case ')':
-        throw new IllegalArgumentException("Unexpected list terminator: ')'");
-      default:
-        if (LINE_BREAKS.indexOf(c) > -1) {
-          return null;
-        } else if (Character.isWhitespace(c)) {
-          // skip
-        } else {
-          reader.unread(c);
-          return readAtom(reader);
-        }
-    }
-    return null;
-  }
-
-  public Object parse(InputStream inputStream) {
-
-    PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
-    try {
-      return nextToken(reader);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 }

@@ -1,5 +1,6 @@
 package main.core.environment;
 
+import main.core.ast.SCMBoolean;
 import main.core.ast.SCMSymbol;
 import main.core.procedures.characters.IsAChar;
 import main.core.procedures.delayed.Force;
@@ -22,8 +23,8 @@ public final class DefaultEnvironment extends Environment {
     }
 
     /* Boolean */
-    put(new SCMSymbol("#t"), true);
-    put(new SCMSymbol("#f"), false);
+    put(SCMBoolean.TRUE,  SCMBoolean.valueOf(SCMBoolean.TRUE));
+    put(SCMBoolean.FALSE, SCMBoolean.valueOf(SCMBoolean.FALSE));
 
     put(new SCMSymbol("not"), new Negation());
 

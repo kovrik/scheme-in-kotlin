@@ -1,5 +1,6 @@
 package main.core.specialforms;
 
+import main.core.ast.SCMBoolean;
 import main.core.ast.SCMList;
 import main.core.ast.SCMSymbol;
 import main.core.environment.Environment;
@@ -50,7 +51,7 @@ public enum SpecialForm implements ISpecialForm {
       Object test = expression.get(1);
       Object consequence = expression.get(2);
       Object alternative = expression.get(3);
-      if ((Boolean) evaluator.eval(test, env)) {
+      if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
         return evaluator.eval(consequence, env);
       } else {
         return evaluator.eval(alternative, env);
@@ -213,7 +214,7 @@ public enum SpecialForm implements ISpecialForm {
           }
           throw new IllegalArgumentException("cond: else must be the last clause in subform");
         }
-        if ((Boolean) evaluator.eval(clause, env)) {
+        if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
           for (int s = 1; s < subform.size() - 1; s++) {
             evaluator.eval(subform.get(s), env);
           }
