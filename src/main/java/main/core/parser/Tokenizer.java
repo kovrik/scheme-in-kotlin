@@ -157,7 +157,6 @@ public class Tokenizer implements IParser {
       }
       return NumberFormat.getInstance().parse(number);
     } else if (c == ';') {
-//      return readComment(reader);
       String comment = readComment(reader);
       return null;
     } else if (c == '"') {
@@ -309,6 +308,12 @@ public class Tokenizer implements IParser {
     }
     char c = (char) i;
     switch (c) {
+      case '\'': {
+        List<Object> quote = new SCMList<Object>();
+        quote.add(SpecialForm.QUOTE);
+        quote.add(nextToken(reader));
+        return quote;
+      }
       case '(':
         return readList(reader);
       case ')':
