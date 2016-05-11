@@ -4,7 +4,7 @@ import main.core.procedures.IFn;
 
 public class Negation implements IBooleanOperation, IFn {
 
-  private static final String UNSUPPORTED_OPERATION = "Wrong number of arguments to `" ;//+ Keywords.NOT.getValue() + "`";
+  private static final String UNSUPPORTED_OPERATION = "Wrong number of arguments to `not`" ;
 
   public Object invoke(Object... args) {
     if (args != null && args.length == 1) {

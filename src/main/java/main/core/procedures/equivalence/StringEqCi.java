@@ -16,7 +16,7 @@ public class StringEqCi implements IOperation, IFn {
   }
 
   public Boolean zero() {
-    return Boolean.TRUE;
+    return Boolean.FALSE;
   }
 
   public Boolean apply(Object first, Object second) {

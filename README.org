@@ -6,7 +6,7 @@
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
 ** TODO [#A] Decouple Procedure and Evaluator
-** TODO [#A] Properly implement Procedure class
+** TODO [#A] Properly implement IFn and Procedure classes
 ** DONE Get rid of `node`s
 CLOSED: [2016-04-28 Thu 19:44]
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
@@ -100,13 +100,14 @@ CLOSED: [2016-04-21 Thu 21:37]
 **** TODO named let [?]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [1/17]
+** TODO Standard procedures [2/17]
 *** TODO Construction [0/4]
 **** TODO vector
 **** TODO make-vector
 **** TODO make-string
 **** TODO list
-*** TODO Equivalence predicates [5/7]
+*** DONE Equivalence predicates [7/7]
+CLOSED: [2016-05-11 Wed 17:56]
 **** DONE eq?
 CLOSED: [2016-04-21 Thu 22:03]
 **** DONE eqv?
@@ -117,8 +118,10 @@ CLOSED: [2016-04-21 Thu 22:03]
 CLOSED: [2016-05-11 Wed 17:50]
 **** DONE string-ci=?
 CLOSED: [2016-05-11 Wed 17:51]
-**** TODO char=?
-**** TODO char-ci=?
+**** DONE char=?
+CLOSED: [2016-05-11 Wed 17:55]
+**** DONE char-ci=?
+CLOSED: [2016-05-11 Wed 17:55]
 *** TODO Type conversion [0/10]
 **** TODO vector->list
 **** TODO list->vector
@@ -211,15 +214,18 @@ CLOSED: [2016-04-21 Thu 22:03]
 ***** TODO real?
 ***** TODO complex?
 ***** TODO number?
-*** TODO Strings [0/18]
-**** TODO string?
+*** TODO Strings [3/18]
+**** DONE string?
+CLOSED: [2016-05-11 Wed 18:08]
 **** TODO make-string
 **** TODO string
 **** TODO string-length
 **** TODO string-ref
 **** TODO string-set!
-**** TODO string=?
-**** TODO string-ci=?
+**** DONE string=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE string-ci=?
+CLOSED: [2016-05-11 Wed 17:56]
 **** TODO string<? string-ci<?
 **** TODO string<=? string-ci<=?
 **** TODO string>? string-ci>?
@@ -230,10 +236,13 @@ CLOSED: [2016-04-21 Thu 22:03]
 **** TODO list->string
 **** TODO string-copy
 **** TODO string-fill!
-*** TODO Characters [0/16]
-**** TODO char?
-**** TODO char=?
-**** TODO char-ci=?
+*** TODO Characters [3/16]
+**** DONE char?
+CLOSED: [2016-05-11 Wed 18:08]
+**** DONE char=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE char-ci=?
+CLOSED: [2016-05-11 Wed 17:56]
 **** TODO char<? char-ci<?
 **** TODO char<=? char-ci<=?
 **** TODO char>? char-ci>?
