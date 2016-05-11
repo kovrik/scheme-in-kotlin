@@ -159,12 +159,8 @@ public class Tokenizer implements IParser {
     }
     char c = (char) i;
     switch (c) {
-      case '\'': {
-        List<Object> quote = new SCMList<Object>();
-        quote.add(SpecialForm.QUOTE);
-        quote.add(nextToken(reader));
-        return quote;
-      }
+      case '\'':
+        return readQuote(reader);
       case '(':
         return readList(reader);
       case ')':
@@ -231,6 +227,17 @@ public class Tokenizer implements IParser {
     }
     reader.unread(c);
     throw new IllegalArgumentException("Unknown atom!");
+  }
+
+  private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
+    List<Object> quote = new SCMList<Object>();
+    quote.add(SpecialForm.QUOTE);
+    Object next = nextToken(reader);
+    while (next == null) {
+      next = nextToken(reader);
+    }
+    quote.add(next);
+    return quote;
   }
 
   private static Object readIdentifier(PushbackReader reader) throws IOException {
