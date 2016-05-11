@@ -58,6 +58,26 @@ public enum SpecialForm implements ISpecialForm {
       }
     }
   },
+  WHEN("when") {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      if (expression.size() <= 1) {
+        throw new IllegalArgumentException("Wrong number of arguments to `when`");
+      }
+      Object test = expression.get(1);
+      if (!SCMBoolean.valueOf(evaluator.eval(test, env))) {
+        return null;
+      } else {
+        if (expression.size() > 1) {
+          Object result = null;
+          for (int i = 2; i < expression.size(); i++) {
+            result = evaluator.eval(expression.get(i), env);
+          }
+          return result;
+        }
+        return null;
+      }
+    }
+  },
   QUOTE("quote") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return expression.get(1);
