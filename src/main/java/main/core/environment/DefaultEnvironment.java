@@ -23,8 +23,8 @@ public final class DefaultEnvironment extends Environment {
     }
 
     /* Boolean */
-    put(SCMBoolean.TRUE,  SCMBoolean.valueOf(SCMBoolean.TRUE));
-    put(SCMBoolean.FALSE, SCMBoolean.valueOf(SCMBoolean.FALSE));
+    put(SCMBoolean.TRUE,  SCMBoolean.TRUE);
+    put(SCMBoolean.FALSE, SCMBoolean.FALSE);
 
     put(new SCMSymbol("not"), new Negation());
 
