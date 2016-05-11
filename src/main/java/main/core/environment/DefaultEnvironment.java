@@ -2,6 +2,7 @@ package main.core.environment;
 
 import main.core.ast.SCMSymbol;
 import main.core.procedures.characters.IsAChar;
+import main.core.procedures.delayed.IsAPromise;
 import main.core.procedures.equivalence.*;
 import main.core.procedures.math.bool.Negation;
 import main.core.procedures.math.numeric.*;
@@ -52,5 +53,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("char?"), new IsAChar());
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
+
+    put(new SCMSymbol("promise?"), new IsAPromise());
   }
 }

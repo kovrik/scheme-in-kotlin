@@ -7,7 +7,7 @@ import main.core.environment.IEnvironment;
 import main.core.evaluator.IEvaluator;
 import main.core.procedures.equivalence.Eqv;
 import main.core.procedures.Procedure;
-import main.core.procedures.Promise;
+import main.core.procedures.delayed.Promise;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -310,18 +310,22 @@ public enum SpecialForm implements ISpecialForm {
       return new Promise(Collections.emptyList(), expression.get(1));
     }
   },
-  // TODO Make it a Procedure, not Special Form
+  // TODO Make it a Procedure, not a Special Form!
   FORCE("force") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-
       if (expression.size() != 2) {
         throw new IllegalArgumentException("Wrong number of arguments to `force`");
       }
-      Object promise = evaluator.eval(expression.get(1), env);
-      if (!(promise instanceof Promise)) {
+      Object p = evaluator.eval(expression.get(1), env);
+      if (!(p instanceof Promise)) {
         throw new IllegalArgumentException("Wrong type argument to `force`");
       }
-      return evaluator.eval(((Promise) promise).getBody(), env);
+      Promise promise = (Promise)p;
+      if (promise.getResult() != null) {
+        return promise.getResult();
+      }
+      promise.setResult(evaluator.eval(promise.getBody(), env));
+      return promise.getResult();
     }
   };
 

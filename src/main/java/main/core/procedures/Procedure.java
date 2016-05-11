@@ -3,8 +3,7 @@ package main.core.procedures;
 import java.util.Collections;
 import java.util.List;
 
-// TODO Implement IFn?
-public class Procedure implements IFn {
+public class Procedure {
 
   private List<Object> params;
   private Object body;
@@ -21,18 +20,4 @@ public class Procedure implements IFn {
   public List<Object> getParams() {
     return params;
   }
-
-  // FIXME ====================================
-  public Object invoke(Object... args) {
-    return null;
-  }
-
-  public Object call() throws Exception {
-    return null;
-  }
-
-  public void run() {
-
-  }
-  // FIXME ====================================
 }

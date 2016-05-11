@@ -12,6 +12,7 @@ CLOSED: [2016-04-28 Thu 19:44]
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Function overriding (dispatching)?
 ** TODO Make `force` a Procedure, not Special Form
+** TODO Nil value
 
 ** DONE Bugs [2/2]
 CLOSED: [2016-05-04 Wed 07:09]
