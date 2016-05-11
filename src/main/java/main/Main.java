@@ -26,7 +26,7 @@ public class Main {
   private static final IEvaluator evaluator = new Evaluator();
 
   public static void main(String[] args) throws ParseException, IOException {
-    repl(WELCOME, PROMPT, new DefaultEnvironment(evaluator));
+    repl(WELCOME, PROMPT, new DefaultEnvironment());
   }
 
   private static SCMSymbol getNextID() {
