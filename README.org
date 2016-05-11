@@ -1,7 +1,7 @@
 *PL*
 ----
 
-* TODO: [4/13]
+* TODO: [5/16]
 
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
@@ -11,7 +11,8 @@ CLOSED: [2016-04-28 Thu 19:44]
 CLOSED: [2016-04-28 Thu 19:44]
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Function overriding (dispatching)?
-** TODO Make `force` a Procedure, not Special Form
+** DONE Make `force` a Procedure, not Special Form
+CLOSED: [2016-05-11 Wed 19:42]
 ** TODO Nil value
 
 ** DONE Bugs [2/2]

@@ -309,24 +309,6 @@ public enum SpecialForm implements ISpecialForm {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return new Promise(Collections.emptyList(), expression.get(1));
     }
-  },
-  // TODO Make it a Procedure, not a Special Form!
-  FORCE("force") {
-    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      if (expression.size() != 2) {
-        throw new IllegalArgumentException("Wrong number of arguments to `force`");
-      }
-      Object p = evaluator.eval(expression.get(1), env);
-      if (!(p instanceof Promise)) {
-        throw new IllegalArgumentException("Wrong type argument to `force`");
-      }
-      Promise promise = (Promise)p;
-      if (promise.getResult() != null) {
-        return promise.getResult();
-      }
-      promise.setResult(evaluator.eval(promise.getBody(), env));
-      return promise.getResult();
-    }
   };
 
   private final String syntax;
@@ -342,6 +324,7 @@ public enum SpecialForm implements ISpecialForm {
   public static SpecialForm get(String key) {
     return SPECIAL_FORMS.get(key);
   }
+
   SpecialForm(String syntax) {
     this.syntax = syntax;
   }

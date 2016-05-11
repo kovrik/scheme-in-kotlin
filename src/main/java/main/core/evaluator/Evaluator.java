@@ -48,7 +48,8 @@ public class Evaluator implements IEvaluator {
     for (int i = 0; i < params.size(); i++) {
       values.put(params.get(i), args[i]);
     }
-    return eval(procedure.getBody(), new Environment(values, env));
+//    return eval(procedure.getBody(), new Environment(values, env));
+    return procedure.apply(this, new Environment(values, env));
   }
 
   /**
