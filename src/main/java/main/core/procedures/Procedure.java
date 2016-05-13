@@ -6,7 +6,7 @@ import main.core.evaluator.IEvaluator;
 import java.util.Collections;
 import java.util.List;
 
-public class Procedure {
+public class Procedure extends AFn {
 
   private List<Object> params;
   private Object body;
