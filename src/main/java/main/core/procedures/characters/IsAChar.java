@@ -1,27 +1,28 @@
 package main.core.procedures.characters;
 
-import main.core.procedures.IFn;
+import main.core.ast.SCMBoolean;
+import main.core.exceptions.ArityException;
+import main.core.procedures.AFn;
 
 import java.util.concurrent.ExecutionException;
 
-public class IsAChar implements IFn {
+public class IsAChar extends AFn {
 
-  public Object invoke(Object... args) throws ExecutionException, InterruptedException {
+  @Override
+  public SCMBoolean invoke(Object... args) throws ExecutionException, InterruptedException {
     if (args.length < 1) {
-      throw new IllegalArgumentException("Wrong number of arguments to `char?`");
+      throw new ArityException(0, "char?");
     }
     for (Object arg : args) {
       if (!(arg instanceof Character)) {
-        return Boolean.FALSE;
+        return SCMBoolean.FALSE;
       }
     }
-    return Boolean.TRUE;
+    return SCMBoolean.TRUE;
   }
 
+  @Override
   public Object call() throws Exception {
-    return Boolean.FALSE;
-  }
-
-  public void run() {
+    return SCMBoolean.FALSE;
   }
 }

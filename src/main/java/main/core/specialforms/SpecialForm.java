@@ -6,6 +6,7 @@ import main.core.ast.SCMSymbol;
 import main.core.environment.Environment;
 import main.core.environment.IEnvironment;
 import main.core.evaluator.IEvaluator;
+import main.core.exceptions.ArityException;
 import main.core.procedures.equivalence.Eqv;
 import main.core.procedures.Procedure;
 import main.core.procedures.delayed.Promise;
@@ -61,7 +62,7 @@ public enum SpecialForm implements ISpecialForm {
   WHEN("when") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
-        throw new IllegalArgumentException("Wrong number of arguments to `when`");
+        throw new ArityException(0, getSyntax());
       }
       Object test = expression.get(1);
       if (!SCMBoolean.valueOf(evaluator.eval(test, env))) {
@@ -289,13 +290,13 @@ public enum SpecialForm implements ISpecialForm {
       Boolean result = Boolean.TRUE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
-          result = result && (Boolean)(evaluator.eval(arg, env));
+          result = result && SCMBoolean.valueOf(evaluator.eval(arg, env));
           if (!result) {
-            return result;
+            return SCMBoolean.toSCMBoolean(result);
           }
         }
       }
-      return result;
+      return SCMBoolean.toSCMBoolean(result);
     }
   },
   OR("or") {
@@ -303,13 +304,13 @@ public enum SpecialForm implements ISpecialForm {
       Boolean result = Boolean.FALSE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
-          result = result || (Boolean)(evaluator.eval(arg, env));
+          result = result || SCMBoolean.valueOf(evaluator.eval(arg, env));
           if (result) {
-            return true;
+            return SCMBoolean.toSCMBoolean(result);
           }
         }
       }
-      return result;
+      return SCMBoolean.toSCMBoolean(result);
     }
   },
   BEGIN("begin") {

@@ -4,6 +4,7 @@ import main.core.ast.SCMList;
 import main.core.ast.SCMSymbol;
 import main.core.environment.Environment;
 import main.core.environment.IEnvironment;
+import main.core.exceptions.ArityException;
 import main.core.procedures.IFn;
 import main.core.procedures.Procedure;
 import main.core.specialforms.SpecialForm;
@@ -41,8 +42,7 @@ public class Evaluator implements IEvaluator {
     Procedure procedure = (Procedure) fn;
     List<Object> params = procedure.getParams();
     if (args.length != params.size()) {
-      throw new IllegalArgumentException("Wrong number of arguments: expected " + params.size() +
-          ", actual " + args.length);
+      throw new ArityException(args.length, procedure.getClass().getSimpleName());
     }
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
     for (int i = 0; i < params.size(); i++) {

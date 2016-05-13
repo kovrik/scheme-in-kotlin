@@ -1,34 +1,37 @@
 package main.core.procedures.math.bool;
 
-import main.core.procedures.IFn;
+import main.core.ast.SCMBoolean;
+import main.core.exceptions.ArityException;
+import main.core.procedures.AFn;
 
-public class Negation implements IBooleanOperation, IFn {
+public class Negation extends AFn implements IBooleanOperation {
 
-  private static final String UNSUPPORTED_OPERATION = "Wrong number of arguments to `not`" ;
-
+  @Override
   public Object invoke(Object... args) {
     if (args != null && args.length == 1) {
-      return (!(Boolean)args[0]);
+      return SCMBoolean.toSCMBoolean(!SCMBoolean.valueOf(args[0]));
     }
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+    throw new ArityException(args.length, "not");
   }
 
   public Boolean zero() {
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+    throw new ArityException(0, "not");
   }
 
   public Boolean apply(Boolean first, Boolean second) {
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+    throw new ArityException(2, "not");
   }
 
   public Object apply(Object first, Object second) {
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+    throw new ArityException(2, "not");
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

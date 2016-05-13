@@ -1,8 +1,8 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.procedures.AFn;
 
-public class Addition implements INumericalOperation, IFn {
+public class Addition extends AFn implements INumericalOperation {
 
   public Number zero() {
     return 0L;
@@ -20,8 +20,8 @@ public class Addition implements INumericalOperation, IFn {
     return first.doubleValue() + second.doubleValue();
   }
 
+  @Override
   public Object invoke(Object... args) {
-
     Object result = zero();
     if (args != null) {
       for (Object number : args) {
@@ -31,10 +31,12 @@ public class Addition implements INumericalOperation, IFn {
     return result;
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

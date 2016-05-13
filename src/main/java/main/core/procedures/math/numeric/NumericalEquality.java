@@ -1,10 +1,11 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.procedures.AFn;
 import main.core.procedures.math.IOperation;
 
-public class NumericalEquality implements IOperation, IFn {
+public class NumericalEquality extends AFn implements IOperation {
 
+  @Override
   public Boolean invoke(Object... args) {
     Boolean result = zero();
     if (args != null && args.length > 1) {
@@ -24,10 +25,12 @@ public class NumericalEquality implements IOperation, IFn {
     return ((Number)first).equals((Number)second);
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

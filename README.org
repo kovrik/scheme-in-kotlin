@@ -1,7 +1,7 @@
-*PL*
+*JISP*
 ----
 
-* TODO: [5/16]
+* TODO: [6/17]
 
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
@@ -14,6 +14,8 @@ CLOSED: [2016-04-28 Thu 19:44]
 ** DONE Make `force` a Procedure, not Special Form
 CLOSED: [2016-05-11 Wed 19:42]
 ** TODO Nil value
+** DONE Java Booleans -> SCMBoolean
+CLOSED: [2016-05-13 Fri 19:54]
 
 ** DONE Bugs [2/2]
 CLOSED: [2016-05-04 Wed 07:09]

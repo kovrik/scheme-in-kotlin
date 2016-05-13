@@ -1,20 +1,22 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.exceptions.ArityException;
+import main.core.procedures.AFn;
 
-public class Subtraction implements INumericalOperation, IFn {
+public class Subtraction extends AFn implements INumericalOperation {
 
   public Number zero() {
     return 0L;
   }
 
+  @Override
   public Object invoke(Object... args) {
 
     if (args == null || args.length == 0) {
-      throw new IllegalArgumentException("Wrong number of arguments to -");
+      throw new ArityException(0, "-");
     }
     if (args.length == 1) {
-      return apply(0L, (Number)args[0]);
+      return apply(zero(), (Number)args[0]);
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
@@ -35,10 +37,12 @@ public class Subtraction implements INumericalOperation, IFn {
     return first.doubleValue() - second.doubleValue();
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

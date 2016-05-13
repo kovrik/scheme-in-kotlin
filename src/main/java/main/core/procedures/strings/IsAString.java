@@ -1,27 +1,28 @@
 package main.core.procedures.strings;
 
-import main.core.procedures.IFn;
+import main.core.ast.SCMBoolean;
+import main.core.exceptions.ArityException;
+import main.core.procedures.AFn;
 
 import java.util.concurrent.ExecutionException;
 
-public class IsAString implements IFn {
+public class IsAString extends AFn {
 
-  public Object invoke(Object... args) throws ExecutionException, InterruptedException {
+  @Override
+  public SCMBoolean invoke(Object... args) throws ExecutionException, InterruptedException {
     if (args.length < 1) {
-      throw new IllegalArgumentException("Wrong number of arguments to `string?`");
+      throw new ArityException(0, "string?");
     }
     for (Object arg : args) {
       if (!(arg instanceof String)) {
-        return Boolean.FALSE;
+        return SCMBoolean.FALSE;
       }
     }
-    return Boolean.TRUE;
+    return SCMBoolean.TRUE;
   }
 
-  public Object call() throws Exception {
-    return Boolean.FALSE;
-  }
-
-  public void run() {
+  @Override
+  public SCMBoolean call() throws Exception {
+    return SCMBoolean.FALSE;
   }
 }

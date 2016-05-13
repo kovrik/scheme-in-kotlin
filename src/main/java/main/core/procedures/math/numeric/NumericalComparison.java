@@ -1,9 +1,9 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.procedures.AFn;
 import main.core.procedures.math.IOperation;
 
-public class NumericalComparison implements IOperation, IFn {
+public class NumericalComparison extends AFn implements IOperation {
 
   public enum Type {
     EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL;
@@ -15,6 +15,7 @@ public class NumericalComparison implements IOperation, IFn {
     this.type = type;
   }
 
+  @Override
   public Boolean invoke(Object... args) {
     Boolean result = zero();
     if (args != null && args.length > 1) {
@@ -50,10 +51,12 @@ public class NumericalComparison implements IOperation, IFn {
     throw new IllegalArgumentException("Unknown comparison type!");
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

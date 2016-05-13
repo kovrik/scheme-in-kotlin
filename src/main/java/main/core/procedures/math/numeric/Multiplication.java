@@ -1,8 +1,8 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.procedures.AFn;
 
-public class Multiplication implements INumericalOperation, IFn {
+public class Multiplication extends AFn implements INumericalOperation {
 
   public Number zero() {
     return 1L;
@@ -13,15 +13,14 @@ public class Multiplication implements INumericalOperation, IFn {
   }
 
   public Number apply(Number first, Number second) {
-
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first * (Long)second;
     }
     return first.doubleValue() * second.doubleValue();
   }
 
+  @Override
   public Object invoke(Object... args) {
-
     Object result = zero();
     if (args != null) {
       for (Object number : args) {
@@ -31,10 +30,12 @@ public class Multiplication implements INumericalOperation, IFn {
     return result;
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

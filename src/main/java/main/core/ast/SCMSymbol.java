@@ -2,7 +2,7 @@ package main.core.ast;
 
 public class SCMSymbol {
 
-  private String value;
+  protected String value;
 
   public SCMSymbol(String value) {
     this.value = value;
@@ -15,7 +15,8 @@ public class SCMSymbol {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+//    if (o == null || getClass() != o.getClass()) return false;
+    if (o == null || !(o instanceof SCMSymbol)) return false;
 
     SCMSymbol scmSymbol = (SCMSymbol) o;
 

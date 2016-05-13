@@ -1,8 +1,9 @@
 package main.core.procedures.math.numeric;
 
-import main.core.procedures.IFn;
+import main.core.exceptions.ArityException;
+import main.core.procedures.AFn;
 
-public class Division implements INumericalOperation, IFn {
+public class Division extends AFn implements INumericalOperation {
 
   public Number zero() {
     return 1L;
@@ -20,10 +21,11 @@ public class Division implements INumericalOperation, IFn {
     return first.doubleValue() / second.doubleValue();
   }
 
+  @Override
   public Object invoke(Object... args) {
 
     if (args == null || args.length == 0) {
-      throw new IllegalArgumentException("Wrong number of arguments to -");
+      throw new ArityException(0, "\\");
     }
     Object result = zero();
     for (Object number : args) {
@@ -32,10 +34,12 @@ public class Division implements INumericalOperation, IFn {
     return result;
   }
 
+  @Override
   public Object call() throws Exception {
     return invoke();
   }
 
+  @Override
   public void run() {
     invoke();
   }

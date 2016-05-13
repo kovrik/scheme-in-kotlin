@@ -1,7 +1,4 @@
-package main.core.procedures;
-
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
+package main.core.exceptions;
 
 /**
  * Copyright (c) Rich Hickey. All rights reserved.
@@ -12,17 +9,19 @@ import java.util.concurrent.ExecutionException;
  * the terms of this license.
  * You must not remove this notice, or any other, from this software.
  **/
-public interface IFn extends Runnable, Callable {
+public class ArityException extends IllegalArgumentException {
 
-  Object invoke();
+  final public int actual;
 
-  Object invoke(Object arg1);
+  final public String name;
 
-  Object invoke(Object arg1, Object arg2);
+  public ArityException(int actual, String name) {
+    this(actual, name, null);
+  }
 
-  Object invoke(Object arg1, Object arg2, Object arg3);
-
-  Object invoke(Object arg1, Object arg2, Object arg3, Object arg4);
-
-  Object invoke(Object... args) throws ExecutionException, InterruptedException;
+  public ArityException(int actual, String name, Throwable cause) {
+    super("Wrong number of arguments (" + actual + ") passed to: " + name, cause);
+    this.actual = actual;
+    this.name = name;
+  }
 }
