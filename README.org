@@ -3,19 +3,19 @@
 
 * TODO: [6/17]
 
-** DONE [#A] Recursive Descent Parser
-CLOSED: [2016-04-28 Thu 19:44]
 ** TODO [#A] Decouple Procedure and Evaluator
 ** TODO [#A] Properly implement IFn and Procedure classes
+** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
+** TODO Nil value
+** DONE [#A] Recursive Descent Parser
+CLOSED: [2016-04-28 Thu 19:44]
 ** DONE Get rid of `node`s
 CLOSED: [2016-04-28 Thu 19:44]
-** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
-** TODO Function overriding (dispatching)?
-** DONE Make `force` a Procedure, not Special Form
-CLOSED: [2016-05-11 Wed 19:42]
-** TODO Nil value
 ** DONE Java Booleans -> SCMBoolean
 CLOSED: [2016-05-13 Fri 19:54]
+** DONE Make `force` a Procedure, not Special Form
+CLOSED: [2016-05-11 Wed 19:42]
+
 
 ** DONE Bugs [2/2]
 CLOSED: [2016-05-04 Wed 07:09]

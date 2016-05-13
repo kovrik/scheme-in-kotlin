@@ -6,15 +6,13 @@ import main.core.environment.IEnvironment;
 import main.core.evaluator.IEvaluator;
 import main.core.procedures.Procedure;
 
-import java.util.Collections;
-
 public class Force extends Procedure {
 
-  /* (lambda (p) (p)) */
-  private static final SCMList<Object> FORCE = new SCMList<Object>(Collections.singletonList((Object)new SCMSymbol("promise")));
   private static final SCMSymbol PROMISE = new SCMSymbol("promise");
+  private static final SCMList<Object> FORCE = new SCMList<Object>(PROMISE);
 
   public Force() {
+    /* (lambda (p) (p)) */
     super(FORCE, FORCE);
   }
 

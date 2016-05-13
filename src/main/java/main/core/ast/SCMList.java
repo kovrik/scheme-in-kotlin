@@ -14,6 +14,11 @@ public class SCMList<E> extends LinkedList<E> {
     super(c);
   }
 
+  public SCMList(E e) {
+    super();
+    add(e);
+  }
+
   @Override
   public String toString() {
     Iterator<E> it = iterator();

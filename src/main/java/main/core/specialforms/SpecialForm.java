@@ -33,17 +33,20 @@ public enum SpecialForm implements ISpecialForm {
         env.put(definition, evaluator.eval(value, env));
       } else if (definition instanceof SCMList) {
         if (((SCMList) definition).isEmpty()) {
-          throw new IllegalArgumentException("Wrong lambda syntax!");
+          throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }
         env.put(((SCMList<Object>)definition).pop(), new Procedure((SCMList<Object>)definition, value));
       } else {
-        throw new IllegalArgumentException("Wrong define syntax!");
+        throw new IllegalArgumentException("define: bad `define` in form: " + expression);
       }
       return DEFINE;
     }
   },
   LAMBDA("lambda") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      if (expression.size() < 3) {
+        throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
+      }
       return new Procedure((List<Object>)expression.get(1), expression.get(2));
     }
   },
@@ -145,7 +148,7 @@ public enum SpecialForm implements ISpecialForm {
 
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let: bad let in form");
+        throw new IllegalArgumentException("let: bad let in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
@@ -194,7 +197,7 @@ public enum SpecialForm implements ISpecialForm {
      */
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let*: bad let* in form");
+        throw new IllegalArgumentException("let*: bad let* in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
