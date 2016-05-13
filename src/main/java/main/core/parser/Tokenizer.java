@@ -2,6 +2,7 @@ package main.core.parser;
 
 import main.core.ast.SCMList;
 import main.core.ast.SCMSymbol;
+import main.core.ast.SCMVector;
 import main.core.specialforms.SpecialForm;
 
 import java.io.*;
@@ -161,6 +162,13 @@ public class Tokenizer implements IParser {
     switch (c) {
       case '\'':
         return readQuote(reader);
+      case '#':
+        char next = (char) reader.read();
+        if (next == '(') {
+          return readVector(reader);
+        } else {
+          reader.unread(next);
+        }
       case '(':
         return readList(reader);
       case ')':
@@ -349,5 +357,19 @@ public class Tokenizer implements IParser {
       }
     }
     return list;
+  }
+
+  private static Object readVector(PushbackReader reader) throws ParseException, IOException {
+
+    List<Object> list = new SCMList<Object>();
+    char c;
+    while ((c = (char)reader.read()) != ')') {
+      reader.unread(c);
+      Object token = nextToken(reader);
+      if (token != null) {
+        list.add(token);
+      }
+    }
+    return new SCMVector((Object[])list.toArray(new Object[list.size()]));
   }
 }

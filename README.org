@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [6/17]
+* TODO: [7/16]
 
 ** TODO [#A] Decouple Procedure and Evaluator
 ** TODO [#A] Properly implement IFn and Procedure classes
@@ -53,15 +53,24 @@ CLOSED: [2016-04-28 Thu 19:45]
 CLOSED: [2016-04-28 Thu 19:45]
 *** DONE Printer
 CLOSED: [2016-04-28 Thu 19:45]
-** TODO Primitives [0/8]
-*** TODO Number
-*** TODO Boolean
-*** TODO String
-*** TODO Char
-*** TODO List
-*** TODO Vector
-*** TODO Symbol
-*** TODO Procedure
+** DONE Primitives [8/8]
+CLOSED: [2016-05-13 Fri 20:56]
+*** DONE Number
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Boolean
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE String
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Char
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE List
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Vector
+CLOSED: [2016-05-13 Fri 20:56]
+*** DONE Symbol
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Procedure
+CLOSED: [2016-05-13 Fri 20:40]
 ** TODO Standard forms [0/2]
 *** TODO Fundamental forms: [5/12]
 **** DONE define

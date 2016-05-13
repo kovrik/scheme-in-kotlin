@@ -78,6 +78,9 @@ public class Evaluator implements IEvaluator {
       args[i - 1] = eval(list.get(i), env);
     }
     /* Procedure */
+    if (!(fn instanceof IFn)) {
+      throw new IllegalArgumentException("Wrong type to apply: " + fn);
+    }
     // FIXME Make generic as IFn?
     if (fn instanceof Procedure) {
       return apply(fn, args, env);

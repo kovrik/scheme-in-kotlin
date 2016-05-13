@@ -9,6 +9,7 @@ import main.core.procedures.equivalence.*;
 import main.core.procedures.math.bool.Negation;
 import main.core.procedures.math.numeric.*;
 import main.core.procedures.strings.IsAString;
+import main.core.procedures.vectors.IsAVector;
 import main.core.specialforms.SpecialForm;
 
 public final class DefaultEnvironment extends Environment {
@@ -29,6 +30,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("not"), new Negation());
 
     /* nil */
+    // TODO?
     put(new SCMSymbol("#nil"), null);
 
     /* math */
@@ -59,5 +61,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("promise?"), new IsAPromise());
 
     put(new SCMSymbol("force"), new Force());
+
+    /* Vectors */
+    put(new SCMSymbol("vector?"), new IsAVector());
   }
 }
