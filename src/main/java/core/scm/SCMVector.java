@@ -1,12 +1,22 @@
 package core.scm;
 
+import java.util.Arrays;
+
 /* Mutable vector */
 public class SCMVector {
 
   private final Object[] vector;
 
-  public SCMVector(Object[] array) {
-    this.vector = array;
+  public SCMVector() {
+    this.vector = new Object[0];
+  }
+
+  public SCMVector(Object... elements) {
+    this.vector = elements;
+  }
+
+  public SCMVector(Object e) {
+    this.vector = new Object[] {e};
   }
 
   public Object get(int index) {
@@ -33,5 +43,16 @@ public class SCMVector {
       sb.append(' ');
     }
     return sb.toString();
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    return obj instanceof SCMVector && Arrays.equals(vector, ((SCMVector) obj).vector);
   }
 }

@@ -1,4 +1,5 @@
 import core.parser.Tokenizer;
+import core.scm.SCMVector;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -34,4 +35,12 @@ public class TokenizerTest {
     assertEquals("", tokenizer.parse("\"\""));
   }
 
+  @Test
+  public void testParseVector() {
+
+    assertEquals(new SCMVector(), tokenizer.parse("#()"));
+    assertEquals(new SCMVector(0L), tokenizer.parse("#(0)"));
+    assertEquals(new SCMVector(1L, 2L, 3L), tokenizer.parse("#(1 2 3)"));
+    assertEquals(new SCMVector(1L, "test", 3L), tokenizer.parse("#(1 \"test\" 3)"));
+  }
 }
