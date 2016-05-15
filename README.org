@@ -1,9 +1,10 @@
 *JISP*
 ----
 
-* TODO: [7/16]
+* TODO: [8/17]
 
-** TODO [#A] Decouple Procedure and Evaluator
+** DONE [#A] Decouple Procedure and Evaluator
+CLOSED: [2016-05-15 Sun 19:09]
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Varargs
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])

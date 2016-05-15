@@ -6,13 +6,11 @@ import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.parser.IParser;
 import core.parser.Tokenizer;
-import core.procedures.delayed.Promise;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -29,17 +27,12 @@ public class Main {
   private static final IParser parser = new Tokenizer();
   private static final IEvaluator evaluator = new Evaluator();
 
-  private static final Map<String, String> PROCS = new HashMap<String, String>();
-  static {
-    PROCS.put("promise?", String.format("(define (promise? o) (string=? \"%s\" (class-of o)))", Promise.class.getName()));
-  }
-
   public static void main(String[] args) throws ParseException, IOException {
 
     DefaultEnvironment defaultEnvironment = new DefaultEnvironment();
 
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : PROCS.entrySet()) {
+    for (Map.Entry<String, String> entry : defaultEnvironment.getProcs().entrySet()) {
       defaultEnvironment.put(entry.getKey(), evaluator.eval(parser.parse(entry.getValue()), defaultEnvironment));
     }
 

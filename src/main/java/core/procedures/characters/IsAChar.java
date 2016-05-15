@@ -6,6 +6,7 @@ import core.procedures.AFn;
 
 import java.util.concurrent.ExecutionException;
 
+@Deprecated
 public class IsAChar extends AFn {
 
   @Override

@@ -14,21 +14,19 @@ public class Tokenizer implements IParser {
 
   /* R5RS Grammar
 
-  <token> -->
-         [ ]  <identifier> |
-         [V]  <boolean>    |
-         [ ]  <number>     |
-         [V]  <character>  |
-         [V]  <string>     |
-         [V]  (            |
-         [V]  )            |
-
-         [ ]  #(           |
-         [ ]  '            |
-         [ ]  `            |
-         [ ]  ,            |
-         [ ]  ,@           |
-         [ ]  .
+  <token> --> [ ]  <identifier> |
+              [V]  <boolean>    |
+              [ ]  <number>     |
+              [V]  <character>  |
+              [V]  <string>     |
+              [V]  (            |
+              [V]  )            |
+              [V]  #(           |
+              [V]  '            |
+              [ ]  `            |
+              [ ]  ,            |
+              [ ]  ,@           |
+              [ ]  .
 
   <comment> --> ;  <all subsequent characters up to a line break>
 
@@ -80,56 +78,9 @@ public class Tokenizer implements IParser {
   <digit 8>   --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
   <digit 10>  --> <digit>
   <digit 16>  --> <digit 10> | a | b | c | d | e | f
-
   */
 
   // TODO Create Reader for each Type
-//  public enum Type {
-//    // This Scheme-like language has three token types:  open parens, close parens, and an "atom" type
-//    LIST,
-//    NUMBER,
-//    STRING,
-//    CHARACTER,
-//    BOOLEAN,
-//    COMMENT,
-//    IDENTIFIER,
-//    WHITESPACE,
-//    KEYWORD
-//  }
-//
-//  public static class Token {
-//
-//    public final Type type;
-//
-//    public final Object value; // contents mainly for atom tokens
-//    // could have column and line number fields too, for reporting errors later
-//    public Token(Type t, Object v) {
-//      this.type = t;
-//      this.value = v;
-//    }
-//
-//    public String toString() {
-//
-//      switch (type) {
-//        case NUMBER:
-//          return "NUMBER<" + value + ">";
-//        case STRING:
-//          return "STRING<" + value + ">";
-//        case CHARACTER:
-//          return "CHARACTER<" + value + ">";
-//        case BOOLEAN:
-//          return "BOOLEAN<" + value + ">";
-//        case IDENTIFIER:
-//          return "IDENTIFIER<" + value + ">";
-//        case COMMENT:
-//          return "COMMENT<" + value + ">";
-//        case LIST:
-//          return "LIST[" + value + "]";
-//        default:
-//          return type.toString();
-//      }
-//    }
-//  }
 
   private static final String LINE_BREAKS = "\n\f\r";
 
@@ -327,7 +278,7 @@ public class Tokenizer implements IParser {
         if (next == '>') {
           throw new IllegalArgumentException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
         } else if (next == '"') {
-          string.append(c);
+          string.append(c).append(next);
           continue;
         }
       }
