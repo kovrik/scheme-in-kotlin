@@ -5,6 +5,7 @@
 
 ** TODO [#A] Decouple Procedure and Evaluator
 ** TODO [#A] Properly implement IFn and Procedure classes
+** TODO [#A] Varargs
 ** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
 ** TODO Nil value
 ** DONE [#A] Recursive Descent Parser
