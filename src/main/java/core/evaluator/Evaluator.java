@@ -1,12 +1,11 @@
 package core.evaluator;
 
-import core.scm.SCMList;
-import core.scm.SCMSymbol;
 import core.environment.Environment;
 import core.environment.IEnvironment;
-import core.exceptions.ArityException;
 import core.procedures.IFn;
+import core.scm.SCMList;
 import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.HashMap;
@@ -42,13 +41,12 @@ public class Evaluator implements IEvaluator {
     SCMProcedure procedure = (SCMProcedure) fn;
     List<SCMSymbol> params = procedure.getParams();
     if (args.length != params.size()) {
-      throw new ArityException(args.length, procedure.getClass().getSimpleName());
+      procedure.throwArity(args.length);
     }
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
     for (int i = 0; i < params.size(); i++) {
       values.put(params.get(i), args[i]);
     }
-//    return eval(procedure.getBody(), new Environment(values, env));
     return procedure.apply(this, new Environment(values, env));
   }
 

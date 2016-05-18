@@ -2,6 +2,7 @@ package core.scm;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.util.Collections;
@@ -37,5 +38,10 @@ public class SCMProcedure extends AFn {
 
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     return evaluator.eval(body, env);
+  }
+
+  @Override
+  public Object throwArity(int actual) {
+    throw new ArityException(actual, params.size(), name.getValue());
   }
 }
