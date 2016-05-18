@@ -45,7 +45,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LAMBDA("lambda") {
-    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+    public SCMProcedure eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
       }

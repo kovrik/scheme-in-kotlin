@@ -116,7 +116,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
-** TODO Standard procedures [2/17]
+** TODO Standard procedures [3/17]
 *** TODO Construction [0/4]
 **** TODO vector
 **** TODO make-vector
@@ -224,12 +224,13 @@ CLOSED: [2016-04-21 Thu 22:03]
 **** TODO Input-output [0/2]
 ***** TODO number->string
 ***** TODO string->number
-**** TODO Type predicates [0/5]
+**** TODO Type predicates [1/5]
 ***** TODO integer?
 ***** TODO rational?
 ***** TODO real?
 ***** TODO complex?
-***** TODO number?
+***** DONE number?
+CLOSED: [2016-05-15 Sun 22:33]
 *** TODO Strings [3/18]
 **** DONE string?
 CLOSED: [2016-05-11 Wed 18:08]
@@ -272,21 +273,23 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO integer->char
 **** TODO char-upcase
 **** TODO char-downcase
-*** TODO Vectors [0/9]
+*** TODO Vectors [1/9]
 **** TODO make-vector
 **** TODO vector
-**** TODO vector?
+**** DONE vector?
+CLOSED: [2016-05-15 Sun 22:19]
 **** TODO vector-length
 **** TODO vector-ref
 **** TODO vector-set!
 **** TODO vector->list
 **** TODO list->vector
 **** TODO vector-fill!
-*** TODO Symbols [0/3]
+*** TODO Symbols [1/3]
 **** TODO symbol->string
 **** TODO string->symbol
-**** TODO symbol?
-*** TODO Pairs and lists [0/22]
+**** DONE symbol?
+CLOSED: [2016-05-15 Sun 22:19]
+*** TODO Pairs and lists [1/22]
 **** TODO pair?
 **** TODO cons
 **** TODO car
@@ -294,7 +297,8 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO set-car!
 **** TODO set-cdr!
 **** TODO null?
-**** TODO list?
+**** DONE list?
+CLOSED: [2016-05-15 Sun 22:20]
 **** TODO list
 **** TODO length
 **** TODO append
@@ -309,23 +313,31 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO vector->list
 **** TODO list->string
 **** TODO string->list
-*** TODO Identity predicates [0/9]
-**** TODO boolean?
+*** TODO Identity predicates [7/9]
+**** DONE boolean?
+CLOSED: [2016-05-15 Sun 22:24]
 **** TODO pair?
-**** TODO symbol?
-**** TODO number?
-**** TODO char?
-**** TODO string?
-**** TODO vector?
+**** DONE symbol?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE number?
+CLOSED: [2016-05-15 Sun 22:23]
+**** DONE char?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE string?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE vector?
+CLOSED: [2016-05-15 Sun 22:21]
 **** TODO port?
-**** TODO procedure?
+**** DONE procedure?
+CLOSED: [2016-05-15 Sun 22:28]
 *** TODO Continuations [0/4]
 **** TODO call-with-current-continuation (call/cc)
 **** TODO values
 **** TODO call-with-values
 **** TODO dynamic-wind
-*** TODO Environments [0/4]
-**** TODO eval
+*** TODO Environments [1/4]
+**** DONE eval
+CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
@@ -358,13 +370,16 @@ CLOSED: [2016-05-11 Wed 17:56]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE force
 CLOSED: [2016-05-11 Wed 17:43]
-*** TODO Functional programming [0/4]
-**** TODO procedure?
+*** TODO Functional programming [1/4]
+**** DONE procedure?
+CLOSED: [2016-05-15 Sun 22:32]
 **** TODO apply
 **** TODO map
 **** TODO for-each
-*** TODO Booleans [1/2]
-**** TODO boolean?
+*** DONE Booleans [2/2]
+CLOSED: [2016-05-15 Sun 22:32]
+**** DONE boolean?
+CLOSED: [2016-05-15 Sun 22:32]
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
 
