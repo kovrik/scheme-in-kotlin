@@ -169,7 +169,11 @@ public class Tokenizer implements IParser {
         // not a number
         return new SCMSymbol(number);
       }
-      return NumberFormat.getInstance().parse(number);
+      Number result = NumberFormat.getInstance().parse(number);
+      if (number.indexOf('.') > -1) {
+        return result.doubleValue();
+      }
+      return result;
     } else if (c == ';') {
       String comment = readComment(reader);
       return null;

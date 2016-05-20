@@ -7,15 +7,17 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 
 import java.io.PrintStream;
+import java.util.List;
 
 public class Display extends SCMProcedure {
 
   private static final SCMSymbol value = new SCMSymbol("value");
+  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(value);
 
   private PrintStream printStream;
 
   public Display(PrintStream printStream) {
-    super("display", new SCMList<SCMSymbol>(value), value);
+    super("display", params, value);
     this.printStream = printStream;
   }
 

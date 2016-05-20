@@ -19,10 +19,10 @@ public class TokenizerTest {
 
     assertEquals(0.5d, tokenizer.parse("0.5"));
     assertEquals(-0.5d, tokenizer.parse("-0.5"));
-//    assertEquals(0.0d, tokenizer.parse("0.0"));
-//    assertEquals(1235.0d, tokenizer.parse("1235.0"));
-//    assertEquals(1235.0d, tokenizer.parse("1235."));
-//    assertEquals(-1235.0d, tokenizer.parse("-1235."));
+    assertEquals(0.0d, tokenizer.parse("0.0"));
+    assertEquals(1235.0d, tokenizer.parse("1235.0"));
+    assertEquals(1235.0d, tokenizer.parse("1235."));
+    assertEquals(-1235.0d, tokenizer.parse("-1235."));
     assertEquals(.5d, tokenizer.parse(".5"));
     assertEquals(-.5d, tokenizer.parse("-.5"));
   }
