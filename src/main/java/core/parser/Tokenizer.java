@@ -82,6 +82,8 @@ public class Tokenizer implements IParser {
 
   // TODO Create Reader for each Type
 
+  private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
   private static final String LINE_BREAKS = "\n\f\r";
 
   //   <whitespace> --> <space or newline>
@@ -89,6 +91,10 @@ public class Tokenizer implements IParser {
 
   //   <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + "()\";";
+
+  private static boolean isValid(int i) {
+    return i > -1 && i != 65535;
+  }
 
   public Object parse(String string) {
 
@@ -221,10 +227,12 @@ public class Tokenizer implements IParser {
   private static Object readIdentifier(PushbackReader reader) throws IOException {
 
     StringBuilder identifier = new StringBuilder();
-    char c = (char)reader.read();
-    while (DELIMITERS.indexOf(c) < 0) {
+    int i = reader.read();
+    char c = (char)i;
+    while (isValid(i) && DELIMITERS.indexOf(c) < 0) {
       identifier.append(c);
-      c = (char)reader.read();
+      i = reader.read();
+      c = (char)i;
     }
     reader.unread(c);
     SCMSpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
@@ -238,10 +246,12 @@ public class Tokenizer implements IParser {
   private static String readComment(PushbackReader reader) throws IOException {
 
     StringBuilder comment = new StringBuilder();
-    char c = (char)reader.read();
-    while (c == ' ' || WHITESPACES.indexOf(c) < 0) {
+    int i = reader.read();
+    char c = (char)i;
+    while (isValid(i) && (c == ' ' || WHITESPACES.indexOf(c) < 0)) {
       comment.append(c);
-      c = (char)reader.read();
+      i = reader.read();
+      c = (char)i;
     }
     return comment.toString();
   }
@@ -253,13 +263,15 @@ public class Tokenizer implements IParser {
   private static String readNumber(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder number = new StringBuilder();
-    char c = (char)reader.read();
+    int i = reader.read();
+    char c = (char)i;
     if (c == '.') {
       number.append('0');
     }
-    while (Character.isDigit(c) || c == '.' || c == '+' || c == '-') {
+    while (isValid(i) && Character.isDigit(c) || c == '.' || c == '+' || c == '-') {
       number.append(c);
-      c = (char)reader.read();
+      i = reader.read();
+      c = (char)i;
     }
     reader.unread(c);
     if (number.charAt(number.length() - 1) == '.') {
@@ -273,12 +285,15 @@ public class Tokenizer implements IParser {
   private static String readString(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder string = new StringBuilder();
-//    string.append('"');
+    int i;
     char c;
-    while ((c = (char)reader.read()) != '"') {
+    while ((isValid(i = reader.read())) &&
+           ((c = (char)i) != '"')) {
+
       // escaping
       if (c == '\\') {
-        char next = (char)reader.read();
+        i = reader.read();
+        char next = (char)i;
         if (next == '>') {
           throw new IllegalArgumentException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
         } else if (next == '"') {
@@ -296,16 +311,20 @@ public class Tokenizer implements IParser {
   private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder character = new StringBuilder();
+    int i;
     char c;
-    while (DELIMITERS.indexOf(c = (char) reader.read()) < 0) {
+    while ((isValid(i = reader.read())) &&
+           (DELIMITERS.indexOf(c = (char)i) < 0)) {
+
       character.append(c);
     }
-    reader.unread(c);
+    reader.unread((char)i);
     // <character name>
     if (character.length() > 1) {
       if ("space".equals(character.toString())) {
         return ' ';
       } else  if ("newline".equals(character.toString())) {
+        // TODO Platform-dependent line separator?
         return '\n';
       } else {
         throw new IllegalArgumentException("Error: unknown named character: \"" + character + "\"");
@@ -317,8 +336,11 @@ public class Tokenizer implements IParser {
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
 
     List<Object> list = new SCMList<Object>();
+    int i;
     char c;
-    while ((c = (char)reader.read()) != ')') {
+    while (isValid(i = reader.read()) &&
+           ((c = (char)i) != ')')) {
+
       reader.unread(c);
       Object token = nextToken(reader);
       if (token != null) {
