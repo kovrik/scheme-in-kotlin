@@ -26,10 +26,11 @@ CLOSED: [2016-04-21 Thu 16:59]
 *** DONE [#A] REPL is not handling newlines/empty lines properly
 CLOSED: [2016-04-28 Thu 19:44]
 
-** TODO General [2/6]
+** TODO General [3/6]
 *** DONE [#A] Clojure or ***Scheme*** syntax? Or custom?
 CLOSED: [2016-04-28 Thu 19:45]
-*** TODO [#A] *Special Forms, Symbols -> Functions etc.*
+*** DONE [#A] *Special Forms, Symbols -> Functions etc.*
+CLOSED: [2016-05-21 Sat 11:26]
 *** TODO [#B] Clean up code
 *** TODO [#B] Error handling
 *** DONE [#B] Separate classes (Reader, Parser, Evaluator etc.)

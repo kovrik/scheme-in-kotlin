@@ -80,6 +80,9 @@ public class TokenizerTest {
   public void testReadComment() {
 
     assertEquals(null, tokenizer.parse(";test"));
+    assertEquals(null, tokenizer.parse(";test\ttest"));
+    assertEquals(null, tokenizer.parse(";test\t\ntest"));
+    assertEquals(tokenizer.parse("1"), tokenizer.parse("1; wefewffewfwfwe \t \t few fwe f wf wfw ;w effw efw e "));
     assertEquals(tokenizer.parse("1"), tokenizer.parse("1 ; test"));
     assertEquals(tokenizer.parse("'(1 \"a\" 5)"), tokenizer.parse("'(1 \"a\" 5) ; test"));
   }

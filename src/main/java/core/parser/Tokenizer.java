@@ -14,9 +14,9 @@ public class Tokenizer implements IParser {
 
   /* R5RS Grammar
 
-  <token> --> [ ]  <identifier> |
+  <token> --> [V]  <identifier> |
               [V]  <boolean>    |
-              [ ]  <number>     |
+              [V]  <number>     |
               [V]  <character>  |
               [V]  <string>     |
               [V]  (            |
@@ -145,17 +145,16 @@ public class Tokenizer implements IParser {
         return readList(reader);
       case ')':
         throw new IllegalArgumentException("Unexpected list terminator: ')'");
-      default:
-        if (LINE_BREAKS.indexOf(c) > -1) {
-          return null;
-        } else if (Character.isWhitespace(c)) {
+      default: {
+        if (Character.isWhitespace(c)) {
           // skip
+          return null;
         } else {
           reader.unread(c);
           return readAtom(reader);
         }
+      }
     }
-    return null;
   }
 
   /* Given a String, and an index, get the atom starting at that index */
@@ -194,6 +193,7 @@ public class Tokenizer implements IParser {
         return new SCMSymbol("#" + (char)reader.read());
       } else if (next == 'i' || next == 'e') {
         char exactness = (char) reader.read();
+        // TODO
 //        String number = "#" + exactness + readNumber(reader);
         String number = readNumber(reader);
         if (number.indexOf(".") != number.lastIndexOf(".")) {
@@ -248,7 +248,7 @@ public class Tokenizer implements IParser {
     StringBuilder comment = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
-    while (isValid(i) && (c == ' ' || WHITESPACES.indexOf(c) < 0)) {
+    while (isValid(i) && (LINE_BREAKS.indexOf(c) < 0)) {
       comment.append(c);
       i = reader.read();
       c = (char)i;
@@ -259,7 +259,7 @@ public class Tokenizer implements IParser {
   // TODO Radix
   // TODO Number types
   //   <digit> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-  // TODO Return NUMBER
+  // TODO Return NUMBER?
   private static String readNumber(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder number = new StringBuilder();
