@@ -4,7 +4,10 @@ import core.evaluator.IEvaluator;
 import core.parser.IParser;
 import core.parser.Tokenizer;
 import core.procedures.delayed.SCMPromise;
+import core.scm.SCMVector;
 import org.junit.Test;
+
+import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
@@ -15,6 +18,12 @@ public class EvaluatorTest {
   private final IParser tokenizer = new Tokenizer();
   private final IEvaluator evaluator = new Evaluator();
   private final DefaultEnvironment defaultEnvironment = new DefaultEnvironment();
+  {
+    /* Eval lib procedures */
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)defaultEnvironment).getProcs().entrySet()) {
+      defaultEnvironment.put(entry.getKey(), evaluator.eval(tokenizer.parse(entry.getValue()), defaultEnvironment));
+    }
+  }
 
   @Test
   public void testEvalNumbers() {
@@ -142,12 +151,39 @@ public class EvaluatorTest {
     assertEquals(10L, evaluator.eval(tokenizer.parse("(force (delay (+ 5 2 (* 1 3))))"), defaultEnvironment));
 
     assertEquals(SCMPromise.class, evaluator.eval(tokenizer.parse("(delay 1.0)"), defaultEnvironment).getClass());
+    assertEquals(TRUE, evaluator.eval(tokenizer.parse("(promise? (delay 1.0))"), defaultEnvironment));
+  }
+
+  @Test
+  public void testEvalIsAChar() {
+
+    assertEquals(TRUE, evaluator.eval(tokenizer.parse("(char? #\\A)"), defaultEnvironment));
+    assertEquals(FALSE, evaluator.eval(tokenizer.parse("(char? \"A\")"), defaultEnvironment));
+  }
+
+  @Test
+  public void testEvalIsAString() {
+
+    assertEquals(FALSE, evaluator.eval(tokenizer.parse("(string? #\\A)"), defaultEnvironment));
+    assertEquals(TRUE, evaluator.eval(tokenizer.parse("(string? \"A\")"), defaultEnvironment));
+  }
+
+  @Test
+  public void testEvalIsAVector() {
+
+    assertEquals(FALSE, evaluator.eval(tokenizer.parse("(vector? #\\A)"), defaultEnvironment));
+    assertEquals(TRUE, evaluator.eval(tokenizer.parse("(vector? #(1 2 3 ))"), defaultEnvironment));
+  }
+
+  @Test
+  public void testEvalVector() {
+
+    assertEquals(new SCMVector(), evaluator.eval(tokenizer.parse("#()"), defaultEnvironment));
+    assertEquals(new SCMVector(1L, 2L, 3L), evaluator.eval(tokenizer.parse("#(1 2 3 )"), defaultEnvironment));
   }
 
   // TODO
-  // Characters
-  // Strings
-  // Vectors
   // Special Forms
+
   // Procedures
 }
