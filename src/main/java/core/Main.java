@@ -26,16 +26,14 @@ public class Main {
 
   private static final IParser parser = new Tokenizer();
   private static final IEvaluator evaluator = new Evaluator();
+  private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
 
   public static void main(String[] args) throws ParseException, IOException {
 
-    DefaultEnvironment defaultEnvironment = new DefaultEnvironment();
-
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : defaultEnvironment.getProcs().entrySet()) {
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)defaultEnvironment).getProcs().entrySet()) {
       defaultEnvironment.put(entry.getKey(), evaluator.eval(parser.parse(entry.getValue()), defaultEnvironment));
     }
-
     repl(WELCOME, PROMPT, defaultEnvironment);
   }
 

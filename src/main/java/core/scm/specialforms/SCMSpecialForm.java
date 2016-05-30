@@ -9,7 +9,7 @@ import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.procedures.equivalence.Eqv;
 import core.scm.SCMProcedure;
-import core.procedures.delayed.Promise;
+import core.procedures.delayed.SCMPromise;
 import core.scm.errors.SCMError;
 
 import java.util.Collections;
@@ -86,6 +86,9 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   QUOTE("quote") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      if ((expression.get(1) instanceof SCMList) && (((SCMList)expression.get(1)).isEmpty())) {
+        return SCMList.EMPTY_LIST;
+      }
       return expression.get(1);
     }
   },
@@ -333,8 +336,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   DELAY("delay") {
-    public Promise eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      return new Promise(Collections.<SCMSymbol>emptyList(), expression.get(1));
+    public SCMPromise eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      return new SCMPromise(Collections.<SCMSymbol>emptyList(), expression.get(1));
     }
   },
   CLASSOF("class-of") {

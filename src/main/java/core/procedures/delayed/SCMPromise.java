@@ -7,11 +7,11 @@ import core.scm.SCMProcedure;
 
 import java.util.List;
 
-public class Promise extends SCMProcedure {
+public class SCMPromise extends SCMProcedure {
 
   private Object result;
 
-  public Promise(List<SCMSymbol> params, Object body) {
+  public SCMPromise(List<SCMSymbol> params, Object body) {
     super("promise", params, body);
   }
 

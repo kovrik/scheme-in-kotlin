@@ -19,7 +19,7 @@ public class Force extends SCMProcedure {
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object promise = env.get(PROMISE);
-    if (!(promise instanceof Promise)) {
+    if (!(promise instanceof SCMPromise)) {
       throw new IllegalArgumentException("Wrong type argument to `force`");
     }
     return super.apply(evaluator, env);

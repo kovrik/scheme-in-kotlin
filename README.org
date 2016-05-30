@@ -342,8 +342,9 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [0/20]
-**** TODO display
+*** TODO Input/output [1/20]
+**** DONE display
+CLOSED: [2016-05-28 Sat 20:15]
 **** TODO newline
 **** TODO read
 **** TODO write

@@ -15,7 +15,7 @@ public class IsAPromise extends AFn {
       throw new ArityException(0, "promise?");
     }
     for (Object arg : args) {
-      if (!(arg instanceof Promise)) {
+      if (!(arg instanceof SCMPromise)) {
         return SCMBoolean.FALSE;
       }
     }

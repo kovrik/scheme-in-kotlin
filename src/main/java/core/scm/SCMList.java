@@ -7,9 +7,11 @@ import java.util.LinkedList;
 
 public class SCMList<E> extends LinkedList<E> {
 
-  public SCMList() {
-    super();
-  }
+  public static final SCMList EMPTY_LIST = new SCMList();
+
+//  public SCMList() {
+//    super();
+//  }
 
   public SCMList(Collection<? extends E> c) {
     super(c);

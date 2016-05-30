@@ -2,11 +2,26 @@ package core.procedures.math.numeric;
 
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
+import core.scm.SCMBoolean;
 
 public class NumericalComparison extends AFn implements IOperation {
 
   public enum Type {
-    EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL;
+    EQUAL("="),
+    LESS("<"),
+    GREATER(">"),
+    LESS_EQUAL("<="),
+    GREATER_EQUAL(">=");
+
+    private String syntax;
+
+    Type(String syntax) {
+      this.syntax = syntax;
+    }
+
+    public String getSyntax() {
+      return syntax;
+    }
   }
 
   private Type type;
@@ -16,14 +31,14 @@ public class NumericalComparison extends AFn implements IOperation {
   }
 
   @Override
-  public Boolean invoke(Object... args) {
+  public SCMBoolean invoke(Object... args) {
     Boolean result = zero();
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         result = result && apply(args[i], args[i + 1]);
       }
     }
-    return result;
+    return SCMBoolean.toSCMBoolean(result);
   }
 
   public Boolean zero() {
@@ -31,21 +46,33 @@ public class NumericalComparison extends AFn implements IOperation {
   }
 
   public Boolean apply(Object first, Object second) {
+
+    if (!(first instanceof Number) || !(second instanceof Number)) {
+      throw new IllegalArgumentException("Wrong argument type to " + type.getSyntax());
+    }
+
+    Number f = (Number)first;
+    Number s = (Number)second;
+    if ((first instanceof Double) || (second instanceof Double)) {
+      f = f.doubleValue();
+      s = s.doubleValue();
+    }
+
     switch (type) {
       case EQUAL: {
-        return ((Comparable)first).compareTo((Comparable) second) == 0;
+        return ((Comparable)f).compareTo(s) == 0;
       }
       case LESS: {
-        return ((Comparable)first).compareTo((Comparable) second) < 0;
+        return ((Comparable)f).compareTo(s) < 0;
       }
       case GREATER: {
-        return ((Comparable)first).compareTo((Comparable) second) > 0;
+        return ((Comparable)f).compareTo(s) > 0;
       }
       case LESS_EQUAL: {
-        return ((Comparable)first).compareTo((Comparable) second) <= 0;
+        return ((Comparable)f).compareTo(s) <= 0;
       }
       case GREATER_EQUAL: {
-        return ((Comparable)first).compareTo((Comparable) second) <= 0;
+        return ((Comparable)f).compareTo(s) >= 0;
       }
     }
     throw new IllegalArgumentException("Unknown comparison type!");

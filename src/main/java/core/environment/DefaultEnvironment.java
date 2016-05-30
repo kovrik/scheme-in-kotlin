@@ -1,7 +1,7 @@
 package core.environment;
 
 import core.procedures.delayed.Force;
-import core.procedures.delayed.Promise;
+import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
 import core.procedures.io.Display;
 import core.procedures.math.bool.Negation;
@@ -16,15 +16,15 @@ public final class DefaultEnvironment extends Environment {
 
   private final Map<String, String> procs = new HashMap<String, String>();
   {
-    procs.put("promise?",   String.format("(define (promise?   o) (string=? \"%s\" (class-of o)))", Promise.class.getName()));
+    procs.put("promise?",   String.format("(define (promise?   o) (string=? \"%s\" (class-of o)))", SCMPromise.class.getName()));
     procs.put("char?",      String.format("(define (char?      o) (string=? \"%s\" (class-of o)))", Character.class.getName()));
     procs.put("string?",    String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
     procs.put("vector?",    String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
     procs.put("symbol?",    String.format("(define (symbol?    o) (string=? \"%s\" (class-of o)))", SCMSymbol.class.getName()));
     procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
-    procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
     procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
+    procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
   }
 
   public Map<String, String> getProcs() {

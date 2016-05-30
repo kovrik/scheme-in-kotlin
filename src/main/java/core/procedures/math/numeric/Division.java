@@ -9,27 +9,32 @@ public class Division extends AFn implements INumericalOperation {
     return 1L;
   }
 
-  public Object apply(Object first, Object second) {
-    return apply((Number)first, (Number)second);
+  public Number apply(Object numenator, Object denominator) {
+    return apply((Number)numenator, (Number)denominator);
   }
 
-  public Number apply(Number first, Number second) {
+  public Number apply(Number numenator, Number denominator) {
 
-    if ((first instanceof Long) && (second instanceof Long)) {
-      return (Long)first / (Long)second;
+    if ((numenator instanceof Long) && (denominator instanceof Long)) {
+      return (Long)numenator / (Long)denominator;
     }
-    return first.doubleValue() / second.doubleValue();
+    return numenator.doubleValue() / denominator.doubleValue();
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Number invoke(Object... args) {
 
     if (args == null || args.length == 0) {
-      throw new ArityException(0, "\\");
+      throw new ArityException(0, "/");
     }
-    Object result = zero();
-    for (Object number : args) {
-      result = apply((Number)result, (Number)number);
+    Number result;
+    if (args.length == 1) {
+      return apply(1, args[0]);
+    } else {
+      result = (Number)args[0];
+    }
+    for (int d = 1; d <= args.length - 1; d++) {
+      result = apply(result, args[d]);
     }
     return result;
   }
