@@ -6,8 +6,11 @@
 ** DONE [#A] Decouple Procedure and Evaluator
 CLOSED: [2016-05-15 Sun 19:09]
 ** TODO [#A] Properly implement IFn and Procedure classes
+** TODO [#A] Do not evaluate Numbers in Tokenizer
 ** TODO [#A] Varargs
-** TODO Function's `arity` (ANY, FIXED(n), RANGE[])
+*** DONE lambda syntax
+CLOSED: [2016-05-31 Tue 22:15]
+*** TODO define syntax
 ** TODO Nil value
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
@@ -26,7 +29,7 @@ CLOSED: [2016-04-21 Thu 16:59]
 *** DONE [#A] REPL is not handling newlines/empty lines properly
 CLOSED: [2016-04-28 Thu 19:44]
 
-** TODO General [3/6]
+** TODO General [4/6]
 *** DONE [#A] Clojure or ***Scheme*** syntax? Or custom?
 CLOSED: [2016-04-28 Thu 19:45]
 *** DONE [#A] *Special Forms, Symbols -> Functions etc.*
@@ -35,7 +38,8 @@ CLOSED: [2016-05-21 Sat 11:26]
 *** TODO [#B] Error handling
 *** DONE [#B] Separate classes (Reader, Parser, Evaluator etc.)
 CLOSED: [2016-05-11 Wed 21:03]
-*** TODO [#B] Test coverage
+*** DONE [#B] Test coverage
+CLOSED: [2016-05-31 Tue 22:15]
 ** TODO Performance [0/2]
 *** TODO [#B] Caching
 
