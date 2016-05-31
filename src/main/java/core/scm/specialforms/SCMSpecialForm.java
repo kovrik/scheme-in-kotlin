@@ -136,13 +136,14 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   SET("set!") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      env.find(expression.get(1));
+//      env.find(expression.get(1));
       env.put(expression.get(1), evaluator.eval(expression.get(2), env));
       return SET;
     }
   },
   /* Library forms */
   DO("do") {
+    // TODO
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
