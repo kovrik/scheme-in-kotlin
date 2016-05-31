@@ -238,6 +238,71 @@ public class EvaluatorTest {
     // set!
     assertEquals(9L, eval.eval(tokenizer.parse("(let ((a 0)) (set! a 9) a)"), env));
     assertEquals(99L, eval.eval(tokenizer.parse("(begin (set! b 99) b)"), env));
+
+    // let
+    assertEquals(124L, eval.eval(tokenizer.parse("(let ((c 123)) (+ c 1))"), env));
+    assertEquals(555L, eval.eval(tokenizer.parse("(let ((c 123) (b 432)) (+ c b))"), env));
+    try {
+      eval.eval(tokenizer.parse("(let ((c 123) (c (+ 400 30 2))) (+ c b))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("let: duplicate bound variable"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(let ((c 123))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("let: bad let in form:"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(let ((z 1) (b (+ z 1))) b)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Unbound variable: z"));
+    }
+
+    // let*
+    assertEquals(2L, eval.eval(tokenizer.parse("(let* ((z 1) (b (+ z 1))) b)"), env));
+    try {
+      eval.eval(tokenizer.parse("(let* ((c 123)))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue("Test bad let* form", e.getMessage().contains("let*: bad let* in form:"));
+    }
+
+    // letrec
+    String letrec1 = "(letrec ((is-even? (lambda (n) (or (= n 0) (is-odd? (- n 1))))) " +
+                              "(is-odd?  (lambda (n) (and (not (= n 0)) (is-even? (- n 1))))))" +
+                     "  (is-odd? 11))";
+    assertEquals(TRUE, eval.eval(tokenizer.parse(letrec1), env));
+
+    // cond
+    // "Source expression failed to match any pattern in form (cond)"
+    try {
+      eval.eval(tokenizer.parse("(cond)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
+    }
+    // "Invalid clause in subform "
+    try {
+      eval.eval(tokenizer.parse("(cond 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
+    }
+    // "cond: else must be the last clause in subform"
+    try {
+      eval.eval(tokenizer.parse("(cond (else 1) (#t 5))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("cond: else must be the last clause in subform"));
+    }
+    // "Source expression failed to match any pattern in form (cond)"
+    try {
+      eval.eval(tokenizer.parse("(cond)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
+    }
+
+    assertEquals(1L, eval.eval(tokenizer.parse("(cond (#f 5) ((not #t) 7) (else 1))"), env));
+    assertEquals(7L, eval.eval(tokenizer.parse("(cond (#f 5) ((not #f) 7) (else 1))"), env));
+
+    // case
+
   }
 
   // TODO Exceptions

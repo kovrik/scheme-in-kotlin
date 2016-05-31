@@ -176,7 +176,7 @@ public enum SCMSpecialForm implements ISpecialForm {
   LET_S("let*") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let*: bad let* in form");
+        throw new IllegalArgumentException("let*: bad let* in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
@@ -203,7 +203,7 @@ public enum SCMSpecialForm implements ISpecialForm {
      */
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let*: bad let* in form: " + expression);
+        throw new IllegalArgumentException("letrec: bad letrec in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
@@ -224,6 +224,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   COND("cond") {
+    private final SCMSymbol ELSE = new SCMSymbol("else");
+
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalArgumentException("Source expression failed to match any pattern in form (cond)");
@@ -235,7 +237,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         }
         List<Object> subform = (List<Object>) node;
         Object clause = subform.get(0);
-        if ("else".equals(clause)) {
+        if (ELSE.equals(clause)) {
           if (i == expression.size() - 1) {
             for (int s = 1; i < subform.size() - 1; i++) {
               evaluator.eval(subform.get(s), env);
@@ -255,7 +257,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   CASE("case") {
-    private final String ELSE = "else";
+    private final SCMSymbol ELSE = new SCMSymbol("else");
     private final Eqv eqv = new Eqv();
 
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -277,7 +279,7 @@ public enum SCMSpecialForm implements ISpecialForm {
             }
             return evaluator.eval(subform.get(subform.size() - 1), env);
           }
-          throw new IllegalArgumentException("cond: else must be the last clause in subform");
+          throw new IllegalArgumentException("case: else must be the last clause in subform");
         }
         if (!(datum instanceof List)) {
           throw new IllegalArgumentException("Invalid clause in subform " + datum);
