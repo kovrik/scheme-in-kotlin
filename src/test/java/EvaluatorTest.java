@@ -8,6 +8,7 @@ import core.scm.SCMList;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
+import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
 
@@ -302,6 +303,58 @@ public class EvaluatorTest {
     assertEquals(7L, eval.eval(tokenizer.parse("(cond (#f 5) ((not #f) 7) (else 1))"), env));
 
     // case
+    try {
+      eval.eval(tokenizer.parse("(case)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (case)"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(case 1 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(case (* 2 3) (else 'prime) ((1 4 6 8 9) 'composite))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("case: else must be the last clause in subform"));
+    }
+    String caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 6 8 9) 'composite))";
+    assertEquals(new SCMSymbol("composite"), eval.eval(tokenizer.parse(caseform), env));
+
+    caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 8 9) 'composite))";
+    assertEquals(null, eval.eval(tokenizer.parse(caseform), env));
+
+    caseform = "(case (* 2 3) ((2 3 5 7) 'prime) (else 'composite))";
+    assertEquals(new SCMSymbol("composite"), eval.eval(tokenizer.parse(caseform), env));
+
+    // and
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(and)"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(and 1)"), env));
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(and (= 2 2) (> 2 1))"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(and (= 2 2) (< 2 1))"), env));
+    assertEquals(new SCMList<Object>(new SCMSymbol("f"), new SCMSymbol("g")),
+                 eval.eval(tokenizer.parse("(and 1 2 'c '(f g)) "), env));
+
+    // or
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(or)"), env));
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(or (= 2 2) (> 2 1)) "), env));
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(or (= 2 2) (< 2 1))"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(or #f #f #f)"), env));
+    assertEquals(new SCMList<Object>(new SCMSymbol("f"), new SCMSymbol("g")),
+                 eval.eval(tokenizer.parse("(or '(f g) 1 2)"), env));
+
+    // begin
+
+    // delay
+
+    // class-of
+
+    // error
+    try {
+      eval.eval(tokenizer.parse("(error \"boom\")"), env).getClass();
+    } catch (SCMError e) {
+      assertTrue(e.getMessage().equals("ERROR:boom"));
+    }
 
   }
 

@@ -293,35 +293,35 @@ public enum SCMSpecialForm implements ISpecialForm {
           }
         }
       }
-      throw new IllegalArgumentException("Source expression failed to match any pattern in form (case)");
+      return null;
     }
   },
   AND("and") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      Boolean result = Boolean.TRUE;
+      Object eval = SCMBoolean.TRUE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
-          result = result && SCMBoolean.valueOf(evaluator.eval(arg, env));
-          if (!result) {
-            return SCMBoolean.toSCMBoolean(result);
+          eval = evaluator.eval(arg, env);
+          if (!SCMBoolean.valueOf(eval)) {
+            return eval;
           }
         }
       }
-      return SCMBoolean.toSCMBoolean(result);
+      return eval;
     }
   },
   OR("or") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      Boolean result = Boolean.FALSE;
+      Object eval = SCMBoolean.FALSE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
-          result = result || SCMBoolean.valueOf(evaluator.eval(arg, env));
-          if (result) {
-            return SCMBoolean.toSCMBoolean(result);
+          eval = evaluator.eval(arg, env);
+          if (SCMBoolean.valueOf(eval)) {
+            return eval;
           }
         }
       }
-      return SCMBoolean.toSCMBoolean(result);
+      return eval;
     }
   },
   BEGIN("begin") {
