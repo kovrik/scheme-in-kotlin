@@ -14,14 +14,27 @@ public class SCMProcedure extends AFn {
   private List<SCMSymbol> params;
   private Object body;
 
+  private boolean variableArity = false;
+
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body) {
     this.name = name;
     this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
     this.body = body;
   }
 
+  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, boolean variableArity) {
+    this.name = name;
+    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.body = body;
+    this.variableArity = variableArity;
+  }
+
   public SCMProcedure(String name, List<SCMSymbol> params, Object body) {
     this(new SCMSymbol(name), params, body);
+  }
+
+  public SCMProcedure(String name, List<SCMSymbol> params, Object body, boolean variableArity) {
+    this(new SCMSymbol(name), params, body, variableArity);
   }
 
   public Object getBody() {
@@ -43,5 +56,9 @@ public class SCMProcedure extends AFn {
   @Override
   public Object throwArity(int actual) {
     throw new ArityException(actual, params.size(), name.getValue());
+  }
+
+  public boolean isVariableArity() {
+    return variableArity;
   }
 }

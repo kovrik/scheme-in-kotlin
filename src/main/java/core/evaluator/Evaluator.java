@@ -8,6 +8,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +41,20 @@ public class Evaluator implements IEvaluator {
 
     SCMProcedure procedure = (SCMProcedure) fn;
     List<SCMSymbol> params = procedure.getParams();
-    if (args.length != params.size()) {
-      procedure.throwArity(args.length);
+    if (!procedure.isVariableArity()) {
+      if (args.length != params.size()) {
+        procedure.throwArity(args.length);
+      }
     }
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
-    for (int i = 0; i < params.size(); i++) {
-      values.put(params.get(i), args[i]);
+    if (procedure.isVariableArity()) {
+      List<Object> varargs = new SCMList<Object>();
+      varargs.addAll(Arrays.asList(args));
+      values.put(params.get(0), varargs);
+    } else {
+      for (int i = 0; i < params.size(); i++) {
+        values.put(params.get(i), args[i]);
+      }
     }
     return procedure.apply(this, new Environment(values, env));
   }

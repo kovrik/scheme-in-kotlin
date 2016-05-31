@@ -33,6 +33,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       if (definition instanceof SCMSymbol) {
         env.put(definition, evaluator.eval(body, env));
       } else if (definition instanceof SCMList) {
+        // lambda
         if (((SCMList) definition).isEmpty()) {
           throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }
@@ -45,11 +46,17 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LAMBDA("lambda") {
+    // TODO arity
     public SCMProcedure eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
       }
-      return new SCMProcedure("", (List<SCMSymbol>)expression.get(1), expression.get(2));
+      Object args = expression.get(1);
+      if (args instanceof List) {
+        return new SCMProcedure("", (List<SCMSymbol>)args, expression.get(2));
+      }
+      // variable arity
+      return new SCMProcedure("", new SCMList<SCMSymbol>((SCMSymbol)expression.get(1)), expression.get(2), true);
     }
   },
   IF("if") {
