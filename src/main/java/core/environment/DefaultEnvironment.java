@@ -4,6 +4,7 @@ import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
 import core.procedures.io.Display;
+import core.procedures.lists.Length;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
 import core.scm.*;
@@ -83,6 +84,8 @@ public final class DefaultEnvironment extends Environment {
 
     put(new SCMSymbol("force"), new Force());
     put(new SCMSymbol("display"), new Display(System.out));
+
+    put(new SCMSymbol("length"), new Length());
 
     /* Vectors */
 //    put(new SCMSymbol("vector?"), new IsAVector());

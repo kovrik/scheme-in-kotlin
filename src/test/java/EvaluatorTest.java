@@ -402,5 +402,23 @@ public class EvaluatorTest {
     assertEquals(new SCMList<Long>(1L, 2L, 3L), eval.eval(tokenizer.parse("(list 1 2 3)"), env));
   }
 
+  @Test
+  public void testEvalEmpty() {
+
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(null?  '())"), env));
+    assertEquals(TRUE, eval.eval(tokenizer.parse("(empty? '())"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(null?  '(1 2 3))"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(empty? '(1 2 3))"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(null?  1)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(empty? 1)"), env));
+  }
+
+  @Test
+  public void testEvalLength() {
+
+    assertEquals(0L, eval.eval(tokenizer.parse("(length '())"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(length '(1))"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(length '(1 2 3 4 5))"), env));
+  }
   // TODO Exceptions
 }

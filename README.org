@@ -296,7 +296,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** TODO string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [3/22]
+*** TODO Pairs and lists [5/23]
 **** TODO pair?
 **** TODO cons
 **** TODO car
@@ -311,7 +311,8 @@ CLOSED: [2016-06-02 Thu 21:30]
 CLOSED: [2016-05-15 Sun 22:20]
 **** DONE list
 CLOSED: [2016-06-02 Thu 18:47]
-**** TODO length
+**** DONE length
+CLOSED: [2016-06-02 Thu 21:54]
 **** TODO append
 **** TODO reverse
 **** TODO list-tail
