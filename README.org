@@ -296,14 +296,17 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** TODO string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [2/22]
+*** TODO Pairs and lists [3/22]
 **** TODO pair?
 **** TODO cons
 **** TODO car
 **** TODO cdr
 **** TODO set-car!
 **** TODO set-cdr!
-**** TODO null?
+**** DONE null?
+CLOSED: [2016-06-02 Thu 21:30]
+**** DONE empty?
+CLOSED: [2016-06-02 Thu 21:30]
 **** DONE list?
 CLOSED: [2016-05-15 Sun 22:20]
 **** DONE list

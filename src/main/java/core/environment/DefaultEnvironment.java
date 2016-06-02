@@ -27,6 +27,8 @@ public final class DefaultEnvironment extends Environment {
     procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
 
     procs.put("list",       "(define (list . elements) elements)");
+    procs.put("null?",      "(define (null?  l) (eq? l '()))");
+    procs.put("empty?",     "(define empty? null?)");
   }
 
   public Map<String, String> getProcs() {
