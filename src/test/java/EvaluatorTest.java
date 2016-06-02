@@ -395,5 +395,12 @@ public class EvaluatorTest {
     }
   }
 
+  @Test
+  public void testEvalList() {
+
+    assertEquals(SCMList.class.getName(), eval.eval(tokenizer.parse("(class-of (list 1 2 3 4 5))"), env));
+    assertEquals(new SCMList<Long>(1L, 2L, 3L), eval.eval(tokenizer.parse("(list 1 2 3)"), env));
+  }
+
   // TODO Exceptions
 }

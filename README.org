@@ -123,11 +123,12 @@ CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
 ** TODO Standard procedures [3/17]
-*** TODO Construction [0/4]
+*** TODO Construction [1/4]
 **** TODO vector
 **** TODO make-vector
 **** TODO make-string
-**** TODO list
+**** DONE list
+CLOSED: [2016-06-02 Thu 18:47]
 *** DONE Equivalence predicates [7/7]
 CLOSED: [2016-05-11 Wed 17:56]
 **** DONE eq?
@@ -295,7 +296,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** TODO string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [1/22]
+*** TODO Pairs and lists [2/22]
 **** TODO pair?
 **** TODO cons
 **** TODO car
@@ -305,7 +306,8 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** TODO null?
 **** DONE list?
 CLOSED: [2016-05-15 Sun 22:20]
-**** TODO list
+**** DONE list
+CLOSED: [2016-06-02 Thu 18:47]
 **** TODO length
 **** TODO append
 **** TODO reverse

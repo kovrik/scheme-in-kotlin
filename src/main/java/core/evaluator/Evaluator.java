@@ -52,13 +52,13 @@ public class Evaluator implements IEvaluator {
         values.put(params.get(i), args[i]);
       }
     } else {
-      // TODO Cleanup and optimize
       /* Variadic arity procedure */
       /* Put mandatory params first */
       for (int i = 0; i < params.size() - 1; i++) {
         values.put(params.get(i), args[i]);
       }
       /* Then rest */
+      // TODO Cleanup and optimize
       List<Object> varargs = new SCMList<Object>();
       varargs.addAll(Arrays.asList(Arrays.copyOfRange(args, params.size() - 1, args.length)));
       values.put(params.get(params.size() - 1), varargs);

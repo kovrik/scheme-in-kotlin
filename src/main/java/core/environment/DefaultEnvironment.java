@@ -25,6 +25,8 @@ public final class DefaultEnvironment extends Environment {
     procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
     procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
+
+    procs.put("list",       "(define (list . elements) elements)");
   }
 
   public Map<String, String> getProcs() {

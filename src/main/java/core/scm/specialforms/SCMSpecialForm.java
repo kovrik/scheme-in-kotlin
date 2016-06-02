@@ -19,7 +19,7 @@ import java.util.Map;
 
 public enum SCMSpecialForm implements ISpecialForm {
 
-  UNSPECIFIED("UNSPECIFIED") {
+  UNSPECIFIED("#<unspecified>") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return UNSPECIFIED;
     }
