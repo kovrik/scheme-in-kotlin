@@ -187,7 +187,21 @@ public class EvaluatorTest {
   public void testEvalDefine() {
     eval.eval(tokenizer.parse("(define a 5)"), env);
     assertEquals(5L, eval.eval(tokenizer.parse("a"), env));
-    assertEquals(SCMSpecialForm.DEFINE, eval.eval(tokenizer.parse("(define b 7)"), env));
+    assertEquals(SCMSpecialForm.UNSPECIFIED, eval.eval(tokenizer.parse("(define b 7)"), env));
+
+    eval.eval(tokenizer.parse("(define edl (lambda (n) (+ n 1)))"), env);
+    assertEquals(2L, eval.eval(tokenizer.parse("(edl 1)"), env));
+
+    // variadic
+    eval.eval(tokenizer.parse("(define edlv (lambda args args))"), env);
+    assertEquals(new SCMList<Long>(1L, 2L, 3L, 4L, 5L), eval.eval(tokenizer.parse("(edlv 1 2 3 4 5)"), env));
+
+    // variadic define
+    eval.eval(tokenizer.parse("(define (edv1 first second . rest) rest)"), env);
+    assertEquals(new SCMList<Long>(2L, 3L, 4L, 5L), eval.eval(tokenizer.parse("(edv1 0 1 2 3 4 5)"), env));
+
+    eval.eval(tokenizer.parse("(define (edv2 first second . rest) second)"), env);
+    assertEquals(1L, eval.eval(tokenizer.parse("(edv2 0 1 2 3 4 5)"), env));
   }
 
   @Test

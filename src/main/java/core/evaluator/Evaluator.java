@@ -47,14 +47,21 @@ public class Evaluator implements IEvaluator {
       }
     }
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
-    if (procedure.isVariableArity()) {
-      List<Object> varargs = new SCMList<Object>();
-      varargs.addAll(Arrays.asList(args));
-      values.put(params.get(0), varargs);
-    } else {
+    if (!procedure.isVariableArity()) {
       for (int i = 0; i < params.size(); i++) {
         values.put(params.get(i), args[i]);
       }
+    } else {
+      // TODO Cleanup and optimize
+      /* Variadic arity procedure */
+      /* Put mandatory params first */
+      for (int i = 0; i < params.size() - 1; i++) {
+        values.put(params.get(i), args[i]);
+      }
+      /* Then rest */
+      List<Object> varargs = new SCMList<Object>();
+      varargs.addAll(Arrays.asList(Arrays.copyOfRange(args, params.size() - 1, args.length)));
+      values.put(params.get(params.size() - 1), varargs);
     }
     return procedure.apply(this, new Environment(values, env));
   }

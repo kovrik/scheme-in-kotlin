@@ -165,7 +165,10 @@ public class Tokenizer implements IParser {
     reader.unread(next);
 
     if (Character.isDigit(c) || c == '+' || c == '-' || c == '.') {
-      // TODO Clean up
+      // dot?
+      if (c == '.' && DELIMITERS.indexOf(next) > -1) {
+        return SCMSpecialForm.DOT;
+      }
       reader.unread(c);
 
       String number = readNumber(reader);
@@ -260,6 +263,7 @@ public class Tokenizer implements IParser {
   // TODO Number types
   //   <digit> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
   // TODO Return NUMBER?
+
   private static String readNumber(PushbackReader reader) throws ParseException, IOException {
 
     StringBuilder number = new StringBuilder();

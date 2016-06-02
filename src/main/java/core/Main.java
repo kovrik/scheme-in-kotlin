@@ -14,8 +14,7 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static core.scm.specialforms.SCMSpecialForm.DEFINE;
-import static core.scm.specialforms.SCMSpecialForm.SET;
+import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 
 public class Main {
 
@@ -54,7 +53,7 @@ public class Main {
 
         // Eval
         Object result = evaluator.eval(sexp, env);
-        if (result != null && result != DEFINE && result != SET) {
+        if (result != null && result != UNSPECIFIED) {
           // Put result into environment
           SCMSymbol id = getNextID();
           env.put(id, result);

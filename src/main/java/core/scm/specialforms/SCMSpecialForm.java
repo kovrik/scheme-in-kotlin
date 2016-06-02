@@ -19,10 +19,14 @@ import java.util.Map;
 
 public enum SCMSpecialForm implements ISpecialForm {
 
-  // FIXME
-  UNDEFINED("UNDEFINED") {
+  UNSPECIFIED("UNSPECIFIED") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      throw new IllegalArgumentException("Can't evaluate UNDEFINED form!");
+      return UNSPECIFIED;
+    }
+  },
+  DOT("DOT") {
+    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+      return DOT;
     }
   },
   /* Fundamental forms */
@@ -33,20 +37,20 @@ public enum SCMSpecialForm implements ISpecialForm {
       if (definition instanceof SCMSymbol) {
         env.put(definition, evaluator.eval(body, env));
       } else if (definition instanceof SCMList) {
-        // lambda
+        // procedure
         if (((SCMList) definition).isEmpty()) {
           throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }
         SCMSymbol name = (SCMSymbol)((SCMList<Object>) definition).pop();
-        env.put(name, new SCMProcedure(name, (SCMList<SCMSymbol>)definition, body));
+        // TODO Optimize DOT removal
+        env.put(name, new SCMProcedure(name, (SCMList<SCMSymbol>) definition, body, ((SCMList<Object>) definition).remove(DOT)));
       } else {
         throw new IllegalArgumentException("define: bad `define` in form: " + expression);
       }
-      return DEFINE;
+      return UNSPECIFIED;
     }
   },
   LAMBDA("lambda") {
-    // TODO arity
     public SCMProcedure eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
@@ -54,9 +58,10 @@ public enum SCMSpecialForm implements ISpecialForm {
       Object args = expression.get(1);
       if (args instanceof List) {
         return new SCMProcedure("", (List<SCMSymbol>)args, expression.get(2));
+      } else {
+        /* Variadic arity */
+        return new SCMProcedure("", new SCMList<SCMSymbol>((SCMSymbol) expression.get(1)), expression.get(2), true);
       }
-      // variable arity
-      return new SCMProcedure("", new SCMList<SCMSymbol>((SCMSymbol)expression.get(1)), expression.get(2), true);
     }
   },
   IF("if") {
@@ -143,9 +148,8 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   SET("set!") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-//      env.find(expression.get(1));
       env.put(expression.get(1), evaluator.eval(expression.get(2), env));
-      return SET;
+      return UNSPECIFIED;
     }
   },
   /* Library forms */
@@ -216,7 +220,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       IEnvironment localEnv = new Environment(env);
       for (Object node : ((List<Object>) expression.get(1))) {
         Object var = ((List<Object>) node).get(0);
-        localEnv.put(var, UNDEFINED);
+        localEnv.put(var, UNSPECIFIED);
       }
       for (Object node : ((List<Object>) expression.get(1))) {
         Object var = ((List<Object>) node).get(0);
