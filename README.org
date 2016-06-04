@@ -4,6 +4,8 @@
 * TODO: [9/17]
 
 ** TODO [#A] Properly implement IFn and Procedure classes
+** TODO [#A] Internal (local) define
+** TODO [#A] Do not create new Environments on eacn named let/letrec call
 ** TODO Nil value
 ** DONE [#A] Decouple Procedure and Evaluator
 CLOSED: [2016-05-15 Sun 19:09]
@@ -99,7 +101,7 @@ CLOSED: [2016-04-21 Thu 21:36]
 **** DONE set!
 CLOSED: [2016-04-21 Thu 21:36]
 
-*** TODO Library forms: [10/12]
+*** TODO Library forms: [11/12]
 **** TODO do
 **** DONE let
 CLOSED: [2016-04-21 Thu 21:37]
@@ -117,7 +119,8 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-04-21 Thu 21:37]
 **** DONE begin
 CLOSED: [2016-04-21 Thu 21:37]
-**** TODO named let [?]
+**** DONE named let [?]
+CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 

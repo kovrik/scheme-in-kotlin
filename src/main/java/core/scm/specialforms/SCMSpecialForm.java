@@ -161,27 +161,63 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   LET("let") {
 
-    // TODO: Named let
-
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
+
       if (expression.size() < 3) {
         throw new IllegalArgumentException("let: bad let in form: " + expression);
       }
 
-      IEnvironment localEnv = new Environment(env);
-      for (Object node : ((List<Object>) expression.get(1))) {
-        Object var = ((List<Object>) node).get(0);
-        Object init = ((List<Object>) node).get(1);
-        if (localEnv.get(var) != null) {
-          throw new IllegalArgumentException("let: duplicate bound variable " + var);
+      if (expression.get(1) instanceof List) {
+        IEnvironment localEnv = new Environment(env);
+        for (Object node : ((List<Object>) expression.get(1))) {
+          Object var = ((List<Object>) node).get(0);
+          Object init = ((List<Object>) node).get(1);
+          if (localEnv.get(var) != null) {
+            throw new IllegalArgumentException("let: duplicate bound variable " + var);
+          }
+          localEnv.put(var, evaluator.eval(init, env));
         }
-        localEnv.put(var, evaluator.eval(init, env));
-      }
 
-      for (int i = 2; i < expression.size() - 1; i++) {
-        evaluator.eval(expression.get(i), localEnv);
+        for (int i = 2; i < expression.size() - 1; i++) {
+          evaluator.eval(expression.get(i), localEnv);
+        }
+        return evaluator.eval(expression.getLast(), localEnv);
+      } else if (expression.get(1) instanceof SCMSymbol) {
+
+        // TODO Optimize and cleanup
+        /* Named let */
+        Object o = expression.get(1);
+        if (!(o instanceof SCMSymbol)) {
+          throw new IllegalArgumentException("let: bad let in form: " + expression);
+        }
+        SCMSymbol procId = (SCMSymbol)o;
+        SCMList<Object> letrec = new SCMList<Object>(LETREC);
+
+        // lambda
+        SCMList<Object> lambdaArgs = new SCMList<Object>();
+        SCMList<Object> initArgs = new SCMList<Object>();
+        List<SCMSymbol> bindings = (List<SCMSymbol>) expression.get(2);
+        for (Object binding : bindings) {
+          Object arg = ((List<Object>) binding).get(0);
+          if (lambdaArgs.contains(arg)) {
+            throw new IllegalArgumentException("let: duplicate bound variable: " + arg);
+          }
+          lambdaArgs.add(arg);
+          initArgs.add(((List<Object>) binding).get(1));
+        }
+        SCMList<Object> lambdaBody = (SCMList<Object>)expression.get(3);
+        SCMList<Object> lambda = new SCMList<Object>(LAMBDA, lambdaArgs, lambdaBody);
+        SCMList<Object> l = new SCMList<Object>();
+        l.add(new SCMList<Object>(procId, lambda));
+        letrec.add(l);
+
+        SCMList<Object> body = new SCMList<Object>(procId);
+        body.addAll(initArgs);
+        letrec.add(body);
+
+        return LETREC.eval(letrec, new Environment(env), evaluator);
       }
-      return evaluator.eval(expression.getLast(), localEnv);
+      throw new IllegalArgumentException("let: bad let in form: " + expression);
     }
   },
   LET_S("let*") {
@@ -341,12 +377,6 @@ public enum SCMSpecialForm implements ISpecialForm {
         evaluator.eval(expression.get(i), env);
       }
       return evaluator.eval(expression.getLast(), env);
-    }
-  },
-  NAMED_LET("named let") {
-    // TODO
-    public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   DELAY("delay") {

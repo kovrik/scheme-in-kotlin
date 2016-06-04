@@ -420,5 +420,17 @@ public class EvaluatorTest {
     assertEquals(1L, eval.eval(tokenizer.parse("(length '(1))"), env));
     assertEquals(5L, eval.eval(tokenizer.parse("(length '(1 2 3 4 5))"), env));
   }
+
+  @Test
+  public void testEvalNamedLet() {
+
+    assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("let: duplicate bound variable: n"));
+    }
+  }
   // TODO Exceptions
 }
