@@ -425,6 +425,7 @@ public class EvaluatorTest {
   public void testEvalNamedLet() {
 
     assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
+    assertEquals(12L, eval.eval(tokenizer.parse("(let t ((x 5) (y 7)) (+ x y))"), env));
 
     try {
       eval.eval(tokenizer.parse("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))"), env);

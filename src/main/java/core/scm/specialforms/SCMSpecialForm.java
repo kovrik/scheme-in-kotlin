@@ -185,36 +185,34 @@ public enum SCMSpecialForm implements ISpecialForm {
       } else if (expression.get(1) instanceof SCMSymbol) {
 
         // TODO Optimize and cleanup
-        /* Named let */
+        /* Named let via letrec */
         Object o = expression.get(1);
         if (!(o instanceof SCMSymbol)) {
           throw new IllegalArgumentException("let: bad let in form: " + expression);
         }
-        SCMSymbol procId = (SCMSymbol)o;
-        SCMList<Object> letrec = new SCMList<Object>(LETREC);
-
         // lambda
         SCMList<Object> lambdaArgs = new SCMList<Object>();
-        SCMList<Object> initArgs = new SCMList<Object>();
-        List<SCMSymbol> bindings = (List<SCMSymbol>) expression.get(2);
-        for (Object binding : bindings) {
-          Object arg = ((List<Object>) binding).get(0);
+        SCMList<Object> initValues = new SCMList<Object>();
+        for (Object binding : (List<SCMSymbol>)expression.get(2)) {
+          Object arg = ((List<Object>)binding).get(0);
           if (lambdaArgs.contains(arg)) {
             throw new IllegalArgumentException("let: duplicate bound variable: " + arg);
           }
           lambdaArgs.add(arg);
-          initArgs.add(((List<Object>) binding).get(1));
+          initValues.add(((List<Object>)binding).get(1));
         }
         SCMList<Object> lambdaBody = (SCMList<Object>)expression.get(3);
         SCMList<Object> lambda = new SCMList<Object>(LAMBDA, lambdaArgs, lambdaBody);
+        SCMSymbol name = (SCMSymbol)o;
         SCMList<Object> l = new SCMList<Object>();
-        l.add(new SCMList<Object>(procId, lambda));
+        l.add(new SCMList<Object>(name, lambda));
+
+        SCMList<Object> body = new SCMList<Object>(name);
+        body.addAll(initValues);
+
+        SCMList<Object> letrec = new SCMList<Object>(LETREC);
         letrec.add(l);
-
-        SCMList<Object> body = new SCMList<Object>(procId);
-        body.addAll(initArgs);
         letrec.add(body);
-
         return LETREC.eval(letrec, new Environment(env), evaluator);
       }
       throw new IllegalArgumentException("let: bad let in form: " + expression);
