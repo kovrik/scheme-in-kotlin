@@ -56,10 +56,11 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("#nil"), null);
 
     /* math */
-    put(new SCMSymbol("+"), new Addition());
-    put(new SCMSymbol("-"), new Subtraction());
-    put(new SCMSymbol("*"), new Multiplication());
-    put(new SCMSymbol("/"), new Division());
+    put(new SCMSymbol("+"),   new Addition());
+    put(new SCMSymbol("-"),   new Subtraction());
+    put(new SCMSymbol("*"),   new Multiplication());
+    put(new SCMSymbol("/"),   new Division());
+    put(new SCMSymbol("abs"), new Abs());
 
     /* Comparison & Equality */
     put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));

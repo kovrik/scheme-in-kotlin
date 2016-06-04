@@ -41,9 +41,9 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (((SCMList) definition).isEmpty()) {
           throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }
-        SCMSymbol name = (SCMSymbol)((SCMList<Object>) definition).pop();
+        SCMSymbol name = (SCMSymbol)((SCMList)definition).pop();
         // TODO Optimize DOT removal
-        env.put(name, new SCMProcedure(name, (SCMList<SCMSymbol>) definition, body, ((SCMList<Object>) definition).remove(DOT)));
+        env.put(name, new SCMProcedure(name, (SCMList<SCMSymbol>) definition, body, ((SCMList)definition).remove(DOT)));
       } else {
         throw new IllegalArgumentException("define: bad `define` in form: " + expression);
       }
@@ -169,9 +169,9 @@ public enum SCMSpecialForm implements ISpecialForm {
 
       if (expression.get(1) instanceof List) {
         IEnvironment localEnv = new Environment(env);
-        for (Object node : ((List<Object>) expression.get(1))) {
-          Object var = ((List<Object>) node).get(0);
-          Object init = ((List<Object>) node).get(1);
+        for (Object binding : ((List)expression.get(1))) {
+          Object var = ((List)binding).get(0);
+          Object init = ((List)binding).get(1);
           if (localEnv.get(var) != null) {
             throw new IllegalArgumentException("let: duplicate bound variable " + var);
           }
@@ -182,8 +182,8 @@ public enum SCMSpecialForm implements ISpecialForm {
           evaluator.eval(expression.get(i), localEnv);
         }
         return evaluator.eval(expression.getLast(), localEnv);
-      } else if (expression.get(1) instanceof SCMSymbol) {
 
+      } else if (expression.get(1) instanceof SCMSymbol) {
         // TODO Optimize and cleanup
         /* Named let via letrec */
         Object o = expression.get(1);
@@ -194,14 +194,14 @@ public enum SCMSpecialForm implements ISpecialForm {
         SCMList<Object> lambdaArgs = new SCMList<Object>();
         SCMList<Object> initValues = new SCMList<Object>();
         for (Object binding : (List<SCMSymbol>)expression.get(2)) {
-          Object arg = ((List<Object>)binding).get(0);
+          Object arg = ((List)binding).get(0);
           if (lambdaArgs.contains(arg)) {
             throw new IllegalArgumentException("let: duplicate bound variable: " + arg);
           }
           lambdaArgs.add(arg);
-          initValues.add(((List<Object>)binding).get(1));
+          initValues.add(((List)binding).get(1));
         }
-        SCMList<Object> lambdaBody = (SCMList<Object>)expression.get(3);
+        SCMList<Object> lambdaBody = (SCMList)expression.get(3);
         SCMList<Object> lambda = new SCMList<Object>(LAMBDA, lambdaArgs, lambdaBody);
         SCMSymbol name = (SCMSymbol)o;
         SCMList<Object> l = new SCMList<Object>();

@@ -1,6 +1,7 @@
 import core.environment.DefaultEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.parser.IParser;
 import core.parser.Tokenizer;
 import core.procedures.delayed.SCMPromise;
@@ -52,6 +53,26 @@ public class EvaluatorTest {
     assertEquals(5.5, eval.eval(tokenizer.parse("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)"), env));
     assertEquals(5.0, eval.eval(tokenizer.parse("(/ 10.0 2)"), env));
     assertEquals(0.1, eval.eval(tokenizer.parse("(/ 10)"), env));
+
+    assertEquals(5L, eval.eval(tokenizer.parse("(abs 5)"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(abs -5)"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(abs)"), env);
+    } catch (ArityException e) {
+      assertTrue(e.getMessage().contains("Wrong number of arguments (0) passed to: abs"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(abs 1 2 3)"), env);
+    } catch (ArityException e) {
+      assertTrue(e.getMessage().contains("Wrong number of arguments (3) passed to: abs"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(abs \"not-a-number\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong type argument to `abs`"));
+    }
+
     // FIXME
 //    assertEquals(0.001, eval.eval(tokenizer.parse("(/ 1 10 10)"), env));
   }
