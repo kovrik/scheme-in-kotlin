@@ -202,6 +202,14 @@ public class EvaluatorTest {
 
     eval.eval(tokenizer.parse("(define (edv2 first second . rest) second)"), env);
     assertEquals(1L, eval.eval(tokenizer.parse("(edv2 0 1 2 3 4 5)"), env));
+
+    // internal define
+    assertEquals(45L, eval.eval(tokenizer.parse("(let ((x 5))(define foo (lambda (y) (bar x y)))(define bar (lambda (a b) (+ (* a b) a)))(foo (+ x 3)))"), env));
+    try {
+      eval.eval(tokenizer.parse("(foo 5)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Unbound variable: foo"));
+    }
   }
 
   @Test

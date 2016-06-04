@@ -51,8 +51,11 @@ public class Main {
         // Read, Tokenize, Parse
         Object sexp = parser.parse(System.in);
 
+        // TODO Macroexpand
+        Object expanded = macroexpand(sexp);
+
         // Eval
-        Object result = evaluator.eval(sexp, env);
+        Object result = evaluator.eval(expanded, env);
         if (result != null && result != UNSPECIFIED) {
           // Put result into environment
           SCMSymbol id = getNextID();
@@ -74,5 +77,10 @@ public class Main {
         System.err.println(e.getMessage());
       }
     }
+  }
+
+  // TODO
+  private static Object macroexpand(Object sexp) {
+    return sexp;
   }
 }

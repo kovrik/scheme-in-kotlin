@@ -1,12 +1,14 @@
 *JISP*
 ----
 
-* TODO: [9/17]
+* TODO: [10/18]
 
 ** TODO [#A] Properly implement IFn and Procedure classes
-** TODO [#A] Internal (local) define
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
+** TODO Macroexpansion
 ** TODO Nil value
+** DONE [#A] Internal (local) define
+CLOSED: [2016-06-05 Sun 09:26]
 ** DONE [#A] Decouple Procedure and Evaluator
 CLOSED: [2016-05-15 Sun 19:09]
 ** DONE [#A] Varargs
