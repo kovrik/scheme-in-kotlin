@@ -57,6 +57,7 @@ public class EvaluatorTest {
     assertEquals(5L, eval.eval(tokenizer.parse("(abs 5)"), env));
     assertEquals(5L, eval.eval(tokenizer.parse("(abs -5)"), env));
 
+    // abs
     try {
       eval.eval(tokenizer.parse("(abs)"), env);
     } catch (ArityException e) {
@@ -72,6 +73,11 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong type argument to `abs`"));
     }
+
+    // sqrt
+    assertEquals(5d, eval.eval(tokenizer.parse("(sqrt 25)"), env));
+    assertEquals(3d, eval.eval(tokenizer.parse("(sqrt 9.0)"), env));
+    assertTrue(Double.isNaN((Double)eval.eval(tokenizer.parse("(sqrt -5)"), env)));
 
     // FIXME
 //    assertEquals(0.001, eval.eval(tokenizer.parse("(/ 1 10 10)"), env));
