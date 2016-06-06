@@ -62,6 +62,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("/"),    new Division());
     put(new SCMSymbol("abs"),  new Abs());
     put(new SCMSymbol("sqrt"), new Sqrt());
+    put(new SCMSymbol("modulo"), new Modulo());
 
     /* Comparison & Equality */
     put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));

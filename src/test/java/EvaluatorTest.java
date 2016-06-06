@@ -79,6 +79,11 @@ public class EvaluatorTest {
     assertEquals(3d, eval.eval(tokenizer.parse("(sqrt 9.0)"), env));
     assertTrue(Double.isNaN((Double)eval.eval(tokenizer.parse("(sqrt -5)"), env)));
 
+    // modulo
+    assertEquals(2L, eval.eval(tokenizer.parse("(modulo 5 3)"), env));
+    assertEquals(2d, eval.eval(tokenizer.parse("(modulo 5 3.0)"), env));
+
+
     // FIXME
 //    assertEquals(0.001, eval.eval(tokenizer.parse("(/ 1 10 10)"), env));
   }
