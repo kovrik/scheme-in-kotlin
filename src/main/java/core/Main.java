@@ -73,6 +73,8 @@ public class Main {
         System.err.println(e.getMessage());
       } catch (IllegalArgumentException e) {
         System.err.println(e.getMessage());
+      } catch (ArithmeticException e) {
+        System.err.println(e.getMessage());
       } catch (SCMError e) {
         System.err.println(e.getMessage());
       }

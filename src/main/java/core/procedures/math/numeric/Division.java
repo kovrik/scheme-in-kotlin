@@ -15,7 +15,11 @@ public class Division extends AFn implements INumericalOperation {
 
   public Number apply(Number numenator, Number denominator) {
 
-    if ((numenator instanceof Long) && (denominator instanceof Long)) {
+    if ((numenator instanceof Long) &&
+        (denominator instanceof Long) &&
+        // FIXME Optimize?
+        ((Long)numenator % (Long)denominator) == 0) {
+
       return (Long)numenator / (Long)denominator;
     }
     return numenator.doubleValue() / denominator.doubleValue();

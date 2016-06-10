@@ -49,10 +49,15 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalMath() {
+
     assertEquals(6L,  eval.eval(tokenizer.parse("(+ 1 2 3)"), env));
     assertEquals(5.5, eval.eval(tokenizer.parse("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)"), env));
     assertEquals(5.0, eval.eval(tokenizer.parse("(/ 10.0 2)"), env));
     assertEquals(0.1, eval.eval(tokenizer.parse("(/ 10)"), env));
+    assertEquals(3.25, eval.eval(tokenizer.parse("(/ 13 4)"), env));
+    assertEquals(2L, eval.eval(tokenizer.parse("(/ 10 5)"), env));
+    assertEquals(2d, eval.eval(tokenizer.parse("(/ 10.0 5)"), env));
+    assertEquals(2d, eval.eval(tokenizer.parse("(/ 10 5.0)"), env));
 
     assertEquals(5L, eval.eval(tokenizer.parse("(abs 5)"), env));
     assertEquals(5L, eval.eval(tokenizer.parse("(abs -5)"), env));
@@ -79,13 +84,71 @@ public class EvaluatorTest {
     assertEquals(3d, eval.eval(tokenizer.parse("(sqrt 9.0)"), env));
     assertTrue(Double.isNaN((Double)eval.eval(tokenizer.parse("(sqrt -5)"), env)));
 
+    // FIXME
+//    assertEquals(0.001, eval.eval(tokenizer.parse("(/ 1 10 10)"), env));
+  }
+
+  @Test
+  public void testNumberTheoreticDivision() {
+
+    // quotient
+    assertEquals(3L, eval.eval(tokenizer.parse("(quotient 13 4)"), env));
+    assertEquals(3d, eval.eval(tokenizer.parse("(quotient 13.0 4)"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(quotient 5 5)"), env));
+    assertEquals(1d, eval.eval(tokenizer.parse("(quotient 5.0 5)"), env));
+    assertEquals(1d, eval.eval(tokenizer.parse("(quotient -5 -5.0)"), env));
+    assertEquals(-1L, eval.eval(tokenizer.parse("(quotient -5 5)"), env));
+    assertEquals(-1d, eval.eval(tokenizer.parse("(quotient -5 5.)"), env));
+    try {
+      eval.eval(tokenizer.parse("(quotient -10 0.0001)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error: (quotient) bad argument type - not an integer: 1.0E-4", e.getMessage());
+    }
+    try {
+      eval.eval(tokenizer.parse("(quotient -10 0.0)"), env);
+    } catch (ArithmeticException e) {
+      assertEquals("/ by zero", e.getMessage());
+    }
+
+    // remainder
+    assertEquals(-1L, eval.eval(tokenizer.parse("(remainder -13 4)"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(remainder 13 -4)"), env));
+    assertEquals(-1L, eval.eval(tokenizer.parse("(remainder -13 -4)"), env));
+    assertEquals(-1.0, eval.eval(tokenizer.parse("(remainder -13 -4.0)"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(remainder 13 4)"), env));
+    assertEquals(0L, eval.eval(tokenizer.parse("(remainder 10 2)"), env));
+    assertEquals(0d, eval.eval(tokenizer.parse("(remainder 10 2.0)"), env));
+    assertEquals(0d, eval.eval(tokenizer.parse("(remainder -10 2.0)"), env));
+    try {
+      eval.eval(tokenizer.parse("(remainder -10 0.0001)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error: (remainder) bad argument type - not an integer: 1.0E-4", e.getMessage());
+    }
+    try {
+      eval.eval(tokenizer.parse("(remainder -10 0.0)"), env);
+    } catch (ArithmeticException e) {
+      assertEquals("/ by zero", e.getMessage());
+    }
+
     // modulo
     assertEquals(2L, eval.eval(tokenizer.parse("(modulo 5 3)"), env));
     assertEquals(2d, eval.eval(tokenizer.parse("(modulo 5 3.0)"), env));
-
+    assertEquals(1L, eval.eval(tokenizer.parse("(modulo 13 4)"), env));
+    assertEquals(-1L, eval.eval(tokenizer.parse("(modulo -13 -4)"), env));
+    try {
+      eval.eval(tokenizer.parse("(modulo -10 0.0001)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error: (modulo) bad argument type - not an integer: 1.0E-4", e.getMessage());
+    }
+    try {
+      eval.eval(tokenizer.parse("(modulo -10 0.0)"), env);
+    } catch (ArithmeticException e) {
+      assertEquals("/ by zero", e.getMessage());
+    }
 
     // FIXME
-//    assertEquals(0.001, eval.eval(tokenizer.parse("(/ 1 10 10)"), env));
+//    assertEquals(3L, eval.eval(tokenizer.parse("(modulo -13 4)"), env));
+//    assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
   }
 
   @Test
