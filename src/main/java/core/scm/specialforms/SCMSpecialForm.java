@@ -33,11 +33,14 @@ public enum SCMSpecialForm implements ISpecialForm {
   DEFINE("define") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object definition = expression.get(1);
-      Object body = expression.get(2);
       if (definition instanceof SCMSymbol) {
+        Object body = expression.get(2);
         env.put(definition, evaluator.eval(body, env));
       } else if (definition instanceof SCMList) {
         // procedure
+        // implicit `begin`
+        SCMList<Object> body = new SCMList<Object>(BEGIN);
+        body.addAll(expression.subList(2, expression.size()));
         if (((SCMList) definition).isEmpty()) {
           throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }

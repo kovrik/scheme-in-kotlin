@@ -185,6 +185,21 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalImplicitBegin() {
+
+    assertEquals(3L, eval.eval(tokenizer.parse("((lambda () 1 2 (+ 1 2)))"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(let    () 1 2 (+ 1 2))"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(let*   () 1 2 (+ 1 2))"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(letrec () 1 2 (+ 1 2))"), env));
+
+    eval.eval(tokenizer.parse("(define (a) 1 2 (+ 1 2))"), env);
+    assertEquals(3L, eval.eval(tokenizer.parse("(a)"), env));
+    // TODO do
+    // TODO named-lambda
+    // TODO fluid-let
+  }
+
+  @Test
   public void testEvalNumericalComparison() {
     assertEquals(TRUE,  eval.eval(tokenizer.parse("(= 1 1 1)"), env));
     assertEquals(FALSE, eval.eval(tokenizer.parse("(= 1 0 1)"), env));
