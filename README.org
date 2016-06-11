@@ -4,6 +4,7 @@
 * TODO: [10/18]
 
 ** TODO [#A] Properly implement IFn and Procedure classes
+** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
 ** TODO Macroexpansion
 ** TODO Nil value
@@ -162,7 +163,7 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** TODO string->list
 **** TODO list->string
 *** TODO Numbers [1/12]
-**** TODO Basic arithmetic operators [6/12]
+**** TODO Basic arithmetic operators [8/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
 ***** DONE -
@@ -173,8 +174,10 @@ CLOSED: [2016-04-21 Thu 22:04]
 CLOSED: [2016-04-21 Thu 22:04]
 ***** DONE abs
 CLOSED: [2016-06-05 Sun 11:50]
-***** TODO quotient
-***** TODO remainder
+***** DONE quotient
+CLOSED: [2016-06-10 Fri 22:08]
+***** DONE remainder
+CLOSED: [2016-06-10 Fri 22:08]
 ***** TODO modulo
 ***** TODO gcd
 ***** TODO lcm

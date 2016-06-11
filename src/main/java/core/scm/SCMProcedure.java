@@ -14,18 +14,38 @@ public class SCMProcedure extends AFn {
   private List<SCMSymbol> params;
   private Object body;
 
+  // TODO Implement as a separate class?
+  private IEnvironment closure = null;
+
   private boolean variableArity = false;
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body) {
     this.name = name;
     this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
     this.body = body;
+    this.closure = null;
+  }
+
+  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure) {
+    this.name = name;
+    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.body = body;
+    this.closure = closure;
   }
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, boolean variableArity) {
     this.name = name;
     this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
     this.body = body;
+    this.closure = null;
+    this.variableArity = variableArity;
+  }
+
+  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure, boolean variableArity) {
+    this.name = name;
+    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.body = body;
+    this.closure = closure;
     this.variableArity = variableArity;
   }
 
@@ -33,8 +53,12 @@ public class SCMProcedure extends AFn {
     this(new SCMSymbol(name), params, body);
   }
 
-  public SCMProcedure(String name, List<SCMSymbol> params, Object body, boolean variableArity) {
-    this(new SCMSymbol(name), params, body, variableArity);
+  public SCMProcedure(String name, List<SCMSymbol> params, Object body, IEnvironment closure) {
+    this(new SCMSymbol(name), params, body, closure);
+  }
+
+  public SCMProcedure(String name, List<SCMSymbol> params, Object body, IEnvironment closure, boolean variableArity) {
+    this(new SCMSymbol(name), params, body, closure, variableArity);
   }
 
   public Object getBody() {
@@ -51,6 +75,10 @@ public class SCMProcedure extends AFn {
 
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     return evaluator.eval(body, env);
+  }
+
+  public IEnvironment getClosure() {
+    return closure;
   }
 
   @Override

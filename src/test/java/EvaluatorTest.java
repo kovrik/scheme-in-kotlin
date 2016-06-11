@@ -1,4 +1,5 @@
 import core.environment.DefaultEnvironment;
+import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
@@ -145,10 +146,42 @@ public class EvaluatorTest {
     } catch (ArithmeticException e) {
       assertEquals("/ by zero", e.getMessage());
     }
-
     // FIXME
 //    assertEquals(3L, eval.eval(tokenizer.parse("(modulo -13 4)"), env));
 //    assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
+  }
+
+  @Test
+  public void testEvalLocalState() {
+
+    IEnvironment lenv = new DefaultEnvironment();
+    eval.eval(tokenizer.parse("(define (make-withdraw balance) (lambda (amount) (if (>= balance amount) (begin (set! balance (- balance amount)) balance) \"Insufficient funds\")))"), lenv);
+
+    eval.eval(tokenizer.parse("(define W1 (make-withdraw 100))"), lenv);
+    eval.eval(tokenizer.parse("(define W2 (make-withdraw 100))"), lenv);
+    assertEquals(50L, eval.eval(tokenizer.parse("(W1 50)"), lenv));
+    assertEquals(30L, eval.eval(tokenizer.parse("(W2 70)"), lenv));
+    assertEquals("Insufficient funds", eval.eval(tokenizer.parse("(W2 40)"), lenv));
+    assertEquals(10L, eval.eval(tokenizer.parse("(W1 40)"), lenv));
+
+    eval.eval(tokenizer.parse("(define a 999)"), lenv);
+    assertEquals(5L, eval.eval(tokenizer.parse("(begin (define a 10) (set! a 5) a)"), lenv));
+
+
+    assertEquals(20L, eval.eval(tokenizer.parse("(let ((a 5)) (set! a 10) (let () (set! a 15) (let () (+ a 5))))"), lenv));
+
+    eval.eval(tokenizer.parse("(define x 2)"), lenv);
+    eval.eval(tokenizer.parse("(define y 10)"), lenv);
+    eval.eval(tokenizer.parse("(define multiply (lambda (x y) (* x y)))"), lenv);
+    assertEquals(12L, eval.eval(tokenizer.parse("(+ x y)"), lenv));
+    assertEquals(100L, eval.eval(tokenizer.parse("(multiply y 10)"), lenv));
+
+
+    eval.eval(tokenizer.parse("(define x 10)"), lenv);
+    eval.eval(tokenizer.parse("(set! x 20)"), lenv);
+    assertEquals(20L, eval.eval(tokenizer.parse("x"), lenv));
+    eval.eval(tokenizer.parse("(define add (lambda (x y) (set! x (+ x y)) x))"), lenv);
+    assertEquals(110L, eval.eval(tokenizer.parse("(add 10 100)"), lenv));
   }
 
   @Test
@@ -234,12 +267,14 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalDelayed() {
+
     assertEquals(1d, eval.eval(tokenizer.parse("(force (delay 1.0))"), env));
     assertEquals("test", eval.eval(tokenizer.parse("(force (delay \"test\"))"), env));
     assertEquals(10L, eval.eval(tokenizer.parse("(force (delay (+ 5 2 (* 1 3))))"), env));
-
     assertEquals(SCMPromise.class, eval.eval(tokenizer.parse("(delay 1.0)"), env).getClass());
     assertEquals(TRUE, eval.eval(tokenizer.parse("(promise? (delay 1.0))"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(force (delay (+ 1 2)))"), env));
+    assertEquals(new SCMList(3L, 3L), eval.eval(tokenizer.parse("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
   }
 
   @Test
@@ -345,7 +380,12 @@ public class EvaluatorTest {
   @Test
   public void testEvalSet() {
     assertEquals(9L, eval.eval(tokenizer.parse("(let ((a 0)) (set! a 9) a)"), env));
-    assertEquals(99L, eval.eval(tokenizer.parse("(begin (set! b 99) b)"), env));
+    assertEquals(19L, eval.eval(tokenizer.parse("(begin (define a 0) (set! a 9) (+ a 10))"), env));
+    try {
+      eval.eval(tokenizer.parse("(begin (set! b 99) b)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Unbound variable: b", e.getMessage());
+    }
   }
 
   @Test
@@ -470,14 +510,12 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalBegin() {
-    assertEquals(6L, eval.eval(tokenizer.parse("(begin (set! x 5)(+ x 1))"), env));
+    try {
+      eval.eval(tokenizer.parse("(begin (set! x 5) (+ x 1))"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Unbound variable: x", e.getMessage());
+    }
     assertEquals(null, eval.eval(tokenizer.parse("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))"), env));
-  }
-
-  @Test
-  public void testEvalDelay() {
-    assertEquals(3L, eval.eval(tokenizer.parse("(force (delay (+ 1 2)))"), env));
-//    assertEquals(3L, eval.eval(tokenizer.parse("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
   }
 
   @Test

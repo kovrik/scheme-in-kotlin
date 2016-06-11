@@ -97,7 +97,11 @@ public class Evaluator implements IEvaluator {
     }
     // FIXME Make generic as IFn?
     if (fn instanceof SCMProcedure) {
-      return apply(fn, args, env);
+      IEnvironment closure = ((SCMProcedure) fn).getClosure();
+      if (closure == null) {
+        closure = env;
+      }
+      return apply(fn, args, closure);
     }
     try {
       return ((IFn)fn).invoke(args);
