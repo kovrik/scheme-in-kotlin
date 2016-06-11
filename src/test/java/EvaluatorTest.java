@@ -166,8 +166,6 @@ public class EvaluatorTest {
 
     eval.eval(tokenizer.parse("(define a 999)"), lenv);
     assertEquals(5L, eval.eval(tokenizer.parse("(begin (define a 10) (set! a 5) a)"), lenv));
-
-
     assertEquals(20L, eval.eval(tokenizer.parse("(let ((a 5)) (set! a 10) (let () (set! a 15) (let () (+ a 5))))"), lenv));
 
     eval.eval(tokenizer.parse("(define x 2)"), lenv);
@@ -176,12 +174,16 @@ public class EvaluatorTest {
     assertEquals(12L, eval.eval(tokenizer.parse("(+ x y)"), lenv));
     assertEquals(100L, eval.eval(tokenizer.parse("(multiply y 10)"), lenv));
 
-
     eval.eval(tokenizer.parse("(define x 10)"), lenv);
     eval.eval(tokenizer.parse("(set! x 20)"), lenv);
     assertEquals(20L, eval.eval(tokenizer.parse("x"), lenv));
     eval.eval(tokenizer.parse("(define add (lambda (x y) (set! x (+ x y)) x))"), lenv);
     assertEquals(110L, eval.eval(tokenizer.parse("(add 10 100)"), lenv));
+
+    eval.eval(tokenizer.parse("(define x 4)"), lenv);
+    eval.eval(tokenizer.parse("(define y 5)"), lenv);
+    assertEquals(2L, eval.eval(tokenizer.parse("(let ((x 1) (y 2)) (* x y))"), lenv));
+    assertEquals(20L, eval.eval(tokenizer.parse("(* x y)"), lenv));
   }
 
   @Test
