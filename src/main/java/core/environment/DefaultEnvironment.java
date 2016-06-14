@@ -30,6 +30,7 @@ public final class DefaultEnvironment extends Environment {
     procs.put("list",       "(define (list . elements) elements)");
     procs.put("null?",      "(define (null?  l) (eq? l '()))");
     procs.put("empty?",     "(define empty? null?)");
+    procs.put("zero?",      "(define (zero? n) (= n 0))");
   }
 
   public Map<String, String> getProcs() {

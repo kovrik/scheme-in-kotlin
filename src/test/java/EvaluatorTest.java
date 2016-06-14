@@ -147,7 +147,7 @@ public class EvaluatorTest {
       assertEquals("/ by zero", e.getMessage());
     }
     // FIXME
-//    assertEquals(3L, eval.eval(tokenizer.parse("(modulo -13 4)"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(modulo -13 4)"), env));
 //    assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
   }
 
@@ -577,6 +577,21 @@ public class EvaluatorTest {
     assertEquals(0L, eval.eval(tokenizer.parse("(length '())"), env));
     assertEquals(1L, eval.eval(tokenizer.parse("(length '(1))"), env));
     assertEquals(5L, eval.eval(tokenizer.parse("(length '(1 2 3 4 5))"), env));
+  }
+
+  @Test
+  public void testEvalIsZero() {
+
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(zero? 0)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(zero? 0.0)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(zero? 1)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(zero? -5)"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(zero? \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
+    }
   }
 
   @Test

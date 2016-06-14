@@ -211,8 +211,9 @@ CLOSED: [2016-04-21 Thu 22:03]
 CLOSED: [2016-04-21 Thu 22:03]
 ***** DONE =
 CLOSED: [2016-04-21 Thu 22:03]
-**** TODO Miscellaneous predicates [0/5]
-***** TODO zero?
+**** TODO Miscellaneous predicates [1/5]
+***** DONE zero?
+CLOSED: [2016-06-14 Tue 22:24]
 ***** TODO negative?
 ***** TODO positive?
 ***** TODO odd?

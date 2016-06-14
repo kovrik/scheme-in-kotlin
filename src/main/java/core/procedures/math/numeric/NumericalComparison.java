@@ -47,8 +47,11 @@ public class NumericalComparison extends AFn implements IOperation {
 
   public Boolean apply(Object first, Object second) {
 
-    if (!(first instanceof Number) || !(second instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type to " + type.getSyntax());
+    if (!(first instanceof Number)) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + first.getClass().getSimpleName());
+    }
+    if (!(second instanceof Number)) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + second.getClass().getSimpleName());
     }
 
     Number f = (Number)first;
