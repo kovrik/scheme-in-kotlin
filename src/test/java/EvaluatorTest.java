@@ -600,9 +600,25 @@ public class EvaluatorTest {
     assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 0)"), env));
     assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 0.0)"), env));
     assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 1)"), env));
-    assertEquals(TRUE,  eval.eval(tokenizer.parse("(negative? -5)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? (* -5 -6))"), env));
+    assertEquals(TRUE,   eval.eval(tokenizer.parse("(negative? -5)"), env));
     try {
       eval.eval(tokenizer.parse("(negative? \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
+    }
+  }
+
+  @Test
+  public void testEvalPositive() {
+
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(positive? 0)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(positive? 0.0)"), env));
+    assertEquals(TRUE,   eval.eval(tokenizer.parse("(positive? 1)"), env));
+    assertEquals(TRUE,   eval.eval(tokenizer.parse("(positive? (* -5 -6))"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(positive? -5)"), env));
+    try {
+      eval.eval(tokenizer.parse("(positive? \"test\")"), env);
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
     }

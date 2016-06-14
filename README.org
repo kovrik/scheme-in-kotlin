@@ -211,12 +211,13 @@ CLOSED: [2016-04-21 Thu 22:03]
 CLOSED: [2016-04-21 Thu 22:03]
 ***** DONE =
 CLOSED: [2016-04-21 Thu 22:03]
-**** TODO Miscellaneous predicates [2/5]
+**** TODO Miscellaneous predicates [3/5]
 ***** DONE zero?
 CLOSED: [2016-06-14 Tue 22:24]
 ***** DONE negative?
 CLOSED: [2016-06-14 Tue 22:26]
-***** TODO positive?
+***** DONE positive?
+CLOSED: [2016-06-14 Tue 22:28]
 ***** TODO odd?
 ***** TODO even?
 **** TODO Maximum and minimum [0/2]

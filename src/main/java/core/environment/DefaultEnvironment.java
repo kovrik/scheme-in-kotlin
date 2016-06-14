@@ -35,6 +35,7 @@ public final class DefaultEnvironment extends Environment {
     // Miscellaneous predicates
     procs.put("zero?",      "(define (zero? n) (= n 0))");
     procs.put("negative?",  "(define (negative? n) (< n 0))");
+    procs.put("positive?",  "(define (positive? n) (> n 0))");
   }
 
   public Map<String, String> getProcs() {
