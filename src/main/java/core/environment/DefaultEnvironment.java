@@ -37,6 +37,7 @@ public final class DefaultEnvironment extends Environment {
     procs.put("negative?",  "(define (negative? n) (< n 0))");
     procs.put("positive?",  "(define (positive? n) (> n 0))");
     procs.put("even?",      "(define (even? n) (= 0 (remainder n 2)))");
+    procs.put("odd?",       "(define (odd? n) (not (even? n)))");
   }
 
   public Map<String, String> getProcs() {

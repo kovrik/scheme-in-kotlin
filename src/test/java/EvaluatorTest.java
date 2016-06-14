@@ -642,6 +642,24 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalOdd() {
+
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? 0)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? 0.0)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? 4)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? 100)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(odd? 1)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? 4)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(odd? (* -5 -6))"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(odd? -5)"), env));
+    try {
+      eval.eval(tokenizer.parse("(odd? \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalNamedLet() {
 
     assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
