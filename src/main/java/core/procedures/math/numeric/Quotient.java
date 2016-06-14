@@ -8,6 +8,12 @@ public class Quotient extends AFn implements INumericalOperation {
   @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
+      if (!(args[0] instanceof Number)) {
+        throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + args[0].getClass().getSimpleName());
+      }
+      if (!(args[1] instanceof Number)) {
+        throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + args[1].getClass().getSimpleName());
+      }
       return apply((Number)args[0], (Number)args[1]);
     }
     throw new ArityException(args.length, "quotient");
