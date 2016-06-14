@@ -595,6 +595,20 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalNegative() {
+
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 0)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 0.0)"), env));
+    assertEquals(FALSE,  eval.eval(tokenizer.parse("(negative? 1)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(negative? -5)"), env));
+    try {
+      eval.eval(tokenizer.parse("(negative? \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
+    }
+  }
+
+  @Test
   public void testEvalNamedLet() {
 
     assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
