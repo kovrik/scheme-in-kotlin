@@ -732,6 +732,52 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalMax() {
+
+    assertEquals(0L,   eval.eval(tokenizer.parse("(max 0)"),    env));
+    assertEquals(5.0,  eval.eval(tokenizer.parse("(max 5.0)"),  env));
+    assertEquals(-5.0, eval.eval(tokenizer.parse("(max -5.0)"), env));
+
+    assertEquals(-5.0, eval.eval(tokenizer.parse("(max -6 -7 -5.0)"), env));
+    assertEquals(7.0,  eval.eval(tokenizer.parse("(max 6 7 5.0)"),    env));
+
+    try {
+      eval.eval(tokenizer.parse("(max \"test\" 1 2 3)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+
+    try {
+      eval.eval(tokenizer.parse("(max 0 \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalMin() {
+
+    assertEquals(0L,   eval.eval(tokenizer.parse("(min 0)"),    env));
+    assertEquals(5.0,  eval.eval(tokenizer.parse("(min 5.0)"),  env));
+    assertEquals(-5.0, eval.eval(tokenizer.parse("(min -5.0)"), env));
+
+    assertEquals(-7.0, eval.eval(tokenizer.parse("(min -6 -7 -5.0)"), env));
+    assertEquals(5.0,  eval.eval(tokenizer.parse("(min 6 7 5.0)"),    env));
+
+    try {
+      eval.eval(tokenizer.parse("(min \"test\" 1 2 3)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+
+    try {
+      eval.eval(tokenizer.parse("(min 0 \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalIsInteger() {
 
     assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 0)"), env));

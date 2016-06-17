@@ -162,7 +162,7 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** TODO integer->char
 **** TODO string->list
 **** TODO list->string
-*** TODO Numbers [3/12]
+*** TODO Numbers [4/12]
 **** TODO Basic arithmetic operators [8/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -228,9 +228,12 @@ CLOSED: [2016-06-14 Tue 22:28]
 CLOSED: [2016-06-14 Tue 22:43]
 ***** DONE even?
 CLOSED: [2016-06-14 Tue 22:40]
-**** TODO Maximum and minimum [0/2]
-***** TODO max
-***** TODO min
+**** DONE Maximum and minimum [2/2]
+CLOSED: [2016-06-17 Fri 18:39]
+***** DONE max
+CLOSED: [2016-06-17 Fri 18:39]
+***** DONE min
+CLOSED: [2016-06-17 Fri 18:39]
 **** TODO Trigonometry [0/6]
 ***** TODO sin
 ***** TODO cos
