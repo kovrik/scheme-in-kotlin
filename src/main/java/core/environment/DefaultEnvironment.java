@@ -77,7 +77,10 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("remainder"), new Remainder());
     put(new SCMSymbol("quotient"), new Quotient());
 
-    put(new SCMSymbol("round"), new Round());
+    put(new SCMSymbol("round"),    new Round());
+    put(new SCMSymbol("floor"),    new Floor());
+    put(new SCMSymbol("ceiling"),  new Ceiling());
+    put(new SCMSymbol("truncate"), new Truncate());
 
     /* Comparison & Equality */
     put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));

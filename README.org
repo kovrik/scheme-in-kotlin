@@ -162,7 +162,7 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** TODO integer->char
 **** TODO string->list
 **** TODO list->string
-*** TODO Numbers [2/12]
+*** TODO Numbers [3/12]
 **** TODO Basic arithmetic operators [8/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -189,11 +189,16 @@ CLOSED: [2016-06-05 Sun 21:32]
 ***** TODO denominator
 ***** TODO rational?
 ***** TODO rationalize
-**** TODO Approximation [0/4]
-***** TODO floor
-***** TODO ceiling
-***** TODO truncate
-***** TODO round
+**** DONE Approximation [4/4]
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE floor
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE ceiling
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE truncate
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE round
+CLOSED: [2016-06-17 Fri 18:07]
 **** TODO Exactness [0/4]
 ***** TODO inexact->exact
 ***** TODO exact->inexact
@@ -247,8 +252,9 @@ CLOSED: [2016-06-14 Tue 22:40]
 **** TODO Input-output [0/2]
 ***** TODO number->string
 ***** TODO string->number
-**** TODO Type predicates [1/5]
-***** TODO integer?
+**** TODO Type predicates [2/5]
+***** DONE integer?
+CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO rational?
 ***** TODO real?
 ***** TODO complex?
