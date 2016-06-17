@@ -27,6 +27,9 @@ public final class DefaultEnvironment extends Environment {
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
     procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
 
+//    procs.put("integer?",   String.format("(define (integer?   o) (string=? \"%s\" (class-of o)))", Long.class.getName()));
+    procs.put("integer?",   "(define (integer? x) (= x (round x)))");
+
     procs.put("list",       "(define (list . elements) elements)");
     procs.put("null?",      "(define (null?  l) (eq? l '()))");
     procs.put("empty?",     "(define empty? null?)");
@@ -73,6 +76,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("modulo"), new Modulo());
     put(new SCMSymbol("remainder"), new Remainder());
     put(new SCMSymbol("quotient"), new Quotient());
+
+    put(new SCMSymbol("round"), new Round());
 
     /* Comparison & Equality */
     put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));

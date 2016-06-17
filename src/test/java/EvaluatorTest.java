@@ -77,7 +77,7 @@ public class EvaluatorTest {
     try {
       eval.eval(tokenizer.parse("(abs \"not-a-number\")"), env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong type argument to `abs`"));
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
     }
 
     // sqrt
@@ -656,6 +656,44 @@ public class EvaluatorTest {
       eval.eval(tokenizer.parse("(odd? \"test\")"), env);
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalRound() {
+
+    assertEquals(0L,   eval.eval(tokenizer.parse("(round 0)"),    env));
+    assertEquals(4L,   eval.eval(tokenizer.parse("(round 4)"),    env));
+    assertEquals(-4L,  eval.eval(tokenizer.parse("(round -4)"),   env));
+    assertEquals(0.0,  eval.eval(tokenizer.parse("(round 0.0)"),  env));
+    assertEquals(1.0,  eval.eval(tokenizer.parse("(round 1.0)"),  env));
+    assertEquals(2.0,  eval.eval(tokenizer.parse("(round 1.5)"),  env));
+    assertEquals(-2.0, eval.eval(tokenizer.parse("(round -1.5)"), env));
+    assertEquals(2.0,  eval.eval(tokenizer.parse("(round 2.5)"),  env));
+    assertEquals(-0.0, eval.eval(tokenizer.parse("(round -0.5)"), env));
+    assertEquals(-2.0, eval.eval(tokenizer.parse("(round -1.7)"), env));
+    assertEquals(4.0,  eval.eval(tokenizer.parse("(round 3.7)"),  env));
+    assertEquals(3.0,  eval.eval(tokenizer.parse("(round 2.7)"),  env));
+    assertEquals(2.0,  eval.eval(tokenizer.parse("(round 2.5)"),  env));
+  }
+
+  @Test
+  public void testEvalIsInteger() {
+
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 0)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 0.0)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 4)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 100)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? 1)"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? (* -5 -6))"), env));
+    assertEquals(TRUE,  eval.eval(tokenizer.parse("(integer? -5)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(integer? -5.4)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(integer? 3.14)"), env));
+    assertEquals(FALSE, eval.eval(tokenizer.parse("(integer? .123)"), env));
+    try {
+      eval.eval(tokenizer.parse("(integer? \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
   }
 
