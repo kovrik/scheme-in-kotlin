@@ -73,6 +73,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("/"),    new Division());
     put(new SCMSymbol("abs"),  new Abs());
     put(new SCMSymbol("sqrt"), new Sqrt());
+    put(new SCMSymbol("expt"), new Expt());
     put(new SCMSymbol("modulo"), new Modulo());
     put(new SCMSymbol("remainder"), new Remainder());
     put(new SCMSymbol("quotient"), new Quotient());

@@ -163,7 +163,7 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** TODO string->list
 **** TODO list->string
 *** TODO Numbers [4/12]
-**** TODO Basic arithmetic operators [8/12]
+**** TODO Basic arithmetic operators [9/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
 ***** DONE -
@@ -181,7 +181,8 @@ CLOSED: [2016-06-10 Fri 22:08]
 ***** TODO modulo
 ***** TODO gcd
 ***** TODO lcm
-***** TODO expt
+***** DONE expt
+CLOSED: [2016-06-18 Sat 20:48]
 ***** DONE sqrt
 CLOSED: [2016-06-05 Sun 21:32]
 **** TODO Rational numbers [0/4]

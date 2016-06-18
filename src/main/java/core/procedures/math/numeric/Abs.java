@@ -15,19 +15,19 @@ public class Abs extends AFn implements INumericalOperation {
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + args[0].getClass().getSimpleName());
     }
-    throw new ArityException(args.length, "abs");
+    throw new ArityException(args.length, 1, "abs");
   }
 
   public Number zero() {
-    throw new ArityException(0, "abs");
+    throw new ArityException(0, 1, "abs");
   }
 
   public Number apply(Number first, Number second) {
-    throw new ArityException(2, "abs");
+    throw new ArityException(2, 1, "abs");
   }
 
   public Object apply(Object first, Object second) {
-    throw new ArityException(2, "abs");
+    throw new ArityException(2, 1, "abs");
   }
 
   @Override

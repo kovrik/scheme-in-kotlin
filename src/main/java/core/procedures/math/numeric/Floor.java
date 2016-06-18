@@ -15,19 +15,19 @@ public class Floor extends AFn implements INumericalOperation {
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + args[0].getClass().getSimpleName());
     }
-    throw new ArityException(args.length, "floor");
+    throw new ArityException(args.length, 1, "floor");
   }
 
   public Number zero() {
-    throw new ArityException(0, "floor");
+    throw new ArityException(0, 1, "floor");
   }
 
   public Number apply(Number first, Number second) {
-    throw new ArityException(2, "floor");
+    throw new ArityException(2, 1, "floor");
   }
 
   public Object apply(Object first, Object second) {
-    throw new ArityException(2, "floor");
+    throw new ArityException(2, 1, "floor");
   }
 
   @Override

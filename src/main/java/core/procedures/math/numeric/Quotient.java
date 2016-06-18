@@ -16,11 +16,11 @@ public class Quotient extends AFn implements INumericalOperation {
       }
       return apply((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, "quotient");
+    throw new ArityException(args.length, 2, "quotient");
   }
 
   public Number zero() {
-    throw new ArityException(0, "quotient");
+    throw new ArityException(0, 2, "quotient");
   }
 
   public Number apply(Number first, Number second) {

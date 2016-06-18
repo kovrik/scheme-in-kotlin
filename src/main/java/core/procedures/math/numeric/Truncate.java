@@ -20,19 +20,19 @@ public class Truncate extends AFn implements INumericalOperation {
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + args[0].getClass().getSimpleName());
     }
-    throw new ArityException(args.length, "truncate");
+    throw new ArityException(args.length, 1, "truncate");
   }
 
   public Number zero() {
-    throw new ArityException(0, "truncate");
+    throw new ArityException(0, 1, "truncate");
   }
 
   public Number apply(Number first, Number second) {
-    throw new ArityException(2, "truncate");
+    throw new ArityException(2, 1, "truncate");
   }
 
   public Object apply(Object first, Object second) {
-    throw new ArityException(2, "truncate");
+    throw new ArityException(2, 1, "truncate");
   }
 
   @Override

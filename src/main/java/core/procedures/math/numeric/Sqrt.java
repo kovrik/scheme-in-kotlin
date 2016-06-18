@@ -15,19 +15,19 @@ public class Sqrt extends AFn implements INumericalOperation {
       }
       throw new IllegalArgumentException("Wrong type argument to `sqrt`");
     }
-    throw new ArityException(args.length, "sqrt");
+    throw new ArityException(args.length, 1, "sqrt");
   }
 
   public Number zero() {
-    throw new ArityException(0, "sqrt");
+    throw new ArityException(0, 1, "sqrt");
   }
 
   public Number apply(Number first, Number second) {
-    throw new ArityException(2, "sqrt");
+    throw new ArityException(2, 1, "sqrt");
   }
 
   public Object apply(Object first, Object second) {
-    throw new ArityException(2, "sqrt");
+    throw new ArityException(2, 1, "sqrt");
   }
 
   @Override

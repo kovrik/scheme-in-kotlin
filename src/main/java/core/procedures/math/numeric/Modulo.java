@@ -16,11 +16,11 @@ public class Modulo extends AFn implements INumericalOperation {
       }
       return apply((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, "modulo");
+    throw new ArityException(args.length, 2, "modulo");
   }
 
   public Number zero() {
-    throw new ArityException(0, "modulo");
+    throw new ArityException(0, 2, "modulo");
   }
 
   // FIXME

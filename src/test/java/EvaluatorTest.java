@@ -67,12 +67,12 @@ public class EvaluatorTest {
     try {
       eval.eval(tokenizer.parse("(abs)"), env);
     } catch (ArityException e) {
-      assertTrue(e.getMessage().contains("Wrong number of arguments (0) passed to: abs"));
+      assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 0, expected: 1) passed to: abs"));
     }
     try {
       eval.eval(tokenizer.parse("(abs 1 2 3)"), env);
     } catch (ArityException e) {
-      assertTrue(e.getMessage().contains("Wrong number of arguments (3) passed to: abs"));
+      assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 3, expected: 1) passed to: abs"));
     }
     try {
       eval.eval(tokenizer.parse("(abs \"not-a-number\")"), env);
@@ -774,6 +774,29 @@ public class EvaluatorTest {
       eval.eval(tokenizer.parse("(min 0 \"test\")"), env);
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalExpt() {
+
+    assertEquals(1.0, eval.eval(tokenizer.parse("(expt 9 0)"), env));
+    assertEquals(0.0, eval.eval(tokenizer.parse("(expt 0 10)"), env));
+    assertEquals(1.0, eval.eval(tokenizer.parse("(expt 1 1)"), env));
+    assertEquals(8.0, eval.eval(tokenizer.parse("(expt 2 3)"), env));
+    assertEquals(16777216.0, eval.eval(tokenizer.parse("(expt 4 12)"), env));
+    assertEquals(25.0, eval.eval(tokenizer.parse("(expt -5 2)"), env));
+    assertEquals(-125.0, eval.eval(tokenizer.parse("(expt -5 3)"), env));
+    assertEquals(13.489468760533386, eval.eval(tokenizer.parse("(expt 2.2 3.3)"), env));
+    try {
+      eval.eval(tokenizer.parse("(expt \"test\" 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+    }
+    try {
+      eval.eval(tokenizer.parse("(expt 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong number of arguments (actual: 1, expected: 2) passed to: expt", e.getMessage());
     }
   }
 

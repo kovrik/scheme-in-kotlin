@@ -16,11 +16,11 @@ public class Remainder extends AFn implements INumericalOperation {
       }
       return apply((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, "remainder");
+    throw new ArityException(args.length, 2, "remainder");
   }
 
   public Number zero() {
-    throw new ArityException(0, "remainder");
+    throw new ArityException(0, 2, "remainder");
   }
 
   public Number apply(Number first, Number second) {
