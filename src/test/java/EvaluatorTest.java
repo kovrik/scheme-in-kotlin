@@ -6,6 +6,7 @@ import core.exceptions.ArityException;
 import core.parser.IParser;
 import core.parser.Tokenizer;
 import core.procedures.delayed.SCMPromise;
+import core.procedures.io.Display;
 import core.scm.SCMList;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
@@ -14,6 +15,8 @@ import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -357,6 +360,28 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Unbound variable: foo"));
     }
+  }
+
+  @Test
+  public void testEvalQuine() {
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream old = System.out;
+    System.setOut(new PrintStream(baos));
+
+    IEnvironment tempEnv = new DefaultEnvironment();
+    /* Eval lib procedures */
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
+      tempEnv.put(entry.getKey(), eval.eval(tokenizer.parse(entry.getValue()), tempEnv));
+    }
+    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+
+    String quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
+                   " (quote (lambda (s) (display (list s (list (quote quote) s))))))";
+    eval.eval(tokenizer.parse(quine), tempEnv);
+    assertEquals(quine, baos.toString().trim());
+
+    System.setOut(old);
   }
 
   @Test
