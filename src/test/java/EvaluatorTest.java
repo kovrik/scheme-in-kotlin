@@ -846,6 +846,26 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testIntegerRoots() {
+    String code = "(define (root a b)" +
+                  "(define // quotient)" +
+                  "(define (y a a1 b c d e)" +
+                  "(if (or (= c d) (= c e))" +
+                  "(min d e)" +
+                  "(y a a1 b d e (// (+ (* a1 e)" +
+                  "(// b (expt e a1))) a))))" +
+                  "(if (< b 2) b" +
+                  "(let* ((a1 (- a 1))" +
+                         "(c 1)" +
+                         "(d (// (+ (* a1 c) (// b (expt c a1))) a))" +
+                         "(e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+                           "(y a a1 b c d e))))";
+
+    eval.eval(tokenizer.parse(code), env);
+    assertEquals(2.0, eval.eval(tokenizer.parse("(root 3 8)"), env));
+  }
+
+  @Test
   public void testEvalNamedLet() {
 
     assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
