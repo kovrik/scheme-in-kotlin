@@ -135,9 +135,9 @@ public class EvaluatorTest {
     }
 
     // modulo
-    assertEquals(2L, eval.eval(tokenizer.parse("(modulo 5 3)"), env));
-    assertEquals(2d, eval.eval(tokenizer.parse("(modulo 5 3.0)"), env));
-    assertEquals(1L, eval.eval(tokenizer.parse("(modulo 13 4)"), env));
+    assertEquals(2L,  eval.eval(tokenizer.parse("(modulo 5 3)"), env));
+    assertEquals(2d,  eval.eval(tokenizer.parse("(modulo 5 3.0)"), env));
+    assertEquals(1L,  eval.eval(tokenizer.parse("(modulo 13 4)"), env));
     assertEquals(-1L, eval.eval(tokenizer.parse("(modulo -13 -4)"), env));
     try {
       eval.eval(tokenizer.parse("(modulo -10 0.0001)"), env);
@@ -149,9 +149,8 @@ public class EvaluatorTest {
     } catch (ArithmeticException e) {
       assertEquals("/ by zero", e.getMessage());
     }
-    // FIXME
-//    assertEquals(3L, eval.eval(tokenizer.parse("(modulo -13 4)"), env));
-//    assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
+    assertEquals(3L,  eval.eval(tokenizer.parse("(modulo -13 4)"), env));
+    assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
   }
 
   @Test

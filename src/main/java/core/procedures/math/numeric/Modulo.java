@@ -5,6 +5,9 @@ import core.procedures.AFn;
 
 public class Modulo extends AFn implements INumericalOperation {
 
+  // TODO move out
+  private static final Remainder rem = new Remainder();
+
   @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
@@ -23,19 +26,32 @@ public class Modulo extends AFn implements INumericalOperation {
     throw new ArityException(0, 2, "modulo");
   }
 
-  // FIXME
   public Number apply(Number first, Number second) {
-    if ((first instanceof Double) || (second instanceof Double)) {
-      double result = first.doubleValue() % second.doubleValue();
-      // Don't want negative zero
-      if (result == -0.0) {
-        return Math.abs(result);
-      }
-      return result;
-    } else if ((first instanceof Long) && (second instanceof Long)) {
-      return (Long)first % (Long)second;
+
+    // check if they are integral
+    if (!((first.doubleValue() == Math.floor(first.doubleValue())) &&
+        !Double.isInfinite(first.doubleValue()))) {
+
+      throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + first);
     }
-    throw new IllegalArgumentException("Wrong type argument to `modulo`");
+    if (!((second.doubleValue() == Math.floor(second.doubleValue())) &&
+        !Double.isInfinite(second.doubleValue()))) {
+
+      throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + second);
+    }
+
+    Number m = rem.apply(first, second);
+    if (m.intValue() == 0) {
+      return m;
+    }
+    if ((first.intValue() > 0) == (second.intValue() > 0)) {
+      return m;
+    }
+    if ((first instanceof Double) || (second instanceof Double)) {
+      return m.doubleValue() + second.doubleValue();
+    } else {
+      return m.longValue() + second.longValue();
+    }
   }
 
   public Object apply(Object first, Object second) {
