@@ -154,6 +154,25 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalMutualRecursion() {
+
+    String f = "(define (F n) (if (= n 0) 1 (- n (M (F (- n 1))))))";
+    String m = "(define (M n) (if (= n 0) 0 (- n (F (M (- n 1))))))";
+    eval.eval(tokenizer.parse(f), env);
+    eval.eval(tokenizer.parse(m), env);
+
+    long[] fs = {1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 9, 10, 11, 11, 12, 13};
+    for (int i = 0; i < fs.length; i++) {
+      assertEquals(fs[i], eval.eval(tokenizer.parse(String.format("(F %s)", i)), env));
+    }
+
+    long[] ms = {0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8, 9, 9, 10, 11, 11, 12, 12};
+    for (int i = 0; i < ms.length; i++) {
+      assertEquals(ms[i], eval.eval(tokenizer.parse(String.format("(M %s)", i)), env));
+    }
+  }
+
+  @Test
   public void testEvalLocalState() {
 
     IEnvironment lenv = new DefaultEnvironment();
