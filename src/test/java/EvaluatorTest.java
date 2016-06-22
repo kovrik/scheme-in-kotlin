@@ -170,6 +170,11 @@ public class EvaluatorTest {
     for (int i = 0; i < ms.length; i++) {
       assertEquals(ms[i], eval.eval(tokenizer.parse(String.format("(M %s)", i)), env));
     }
+
+    String letrec = "(letrec ((F (lambda (n) (if (= n 0) 1 (- n (M (F (- n 1)))))))" +
+                             "(M (lambda (n) (if (= n 0) 0 (- n (F (M (- n 1))))))))" +
+                      "(F 19))";
+    assertEquals(12L, eval.eval(tokenizer.parse(letrec), env));
   }
 
   @Test
