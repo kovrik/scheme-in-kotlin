@@ -10,6 +10,7 @@ import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
+import core.procedures.vectors.Vector;
 import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
@@ -121,5 +122,6 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("string->symbol"), new StringToSymbol());
 
     /* Vectors */
+    put(new SCMSymbol("vector"), new Vector());
   }
 }

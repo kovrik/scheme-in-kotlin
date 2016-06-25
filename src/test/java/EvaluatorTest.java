@@ -343,6 +343,10 @@ public class EvaluatorTest {
   public void testEvalVector() {
     assertEquals(new SCMVector(), eval.eval(tokenizer.parse("#()"), env));
     assertEquals(new SCMVector(1L, 2L, 3L), eval.eval(tokenizer.parse("#(1 2 3 )"), env));
+
+    assertEquals(new SCMVector(), eval.eval(tokenizer.parse("(vector)"), env));
+    assertEquals(new SCMVector(1L, 2L, 3L), eval.eval(tokenizer.parse("(vector 1 2 3)"), env));
+    assertEquals(new SCMVector(1L, 2L, 3L), eval.eval(tokenizer.parse("(vector 1 2 (+ 1 2))"), env));
   }
 
   @Test
