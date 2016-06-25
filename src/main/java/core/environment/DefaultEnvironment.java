@@ -11,6 +11,7 @@ import core.procedures.math.numeric.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.vectors.Vector;
+import core.procedures.vectors.VectorLength;
 import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
@@ -123,5 +124,6 @@ public final class DefaultEnvironment extends Environment {
 
     /* Vectors */
     put(new SCMSymbol("vector"), new Vector());
+    put(new SCMSymbol("vector-length"), new VectorLength());
   }
 }

@@ -350,6 +350,19 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalVectorLength() {
+    assertEquals(0L, eval.eval(tokenizer.parse("(vector-length #())"), env));
+    assertEquals(0L, eval.eval(tokenizer.parse("(vector-length (vector))"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(vector-length (vector 1 2 3))"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(vector-length 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Vector, actual: Long"));
+    }
+  }
+
+  @Test
   public void testEvalProcedure() {
     assertEquals(SCMProcedure.class, eval.eval(tokenizer.parse("(lambda () #t)"), env).getClass());
     assertEquals(TRUE, eval.eval(tokenizer.parse("((lambda () #t))"), env));

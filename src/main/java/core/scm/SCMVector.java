@@ -27,6 +27,10 @@ public class SCMVector {
     vector[index] = value;
   }
 
+  public int length() {
+    return vector.length;
+  }
+
   @Override
   public String toString() {
     if (vector.length == 0) {
