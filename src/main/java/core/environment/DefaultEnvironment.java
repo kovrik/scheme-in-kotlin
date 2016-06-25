@@ -8,6 +8,8 @@ import core.procedures.io.Newline;
 import core.procedures.lists.Length;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
+import core.procedures.symbols.StringToSymbol;
+import core.procedures.symbols.SymbolToString;
 import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
@@ -102,15 +104,11 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("eqv?"),   new Eqv());
     put(new SCMSymbol("equal?"), new Equal());
 
-//    put(new SCMSymbol("string?"), new IsAString());
     put(new SCMSymbol("string=?"), new StringEq());
     put(new SCMSymbol("string-ci=?"), new StringEqCi());
 
-//    put(new SCMSymbol("char?"), new IsAChar());
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
-
-//    put(new SCMSymbol("promise?"), new IsAPromise());
 
     put(new SCMSymbol("force"), new Force());
     put(new SCMSymbol("display"), new Display(System.out));
@@ -118,7 +116,10 @@ public final class DefaultEnvironment extends Environment {
 
     put(new SCMSymbol("length"), new Length());
 
+    /* Symbols */
+    put(new SCMSymbol("symbol->string"), new SymbolToString());
+    put(new SCMSymbol("string->symbol"), new StringToSymbol());
+
     /* Vectors */
-//    put(new SCMSymbol("vector?"), new IsAVector());
   }
 }

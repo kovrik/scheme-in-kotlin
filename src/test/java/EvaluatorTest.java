@@ -990,6 +990,25 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalSymbolStringConversion() {
+
+    assertEquals("test", eval.eval(tokenizer.parse("(symbol->string 'test)"), env));
+    assertEquals("test", eval.eval(tokenizer.parse("(symbol->string (string->symbol (symbol->string 'test)))"), env));
+    assertEquals(new SCMSymbol("test"), eval.eval(tokenizer.parse("(string->symbol (symbol->string 'test))"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(symbol->string 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: Long"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(string->symbol 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: Long"));
+    }
+  }
+
+  @Test
   public void testEvalNamedLet() {
 
     assertEquals(120L, eval.eval(tokenizer.parse("(let fact ((n 5) (acc 1)) (if (= n 0) acc (fact (- n 1) (* acc n))))"), env));
