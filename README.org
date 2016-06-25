@@ -129,9 +129,9 @@ CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
 ** TODO Standard procedures [4/17]
-*** TODO Construction [2/4]
+*** TODO Construction [3/4]
 **** DONE vector
-**** TODO make-vector
+**** DONE make-vector
 **** TODO make-string
 **** DONE list
 CLOSED: [2016-06-02 Thu 18:47]
@@ -307,8 +307,8 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO integer->char
 **** TODO char-upcase
 **** TODO char-downcase
-*** TODO Vectors [3/9]
-**** TODO make-vector
+*** TODO Vectors [4/9]
+**** DONE make-vector
 **** DONE vector
 **** DONE vector?
 CLOSED: [2016-05-15 Sun 22:19]

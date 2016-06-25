@@ -11,6 +11,15 @@ public class SCMVector {
     this.vector = new Object[0];
   }
 
+  public SCMVector(int size) {
+    this.vector = new Object[size];
+  }
+
+  public SCMVector(int size, Object init) {
+    this.vector = new Object[size];
+    Arrays.fill(vector, init);
+  }
+
   public SCMVector(Object... elements) {
     this.vector = elements;
   }
@@ -40,7 +49,13 @@ public class SCMVector {
     sb.append("#(");
     for (int i = 0; i < vector.length; i++) {
       Object e = vector[i];
-      sb.append(e == this ? "(this Vector)" : e);
+      if (e == this) {
+        sb.append("(this Vector)");
+      } else if (e instanceof String) {
+        sb.append('"').append(e).append('"');
+      } else {
+        sb.append(e);
+      }
       if (i == (vector.length - 1)) {
         return sb.append(')').toString();
       }

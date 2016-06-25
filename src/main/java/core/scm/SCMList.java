@@ -36,7 +36,13 @@ public class SCMList<E> extends LinkedList<E> {
     sb.append('(');
     for (;;) {
       E e = it.next();
-      sb.append(e == this ? "(this List)" : e);
+      if (e == this) {
+        sb.append("(this List)");
+      } else if (e instanceof String) {
+        sb.append('"').append(e).append('"');
+      } else {
+        sb.append(e);
+      }
       if (!it.hasNext()) {
         return sb.append(')').toString();
       }

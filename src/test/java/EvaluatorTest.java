@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
+import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -350,6 +351,24 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalMakeVector() {
+    assertEquals(new SCMVector(1L, 1L, 1L), eval.eval(tokenizer.parse("(make-vector 3 1)"), env));
+    assertEquals(new SCMVector(), eval.eval(tokenizer.parse("(make-vector 0)"), env));
+    assertEquals(new SCMVector(UNSPECIFIED, UNSPECIFIED, UNSPECIFIED), eval.eval(tokenizer.parse("(make-vector 3)"), env));
+    try {
+      eval.eval(tokenizer.parse("(make-vector 1 2 3)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong number of arguments to `make-vector'"));
+    }
+
+    try {
+      eval.eval(tokenizer.parse("(make-vector \"test\")"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Integer, actual: String"));
+    }
+  }
+
+  @Test
   public void testEvalVectorLength() {
     assertEquals(0L, eval.eval(tokenizer.parse("(vector-length #())"), env));
     assertEquals(0L, eval.eval(tokenizer.parse("(vector-length (vector))"), env));
@@ -378,7 +397,7 @@ public class EvaluatorTest {
   public void testEvalDefine() {
     eval.eval(tokenizer.parse("(define a 5)"), env);
     assertEquals(5L, eval.eval(tokenizer.parse("a"), env));
-    assertEquals(SCMSpecialForm.UNSPECIFIED, eval.eval(tokenizer.parse("(define b 7)"), env));
+    assertEquals(UNSPECIFIED, eval.eval(tokenizer.parse("(define b 7)"), env));
 
     eval.eval(tokenizer.parse("(define edl (lambda (n) (+ n 1)))"), env);
     assertEquals(2L, eval.eval(tokenizer.parse("(edl 1)"), env));
