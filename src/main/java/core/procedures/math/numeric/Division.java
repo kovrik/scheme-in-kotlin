@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Division extends AFn implements INumericalOperation {
 
   public Number zero() {
@@ -22,7 +24,11 @@ public class Division extends AFn implements INumericalOperation {
 
       return (Long)numenator / (Long)denominator;
     }
-    return numenator.doubleValue() / denominator.doubleValue();
+    double result = numenator.doubleValue() / denominator.doubleValue();
+    if (Double.isNaN(result) || Double.isInfinite(result)) {
+      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), BigDecimal.ROUND_HALF_UP);
+    }
+    return result;
   }
 
   @Override

@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Subtraction extends AFn implements INumericalOperation {
 
   public Number zero() {
@@ -34,7 +36,11 @@ public class Subtraction extends AFn implements INumericalOperation {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first - (Long)second;
     }
-    return first.doubleValue() - second.doubleValue();
+    double result = first.doubleValue() - second.doubleValue();
+    if (Double.isNaN(result) || Double.isInfinite(result)) {
+      return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+    }
+    return result;
   }
 
   @Override

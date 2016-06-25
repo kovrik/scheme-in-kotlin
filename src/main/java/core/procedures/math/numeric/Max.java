@@ -2,6 +2,8 @@ package core.procedures.math.numeric;
 
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Max extends AFn implements INumericalOperation {
 
   public Number zero() {
@@ -15,6 +17,15 @@ public class Max extends AFn implements INumericalOperation {
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);
+    }
+    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
+      return ((BigDecimal)first).max((BigDecimal) second);
+    }
+    if (first instanceof BigDecimal) {
+      return ((BigDecimal)first).max(new BigDecimal(second.toString()));
+    }
+    if (second instanceof BigDecimal) {
+      return ((BigDecimal)second).max(new BigDecimal(first.toString()));
     }
     return Math.max(first.doubleValue(), second.doubleValue());
   }

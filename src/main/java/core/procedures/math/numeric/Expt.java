@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Expt extends AFn implements INumericalOperation {
 
   @Override
@@ -24,7 +26,11 @@ public class Expt extends AFn implements INumericalOperation {
   }
 
   public Number apply(Number first, Number second) {
-    return Math.pow(first.doubleValue(), second.doubleValue());
+    double result = Math.pow(first.doubleValue(), second.doubleValue());
+    if (Double.isInfinite(result)) {
+      return new BigDecimal(first.longValue()).pow(second.intValue());
+    }
+    return result;
   }
 
   public Object apply(Object first, Object second) {

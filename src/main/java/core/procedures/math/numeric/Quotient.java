@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Quotient extends AFn implements INumericalOperation {
 
   @Override
@@ -24,16 +26,23 @@ public class Quotient extends AFn implements INumericalOperation {
   }
 
   public Number apply(Number first, Number second) {
+
+    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
+      return ((BigDecimal)first).divideToIntegralValue((BigDecimal)second);
+    }
+    if (first instanceof BigDecimal) {
+      return ((BigDecimal)first).divideToIntegralValue(new BigDecimal(second.toString()));
+    }
+    if (second instanceof BigDecimal) {
+      return ((BigDecimal)second).divideToIntegralValue(new BigDecimal(first.toString()));
+    }
+
     if ((first instanceof Double) || (second instanceof Double)) {
       // check if they are integral
-      if (!((first.doubleValue() == Math.floor(first.doubleValue())) &&
-            !Double.isInfinite(first.doubleValue()))) {
-
+      if (first.doubleValue() != Math.floor(first.doubleValue())) {
         throw new IllegalArgumentException("Error: (quotient) bad argument type - not an integer: " + first);
       }
-      if (!((second.doubleValue() == Math.floor(second.doubleValue())) &&
-          !Double.isInfinite(second.doubleValue()))) {
-
+      if (second.doubleValue() != Math.floor(second.doubleValue())) {
         throw new IllegalArgumentException("Error: (quotient) bad argument type - not an integer: " + second);
       }
       return (double)(first.longValue() / second.longValue());

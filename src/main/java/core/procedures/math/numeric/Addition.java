@@ -2,6 +2,8 @@ package core.procedures.math.numeric;
 
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Addition extends AFn implements INumericalOperation {
 
   public Number zero() {
@@ -17,7 +19,11 @@ public class Addition extends AFn implements INumericalOperation {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first + (Long)second;
     }
-    return first.doubleValue() + second.doubleValue();
+    double result = first.doubleValue() + second.doubleValue();
+    if (Double.isNaN(result) || Double.isInfinite(result)) {
+      return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
+    }
+    return result;
   }
 
   @Override

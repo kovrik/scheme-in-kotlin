@@ -4,6 +4,8 @@ import core.procedures.AFn;
 import core.procedures.math.IOperation;
 import core.scm.SCMBoolean;
 
+import java.math.BigDecimal;
+
 public class NumericalComparison extends AFn implements IOperation {
 
   public enum Type {
@@ -59,6 +61,9 @@ public class NumericalComparison extends AFn implements IOperation {
     if ((first instanceof Double) || (second instanceof Double)) {
       f = f.doubleValue();
       s = s.doubleValue();
+    } else if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      f = new BigDecimal(f.toString());
+      s = new BigDecimal(s.toString());
     }
 
     switch (type) {

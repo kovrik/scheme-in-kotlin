@@ -2,6 +2,8 @@ package core.procedures.math.numeric;
 
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Min extends AFn implements INumericalOperation {
 
   public Number zero() {
@@ -15,6 +17,15 @@ public class Min extends AFn implements INumericalOperation {
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.min((Long)first, (Long)second);
+    }
+    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
+      return ((BigDecimal)first).min((BigDecimal) second);
+    }
+    if (first instanceof BigDecimal) {
+      return ((BigDecimal)first).min(new BigDecimal(second.toString()));
+    }
+    if (second instanceof BigDecimal) {
+      return ((BigDecimal)second).min(new BigDecimal(first.toString()));
     }
     return Math.min(first.doubleValue(), second.doubleValue());
   }

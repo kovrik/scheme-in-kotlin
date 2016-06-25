@@ -10,6 +10,7 @@ import core.procedures.math.numeric.*;
 import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,12 @@ public final class DefaultEnvironment extends Environment {
     procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
     procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
-    procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) (string=? \"%s\" (class-of o))))", Long.class.getName(), Double.class.getName()));
+    procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
+                                                                     "(string=? \"%s\" (class-of o))" +
+                                                                     "(string=? \"%s\" (class-of o))))",
+                                                                     Long.class.getName(),
+                                                                     Double.class.getName(),
+                                                                     BigDecimal.class.getName()));
 
 //    procs.put("integer?",   String.format("(define (integer?   o) (string=? \"%s\" (class-of o)))", Long.class.getName()));
     procs.put("integer?",   "(define (integer? x) (= x (round x)))");

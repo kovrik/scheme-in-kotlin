@@ -6,6 +6,7 @@ import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -178,6 +179,9 @@ public class Tokenizer implements IParser {
         return new SCMSymbol(number);
       }
       Number result = NumberFormat.getInstance().parse(number);
+      if ((result instanceof Double) && (Double.isInfinite((Double)result)))  {
+        return new BigDecimal(number);
+      }
       if (number.indexOf('.') > -1) {
         return result.doubleValue();
       }

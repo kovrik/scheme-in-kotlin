@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Truncate extends AFn implements INumericalOperation {
 
   @Override
@@ -16,6 +18,13 @@ public class Truncate extends AFn implements INumericalOperation {
           return Math.ceil(arg);
         } else {
           return Math.floor(arg);
+        }
+      } else if (args[0] instanceof BigDecimal) {
+        BigDecimal arg = (BigDecimal)args[0];
+        if (arg.compareTo(BigDecimal.ZERO) < 0) {
+          return arg.setScale(0, BigDecimal.ROUND_UP);
+        } else {
+          return arg.setScale(0, BigDecimal.ROUND_DOWN);
         }
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + args[0].getClass().getSimpleName());

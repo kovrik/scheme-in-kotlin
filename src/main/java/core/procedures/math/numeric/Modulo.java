@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Modulo extends AFn implements INumericalOperation {
 
   // TODO move out
@@ -26,17 +28,34 @@ public class Modulo extends AFn implements INumericalOperation {
     throw new ArityException(0, 2, "modulo");
   }
 
+  public BigDecimal apply(BigDecimal first, BigDecimal second) {
+    BigDecimal remainder = first.remainder(second);
+    if (remainder.compareTo(BigDecimal.ZERO) == 0) {
+      return remainder;
+    }
+    if ((first.compareTo(BigDecimal.ZERO) > 0) == (second.compareTo(BigDecimal.ZERO) > 0)) {
+      return remainder;
+    }
+    return second.add(remainder);
+  }
+
   public Number apply(Number first, Number second) {
 
-    // check if they are integral
-    if (!((first.doubleValue() == Math.floor(first.doubleValue())) &&
-        !Double.isInfinite(first.doubleValue()))) {
+    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
+      return apply((BigDecimal) first, (BigDecimal)second);
+    }
+    if (first instanceof BigDecimal) {
+      return apply((BigDecimal) first, new BigDecimal(second.toString()));
+    }
+    if (second instanceof BigDecimal) {
+      return apply((BigDecimal) second, new BigDecimal(first.toString()));
+    }
 
+    // check if they are integral
+    if (first.doubleValue() != Math.floor(first.doubleValue())) {
       throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + first);
     }
-    if (!((second.doubleValue() == Math.floor(second.doubleValue())) &&
-        !Double.isInfinite(second.doubleValue()))) {
-
+    if (second.doubleValue() != Math.floor(second.doubleValue())) {
       throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + second);
     }
 

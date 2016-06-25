@@ -3,6 +3,8 @@ package core.procedures.math.numeric;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 
+import java.math.BigDecimal;
+
 public class Sqrt extends AFn implements INumericalOperation {
 
   @Override
@@ -12,6 +14,8 @@ public class Sqrt extends AFn implements INumericalOperation {
         return Math.sqrt((Long)args[0]);
       } else if (args[0] instanceof Double) {
         return Math.sqrt((Double) args[0]);
+      } else if (args[0] instanceof BigDecimal) {
+        return Double.POSITIVE_INFINITY;
       }
       throw new IllegalArgumentException("Wrong type argument to `sqrt`");
     }
