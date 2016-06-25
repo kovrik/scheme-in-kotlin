@@ -9,22 +9,20 @@ import core.scm.SCMSymbol;
 import java.io.PrintStream;
 import java.util.List;
 
-public class Display extends SCMProcedure {
+public class Newline extends SCMProcedure {
 
-  private static final SCMSymbol value = new SCMSymbol("value");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(value);
+  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>();
 
   private PrintStream printStream;
 
-  public Display(PrintStream printStream) {
-    super("display", params, value);
+  public Newline(PrintStream printStream) {
+    super("newline", params, null);
     this.printStream = printStream;
   }
 
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object result = super.apply(evaluator, env);
-    printStream.print(result);
+    printStream.println();
     return null;
   }
 }

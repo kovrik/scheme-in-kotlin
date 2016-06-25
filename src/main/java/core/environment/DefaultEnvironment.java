@@ -4,6 +4,7 @@ import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
 import core.procedures.io.Display;
+import core.procedures.io.Newline;
 import core.procedures.lists.Length;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
@@ -39,7 +40,6 @@ public final class DefaultEnvironment extends Environment {
     procs.put("list",       "(define (list . elements) elements)");
     procs.put("null?",      "(define (null?  l) (eq? l '()))");
     procs.put("empty?",     "(define empty? null?)");
-
 
     // Miscellaneous predicates
     procs.put("zero?",      "(define (zero? n) (= n 0))");
@@ -114,6 +114,7 @@ public final class DefaultEnvironment extends Environment {
 
     put(new SCMSymbol("force"), new Force());
     put(new SCMSymbol("display"), new Display(System.out));
+    put(new SCMSymbol("newline"), new Newline(System.out));
 
     put(new SCMSymbol("length"), new Length());
 

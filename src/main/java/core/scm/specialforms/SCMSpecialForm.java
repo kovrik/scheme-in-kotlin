@@ -75,6 +75,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object test = expression.get(1);
       Object consequence = expression.get(2);
+      if (expression.size() < 3) {
+        throw new IllegalArgumentException("if: Missing an `else` statement");
+      }
       Object alternative = expression.get(3);
       if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
         return evaluator.eval(consequence, env);

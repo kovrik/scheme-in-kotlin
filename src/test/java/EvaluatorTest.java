@@ -7,6 +7,7 @@ import core.parser.IParser;
 import core.parser.Tokenizer;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.io.Display;
+import core.procedures.io.Newline;
 import core.scm.SCMList;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
@@ -928,23 +929,64 @@ public class EvaluatorTest {
   @Test
   public void testIntegerRoots() {
     String code = "(define (root a b)" +
-                  "(define // quotient)" +
-                  "(define (y a a1 b c d e)" +
-                  "(if (or (= c d) (= c e))" +
-                  "(min d e)" +
-                  "(y a a1 b d e (// (+ (* a1 e)" +
-                  "(// b (expt e a1))) a))))" +
-                  "(if (< b 2)" +
-                  "b" +
-                  "(let* ((a1 (- a 1))" +
-                         "(c 1)" +
-                         "(d (// (+ (* a1 c) (// b (expt c a1))) a))" +
-                         "(e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-                           "(y a a1 b c d e))))";
+                    "(define // quotient)" +
+                    "(define (y a a1 b c d e)" +
+                    "(if (or (= c d) (= c e))" +
+                    "(min d e)" +
+                    "(y a a1 b d e (// (+ (* a1 e)" +
+                    "(// b (expt e a1))) a))))" +
+                    "(if (< b 2)" +
+                    "b" +
+                    "(let* ((a1 (- a 1))" +
+                           "(c 1)" +
+                           "(d (// (+ (* a1 c) (// b (expt c a1))) a))" +
+                           "(e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+                             "(y a a1 b c d e))))";
 
-    eval.eval(tokenizer.parse(code), env);
-    assertEquals(2.0, eval.eval(tokenizer.parse("(root 3 8)"), env));
-//    assertEquals(2.0, eval.eval(tokenizer.parse("(root 3 (* 2 (expt 1000 2000)))"), env));
+    IEnvironment tempEnv = new DefaultEnvironment();
+    eval.eval(tokenizer.parse(code), tempEnv);
+    assertEquals(2.0, eval.eval(tokenizer.parse("(root 3 8)"), tempEnv));
+    // FIXME
+//    assertEquals(2.0, eval.eval(tokenizer.parse("(root 3 (* 2 (expt 1000 2000)))"), tempEnv));
+  }
+
+  @Test
+  public void testEvalHanoi() {
+
+    PrintStream old = System.out;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(baos));
+
+    IEnvironment tempEnv = new DefaultEnvironment();
+    /* Eval lib procedures */
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
+      tempEnv.put(entry.getKey(), eval.eval(tokenizer.parse(entry.getValue()), tempEnv));
+    }
+    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+    tempEnv.put(new SCMSymbol("newline"), new Newline(System.out));
+
+    String hanoi = "(define (hanoi n a b c) (if (> n 0) (begin (hanoi (- n 1) a c b) (display \"Move disk from pole \") (display a) (display \" to pole \") (display b) (newline) (hanoi (- n 1) c b a)) #t))";
+    eval.eval(tokenizer.parse(hanoi), tempEnv);
+    eval.eval(tokenizer.parse("(hanoi 4 1 2 3)"), tempEnv);
+
+    String solution = "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 2 to pole 1\n" +
+                      "Move disk from pole 2 to pole 3\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 3 to pole 1\n" +
+                      "Move disk from pole 2 to pole 1\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2";
+
+    assertEquals(solution, baos.toString().trim());
+    System.setOut(old);
   }
 
   @Test
