@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -1214,6 +1215,31 @@ public class EvaluatorTest {
 
     assertEquals(solution, baos.toString().trim());
     System.setOut(old);
+  }
+
+  @Test
+  public void testDayOfWeek() {
+
+    String dayOfWeek = "(define (day-of-week year month day)" +
+                       "  (if (< month 3)" +
+                       "    (begin" +
+                       "      (set! month (+ month 12))" +
+                       "      (set! year (- year 1)))" +
+                       "  #f)" +
+                       "(+ 1 " +
+                       "   (remainder (+ 5 day (quotient (* (+ 1 month) 13) 5) " +
+                       "                 year (quotient year 4) (* (quotient year 100) 6) (quotient year 400)) " +
+                       "              7)))";
+    eval.eval(tokenizer.parse(dayOfWeek), env);
+    assertEquals(3L, eval.eval(tokenizer.parse("(day-of-week 2016 6 29)"), env));
+
+    // test Today
+    Integer dw = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+    int y = Calendar.getInstance().get(Calendar.YEAR);
+    int m = Calendar.getInstance().get(Calendar.MONTH) + 1;
+    int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+    String todaySexp = "(day-of-week %s %s %s)";
+    assertEquals(dw.longValue(), eval.eval(tokenizer.parse(String.format(todaySexp, y, m, d)), env));
   }
 
   @Test
