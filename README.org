@@ -151,9 +151,9 @@ CLOSED: [2016-05-11 Wed 17:51]
 CLOSED: [2016-05-11 Wed 17:55]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:55]
-*** TODO Type conversion [2/10]
-**** TODO vector->list
-**** TODO list->vector
+*** TODO Type conversion [4/10]
+**** DONE vector->list
+**** DONE list->vector
 **** TODO number->string
 **** TODO string->number
 **** DONE symbol->string
@@ -323,7 +323,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [5/23]
+*** TODO Pairs and lists [7/23]
 **** TODO pair?
 **** TODO cons
 **** TODO car
@@ -348,8 +348,8 @@ CLOSED: [2016-06-02 Thu 21:54]
 **** TODO assq
 **** TODO assv
 **** TODO assoc
-**** TODO list->vector
-**** TODO vector->list
+**** DONE list->vector
+**** DONE vector->list
 **** TODO list->string
 **** TODO string->list
 *** TODO Identity predicates [7/9]
