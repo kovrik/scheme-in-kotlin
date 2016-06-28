@@ -364,7 +364,7 @@ public class EvaluatorTest {
     try {
       eval.eval(tokenizer.parse("(make-vector \"test\")"), env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Integer, actual: String"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
     }
   }
 
@@ -377,7 +377,41 @@ public class EvaluatorTest {
     try {
       eval.eval(tokenizer.parse("(vector-length 1)"), env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Vector, actual: Long"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: Long"));
+    }
+  }
+
+  @Test
+  public void testEvalVectorRef() {
+    assertEquals(1L, eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 0)"), env));
+    assertEquals(2L, eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 1)"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 2)"), env));
+    assertEquals("test", eval.eval(tokenizer.parse("(vector-ref (vector \"test\" 2 3) 0)"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) -1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: -1"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 3)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 3"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(vector-ref (vector) 0)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 0"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(vector-ref '(1 2 3) 0)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMList"));
+    }
+    try {
+      eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 0.5)"), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: Double"));
     }
   }
 

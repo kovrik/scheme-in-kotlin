@@ -13,6 +13,7 @@ import core.procedures.symbols.SymbolToString;
 import core.procedures.vectors.MakeVector;
 import core.procedures.vectors.Vector;
 import core.procedures.vectors.VectorLength;
+import core.procedures.vectors.VectorRef;
 import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
@@ -127,5 +128,6 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("make-vector"), new MakeVector());
     put(new SCMSymbol("vector"), new Vector());
     put(new SCMSymbol("vector-length"), new VectorLength());
+    put(new SCMSymbol("vector-ref"), new VectorRef());
   }
 }
