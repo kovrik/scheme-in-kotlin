@@ -26,6 +26,7 @@ import static core.scm.SCMBoolean.TRUE;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class EvaluatorTest {
 
@@ -72,16 +73,19 @@ public class EvaluatorTest {
     // abs
     try {
       eval.eval(tokenizer.parse("(abs)"), env);
+      fail();
     } catch (ArityException e) {
       assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 0, expected: 1) passed to: abs"));
     }
     try {
       eval.eval(tokenizer.parse("(abs 1 2 3)"), env);
+      fail();
     } catch (ArityException e) {
       assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 3, expected: 1) passed to: abs"));
     }
     try {
       eval.eval(tokenizer.parse("(abs \"not-a-number\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
     }
@@ -107,13 +111,15 @@ public class EvaluatorTest {
     assertEquals(-1d, eval.eval(tokenizer.parse("(quotient -5 5.)"), env));
     try {
       eval.eval(tokenizer.parse("(quotient -10 0.0001)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Error: (quotient) bad argument type - not an integer: 1.0E-4", e.getMessage());
     }
     try {
       eval.eval(tokenizer.parse("(quotient -10 0.0)"), env);
+      fail();
     } catch (ArithmeticException e) {
-      assertEquals("/ by zero", e.getMessage());
+      assertEquals("Error: (quotient) undefined for 0", e.getMessage());
     }
 
     // remainder
@@ -127,13 +133,15 @@ public class EvaluatorTest {
     assertEquals(0d, eval.eval(tokenizer.parse("(remainder -10 2.0)"), env));
     try {
       eval.eval(tokenizer.parse("(remainder -10 0.0001)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Error: (remainder) bad argument type - not an integer: 1.0E-4", e.getMessage());
     }
     try {
       eval.eval(tokenizer.parse("(remainder -10 0.0)"), env);
+      fail();
     } catch (ArithmeticException e) {
-      assertEquals("/ by zero", e.getMessage());
+      assertEquals("Error: (remainder) undefined for 0", e.getMessage());
     }
 
     // modulo
@@ -143,13 +151,15 @@ public class EvaluatorTest {
     assertEquals(-1L, eval.eval(tokenizer.parse("(modulo -13 -4)"), env));
     try {
       eval.eval(tokenizer.parse("(modulo -10 0.0001)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Error: (modulo) bad argument type - not an integer: 1.0E-4", e.getMessage());
     }
     try {
       eval.eval(tokenizer.parse("(modulo -10 0.0)"), env);
+      fail();
     } catch (ArithmeticException e) {
-      assertEquals("/ by zero", e.getMessage());
+      assertEquals("Error: (modulo) undefined for 0", e.getMessage());
     }
     assertEquals(3L,  eval.eval(tokenizer.parse("(modulo -13 4)"), env));
     assertEquals(-3L, eval.eval(tokenizer.parse("(modulo 13 -4)"), env));
@@ -357,12 +367,14 @@ public class EvaluatorTest {
     assertEquals(new SCMVector(UNSPECIFIED, UNSPECIFIED, UNSPECIFIED), eval.eval(tokenizer.parse("(make-vector 3)"), env));
     try {
       eval.eval(tokenizer.parse("(make-vector 1 2 3)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong number of arguments to `make-vector'"));
     }
 
     try {
       eval.eval(tokenizer.parse("(make-vector \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
     }
@@ -376,6 +388,7 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(vector-length 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: Long"));
     }
@@ -390,26 +403,86 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) -1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: -1"));
     }
     try {
       eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 3)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: 3"));
     }
     try {
       eval.eval(tokenizer.parse("(vector-ref (vector) 0)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: 0"));
     }
     try {
       eval.eval(tokenizer.parse("(vector-ref '(1 2 3) 0)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMList"));
     }
     try {
       eval.eval(tokenizer.parse("(vector-ref (vector 1 2 3) 0.5)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: Double"));
+    }
+  }
+
+  @Test
+  public void testEvalVectorSet() {
+
+    String sexp = "(begin (define v (vector 1 2 3))" +
+                  "       (vector-set! v 0 99)" +
+                  "       (vector-ref  v 0))";
+    assertEquals(99L, eval.eval(tokenizer.parse(sexp), env));
+
+    sexp = "(begin (define v (vector 1 2 3))" +
+           "       (vector-set! v 2 \"test\")" +
+           "       (vector-ref  v 2))";
+    assertEquals("test", eval.eval(tokenizer.parse(sexp), env));
+
+    sexp = "(begin (define v (vector 1 2 3))" +
+           "       (vector-set! v -1 \"test\"))";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: -1"));
+    }
+
+    sexp = "(begin (define v (vector 1 2 3))" +
+           "       (vector-set! v 3 \"test\"))";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 3"));
+    }
+
+    sexp = "(begin (define v (vector))" +
+           "       (vector-set! v 0 \"test\"))";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 0"));
+    }
+
+    sexp = "(begin (define v '(1 2 3))" +
+           "       (vector-set! v 0 \"test\"))";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMList"));
+    }
+
+    sexp = "(begin (define v (vector 1 2))" +
+           "       (vector-set! v 0.5 \"test\"))";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: Double"));
     }
@@ -451,6 +524,7 @@ public class EvaluatorTest {
     assertEquals(45L, eval.eval(tokenizer.parse("(let ((x 5))(define foo (lambda (y) (bar x y)))(define bar (lambda (a b) (+ (* a b) a)))(foo (+ x 3)))"), env));
     try {
       eval.eval(tokenizer.parse("(foo 5)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Unbound variable: foo"));
     }
@@ -483,6 +557,7 @@ public class EvaluatorTest {
     String f1 = "(lambda ())";
     try {
       eval.eval(tokenizer.parse(f1), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("bad lambda in form: " + f1));
     }
@@ -519,6 +594,7 @@ public class EvaluatorTest {
     assertEquals(19L, eval.eval(tokenizer.parse("(begin (define a 0) (set! a 9) (+ a 10))"), env));
     try {
       eval.eval(tokenizer.parse("(begin (set! b 99) b)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Unbound variable: b", e.getMessage());
     }
@@ -530,16 +606,19 @@ public class EvaluatorTest {
     assertEquals(555L, eval.eval(tokenizer.parse("(let ((c 123) (b 432)) (+ c b))"), env));
     try {
       eval.eval(tokenizer.parse("(let ((c 123) (c (+ 400 30 2))) (+ c b))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("let: duplicate bound variable"));
     }
     try {
       eval.eval(tokenizer.parse("(let ((c 123))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("let: bad let in form:"));
     }
     try {
       eval.eval(tokenizer.parse("(let ((z 1) (b (+ z 1))) b)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Unbound variable: z"));
     }
@@ -550,6 +629,7 @@ public class EvaluatorTest {
     assertEquals(2L, eval.eval(tokenizer.parse("(let* ((z 1) (b (+ z 1))) b)"), env));
     try {
       eval.eval(tokenizer.parse("(let* ((c 123)))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue("Test bad let* form", e.getMessage().contains("let*: bad let* in form:"));
     }
@@ -568,24 +648,28 @@ public class EvaluatorTest {
     // "Source expression failed to match any pattern in form (cond)"
     try {
       eval.eval(tokenizer.parse("(cond)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
     }
     // "Invalid clause in subform "
     try {
       eval.eval(tokenizer.parse("(cond 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
     }
     // "cond: else must be the last clause in subform"
     try {
       eval.eval(tokenizer.parse("(cond (else 1) (#t 5))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("cond: else must be the last clause in subform"));
     }
     // "Source expression failed to match any pattern in form (cond)"
     try {
       eval.eval(tokenizer.parse("(cond)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
     }
@@ -601,16 +685,19 @@ public class EvaluatorTest {
   public void testEvalCase() {
     try {
       eval.eval(tokenizer.parse("(case)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (case)"));
     }
     try {
       eval.eval(tokenizer.parse("(case 1 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
     }
     try {
       eval.eval(tokenizer.parse("(case (* 2 3) (else 'prime) ((1 4 6 8 9) 'composite))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("case: else must be the last clause in subform"));
     }
@@ -648,6 +735,7 @@ public class EvaluatorTest {
   public void testEvalBegin() {
     try {
       eval.eval(tokenizer.parse("(begin (set! x 5) (+ x 1))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Unbound variable: x", e.getMessage());
     }
@@ -667,6 +755,7 @@ public class EvaluatorTest {
     // error
     try {
       eval.eval(tokenizer.parse("(error \"boom\")"), env).getClass();
+      fail();
     } catch (SCMError e) {
       assertTrue(e.getMessage().equals("ERROR:boom"));
     }
@@ -708,6 +797,7 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(zero? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -723,6 +813,7 @@ public class EvaluatorTest {
     assertEquals(TRUE,  eval.eval(tokenizer.parse("(negative? -5)"), env));
     try {
       eval.eval(tokenizer.parse("(negative? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -738,6 +829,7 @@ public class EvaluatorTest {
     assertEquals(FALSE, eval.eval(tokenizer.parse("(positive? -5)"), env));
     try {
       eval.eval(tokenizer.parse("(positive? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -755,6 +847,7 @@ public class EvaluatorTest {
     assertEquals(FALSE, eval.eval(tokenizer.parse("(even? -5)"), env));
     try {
       eval.eval(tokenizer.parse("(even? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
     }
@@ -773,6 +866,7 @@ public class EvaluatorTest {
     assertEquals(TRUE,  eval.eval(tokenizer.parse("(odd? -5)"), env));
     try {
       eval.eval(tokenizer.parse("(odd? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
     }
@@ -796,6 +890,7 @@ public class EvaluatorTest {
     assertEquals(2.0,  eval.eval(tokenizer.parse("(round 2.5)"),  env));
     try {
       eval.eval(tokenizer.parse("(round \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -812,6 +907,7 @@ public class EvaluatorTest {
     assertEquals(-2.0, eval.eval(tokenizer.parse("(floor -1.2)"), env));
     try {
       eval.eval(tokenizer.parse("(floor \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -828,6 +924,7 @@ public class EvaluatorTest {
     assertEquals(-1.0, eval.eval(tokenizer.parse("(ceiling -1.2)"), env));
     try {
       eval.eval(tokenizer.parse("(ceiling \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -845,6 +942,7 @@ public class EvaluatorTest {
     assertEquals(-1.0, eval.eval(tokenizer.parse("(truncate -1.2)"), env));
     try {
       eval.eval(tokenizer.parse("(truncate \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -862,12 +960,14 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(max \"test\" 1 2 3)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
 
     try {
       eval.eval(tokenizer.parse("(max 0 \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -885,12 +985,14 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(min \"test\" 1 2 3)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
 
     try {
       eval.eval(tokenizer.parse("(min 0 \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -909,11 +1011,13 @@ public class EvaluatorTest {
     assertEquals(13.489468760533386, eval.eval(tokenizer.parse("(expt 2.2 3.3)"), env));
     try {
       eval.eval(tokenizer.parse("(expt \"test\" 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
     try {
       eval.eval(tokenizer.parse("(expt 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong number of arguments (actual: 1, expected: 2) passed to: expt", e.getMessage());
     }
@@ -991,6 +1095,7 @@ public class EvaluatorTest {
     assertEquals(FALSE, eval.eval(tokenizer.parse("(integer? .123)"), env));
     try {
       eval.eval(tokenizer.parse("(integer? \"test\")"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
@@ -1068,11 +1173,13 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(symbol->string 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: Long"));
     }
     try {
       eval.eval(tokenizer.parse("(string->symbol 1)"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: Long"));
     }
@@ -1086,6 +1193,7 @@ public class EvaluatorTest {
 
     try {
       eval.eval(tokenizer.parse("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))"), env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("let: duplicate bound variable: n"));
     }

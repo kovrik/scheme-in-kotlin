@@ -25,16 +25,23 @@ public class Quotient extends AFn implements INumericalOperation {
     throw new ArityException(0, 2, "quotient");
   }
 
+  public Number apply(BigDecimal first, BigDecimal second) {
+    if (second.compareTo(BigDecimal.ZERO) == 0) {
+      throw new ArithmeticException("Error: (quotient) undefined for 0");
+    }
+    return first.divideToIntegralValue(second);
+  }
+
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return ((BigDecimal)first).divideToIntegralValue((BigDecimal)second);
+      return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).divideToIntegralValue(new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).divideToIntegralValue(new BigDecimal(first.toString()));
+      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {
@@ -45,7 +52,13 @@ public class Quotient extends AFn implements INumericalOperation {
       if (second.doubleValue() != Math.floor(second.doubleValue())) {
         throw new IllegalArgumentException("Error: (quotient) bad argument type - not an integer: " + second);
       }
+      if (second.intValue() == 0) {
+        throw new ArithmeticException("Error: (quotient) undefined for 0");
+      }
       return (double)(first.longValue() / second.longValue());
+    }
+    if (second.intValue() == 0) {
+      throw new ArithmeticException("Error: (quotient) undefined for 0");
     }
     return first.longValue() / second.longValue();
   }

@@ -29,6 +29,9 @@ public class Modulo extends AFn implements INumericalOperation {
   }
 
   public BigDecimal apply(BigDecimal first, BigDecimal second) {
+    if (second.compareTo(BigDecimal.ZERO) == 0) {
+      throw new ArithmeticException("Error: (modulo) undefined for 0");
+    }
     BigDecimal remainder = first.remainder(second);
     if (remainder.compareTo(BigDecimal.ZERO) == 0) {
       return remainder;
@@ -57,6 +60,9 @@ public class Modulo extends AFn implements INumericalOperation {
     }
     if (second.doubleValue() != Math.floor(second.doubleValue())) {
       throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + second);
+    }
+    if (second.intValue() == 0) {
+      throw new ArithmeticException("Error: (modulo) undefined for 0");
     }
 
     Number m = rem.apply(first, second);

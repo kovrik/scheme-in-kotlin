@@ -307,14 +307,14 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO integer->char
 **** TODO char-upcase
 **** TODO char-downcase
-*** TODO Vectors [4/9]
+*** TODO Vectors [6/9]
 **** DONE make-vector
 **** DONE vector
 **** DONE vector?
 CLOSED: [2016-05-15 Sun 22:19]
 **** DONE vector-length
-**** TODO vector-ref
-**** TODO vector-set!
+**** DONE vector-ref
+**** DONE vector-set!
 **** TODO vector->list
 **** TODO list->vector
 **** TODO vector-fill!

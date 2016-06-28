@@ -25,16 +25,23 @@ public class Remainder extends AFn implements INumericalOperation {
     throw new ArityException(0, 2, "remainder");
   }
 
+  public Number apply(BigDecimal first, BigDecimal second) {
+    if (second.compareTo(BigDecimal.ZERO) == 0) {
+      throw new ArithmeticException("Error: (remainder) undefined for 0");
+    }
+    return first.remainder(second);
+  }
+
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return ((BigDecimal)first).remainder((BigDecimal)second);
+      return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).remainder(new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).remainder(new BigDecimal(first.toString()));
+      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {
@@ -45,6 +52,9 @@ public class Remainder extends AFn implements INumericalOperation {
       if (second.doubleValue() != Math.floor(second.doubleValue())) {
         throw new IllegalArgumentException("Error: (remainder) bad argument type - not an integer: " + second);
       }
+      if (second.intValue() == 0) {
+        throw new ArithmeticException("Error: (remainder) undefined for 0");
+      }
 
       double result = first.doubleValue() % second.doubleValue();
       // Don't want negative zero
@@ -53,6 +63,9 @@ public class Remainder extends AFn implements INumericalOperation {
       }
       return result;
     } else if ((first instanceof Long) && (second instanceof Long)) {
+      if (second.intValue() == 0) {
+        throw new ArithmeticException("Error: (remainder) undefined for 0");
+      }
       return (Long)first % (Long)second;
     }
     throw new IllegalArgumentException("Wrong type argument to `remainder`");
