@@ -361,6 +361,6 @@ public class Tokenizer implements IParser {
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
 
     List<Object> list = readList(reader);
-    return new SCMVector(list.toArray(new Object[list.size()]));
+    return new SCMVector(list.toArray());
   }
 }

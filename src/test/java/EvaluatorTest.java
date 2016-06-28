@@ -489,6 +489,34 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalListToVector() {
+
+    assertEquals(new SCMVector(1L, 2L, "test"), eval.eval(tokenizer.parse("(list->vector '(1 2 \"test\"))"), env));
+    assertEquals(new SCMVector(), eval.eval(tokenizer.parse("(list->vector '())"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(list->vector #(1 2 3))"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: SCMVector", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalVectorToList() {
+
+    assertEquals(new SCMList(1L, 2L, "test"), eval.eval(tokenizer.parse("(vector->list #(1 2 \"test\"))"), env));
+    assertEquals(new SCMList(), eval.eval(tokenizer.parse("(vector->list #())"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(vector->list '(1 2 3))"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Vector, actual: SCMList", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalProcedure() {
     assertEquals(SCMProcedure.class, eval.eval(tokenizer.parse("(lambda () #t)"), env).getClass());
     assertEquals(TRUE, eval.eval(tokenizer.parse("((lambda () #t))"), env));

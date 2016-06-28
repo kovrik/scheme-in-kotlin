@@ -40,6 +40,10 @@ public class SCMVector {
     return vector.length;
   }
 
+  public Object[] toArray() {
+    return vector;
+  }
+
   @Override
   public String toString() {
     if (vector.length == 0) {

@@ -127,5 +127,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("vector-length"), new VectorLength());
     put(new SCMSymbol("vector-ref"), new VectorRef());
     put(new SCMSymbol("vector-set!"), new VectorSet());
+    put(new SCMSymbol("list->vector"), new ListToVector());
+    put(new SCMSymbol("vector->list"), new VectorToList());
   }
 }
