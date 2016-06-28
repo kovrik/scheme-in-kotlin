@@ -2,33 +2,28 @@ package core.procedures.vectors;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.SCMList;
 import core.scm.SCMVector;
+import core.scm.specialforms.SCMSpecialForm;
 
-public class VectorToList extends AFn {
+import java.util.Arrays;
+
+public class VectorFill extends AFn {
 
   @Override
-  public SCMList invoke(Object... args) {
-    if (args != null && args.length == 1) {
+  public Object invoke(Object... args) {
+    if (args != null && args.length == 2) {
       if (args[0] instanceof SCMVector) {
         SCMVector vector = (SCMVector) args[0];
-        return new SCMList(vector.getArray());
+        Arrays.fill(vector.getArray(), args[1]);
+        return SCMSpecialForm.UNSPECIFIED;
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + args[0].getClass().getSimpleName());
     }
-    throw new ArityException(args.length, 1, "vector->list");
+    throw new ArityException(args.length, 2, "vector-fill!");
   }
 
   public Number zero() {
-    throw new ArityException(0, 1, "vector->list");
-  }
-
-  public Number apply(Number first, Number second) {
-    throw new ArityException(2, 1, "vector->list");
-  }
-
-  public Object apply(Object first, Object second) {
-    throw new ArityException(2, 1, "vector->list");
+    throw new ArityException(0, 2, "vector-fill!");
   }
 
   @Override

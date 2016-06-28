@@ -40,7 +40,7 @@ public class SCMVector {
     return vector.length;
   }
 
-  public Object[] toArray() {
+  public Object[] getArray() {
     return vector;
   }
 

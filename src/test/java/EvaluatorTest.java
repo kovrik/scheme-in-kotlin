@@ -517,6 +517,30 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalVectorFill() {
+
+    String sexp = "(begin (define v (vector 1 2 3))" +
+                  "       (vector-fill! v 3)" +
+                  "       v)";
+    assertEquals(new SCMVector(3L, 3L, 3L), eval.eval(tokenizer.parse(sexp), env));
+
+    sexp = "(begin (define v (vector))" +
+           "       (vector-fill! v 3)" +
+           "       v)";
+    assertEquals(new SCMVector(), eval.eval(tokenizer.parse(sexp), env));
+
+    sexp = "(begin (define v (list 1 2 3))" +
+           "       (vector-fill! v 3)" +
+           "       v)";
+    try {
+      eval.eval(tokenizer.parse(sexp), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Vector, actual: SCMList", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalProcedure() {
     assertEquals(SCMProcedure.class, eval.eval(tokenizer.parse("(lambda () #t)"), env).getClass());
     assertEquals(TRUE, eval.eval(tokenizer.parse("((lambda () #t))"), env));
