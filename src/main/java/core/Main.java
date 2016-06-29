@@ -47,6 +47,7 @@ public class Main {
       try {
         System.err.flush();
         System.out.print(prompt);
+        System.out.flush();
 
         // Read, Tokenize, Parse
         Object sexp = parser.parse(System.in);
@@ -64,21 +65,28 @@ public class Main {
           // Print
           if (result instanceof String) {
             System.out.println(id + " = \"" + result + "\"");
+            System.out.flush();
           } else {
             System.out.println(id + " = " + result);
+            System.out.flush();
           }
         }
         // TODO Proper Error handling
       } catch (UnsupportedOperationException e) {
-        System.err.println(e.getMessage());
+        error(e);
       } catch (IllegalArgumentException e) {
-        System.err.println(e.getMessage());
+        error(e);
       } catch (ArithmeticException e) {
-        System.err.println(e.getMessage());
+        error(e);
       } catch (SCMError e) {
-        System.err.println(e.getMessage());
+        error(e);
       }
     }
+  }
+
+  private static void error(Exception e) {
+    System.err.println("ERROR: " + e.getMessage());
+    System.err.flush();
   }
 
   // TODO

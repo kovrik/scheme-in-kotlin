@@ -6,6 +6,6 @@ public class SCMError extends RuntimeException {
   }
 
   public SCMError(String message) {
-    super("ERROR:" + message);
+    super(message);
   }
 }
