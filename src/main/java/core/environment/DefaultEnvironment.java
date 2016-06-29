@@ -93,6 +93,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("truncate"), new Truncate());
     put(new SCMSymbol("max"),      new Max());
     put(new SCMSymbol("min"),      new Min());
+    put(new SCMSymbol("gcd"),      new GCD());
+    put(new SCMSymbol("lcm"),      new LCM());
 
     /* Comparison & Equality */
     put(new SCMSymbol("="),  new NumericalComparison(NumericalComparison.Type.EQUAL));

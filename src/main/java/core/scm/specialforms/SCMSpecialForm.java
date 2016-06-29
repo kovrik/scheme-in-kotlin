@@ -1,15 +1,15 @@
 package core.scm.specialforms;
 
-import core.scm.SCMBoolean;
-import core.scm.SCMList;
-import core.scm.SCMSymbol;
 import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
-import core.procedures.equivalence.Eqv;
-import core.scm.SCMProcedure;
 import core.procedures.delayed.SCMPromise;
+import core.procedures.equivalence.Eqv;
+import core.scm.SCMBoolean;
+import core.scm.SCMList;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
 import java.util.Collections;
@@ -75,13 +75,13 @@ public enum SCMSpecialForm implements ISpecialForm {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object test = expression.get(1);
       Object consequence = expression.get(2);
-      if (expression.size() < 4) {
-        throw new IllegalArgumentException("if: Missing an `else` statement");
-      }
-      Object alternative = expression.get(3);
       if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
         return evaluator.eval(consequence, env);
       } else {
+        if (expression.size() < 4) {
+          return UNSPECIFIED;
+        }
+        Object alternative = expression.get(3);
         return evaluator.eval(alternative, env);
       }
     }

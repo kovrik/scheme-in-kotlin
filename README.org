@@ -6,6 +6,8 @@
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
+** TODO [#B] Use BigInteger for integral big numbers?
+** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
 ** TODO Macroexpansion
 ** TODO Nil value
 ** DONE [#A] Internal (local) define
@@ -162,8 +164,8 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** TODO integer->char
 **** TODO string->list
 **** TODO list->string
-*** TODO Numbers [4/12]
-**** TODO Basic arithmetic operators [10/12]
+*** TODO Numbers [5/12]
+**** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
 ***** DONE -
@@ -180,8 +182,8 @@ CLOSED: [2016-06-10 Fri 22:08]
 CLOSED: [2016-06-10 Fri 22:08]
 ***** DONE modulo
 CLOSED: [2016-06-22 Wed 22:15]
-***** TODO gcd
-***** TODO lcm
+***** DONE gcd
+***** DONE lcm
 ***** DONE expt
 CLOSED: [2016-06-18 Sat 20:48]
 ***** DONE sqrt

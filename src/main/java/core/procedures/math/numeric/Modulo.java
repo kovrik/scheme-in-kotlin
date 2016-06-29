@@ -69,7 +69,7 @@ public class Modulo extends AFn implements INumericalOperation {
     if (m.intValue() == 0) {
       return m;
     }
-    if ((first.intValue() > 0) == (second.intValue() > 0)) {
+    if ((first.longValue() > 0) == (second.longValue() > 0)) {
       return m;
     }
     if ((first instanceof Double) || (second instanceof Double)) {

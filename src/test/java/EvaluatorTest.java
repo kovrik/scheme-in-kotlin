@@ -625,6 +625,7 @@ public class EvaluatorTest {
     assertEquals(new SCMSymbol("yes"), eval.eval(tokenizer.parse("(if (> 3 2) 'yes 'no)"), env));
     assertEquals(new SCMSymbol("no"), eval.eval(tokenizer.parse("(if (> 2 3) 'yes 'no)"), env));
     assertEquals(1L, eval.eval(tokenizer.parse("(if (> 3 2)(- 3 2)(+ 3 2))"), env));
+    assertEquals(UNSPECIFIED, eval.eval(tokenizer.parse("(if #f 5)"), env));
   }
 
   @Test
@@ -1049,6 +1050,76 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
     }
+  }
+
+  @Test
+  public void testEvalGCD() {
+
+    // gcd of no args is 0
+    assertEquals(0L, eval.eval(tokenizer.parse("(gcd)"), env));
+    // gcd of 0(s) is 0
+    assertEquals(0L, eval.eval(tokenizer.parse("(gcd 0)"), env));
+    assertEquals(0d, eval.eval(tokenizer.parse("(gcd 0.0)"), env));
+    assertEquals(0L, eval.eval(tokenizer.parse("(gcd 0 0)"), env));
+    assertEquals(0d, eval.eval(tokenizer.parse("(gcd 0 0.0)"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(gcd 5 0)"), env));
+    assertEquals(5d, eval.eval(tokenizer.parse("(gcd 5.0 0)"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(gcd 0 5)"), env));
+
+    // gcd of n is n
+    assertEquals(5L, eval.eval(tokenizer.parse("(gcd 5)"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(gcd -5)"), env));
+
+    // gcd of multiple numbers
+    assertEquals(5L, eval.eval(tokenizer.parse("(gcd 5 10)"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(gcd 3 6 8)"), env));
+
+    // TODO Doubles
+    assertEquals(3d, eval.eval(tokenizer.parse("(gcd 3.0 6)"), env));
+    assertEquals(40000d, eval.eval(tokenizer.parse("(gcd 200000.0 40000.0)"), env));
+    try {
+      eval.eval(tokenizer.parse("(gcd 3.3 6)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Integer, actual: Double", e.getMessage());
+    }
+
+    assertEquals(new BigDecimal(9), eval.eval(tokenizer.parse("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)"), env));
+  }
+
+  @Test
+  public void testEvalLCM() {
+
+    // lcm of no args is 0
+    assertEquals(0L, eval.eval(tokenizer.parse("(lcm)"), env));
+    // lcm of 0(s) is 0
+    assertEquals(0L, eval.eval(tokenizer.parse("(lcm 0)"), env));
+    assertEquals(0d, eval.eval(tokenizer.parse("(lcm 0.0)"), env));
+    assertEquals(0L, eval.eval(tokenizer.parse("(lcm 0 0)"), env));
+
+    // lcm of n is n
+    assertEquals(5L, eval.eval(tokenizer.parse("(lcm 5)"), env));
+    assertEquals(5d, eval.eval(tokenizer.parse("(lcm 5.0)"), env));
+    assertEquals(5L, eval.eval(tokenizer.parse("(lcm -5)"), env));
+
+    // lcm of multiple numbers
+    assertEquals(10L, eval.eval(tokenizer.parse("(lcm 5 10)"), env));
+    assertEquals(24L, eval.eval(tokenizer.parse("(lcm 3 6 8)"), env));
+    assertEquals(24d, eval.eval(tokenizer.parse("(lcm 3 6 8.0)"), env));
+
+    // TODO Doubles
+    assertEquals(6d, eval.eval(tokenizer.parse("(lcm 3.0 6)"), env));
+    assertEquals(200000d, eval.eval(tokenizer.parse("(lcm 200000.0 40000.0)"), env));
+    try {
+      eval.eval(tokenizer.parse("(lcm 3.3 6)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Integer, actual: Double", e.getMessage());
+    }
+
+    // TODO BigDecimals
+    String big = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
+    assertEquals(new BigDecimal(big), eval.eval(tokenizer.parse(String.format("(lcm %s 9)", big)), env));
   }
 
   @Test
