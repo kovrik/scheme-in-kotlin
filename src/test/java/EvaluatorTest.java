@@ -296,6 +296,35 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalStringProc() {
+    assertEquals("", eval.eval(tokenizer.parse("(string)"), env));
+    assertEquals("a", eval.eval(tokenizer.parse("(string #\\a)"), env));
+    assertEquals("abc", eval.eval(tokenizer.parse("(string #\\a #\\b #\\c)"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(string 1)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Character, actual: Long", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalStringLength() {
+    assertEquals(0L, eval.eval(tokenizer.parse("(string-length \"\")"), env));
+    assertEquals(0L, eval.eval(tokenizer.parse("(string-length (string))"), env));
+    assertEquals(1L, eval.eval(tokenizer.parse("(string-length \"1\")"), env));
+    assertEquals(3L, eval.eval(tokenizer.parse("(string-length \"123\")"), env));
+
+    try {
+      eval.eval(tokenizer.parse("(string-length 1)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: Long"));
+    }
+  }
+
+  @Test
   public void testEvalEq() {
     assertEquals(TRUE,  eval.eval(tokenizer.parse("(eq? '() '())"), env));
     assertEquals(FALSE, eval.eval(tokenizer.parse("(eq? 1 1)"), env));

@@ -8,6 +8,8 @@ import core.procedures.io.Newline;
 import core.procedures.lists.Length;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
+import core.procedures.strings.StringLength;
+import core.procedures.strings.StringProc;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.vectors.*;
@@ -107,8 +109,11 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("eqv?"),   new Eqv());
     put(new SCMSymbol("equal?"), new Equal());
 
+    /* Strings */
     put(new SCMSymbol("string=?"), new StringEq());
     put(new SCMSymbol("string-ci=?"), new StringEqCi());
+    put(new SCMSymbol("string-length"), new StringLength());
+    put(new SCMSymbol("string"), new StringProc());
 
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
