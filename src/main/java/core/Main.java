@@ -4,8 +4,8 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
-import core.parser.IParser;
-import core.parser.Tokenizer;
+import core.parser.IReader;
+import core.parser.Reader;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
@@ -23,7 +23,7 @@ public class Main {
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "scheme@(user)> ";
 
-  private static final IParser parser = new Tokenizer();
+  private static final IReader reader = new Reader();
   private static final IEvaluator evaluator = new Evaluator();
   private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
 
@@ -31,7 +31,7 @@ public class Main {
 
     /* Eval lib procedures */
     for (Map.Entry<String, String> entry : ((DefaultEnvironment)defaultEnvironment).getProcs().entrySet()) {
-      defaultEnvironment.put(entry.getKey(), evaluator.eval(parser.parse(entry.getValue()), defaultEnvironment));
+      defaultEnvironment.put(entry.getKey(), evaluator.eval(reader.read(entry.getValue()), defaultEnvironment));
     }
     repl(WELCOME, PROMPT, defaultEnvironment);
   }
@@ -50,7 +50,7 @@ public class Main {
         System.out.flush();
 
         // Read, Tokenize, Parse
-        Object sexp = parser.parse(System.in);
+        Object sexp = reader.read(System.in);
 
         // TODO Macroexpand
         Object expanded = macroexpand(sexp);

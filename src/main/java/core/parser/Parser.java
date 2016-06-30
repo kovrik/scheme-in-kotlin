@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 @Deprecated
-public class Parser implements IParser {
+public class Parser implements IReader {
 
-  public Object parse(InputStream inputStream) {
+  public Object read(InputStream inputStream) {
 
     // TODO BufferedReader?
     // TODO Decouple
@@ -53,7 +53,7 @@ public class Parser implements IParser {
     return sexp;
   }
 
-  public Object parse(String string) {
+  public Object read(String string) {
     return null;
   }
 

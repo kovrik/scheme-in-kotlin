@@ -11,7 +11,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
-public class Tokenizer implements IParser {
+public class Reader implements IReader {
 
   /* R5RS Grammar
 
@@ -97,7 +97,7 @@ public class Tokenizer implements IParser {
     return i > -1 && i != 65535;
   }
 
-  public Object parse(String string) {
+  public Object read(String string) {
 
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
@@ -110,7 +110,7 @@ public class Tokenizer implements IParser {
     return null;
   }
 
-  public Object parse(InputStream inputStream) {
+  public Object read(InputStream inputStream) {
 
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {
@@ -341,6 +341,7 @@ public class Tokenizer implements IParser {
     return character.charAt(0);
   }
 
+  // TODO Return CONS CELL instead of LIST?
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
 
     List<Object> list = new SCMList<Object>();
