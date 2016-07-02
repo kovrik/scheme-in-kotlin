@@ -25,9 +25,7 @@ import java.util.Map;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class EvaluatorTest {
 
@@ -258,8 +256,9 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalNegation() {
-    assertEquals(FALSE, eval.eval(reader.read("(not #t)"), env));
-    assertEquals(TRUE,  eval.eval(reader.read("(not #f)"), env));
+    assertEquals(FALSE, eval.eval(reader.read("(not #t)"),  env));
+    assertEquals(TRUE,  eval.eval(reader.read("(not #f)"),  env));
+    assertEquals(TRUE,  eval.eval(reader.read("(not '())"), env));
     assertEquals(TRUE,  eval.eval(reader.read("(not (= 1 2 1))"), env));
     assertEquals(FALSE, eval.eval(reader.read("(not (= 1 1 1))"), env));
   }
@@ -647,8 +646,9 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalIf() {
-    assertEquals(5L, eval.eval(reader.read("(if #t 5 0)"), env));
-    assertEquals(5L, eval.eval(reader.read("(if #f 0 5)"), env));
+    assertEquals(5L, eval.eval(reader.read("(if #t 5 0)"),  env));
+    assertEquals(5L, eval.eval(reader.read("(if #f 0 5)"),  env));
+    assertEquals(5L, eval.eval(reader.read("(if '() 0 5)"), env));
     assertEquals(0L, eval.eval(reader.read("(if (not #f) 0 5)"), env));
     assertEquals(5L, eval.eval(reader.read("(if (not (not (or #f #f))) 0 (+ 3 2))"), env));
     assertEquals(new SCMSymbol("yes"), eval.eval(reader.read("(if (> 3 2) 'yes 'no)"), env));
@@ -1376,5 +1376,25 @@ public class EvaluatorTest {
       assertTrue(e.getMessage().equals("let: duplicate bound variable: n"));
     }
   }
+
+  @Test
+  public void testCons() {
+
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '(1 2)   (cons 1 (cons 2 '())))"), env));
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '()))))"), env));
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '(1 2 3) (cons 1 '(2 3))))"), env));
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '(1)     (cons 1 '())))"), env));
+
+    assertEquals(FALSE, eval.eval(reader.read("(equal? (cons 1 2) (cons 1 2)))"), env));
+
+    // check that we do not modify the original list/cons, but return new instead
+    eval.eval(reader.read("(define conslist '())"), env);
+    eval.eval(reader.read("(cons 1 conslist)"), env);
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '() conslist))"), env));
+    eval.eval(reader.read("(define conslist '(3))"), env);
+    eval.eval(reader.read("(cons 1 conslist)"), env);
+    assertEquals(TRUE, eval.eval(reader.read("(equal? '(3) conslist))"), env));
+  }
+
   // TODO Exceptions
 }

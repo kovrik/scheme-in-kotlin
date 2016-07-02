@@ -109,7 +109,7 @@ public enum SCMSpecialForm implements ISpecialForm {
   QUOTE("quote") {
     public Object eval(SCMList<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if ((expression.get(1) instanceof SCMList) && (((SCMList)expression.get(1)).isEmpty())) {
-        return SCMList.EMPTY_LIST;
+        return SCMList.NIL;
       }
       return expression.get(1);
     }

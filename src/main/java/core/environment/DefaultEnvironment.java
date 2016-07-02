@@ -1,5 +1,6 @@
 package core.environment;
 
+import core.procedures.cons.Cons;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
@@ -137,5 +138,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("list->vector"), new ListToVector());
     put(new SCMSymbol("vector->list"), new VectorToList());
     put(new SCMSymbol("vector-fill!"), new VectorFill());
+
+    /* Cons */
+    put(new SCMSymbol("cons"), new Cons());
   }
 }

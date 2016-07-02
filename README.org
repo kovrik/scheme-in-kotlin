@@ -1,8 +1,11 @@
 *JISP*
 ----
 
-* TODO: [10/18]
+* TODO: [11/25]
 
+** TODO [#A] Implement CONS cells
+** TODO [#A] Implement SCMList using CONS?
+** TODO [#A] Reader: read dotted notation
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
@@ -10,7 +13,8 @@
 ** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
 ** TODO Proper LOGGING
 ** TODO Macroexpansion
-** TODO Nil value
+** DONE Nil value
+CLOSED: [2016-07-02 Sat 19:54]
 ** DONE [#A] Internal (local) define
 CLOSED: [2016-06-05 Sun 09:26]
 ** DONE [#A] Decouple Procedure and Evaluator
@@ -326,9 +330,10 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [7/23]
+*** TODO Pairs and lists [8/23]
 **** TODO pair?
-**** TODO cons
+**** DONE cons
+CLOSED: [2016-07-02 Sat 19:32]
 **** TODO car
 **** TODO cdr
 **** TODO set-car!

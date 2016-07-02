@@ -1,17 +1,11 @@
 package core.scm;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class SCMList<E> extends LinkedList<E> {
 
-  public static final SCMList EMPTY_LIST = new SCMList();
-
-//  public SCMList() {
-//    super();
-//  }
+  // TODO Make it a Singleton
+  public static final SCMList NIL = new SCMList();
 
   public SCMList(Collection<? extends E> c) {
     super(c);

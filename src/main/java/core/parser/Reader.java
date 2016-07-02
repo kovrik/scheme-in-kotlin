@@ -295,9 +295,7 @@ public class Reader implements IReader {
     StringBuilder string = new StringBuilder();
     int i;
     char c;
-    while ((isValid(i = reader.read())) &&
-           ((c = (char)i) != '"')) {
-
+    while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
       // escaping
       if (c == '\\') {
         i = reader.read();
@@ -321,9 +319,7 @@ public class Reader implements IReader {
     StringBuilder character = new StringBuilder();
     int i;
     char c;
-    while ((isValid(i = reader.read())) &&
-           (DELIMITERS.indexOf(c = (char)i) < 0)) {
-
+    while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
       character.append(c);
     }
     reader.unread((char)i);
@@ -342,17 +338,20 @@ public class Reader implements IReader {
   }
 
   // TODO Return CONS CELL instead of LIST?
+  // TODO Read CONS/LIST in dotted notation
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
-
-    List<Object> list = new SCMList<Object>();
+    List<Object> list = SCMList.NIL;
+    boolean hasElements = false;
     int i;
     char c;
-    while (isValid(i = reader.read()) &&
-           ((c = (char)i) != ')')) {
-
+    while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
       reader.unread(c);
       Object token = nextToken(reader);
       if (token != null) {
+        if (!hasElements) {
+          list = new SCMList<Object>();
+          hasElements = true;
+        }
         list.add(token);
       }
     }
