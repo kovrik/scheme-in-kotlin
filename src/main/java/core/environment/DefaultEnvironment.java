@@ -1,9 +1,6 @@
 package core.environment;
 
-import core.procedures.cons.Car;
-import core.procedures.cons.Cdr;
-import core.procedures.cons.Cons;
-import core.procedures.cons.IsPair;
+import core.procedures.cons.*;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
@@ -47,7 +44,7 @@ public final class DefaultEnvironment extends Environment {
     procs.put("integer?",   "(define (integer? x) (= x (round x)))");
 
     procs.put("list",       "(define (list . elements) elements)");
-    procs.put("null?",      "(define (null?  l) (eq? l '()))");
+//    procs.put("null?",      "(define (null?  l) (eq? l '()))");
     procs.put("empty?",     "(define empty? null?)");
 
     // Miscellaneous predicates
@@ -147,5 +144,6 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("car"),   new Car());
     put(new SCMSymbol("cdr"),   new Cdr());
     put(new SCMSymbol("pair?"), new IsPair());
+    put(new SCMSymbol("null?"), new IsNull());
   }
 }

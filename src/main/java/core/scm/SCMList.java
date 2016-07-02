@@ -71,7 +71,11 @@ public class SCMList<E> extends LinkedList<E> implements IPair {
   }
 
   public Object cdr() {
-    return subList(1, size());
+    if (size() == 1) {
+      return NIL;
+    } else {
+      return new SCMList(subList(1, size()));
+    }
   }
 
   public boolean isPair() {
