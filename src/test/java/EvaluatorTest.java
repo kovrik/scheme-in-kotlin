@@ -1335,10 +1335,14 @@ public class EvaluatorTest {
     assertEquals(3L, eval.eval(reader.read("(day-of-week 2016 6 29)"), env));
 
     // test Today
-    Integer dw = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-    int y = Calendar.getInstance().get(Calendar.YEAR);
-    int m = Calendar.getInstance().get(Calendar.MONTH) + 1;
-    int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+    Calendar calendar = Calendar.getInstance();
+    Integer dw = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+    if (dw == 0) {
+      dw = 7;
+    }
+    int y = calendar.get(Calendar.YEAR);
+    int m = calendar.get(Calendar.MONTH) + 1;
+    int d = calendar.get(Calendar.DAY_OF_MONTH);
     String todaySexp = "(day-of-week %s %s %s)";
     assertEquals(dw.longValue(), eval.eval(reader.read(String.format(todaySexp, y, m, d)), env));
   }
@@ -1475,5 +1479,39 @@ public class EvaluatorTest {
     String test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))";
     SCMList sorted = new SCMList(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
     assertEquals(sorted, eval.eval(reader.read(test), env));
+  }
+
+  @Test
+  public void testHailstoneSeq() {
+
+    String hailstone = "(define (hailstone n)" +
+                       "  (if (= n 1) '(1)" +
+                       "  (cons n (hailstone (if (even? n) (/ n 2) (+ 1 (* 3 n)))))))";
+
+    String hailstoneLength = "(define (hailstone-length n)" +
+                             "  (let aux ((n n) (r 1)) (if (= n 1) r" +
+                             "  (aux (if (even? n) (/ n 2) (+ 1 (* 3 n))) (+ r 1)))))";
+
+    String hailstoneMax = "(define (hailstone-max a b)" +
+                          "  (let aux ((i a) (j 0) (k 0))" +
+                          "    (if (> i b) (list j k)" +
+                          "      (let ((h (hailstone-length i)))" +
+                          "        (if (> h k) (aux (+ i 1) i h) (aux (+ i 1) j k))))))";
+
+    eval.eval(reader.read(hailstone), env);
+    eval.eval(reader.read(hailstoneLength), env);
+    eval.eval(reader.read(hailstoneMax), env);
+
+    SCMList<Long> seq = new SCMList(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
+                                    242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
+                                    700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
+                                    668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
+                                    638L, 319L, 958L, 479L, 1438L, 719L, 2158L, 1079L, 3238L, 1619L, 4858L, 2429L,
+                                    7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
+                                    2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
+                                    61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
+                                    8L, 4L, 2L, 1L);
+    assertEquals(seq, eval.eval(reader.read("(hailstone 27)"), env));
+    assertEquals(112L, eval.eval(reader.read("(hailstone-length 27)"), env));
   }
 }
