@@ -330,12 +330,15 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [8/23]
-**** TODO pair?
+*** TODO Pairs and lists [11/23]
+**** DONE pair?
+CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
 CLOSED: [2016-07-02 Sat 19:32]
-**** TODO car
-**** TODO cdr
+**** DONE car
+CLOSED: [2016-07-02 Sat 22:53]
+**** DONE cdr
+CLOSED: [2016-07-02 Sat 22:54]
 **** TODO set-car!
 **** TODO set-cdr!
 **** DONE null?

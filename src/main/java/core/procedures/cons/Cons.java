@@ -2,7 +2,6 @@ package core.procedures.cons;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.exceptions.ArityException;
 import core.scm.SCMCons;
 import core.scm.SCMList;
 import core.scm.SCMProcedure;
@@ -12,27 +11,24 @@ import java.util.List;
 
 public class Cons extends SCMProcedure {
 
-  private static final SCMSymbol values = new SCMSymbol("values");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(values);
+  private static final SCMSymbol car = new SCMSymbol("car");
+  private static final SCMSymbol cdr = new SCMSymbol("cdr");
+  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(car, cdr);
 
   public Cons() {
-    super("cons", params, null, null, true);
+    super("cons", params, null, null, false);
   }
 
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
-    SCMList vals = (SCMList)env.get(values);
-    if (vals.size() != 2) {
-      throw new ArityException(vals.size(), 2, "cons");
-    }
-    Object first = vals.get(0);
-    Object second = vals.get(1);
-    if (second instanceof SCMList) {
+    Object car = env.get(Cons.car);
+    Object cdr = env.get(Cons.cdr);
+    if (cdr instanceof SCMList) {
       // do not modify the original list, but return new one
-      SCMList list = new SCMList((SCMList)second);
-      list.push(first);
+      SCMList list = new SCMList((SCMList)cdr);
+      list.push(car);
       return list;
     }
-    return SCMCons.cons(first, second);
+    return SCMCons.cons(car, cdr);
   }
 }

@@ -1396,5 +1396,61 @@ public class EvaluatorTest {
     assertEquals(TRUE, eval.eval(reader.read("(equal? '(3) conslist))"), env));
   }
 
+  @Test
+  public void testIsPair() {
+
+    assertEquals(FALSE, eval.eval(reader.read("(pair? '())"), env));
+    assertEquals(FALSE, eval.eval(reader.read("(pair? 1)"), env));
+    assertEquals(FALSE, eval.eval(reader.read("(pair? #(1 2))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? '(1))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? '(1 2))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? '(1 2 3))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 2))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 '()))"), env));
+    assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 (cons 2 3))))"), env));
+
+  }
+
+  @Test
+  public void testCar() {
+
+    assertEquals(1L, eval.eval(reader.read("(car (cons 1 2))"), env));
+    assertEquals("test", eval.eval(reader.read("(car (cons \"test\" 2))"), env));
+    assertEquals(1L, eval.eval(reader.read("(car (cons 1 (cons 2 3)))"), env));
+    assertEquals(1L, eval.eval(reader.read("(car '(1 2 3))"), env));
+    assertEquals(1L, eval.eval(reader.read("(car '(1))"), env));
+    assertEquals(1L, eval.eval(reader.read("(car (list 1))"), env));
+    try {
+      eval.eval(reader.read("(car '())"), env);
+    } catch (IllegalArgumentException e) {
+     assertEquals("Wrong argument type. Expected: Pair, actual: '()", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("(car 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: Long", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testCdr() {
+
+    assertEquals(2L, eval.eval(reader.read("(cdr (cons 1 2))"), env));
+    assertEquals("test", eval.eval(reader.read("(cdr (cons 2 \"test\"))"), env));
+    assertEquals("(2 . 3)", eval.eval(reader.read("(cdr (cons 1 (cons 2 3)))"), env).toString());
+    assertEquals(new SCMList(2L, 3L), eval.eval(reader.read("(cdr '(1 2 3))"), env));
+    assertEquals(SCMList.NIL, eval.eval(reader.read("(cdr '(1))"), env));
+    assertEquals(SCMList.NIL, eval.eval(reader.read("(cdr (list 1))"), env));
+    try {
+      eval.eval(reader.read("(cdr '())"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: '()", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("(cdr 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: Long", e.getMessage());
+    }
+  }
   // TODO Exceptions
 }

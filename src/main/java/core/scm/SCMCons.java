@@ -1,15 +1,31 @@
 package core.scm;
 
-public class SCMCons {
+public class SCMCons implements IPair{
 
   // TODO: Optimize
   // TODO: Implement SCMLists using SCMCons?
-  private final Object car;
-  private final Object cdr;
+  private Object car;
+  private Object cdr;
 
   private SCMCons(Object car, Object cdr) {
     this.car = car;
     this.cdr = cdr;
+  }
+
+  public Object car() {
+    return car;
+  }
+
+  public Object cdr() {
+    return cdr;
+  }
+
+  public boolean isPair() {
+    return true;
+  }
+
+  public boolean isNull() {
+    return false;
   }
 
   @Override
@@ -28,5 +44,10 @@ public class SCMCons {
 
   public static SCMCons cons(Object car, Object cdr) {
     return new SCMCons(car, cdr);
+  }
+
+  // TODO IPair interface?
+  public static boolean isPair(Object o) {
+    return ((o instanceof SCMCons) || (o instanceof SCMList)) && (!SCMList.NIL.equals(o));
   }
 }
