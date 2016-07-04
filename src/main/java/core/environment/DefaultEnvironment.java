@@ -140,10 +140,11 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("vector-fill!"), new VectorFill());
 
     /* Cons */
-    put(new SCMSymbol("cons"),  new Cons());
-    put(new SCMSymbol("car"),   new Car());
-    put(new SCMSymbol("cdr"),   new Cdr());
-    put(new SCMSymbol("pair?"), new IsPair());
-    put(new SCMSymbol("null?"), new IsNull());
+    put(new SCMSymbol("cons"),   new ConsProc());
+    put(new SCMSymbol("car"),    new Car());
+    put(new SCMSymbol("cdr"),    new Cdr());
+    put(new SCMSymbol("pair?"),  new IsPair());
+    put(new SCMSymbol("null?"),  new IsNull());
+//    put(new SCMSymbol("append"), new core.procedures.append.Append());
   }
 }

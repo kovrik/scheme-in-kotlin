@@ -1257,26 +1257,41 @@ public class EvaluatorTest {
 
   @Test
   public void testIntegerRoots() {
-    String code = "(define (root a b)" +
-                    "(define // quotient)" +
-                    "(define (y a a1 b c d e)" +
-                    "(if (or (= c d) (= c e))" +
-                    "(min d e)" +
-                    "(y a a1 b d e (// (+ (* a1 e)" +
-                    "(// b (expt e a1))) a))))" +
-                    "(if (< b 2)" +
-                    "b" +
-                    "(let* ((a1 (- a 1))" +
-                           "(c 1)" +
-                           "(d (// (+ (* a1 c) (// b (expt c a1))) a))" +
-                           "(e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-                             "(y a a1 b c d e))))";
+
+    String integerRoots = "(define (root a b)" +
+                          "  (define // quotient)" +
+                          "  (define (y a a1 b c d e)" +
+                          "    (if (or (= c d) (= c e))" +
+                          "        (min d e)" +
+                          "      (y a a1 b d e (// (+ (* a1 e)" + // <--- y is recursive. TCO
+                          "                           (// b (expt e a1))) a))))" +
+                          "  (if (< b 2)" +
+                          "      b" +
+                          "    (let* ((a1 (- a 1))" +
+                          "           (c 1)" +
+                          "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
+                          "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+                          "      (y a a1 b c d e))))";
 
     IEnvironment tempEnv = new DefaultEnvironment();
-    eval.eval(reader.read(code), tempEnv);
-    assertEquals(2.0, eval.eval(reader.read("(root 3 8)"), tempEnv));
-    // FIXME
+    eval.eval(reader.read(integerRoots), tempEnv);
+    // TODO StackOverflow
 //    assertEquals(2.0, eval.eval(reader.read("(root 3 (* 2 (expt 1000 2000)))"), tempEnv));
+  }
+
+  // TODO
+  @Test
+  public void testTCO() {
+    String recursive = "(define (recursive n)" +
+                       "  (if (zero? n)" +
+                       "      \"DONE\"" +
+                       "    (recursive (- n 1))))";
+    eval.eval(reader.read(recursive), env);
+
+//    assertEquals("DONE", eval.eval(reader.read("(recursive 5)"), env));
+//    assertEquals("DONE", eval.eval(reader.read("(recursive 489)"), env));
+    assertEquals("DONE", eval.eval(reader.read("(recursive 490)"), env));
+//    assertEquals("DONE", eval.eval(reader.read("(recursive 1000000)"), env));
   }
 
   @Test

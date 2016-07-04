@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     EvaluatorTest.class,
     ReaderTest.class,
-    SCMConsTest.class
+    SCMConsTest.class,
+    ConsTest.class
 })
 public class AllTests {
 }
