@@ -3,10 +3,8 @@ package core.scm;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
-public class SCMList<E> extends LinkedList<E> implements IPair {
+public class SCMList<E> extends LinkedList<E> implements IList {
 
-  // TODO Make it a Singleton?
-  // TODO Make it a separate class?
   public static final SCMList NIL = new SCMList<Object>() {
     public Object car() {
       throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: '()");
@@ -53,8 +51,12 @@ public class SCMList<E> extends LinkedList<E> implements IPair {
     super();
   }
 
+  // FIXME
   public SCMList(Collection<? extends E> c) {
     super(c);
+//    if (NIL.equals(c)) {
+//      add((E)NIL);
+//    }
   }
 
   public SCMList(E... elements) {
@@ -66,24 +68,41 @@ public class SCMList<E> extends LinkedList<E> implements IPair {
     add(e);
   }
 
+  public Object cons(Object a) {
+    SCMList list = new SCMList(this);
+    list.push(a);
+    return list;
+  }
+
   public Object car() {
+    if (NIL.equals(this)) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: '()");
+    }
     return get(0);
   }
 
+  // FIXME
   public Object cdr() {
     if (size() == 1) {
       return NIL;
     } else {
+      // FIXME Should share tail, but return SCMList, not SubList
       return new SCMList(subList(1, size()));
+      /* Share tail */
+//      return subList(1, size());
     }
   }
 
+  public long length() {
+    return this.size();
+  }
+
   public boolean isPair() {
-    return true;
+    return !NIL.equals(this);
   }
 
   public boolean isNull() {
-    return false;
+    return NIL.equals(this);
   }
 
   @Override
@@ -108,5 +127,32 @@ public class SCMList<E> extends LinkedList<E> implements IPair {
       }
       sb.append(' ');
     }
+  }
+
+  public static SCMList list() {
+    return NIL;
+  }
+
+  public static <E> SCMList list(E e) {
+    SCMList list = new SCMList();
+    list.add(e);
+    return list;
+  }
+
+  public static <E> SCMList list(Collection<? extends E> c) {
+    if (c == null || c.isEmpty()) {
+      return NIL;
+    }
+    SCMList list = new SCMList();
+    return list;
+  }
+
+  public static <E> SCMList list(E... elements) {
+    if (elements == null || elements.length == 0) {
+      return NIL;
+    }
+    SCMList list = new SCMList();
+    list.addAll(Arrays.asList(elements));
+    return list;
   }
 }

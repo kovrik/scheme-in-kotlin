@@ -8,8 +8,8 @@ import java.util.List;
 
 public class IsNull extends SCMProcedure {
 
-  private static final SCMSymbol o = new SCMSymbol("o");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(o);
+  private static final SCMSymbol obj = new SCMSymbol("obj");
+  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(obj);
 
   public IsNull() {
     super("null?", params, null, null, false);
@@ -17,9 +17,13 @@ public class IsNull extends SCMProcedure {
 
   @Override
   public SCMBoolean apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(this.o);
-    if (o instanceof IPair) {
-      return SCMBoolean.toSCMBoolean(((IPair)o).isNull());
+    Object o = env.get(obj);
+    return isNull(o);
+  }
+
+  public static SCMBoolean isNull(Object object) {
+    if (object instanceof IPair) {
+      return SCMBoolean.toSCMBoolean(SCMList.NIL.equals(object));
     }
     return SCMBoolean.FALSE;
   }

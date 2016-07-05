@@ -2,20 +2,18 @@ package core.procedures.lists;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.SCMList;
-
-import java.util.List;
+import core.scm.IList;
 
 public class Length extends AFn {
 
   @Override
   public Long invoke(Object... args) {
     if (args != null && args.length == 1) {
-      if (args[0] instanceof List) {
-        return (long)((List)args[0]).size();
+      if (args[0] instanceof IList) {
+        return ((IList)args[0]).length();
       }
       throw new IllegalArgumentException(
-          String.format("Wrong type argument to `length`! Expected: %s, Actual: %s", SCMList.class, args[0].getClass()));
+          String.format("Wrong type argument to `length`! Expected: List, Actual: %s", args[0].getClass()));
     }
     throw new ArityException(args.length, "length");
   }

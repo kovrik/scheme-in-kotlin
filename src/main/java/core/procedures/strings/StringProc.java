@@ -11,7 +11,7 @@ import java.util.List;
 public class StringProc extends SCMProcedure {
 
   private static final SCMSymbol chars = new SCMSymbol("chars");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(chars);
+  private static final List<SCMSymbol> params = SCMList.list(chars);
 
   public StringProc() {
     super("string", params, null, null, true);

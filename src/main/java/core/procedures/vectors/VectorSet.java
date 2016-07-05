@@ -15,7 +15,7 @@ public class VectorSet extends SCMProcedure {
   private static final SCMSymbol vector  = new SCMSymbol("vector");
   private static final SCMSymbol pos = new SCMSymbol("pos");
   private static final SCMSymbol v = new SCMSymbol("v");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(vector, pos, v);
+  private static final List<SCMSymbol> params = SCMList.list(vector, pos, v);
 
   public VectorSet() {
     super("vector-set!", params, null, null, false);

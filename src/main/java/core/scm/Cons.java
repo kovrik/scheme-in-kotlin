@@ -3,13 +3,9 @@ package core.scm;
 import java.util.List;
 import java.util.ListIterator;
 
+@Deprecated
 public class Cons {
 
-  /**
-   * TODO: Optimize
-   * TODO: Test
-   * TODO: Use it instead of SCMCons and SCMList?
-   */
   public static final Cons NIL = new Cons(null, null);
 
   private Object car;

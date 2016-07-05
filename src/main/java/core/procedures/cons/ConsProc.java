@@ -20,12 +20,17 @@ public class ConsProc extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object car = env.get(ConsProc.car);
     Object cdr = env.get(ConsProc.cdr);
-    if (cdr instanceof SCMList) {
-      // do not modify the original list, but return new one
-      SCMList list = new SCMList((SCMList)cdr);
-      list.push(car);
-      return list;
+    return cons(car, cdr);
+  }
+
+  public static Object cons(Object car, Object cdr) {
+    if (car == null && cdr == null) {
+      return SCMList.NIL;
     }
-    return SCMCons.cons(car, cdr);
+    if (cdr instanceof IPair) {
+      IPair pair = (IPair) cdr;
+      return pair.cons(car);
+    }
+    return new SCMCons(car, cdr);
   }
 }

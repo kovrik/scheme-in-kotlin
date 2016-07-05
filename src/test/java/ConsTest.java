@@ -1,9 +1,20 @@
 import core.scm.Cons;
 import org.junit.Test;
 
-import static core.scm.Cons.*;
-import static org.junit.Assert.*;
+import static core.scm.Cons.cons;
+import static core.scm.Cons.NIL;
+import static core.scm.Cons.list;
+import static core.scm.Cons.car;
+import static core.scm.Cons.cdr;
+import static core.scm.Cons.isList;
+import static core.scm.Cons.isNil;
+import static core.scm.Cons.isPair;
+import static core.scm.Cons.length;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+@Deprecated
 public class ConsTest {
 
   @Test
