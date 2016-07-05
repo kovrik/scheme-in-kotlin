@@ -14,14 +14,6 @@ public class SCMList<E> extends LinkedList<E> implements IList {
       throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: '()");
     }
 
-    public boolean isPair() {
-      return false;
-    }
-
-    public boolean isNull() {
-      return true;
-    }
-
     @Override
     public Object set(int index, Object element) {
       throw new UnsupportedOperationException();
@@ -95,14 +87,6 @@ public class SCMList<E> extends LinkedList<E> implements IList {
 
   public long length() {
     return this.size();
-  }
-
-  public boolean isPair() {
-    return !NIL.equals(this);
-  }
-
-  public boolean isNull() {
-    return NIL.equals(this);
   }
 
   @Override
