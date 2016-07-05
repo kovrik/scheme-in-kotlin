@@ -43,12 +43,8 @@ public class SCMList<E> extends LinkedList<E> implements IList {
     super();
   }
 
-  // FIXME
   public SCMList(Collection<? extends E> c) {
     super(c);
-//    if (NIL.equals(c)) {
-//      add((E)NIL);
-//    }
   }
 
   public SCMList(E... elements) {
@@ -61,7 +57,8 @@ public class SCMList<E> extends LinkedList<E> implements IList {
   }
 
   public Object cons(Object a) {
-    SCMList list = new SCMList(this);
+    SCMList list = new SCMList();
+    list.addAll(this);
     list.push(a);
     return list;
   }
@@ -73,12 +70,11 @@ public class SCMList<E> extends LinkedList<E> implements IList {
     return get(0);
   }
 
-  // FIXME
   public Object cdr() {
     if (size() == 1) {
       return NIL;
     } else {
-      // FIXME Should share tail, but return SCMList, not SubList
+      // FIXME Should share tail, but return SCMList, not SubList!
       return new SCMList(subList(1, size()));
       /* Share tail */
 //      return subList(1, size());
@@ -128,6 +124,7 @@ public class SCMList<E> extends LinkedList<E> implements IList {
       return NIL;
     }
     SCMList list = new SCMList();
+    list.addAll(c);
     return list;
   }
 
