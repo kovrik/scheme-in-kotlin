@@ -689,7 +689,7 @@ public class EvaluatorTest {
   @Test
   public void testEvalWhen() {
     assertEquals(0L, eval.eval(reader.read("(when #t 5 4 3 2 1 0)"), env));
-    assertEquals(null, eval.eval(reader.read("(when #f 5 4 3 2 1 0)"), env));
+    assertEquals(UNSPECIFIED, eval.eval(reader.read("(when #f 5 4 3 2 1 0)"), env));
   }
 
   @Test
@@ -697,7 +697,7 @@ public class EvaluatorTest {
     assertEquals(0L, eval.eval(reader.read("'0"), env));
     assertEquals("test", eval.eval(reader.read("'\"test\""), env));
     assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval.eval(reader.read("''\"test\""), env));
-    assertEquals(SCMCons.<Object>list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
+    assertEquals(SCMCons.list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
   }
 
   @Test
@@ -817,7 +817,7 @@ public class EvaluatorTest {
     assertEquals(new SCMSymbol("composite"), eval.eval(reader.read(caseform), env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 8 9) 'composite))";
-    assertEquals(null, eval.eval(reader.read(caseform), env));
+    assertEquals(UNSPECIFIED, eval.eval(reader.read(caseform), env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) (else 'composite))";
     assertEquals(new SCMSymbol("composite"), eval.eval(reader.read(caseform), env));
@@ -851,7 +851,17 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Unbound variable: x", e.getMessage());
     }
-    assertEquals(null, eval.eval(reader.read("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))"), env));
+    PrintStream old = System.out;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(baos));
+    IEnvironment tempEnv = new DefaultEnvironment();
+    /* Eval lib procedures */
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
+      tempEnv.put(entry.getKey(), eval.eval(reader.read(entry.getValue()), tempEnv));
+    }
+    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+    assertEquals(UNSPECIFIED, eval.eval(reader.read("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))"), tempEnv));
+    System.setOut(old);
   }
 
   @Test

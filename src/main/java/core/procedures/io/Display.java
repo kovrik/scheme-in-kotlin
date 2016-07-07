@@ -5,6 +5,7 @@ import core.evaluator.IEvaluator;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -25,6 +26,6 @@ public class Display extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object result = super.apply(evaluator, env);
     printStream.print(result);
-    return null;
+    return SCMSpecialForm.UNSPECIFIED;
   }
 }

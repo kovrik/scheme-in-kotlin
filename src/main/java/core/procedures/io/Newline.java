@@ -5,6 +5,7 @@ import core.evaluator.IEvaluator;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -23,6 +24,6 @@ public class Newline extends SCMProcedure {
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     printStream.println();
-    return null;
+    return SCMSpecialForm.UNSPECIFIED;
   }
 }

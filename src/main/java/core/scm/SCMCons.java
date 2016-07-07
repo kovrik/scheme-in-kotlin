@@ -1,9 +1,8 @@
 package core.scm;
 
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SCMCons<E> extends LinkedList<E> implements ICons {
 
@@ -120,31 +119,26 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
         /* Dotted notation */
         cons.append(" . ").append(cdr);
       }
-      cons.append(")");
-      return cons.toString();
+      return cons.append(")").toString();
     }
 
     /* List */
     StringBuilder sb = new StringBuilder();
     sb.append('(');
     boolean first = true;
-    Iterator it = iterator();
-    for (;;) {
-      Object e = it.next();
+    for (Object e : this) {
+      if (!first) {
+        sb.append(' ');
+      } else {
+        first = false;
+      }
       if (e == this) {
         sb.append("(this Cons)");
       } else {
-        if (!first) {
-          sb.append(' ');
-        } else {
-          first = false;
-        }
         sb.append(e);
       }
-      if (!it.hasNext()) {
-        return sb.append(')').toString();
-      }
     }
+    return sb.append(')').toString();
   }
 
   public static <E> SCMCons<E> cons(E car, E cdr) {

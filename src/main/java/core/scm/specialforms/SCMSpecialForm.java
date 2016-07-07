@@ -93,7 +93,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       }
       Object test = expression.get(1);
       if (!SCMBoolean.valueOf(evaluator.eval(test, env))) {
-        return null;
+        return UNSPECIFIED;
       } else {
         if (expression.size() > 1) {
           Object result = null;
@@ -102,7 +102,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           }
           return result;
         }
-        return null;
+        return UNSPECIFIED;
       }
     }
   },
@@ -348,7 +348,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           }
         }
       }
-      return null;
+      return UNSPECIFIED;
     }
   },
   AND("and") {
