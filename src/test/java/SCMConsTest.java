@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static core.procedures.cons.Car.car;
 import static core.procedures.cons.Cdr.cdr;
 import static core.procedures.cons.ConsProc.cons;
@@ -44,6 +46,8 @@ public class SCMConsTest {
     assertEquals("(() (1 2 ()) ())", list(NIL, list(1, 2, NIL), NIL).toString());
     assertEquals("()", list().toString());
     assertEquals("(1)", list(1).toString());
+    assertEquals("(1)", cons(1, new ArrayList()).toString());
+    assertEquals("(2 1)", cons(2, cons(1, new ArrayList())).toString());
     assertEquals("(1 2)", list(1, 2).toString());
     assertEquals("(1 2 3 4)", list(1, 2, 3, 4).toString());
     assertEquals("(1 2 () 4)", list(1, 2, NIL, 4).toString());

@@ -37,7 +37,6 @@ public class SCMList<E> extends LinkedList<E> implements IList {
     public void sort(Comparator c) {
       throw new UnsupportedOperationException();
     }
-    // TODO @Override ListIterator?
   };
 
   public SCMList() {
@@ -75,7 +74,7 @@ public class SCMList<E> extends LinkedList<E> implements IList {
     if (size() == 1) {
       return NIL;
     } else {
-      // FIXME Should share tail, but return SCMList, not SubList!
+      // FIX Should share tail, but return SCMList, not SubList!
       return new SCMList(subList(1, size()));
       /* Share tail */
 //      return subList(1, size());

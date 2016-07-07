@@ -1,9 +1,13 @@
 package core.scm;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 
 public class SCMCons<E> extends LinkedList<E> implements ICons {
 
+  /* Empty list constant */
   public static final SCMCons NIL = new SCMCons() {
     @Override
     public boolean isList() {
@@ -33,6 +37,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     }
   };
 
+  /* By default every cons is a cons, not a list */
   private boolean isList = false;
 
   private SCMCons() {
@@ -42,15 +47,12 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
   private SCMCons(E car, E cdr) {
     super();
     add(car);
-    if (cdr instanceof SCMCons) {
-      SCMCons cdrcons = (SCMCons) cdr;
-      if (cdrcons.isList()) {
-        setList(true);
-        addAll(cdrcons);
-      } else {
-        add(cdr);
-      }
-    } else if (cdr instanceof List) {
+
+    /* Add all elements only if it is a list (not cons) */
+    if (((cdr instanceof List)  && !(cdr instanceof ICons)) ||
+        ((cdr instanceof ICons) && ((ICons)cdr).isList())) {
+
+      /* cons becomes a list */
       setList(true);
       addAll((List)cdr);
     } else {
@@ -83,6 +85,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   public Object cdr() {
     if (isList) {
+      /* FIXME set-cdr! won't work! */
       return subList(1, size());
     } else {
       return getLast();
@@ -97,11 +100,9 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     }
 
     /* Cons cell */
-    Iterator it = iterator();
     if (!isList) {
       StringBuilder cons = new StringBuilder();
-      cons.append("(");
-      cons.append(getFirst());
+      cons.append("(").append(getFirst());
       Object cdr = getLast();
       if ((cdr instanceof SCMCons) && !((SCMCons)cdr).isList) {
         Object current = cdr;
@@ -117,8 +118,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
         }
       } else {
         /* Dotted notation */
-        cons.append(" . ");
-        cons.append(cdr);
+        cons.append(" . ").append(cdr);
       }
       cons.append(")");
       return cons.toString();
@@ -128,6 +128,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     StringBuilder sb = new StringBuilder();
     sb.append('(');
     boolean first = true;
+    Iterator it = iterator();
     for (;;) {
       Object e = it.next();
       if (e == this) {
@@ -166,25 +167,15 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     if (elements == null || elements.length == 0) {
       return NIL;
     }
-    SCMCons list = new SCMCons();
-    list.setList(true);
-    list.addAll(Arrays.asList(elements));
-    return list;
+    return list(Arrays.asList(elements));
   }
 
   public static <E> SCMCons<E> list(List<E> list) {
     if (list == null || list.isEmpty()) {
       return NIL;
     }
-    if ((list instanceof SCMCons) && !NIL.equals(list.get(list.size() - 1))) {
-      SCMCons result = SCMCons.list();
-      result.add(list);
-      return result;
-    } else {
-      SCMCons<E> result = new SCMCons<E>();
-      result.setList(true);
-      result.addAll(list);
-      return result;
-    }
+    SCMCons<E> result = list();
+    result.addAll(list);
+    return result;
   }
 }

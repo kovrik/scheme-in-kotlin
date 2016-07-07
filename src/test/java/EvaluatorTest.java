@@ -321,7 +321,6 @@ public class EvaluatorTest {
       eval.eval(reader.read("(make-string \"test\")"), env);
       fail();
     } catch (IllegalArgumentException e) {
-      e.printStackTrace();
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
     }
     try {
