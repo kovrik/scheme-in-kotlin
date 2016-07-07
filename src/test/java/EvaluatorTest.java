@@ -307,6 +307,38 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalMakeString() {
+    assertEquals("", eval.eval(reader.read("(make-string 0)"), env));
+    assertEquals("", eval.eval(reader.read("(make-string 0 #\\a)"), env));
+    assertEquals("a", eval.eval(reader.read("(make-string 1 #\\a)"), env));
+    assertEquals("aa", eval.eval(reader.read("(make-string 2 #\\a)"), env));
+    assertEquals("ZZZZZZZZ", eval.eval(reader.read("(make-string 8 #\\Z)"), env));
+
+    assertEquals("\u0000\u0000\u0000", eval.eval(reader.read("(make-string 3)"), env));
+    assertEquals("\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000", eval.eval(reader.read("(make-string 8)"), env));
+
+    try {
+      eval.eval(reader.read("(make-string \"test\")"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
+    }
+    try {
+      eval.eval(reader.read("(make-string)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong number of arguments (0) passed to: make-string"));
+    }
+    try {
+      eval.eval(reader.read("(make-string 1 2 3)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong number of arguments (3) passed to: make-string"));
+    }
+  }
+
+  @Test
   public void testEvalStringLength() {
     assertEquals(0L, eval.eval(reader.read("(string-length \"\")"), env));
     assertEquals(0L, eval.eval(reader.read("(string-length (string))"), env));
@@ -396,7 +428,7 @@ public class EvaluatorTest {
       eval.eval(reader.read("(make-vector 1 2 3)"), env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong number of arguments to `make-vector'"));
+      assertTrue(e.getMessage().equals("Wrong number of arguments (3) passed to: make-vector"));
     }
 
     try {

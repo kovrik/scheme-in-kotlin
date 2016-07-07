@@ -1,18 +1,22 @@
 *JISP*
 ----
 
-* TODO: [11/25]
+* TODO: [13/26]
 
-** TODO [#A] Implement CONS cells
-** TODO [#A] Implement SCMList using CONS?
+** DONE [#A] Implement CONS cells
+CLOSED: [2016-07-07 Thu 19:06]
+** DONE [#A] Implement SCMList using CONS?
+CLOSED: [2016-07-07 Thu 19:06]
 ** TODO [#A] Reader: read dotted notation
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
+** TODO [#B] Inner `define`
 ** TODO [#B] Use BigInteger for integral big numbers?
 ** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
-** TODO Proper LOGGING
-** TODO Macroexpansion
+** TODO [#C] Tail-call elimination
+** TODO [#C] Proper LOGGING
+** TODO [#C] Macroexpansion
 ** DONE Nil value
 CLOSED: [2016-07-02 Sat 19:54]
 ** DONE [#A] Internal (local) define
@@ -55,7 +59,6 @@ CLOSED: [2016-05-11 Wed 21:03]
 CLOSED: [2016-05-31 Tue 22:15]
 ** TODO Performance [0/2]
 *** TODO [#B] Caching
-
 ** TODO Features [2/4]
 *** TODO [#B] Trampolining (explicit recur)
 *** DONE [#C] Shortcut for lambda definition (define (name args) body)
@@ -135,11 +138,13 @@ CLOSED: [2016-06-04 Sat 22:33]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
-** TODO Standard procedures [5/17]
-*** TODO Construction [3/4]
+** TODO Standard procedures [6/17]
+*** DONE Construction [4/4]
+CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
 **** DONE make-vector
-**** TODO make-string
+**** DONE make-string
+CLOSED: [2016-07-07 Thu 19:41]
 **** DONE list
 CLOSED: [2016-06-02 Thu 18:47]
 *** DONE Equivalence predicates [7/7]
@@ -272,10 +277,11 @@ CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO complex?
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]
-*** TODO Strings [5/18]
+*** TODO Strings [6/18]
 **** DONE string?
 CLOSED: [2016-05-11 Wed 18:08]
-**** TODO make-string
+**** DONE make-string
+CLOSED: [2016-07-07 Thu 19:50]
 **** DONE string
 **** DONE string-length
 **** TODO string-ref

@@ -2,6 +2,7 @@ package core.evaluator;
 
 import core.environment.Environment;
 import core.environment.IEnvironment;
+import core.exceptions.ArityException;
 import core.procedures.IFn;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
@@ -53,6 +54,9 @@ public class Evaluator implements IEvaluator {
       }
     } else {
       /* Variadic arity procedure */
+      if (args.length < params.size() - 1) {
+        throw new ArityException(args.length, ((SCMProcedure) fn).getName().getValue());
+      }
       /* Put mandatory params first */
       for (int i = 0; i < params.size() - 1; i++) {
         values.put(params.get(i), args[i]);
