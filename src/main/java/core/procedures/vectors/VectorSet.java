@@ -2,10 +2,7 @@ package core.procedures.vectors;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.SCMList;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
@@ -15,7 +12,7 @@ public class VectorSet extends SCMProcedure {
   private static final SCMSymbol vector  = new SCMSymbol("vector");
   private static final SCMSymbol pos = new SCMSymbol("pos");
   private static final SCMSymbol v = new SCMSymbol("v");
-  private static final List<SCMSymbol> params = SCMList.list(vector, pos, v);
+  private static final List<SCMSymbol> params = SCMCons.list(vector, pos, v);
 
   public VectorSet() {
     super("vector-set!", params, null, null, false);

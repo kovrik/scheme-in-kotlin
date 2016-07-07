@@ -3,6 +3,7 @@ package core.scm;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class SCMList<E> extends LinkedList<E> implements IList {
 
   public static final SCMList NIL = new SCMList<Object>() {

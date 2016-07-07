@@ -9,7 +9,7 @@ import java.util.List;
 public class IsPair extends SCMProcedure {
 
   private static final SCMSymbol obj = new SCMSymbol("obj");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(obj);
+  private static final List<SCMSymbol> params = SCMCons.list(obj);
 
   public IsPair() {
     super("pair?", params, null, null, false);
@@ -18,15 +18,15 @@ public class IsPair extends SCMProcedure {
   @Override
   public SCMBoolean apply(IEvaluator evaluator, IEnvironment env) {
     Object o = env.get(obj);
-    if (o instanceof IPair) {
-      return SCMBoolean.toSCMBoolean(!SCMList.NIL.equals(o));
-    }
-    return SCMBoolean.FALSE;
+    return isPair(o);
   }
 
   public static SCMBoolean isPair(Object object) {
-    if (object instanceof IPair) {
-      return SCMBoolean.toSCMBoolean(!SCMList.NIL.equals(object));
+    if (object instanceof ICons) {
+      return SCMBoolean.toSCMBoolean(((ICons)object).isPair());
+    }
+    if (object instanceof List) {
+      return SCMBoolean.toSCMBoolean(!((List)object).isEmpty());
     }
     return SCMBoolean.FALSE;
   }

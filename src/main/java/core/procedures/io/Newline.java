@@ -2,7 +2,7 @@ package core.procedures.io;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Newline extends SCMProcedure {
 
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>();
+  private static final List<SCMSymbol> params = SCMCons.list();
 
   private PrintStream printStream;
 

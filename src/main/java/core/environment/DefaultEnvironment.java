@@ -30,7 +30,7 @@ public final class DefaultEnvironment extends Environment {
     procs.put("string?",    String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
     procs.put("vector?",    String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
     procs.put("symbol?",    String.format("(define (symbol?    o) (string=? \"%s\" (class-of o)))", SCMSymbol.class.getName()));
-    procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
+//    procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
     procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
     procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
@@ -145,6 +145,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("cdr"),    new Cdr());
     put(new SCMSymbol("pair?"),  new IsPair());
     put(new SCMSymbol("null?"),  new IsNull());
+    put(new SCMSymbol("list?"),  new IsList());
 //    put(new SCMSymbol("append"), new core.procedures.append.Append());
   }
 }

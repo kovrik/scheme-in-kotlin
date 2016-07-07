@@ -2,10 +2,7 @@ package core.procedures.vectors;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.SCMList;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
@@ -14,7 +11,7 @@ public class MakeVector extends SCMProcedure {
 
   private static final SCMSymbol size  = new SCMSymbol("size");
   private static final SCMSymbol value = new SCMSymbol("value");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(size, value);
+  private static final List<SCMSymbol> params = SCMCons.list(size, value);
 
   public MakeVector() {
     super("make-vector", params, null, null, true);
@@ -32,14 +29,14 @@ public class MakeVector extends SCMProcedure {
     if (s < 0) {
       throw new IllegalArgumentException("Size value is out of range in `make-vector`");
     }
-    SCMList vals = (SCMList)env.get(value);
+    List vals = (List)env.get(value);
     if (vals.size() > 1) {
       throw new IllegalArgumentException("Wrong number of arguments to `make-vector'");
     }
     if (vals.isEmpty()) {
       return new SCMVector(s.intValue(), SCMSpecialForm.UNSPECIFIED);
     }
-    Object init = vals.getFirst();
+    Object init = vals.get(0);
     return new SCMVector(s.intValue(), init);
   }
 }

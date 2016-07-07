@@ -2,7 +2,7 @@ package core.procedures.vectors;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
@@ -13,7 +13,7 @@ public class VectorRef extends SCMProcedure {
 
   private static final SCMSymbol vector  = new SCMSymbol("vector");
   private static final SCMSymbol pos = new SCMSymbol("pos");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(vector, pos);
+  private static final List<SCMSymbol> params = SCMCons.list(vector, pos);
 
   public VectorRef() {
     super("vector-ref", params, null, null, false);

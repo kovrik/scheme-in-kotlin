@@ -2,17 +2,17 @@ package core.procedures.vectors;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMVector;
 
 public class VectorToList extends AFn {
 
   @Override
-  public SCMList invoke(Object... args) {
+  public SCMCons invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof SCMVector) {
         SCMVector vector = (SCMVector) args[0];
-        return new SCMList(vector.getArray());
+        return SCMCons.list(vector.getArray());
       }
       throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + args[0].getClass().getSimpleName());
     }

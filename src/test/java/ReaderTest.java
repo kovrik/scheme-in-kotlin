@@ -1,7 +1,7 @@
 import core.parser.IReader;
 import core.parser.Reader;
 import core.scm.SCMBoolean;
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
@@ -53,12 +53,12 @@ public class ReaderTest {
   @Test
   public void testReadList() {
 
-    assertEquals(new SCMList(), reader.read("()"));
-    assertEquals(new SCMList(0L), reader.read("(0)"));
-    assertEquals(new SCMList(1L, 2L, 3L), reader.read("(1 2 3)"));
-    assertEquals(new SCMList(1L, "test", 3L), reader.read("(1 \"test\" 3)"));
-    assertEquals(new SCMList(1L, new SCMVector(2L), 3L), reader.read("(1 #(2) 3)"));
-    assertEquals(new SCMList(1L, new SCMList<Object>(2L), 3L), reader.read("(1 (2) 3)"));
+    assertEquals(SCMCons.list(), reader.read("()"));
+    assertEquals(SCMCons.list(0L), reader.read("(0)"));
+    assertEquals(SCMCons.list(1L, 2L, 3L), reader.read("(1 2 3)"));
+    assertEquals(SCMCons.list(1L, "test", 3L), reader.read("(1 \"test\" 3)"));
+    assertEquals(SCMCons.list(1L, new SCMVector(2L), 3L), reader.read("(1 #(2) 3)"));
+    assertEquals(SCMCons.list(1L, SCMCons.list(2L), 3L), reader.read("(1 (2) 3)"));
   }
 
   @Test
@@ -72,9 +72,9 @@ public class ReaderTest {
   @Test
   public void testReadQuote() {
 
-    assertEquals(new SCMList<Object>(SCMSpecialForm.QUOTE, 1L), reader.read("'1"));
-    assertEquals(new SCMList<Object>(SCMSpecialForm.QUOTE, new SCMList<Object>(1L, "test")), reader.read("'(1 \"test\")"));
-    assertEquals(new SCMList<Object>(SCMSpecialForm.QUOTE, new SCMList<Object>(SCMSpecialForm.QUOTE, 1L)), reader.read("''1"));
+    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, 1L), reader.read("'1"));
+    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(1L, "test")), reader.read("'(1 \"test\")"));
+    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(SCMSpecialForm.QUOTE, 1L)), reader.read("''1"));
   }
 
   @Test

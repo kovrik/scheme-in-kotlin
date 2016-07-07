@@ -1,9 +1,9 @@
 package core.parser;
 
-import core.scm.SCMList;
-import core.scm.SCMSymbol;
 import core.exceptions.UnmatchedDoubleQuoteException;
 import core.exceptions.UnmatchedParenException;
+import core.scm.SCMCons;
+import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.InputStream;
@@ -21,7 +21,7 @@ public class Parser implements IReader {
     // TODO Decouple
     Scanner scanner = new Scanner(inputStream);
 
-    SCMList<String> tokens = new SCMList<String>();
+    SCMCons tokens = SCMCons.list();
     boolean read = true;
     boolean unmatched = false;
     String previousInput = "";
@@ -57,19 +57,19 @@ public class Parser implements IReader {
     return null;
   }
 
-  private SCMList<String> tokenize(String input) {
+  private SCMCons tokenize(String input) {
 
-    return new SCMList<String>(Arrays.asList(input.replaceAll("\\(", " ( ")
-                                                  .replaceAll("\\)", " ) ")
-                                                  .trim().split("\\s+")));
+    return SCMCons.list(Arrays.asList(input.replaceAll("\\(", " ( ")
+                                           .replaceAll("\\)", " ) ")
+                                           .trim().split("\\s+")));
   }
 
-  private Object readFromTokens(SCMList<String> tokens) {
+  private Object readFromTokens(SCMCons tokens) {
 
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Empty tokens list!");
     }
-    String token = tokens.pop();
+    String token = (String)tokens.pop();
     if ("(".equals(token)) {
       /* Process list */
       return readList(tokens);
@@ -85,12 +85,12 @@ public class Parser implements IReader {
     }
   }
 
-  private Object readList(SCMList<String> tokens) {
+  private Object readList(SCMCons tokens) {
 
     if (tokens.isEmpty()) {
       throw new UnmatchedParenException("Unmatched left `(`");
     }
-    SCMList<Object> nodes = new SCMList<Object>();
+    SCMCons nodes = SCMCons.list();
     while (!")".equals(tokens.getFirst())) {
       nodes.add(readFromTokens(tokens));
       if (tokens.isEmpty()) {
@@ -101,15 +101,14 @@ public class Parser implements IReader {
     return nodes;
   }
 
-  // TODO
-  private Object readString(SCMList<String> tokens) {
+  private Object readString(SCMCons tokens) {
 
     if (tokens.isEmpty()) {
       throw new UnmatchedDoubleQuoteException("Unmatched left `\"`");
     }
     StringBuilder sb = new StringBuilder();
-    for (String token : tokens) {
-
+    for (Object t : tokens) {
+      String token = (String)t;
       sb.append(token);
       if (token.startsWith("\"") || token.endsWith("\"")) {
         return sb.toString();

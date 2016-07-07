@@ -8,10 +8,7 @@ import core.parser.Reader;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
-import core.scm.SCMList;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
@@ -24,6 +21,7 @@ import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
+import static core.scm.SCMCons.list;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.*;
 
@@ -358,7 +356,7 @@ public class EvaluatorTest {
     assertEquals(SCMPromise.class, eval.eval(reader.read("(delay 1.0)"), env).getClass());
     assertEquals(TRUE, eval.eval(reader.read("(promise? (delay 1.0))"), env));
     assertEquals(3L, eval.eval(reader.read("(force (delay (+ 1 2)))"), env));
-    assertEquals(new SCMList(3L, 3L), eval.eval(reader.read("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
+    assertEquals(SCMCons.list(3L, 3L), eval.eval(reader.read("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
   }
 
   @Test
@@ -452,7 +450,7 @@ public class EvaluatorTest {
       eval.eval(reader.read("(vector-ref '(1 2 3) 0)"), env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMList"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMCons"));
     }
     try {
       eval.eval(reader.read("(vector-ref (vector 1 2 3) 0.5)"), env);
@@ -505,7 +503,7 @@ public class EvaluatorTest {
     try {
       eval.eval(reader.read(sexp), env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMList"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMCons"));
     }
 
     sexp = "(begin (define v (vector 1 2))" +
@@ -534,14 +532,14 @@ public class EvaluatorTest {
   @Test
   public void testEvalVectorToList() {
 
-    assertEquals(new SCMList(1L, 2L, "test"), eval.eval(reader.read("(vector->list #(1 2 \"test\"))"), env));
-    assertEquals(new SCMList(), eval.eval(reader.read("(vector->list #())"), env));
+    assertEquals(SCMCons.list(1L, 2L, "test"), eval.eval(reader.read("(vector->list #(1 2 \"test\"))"), env));
+    assertEquals(SCMCons.list(), eval.eval(reader.read("(vector->list #())"), env));
 
     try {
       eval.eval(reader.read("(vector->list '(1 2 3))"), env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: SCMList", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Vector, actual: SCMCons", e.getMessage());
     }
   }
 
@@ -565,7 +563,7 @@ public class EvaluatorTest {
       eval.eval(reader.read(sexp), env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: SCMList", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Vector, actual: SCMCons", e.getMessage());
     }
   }
 
@@ -592,11 +590,11 @@ public class EvaluatorTest {
 
     // variadic
     eval.eval(reader.read("(define edlv (lambda args args))"), env);
-    assertEquals(new SCMList<Long>(1L, 2L, 3L, 4L, 5L), eval.eval(reader.read("(edlv 1 2 3 4 5)"), env));
+    assertEquals(SCMCons.<Long>list(1L, 2L, 3L, 4L, 5L), eval.eval(reader.read("(edlv 1 2 3 4 5)"), env));
 
     // variadic define
     eval.eval(reader.read("(define (edv1 first second . rest) rest)"), env);
-    assertEquals(new SCMList<Long>(2L, 3L, 4L, 5L), eval.eval(reader.read("(edv1 0 1 2 3 4 5)"), env));
+    assertEquals(SCMCons.<Long>list(2L, 3L, 4L, 5L), eval.eval(reader.read("(edv1 0 1 2 3 4 5)"), env));
 
     eval.eval(reader.read("(define (edv2 first second . rest) second)"), env);
     assertEquals(1L, eval.eval(reader.read("(edv2 0 1 2 3 4 5)"), env));
@@ -667,8 +665,8 @@ public class EvaluatorTest {
   public void testEvalQuote() {
     assertEquals(0L, eval.eval(reader.read("'0"), env));
     assertEquals("test", eval.eval(reader.read("'\"test\""), env));
-    assertEquals(new SCMList<Object>(SCMSpecialForm.QUOTE, "test"), eval.eval(reader.read("''\"test\""), env));
-    assertEquals(new SCMList<Object>(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
+    assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval.eval(reader.read("''\"test\""), env));
+    assertEquals(SCMCons.<Object>list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
   }
 
   @Test
@@ -800,7 +798,7 @@ public class EvaluatorTest {
     assertEquals(1L, eval.eval(reader.read("(and 1)"), env));
     assertEquals(TRUE, eval.eval(reader.read("(and (= 2 2) (> 2 1))"), env));
     assertEquals(FALSE, eval.eval(reader.read("(and (= 2 2) (< 2 1))"), env));
-    assertEquals(new SCMList<Object>(new SCMSymbol("f"), new SCMSymbol("g")),
+    assertEquals(SCMCons.<Object>list(new SCMSymbol("f"), new SCMSymbol("g")),
                  eval.eval(reader.read("(and 1 2 'c '(f g)) "), env));
   }
 
@@ -810,7 +808,7 @@ public class EvaluatorTest {
     assertEquals(TRUE, eval.eval(reader.read("(or (= 2 2) (> 2 1)) "), env));
     assertEquals(TRUE, eval.eval(reader.read("(or (= 2 2) (< 2 1))"), env));
     assertEquals(FALSE, eval.eval(reader.read("(or #f #f #f)"), env));
-    assertEquals(new SCMList<Object>(new SCMSymbol("f"), new SCMSymbol("g")),
+    assertEquals(SCMCons.<Object>list(new SCMSymbol("f"), new SCMSymbol("g")),
                  eval.eval(reader.read("(or '(f g) 1 2)"), env));
   }
 
@@ -847,8 +845,8 @@ public class EvaluatorTest {
   @Test
   public void testEvalList() {
 
-    assertEquals(SCMList.class.getName(), eval.eval(reader.read("(class-of (list 1 2 3 4 5))"), env));
-    assertEquals(new SCMList<Long>(1L, 2L, 3L), eval.eval(reader.read("(list 1 2 3)"), env));
+    assertEquals(SCMCons.class.getName(), eval.eval(reader.read("(class-of (list 1 2 3 4 5))"), env));
+    assertEquals(SCMCons.list(1L, 2L, 3L), eval.eval(reader.read("(list 1 2 3)"), env));
   }
 
   @Test
@@ -1288,7 +1286,7 @@ public class EvaluatorTest {
                        "    (recursive (- n 1))))";
     eval.eval(reader.read(recursive), env);
 
-//    assertEquals("DONE", eval.eval(reader.read("(recursive 5)"), env));
+    assertEquals("DONE", eval.eval(reader.read("(recursive 5)"), env));
 //    assertEquals("DONE", eval.eval(reader.read("(recursive 489)"), env));
 //    assertEquals("DONE", eval.eval(reader.read("(recursive 490)"), env));
 //    assertEquals("DONE", eval.eval(reader.read("(recursive 1000000)"), env));
@@ -1404,8 +1402,7 @@ public class EvaluatorTest {
     assertEquals(TRUE, eval.eval(reader.read("(equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '()))))"), env));
     assertEquals(TRUE, eval.eval(reader.read("(equal? '(1 2 3) (cons 1 '(2 3))))"), env));
     assertEquals(TRUE, eval.eval(reader.read("(equal? '(1)     (cons 1 '())))"), env));
-
-    assertEquals(FALSE, eval.eval(reader.read("(equal? (cons 1 2) (cons 1 2)))"), env));
+    assertEquals(TRUE, eval.eval(reader.read("(equal? (cons 1 2) (cons 1 2)))"), env));
 
     // check that we do not modify the original list/cons, but return new instead
     eval.eval(reader.read("(define conslist '())"), env);
@@ -1428,7 +1425,6 @@ public class EvaluatorTest {
     assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 2))"), env));
     assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 '()))"), env));
     assertEquals(TRUE,  eval.eval(reader.read("(pair? (cons 1 (cons 2 3))))"), env));
-
   }
 
   @Test
@@ -1443,7 +1439,7 @@ public class EvaluatorTest {
     try {
       eval.eval(reader.read("(car '())"), env);
     } catch (IllegalArgumentException e) {
-     assertEquals("Wrong argument type. Expected: Pair, actual: '()", e.getMessage());
+     assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval.eval(reader.read("(car 1)"), env);
@@ -1458,13 +1454,13 @@ public class EvaluatorTest {
     assertEquals(2L, eval.eval(reader.read("(cdr (cons 1 2))"), env));
     assertEquals("test", eval.eval(reader.read("(cdr (cons 2 \"test\"))"), env));
     assertEquals("(2 . 3)", eval.eval(reader.read("(cdr (cons 1 (cons 2 3)))"), env).toString());
-    assertEquals(new SCMList(2L, 3L), eval.eval(reader.read("(cdr '(1 2 3))"), env));
-    assertEquals(SCMList.NIL, eval.eval(reader.read("(cdr '(1))"), env));
-    assertEquals(SCMList.NIL, eval.eval(reader.read("(cdr (list 1))"), env));
+    assertEquals(list(2L, 3L), eval.eval(reader.read("(cdr '(1 2 3))"), env));
+    assertEquals(SCMCons.NIL, eval.eval(reader.read("(cdr '(1))"), env));
+    assertEquals(SCMCons.NIL, eval.eval(reader.read("(cdr (list 1))"), env));
     try {
       eval.eval(reader.read("(cdr '())"), env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Pair, actual: '()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval.eval(reader.read("(cdr 1)"), env);
@@ -1492,8 +1488,8 @@ public class EvaluatorTest {
     eval.eval(reader.read(gnome), env);
 
     String test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))";
-    SCMList sorted = new SCMList(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
-//    assertEquals(sorted, eval.eval(reader.read(test), env));
+    SCMCons sorted = SCMCons.list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
+    assertEquals(sorted, eval.eval(reader.read(test), env));
   }
 
   @Test
@@ -1517,15 +1513,15 @@ public class EvaluatorTest {
     eval.eval(reader.read(hailstoneLength), env);
     eval.eval(reader.read(hailstoneMax), env);
 
-    SCMList<Long> seq = new SCMList(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
-                                    242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
-                                    700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
-                                    668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
-                                    638L, 319L, 958L, 479L, 1438L, 719L, 2158L, 1079L, 3238L, 1619L, 4858L, 2429L,
-                                    7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
-                                    2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
-                                    61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
-                                    8L, 4L, 2L, 1L);
+    SCMCons seq = SCMCons.list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
+                               242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
+                               700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
+                               668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
+                               638L, 319L, 958L, 479L, 1438L, 719L, 2158L, 1079L, 3238L, 1619L, 4858L, 2429L,
+                               7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
+                               2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
+                               61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
+                               8L, 4L, 2L, 1L);
     assertEquals(seq, eval.eval(reader.read("(hailstone 27)"), env));
     assertEquals(112L, eval.eval(reader.read("(hailstone-length 27)"), env));
   }

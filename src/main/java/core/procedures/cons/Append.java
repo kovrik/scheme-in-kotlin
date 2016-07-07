@@ -3,7 +3,6 @@ package core.procedures.append;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.SCMCons;
-import core.scm.SCMList;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 
@@ -13,7 +12,7 @@ public class Append extends SCMProcedure {
 
   private static final SCMSymbol first = new SCMSymbol("first");
   private static final SCMSymbol second = new SCMSymbol("second");
-  private static final List<SCMSymbol> params = new SCMList<SCMSymbol>(first, second);
+  private static final List<SCMSymbol> params = SCMCons.list(first, second);
 
   public Append() {
     super("append", params, null, null, false);

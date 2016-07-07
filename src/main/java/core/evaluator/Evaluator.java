@@ -3,7 +3,7 @@ package core.evaluator;
 import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.procedures.IFn;
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
@@ -27,7 +27,7 @@ public class Evaluator implements IEvaluator {
       return env.find(sexp);
     } else if (!(sexp instanceof List)) {
       return sexp;
-    } else if (sexp instanceof SCMList) {
+    } else if (sexp instanceof SCMCons) {
       return evlis(sexp, env);
     }
     throw new IllegalArgumentException("Evaluation error: " + sexp);
@@ -59,7 +59,7 @@ public class Evaluator implements IEvaluator {
       }
       /* Then rest */
       // TODO Cleanup and optimize
-      List<Object> varargs = new SCMList<Object>();
+      List<Object> varargs = SCMCons.list();
       varargs.addAll(Arrays.asList(Arrays.copyOfRange(args, params.size() - 1, args.length)));
       values.put(params.get(params.size() - 1), varargs);
     }
@@ -71,7 +71,7 @@ public class Evaluator implements IEvaluator {
    */
   public Object evlis(Object sexp, IEnvironment env) {
 
-    SCMList<Object> list = (SCMList<Object>)sexp;
+    SCMCons list = (SCMCons)sexp;
     if (list.isEmpty()) {
       throw new IllegalArgumentException("Unexpected syntax in form " + list);
     }

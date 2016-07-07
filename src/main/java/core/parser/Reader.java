@@ -1,6 +1,6 @@
 package core.parser;
 
-import core.scm.SCMList;
+import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
@@ -221,8 +221,7 @@ public class Reader implements IReader {
   }
 
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = new SCMList<Object>();
-    quote.add(SCMSpecialForm.QUOTE);
+    List<Object> quote = SCMCons.<Object>list(SCMSpecialForm.QUOTE);
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
@@ -340,7 +339,7 @@ public class Reader implements IReader {
   // TODO Return CONS CELL instead of LIST?
   // TODO Read CONS/LIST in dotted notation
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
-    List<Object> list = SCMList.NIL;
+    List<Object> list = SCMCons.NIL;
     boolean hasElements = false;
     int i;
     char c;
@@ -349,7 +348,7 @@ public class Reader implements IReader {
       Object token = nextToken(reader);
       if (token != null) {
         if (!hasElements) {
-          list = new SCMList<Object>();
+          list = SCMCons.list();
           hasElements = true;
         }
         list.add(token);
