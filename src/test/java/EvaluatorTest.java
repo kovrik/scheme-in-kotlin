@@ -1535,6 +1535,27 @@ public class EvaluatorTest {
     }
   }
 
+  @Test
+  public void testSetCdr() {
+
+    assertEquals(UNSPECIFIED, eval.eval(reader.read("(set-cdr! '(1) 2)"), env));
+    assertEquals(3L, eval.eval(reader.read("(let ((a '(1))) (set-cdr! a 3) (cdr a)))"), env));
+    assertEquals("test", eval.eval(reader.read("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))"), env));
+    assertEquals(SCMCons.list(2L, 3L, 4L), eval.eval(reader.read("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))"), env));
+    assertEquals(3L, eval.eval(reader.read("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))"), env));
+    assertEquals(SCMCons.list(3L, 4L, 5L), eval.eval(reader.read("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr a)))"), env));
+    try {
+      eval.eval(reader.read("(set-cdr! '() 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("(set-cdr! 5 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: 5", e.getMessage());
+    }
+  }
+
   // TODO Exceptions
 
   @Test

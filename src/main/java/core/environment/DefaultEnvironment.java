@@ -149,7 +149,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("car"),    new Car());
     put(new SCMSymbol("cdr"),    new Cdr());
     put(new SCMSymbol("set-car!"), new SetCar());
-//    put(new SCMSymbol("set-cdr!"), new SetCdr());
+    put(new SCMSymbol("set-cdr!"), new SetCdr());
     put(new SCMSymbol("pair?"),  new IsPair());
     put(new SCMSymbol("null?"),  new IsNull());
     put(new SCMSymbol("list?"),  new IsList());

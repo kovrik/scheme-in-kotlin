@@ -46,17 +46,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
   private SCMCons(E car, E cdr) {
     super();
     add(car);
-
-    /* Add all elements only if it is a list (not cons) */
-    if (((cdr instanceof List)  && !(cdr instanceof ICons)) ||
-        ((cdr instanceof ICons) && ((ICons)cdr).isList())) {
-
-      /* cons becomes a list */
-      setList(true);
-      addAll((List)cdr);
-    } else {
-      add(cdr);
-    }
+    setCdr(cdr);
   }
 
   public boolean isList() {
@@ -84,10 +74,28 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   public Object cdr() {
     if (isList) {
-      /* FIXME set-cdr! won't work! */
       return subList(1, size());
     } else {
       return getLast();
+    }
+  }
+
+  public void setCdr(Object cdr) {
+    if (isEmpty()) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+    }
+    subList(1, size()).clear();
+
+    /* Add all elements only if it is a list (not cons) */
+    if (((cdr instanceof List)  && !(cdr instanceof ICons)) ||
+        ((cdr instanceof ICons) && ((ICons)cdr).isList())) {
+
+      /* cons becomes a list */
+      setList(true);
+      addAll((List)cdr);
+    } else {
+      setList(false);
+      add((E)cdr);
     }
   }
 

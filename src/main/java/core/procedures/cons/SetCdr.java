@@ -9,14 +9,14 @@ import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
 
-public class SetCar extends SCMProcedure {
+public class SetCdr extends SCMProcedure {
 
   private static final SCMSymbol pair  = new SCMSymbol("pair");
-  private static final SCMSymbol car = new SCMSymbol("car");
-  private static final List<SCMSymbol> params = SCMCons.list(pair, car);
+  private static final SCMSymbol cdr = new SCMSymbol("object");
+  private static final List<SCMSymbol> params = SCMCons.list(pair, cdr);
 
-  public SetCar() {
-    super("set-car!", params, null, null, false);
+  public SetCdr() {
+    super("set-cdr!", params, null, null, false);
   }
 
   @Override
@@ -28,7 +28,7 @@ public class SetCar extends SCMProcedure {
                                                        p));
     }
     SCMCons cons = (SCMCons)p;
-    cons.set(0, env.get(car));
+    cons.setCdr(env.get(cdr));
     return SCMSpecialForm.UNSPECIFIED;
   }
 }
