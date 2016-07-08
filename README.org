@@ -17,6 +17,7 @@ CLOSED: [2016-07-07 Thu 19:06]
 ** TODO [#C] Tail-call elimination
 ** TODO [#C] Proper LOGGING
 ** TODO [#C] Macroexpansion
+** TODO [#C] Correct error messages (Long -> Integer? etc.)
 ** DONE Nil value
 CLOSED: [2016-07-02 Sat 19:54]
 ** DONE [#A] Internal (local) define

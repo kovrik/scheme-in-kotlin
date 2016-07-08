@@ -324,6 +324,12 @@ public class EvaluatorTest {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
     }
     try {
+      eval.eval(reader.read("(make-string 2 1)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: Long"));
+    }
+    try {
       eval.eval(reader.read("(make-string)"), env);
       fail();
     } catch (IllegalArgumentException e) {
@@ -1509,6 +1515,26 @@ public class EvaluatorTest {
       assertEquals("Wrong argument type. Expected: Pair, actual: Long", e.getMessage());
     }
   }
+
+  @Test
+  public void testSetCar() {
+
+    assertEquals(UNSPECIFIED, eval.eval(reader.read("(set-car! '(1) 2)"), env));
+    assertEquals(3L, eval.eval(reader.read("(let ((a '(1))) (set-car! a 3) (car a)))"), env));
+    assertEquals("test", eval.eval(reader.read("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))"), env));
+    assertEquals("test", eval.eval(reader.read("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))"), env));
+    try {
+      eval.eval(reader.read("(set-car! '() 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("(set-car! 5 1)"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Pair, actual: 5", e.getMessage());
+    }
+  }
+
   // TODO Exceptions
 
   @Test

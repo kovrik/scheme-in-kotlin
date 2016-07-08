@@ -35,11 +35,10 @@ public class MakeString extends SCMProcedure {
     if (vals.size() > 1) {
       throw new ArityException(vals.size() + 1, "make-string");
     }
-    char c;
-    if (vals.isEmpty()) {
-      c = Character.MIN_VALUE;
-    } else {
-      c = (Character)vals.get(0);
+    Object c = vals.isEmpty() ? Character.MIN_VALUE : vals.get(0);
+    if (!(c instanceof Character)) {
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Character, actual: %s",
+                                                       c.getClass().getSimpleName()));
     }
     StringBuilder sb = new StringBuilder();
     for (long i = 0; i < s; i++) {
