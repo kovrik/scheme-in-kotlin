@@ -97,31 +97,19 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     if (isEmpty()) {
       return "()";
     }
-
     /* Cons cell */
     if (!isList) {
       StringBuilder cons = new StringBuilder();
       cons.append("(").append(getFirst());
       Object cdr = getLast();
-      if ((cdr instanceof SCMCons) && !((SCMCons)cdr).isList) {
-        Object current = cdr;
-        while ((current instanceof SCMCons) && !((SCMCons)current).isList) {
-          cons.append(" ").append(((SCMCons) current).getFirst());
-          current = ((SCMCons)current).getLast();
-        }
-        if (!NIL.equals(current)) {
-          if (!isList()) {
-            cons.append(" .");
-          }
-          cons.append(" ").append(current);
-        }
-      } else {
-        /* Dotted notation */
-        cons.append(" . ").append(cdr);
+      while (cdr instanceof SCMCons) {
+        cons.append(" ").append(((SCMCons) cdr).getFirst());
+        cdr = ((SCMCons)cdr).getLast();
       }
+      /* Dotted notation */
+      cons.append(" . ").append(cdr);
       return cons.append(")").toString();
     }
-
     /* List */
     StringBuilder sb = new StringBuilder();
     sb.append('(');
