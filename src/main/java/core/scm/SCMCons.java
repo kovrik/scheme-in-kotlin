@@ -87,9 +87,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     subList(1, size()).clear();
 
     /* Add all elements only if it is a list (not cons) */
-    if (((cdr instanceof List)  && !(cdr instanceof ICons)) ||
-        ((cdr instanceof ICons) && ((ICons)cdr).isList())) {
-
+    if (isList(cdr)) {
       /* cons becomes a list */
       setList(true);
       addAll((List)cdr);
@@ -167,5 +165,10 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     SCMCons<E> result = list();
     result.addAll(list);
     return result;
+  }
+
+  /* Return true if o is a List or SCMCons and a list */
+  public static boolean isList(Object o) {
+    return ((o instanceof List)  && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
   }
 }

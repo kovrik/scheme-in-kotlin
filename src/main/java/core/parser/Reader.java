@@ -336,7 +336,6 @@ public class Reader implements IReader {
     return character.charAt(0);
   }
 
-  // TODO Return CONS CELL instead of LIST?
   // TODO Read CONS/LIST in dotted notation
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = SCMCons.NIL;

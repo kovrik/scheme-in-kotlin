@@ -24,8 +24,7 @@ public class SetCdr extends SCMProcedure {
 
     Object p = env.get(pair);
     if ((!(p instanceof SCMCons)) || !((SCMCons)p).isPair()) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s",
-                                                       p));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", p));
     }
     SCMCons cons = (SCMCons)p;
     cons.setCdr(env.get(cdr));

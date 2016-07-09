@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
+import static core.scm.SCMCons.NIL;
 import static core.scm.SCMCons.list;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.*;
@@ -1553,6 +1554,30 @@ public class EvaluatorTest {
       eval.eval(reader.read("(set-cdr! 5 1)"), env);
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 5", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testAppend() {
+    assertEquals("test", eval.eval(reader.read("(append '() \"test\")"), env));
+    assertEquals(5L, eval.eval(reader.read("(append '() 5)"), env));
+    assertEquals("(1 . 5)", eval.eval(reader.read("(append '(1) 5)"), env).toString());
+    assertEquals("(1 2 3)", eval.eval(reader.read("(append '(1) '(2 3))"), env).toString());
+    assertEquals("(1 2 2 3)", eval.eval(reader.read("(append '(1 2) '(2 3))"), env).toString());
+    assertEquals("(1 2 3 4 5)", eval.eval(reader.read("(append '(1) '(2) '(3 4) '(5))"), env).toString());
+    assertEquals("(1 . 2)", eval.eval(reader.read("(append '() (cons 1 2))"), env).toString());
+    assertEquals("(1 1 . 2)", eval.eval(reader.read("(append '(1) (cons 1 2))"), env).toString());
+    assertEquals("(1 1 1 . 2)", eval.eval(reader.read("(append '(1 1) (cons 1 2))"), env).toString());
+    assertEquals(NIL, eval.eval(reader.read("(append '() '() '() '())"), env));
+    try {
+      eval.eval(reader.read("(append 1 '())"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("(append '() '() 5 '())"), env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: 5", e.getMessage());
     }
   }
 

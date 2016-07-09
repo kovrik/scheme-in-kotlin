@@ -337,7 +337,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [13/23]
+*** TODO Pairs and lists [14/23]
 **** DONE pair?
 CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
@@ -360,7 +360,8 @@ CLOSED: [2016-05-15 Sun 22:20]
 CLOSED: [2016-06-02 Thu 18:47]
 **** DONE length
 CLOSED: [2016-06-02 Thu 21:54]
-**** TODO append
+**** DONE append
+CLOSED: [2016-07-09 Sat 20:53]
 **** TODO reverse
 **** TODO list-tail
 **** TODO list-ref
