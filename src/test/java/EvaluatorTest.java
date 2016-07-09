@@ -395,7 +395,7 @@ public class EvaluatorTest {
     assertEquals(SCMPromise.class, eval.eval(reader.read("(delay 1.0)"), env).getClass());
     assertEquals(TRUE, eval.eval(reader.read("(promise? (delay 1.0))"), env));
     assertEquals(3L, eval.eval(reader.read("(force (delay (+ 1 2)))"), env));
-    assertEquals(SCMCons.list(3L, 3L), eval.eval(reader.read("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
+    assertEquals(list(3L, 3L), eval.eval(reader.read("(let ((p (delay (+ 1 2))))(list (force p) (force p)))"), env));
   }
 
   @Test
@@ -571,8 +571,8 @@ public class EvaluatorTest {
   @Test
   public void testEvalVectorToList() {
 
-    assertEquals(SCMCons.list(1L, 2L, "test"), eval.eval(reader.read("(vector->list #(1 2 \"test\"))"), env));
-    assertEquals(SCMCons.list(), eval.eval(reader.read("(vector->list #())"), env));
+    assertEquals(list(1L, 2L, "test"), eval.eval(reader.read("(vector->list #(1 2 \"test\"))"), env));
+    assertEquals(list(), eval.eval(reader.read("(vector->list #())"), env));
 
     try {
       eval.eval(reader.read("(vector->list '(1 2 3))"), env);
@@ -705,7 +705,7 @@ public class EvaluatorTest {
     assertEquals(0L, eval.eval(reader.read("'0"), env));
     assertEquals("test", eval.eval(reader.read("'\"test\""), env));
     assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval.eval(reader.read("''\"test\""), env));
-    assertEquals(SCMCons.list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
+    assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
   }
 
   @Test
@@ -915,7 +915,7 @@ public class EvaluatorTest {
   public void testEvalList() {
 
     assertEquals(SCMCons.class.getName(), eval.eval(reader.read("(class-of (list 1 2 3 4 5))"), env));
-    assertEquals(SCMCons.list(1L, 2L, 3L), eval.eval(reader.read("(list 1 2 3)"), env));
+    assertEquals(list(1L, 2L, 3L), eval.eval(reader.read("(list 1 2 3)"), env));
   }
 
   @Test
@@ -1563,9 +1563,9 @@ public class EvaluatorTest {
     assertEquals(UNSPECIFIED, eval.eval(reader.read("(set-cdr! '(1) 2)"), env));
     assertEquals(3L, eval.eval(reader.read("(let ((a '(1))) (set-cdr! a 3) (cdr a)))"), env));
     assertEquals("test", eval.eval(reader.read("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))"), env));
-    assertEquals(SCMCons.list(2L, 3L, 4L), eval.eval(reader.read("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))"), env));
+    assertEquals(list(2L, 3L, 4L), eval.eval(reader.read("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))"), env));
     assertEquals(3L, eval.eval(reader.read("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))"), env));
-    assertEquals(SCMCons.list(3L, 4L, 5L), eval.eval(reader.read("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr a)))"), env));
+    assertEquals(list(3L, 4L, 5L), eval.eval(reader.read("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr a)))"), env));
     try {
       eval.eval(reader.read("(set-cdr! '() 1)"), env);
     } catch (IllegalArgumentException e) {
@@ -1602,6 +1602,19 @@ public class EvaluatorTest {
     }
   }
 
+  @Test
+  public void testFlattenList() {
+
+    String flatten = "(define (flatten x)" +
+                     "    (cond ((null? x) '())" +
+                     "          ((not (pair? x)) (list x))" +
+                     "          (else (append (flatten (car x))" +
+                     "                        (flatten (cdr x))))))";
+    eval.eval(reader.read(flatten), env);
+    assertEquals(list(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L),
+                 eval.eval(reader.read("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))"), env));
+  }
+
   // TODO Exceptions
 
   @Test
@@ -1622,7 +1635,7 @@ public class EvaluatorTest {
     eval.eval(reader.read(gnome), env);
 
     String test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))";
-    SCMCons sorted = SCMCons.list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
+    SCMCons sorted = list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
     assertEquals(sorted, eval.eval(reader.read(test), env));
   }
 
@@ -1647,7 +1660,7 @@ public class EvaluatorTest {
     eval.eval(reader.read(hailstoneLength), env);
     eval.eval(reader.read(hailstoneMax), env);
 
-    SCMCons seq = SCMCons.list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
+    SCMCons seq = list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
                                242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
                                700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
                                668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
