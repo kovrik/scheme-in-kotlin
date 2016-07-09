@@ -27,24 +27,24 @@ public class Append extends SCMProcedure {
     if (es.size() == 1) {
       return es.get(0);
     }
-    Object r = es.get(0);
-    if (!SCMCons.isList(r)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", r));
+    Object result = es.get(0);
+    if (!SCMCons.isList(result)) {
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", result));
     }
-    Object result = (List)r;
+
     for (int i = 1; i < es.size(); i++) {
-      Object cur = es.get(i);
-      if ((i != es.size() - 1) && !SCMCons.isList(cur)) {
-        throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", cur));
+      Object current = es.get(i);
+      /* Do not check last element */
+      if ((i != es.size() - 1) && !SCMCons.isList(current)) {
+        throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", current));
       }
-      result = append2(result, cur);
+      result = append2(result, current);
     }
     return result;
   }
 
-  // FIXME Make iterative
+  // FIXME Make iterative!
   public static Object append2(Object first, Object second) {
-
     if (SCMBoolean.valueOf(IsNull.isNull(first))) {
       return second;
     }

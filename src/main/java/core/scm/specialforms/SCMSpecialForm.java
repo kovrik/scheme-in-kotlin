@@ -12,10 +12,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public enum SCMSpecialForm implements ISpecialForm {
 
@@ -24,7 +21,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       return UNSPECIFIED;
     }
   },
-  DOT("DOT") {
+  DOT(".") {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       return DOT;
     }
@@ -111,7 +108,34 @@ public enum SCMSpecialForm implements ISpecialForm {
       if ((expression.get(1) instanceof SCMCons) && (((SCMCons)expression.get(1)).isEmpty())) {
         return SCMCons.NIL;
       }
-      return expression.get(1);
+      Object e = expression.get(1);
+      if (e instanceof LinkedList) {
+        LinkedList list = (LinkedList) e;
+        int i = list.indexOf(DOT);
+        /* Dotted pair */
+        if (i > -1) {
+          /* Check dot position */
+          if (i != (list.size() - 2)) {
+            throw new IllegalArgumentException("Error: bad dotted pair form: " + e);
+          }
+          Object afterDot = list.remove(list.size() - 1);
+          /* Ignore dot */
+          Object dot = list.remove(list.size() - 1);
+          Object beforeDot = list.remove(list.size() - 1);
+
+          /* Iterate backwards */
+          ListIterator listIterator = list.listIterator(list.size());
+          /* Create dotted pair */
+          SCMCons cons = SCMCons.cons(beforeDot, afterDot);
+          /* Cons everything else if exists */
+          while (listIterator.hasPrevious()) {
+            Object previous = listIterator.previous();
+            cons = SCMCons.cons(previous, cons);
+          }
+          return cons;
+        }
+      }
+      return e;
     }
   },
   UNQUOTE("unquote") {

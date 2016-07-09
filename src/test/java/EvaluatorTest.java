@@ -22,6 +22,7 @@ import java.util.Map;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.NIL;
+import static core.scm.SCMCons.cons;
 import static core.scm.SCMCons.list;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.*;
@@ -705,6 +706,26 @@ public class EvaluatorTest {
     assertEquals("test", eval.eval(reader.read("'\"test\""), env));
     assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval.eval(reader.read("''\"test\""), env));
     assertEquals(SCMCons.list(new SCMSymbol("+"), 1L, 2L), eval.eval(reader.read("'(+ 1 2)"), env));
+  }
+
+  @Test
+  public void testEvalDottedPair() {
+    assertEquals(2L, eval.eval(reader.read("(car (cdr '(1 2 3 . (2 3 4))))"), env));
+    assertEquals(cons(1L, 2L), eval.eval(reader.read("'(1 . 2)"), env));
+    assertEquals(cons(1L, cons(2L, cons(3L, 4L))), eval.eval(reader.read("'(1 2 3 . 4)"), env));
+
+    try {
+      eval.eval(reader.read("'(1 2 3 . 4 5)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error: bad dotted pair form: (1 2 3 . 4 5)", e.getMessage());
+    }
+    try {
+      eval.eval(reader.read("'( . 1 2 3 4 5)"), env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error: bad dotted pair form: (. 1 2 3 4 5)", e.getMessage());
+    }
   }
 
   @Test
