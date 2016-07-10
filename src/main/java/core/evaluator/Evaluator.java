@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 public class Evaluator implements IEvaluator {
 
   public Object eval(Object sexp, IEnvironment env) {
-
     if (sexp instanceof SCMSymbol) {
       /* Symbol */
       if (((SCMSymbol) sexp).getValue().startsWith(",")) {
@@ -38,8 +37,7 @@ public class Evaluator implements IEvaluator {
    * Gets a procedure `fn`, parameters `args`, environment `env`,
    * invokes the procedure and returns a result.
    */
-  public Object apply(Object fn, Object[] args, IEnvironment env) {
-
+  private Object apply(Object fn, Object[] args, IEnvironment env) {
     SCMProcedure procedure = (SCMProcedure) fn;
     List<SCMSymbol> params = procedure.getParams();
     if (!procedure.isVariableArity()) {
@@ -73,8 +71,7 @@ public class Evaluator implements IEvaluator {
   /**
    * Evaluate a list
    */
-  public Object evlis(Object sexp, IEnvironment env) {
-
+  private Object evlis(Object sexp, IEnvironment env) {
     SCMCons list = (SCMCons)sexp;
     if (list.isEmpty()) {
       throw new IllegalArgumentException("Unexpected syntax in form " + list);
@@ -120,7 +117,7 @@ public class Evaluator implements IEvaluator {
   /**
    * Evaluate meta
    */
-  public Object evmeta(String sexp) {
+  private Object evmeta(String sexp) {
     if (",q".equals(sexp)) {
       System.out.println("Bye!");
       System.exit(0);
