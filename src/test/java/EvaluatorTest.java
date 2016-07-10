@@ -1787,6 +1787,55 @@ public class EvaluatorTest {
     assertEquals(112L, eval("(hailstone-length 27)", env));
   }
 
+  @Test
+  public void testEvalDisplay() {
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream old = System.out;
+    System.setOut(new PrintStream(baos));
+
+    IEnvironment tempEnv = new DefaultEnvironment();
+    /* Eval lib procedures */
+    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
+      tempEnv.put(entry.getKey(), eval(entry.getValue(), tempEnv));
+    }
+    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+
+    eval("(display 123)", tempEnv);
+    assertEquals("123", baos.toString().trim());
+    baos.reset();
+
+    eval("(display -123.25)", tempEnv);
+    assertEquals("-123.25", baos.toString().trim());
+    baos.reset();
+
+    eval("(display \"test string\")", tempEnv);
+    assertEquals("test string", baos.toString().trim());
+    baos.reset();
+
+    eval("(display '())", tempEnv);
+    assertEquals("()", baos.toString().trim());
+    baos.reset();
+
+    eval("(display '(1 2 3 #\\A (1 . 2)))", tempEnv);
+    assertEquals("(1 2 3 #\\A (1 . 2))", baos.toString().trim());
+    baos.reset();
+
+    eval("(display (list 1 2 3 #\\A (cons 1 2) (list 1 2 3)))", tempEnv);
+    assertEquals("(1 2 3 #\\A (1 . 2) (1 2 3))", baos.toString().trim());
+    baos.reset();
+
+    eval("(display (string->list \"Hello\"))", tempEnv);
+    assertEquals("(#\\H #\\e #\\l #\\l #\\o)", baos.toString().trim());
+    baos.reset();
+
+    eval("(display (cdr (cdr '(1 2 3 4 5 6))))", tempEnv);
+    assertEquals("(3 4 5 6)", baos.toString().trim());
+    baos.reset();
+
+    System.setOut(old);
+  }
+
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
