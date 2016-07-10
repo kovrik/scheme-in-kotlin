@@ -99,40 +99,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   @Override
   public String toString() {
-
-    if (isEmpty()) {
-      return "()";
-    }
-    /* Cons cell */
-    if (!isList) {
-      StringBuilder cons = new StringBuilder();
-      cons.append("(").append(getFirst());
-      Object cdr = getLast();
-      while (cdr instanceof SCMCons) {
-        cons.append(" ").append(((SCMCons) cdr).getFirst());
-        cdr = ((SCMCons)cdr).getLast();
-      }
-      /* Dotted notation */
-      cons.append(" . ").append(cdr);
-      return cons.append(")").toString();
-    }
-    /* List */
-    StringBuilder sb = new StringBuilder();
-    sb.append('(');
-    boolean first = true;
-    for (Object e : this) {
-      if (!first) {
-        sb.append(' ');
-      } else {
-        first = false;
-      }
-      if (e == this) {
-        sb.append("(this Cons)");
-      } else {
-        sb.append(e);
-      }
-    }
-    return sb.append(')').toString();
+    return toString(this);
   }
 
   public static <E> SCMCons<E> cons(E car, E cdr) {
@@ -170,5 +137,47 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
   /* Return true if o is a List or SCMCons and a list */
   public static boolean isList(Object o) {
     return ((o instanceof List)  && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
+  }
+
+  public static boolean isPair(Object o) {
+    return (o instanceof List) && !(((List)o).isEmpty());
+  }
+
+  /* Use this method to print all lists */
+  public static String toString(List list) {
+
+    if (list.isEmpty()) {
+      return "()";
+    }
+    /* Cons cell */
+    if (!isList(list)) {
+      StringBuilder cons = new StringBuilder();
+      cons.append("(").append(list.get(0));
+      Object cdr = list.get(list.size() - 1);
+      while (cdr instanceof SCMCons) {
+        cons.append(" ").append(((SCMCons) cdr).getFirst());
+        cdr = ((SCMCons)cdr).getLast();
+      }
+      /* Dotted notation */
+      cons.append(" . ").append(cdr);
+      return cons.append(")").toString();
+    }
+    /* List */
+    StringBuilder sb = new StringBuilder();
+    sb.append('(');
+    boolean first = true;
+    for (Object e : list) {
+      if (!first) {
+        sb.append(' ');
+      } else {
+        first = false;
+      }
+      if (e == list) {
+        sb.append("(this List)");
+      } else {
+        sb.append(e);
+      }
+    }
+    return sb.append(')').toString();
   }
 }

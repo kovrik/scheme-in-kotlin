@@ -21,12 +21,11 @@ public class SetCar extends SCMProcedure {
 
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
-
     Object p = env.get(pair);
-    if ((!(p instanceof SCMCons)) || !((SCMCons)p).isPair()) {
+    if (!SCMCons.isPair(p)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", p));
     }
-    SCMCons cons = (SCMCons)p;
+    List cons = (List)p;
     cons.set(0, env.get(car));
     return SCMSpecialForm.UNSPECIFIED;
   }

@@ -1565,7 +1565,7 @@ public class EvaluatorTest {
     assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env));
     assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env));
     assertEquals(3L, eval("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))", env));
-    assertEquals(list(3L, 4L, 5L), eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr a)))", env));
+    assertEquals(2L, eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr (cons 1 2)))", env));
     try {
       eval("(set-cdr! '() 1)", env);
     } catch (IllegalArgumentException e) {
@@ -1619,6 +1619,19 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: reverse", e.getMessage());
     }
+  }
+
+  @Test
+  public void testListTail() {
+    assertEquals(list(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env));
+    assertEquals(2L, eval("(list-tail (cons 1 2) 1)", env));
+    assertEquals(new SCMSymbol("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env));
+
+    eval("(define a '(1 2 3 4))", env);
+    eval("(define b (list-tail (cdr a) 2))", env);
+    eval("(set-cdr! b '(33 44))", env);
+    assertEquals(list(1L, 2L, 3L, 4L, 33L, 44L), eval("a", env));
+    assertEquals(list(4L, 33L, 44L), eval("b", env));
   }
 
   @Test
@@ -1722,6 +1735,6 @@ public class EvaluatorTest {
 
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
-    return eval.eval( reader.read(sexp), env);
+    return eval.eval(reader.read(sexp), env);
   }
 }

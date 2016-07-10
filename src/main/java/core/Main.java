@@ -6,11 +6,13 @@ import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.parser.IReader;
 import core.parser.Reader;
+import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -65,11 +67,12 @@ public class Main {
           // Print
           if (result instanceof String) {
             System.out.println(id + " = \"" + result + "\"");
-            System.out.flush();
+          } else if (result instanceof List) {
+            System.out.println(id + " = " + SCMCons.toString((List) result));
           } else {
             System.out.println(id + " = " + result);
-            System.out.flush();
           }
+          System.out.flush();
         }
         // TODO Proper Error handling
       } catch (UnsupportedOperationException e) {

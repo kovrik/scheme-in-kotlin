@@ -21,13 +21,26 @@ public class SetCdr extends SCMProcedure {
 
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
-
     Object p = env.get(pair);
-    if ((!(p instanceof SCMCons)) || !((SCMCons)p).isPair()) {
+    if (!SCMCons.isPair(p)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", p));
     }
-    SCMCons cons = (SCMCons)p;
-    cons.setCdr(env.get(cdr));
+
+    List list = (List)p;
+    /* Remove tail */
+    list.subList(1, list.size()).clear();
+
+    /* Set new tail */
+    Object o = env.get(cdr);
+    if (o instanceof List) {
+      list.addAll((List)o);
+    } else {
+      list.add(o);
+      // FIXME How to make it Cons if it is a SubList?
+      if (list instanceof SCMCons) {
+        ((SCMCons)list).setList(false);
+      }
+    }
     return SCMSpecialForm.UNSPECIFIED;
   }
 }

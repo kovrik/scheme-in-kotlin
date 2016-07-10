@@ -23,7 +23,7 @@ public class MakeString extends SCMProcedure {
   public String apply(IEvaluator evaluator, IEnvironment env) {
 
     Object o = env.get(size);
-    if (!(o instanceof Number)) {
+    if (!(o instanceof Long)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
                                                        o.getClass().getSimpleName()));
     }
