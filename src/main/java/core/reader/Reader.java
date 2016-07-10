@@ -1,4 +1,4 @@
-package core.parser;
+package core.reader;
 
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;

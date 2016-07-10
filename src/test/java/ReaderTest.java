@@ -1,5 +1,5 @@
-import core.parser.IReader;
-import core.parser.Reader;
+import core.reader.IReader;
+import core.reader.Reader;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;

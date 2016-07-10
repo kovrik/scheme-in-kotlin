@@ -1,4 +1,4 @@
-package core.parser;
+package core.reader;
 
 import core.exceptions.UnmatchedDoubleQuoteException;
 import core.exceptions.UnmatchedParenException;

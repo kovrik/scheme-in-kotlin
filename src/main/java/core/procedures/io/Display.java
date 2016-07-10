@@ -6,12 +6,15 @@ import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
+import core.writer.IWriter;
+import core.writer.Writer;
 
 import java.io.PrintStream;
 import java.util.List;
 
 public class Display extends SCMProcedure {
 
+  private static final IWriter writer = new Writer();
   private static final SCMSymbol value = new SCMSymbol("value");
   private static final List<SCMSymbol> params = SCMCons.list(value);
 
@@ -25,7 +28,7 @@ public class Display extends SCMProcedure {
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object result = super.apply(evaluator, env);
-    printStream.print(result);
+    printStream.print(writer.toString(result));
     return SCMSpecialForm.UNSPECIFIED;
   }
 }

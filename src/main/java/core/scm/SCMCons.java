@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static core.writer.Writer.write;
+
 public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   /* Empty list constant */
@@ -143,6 +145,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     return (o instanceof List) && !(((List)o).isEmpty());
   }
 
+  // TODO Move to Writer?
   /* Use this method to print all lists */
   public static String toString(List list) {
 
@@ -152,14 +155,14 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     /* Cons cell */
     if (!isList(list)) {
       StringBuilder cons = new StringBuilder();
-      cons.append("(").append(list.get(0));
+      cons.append("(").append(write(list.get(0)));
       Object cdr = list.get(list.size() - 1);
       while (cdr instanceof SCMCons) {
-        cons.append(" ").append(((SCMCons) cdr).getFirst());
+        cons.append(" ").append(write(((SCMCons) cdr).getFirst()));
         cdr = ((SCMCons)cdr).getLast();
       }
       /* Dotted notation */
-      cons.append(" . ").append(cdr);
+      cons.append(" . ").append(write(cdr));
       return cons.append(")").toString();
     }
     /* List */
@@ -175,7 +178,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
       if (e == list) {
         sb.append("(this List)");
       } else {
-        sb.append(e);
+        sb.append(write(e));
       }
     }
     return sb.append(')').toString();

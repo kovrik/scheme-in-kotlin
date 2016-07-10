@@ -1,4 +1,4 @@
-package core.parser;
+package core.reader;
 
 import java.io.InputStream;
 

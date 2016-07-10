@@ -4,15 +4,15 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
-import core.parser.IReader;
-import core.parser.Reader;
-import core.scm.SCMCons;
+import core.reader.IReader;
+import core.reader.Reader;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
+import core.writer.IWriter;
+import core.writer.Writer;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,6 +25,7 @@ public class Main {
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "scheme@(user)> ";
 
+  private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader();
   private static final IEvaluator evaluator = new Evaluator();
   private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
@@ -63,15 +64,8 @@ public class Main {
           // Put result into environment
           SCMSymbol id = getNextID();
           env.put(id, result);
-
           // Print
-          if (result instanceof String) {
-            System.out.println(id + " = \"" + result + "\"");
-          } else if (result instanceof List) {
-            System.out.println(id + " = " + SCMCons.toString((List) result));
-          } else {
-            System.out.println(id + " = " + result);
-          }
+          System.out.println(id + " = " + writer.toString(result));
           System.out.flush();
         }
         // TODO Proper Error handling
