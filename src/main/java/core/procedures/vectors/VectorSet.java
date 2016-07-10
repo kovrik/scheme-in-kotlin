@@ -23,15 +23,13 @@ public class VectorSet extends SCMProcedure {
 
     Object o = env.get(vector);
     if (!(o instanceof SCMVector)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Vector, actual: %s",
-                                                       o));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Vector, actual: %s", o));
     }
     SCMVector vec = (SCMVector)o;
 
     Object p = env.get(pos);
     if (!(p instanceof Long)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       p));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s", p));
     }
     Long pos = (Long)p;
     if ((pos < 0) || (pos >= vec.length())) {

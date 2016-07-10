@@ -1726,6 +1726,53 @@ public class EvaluatorTest {
     }
   }
 
+  // FIXME Make modifiable String
+  @Test
+  public void testEvalStringSet() {
+    assertEquals("z", eval("(string-set! \"a\" 0 #\\z)", env));
+    assertEquals("zbc", eval("(string-set! \"abc\" 0 #\\z)", env));
+    assertEquals("azc", eval("(string-set! \"abc\" 1 #\\z)", env));
+    assertEquals("abz", eval("(string-set! \"abc\" 2 #\\z)", env));
+
+    try {
+      eval("(string-set! \"abc\" -1 #\\z)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: -1"));
+    }
+    try {
+      eval("(string-set! \"abc\" 3 #\\z)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 3"));
+    }
+    try {
+      eval("(string-set! \"\" 0 #\\z)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 0"));
+    }
+    try {
+      eval("(string-set! '(1 2 3) 2 #\\z)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: (1 2 3)"));
+    }
+    try {
+      eval("(string-set! \"test\" 0.5 #\\A)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
+    }
+    try {
+      eval("(string-set! \"test\" 3 '())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: ()"));
+    }
+    // FIXME Mutable string?
+  }
+
   @Test
   public void testFlattenList() {
 

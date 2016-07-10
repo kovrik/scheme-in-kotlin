@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [14/30]
+* TODO: [15/32]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -9,7 +9,9 @@ CLOSED: [2016-07-07 Thu 19:06]
 CLOSED: [2016-07-07 Thu 19:06]
 ** DONE [#A] Reader: read dotted notation
 CLOSED: [2016-07-09 Sat 21:55]
-** TODO [#A] Fix toString everywhere for Chars and Lists
+** TODO [#A] Make modifiable SCMString
+** DONE [#A] Fix toString everywhere for Chars and Lists
+CLOSED: [2016-07-10 Sun 20:13]
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
@@ -283,7 +285,7 @@ CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO complex?
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]
-*** TODO Strings [9/18]
+*** TODO Strings [10/18]
 **** DONE string?
 CLOSED: [2016-05-11 Wed 18:08]
 **** DONE make-string
@@ -292,7 +294,8 @@ CLOSED: [2016-07-07 Thu 19:50]
 **** DONE string-length
 **** DONE string-ref
 CLOSED: [2016-07-10 Sun 18:40]
-**** TODO string-set!
+**** DONE string-set!
+CLOSED: [2016-07-10 Sun 20:13]
 **** DONE string=?
 CLOSED: [2016-05-11 Wed 17:56]
 **** DONE string-ci=?

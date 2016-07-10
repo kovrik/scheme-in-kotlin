@@ -121,6 +121,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("list->string"), new ListToString());
     put(new SCMSymbol("string->list"), new StringToList());
     put(new SCMSymbol("string-ref"), new StringRef());
+    put(new SCMSymbol("string-set!"), new StringSet());
 
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
