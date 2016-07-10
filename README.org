@@ -339,7 +339,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [15/23]
+*** TODO Pairs and lists [17/23]
 **** DONE pair?
 CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
@@ -366,7 +366,8 @@ CLOSED: [2016-06-02 Thu 21:54]
 CLOSED: [2016-07-09 Sat 20:53]
 **** DONE reverse
 CLOSED: [2016-07-10 Sun 10:01]
-**** TODO list-tail
+**** DONE list-tail
+CLOSED: [2016-07-10 Sun 12:00]
 **** TODO list-ref
 **** TODO memq. memv. member
 **** TODO assq
@@ -374,7 +375,8 @@ CLOSED: [2016-07-10 Sun 10:01]
 **** TODO assoc
 **** DONE list->vector
 **** DONE vector->list
-**** TODO list->string
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 12:08]
 **** TODO string->list
 *** TODO Identity predicates [7/9]
 **** DONE boolean?
