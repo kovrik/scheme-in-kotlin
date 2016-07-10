@@ -28,7 +28,11 @@ public class Display extends SCMProcedure {
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object result = super.apply(evaluator, env);
-    printStream.print(writer.toString(result));
+    if (result instanceof String) {
+      printStream.print(result);
+    } else {
+      printStream.print(writer.toString(result));
+    }
     return SCMSpecialForm.UNSPECIFIED;
   }
 }
