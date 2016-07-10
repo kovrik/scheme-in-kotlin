@@ -1632,6 +1632,30 @@ public class EvaluatorTest {
     eval("(set-cdr! b '(33 44))", env);
     assertEquals(list(1L, 2L, 3L, 4L, 33L, 44L), eval("a", env));
     assertEquals(list(4L, 33L, 44L), eval("b", env));
+    try {
+      eval("(list-tail 1 2)", env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testListRef() {
+    assertEquals(1L, eval("(list-ref '(1) 0)", env));
+    assertEquals(3L, eval("(list-ref '(1 2 3) 2)", env));
+    assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env));
+//  FIXME assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env));
+    assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env));
+    try {
+      eval("(list-ref 1 2)", env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
+    }
+    try {
+      eval("(list-ref '(1 2) 2.5)", env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: Integer, actual: 2.5", e.getMessage());
+    }
   }
 
   @Test

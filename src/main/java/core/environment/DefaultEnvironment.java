@@ -155,8 +155,9 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("pair?"),  new IsPair());
     put(new SCMSymbol("null?"),  new IsNull());
     put(new SCMSymbol("list?"),  new IsList());
-    put(new SCMSymbol("append"), new core.procedures.cons.Append());
-    put(new SCMSymbol("reverse"), new core.procedures.cons.Reverse());
-    put(new SCMSymbol("list-tail"), new core.procedures.cons.ListTail());
+    put(new SCMSymbol("append"), new Append());
+    put(new SCMSymbol("reverse"), new Reverse());
+    put(new SCMSymbol("list-tail"), new ListTail());
+    put(new SCMSymbol("list-ref"), new ListRef());
   }
 }
