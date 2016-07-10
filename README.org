@@ -167,7 +167,7 @@ CLOSED: [2016-05-11 Wed 17:51]
 CLOSED: [2016-05-11 Wed 17:55]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:55]
-*** TODO Type conversion [4/10]
+*** TODO Type conversion [6/10]
 **** DONE vector->list
 **** DONE list->vector
 **** TODO number->string
@@ -176,8 +176,10 @@ CLOSED: [2016-05-11 Wed 17:55]
 **** DONE string->symbol
 **** TODO char->integer
 **** TODO integer->char
-**** TODO string->list
-**** TODO list->string
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 18:33]
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 18:33]
 *** TODO Numbers [5/12]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
@@ -281,14 +283,15 @@ CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO complex?
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]
-*** TODO Strings [6/18]
+*** TODO Strings [9/18]
 **** DONE string?
 CLOSED: [2016-05-11 Wed 18:08]
 **** DONE make-string
 CLOSED: [2016-07-07 Thu 19:50]
 **** DONE string
 **** DONE string-length
-**** TODO string-ref
+**** DONE string-ref
+CLOSED: [2016-07-10 Sun 18:40]
 **** TODO string-set!
 **** DONE string=?
 CLOSED: [2016-05-11 Wed 17:56]
@@ -300,8 +303,10 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO string>=? string-ci>=?
 **** TODO substring
 **** TODO string-append
-**** TODO string->list
-**** TODO list->string
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 18:33]
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 18:33]
 **** TODO string-copy
 **** TODO string-fill!
 *** TODO Characters [3/16]

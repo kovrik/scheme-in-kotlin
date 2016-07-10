@@ -489,13 +489,13 @@ public class EvaluatorTest {
       eval("(vector-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMCons"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: (1 2 3)"));
     }
     try {
       eval("(vector-ref (vector 1 2 3) 0.5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: Double"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
     }
   }
 
@@ -542,7 +542,7 @@ public class EvaluatorTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: SCMCons"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: (1 2 3)"));
     }
 
     sexp = "(begin (define v (vector 1 2))" +
@@ -550,7 +550,7 @@ public class EvaluatorTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: Double"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
     }
   }
 
@@ -1685,6 +1685,44 @@ public class EvaluatorTest {
       eval("(string->list (cons 1 2))", env);
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: String, actual: (1 . 2)", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalStringRef() {
+    assertEquals('t', eval("(string-ref \"test string\" 0)", env));
+    assertEquals('e', eval("(string-ref \"test string\" 1)", env));
+    assertEquals('s', eval("(string-ref \"test string\" 2)", env));
+
+    try {
+      eval("(string-ref \"test\" -1)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: -1"));
+    }
+    try {
+      eval("(string-ref \"tes\" 3)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 3"));
+    }
+    try {
+      eval("(string-ref \"\" 0)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Value out of range: 0"));
+    }
+    try {
+      eval("(string-ref '(1 2 3) 0)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: (1 2 3)"));
+    }
+    try {
+      eval("(string-ref \"test\" 0.5)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
     }
   }
 
