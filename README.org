@@ -9,6 +9,7 @@ CLOSED: [2016-07-07 Thu 19:06]
 CLOSED: [2016-07-07 Thu 19:06]
 ** DONE [#A] Reader: read dotted notation
 CLOSED: [2016-07-09 Sat 21:55]
+** TODO [#A] Fix toString everywhere for Chars and Lists
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
@@ -339,7 +340,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [18/23]
+*** TODO Pairs and lists [19/23]
 **** DONE pair?
 CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
@@ -378,7 +379,8 @@ CLOSED: [2016-07-10 Sun 12:20]
 **** DONE vector->list
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 12:08]
-**** TODO string->list
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 17:53]
 *** TODO Identity predicates [7/9]
 **** DONE boolean?
 CLOSED: [2016-05-15 Sun 22:24]

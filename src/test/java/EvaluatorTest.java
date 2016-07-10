@@ -1677,6 +1677,18 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testStringToList() {
+    assertEquals(list('a', 'b', 'c'), eval("(string->list \"abc\")", env));
+    assertEquals(list('a'), eval("(string->list \"a\")", env));
+    assertEquals(list(), eval("(string->list \"\")", env));
+    try {
+      eval("(string->list (cons 1 2))", env);
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong argument type. Expected: String, actual: (1 . 2)", e.getMessage());
+    }
+  }
+
+  @Test
   public void testFlattenList() {
 
     String flatten = "(define (flatten x)" +
