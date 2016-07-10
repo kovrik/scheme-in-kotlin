@@ -12,6 +12,7 @@ import core.procedures.math.numeric.*;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
+import core.procedures.system.Exit;
 import core.procedures.vectors.*;
 import core.scm.SCMBoolean;
 import core.scm.SCMProcedure;
@@ -69,6 +70,9 @@ public final class DefaultEnvironment extends Environment {
     for (SCMSpecialForm specialForm : SCMSpecialForm.values()) {
       put(specialForm, specialForm);
     }
+
+    /* System */
+    put(new SCMSymbol("exit"), new Exit());
 
     /* Boolean */
     put(SCMBoolean.TRUE,  SCMBoolean.TRUE);

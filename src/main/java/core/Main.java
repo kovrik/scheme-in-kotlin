@@ -13,6 +13,7 @@ import core.writer.Writer;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -29,6 +30,14 @@ public class Main {
   private static final IReader reader = new Reader();
   private static final IEvaluator evaluator = new Evaluator();
   private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
+
+  /* REPL History */
+  private static final int MAX_ENTRIES = 10;
+  private static final Map HISTORY = new LinkedHashMap(MAX_ENTRIES + 1, 0.75F, true) {
+    public boolean removeEldestEntry(Map.Entry eldest) {
+      return size() > MAX_ENTRIES;
+    }
+  };
 
   public static void main(String[] args) throws ParseException, IOException {
 
@@ -67,6 +76,9 @@ public class Main {
           // Print
           System.out.println(id + " = " + writer.toString(result));
           System.out.flush();
+
+          /* Store sexp in a history */
+          HISTORY.put(id, sexp);
         }
         // TODO Proper Error handling
       } catch (UnsupportedOperationException e) {
