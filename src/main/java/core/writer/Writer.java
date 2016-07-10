@@ -17,6 +17,9 @@ public class Writer implements IWriter {
     if (o instanceof List) {
       return SCMCons.toString((List)o);
     }
+    if (o instanceof String) {
+      return "\"" + o + "\"";
+    }
     if (o instanceof Character) {
       return "#\\" + o;
     }
