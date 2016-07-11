@@ -22,6 +22,9 @@ public class StringProc extends SCMProcedure {
     List cs = (List)env.get(chars);
     if (cs.isEmpty()) {
       return "";
+      // TODO?
+      /* Return new String object */
+      // return new String();
     }
     StringBuilder sb = new StringBuilder(cs.size());
     for (Object c : cs) {

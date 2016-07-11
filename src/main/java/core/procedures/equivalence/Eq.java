@@ -1,8 +1,11 @@
 package core.procedures.equivalence;
 
-import core.scm.SCMBoolean;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
+import core.scm.SCMBoolean;
+import core.scm.SCMSymbol;
+
+import static core.scm.SCMCons.NIL;
 
 public class Eq extends AFn implements IOperation {
 
@@ -22,7 +25,10 @@ public class Eq extends AFn implements IOperation {
   }
 
   public Boolean apply(Object first, Object second) {
-    return first == second;
+    if ((first instanceof SCMSymbol) && (second instanceof SCMSymbol)) {
+      return first.equals(second);
+    }
+    return NIL.equals(first) && (NIL.equals(second)) || first == second;
   }
 
   @Override

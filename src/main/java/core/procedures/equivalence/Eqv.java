@@ -1,8 +1,12 @@
 package core.procedures.equivalence;
 
-import core.scm.SCMBoolean;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
+import core.scm.SCMBoolean;
+import core.scm.SCMCons;
+import core.scm.SCMSymbol;
+
+import java.util.List;
 
 public class Eqv extends AFn implements IOperation {
 
@@ -24,9 +28,15 @@ public class Eqv extends AFn implements IOperation {
   public Boolean apply(Object first, Object second) {
 
     if (first instanceof Character && second instanceof Character) {
-      return ((Character) first).equals((Character)second);
+      return first.equals(second);
     } else if (first instanceof Number && second instanceof Number) {
-      return ((Number) first).equals((Number)second);
+      return first.equals(second);
+    } else if (first instanceof SCMCons && second instanceof SCMCons) {
+      return first == second;
+    } else if (first instanceof List && second instanceof List) {
+      return first.equals(second);
+    } else if (first instanceof SCMSymbol && second instanceof SCMSymbol) {
+      return first.equals(second);
     }
     return first == second;
   }
