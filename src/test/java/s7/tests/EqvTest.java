@@ -45,6 +45,16 @@ public class EqvTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(eqv? (lambda () 1) (lambda () 1))", env));
     assertEquals(FALSE, eval("(let () (define (make-adder x) (lambda (y) (+ x y))) (eqv? (make-adder 1) (make-adder 1)))", env));
     assertEquals(TRUE, eval("(eqv? quote quote) #t)", env));
+    assertEquals(FALSE, eval("(eqv? ''2 '2)", env));
+    assertEquals(TRUE, eval("(eqv? '2 '2)", env));
+    assertEquals(TRUE, eval("(eqv? '2 2)", env));
+    assertEquals(FALSE, eval("(eqv? ''2 ''2)", env));
+    assertEquals(FALSE, eval("(eqv? ''#\\a '#\\a)", env));
+    assertEquals(TRUE, eval("(eqv? '#\\a #\\a)", env));
+    assertEquals(FALSE, eval("(eqv? 'car car)", env));
+    assertEquals(FALSE, eval("(eqv? ''() '())", env));
+    assertEquals(TRUE, eval("(eqv? '#f #f)", env));
+    assertEquals(TRUE, eval("(eqv? '#f '#f)", env));
 
 //    assertEquals(TRUE, eval("(eqv? 'a (string->symbol "a"))", env));
 //    assertEquals(, "(eqv? (integer->char 255) (string-ref (string #\x (integer->char 255) #\x) 1)) #t)
