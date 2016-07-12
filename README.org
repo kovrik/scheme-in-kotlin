@@ -9,6 +9,7 @@ CLOSED: [2016-07-07 Thu 19:06]
 CLOSED: [2016-07-07 Thu 19:06]
 ** DONE [#A] Reader: read dotted notation
 CLOSED: [2016-07-09 Sat 21:55]
+** TODO [#A] Now properly implement dotted pair notation everywhere
 ** TODO [#A] Make modifiable SCMString
 ** DONE [#A] Fix toString everywhere for Chars and Lists
 CLOSED: [2016-07-10 Sun 20:13]
@@ -16,7 +17,7 @@ CLOSED: [2016-07-10 Sun 20:13]
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
 ** TODO [#B] Make `append` proc iterative!
-** TODO [#B] Inner `define`
+** TODO [#B] Internal `define`: can be top-form only
 ** TODO [#B] Use BigInteger for integral big numbers?
 ** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
 ** TODO [#C] Tail-call elimination

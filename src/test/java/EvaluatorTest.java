@@ -399,21 +399,36 @@ public class EvaluatorTest {
   }
 
   @Test
-  public void testEvalIsAChar() {
+  public void testEvalIsChar() {
     assertEquals(TRUE, eval("(char? #\\A)", env));
     assertEquals(FALSE, eval("(char? \"A\")", env));
   }
 
   @Test
-  public void testEvalIsAString() {
+  public void testEvalIsString() {
     assertEquals(FALSE, eval("(string? #\\A)", env));
     assertEquals(TRUE, eval("(string? \"A\")", env));
   }
 
   @Test
-  public void testEvalIsAVector() {
+  public void testEvalIsVector() {
     assertEquals(FALSE, eval("(vector? #\\A)", env));
     assertEquals(TRUE, eval("(vector? #(1 2 3 ))", env));
+  }
+
+  @Test
+  public void testEvalIsList() {
+    assertEquals(TRUE, eval("(list? '())", env));
+    assertEquals(TRUE, eval("(list? '(1 2 3))", env));
+    assertEquals(FALSE, eval("(list? #(1 2 3))", env));
+    assertEquals(FALSE, eval("(list? (cons 1 2))", env));
+    assertEquals(FALSE, eval("(list? 2)", env));
+    assertEquals(TRUE, eval("(list? (car '((1 2 3))))", env));
+    assertEquals(TRUE, eval("(list? (cdr '((1 2 3))))", env));
+    // TODO
+    assertEquals(FALSE, eval("(list? (car '((1 . 2))))", env));
+    assertEquals(FALSE, eval("(list? (vector-ref #((1 2 3 . 4)) 0))", env));
+    assertEquals(FALSE, eval("(list? (vector-ref #((1 . 2)) 0))", env));
   }
 
   @Test
@@ -629,11 +644,11 @@ public class EvaluatorTest {
 
     // variadic
     eval("(define edlv (lambda args args))", env);
-    assertEquals(SCMCons.<Long>list(1L, 2L, 3L, 4L, 5L), eval("(edlv 1 2 3 4 5)", env));
+    assertEquals(SCMCons.list(1L, 2L, 3L, 4L, 5L), eval("(edlv 1 2 3 4 5)", env));
 
     // variadic define
     eval("(define (edv1 first second . rest) rest)", env);
-    assertEquals(SCMCons.<Long>list(2L, 3L, 4L, 5L), eval("(edv1 0 1 2 3 4 5)", env));
+    assertEquals(SCMCons.list(2L, 3L, 4L, 5L), eval("(edv1 0 1 2 3 4 5)", env));
 
     eval("(define (edv2 first second . rest) second)", env);
     assertEquals(1L, eval("(edv2 0 1 2 3 4 5)", env));
@@ -646,6 +661,34 @@ public class EvaluatorTest {
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Unbound variable: foo"));
     }
+
+    String d1 = "(define (test-internal-define)" +
+                "  (let ((a 5) (b 7))" +
+                "  (define (get-a) a)" +
+                "  (define (get-b) b)" +
+                "  (define (get-c) (+ (get-a) b))" +
+                "  (+ (get-b) (get-c))))";
+    eval(d1, env);
+    assertEquals(19L, eval("(test-internal-define)", env));
+
+    String d2 = "(define (test-internal-define2)" +
+                "  (define (test2)" +
+                "    (define (test4) 7)" +
+                "    (define (test3) (test4))" +
+                "    (+ 1 (test3)))" +
+                "  (+ 1 (test2)))";
+    eval(d2, env);
+    assertEquals(9L, eval("(test-internal-define2)", env));
+
+    // check that define is a top form in a body
+    // TODO
+    String d3 = "(let ((a 1)) a (define a 5) a)";
+//    try {
+//      eval(d3, env);
+//      fail();
+//    } catch (IllegalArgumentException e) {
+//
+//    }
   }
 
   @Test

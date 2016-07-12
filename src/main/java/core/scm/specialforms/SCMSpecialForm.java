@@ -109,6 +109,8 @@ public enum SCMSpecialForm implements ISpecialForm {
         return SCMCons.NIL;
       }
       Object e = expression.get(1);
+      // TODO Remove and implement in Reader!
+      // -----------------------------------------------
       if (e instanceof LinkedList) {
         LinkedList list = (LinkedList) e;
         int i = list.indexOf(DOT);
@@ -135,6 +137,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           return cons;
         }
       }
+      // -----------------------------------------------
       return e;
     }
   },
