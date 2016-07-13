@@ -1915,6 +1915,18 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalHornersRule() {
+    String horner = "(define (horner lst x)" +
+                    "  (define (*horner lst x acc)" +
+                    "    (if (null? lst)" +
+                    "        acc" +
+                    "        (*horner (cdr lst) x (+ (* acc x) (car lst)))))" +
+                    "  (*horner (reverse lst) x 0))";
+    eval(horner, env);
+    assertEquals(128L, eval("(horner '(-19 7 -4 6) 3)", env));
+  }
+
+  @Test
   public void testEvalDisplay() {
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
