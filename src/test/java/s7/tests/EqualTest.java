@@ -10,7 +10,6 @@ public class EqualTest extends AbstractS7Test {
 
   @Test
   public void testEqual() {
-    // TODO
     assertEquals(FALSE, eval("(equal? 'a 3)", env));
     assertEquals(FALSE, eval("(equal? #t 't)", env));
     assertEquals(FALSE, eval("(equal? \"abs\" 'abc)", env));
@@ -48,10 +47,9 @@ public class EqualTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(equal? #(1 2) (vector 1 2.0))", env));
     assertEquals(TRUE, eval("(equal? '(1 . 2) (cons 1 2))", env));
     assertEquals(TRUE, eval("(equal? #(1 \"hi\" #\\a) (vector 1 \"hi\" #\\a))", env));
-    // FIXME Dotted notation?
-//    assertEquals(TRUE, eval("(equal? #((1 . 2)) (vector (cons 1 2)))", env));
-//    assertEquals(TRUE, eval("(equal? #(1 \"hi\" #\\a (1 . 2)) (vector 1 \"hi\" #\\a (cons 1 2)))", env));
-//    assertEquals(TRUE, eval("(equal? #(#f hi (1 2) 1 \"hi\" #\\a (1 . 2)) (vector #f 'hi (list 1 2) 1 \"hi\" #\\a (cons 1 2)))", env));
+    assertEquals(TRUE, eval("(equal? #((1 . 2)) (vector (cons 1 2)))", env));
+    assertEquals(TRUE, eval("(equal? #(1 \"hi\" #\\a (1 . 2)) (vector 1 \"hi\" #\\a (cons 1 2)))", env));
+    assertEquals(TRUE, eval("(equal? #(#f hi (1 2) 1 \"hi\" #\\a (1 . 2)) (vector #f 'hi (list 1 2) 1 \"hi\" #\\a (cons 1 2)))", env));
     assertEquals(TRUE, eval("(equal? #(#(1) #(1)) (vector (vector 1) (vector 1)))", env));
     assertEquals(TRUE, eval("(equal? #(()) (vector '()))", env));
     assertEquals(TRUE, eval("(equal? #(\"hi\" \"ho\") (vector \"hi\" '\"ho\"))", env));

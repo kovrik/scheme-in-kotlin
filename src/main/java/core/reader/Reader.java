@@ -336,24 +336,56 @@ public class Reader implements IReader {
     return character.charAt(0);
   }
 
-  // TODO Read CONS/LIST in dotted notation
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = SCMCons.NIL;
-    boolean hasElements = false;
     int i;
     char c;
+    /* Position of a dot (if we have it) */
+    int dotPos = -1;
+    /* Current index */
+    int pos = -1;
     while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
       reader.unread(c);
       Object token = nextToken(reader);
       if (token != null) {
-        if (!hasElements) {
+        pos += 1;
+        /* Have no elements in a result list yet */
+        if (SCMCons.NIL.equals(list)) {
+          /* Create empty list (can't modify NIL) */
           list = SCMCons.list();
-          hasElements = true;
         }
+        /* Check if current token is a dot */
+        if (SCMSpecialForm.DOT.equals(token)) {
+          /* Remember the position */
+          dotPos = pos;
+        }
+        /* Add token read */
         list.add(token);
       }
     }
-    return list;
+    // TODO Do not iterate the same list again?
+    /* Did we have a dot? */
+    if (dotPos < 0) {
+      /* No. Return result */
+      return list;
+    } else {
+      /* Process dotted pair notation */
+      if (dotPos != list.size() - 2) {
+        /* Malformed dotted pair */
+        throw new IllegalArgumentException("Error: bad dotted pair form: " + list);
+      }
+      /* Remove dot */
+      list.remove(dotPos);
+      /* Convert list into cons */
+      Object last = list.get(list.size() - 1);
+      Object beforeLast = list.get(list.size() - 2);
+      SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
+      /* Cons backwars */
+      for (int n = list.size() - 3; n >= 0; n--) {
+        cons = SCMCons.cons(list.get(n), cons);
+      }
+      return cons;
+    }
   }
 
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {

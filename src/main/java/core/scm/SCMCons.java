@@ -1,5 +1,6 @@
 package core.scm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -182,5 +183,20 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
       }
     }
     return sb.append(')').toString();
+  }
+
+  /* Non-recursively flatten a list (or a chain of conses) */
+  public static <E> List<E> flatten(List<E> list) {
+    List<E> result = new ArrayList<E>();
+    LinkedList<E> queue = new LinkedList<E>(list);
+    while (!queue.isEmpty()) {
+      E e = queue.remove();
+      if (e instanceof List) {
+        queue.addAll(0, (List)e);
+      } else {
+        result.add(e);
+      }
+    }
+    return result;
   }
 }

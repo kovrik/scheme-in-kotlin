@@ -26,7 +26,7 @@ public class SCMBoolean extends SCMSymbol {
     VALUES.put(TRUE, true);
     VALUES.put(Boolean.FALSE, false);
     VALUES.put(FALSE, false);
-    VALUES.put(SCMCons.NIL, false);
+//    VALUES.put(SCMCons.NIL, false);
   }
 
   public static boolean valueOf(Object value) {

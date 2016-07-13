@@ -31,19 +31,35 @@ public enum SCMSpecialForm implements ISpecialForm {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       Object definition = expression.get(1);
       if (definition instanceof SCMSymbol) {
+        /* Normal definition */
         Object body = expression.get(2);
         env.put(definition, evaluator.eval(body, env));
       } else if (definition instanceof SCMCons) {
-        // procedure
-        // implicit `begin`
-        SCMCons body = SCMCons.list(BEGIN);
-        body.addAll(expression.subList(2, expression.size()));
+        /* Function shorthand definition
+         * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
+         *              |   0   | 1 definition           | 3 body      |
+         */
         if (((SCMCons) definition).isEmpty()) {
           throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
         }
+        /* Add implicit `begin` */
+        SCMCons body = SCMCons.list(BEGIN);
+        /* Add all body forms */
+        body.addAll(expression.subList(2, expression.size()));
+
+        /* Get name and remove it */
         SCMSymbol name = (SCMSymbol)((SCMCons)definition).pop();
-        // TODO Optimize DOT removal
-        env.put(name, new SCMProcedure(name, (SCMCons)definition, body, env, ((SCMCons)definition).remove(DOT)));
+        /* Everything that remains should be a list of params */
+        /* Check if it is a cons, not a list (hence, we have a dotted notation) */
+        if (((SCMCons)definition).isList()) {
+          /* No varargs */
+          env.put(name, new SCMProcedure(name, (SCMCons<SCMSymbol>) definition, body, env, false));
+        } else {
+          /* Varargs */
+          /* Flatten chain of conses into a list of params */
+          List<SCMSymbol> params = SCMCons.flatten((List<SCMSymbol>)definition);
+          env.put(name, new SCMProcedure(name, params, body, env, true));
+        }
       } else {
         throw new IllegalArgumentException("define: bad `define` in form: " + expression);
       }
@@ -108,37 +124,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       if ((expression.get(1) instanceof SCMCons) && (((SCMCons)expression.get(1)).isEmpty())) {
         return SCMCons.NIL;
       }
-      Object e = expression.get(1);
-      // TODO Remove and implement in Reader!
-      // -----------------------------------------------
-      if (e instanceof LinkedList) {
-        LinkedList list = (LinkedList) e;
-        int i = list.indexOf(DOT);
-        /* Dotted pair */
-        if (i > -1) {
-          /* Check dot position */
-          if (i != (list.size() - 2)) {
-            throw new IllegalArgumentException("Error: bad dotted pair form: " + e);
-          }
-          Object afterDot = list.remove(list.size() - 1);
-          /* Ignore dot */
-          Object dot = list.remove(list.size() - 1);
-          Object beforeDot = list.remove(list.size() - 1);
-
-          /* Iterate backwards */
-          ListIterator listIterator = list.listIterator(list.size());
-          /* Create dotted pair */
-          SCMCons cons = SCMCons.cons(beforeDot, afterDot);
-          /* Cons everything else if exists */
-          while (listIterator.hasPrevious()) {
-            Object previous = listIterator.previous();
-            cons = SCMCons.cons(previous, cons);
-          }
-          return cons;
-        }
-      }
-      // -----------------------------------------------
-      return e;
+      return expression.get(1);
     }
   },
   UNQUOTE("unquote") {

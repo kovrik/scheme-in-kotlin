@@ -258,7 +258,6 @@ public class EvaluatorTest {
   public void testEvalNegation() {
     assertEquals(FALSE, eval("(not #t)",  env));
     assertEquals(TRUE,  eval("(not #f)",  env));
-    assertEquals(TRUE,  eval("(not '())", env));
     assertEquals(TRUE,  eval("(not (= 1 2 1))", env));
     assertEquals(FALSE, eval("(not (= 1 1 1))", env));
   }
@@ -728,7 +727,7 @@ public class EvaluatorTest {
   public void testEvalIf() {
     assertEquals(5L, eval("(if #t 5 0)",  env));
     assertEquals(5L, eval("(if #f 0 5)",  env));
-    assertEquals(5L, eval("(if '() 0 5)", env));
+    assertEquals(0L, eval("(if '() 0 5)", env));
     assertEquals(0L, eval("(if (not #f) 0 5)", env));
     assertEquals(5L, eval("(if (not (not (or #f #f))) 0 (+ 3 2))", env));
     assertEquals(new SCMSymbol("yes"), eval("(if (> 3 2) 'yes 'no)", env));
