@@ -179,6 +179,11 @@ public class Reader implements IReader {
         return new SCMSymbol(number);
       }
       Number result = NumberFormat.getInstance().parse(number);
+      /* Switch to BigDecimal if number has 19 or more digits */
+      // TODO BigInt?
+      if (number.length() >= 19)  {
+        return new BigDecimal(number);
+      }
       if ((result instanceof Double) && (Double.isInfinite((Double)result)))  {
         return new BigDecimal(number);
       }
@@ -389,7 +394,6 @@ public class Reader implements IReader {
   }
 
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
-
     List<Object> list = readList(reader);
     return new SCMVector(list.toArray());
   }

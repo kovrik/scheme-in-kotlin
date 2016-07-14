@@ -38,7 +38,7 @@ public class GCD extends AFn implements INumericalOperation {
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 
-  // FIXME
+  // FIXME BigInt? Double?
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);
