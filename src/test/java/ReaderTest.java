@@ -15,7 +15,6 @@ public class ReaderTest {
 
   @Test
   public void testReadNumbers() {
-
     assertEquals(1L, reader.read("1"));
     assertEquals(12345L, reader.read("12345"));
     assertEquals(-12345L, reader.read("-12345"));
@@ -33,7 +32,6 @@ public class ReaderTest {
 
   @Test
   public void testReadStrings() {
-
     assertEquals("1", reader.read("\"1\""));
     assertEquals("Lorem ipsum", reader.read("\"Lorem ipsum\""));
     assertEquals("Lorem \\\"ipsum\\\" ", reader.read("\"Lorem \\\"ipsum\\\" \""));
@@ -42,7 +40,6 @@ public class ReaderTest {
 
   @Test
   public void testReadVector() {
-
     assertEquals(new SCMVector(), reader.read("#()"));
     assertEquals(new SCMVector(0L), reader.read("#(0)"));
     assertEquals(new SCMVector(1L, 2L, 3L), reader.read("#(1 2 3)"));
@@ -52,7 +49,6 @@ public class ReaderTest {
 
   @Test
   public void testReadList() {
-
     assertEquals(SCMCons.list(), reader.read("()"));
     assertEquals(SCMCons.list(0L), reader.read("(0)"));
     assertEquals(SCMCons.list(1L, 2L, 3L), reader.read("(1 2 3)"));
@@ -63,7 +59,6 @@ public class ReaderTest {
 
   @Test
   public void testReadWhitespace() {
-
     assertEquals(null, reader.read(""));
     assertEquals(null, reader.read("\t"));
     assertEquals(null, reader.read("\n\r"));
@@ -71,15 +66,20 @@ public class ReaderTest {
 
   @Test
   public void testReadQuote() {
-
     assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, 1L), reader.read("'1"));
     assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(1L, "test")), reader.read("'(1 \"test\")"));
     assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(SCMSpecialForm.QUOTE, 1L)), reader.read("''1"));
   }
 
   @Test
-  public void testReadComment() {
+  public void testReadQuasiquote() {
+    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, 1L), reader.read("`1"));
+    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, SCMCons.list(1L, "test")), reader.read("`(1 \"test\")"));
+    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, SCMCons.list(SCMSpecialForm.QUOTE, 1L)), reader.read("`'1"));
+  }
 
+  @Test
+  public void testReadComment() {
     assertEquals(null, reader.read(";test"));
     assertEquals(null, reader.read(";test\ttest"));
     assertEquals(null, reader.read(";test\t\ntest"));
@@ -90,7 +90,6 @@ public class ReaderTest {
 
   @Test
   public void testReadCharacter() {
-
     assertEquals('A', reader.read("#\\A"));
     assertEquals('z', reader.read("#\\z"));
     assertEquals('5', reader.read("#\\5"));
@@ -100,14 +99,12 @@ public class ReaderTest {
 
   @Test
   public void testReadBoolean() {
-
-    assertEquals(SCMBoolean.TRUE, reader.read("#t"));
+    assertEquals(SCMBoolean.TRUE,  reader.read("#t"));
     assertEquals(SCMBoolean.FALSE, reader.read("#f"));
   }
 
   @Test
   public void testReadIdentifier() {
-
     assertEquals(new SCMSymbol("test"), reader.read("test"));
     assertEquals(SCMSpecialForm.LAMBDA, reader.read("lambda"));
     assertEquals(new SCMSymbol("list->vector"), reader.read("list->vector"));

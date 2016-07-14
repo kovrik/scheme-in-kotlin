@@ -22,12 +22,15 @@ public class ClassOf extends SCMProcedure {
   @Override
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object object = env.get(obj);
+    /* All special forms have the same SCMSpecialForm class */
     if (SCMSpecialForm.class.equals(object.getClass().getSuperclass())) {
       return SCMSpecialForm.class.getName();
     }
+    /* Promise is a procedure, but want it to have a separate class */
     if (object instanceof SCMPromise) {
       return SCMPromise.class.getName();
     }
+    /* Do not return exact class of procedure */
     if (object instanceof SCMProcedure) {
       return SCMProcedure.class.getName();
     }

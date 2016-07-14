@@ -87,10 +87,10 @@ public class Reader implements IReader {
 
   private static final String LINE_BREAKS = "\n\f\r";
 
-  //   <whitespace> --> <space or newline>
+  // <whitespace> --> <space or newline>
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
 
-  //   <delimiter> --> <whitespace> | ( | ) | " | ;
+  // <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + "()\";";
 
   private static boolean isValid(int i) {
@@ -98,7 +98,6 @@ public class Reader implements IReader {
   }
 
   public Object read(String string) {
-
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
       return nextToken(reader);
@@ -111,7 +110,6 @@ public class Reader implements IReader {
   }
 
   public Object read(InputStream inputStream) {
-
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {
       return nextToken(reader);
@@ -123,8 +121,15 @@ public class Reader implements IReader {
     return null;
   }
 
+  /**
+   * Read next token
+   *
+   * @param reader
+   * @return
+   * @throws IOException
+   * @throws ParseException
+   */
   public static Object nextToken(PushbackReader reader) throws IOException, ParseException {
-
     int i;
     if ((i = reader.read()) == -1) {
       return null;
@@ -133,6 +138,8 @@ public class Reader implements IReader {
     switch (c) {
       case '\'':
         return readQuote(reader);
+      case '`':
+        return readQuasiquote(reader);
       case '#':
         char next = (char) reader.read();
         if (next == '(') {
@@ -158,7 +165,14 @@ public class Reader implements IReader {
     }
   }
 
-  /* Given a String, and an index, get the atom starting at that index */
+  /**
+   * Read atom
+   *
+   * @param reader
+   * @return
+   * @throws IOException
+   * @throws ParseException
+   */
   private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
 
     char c = (char) reader.read();
@@ -225,8 +239,20 @@ public class Reader implements IReader {
     throw new IllegalArgumentException("Unknown atom!");
   }
 
+  /**
+   * Read a quoted form
+   *
+   * Syntax:
+   *
+   * <quote> -> '<form>
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.<Object>list(SCMSpecialForm.QUOTE);
+    List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE);
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
@@ -235,8 +261,40 @@ public class Reader implements IReader {
     return quote;
   }
 
-  private static Object readIdentifier(PushbackReader reader) throws IOException {
+  /**
+   * Read a quasi-quoted form
+   *
+   * Syntax:
+   *
+   * <quasiquote> -> `<form>
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
+  private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
+    List<Object> quote = SCMCons.list(SCMSpecialForm.QUASIQUOTE);
+    Object next = nextToken(reader);
+    while (next == null) {
+      next = nextToken(reader);
+    }
+    quote.add(next);
+    return quote;
+  }
 
+  /**
+   * Read identifier
+   *
+   * Syntax:
+   *
+   * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
+   *
+   * @param reader
+   * @return
+   * @throws IOException
+   */
+  private static Object readIdentifier(PushbackReader reader) throws IOException {
     StringBuilder identifier = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
@@ -247,6 +305,7 @@ public class Reader implements IReader {
     }
     reader.unread(c);
     SCMSpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
+    /* Check if it is a Special Form */
     if (specialForm != null) {
       return specialForm;
     } else {
@@ -254,11 +313,22 @@ public class Reader implements IReader {
     }
   }
 
+  /**
+   * Read a comment
+   *
+   * Syntax:
+   *
+   * <comment> --> ;  <all subsequent characters up to a line break>
+   *
+   * @param reader
+   * @return
+   * @throws IOException
+   */
   private static String readComment(PushbackReader reader) throws IOException {
-
     StringBuilder comment = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
+    /* Read everything until line break */
     while (isValid(i) && (LINE_BREAKS.indexOf(c) < 0)) {
       comment.append(c);
       i = reader.read();
@@ -267,13 +337,22 @@ public class Reader implements IReader {
     return comment.toString();
   }
 
+  /**
+   * Read a Number
+   *
+   * Syntax:
+   *
+   * (See above for full syntax)
+   * <digit> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
   // TODO Radix
   // TODO Number types
-  //   <digit> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-  // TODO Return NUMBER?
-
   private static String readNumber(PushbackReader reader) throws ParseException, IOException {
-
     StringBuilder number = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
@@ -292,10 +371,20 @@ public class Reader implements IReader {
     return number.toString();
   }
 
-  //   <string> --> " <string element>* "
-  //   <string element> --> <any character other than " or \> | \" | \\
+  /**
+   * Read a String
+   *
+   * Syntax:
+   *
+   * <string> --> " <string element>* "
+   * <string element> --> <any character other than " or \> | \" | \\
+   *
+   * @param reader
+   * @return String
+   * @throws ParseException
+   * @throws IOException
+   */
   private static String readString(PushbackReader reader) throws ParseException, IOException {
-
     StringBuilder string = new StringBuilder();
     int i;
     char c;
@@ -316,10 +405,20 @@ public class Reader implements IReader {
     return string.toString();
   }
 
-  //   <character> --> #\ <any character> | #\ <character name>
-  //   <character name> --> space | newline
+  /**
+   * Read a Character
+   *
+   * Syntax:
+   *
+   * <character> --> #\ <any character> | #\ <character name>
+   * <character name> --> space | newline
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
   private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
-
     StringBuilder character = new StringBuilder();
     int i;
     char c;
@@ -341,6 +440,18 @@ public class Reader implements IReader {
     return character.charAt(0);
   }
 
+  /**
+   * Read list
+   *
+   * Syntax:
+   *
+   * <list> -> (<list_contents>)
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = SCMCons.NIL;
     int i;
@@ -393,6 +504,18 @@ public class Reader implements IReader {
     }
   }
 
+  /**
+   * Read vector
+   *
+   * Syntax:
+   *
+   * <vector> -> </vector>#(<vector_contents>)
+   *
+   * @param reader
+   * @return
+   * @throws ParseException
+   * @throws IOException
+   */
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = readList(reader);
     return new SCMVector(list.toArray());

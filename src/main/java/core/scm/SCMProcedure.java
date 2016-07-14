@@ -21,21 +21,21 @@ public class SCMProcedure extends AFn {
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body) {
     this.name = name;
-    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.closure = null;
   }
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure) {
     this.name = name;
-    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.closure = closure;
   }
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, boolean variableArity) {
     this.name = name;
-    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.closure = null;
     this.variableArity = variableArity;
@@ -43,7 +43,7 @@ public class SCMProcedure extends AFn {
 
   public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure, boolean variableArity) {
     this.name = name;
-    this.params = (params == null) ? Collections.<SCMSymbol>emptyList() : params;
+    this.params = (params == null) ? Collections.emptyList() : params;
     this.body = body;
     this.closure = closure;
     this.variableArity = variableArity;

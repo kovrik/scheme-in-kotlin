@@ -150,9 +150,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   QUASIQUOTE("quasiquote") {
-    // TODO
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      throw new UnsupportedOperationException("NOT IMPLEMENTED!");
+      // TODO
+      return expression;
     }
   },
   DEFINE_SYNTAX("define-syntax") {
@@ -412,7 +412,10 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   DELAY("delay") {
     public SCMPromise eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      return new SCMPromise(Collections.<SCMSymbol>emptyList(), expression.get(1));
+      if (expression.size() < 2) {
+        throw new IllegalArgumentException("delay: bad `delay` in form: " + expression);
+      }
+      return new SCMPromise(Collections.emptyList(), expression.get(1));
     }
   },
   ERROR("error") {
