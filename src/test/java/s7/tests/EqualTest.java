@@ -90,10 +90,10 @@ public class EqualTest extends AbstractS7Test {
     assertEquals(TRUE, eval("(let hiho ((i 0)) (equal? hiho hiho))", env));
     assertEquals(FALSE, eval("(let hiho ((i 0)) (let hoho ((i 0)) (equal? hiho hoho)))", env));
     assertEquals(FALSE, eval("(equal? + *)", env));
-    assertEquals(TRUE, eval("(equal? lambda lambda)", env));
-    assertEquals(TRUE, eval("(equal? let let)", env));
-    assertEquals(FALSE, eval("(equal? let letrec)", env));
-    assertEquals(TRUE, eval("(equal? define define)", env));
+    assertEquals(TRUE, eval("(equal? 'lambda 'lambda)", env));
+    assertEquals(TRUE, eval("(equal? 'let 'let)", env));
+    assertEquals(FALSE, eval("(equal? 'let 'letrec)", env));
+    assertEquals(TRUE, eval("(equal? 'define 'define)", env));
     assertEquals(TRUE, eval("(equal? + ((lambda (a) a) +))", env));
     assertEquals(TRUE, eval("(let ((x \"hi\")) (define (hi) x) (equal? (hi) (hi)))", env));
 

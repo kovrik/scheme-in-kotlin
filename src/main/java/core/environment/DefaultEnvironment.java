@@ -12,6 +12,7 @@ import core.procedures.math.numeric.*;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
+import core.procedures.system.ClassOf;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
 import core.scm.SCMBoolean;
@@ -32,7 +33,11 @@ public final class DefaultEnvironment extends Environment {
     procs.put("char?",      String.format("(define (char?      o) (string=? \"%s\" (class-of o)))", Character.class.getName()));
     procs.put("string?",    String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
     procs.put("vector?",    String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
-    procs.put("symbol?",    String.format("(define (symbol?    o) (string=? \"%s\" (class-of o)))", SCMSymbol.class.getName()));
+    procs.put("symbol?",    String.format("(define (symbol?    o) (or (string=? \"%s\" (class-of o))" +
+                                                                     "(string=? \"%s\" (class-of o))" + "))",
+                                                                     SCMSymbol.class.getName(),
+                                                                     SCMSpecialForm.class.getName()));
+
 //    procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
     procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
@@ -73,6 +78,7 @@ public final class DefaultEnvironment extends Environment {
 
     /* System */
     put(new SCMSymbol("exit"), new Exit());
+    put(new SCMSymbol("class-of"), new ClassOf());
 
     /* Boolean */
     put(SCMBoolean.TRUE,  SCMBoolean.TRUE);

@@ -25,6 +25,8 @@ public class Evaluator implements IEvaluator {
         return evmeta(((SCMSymbol)sexp).getValue());
       }
       return env.find(sexp);
+    } else if (sexp instanceof SCMSpecialForm) {
+      throw new IllegalArgumentException("Bad syntax in form: " + sexp);
     } else if (!(sexp instanceof List)) {
       return sexp;
     } else if (sexp instanceof SCMCons) {

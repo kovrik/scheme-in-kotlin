@@ -12,9 +12,7 @@ public class SCMBoolean extends SCMSymbol {
 
   public SCMBoolean(String value) {
     super("");
-    if ("#t".equals(value)) {
-      this.value = value;
-    } else if ("#f".equals(value)) {
+    if ("#t".equals(value) || "#f".equals(value)) {
       this.value = value;
     } else {
       throw new IllegalArgumentException("Unknown boolean: " + value);

@@ -44,7 +44,7 @@ public class EqvTest extends AbstractS7Test {
     assertEquals(TRUE, eval("(let ((x (lambda () 1))) (eqv? x x))", env));
     assertEquals(FALSE, eval("(eqv? (lambda () 1) (lambda () 1))", env));
     assertEquals(FALSE, eval("(let () (define (make-adder x) (lambda (y) (+ x y))) (eqv? (make-adder 1) (make-adder 1)))", env));
-    assertEquals(TRUE, eval("(eqv? quote quote) #t)", env));
+    assertEquals(TRUE, eval("(eqv? 'quote 'quote) #t)", env));
     assertEquals(FALSE, eval("(eqv? ''2 '2)", env));
     assertEquals(TRUE, eval("(eqv? '2 '2)", env));
     assertEquals(TRUE, eval("(eqv? '2 2)", env));

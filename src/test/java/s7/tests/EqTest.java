@@ -64,7 +64,6 @@ public class EqTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(eq? (vector) #())", env));
     assertEquals(TRUE, eval("(eq? (list) (list))", env));
     assertEquals(TRUE, eval("(eq? (list) '())", env));
-    assertEquals(TRUE, eval("(eq? let* let*)", env));
 
     eval("(define (counter count)" +
          "  (lambda ()" +

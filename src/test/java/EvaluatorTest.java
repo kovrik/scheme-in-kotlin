@@ -1220,7 +1220,7 @@ public class EvaluatorTest {
       eval("(gcd 3.3 6)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: Double", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
     }
 
     assertEquals(new BigDecimal(9), eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
@@ -1261,7 +1261,7 @@ public class EvaluatorTest {
       eval("(lcm 3.3 6)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: Double", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
     }
 
     // TODO BigDecimals

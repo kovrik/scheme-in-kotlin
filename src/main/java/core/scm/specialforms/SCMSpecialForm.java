@@ -27,6 +27,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   /* Fundamental forms */
+  // TODO Check that internal definitions are at the beginning only!
   DEFINE("define") {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       Object definition = expression.get(1);
@@ -121,10 +122,19 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   QUOTE("quote") {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      if ((expression.get(1) instanceof SCMCons) && (((SCMCons)expression.get(1)).isEmpty())) {
+      Object exp = expression.get(1);
+      if ((exp instanceof SCMCons) && (((SCMCons)exp).isEmpty())) {
         return SCMCons.NIL;
       }
-      return expression.get(1);
+      /* Numerical constants, string constants, character constants, and boolean constants
+       * evaluate "to themselves"; they need not be quoted */
+      if (SCMBoolean.TRUE.equals(exp)) {
+        return SCMBoolean.TRUE;
+      }
+      if (SCMBoolean.FALSE.equals(exp)) {
+        return SCMBoolean.FALSE;
+      }
+      return exp;
     }
   },
   UNQUOTE("unquote") {
@@ -403,14 +413,6 @@ public enum SCMSpecialForm implements ISpecialForm {
   DELAY("delay") {
     public SCMPromise eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       return new SCMPromise(Collections.<SCMSymbol>emptyList(), expression.get(1));
-    }
-  },
-  CLASSOF("class-of") {
-    public String eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      if (expression.size() > 2) {
-        throw new ArityException(expression.size() - 1, "class-of");
-      }
-      return evaluator.eval(expression.get(1), env).getClass().getName();
     }
   },
   ERROR("error") {
