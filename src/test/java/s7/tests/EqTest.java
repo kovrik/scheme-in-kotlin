@@ -77,23 +77,7 @@ public class EqTest extends AbstractS7Test {
 
 //    assertEquals(TRUE, eval("(let ((f (lambda () (quote (1 . \"H\"))))) (eq? (f) (f)))", env));
 //    assertEquals(FALSE, eval("(eq? '#\\a #\\a)", env));
-//    assertEquals(TRUE, eval("(eq? '2 '2)", env));
-//    assertEquals(TRUE, eval("(eq? '2 2)", env));
-//    assertEquals(FALSE, eval("(eq? ''2 '2)", env));
-//    assertEquals(FALSE, eval("(eq? ''2 ''2)", env));
-//    assertEquals(TRUE, eval("(eq? (begin) (append))", env));
 //    assertEquals(FALSE, eval("(eq? (string) (string))", env));
 //    assertEquals(TRUE, eval("(eq? (symbol \"a\") (string->symbol \"a\"))", env));
-//    "(eq? :a :a) #t)
-//    "(eq? ':a 'a) #f)
-//    "(eq? ':a ':a) #t)
-//    "(eq? :a a:) #f)
-//    "(eq? ':a 'a:) #f)
-//    "(eq? 'a: 'a:) #t)
-//    "(eq? ':a: 'a:) #f)
-//    "(eq? 'a (symbol "a")) #t)
-//    "(eq? :: '::) #t)
-//    "(eq? ':a (symbol->keyword (symbol "a"))) #t) ; but not a:
-//    "(eq? '(a) '(b)) #f)
   }
 }
