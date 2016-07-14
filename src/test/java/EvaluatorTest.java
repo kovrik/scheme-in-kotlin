@@ -1983,6 +1983,24 @@ public class EvaluatorTest {
     System.setOut(old);
   }
 
+  @Test
+  public void testEvalGroupNumbers() {
+    String group = "(let loop ((numbers '(3 -2 1 6 -5))" +
+                   "           (nonneg '())" +
+                   "           (neg '()))" +
+                   "  (cond ((null? numbers) (list nonneg neg))" +
+                   "        ((>= (car numbers) 0)" +
+                   "         (loop (cdr numbers)" +
+                   "               (cons (car numbers) nonneg)" +
+                   "               neg))" +
+                   "        ((< (car numbers) 0)" +
+                   "         (loop (cdr numbers)" +
+                   "               nonneg" +
+                   "               (cons (car numbers) neg)))))";
+
+    assertEquals(list(list(6L, 1L, 3L), list(-5L, -2L)), eval(group, env));
+  }
+
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
