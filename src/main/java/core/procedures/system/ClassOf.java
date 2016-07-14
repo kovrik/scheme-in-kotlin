@@ -2,6 +2,7 @@ package core.procedures.system;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.procedures.delayed.SCMPromise;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
@@ -23,6 +24,12 @@ public class ClassOf extends SCMProcedure {
     Object object = env.get(obj);
     if (SCMSpecialForm.class.equals(object.getClass().getSuperclass())) {
       return SCMSpecialForm.class.getName();
+    }
+    if (object instanceof SCMPromise) {
+      return SCMPromise.class.getName();
+    }
+    if (object instanceof SCMProcedure) {
+      return SCMProcedure.class.getName();
     }
     return object.getClass().getName();
   }

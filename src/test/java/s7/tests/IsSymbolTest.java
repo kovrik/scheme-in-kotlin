@@ -9,7 +9,7 @@ import static junit.framework.TestCase.assertEquals;
 public class IsSymbolTest extends AbstractS7Test {
 
   @Test
-  public void testEqual() {
+  public void testIsSymbol() {
     assertEquals(TRUE, eval("(symbol? 't)  ", env));
     assertEquals(FALSE, eval("(symbol? \"t\") ", env));
     assertEquals(FALSE, eval("(symbol? '(t))", env));

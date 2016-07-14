@@ -10,7 +10,8 @@ import s7.tests.*;
     EqvTest.class,
     EqualTest.class,
     NotTest.class,
-    IsSymbolTest.class
+    IsSymbolTest.class,
+    IsProcedureTest.class
 })
 public class S7Tests {
 }
