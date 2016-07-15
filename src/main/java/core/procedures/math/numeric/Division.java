@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Division extends AFn implements INumericalOperation {
 
@@ -23,6 +24,12 @@ public class Division extends AFn implements INumericalOperation {
         ((Long)numenator % (Long)denominator) == 0) {
 
       return (Long)numenator / (Long)denominator;
+    }
+    if (numenator instanceof BigInteger) {
+      return ((BigInteger)numenator).divide(new BigInteger(denominator.toString()));
+    }
+    if (denominator instanceof BigInteger) {
+      return ((BigInteger)denominator).divide(new BigInteger(numenator.toString()));
     }
     double result = numenator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

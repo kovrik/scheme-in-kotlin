@@ -7,6 +7,7 @@ import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -179,32 +180,20 @@ public class Reader implements IReader {
     char next = (char) reader.read();
     reader.unread(next);
 
-    if (Character.isDigit(c) || c == '+' || c == '-' || c == '.') {
+    if (isNumeric(c)) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
         return SCMSpecialForm.DOT;
       }
       reader.unread(c);
-
-      String number = readNumber(reader);
-      if ((number.indexOf(".") != number.lastIndexOf(".")) ||
-          (number.length() == 1 && (number.charAt(0) == '+' || number.charAt(0) == '-'))) {
-        // not a number
-        return new SCMSymbol(number);
+      String number = readNumber(reader, 'd');
+      /* Check if read the number */
+      if ("-".equals(number) || "+".equals(number)) {
+        /* If not, then fallback to identifier */
+        reader.unread(number.charAt(0));
+        return readIdentifier(reader);
       }
-      Number result = NumberFormat.getInstance().parse(number);
-      /* Switch to BigDecimal if number has 19 or more digits */
-      // TODO BigInt?
-      if (number.length() >= 19)  {
-        return new BigDecimal(number);
-      }
-      if ((result instanceof Double) && (Double.isInfinite((Double)result)))  {
-        return new BigDecimal(number);
-      }
-      if (number.indexOf('.') > -1) {
-        return result.doubleValue();
-      }
-      return result;
+      return preProcessNumber(number, 'e', 'd');
     } else if (c == ';') {
       String comment = readComment(reader);
       return null;
@@ -215,21 +204,65 @@ public class Reader implements IReader {
         reader.read();
         return readCharacter(reader);
       } else if (next == 't' || next == 'f') {
-        //   <boolean> --> #t | #f
-        return new SCMSymbol("#" + (char)reader.read());
-      } else if (next == 'i' || next == 'e') {
-        char exactness = (char) reader.read();
-        // TODO
-//        String number = "#" + exactness + readNumber(reader);
-        String number = readNumber(reader);
-        if (number.indexOf(".") != number.lastIndexOf(".")) {
-          throw new IllegalArgumentException("Error: illegal number syntax: \"" + number + "\"");
+        // <boolean> --> #t | #f
+        return new SCMSymbol("#" + (char) reader.read());
+        // -----------------------------------------------------------------------------
+      } else if (isBase(next) || isExactness(next)) {
+        // TODO Cleanup
+        /* Read radix and/or exactness and a number */
+        String number = null;
+        Character radix = null;
+        Character exactness = null;
+        /* We know that next char is either radix or exactness
+         * So just check which one and set it */
+        if (isBase(next)) {
+          radix = next;
         }
-        if (exactness == 'e') {
-          return NumberFormat.getInstance().parse(number).longValue();
-        } else {
-          return NumberFormat.getInstance().parse(number).doubleValue();
+        if (isExactness(next)) {
+          exactness = next;
         }
+        /* Now read next char: should be either # or numeric */
+        reader.read();
+        next = (char) reader.read();
+        /* If it is #, then we expect radix or exactness */
+        if (next == '#') {
+          next = (char) reader.read();
+          if (isBase(next)) {
+            if (radix != null) {
+              /* Met radix twice */
+              throw new IllegalArgumentException("Bad number!");
+            }
+            radix = next;
+          }
+          if (isExactness(next)) {
+            if (exactness != null) {
+              /* Met exactness twice */
+              throw new IllegalArgumentException("Bad number!");
+            }
+            exactness = next;
+          }
+          /* Now we should have both radix and exactness */
+          next = (char) reader.read();
+          /* So just read the number */
+          if (isNumeric(next)) {
+            reader.unread(next);
+            number = readNumber(reader, radix);
+          } else {
+            throw new IllegalArgumentException("Bad number!");
+          }
+        } else if (isNumeric(next) || isValidForRadix(next, radix)) {
+          /* If it is number, then just read it */
+          reader.unread(next);
+          number = readNumber(reader, radix);
+        }
+        /* Check if we got exactness or radix */
+        if (exactness == null) {
+          exactness = 'e';
+        }
+        if (radix == null) {
+          radix = 'd';
+        }
+        return preProcessNumber(number, exactness, radix);
       }
     } else {
       reader.unread(c);
@@ -237,6 +270,89 @@ public class Reader implements IReader {
     }
     reader.unread(c);
     throw new IllegalArgumentException("Unknown atom!");
+  }
+
+  private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
+    if ((number.indexOf(".") != number.lastIndexOf(".")) ||
+        (number.length() == 1 && (number.charAt(0) == '+' || number.charAt(0) == '-'))) {
+      // not a number
+      return new SCMSymbol(number);
+    }
+
+    /* Check if first char is a sign */
+    int hasSign = 0;
+    if (number.charAt(0) == '+' || number.charAt(0) == '-') {
+      hasSign = 1;
+    }
+
+    /* Check exactness */
+    // TODO
+
+    /* Check radix */
+    if (radix == 'b') {
+      if (number.length() > (63 + hasSign)) {
+        return new BigInteger(number, 2);
+      }
+      return Long.parseLong(number, 2);
+    } else if (radix == 'o') {
+      if (number.length() > (21 + hasSign)) {
+        return new BigInteger(number, 8);
+      }
+      return Long.parseLong(number, 8);
+    } else if (radix == 'x') {
+      if (number.length() > (15 + hasSign)) {
+        return new BigInteger(number, 16);
+      }
+      return Long.parseLong(number, 16);
+    }
+
+    Number result;
+    try {
+      result = NumberFormat.getInstance().parse(number);
+    } catch (ParseException e) {
+      return new SCMSymbol(number);
+    }
+
+    /* Switch to BigDecimal if number has 19 or more digits */
+    // TODO BigInt?
+    if (number.length() >= 19)  {
+      return new BigDecimal(number);
+    }
+    if ((result instanceof Double) && (Double.isInfinite((Double)result)))  {
+      return new BigDecimal(number);
+    }
+    if (number.indexOf('.') > -1) {
+      return result.doubleValue();
+    }
+    return result;
+  }
+
+  private static boolean isNumeric(char c) {
+    return Character.isDigit(c) || c == '+' || c == '-' || c == '.';
+  }
+
+  private static boolean isExactness(char c) {
+    return c == 'i' || c == 'e';
+  }
+
+  private static boolean isBase(char c) {
+    return c == 'b' || c == 'o' || c == 'd' || c == 'x';
+  }
+
+  private static boolean isValidForRadix(char c, Character radix) {
+    if (radix == null || radix.equals('d')) {
+      return "0123456789".indexOf(c) > -1;
+    }
+    if (radix.equals('b')) {
+      return "01".indexOf(c) > -1;
+    }
+    if (radix.equals('o')) {
+      return "01234567".indexOf(c) > -1;
+    }
+    if (radix.equals('x')) {
+      return "0123456789abcdefABCDEF".indexOf(c) > -1;
+    }
+    throw new IllegalArgumentException("Bad radix: " + radix);
   }
 
   /**
@@ -352,14 +468,14 @@ public class Reader implements IReader {
    */
   // TODO Radix
   // TODO Number types
-  private static String readNumber(PushbackReader reader) throws ParseException, IOException {
+  private static String readNumber(PushbackReader reader, Character radix) throws ParseException, IOException {
     StringBuilder number = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
     if (c == '.') {
       number.append('0');
     }
-    while (isValid(i) && Character.isDigit(c) || c == '.' || c == '+' || c == '-') {
+    while (isValid(i) && (isNumeric(c) || isValidForRadix(c, radix))) {
       number.append(c);
       i = reader.read();
       c = (char)i;
@@ -424,6 +540,9 @@ public class Reader implements IReader {
     char c;
     while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
       character.append(c);
+    }
+    if (character.length () == 0 && (char)i == ' ') {
+      return ' ';
     }
     reader.unread((char)i);
     // <character name>

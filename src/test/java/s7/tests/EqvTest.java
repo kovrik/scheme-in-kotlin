@@ -20,6 +20,9 @@ public class EqvTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(eqv? #\\a #\\b)", env));
     assertEquals(TRUE, eval("(eqv? #\\a #\\a)", env));
     assertEquals(TRUE, eval("(eqv? #\\space #\\space)", env));
+    assertEquals(TRUE, eval("(eqv? #\\  #\\space)", env));
+    assertEquals(TRUE, eval("(eqv? #\\space #\\space)", env));
+    assertEquals(TRUE, eval("(eqv? #\\newline '#\\newline)", env));
     assertEquals(TRUE, eval("(let ((x (string-ref \"hi\" 0))) (eqv? x x))", env));
     assertEquals(TRUE, eval("(eqv? #t #t)", env));
     assertEquals(TRUE, eval("(eqv? #f #f)", env));

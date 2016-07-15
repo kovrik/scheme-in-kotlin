@@ -3,6 +3,7 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Max extends AFn implements INumericalOperation {
 
@@ -18,6 +19,7 @@ public class Max extends AFn implements INumericalOperation {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);
     }
+
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return ((BigDecimal)first).max((BigDecimal) second);
     }
@@ -27,6 +29,17 @@ public class Max extends AFn implements INumericalOperation {
     if (second instanceof BigDecimal) {
       return ((BigDecimal)second).max(new BigDecimal(first.toString()));
     }
+
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return ((BigInteger)first).max((BigInteger) second);
+    }
+    if (first instanceof BigInteger) {
+      return ((BigInteger)first).max(new BigInteger(second.toString()));
+    }
+    if (second instanceof BigInteger) {
+      return ((BigInteger)second).max(new BigInteger(first.toString()));
+    }
+
     return Math.max(first.doubleValue(), second.doubleValue());
   }
 

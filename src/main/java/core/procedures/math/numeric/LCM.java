@@ -41,10 +41,21 @@ public class LCM extends AFn implements INumericalOperation {
     return new BigDecimal((a.toBigIntegerExact().divide(gcd)).multiply(b.toBigIntegerExact()));
   }
 
+  // FIXME Optmize
+  private static BigInteger lcm(BigInteger a, BigInteger b) {
+    if ((BigInteger.ZERO.compareTo(a) == 0) && (BigInteger.ZERO.compareTo(b) == 0)) {
+      return BigInteger.ZERO;
+    }
+    // FIXME Check if numbers are integral!
+    BigInteger gcd = a.gcd(b);
+    return (a.divide(gcd)).multiply(b);
+  }
+
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
+
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return lcm((BigDecimal)first, (BigDecimal)second);
     }
@@ -54,6 +65,17 @@ public class LCM extends AFn implements INumericalOperation {
     if (second instanceof BigDecimal) {
       return lcm(new BigDecimal(first.toString()), (BigDecimal)second);
     }
+
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return lcm((BigInteger)first, (BigInteger)second);
+    }
+    if (first instanceof BigInteger) {
+      return lcm((BigInteger)first, new BigInteger(second.toString()));
+    }
+    if (second instanceof BigInteger) {
+      return lcm(new BigInteger(first.toString()), (BigInteger)second);
+    }
+
     return lcm(first.doubleValue(), second.doubleValue());
   }
 

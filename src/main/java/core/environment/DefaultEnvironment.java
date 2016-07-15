@@ -22,6 +22,7 @@ import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +44,11 @@ public final class DefaultEnvironment extends Environment {
     procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
     procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
                                                                      "(string=? \"%s\" (class-of o))" +
+                                                                     "(string=? \"%s\" (class-of o))" +
                                                                      "(string=? \"%s\" (class-of o))))",
                                                                      Long.class.getName(),
                                                                      Double.class.getName(),
+                                                                     BigInteger.class.getName(),
                                                                      BigDecimal.class.getName()));
 
 //    procs.put("integer?",   String.format("(define (integer?   o) (string=? \"%s\" (class-of o)))", Long.class.getName()));

@@ -3,6 +3,7 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Multiplication extends AFn implements INumericalOperation {
 
@@ -17,6 +18,12 @@ public class Multiplication extends AFn implements INumericalOperation {
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first * (Long)second;
+    }
+    if (first instanceof BigInteger) {
+      return ((BigInteger)first).multiply(new BigInteger(second.toString()));
+    }
+    if (second instanceof BigInteger) {
+      return ((BigInteger)second).multiply(new BigInteger(first.toString()));
     }
     double result = first.doubleValue() * second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

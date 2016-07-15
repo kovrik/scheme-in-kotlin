@@ -3,6 +3,7 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Min extends AFn implements INumericalOperation {
 
@@ -27,6 +28,17 @@ public class Min extends AFn implements INumericalOperation {
     if (second instanceof BigDecimal) {
       return ((BigDecimal)second).min(new BigDecimal(first.toString()));
     }
+
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return ((BigInteger)first).min((BigInteger) second);
+    }
+    if (first instanceof BigInteger) {
+      return ((BigInteger)first).min(new BigInteger(second.toString()));
+    }
+    if (second instanceof BigInteger) {
+      return ((BigInteger)second).min(new BigInteger(first.toString()));
+    }
+
     return Math.min(first.doubleValue(), second.doubleValue());
   }
 
