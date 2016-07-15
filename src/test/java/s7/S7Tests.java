@@ -11,7 +11,8 @@ import s7.tests.*;
     EqualTest.class,
     NotTest.class,
     IsSymbolTest.class,
-    IsProcedureTest.class
+    IsProcedureTest.class,
+    IsCharTest.class
 })
 public class S7Tests {
 }
