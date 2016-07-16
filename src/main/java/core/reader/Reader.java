@@ -280,16 +280,19 @@ public class Reader implements IReader {
           /* Now we should have both radix and exactness */
           next = (char) reader.read();
           /* So just read the number */
-          if (isNumeric(next)) {
+          if ("+-.".indexOf(next) > -1 || isValidForRadix(next, radix)) {
             reader.unread(next);
             number = readNumber(reader, radix);
           } else {
             throw new IllegalArgumentException("Bad number!");
           }
-        } else if (isNumeric(next) || isValidForRadix(next, radix)) {
+        } else if ("+-.".indexOf(next) > -1 || isValidForRadix(next, radix)) {
           /* If it is number, then just read it */
           reader.unread(next);
           number = readNumber(reader, radix);
+        }
+        if (number == null) {
+          throw new IllegalArgumentException("Bad number!");
         }
         /* Check if we got exactness or radix */
         if (exactness == null) {
@@ -317,13 +320,17 @@ public class Reader implements IReader {
 
     /* Check if first char is a sign */
     int hasSign = 0;
-    if (number.charAt(0) == '+' || number.charAt(0) == '-') {
+    if (number.charAt(0) == '-') {
       hasSign = 1;
+    } else if (number.charAt(0) == '+') {
+      /* Drop + sign */
+      number = number.substring(1);
     }
 
     /* Check exactness */
     // TODO
 
+    // TODO Inexact numbers in b,o,x?
     /* Check radix */
     if (radix == 'b') {
       if (number.length() > (63 + hasSign)) {
@@ -511,10 +518,17 @@ public class Reader implements IReader {
     if (c == '.') {
       number.append('0');
     }
-    while (isValid(i) && (isNumeric(c) || isValidForRadix(c, radix))) {
+    while (isValid(i) && ("+-.".indexOf(c) > -1 || isValidForRadix(c, radix))) {
       number.append(c);
       i = reader.read();
       c = (char)i;
+    }
+    /* Ensure we have 1 sign/dot max */
+    if ((number.indexOf("+") != number.lastIndexOf("+")) ||
+        (number.indexOf("-") != number.lastIndexOf("-")) ||
+        (number.indexOf(".") != number.lastIndexOf("."))) {
+
+      throw new IllegalArgumentException("Bad number!");
     }
     reader.unread(c);
     if (number.length() > 0 && number.charAt(number.length() - 1) == '.') {

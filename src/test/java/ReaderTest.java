@@ -7,6 +7,8 @@ import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 import static org.junit.Assert.assertEquals;
 
 public class ReaderTest {
@@ -28,6 +30,55 @@ public class ReaderTest {
     assertEquals(-1235.0d, reader.read("-1235."));
     assertEquals(.5d, reader.read(".5"));
     assertEquals(-.5d, reader.read("-.5"));
+
+    assertEquals(-.5d, reader.read("#e#d-.5"));
+    assertEquals(+4.5d, reader.read("#i#d+4.5"));
+    assertEquals(4999999.5d, reader.read("#i#d+4999999.5"));
+    assertEquals(5L, reader.read("#e#b101"));
+    assertEquals(5L, reader.read("#b#e101"));
+    assertEquals(1L, reader.read("#b#e0001"));
+    assertEquals(455L, reader.read("#o0707"));
+    assertEquals(585L, reader.read("#o1111"));
+    assertEquals(new BigInteger("324518553658426726783156020576255"), reader.read("#xfffffffffffffffffffffffffff"));
+    try {
+      reader.read("#o9999");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+    try {
+      reader.read("#df999");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+    try {
+      reader.read("#xz999");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+    try {
+      reader.read("#b2222");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+    try {
+      reader.read("#d+5+5");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+    try {
+      reader.read("+5+5");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Bad number!", e.getMessage());
+    }
+
+    assertEquals(255.99609375, reader.read("#d255.99609375"));
+    // TODO
+//    assertEquals(255.99609375, reader.read("#xff.ff"));
+//    assertEquals(171.67111108726925, reader.read("#xab.abcdefabcdef"));
+//    assertEquals(3.3125, reader.read("#b11.0101"));
+//    assertEquals(2730.661460876465, reader.read("#b101010101010.10101001010101011"));
+//    assertEquals(83.97128295898438, reader.read("#o123.76123"));
+//    assertEquals(2054353.1632647514, reader.read("#o7654321.1234567"));
   }
 
   @Test
