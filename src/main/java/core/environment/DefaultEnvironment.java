@@ -7,6 +7,7 @@ import core.procedures.equivalence.*;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.procedures.lists.Length;
+import core.procedures.lists.Member;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
 import core.procedures.strings.*;
@@ -143,7 +144,9 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("display"), new Display(System.out));
     put(new SCMSymbol("newline"), new Newline(System.out));
 
+    /* Lists */
     put(new SCMSymbol("length"), new Length());
+    put(new SCMSymbol("member"), new Member());
 
     /* Symbols */
     put(new SCMSymbol("symbol->string"), new SymbolToString());

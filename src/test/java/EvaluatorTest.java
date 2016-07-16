@@ -57,7 +57,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalMath() {
-
     assertEquals(6L,  eval("(+ 1 2 3)", env));
     assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env));
     assertEquals(5.0, eval("(/ 10.0 2)", env));
@@ -100,7 +99,6 @@ public class EvaluatorTest {
 
   @Test
   public void testNumberTheoreticDivision() {
-
     // quotient
     assertEquals(3L,  eval("(quotient 13 4)", env));
     assertEquals(3d,  eval("(quotient 13.0 4)", env));
@@ -226,7 +224,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalImplicitBegin() {
-
     assertEquals(3L, eval("((lambda () 1 2 (+ 1 2)))", env));
     assertEquals(3L, eval("(let    () 1 2 (+ 1 2))", env));
     assertEquals(3L, eval("(let*   () 1 2 (+ 1 2))", env));
@@ -958,14 +955,12 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalList() {
-
     assertEquals(SCMCons.class.getName(), eval("(class-of (list 1 2 3 4 5))", env));
     assertEquals(list(1L, 2L, 3L), eval("(list 1 2 3)", env));
   }
 
   @Test
   public void testEvalEmpty() {
-
     assertEquals(TRUE,  eval("(null?  '())", env));
     assertEquals(TRUE,  eval("(empty? '())", env));
     assertEquals(FALSE, eval("(null?  '(1 2 3))", env));
@@ -977,15 +972,49 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalLength() {
-
     assertEquals(0L, eval("(length '())", env));
     assertEquals(1L, eval("(length '(1))", env));
     assertEquals(5L, eval("(length '(1 2 3 4 5))", env));
+    try {
+      eval("(length)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: length", e.getMessage());
+    }
+    try {
+      eval("(length 1)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `length`! Expected: List, Actual: 1", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalMember() {
+    assertEquals(FALSE, eval("(member 0 '())", env));
+    assertEquals(FALSE, eval("(member 0 '(1 2 3))", env));
+    assertEquals(FALSE, eval("(member \"test\" '(1 2 3))", env));
+
+    assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env));
+    assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env));
+    assertEquals(list(3L), eval("(member 3 '(1 2 3))", env));
+    assertEquals(list(list(new SCMSymbol("a")), new SCMSymbol("c")), eval("(member (list 'a) '(b (a) c))", env));
+    try {
+      eval("(member)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: member", e.getMessage());
+    }
+    try {
+      eval("(member 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `member`! Expected: List, Actual: #()", e.getMessage());
+    }
   }
 
   @Test
   public void testEvalIsZero() {
-
     assertEquals(TRUE,  eval("(zero? 0)", env));
     assertEquals(TRUE,  eval("(zero? 0.0)", env));
     assertEquals(FALSE, eval("(zero? 1)", env));
@@ -1001,7 +1030,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalNegative() {
-
     assertEquals(FALSE, eval("(negative? 0)", env));
     assertEquals(FALSE, eval("(negative? 0.0)", env));
     assertEquals(FALSE, eval("(negative? 1)", env));
@@ -1017,7 +1045,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalPositive() {
-
     assertEquals(FALSE, eval("(positive? 0)", env));
     assertEquals(FALSE, eval("(positive? 0.0)", env));
     assertEquals(TRUE,  eval("(positive? 1)", env));
@@ -1033,7 +1060,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalEven() {
-
     assertEquals(TRUE,  eval("(even? 0)", env));
     assertEquals(TRUE,  eval("(even? 0.0)", env));
     assertEquals(TRUE,  eval("(even? 4)", env));
@@ -1051,7 +1077,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalOdd() {
-
     assertEquals(FALSE, eval("(odd? 0)", env));
     assertEquals(FALSE, eval("(odd? 0.0)", env));
     assertEquals(FALSE, eval("(odd? 4)", env));
@@ -1070,7 +1095,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalRound() {
-
     assertEquals(0L,   eval("(round 0)",    env));
     assertEquals(4L,   eval("(round 4)",    env));
     assertEquals(-4L,  eval("(round -4)",   env));
@@ -1094,7 +1118,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalFloor() {
-
     assertEquals(0L,   eval("(floor 0)",    env));
     assertEquals(4L,   eval("(floor 4)",    env));
     assertEquals(-5.0, eval("(floor -4.3)", env));
@@ -1111,7 +1134,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalCeiling() {
-
     assertEquals(0L,   eval("(ceiling 0)",    env));
     assertEquals(4L,   eval("(ceiling 4)",    env));
     assertEquals(-4.0, eval("(ceiling -4.3)", env));
@@ -1128,7 +1150,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalTruncate() {
-
     assertEquals(0L,   eval("(truncate 0)",    env));
     assertEquals(4L,   eval("(truncate 4)",    env));
     assertEquals(-4L,  eval("(truncate -4)",   env));
@@ -1146,11 +1167,9 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalMax() {
-
     assertEquals(0L,   eval("(max 0)",    env));
     assertEquals(5.0,  eval("(max 5.0)",  env));
     assertEquals(-5.0, eval("(max -5.0)", env));
-
     assertEquals(-5.0, eval("(max -6 -7 -5.0)", env));
     assertEquals(7.0,  eval("(max 6 7 5.0)",    env));
 
@@ -1171,14 +1190,11 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalMin() {
-
     assertEquals(0L,   eval("(min 0)",    env));
     assertEquals(5.0,  eval("(min 5.0)",  env));
     assertEquals(-5.0, eval("(min -5.0)", env));
-
     assertEquals(-7.0, eval("(min -6 -7 -5.0)", env));
     assertEquals(5.0,  eval("(min 6 7 5.0)",    env));
-
     try {
       eval("(min \"test\" 1 2 3)", env);
       fail();
@@ -1196,7 +1212,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalGCD() {
-
     // gcd of no args is 0
     assertEquals(0L, eval("(gcd)", env));
     // gcd of 0(s) is 0
@@ -1239,7 +1254,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalLCM() {
-
     // lcm of no args is 0
     assertEquals(0L, eval("(lcm)", env));
     // lcm of 0(s) is 0
@@ -1273,7 +1287,6 @@ public class EvaluatorTest {
 
   @Test
   public void testEvalExpt() {
-
     assertEquals(1.0, eval("(expt 9 0)", env));
     assertEquals(0.0, eval("(expt 0 10)", env));
     assertEquals(1.0, eval("(expt 1 1)", env));
