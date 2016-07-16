@@ -37,8 +37,8 @@ public class IsSymbolTest extends AbstractS7Test {
     assertEquals(TRUE, eval("(symbol? 'begin)", env));
     assertEquals(TRUE, eval("(symbol? 'if)", env));
     assertEquals(FALSE, eval("(symbol? #b1)", env));
-
-    // FIXME
     assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0e) #t)", env));
+    assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0000eeesve) #t)", env));
+    assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env));
   }
 }

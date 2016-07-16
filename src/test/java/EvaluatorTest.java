@@ -749,6 +749,8 @@ public class EvaluatorTest {
     assertEquals("test", eval("'\"test\"", env));
     assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval("''\"test\"", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("'(+ 1 2)", env));
+    assertEquals(new SCMSymbol("0eab"), eval("'0eab", env));
+    assertEquals(new SCMSymbol("000eab"), eval("'000eab", env));
   }
 
   @Test
