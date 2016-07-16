@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 
 public class Round extends AFn implements INumericalOperation {
@@ -16,8 +15,6 @@ public class Round extends AFn implements INumericalOperation {
         return (Long)args[0];
       } else if (args[0] instanceof Double) {
         return Math.rint((Double)args[0]);
-      } else if (args[0] instanceof BigInteger) {
-        return (BigInteger)args[0];
       } else if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).round(MathContext.DECIMAL32);
       }

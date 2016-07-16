@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Ceiling extends AFn implements INumericalOperation {
 
@@ -15,8 +14,6 @@ public class Ceiling extends AFn implements INumericalOperation {
         return (Long)args[0];
       } else if (args[0] instanceof Double) {
         return Math.ceil((Double)args[0]);
-      } else if (args[0] instanceof BigInteger) {
-        return (BigInteger)args[0];
       } else if (args[0] instanceof BigDecimal) {
         BigDecimal arg = (BigDecimal)args[0];
         return arg.setScale(0, BigDecimal.ROUND_UP);

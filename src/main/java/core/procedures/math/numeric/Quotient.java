@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Quotient extends AFn implements INumericalOperation {
 
@@ -33,13 +32,6 @@ public class Quotient extends AFn implements INumericalOperation {
     return first.divideToIntegralValue(second);
   }
 
-  public Number apply(BigInteger first, BigInteger second) {
-    if (second.compareTo(BigInteger.ZERO) == 0) {
-      throw new ArithmeticException("Error: (quotient) undefined for 0");
-    }
-    return first.divide(second);
-  }
-
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
@@ -50,16 +42,6 @@ public class Quotient extends AFn implements INumericalOperation {
     }
     if (second instanceof BigDecimal) {
       return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
-    }
-
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return apply((BigInteger)first, (BigInteger)second);
-    }
-    if (first instanceof BigInteger) {
-      return apply((BigInteger)first, new BigInteger(second.toString()));
-    }
-    if (second instanceof BigInteger) {
-      return apply(new BigInteger(first.toString()), new BigInteger(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {

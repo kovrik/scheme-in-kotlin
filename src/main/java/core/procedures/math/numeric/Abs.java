@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Abs extends AFn implements INumericalOperation {
 
@@ -15,8 +14,6 @@ public class Abs extends AFn implements INumericalOperation {
         return Math.abs((Long)args[0]);
       } else if (args[0] instanceof Double) {
         return Math.abs((Double) args[0]);
-      } else if (args[0] instanceof BigInteger) {
-        return ((BigInteger)args[0]).abs();
       } else if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).abs();
       }

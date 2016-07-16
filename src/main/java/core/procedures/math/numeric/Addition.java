@@ -3,7 +3,6 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Addition extends AFn implements INumericalOperation {
 
@@ -19,11 +18,11 @@ public class Addition extends AFn implements INumericalOperation {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first + (Long)second;
     }
-    if (first instanceof BigInteger) {
-      return ((BigInteger)first).add(new BigInteger(second.toString()));
+    if (first instanceof BigDecimal) {
+      return ((BigDecimal)first).add(new BigDecimal(second.toString()));
     }
-    if (second instanceof BigInteger) {
-      return ((BigInteger)second).add(new BigInteger(first.toString()));
+    if (second instanceof BigDecimal) {
+      return ((BigDecimal)second).add(new BigDecimal(first.toString()));
     }
     double result = first.doubleValue() + second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

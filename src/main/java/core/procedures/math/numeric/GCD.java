@@ -3,7 +3,6 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class GCD extends AFn implements INumericalOperation {
 
@@ -39,11 +38,6 @@ public class GCD extends AFn implements INumericalOperation {
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 
-  public static BigInteger gcd(BigInteger a, BigInteger b) {
-    // FIXME Check if numbers are integral!
-    return a.gcd(b);
-  }
-
   // FIXME BigInt? Double?
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
@@ -58,16 +52,6 @@ public class GCD extends AFn implements INumericalOperation {
     }
     if (second instanceof BigDecimal) {
       return gcd(new BigDecimal(first.toString()), (BigDecimal) second);
-    }
-
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return gcd((BigInteger) first, (BigInteger) second);
-    }
-    if (first instanceof BigInteger) {
-      return gcd((BigInteger) first, new BigInteger(second.toString()));
-    }
-    if (second instanceof BigInteger) {
-      return gcd(new BigInteger(first.toString()), (BigInteger) second);
     }
 
     return gcd(first.doubleValue(), second.doubleValue());

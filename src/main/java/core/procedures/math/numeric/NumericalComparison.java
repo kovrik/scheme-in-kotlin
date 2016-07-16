@@ -5,7 +5,6 @@ import core.procedures.math.IOperation;
 import core.scm.SCMBoolean;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class NumericalComparison extends AFn implements IOperation {
 
@@ -62,9 +61,6 @@ public class NumericalComparison extends AFn implements IOperation {
     if ((first instanceof Double) || (second instanceof Double)) {
       f = f.doubleValue();
       s = s.doubleValue();
-    } else if ((first instanceof BigInteger) || (second instanceof BigInteger)) {
-      f = new BigInteger(f.toString());
-      s = new BigInteger(s.toString());
     } else if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
       f = new BigDecimal(f.toString());
       s = new BigDecimal(s.toString());

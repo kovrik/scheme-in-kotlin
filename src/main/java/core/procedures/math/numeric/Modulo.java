@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Modulo extends AFn implements INumericalOperation {
 
@@ -43,20 +42,6 @@ public class Modulo extends AFn implements INumericalOperation {
     return second.add(remainder);
   }
 
-  public BigInteger apply(BigInteger first, BigInteger second) {
-    if (second.compareTo(BigInteger.ZERO) == 0) {
-      throw new ArithmeticException("Error: (modulo) undefined for 0");
-    }
-    BigInteger remainder = first.remainder(second);
-    if (remainder.compareTo(BigInteger.ZERO) == 0) {
-      return remainder;
-    }
-    if ((first.compareTo(BigInteger.ZERO) > 0) == (second.compareTo(BigInteger.ZERO) > 0)) {
-      return remainder;
-    }
-    return second.add(remainder);
-  }
-
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
@@ -67,16 +52,6 @@ public class Modulo extends AFn implements INumericalOperation {
     }
     if (second instanceof BigDecimal) {
       return apply((BigDecimal) second, new BigDecimal(first.toString()));
-    }
-
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return apply((BigInteger) first, (BigInteger)second);
-    }
-    if (first instanceof BigInteger) {
-      return apply((BigInteger) first, new BigInteger(second.toString()));
-    }
-    if (second instanceof BigInteger) {
-      return apply((BigInteger) second, new BigInteger(first.toString()));
     }
 
     // check if they are integral

@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Truncate extends AFn implements INumericalOperation {
 
@@ -20,8 +19,6 @@ public class Truncate extends AFn implements INumericalOperation {
         } else {
           return Math.floor(arg);
         }
-      } else if (args[0] instanceof BigInteger) {
-        return (BigInteger)args[0];
       } else if (args[0] instanceof BigDecimal) {
         BigDecimal arg = (BigDecimal)args[0];
         if (arg.compareTo(BigDecimal.ZERO) < 0) {

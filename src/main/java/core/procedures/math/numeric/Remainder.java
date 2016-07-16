@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Remainder extends AFn implements INumericalOperation {
 
@@ -26,13 +25,6 @@ public class Remainder extends AFn implements INumericalOperation {
     throw new ArityException(0, 2, "remainder");
   }
 
-  public Number apply(BigInteger first, BigInteger second) {
-    if (second.compareTo(BigInteger.ZERO) == 0) {
-      throw new ArithmeticException("Error: (remainder) undefined for 0");
-    }
-    return first.remainder(second);
-  }
-
   public Number apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException("Error: (remainder) undefined for 0");
@@ -50,16 +42,6 @@ public class Remainder extends AFn implements INumericalOperation {
     }
     if (second instanceof BigDecimal) {
       return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
-    }
-
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return apply((BigInteger)first, (BigInteger)second);
-    }
-    if (first instanceof BigInteger) {
-      return apply((BigInteger)first, new BigInteger(second.toString()));
-    }
-    if (second instanceof BigInteger) {
-      return apply(new BigInteger(first.toString()), new BigInteger(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {

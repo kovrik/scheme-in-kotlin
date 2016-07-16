@@ -312,7 +312,7 @@ public class Reader implements IReader {
   }
 
   private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
-    if ((number.indexOf(".") != number.lastIndexOf(".")) ||
+    if ((number.indexOf('.') != number.lastIndexOf('.')) ||
         (number.length() == 1 && (number.charAt(0) == '+' || number.charAt(0) == '-'))) {
       // not a number
       return new SCMSymbol(number);
@@ -328,7 +328,7 @@ public class Reader implements IReader {
     }
 
     /* Check exactness */
-    // TODO
+    // TODO Exactness
 
     // TODO Inexact numbers in b,o,x?
     /* Check radix */
@@ -347,27 +347,28 @@ public class Reader implements IReader {
         return new BigInteger(number, 16);
       }
       return Long.parseLong(number, 16);
-    }
+    } else if (radix == 'd') {
 
-    Number result;
-    try {
-      result = NumberFormat.getInstance().parse(number);
-    } catch (ParseException e) {
-      return new SCMSymbol(number);
-    }
+      Number result;
+      try {
+        result = NumberFormat.getInstance().parse(number);
+      } catch (ParseException e) {
+        return new SCMSymbol(number);
+      }
 
-    /* Switch to BigDecimal if number has 19 or more digits */
-    // TODO BigInt?
-    if (number.length() >= 19)  {
-      return new BigDecimal(number);
+      /* Switch to BigDecimal if number has 19 or more digits */
+      if (number.length() >= 19) {
+          return new BigDecimal(number);
+      }
+      if ((result instanceof Double) && (Double.isInfinite((Double) result))) {
+        return new BigDecimal(number);
+      }
+      if (number.indexOf('.') > -1) {
+        return result.doubleValue();
+      }
+      return result;
     }
-    if ((result instanceof Double) && (Double.isInfinite((Double)result)))  {
-      return new BigDecimal(number);
-    }
-    if (number.indexOf('.') > -1) {
-      return result.doubleValue();
-    }
-    return result;
+    throw new IllegalArgumentException("Bad number!");
   }
 
   private static boolean isNumeric(char c) {

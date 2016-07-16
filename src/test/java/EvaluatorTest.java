@@ -3,12 +3,15 @@ import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
-import core.reader.IReader;
-import core.reader.Reader;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
-import core.scm.*;
+import core.reader.IReader;
+import core.reader.Reader;
+import core.scm.SCMCons;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
+import core.scm.SCMVector;
 import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
@@ -21,9 +24,7 @@ import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
-import static core.scm.SCMCons.NIL;
-import static core.scm.SCMCons.cons;
-import static core.scm.SCMCons.list;
+import static core.scm.SCMCons.*;
 import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
 import static org.junit.Assert.*;
 
@@ -1223,15 +1224,15 @@ public class EvaluatorTest {
       assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
     }
 
-    assertEquals(new BigDecimal(9), eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
+    assertEquals(new BigDecimal("9"), eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
 
     /* Check switch from Double to BigDecimal for big numbers */
     assertEquals(3L,                  eval("(gcd 99999999999999999 123)", env));
     assertEquals(3L,                  eval("(gcd 999999999999999999 123)", env));
-    assertEquals(new BigDecimal(3),   eval("(gcd 9999999999999999999 123)", env));
-    assertEquals(new BigDecimal(123), eval("(gcd 99999999999999999999 123)", env));
-    assertEquals(new BigDecimal(3),   eval("(gcd 999999999999999999999 123)", env));
-    assertEquals(new BigDecimal(3),   eval("(gcd 9999999999999999999999 123)", env));
+    assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999 123)", env));
+    assertEquals(new BigDecimal("123"), eval("(gcd 99999999999999999999 123)", env));
+    assertEquals(new BigDecimal("3"),   eval("(gcd 999999999999999999999 123)", env));
+    assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999999 123)", env));
   }
 
   @Test
@@ -1264,7 +1265,6 @@ public class EvaluatorTest {
       assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
     }
 
-    // TODO BigDecimals
     String big = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
     assertEquals(new BigDecimal(big), eval(String.format("(lcm %s 9)", big), env));
   }
@@ -1312,8 +1312,8 @@ public class EvaluatorTest {
     assertEquals(TRUE, eval(String.format("(number? %s)", big0), env));
 
     assertEquals(new BigDecimal(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
-    assertEquals(new BigDecimal(big0).multiply(new BigDecimal(2)), eval(String.format("(+ %s %s)", big0, big0), env));
-    assertEquals(new BigDecimal(big0).multiply(new BigDecimal(2)).subtract(new BigDecimal(big0)),
+    assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")), eval(String.format("(+ %s %s)", big0, big0), env));
+    assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")).subtract(new BigDecimal(big0)),
                  eval(String.format("(- (* 2 %s) %s)", big0, big0), env));
 
 
