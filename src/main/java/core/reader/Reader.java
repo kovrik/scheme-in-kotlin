@@ -429,6 +429,7 @@ public class Reader implements IReader {
    * @throws ParseException
    * @throws IOException
    */
+  // FIXME '0e => (quote 0eabc), not (quote 0)
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
     List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE);
     Object next = nextToken(reader);

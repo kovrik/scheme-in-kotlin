@@ -70,15 +70,13 @@ public class ReaderTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Bad number!", e.getMessage());
     }
-
     assertEquals(255.99609375, reader.read("#d255.99609375"));
-    // TODO
-//    assertEquals(255.99609375, reader.read("#xff.ff"));
-//    assertEquals(171.67111108726925, reader.read("#xab.abcdefabcdef"));
-//    assertEquals(3.3125, reader.read("#b11.0101"));
-//    assertEquals(2730.661460876465, reader.read("#b101010101010.10101001010101011"));
-//    assertEquals(83.97128295898438, reader.read("#o123.76123"));
-//    assertEquals(2054353.1632647514, reader.read("#o7654321.1234567"));
+    assertEquals(255.99609375, reader.read("#xff.ff"));
+    assertEquals(171.67111108726925, reader.read("#xab.abcdefabcdef"));
+    assertEquals(3.3125, reader.read("#b11.0101"));
+    assertEquals(2730.661460876465, reader.read("#b101010101010.10101001010101011"));
+    assertEquals(83.97128295898438, reader.read("#o123.76123"));
+    assertEquals(2054353.1632647514, reader.read("#o7654321.1234567"));
   }
 
   @Test

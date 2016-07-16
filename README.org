@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [16/33]
+* TODO: [17/34]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -11,7 +11,9 @@ CLOSED: [2016-07-07 Thu 19:06]
 CLOSED: [2016-07-09 Sat 21:55]
 ** DONE [#A] Now properly implement dotted pair notation everywhere
 CLOSED: [2016-07-15 Fri 22:34]
-** TODO [#A] Binary/Octal/Hex numbers with fraction
+** DONE [#A] Binary/Octal/Hex numbers with fraction
+CLOSED: [2016-07-16 Sat 23:20]
+** TODO [#A] Fix readQuote ('0e)
 ** TODO [#A] Make modifiable SCMString
 ** DONE [#A] Fix toString everywhere for Chars and Lists
 CLOSED: [2016-07-10 Sun 20:13]
