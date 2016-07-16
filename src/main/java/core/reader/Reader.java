@@ -151,6 +151,31 @@ public class Reader implements IReader {
     return i > -1 && i != 65535;
   }
 
+  private static boolean isExactness(char c) {
+    return c == 'i' || c == 'e';
+  }
+
+  private static boolean isRadix(char c) {
+    return c == 'b' || c == 'o' || c == 'd' || c == 'x';
+  }
+
+  /* Check if digit is valid for a number in a specific radix */
+  private static boolean isValidForRadix(char c, Character radix) {
+    if (radix == null || radix.equals('d')) {
+      return "+-.0123456789".indexOf(c) > -1;
+    }
+    if (radix.equals('b')) {
+      return "+-.01".indexOf(c) > -1;
+    }
+    if (radix.equals('o')) {
+      return "+-.01234567".indexOf(c) > -1;
+    }
+    if (radix.equals('x')) {
+      return "+-.0123456789abcdefABCDEF".indexOf(c) > -1;
+    }
+    throw new IllegalArgumentException("Bad radix: " + radix);
+  }
+
   public Object read(String string) {
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
@@ -256,13 +281,13 @@ public class Reader implements IReader {
       } else if (next == 't' || next == 'f') {
         // <boolean> --> #t | #f
         return new SCMSymbol("#" + (char) reader.read());
-      } else if (isBase(next) || isExactness(next)) {
+      } else if (isRadix(next) || isExactness(next)) {
         /* Read radix and/or exactness and a number */
         Character radix = null;
         Character exactness = null;
         /* We know that next char is either radix or exactness
          * So just check which one and set it */
-        if (isBase(next)) {
+        if (isRadix(next)) {
           radix = (char)reader.read();
         }
         if (isExactness(next)) {
@@ -273,7 +298,7 @@ public class Reader implements IReader {
         /* If it is #, then we expect radix or exactness */
         if (next == '#') {
           next = (char) reader.read();
-          if (isBase(next)) {
+          if (isRadix(next)) {
             if (radix != null) {
               /* Met radix twice */
               throw new IllegalArgumentException("Bad number!");
@@ -312,6 +337,7 @@ public class Reader implements IReader {
     throw new IllegalArgumentException("Unknown atom!");
   }
 
+  /* Check if string represents a valid number */
   private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
 
     boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
@@ -342,6 +368,7 @@ public class Reader implements IReader {
     return processNumber(number, radix, exactness);
   }
 
+  /* Parse string into a number */
   private static Number processNumber(String number, char radix, char exactness) {
 
     int hasSign = (number.charAt(0) == '-') ? 1 : 0;
@@ -372,31 +399,6 @@ public class Reader implements IReader {
     return Long.parseLong(number, r);
   }
 
-  private static boolean isExactness(char c) {
-    return c == 'i' || c == 'e';
-  }
-
-  private static boolean isBase(char c) {
-    return c == 'b' || c == 'o' || c == 'd' || c == 'x';
-  }
-
-  /* Check if digit is valid for a number in a specific radix */
-  private static boolean isValidForRadix(char c, Character radix) {
-    if (radix == null || radix.equals('d')) {
-      return "+-.0123456789".indexOf(c) > -1;
-    }
-    if (radix.equals('b')) {
-      return "+-.01".indexOf(c) > -1;
-    }
-    if (radix.equals('o')) {
-      return "+-.01234567".indexOf(c) > -1;
-    }
-    if (radix.equals('x')) {
-      return "+-.0123456789abcdefABCDEF".indexOf(c) > -1;
-    }
-    throw new IllegalArgumentException("Bad radix: " + radix);
-  }
-
   /**
    * Read a quoted form
    *
@@ -409,7 +411,6 @@ public class Reader implements IReader {
    * @throws ParseException
    * @throws IOException
    */
-  // FIXME '0e => (quote 0eabc), not (quote 0)
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
     List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE);
     Object next = nextToken(reader);
@@ -595,11 +596,11 @@ public class Reader implements IReader {
       String codepoint = readNumber(reader, radix);
       int cp = -1;
       if (radix == 'd') {
-        /* Decimal digits */
+        /* Decimal digits, not a codepoint */
         if (codepoint.length() == 1) {
           return codepoint.charAt(0);
         }
-        cp = Integer.parseInt(codepoint);
+        cp = Integer.parseInt(codepoint, 10);
       } else if (radix == 'x') {
         if (codepoint.isEmpty()) {
           return 'x';
@@ -620,7 +621,7 @@ public class Reader implements IReader {
     if (character.length () == 0) {
       character.append((char)i);
     } else {
-      reader.unread((char) i);
+      reader.unread((char)i);
     }
     // <character name>
     if (character.length() > 1) {
