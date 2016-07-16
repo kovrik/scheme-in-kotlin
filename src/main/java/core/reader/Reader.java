@@ -8,7 +8,7 @@ import core.scm.specialforms.SCMSpecialForm;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.NumberFormat;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -122,6 +122,23 @@ public class Reader implements IReader {
     }
   }
 
+  private static final Map<Character, Integer> RADICES = new HashMap<>();
+  static {
+    RADICES.put('b', 2);
+    RADICES.put('o', 8);
+    RADICES.put('d', 10);
+    RADICES.put('x', 16);
+  }
+
+  /* Threshold after which we switch to BigDecimals */
+  private static final Map<Character, Integer> RADIX_THRESHOLDS = new HashMap<>();
+  static {
+    RADIX_THRESHOLDS.put('b', 63);
+    RADIX_THRESHOLDS.put('o', 21);
+    RADIX_THRESHOLDS.put('d', 18);
+    RADIX_THRESHOLDS.put('x', 15);
+  }
+
   public static Character namedCharToChar(String named) {
     return NAMED_CHARS.get(named);
   }
@@ -166,7 +183,7 @@ public class Reader implements IReader {
    * @throws IOException
    * @throws ParseException
    */
-  public static Object nextToken(PushbackReader reader) throws IOException, ParseException {
+  private static Object nextToken(PushbackReader reader) throws IOException, ParseException {
     int i;
     if ((i = reader.read()) == -1) {
       return null;
@@ -216,6 +233,7 @@ public class Reader implements IReader {
     char next = (char) reader.read();
     reader.unread(next);
 
+    /* Decimal number */
     if (isNumeric(c)) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
@@ -242,8 +260,8 @@ public class Reader implements IReader {
       } else if (next == 't' || next == 'f') {
         // <boolean> --> #t | #f
         return new SCMSymbol("#" + (char) reader.read());
-        // -----------------------------------------------------------------------------
       } else if (isBase(next) || isExactness(next)) {
+        // -----------------------------------------------------------------------------
         // TODO Cleanup
         /* Read radix and/or exactness and a number */
         String number = null;
@@ -303,6 +321,7 @@ public class Reader implements IReader {
         }
         return preProcessNumber(number, exactness, radix);
       }
+      // -----------------------------------------------------------------------------
     } else {
       reader.unread(c);
       return readIdentifier(reader);
@@ -312,8 +331,11 @@ public class Reader implements IReader {
   }
 
   private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
-    if ((number.indexOf('.') != number.lastIndexOf('.')) ||
-        (number.length() == 1 && (number.charAt(0) == '+' || number.charAt(0) == '-'))) {
+
+    boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
+    boolean isSignCharOnly = (number.length() == 1) && (number.charAt(0) == '+' || number.charAt(0) == '-');
+    boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
+    if (hasTwoDots || isSignCharOnly || hasBadSignPos) {
       // not a number
       return new SCMSymbol(number);
     }
@@ -329,46 +351,37 @@ public class Reader implements IReader {
 
     /* Check exactness */
     // TODO Exactness
+    return processNumber(number, radix, exactness);
+  }
 
-    // TODO Inexact numbers in b,o,x?
-    /* Check radix */
-    if (radix == 'b') {
-      if (number.length() > (63 + hasSign)) {
-        return new BigInteger(number, 2);
-      }
-      return Long.parseLong(number, 2);
-    } else if (radix == 'o') {
-      if (number.length() > (21 + hasSign)) {
-        return new BigInteger(number, 8);
-      }
-      return Long.parseLong(number, 8);
-    } else if (radix == 'x') {
-      if (number.length() > (15 + hasSign)) {
-        return new BigInteger(number, 16);
-      }
-      return Long.parseLong(number, 16);
-    } else if (radix == 'd') {
+  private static Number processNumber(String number, char radix, char exactness) {
 
-      Number result;
-      try {
-        result = NumberFormat.getInstance().parse(number);
-      } catch (ParseException e) {
-        return new SCMSymbol(number);
-      }
+    int hasSign = (number.charAt(0) == '-') ? 1 : 0;
+    int dot = number.indexOf('.');
+    Integer r = RADICES.get(radix);
+    Integer threshold = RADIX_THRESHOLDS.get(radix);
 
-      /* Switch to BigDecimal if number has 19 or more digits */
-      if (number.length() >= 19) {
-          return new BigDecimal(number);
+    if (number.length() > (threshold + hasSign)) {
+      if (dot > -1) {
+        /* Remove dot */
+        number = number.replace(".", "");
+        BigInteger bigInteger = new BigInteger(number, r);
+        return new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - hasSign - dot), MathContext.DECIMAL32);
       }
-      if ((result instanceof Double) && (Double.isInfinite((Double) result))) {
-        return new BigDecimal(number);
-      }
-      if (number.indexOf('.') > -1) {
-        return result.doubleValue();
-      }
-      return result;
+      BigInteger bigInteger = new BigInteger(number, r);
+      return new BigDecimal(bigInteger);
     }
-    throw new IllegalArgumentException("Bad number!");
+    if (dot > -1) {
+      if (r == 10) {
+        return Double.parseDouble(number);
+      } else {
+        /* Remove dot */
+        number = number.replace(".", "");
+        long l = Long.parseLong(number, r);
+        return l / Math.pow(r.doubleValue(), number.length() - hasSign - dot);
+      }
+    }
+    return Long.parseLong(number, r);
   }
 
   private static boolean isNumeric(char c) {

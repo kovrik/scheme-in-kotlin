@@ -20,7 +20,6 @@ CLOSED: [2016-07-10 Sun 20:13]
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
 ** TODO [#B] Make `append` proc iterative!
 ** TODO [#B] Internal `define`: can be top-form only
-** TODO [#B] Use BigInteger for integral big numbers?
 ** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
 ** TODO [#C] Tail-call elimination
 ** TODO [#C] Proper LOGGING

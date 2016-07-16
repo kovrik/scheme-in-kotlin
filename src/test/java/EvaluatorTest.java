@@ -363,7 +363,7 @@ public class EvaluatorTest {
   @Test
   public void testEvalEq() {
     assertEquals(TRUE,  eval("(eq? '() '())", env));
-    assertEquals(FALSE, eval("(eq? 1 1)", env));
+    assertEquals(TRUE, eval("(eq? 1 1)", env));
     assertEquals(FALSE, eval("(eq? 1 2)", env));
     assertEquals(FALSE, eval("(eq? \"1\" \"1\")", env));
   }

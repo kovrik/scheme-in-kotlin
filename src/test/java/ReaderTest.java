@@ -7,7 +7,7 @@ import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Test;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,7 +39,7 @@ public class ReaderTest {
     assertEquals(1L, reader.read("#b#e0001"));
     assertEquals(455L, reader.read("#o0707"));
     assertEquals(585L, reader.read("#o1111"));
-    assertEquals(new BigInteger("324518553658426726783156020576255"), reader.read("#xfffffffffffffffffffffffffff"));
+    assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.read("#xfffffffffffffffffffffffffff"));
     try {
       reader.read("#o9999");
     } catch (IllegalArgumentException e) {
