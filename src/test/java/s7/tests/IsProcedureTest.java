@@ -1,5 +1,6 @@
 package s7.tests;
 
+import core.exceptions.ArityException;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -38,57 +39,56 @@ public class IsProcedureTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(procedure? 'cond)", env));
     assertEquals(FALSE, eval("(procedure? 'do)", env));
     assertEquals(FALSE, eval("(procedure? 'set!)", env));
-
+    assertEquals(FALSE, eval("(procedure? \"hi\")", env));
+    assertEquals(FALSE, eval("(procedure? '(1 2))", env));
+    assertEquals(FALSE, eval("(procedure? #(1 2))", env));
     try {
       eval("(procedure? and)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: and", e.getMessage());
     }
-
     try {
       eval("(procedure? let)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: let", e.getMessage());
     }
-
     try {
       eval("(procedure? quasiquote)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: quasiquote", e.getMessage());
     }
-
     try {
       eval("(procedure? cond)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: cond", e.getMessage());
     }
-
     try {
       eval("(procedure? do)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: do", e.getMessage());
     }
-
     try {
       eval("(procedure? set!)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Bad syntax in form: set!", e.getMessage());
     }
-
-//    (procedure?) 'error)
-//    (procedure? abs car) 'error)
-//    (procedure abs) 'error)
-
-//    ;; these are questionable -- an applicable object is a procedure
-//    (test (procedure? "hi") #f)
-//    (test (procedure? '(1 2)) #f)
-//    (test (procedure? #(1 2)) #f)
-
+    try {
+      eval("(procedure?)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: procedure?", e.getMessage());
+    }
+    try {
+      eval("(procedure? abs car)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: procedure?", e.getMessage());
+    }
   }
 }

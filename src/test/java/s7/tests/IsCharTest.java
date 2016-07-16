@@ -1,10 +1,12 @@
 package s7.tests;
 
+import core.exceptions.ArityException;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.fail;
 
 public class IsCharTest extends AbstractS7Test {
 
@@ -46,11 +48,6 @@ public class IsCharTest extends AbstractS7Test {
     assertEquals(TRUE,  eval("(char? #\\`)", env));
     assertEquals(TRUE,  eval("(char? #\\@)", env));
     assertEquals(FALSE, eval("(char? 'begin)", env));
-
-//    assertEquals(, eval("(char?) 'error)
-//    assertEquals(, eval("(char? #\a #\b) 'error)
-//    assertEquals(, eval("(char #\a) 'error)
-
     assertEquals(TRUE,  eval("(char? #\\x65)", env));
     assertEquals(TRUE,  eval("(char? #\\x000000000065)", env));
     assertEquals(TRUE,  eval("(char? #\\x0)", env));
@@ -80,10 +77,21 @@ public class IsCharTest extends AbstractS7Test {
     assertEquals(TRUE,  eval("(char? #\\alarm)", env));
     assertEquals(TRUE,  eval("(char? #\\delete)", env));
     assertEquals(FALSE, eval("(char=? #\\delete #\\backspace)", env));
-
+    assertEquals(FALSE, eval("(char? '1e311)", env));
+    try {
+      eval("(char?) 'error)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: char?", e.getMessage());
+    }
+    try {
+      eval("(char? #\\a #\\b)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: char?", e.getMessage());
+    }
 //    assertEquals(TRUE,  eval("(apply char? (list (integer->char 255)))", env));
 //    ;(test (char? #\ÿ) #t) ; this seems to involve unwanted translations in emacs?
 //    assertEquals(FALSE, eval("(char? #<eof>)", env));
-//    assertEquals(FALSE, eval("(char? '1e311)", env));
   }
 }

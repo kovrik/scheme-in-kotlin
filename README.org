@@ -15,9 +15,9 @@ CLOSED: [2016-07-15 Fri 22:34]
 CLOSED: [2016-07-16 Sat 23:20]
 ** DONE [#A] Fix readQuote ('0e)
 CLOSED: [2016-07-17 Sun 10:11]
-** TODO [#A] Make modifiable SCMString
 ** DONE [#A] Fix toString everywhere for Chars and Lists
 CLOSED: [2016-07-10 Sun 20:13]
+** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call

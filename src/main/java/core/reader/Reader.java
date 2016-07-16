@@ -584,9 +584,7 @@ public class Reader implements IReader {
    * @throws IOException
    */
   private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
-    StringBuilder character = new StringBuilder();
     int i;
-    char c;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'x'))) {
       char radix = ((char)i == 'x') ? 'x' : 'd';
@@ -615,6 +613,8 @@ public class Reader implements IReader {
     }
     reader.unread((char)i);
 
+    char c;
+    StringBuilder character = new StringBuilder();
     while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
       character.append(c);
     }
@@ -673,7 +673,6 @@ public class Reader implements IReader {
         list.add(token);
       }
     }
-    // TODO Do not iterate the same list again?
     /* Did we have a dot? */
     if (dotPos < 0) {
       /* No. Return result */
@@ -691,6 +690,7 @@ public class Reader implements IReader {
       Object beforeLast = list.get(list.size() - 2);
       SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
       /* Cons backwars */
+      // TODO Do not iterate the same list again?
       for (int n = list.size() - 3; n >= 0; n--) {
         cons = SCMCons.cons(list.get(n), cons);
       }
