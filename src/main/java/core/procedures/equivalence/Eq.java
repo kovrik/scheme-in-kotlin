@@ -25,6 +25,10 @@ public class Eq extends AFn implements IOperation {
   }
 
   public Boolean apply(Object first, Object second) {
+    return eq(first, second);
+  }
+
+  public static boolean eq(Object first, Object second) {
     if ((first instanceof SCMSymbol) && (second instanceof SCMSymbol)) {
       return first.equals(second);
     }

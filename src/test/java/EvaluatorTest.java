@@ -1014,6 +1014,64 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalMemq() {
+    assertEquals(FALSE, eval("(memq 0 '())", env));
+    assertEquals(FALSE, eval("(memq 0 '(1 2 3))", env));
+    assertEquals(FALSE, eval("(memq \"test\" '(1 2 3))", env));
+
+    assertEquals(list(1L, 2L, 3L), eval("(memq 1 '(1 2 3))", env));
+    assertEquals(list(2L, 3L), eval("(memq 2 '(1 2 3))", env));
+    assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env));
+    assertEquals(FALSE, eval("(memq (list 'a) '(b (a) c))", env));
+
+    assertEquals(list(new SCMSymbol("a"), new SCMSymbol("b"), new SCMSymbol("c")), eval("(memq 'a '(a b c))", env));
+    assertEquals(list(new SCMSymbol("b"), new SCMSymbol("c")), eval("(memq 'b '(a b c))", env));
+    assertEquals(FALSE, eval("(memq 'a '(b c d))", env));
+    try {
+      eval("(memq)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: memq", e.getMessage());
+    }
+    try {
+      eval("(memq 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `memq`! Expected: List, Actual: #()", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalMemv() {
+    assertEquals(FALSE, eval("(memv 0 '())", env));
+    assertEquals(FALSE, eval("(memv 0 '(1 2 3))", env));
+    assertEquals(FALSE, eval("(memv \"test\" '(1 2 3))", env));
+
+    assertEquals(list(1L, 2L, 3L), eval("(memv 1 '(1 2 3))", env));
+    assertEquals(list(2L, 3L), eval("(memv 2 '(1 2 3))", env));
+    assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env));
+    assertEquals(FALSE, eval("(memv (list 'a) '(b (a) c))", env));
+
+    assertEquals(list(new SCMSymbol("a"), new SCMSymbol("b"), new SCMSymbol("c")), eval("(memv 'a '(a b c))", env));
+    assertEquals(list(new SCMSymbol("b"), new SCMSymbol("c")), eval("(memv 'b '(a b c))", env));
+    assertEquals(FALSE, eval("(memv 'a '(b c d))", env));
+
+    assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env));
+    try {
+      eval("(memv)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: memv", e.getMessage());
+    }
+    try {
+      eval("(memv 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `memv`! Expected: List, Actual: #()", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalIsZero() {
     assertEquals(TRUE,  eval("(zero? 0)", env));
     assertEquals(TRUE,  eval("(zero? 0.0)", env));

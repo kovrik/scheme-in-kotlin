@@ -26,7 +26,10 @@ public class Eqv extends AFn implements IOperation {
   }
 
   public Boolean apply(Object first, Object second) {
+    return eqv(first, second);
+  }
 
+  public static boolean eqv(Object first, Object second) {
     if (first instanceof Character && second instanceof Character) {
       return first.equals(second);
     } else if (first instanceof Number && second instanceof Number) {

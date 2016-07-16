@@ -353,7 +353,7 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [20/25]
+*** TODO Pairs and lists [22/25]
 **** DONE pair?
 CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
@@ -386,8 +386,10 @@ CLOSED: [2016-07-10 Sun 12:00]
 CLOSED: [2016-07-10 Sun 12:20]
 **** DONE member
 CLOSED: [2016-07-17 Sun 11:25]
-**** TODO memv
-**** TODO memq
+**** DONE memv
+CLOSED: [2016-07-17 Sun 11:38]
+**** DONE memq
+CLOSED: [2016-07-17 Sun 11:38]
 **** TODO assq
 **** TODO assv
 **** TODO assoc

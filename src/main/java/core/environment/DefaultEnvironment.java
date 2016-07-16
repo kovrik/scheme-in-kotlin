@@ -8,6 +8,8 @@ import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.procedures.lists.Length;
 import core.procedures.lists.Member;
+import core.procedures.lists.Memq;
+import core.procedures.lists.Memv;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
 import core.procedures.strings.*;
@@ -140,13 +142,15 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
 
-    put(new SCMSymbol("force"), new Force());
+    put(new SCMSymbol("force"),   new Force());
     put(new SCMSymbol("display"), new Display(System.out));
     put(new SCMSymbol("newline"), new Newline(System.out));
 
     /* Lists */
     put(new SCMSymbol("length"), new Length());
     put(new SCMSymbol("member"), new Member());
+    put(new SCMSymbol("memq"),   new Memq());
+    put(new SCMSymbol("memv"),   new Memv());
 
     /* Symbols */
     put(new SCMSymbol("symbol->string"), new SymbolToString());
