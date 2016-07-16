@@ -10,7 +10,6 @@ public class IsCharTest extends AbstractS7Test {
 
   @Test
   public void testIsChar() {
-
     assertEquals(TRUE,  eval("(char? #\\a)", env));
     assertEquals(TRUE,  eval("(char? #\\()", env));
     assertEquals(TRUE,  eval("(char? #\\space)", env));
@@ -52,23 +51,21 @@ public class IsCharTest extends AbstractS7Test {
 //    assertEquals(, eval("(char? #\a #\b) 'error)
 //    assertEquals(, eval("(char #\a) 'error)
 
-    // TODO
-//    assertEquals(TRUE,  eval("(char? #\\x65)", env));
-//    assertEquals(TRUE,  eval("(char? #\\x000000000065)", env));
-//    assertEquals(TRUE,  eval("(char? #\\x0)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\x000 #\\null)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\x08 #\\x8)", env));
+    assertEquals(TRUE,  eval("(char? #\\x65)", env));
+    assertEquals(TRUE,  eval("(char? #\\x000000000065)", env));
+    assertEquals(TRUE,  eval("(char? #\\x0)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x000 #\\null)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x08 #\\x8)", env));
 //    ; Guile thinks both of these names are bogus
-//    assertEquals(TRUE,  eval("(char=? #\\x0e    #\\xe)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\x00e   #\\xe)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\x0000e #\\xe)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x0e    #\\xe)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x00e   #\\xe)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x0000e #\\xe)", env));
 //    ; hmmm -- surely this is a bug
-//    assertEquals(TRUE,  eval("(char=? #\\x00000000e #\\xe)", env));
-//    assertEquals(TRUE,  eval("(char? #\\xff)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\x6a #\\j)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\return #\\xd)", env));
-//    assertEquals(TRUE,  eval("(char=? #\\null #\\x0)", env));
-
+    assertEquals(TRUE,  eval("(char=? #\\x00000000e #\\xe)", env));
+    assertEquals(TRUE,  eval("(char? #\\xff)", env));
+    assertEquals(TRUE,  eval("(char=? #\\x6a #\\j)", env));
+    assertEquals(TRUE,  eval("(char=? #\\return #\\xd)", env));
+    assertEquals(TRUE,  eval("(char=? #\\null #\\x0)", env));
     assertEquals(TRUE,  eval("(char? #\\return)", env));
     assertEquals(TRUE,  eval("(char? #\\null)", env));
     assertEquals(TRUE,  eval("(char? #\\nul)", env));

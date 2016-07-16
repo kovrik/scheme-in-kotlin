@@ -1,5 +1,6 @@
 package core.writer;
 
+import core.reader.Reader;
 import core.scm.SCMCons;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class Writer implements IWriter {
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {
+      /* Check named characters */
+      String named = Reader.charToNamedChar((Character) o);
+      if (named != null) {
+        return "#\\" + named;
+      }
       return "#\\" + o;
     }
     return o.toString();

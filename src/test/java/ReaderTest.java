@@ -95,6 +95,22 @@ public class ReaderTest {
     assertEquals('5', reader.read("#\\5"));
     assertEquals(' ', reader.read("#\\space"));
     assertEquals('\n', reader.read("#\\newline"));
+    assertEquals('\r', reader.read("#\\13"));
+    assertEquals('\u000b', reader.read("#\\11"));
+    assertEquals('0', reader.read("#\\0"));
+    assertEquals('8', reader.read("#\\8"));
+    assertEquals('3', reader.read("#\\3"));
+    assertEquals('\r', reader.read("#\\13"));
+    assertEquals('\u0007', reader.read("#\\alarm"));
+    assertEquals('\u0000', reader.read("#\\nul"));
+    assertEquals('\u0000', reader.read("#\\null"));
+    assertEquals(Character.MIN_VALUE, reader.read("#\\null"));
+    assertEquals(Character.MIN_VALUE, reader.read("#\\x00000"));
+    assertEquals(Character.MIN_VALUE, reader.read("#\\x0"));
+    assertEquals('\r', reader.read("#\\xd"));
+    assertEquals('\u000b', reader.read("#\\xb"));
+    assertEquals('\u000b', reader.read("#\\x000b"));
+    assertEquals('\u000b', reader.read("#\\x000000b"));
   }
 
   @Test

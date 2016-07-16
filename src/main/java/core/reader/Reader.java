@@ -99,22 +99,36 @@ public class Reader implements IReader {
   private static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
     // TODO Platform-dependent line separator?
-    NAMED_CHARS.put("newline", '\n');
-    NAMED_CHARS.put("linefeed", '\n');
-    NAMED_CHARS.put("space", ' ');
-    NAMED_CHARS.put("tab", '\t');
-    NAMED_CHARS.put("return", '\r');
+    NAMED_CHARS.put("newline",   '\n');
+    NAMED_CHARS.put("linefeed",  '\n');
+    NAMED_CHARS.put("space",     ' ');
+    NAMED_CHARS.put("tab",       '\t');
+    NAMED_CHARS.put("return",    '\r');
     NAMED_CHARS.put("backspace", '\b');
-    NAMED_CHARS.put("page", '\f');
-    NAMED_CHARS.put("alarm", '\u0007');
-    NAMED_CHARS.put("vtab", '\u000B');
-    NAMED_CHARS.put("esc", '\u001B');
-    NAMED_CHARS.put("escape", '\u001B');
-    NAMED_CHARS.put("delete", '\u007F');
-    NAMED_CHARS.put("null", Character.MIN_VALUE);
-    NAMED_CHARS.put("nul", Character.MIN_VALUE);
+    NAMED_CHARS.put("page",      '\f');
+    NAMED_CHARS.put("alarm",     '\u0007');
+    NAMED_CHARS.put("vtab",      '\u000B');
+    NAMED_CHARS.put("esc",       '\u001B');
+    NAMED_CHARS.put("escape",    '\u001B');
+    NAMED_CHARS.put("delete",    '\u007F');
+    NAMED_CHARS.put("null",      Character.MIN_VALUE);
+    NAMED_CHARS.put("nul",       Character.MIN_VALUE);
   }
 
+  private static final Map<Character, String> CODEPOINTS = new HashMap<>();
+  static {
+    for (Map.Entry<String, Character> entry : NAMED_CHARS.entrySet()) {
+      CODEPOINTS.put(entry.getValue(), entry.getKey());
+    }
+  }
+
+  public static Character namedCharToChar(String named) {
+    return NAMED_CHARS.get(named);
+  }
+
+  public static String charToNamedChar(Character ch) {
+    return CODEPOINTS.get(ch);
+  }
 
   private static boolean isValid(int i) {
     return i > -1 && i != 65535;
@@ -503,7 +517,7 @@ public class Reader implements IReader {
       c = (char)i;
     }
     reader.unread(c);
-    if (number.charAt(number.length() - 1) == '.') {
+    if (number.length() > 0 && number.charAt(number.length() - 1) == '.') {
       number.append('0');
     }
     return number.toString();
@@ -560,6 +574,34 @@ public class Reader implements IReader {
     StringBuilder character = new StringBuilder();
     int i;
     char c;
+    /* Check if it is a codepoint */
+    if (isValid(i = reader.read()) && (isValidForRadix((char)i, 'd') || ((char)i == 'x'))) {
+      char radix = ((char)i == 'x') ? 'x' : 'd';
+      if (radix != 'x') {
+        reader.unread((char)i);
+      }
+      String codepoint = readNumber(reader, radix);
+      int cp = -1;
+      if (radix == 'd') {
+        /* Decimal digits */
+        if (codepoint.length() == 1) {
+          return codepoint.charAt(0);
+        }
+        cp = Integer.parseInt(codepoint);
+      } else if (radix == 'x') {
+        if (codepoint.isEmpty()) {
+          return 'x';
+        }
+        cp = Integer.parseInt(codepoint, 16);
+      }
+      if (!Character.isValidCodePoint(cp)) {
+        throw new IllegalArgumentException("Bad codepoint: " + cp);
+      }
+      /* Is it a named char? */
+      return (char)cp;
+    }
+    reader.unread((char)i);
+
     while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
       character.append(c);
     }
