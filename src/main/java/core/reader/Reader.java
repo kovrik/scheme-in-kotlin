@@ -94,7 +94,7 @@ public class Reader implements IReader {
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
 
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + "()\";";
+  private static final String DELIMITERS = WHITESPACES + "()\";" + '\u0000' + '\uffff';
 
   private static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
@@ -240,7 +240,12 @@ public class Reader implements IReader {
         return SCMSpecialForm.DOT;
       }
       reader.unread(c);
+
       String number = readNumber(reader, 'd');
+      /* Check if we succesfully read number */
+      if (number == null) {
+        return readIdentifier(reader);
+      }
       /* Check if read the number */
       if ("-".equals(number) || "+".equals(number)) {
         /* If not, then fallback to identifier */
@@ -543,6 +548,14 @@ public class Reader implements IReader {
         (number.indexOf(".") != number.lastIndexOf("."))) {
 
       throw new IllegalArgumentException("Bad number!");
+    }
+    /* Check if next char is a delimiter */
+    if (DELIMITERS.indexOf(c) < 0) {
+      /* Not a number! */
+      for (int n = 0; n < number.length(); n++) {
+        reader.unread(number.charAt(n));
+      }
+      return null;
     }
     reader.unread(c);
     if (number.length() > 0 && number.charAt(number.length() - 1) == '.') {
