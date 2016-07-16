@@ -257,22 +257,18 @@ public class Reader implements IReader {
         // <boolean> --> #t | #f
         return new SCMSymbol("#" + (char) reader.read());
       } else if (isBase(next) || isExactness(next)) {
-        // -----------------------------------------------------------------------------
-        // TODO Cleanup
         /* Read radix and/or exactness and a number */
-        String number = null;
         Character radix = null;
         Character exactness = null;
         /* We know that next char is either radix or exactness
          * So just check which one and set it */
         if (isBase(next)) {
-          radix = next;
+          radix = (char)reader.read();
         }
         if (isExactness(next)) {
-          exactness = next;
+          exactness = (char)reader.read();
         }
         /* Now read next char: should be either # or numeric */
-        reader.read();
         next = (char) reader.read();
         /* If it is #, then we expect radix or exactness */
         if (next == '#') {
@@ -291,25 +287,11 @@ public class Reader implements IReader {
             }
             exactness = next;
           }
-          /* Now we should have both radix and exactness */
-          next = (char) reader.read();
-          /* So just read the number */
-          if (isValidForRadix(next, radix)) {
-            reader.unread(next);
-            /* Read identifier, not a number */
-            number = readIdentifier(reader).toString();
-          } else {
-            throw new IllegalArgumentException("Bad number!");
-          }
-        } else if (isValidForRadix(next, radix)) {
-          /* If it is number, then just read it */
+        } else {
+          /* Should be the first digit of a number, so unread it */
           reader.unread(next);
-          /* Read identifier, not a number */
-          number = readIdentifier(reader).toString();
         }
-        if (number == null) {
-          throw new IllegalArgumentException("Bad number!");
-        }
+
         /* Check if we got exactness or radix */
         if (exactness == null) {
           exactness = 'e';
@@ -317,9 +299,11 @@ public class Reader implements IReader {
         if (radix == null) {
           radix = 'd';
         }
+
+        /* Read identifier, not a number */
+        String number = readIdentifier(reader).toString();
         return preProcessNumber(number, exactness, radix);
       }
-      // -----------------------------------------------------------------------------
     } else {
       reader.unread(c);
       return readIdentifier(reader);
@@ -347,8 +331,8 @@ public class Reader implements IReader {
       return new SCMSymbol(number);
     }
 
+    /* Drop + sign if exists */
     if (number.charAt(0) == '+') {
-      /* Drop + sign */
       number = number.substring(1);
     }
 
