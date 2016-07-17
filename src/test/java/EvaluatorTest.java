@@ -1072,6 +1072,79 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalAssoc() {
+    eval("(define e '((a 1) (b 2) (c 3)))", env);
+    assertEquals(list((Object)list(new SCMSymbol("a"))), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env));
+    try {
+      eval("(assoc)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: assoc", e.getMessage());
+    }
+    try {
+      eval("(assoc 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `assoc`! Expected: List, Actual: #()", e.getMessage());
+    }
+    try {
+      eval("(assoc 1 '((a 2) 3))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalAssq() {
+    eval("(define e '((a 1) (b 2) (c 3)))", env);
+    assertEquals(list(new SCMSymbol("a"), 1L), eval("(assq 'a e)", env));
+    assertEquals(list(new SCMSymbol("b"), 2L), eval("(assq 'b e)", env));
+    assertEquals(FALSE, eval("(assq 'd e)", env));
+    try {
+      eval("(assq)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: assq", e.getMessage());
+    }
+    try {
+      eval("(assq 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `assq`! Expected: List, Actual: #()", e.getMessage());
+    }
+    try {
+      eval("(assq 1 '((a 2) 3))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalAssv() {
+    assertEquals(list(5L, 7L), eval("(assv 5 '((2 3) (5 7) (11 13)))", env));
+    try {
+      eval("(assv)", env);
+      fail();
+    } catch (ArityException e) {
+      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: assv", e.getMessage());
+    }
+    try {
+      eval("(assv 1 #())", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument to `assv`! Expected: List, Actual: #()", e.getMessage());
+    }
+    try {
+      eval("(assv 1 '((a 2) 3))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+    }
+  }
+
+  @Test
   public void testEvalIsZero() {
     assertEquals(TRUE,  eval("(zero? 0)", env));
     assertEquals(TRUE,  eval("(zero? 0.0)", env));

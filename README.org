@@ -149,7 +149,7 @@ CLOSED: [2016-06-04 Sat 22:33]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
-** TODO Standard procedures [6/17]
+** TODO Standard procedures [7/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -353,7 +353,8 @@ CLOSED: [2016-05-15 Sun 22:19]
 **** DONE string->symbol
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:19]
-*** TODO Pairs and lists [22/25]
+*** DONE Pairs and lists [25/25]
+CLOSED: [2016-07-17 Sun 12:03]
 **** DONE pair?
 CLOSED: [2016-07-02 Sat 22:58]
 **** DONE cons
@@ -390,9 +391,12 @@ CLOSED: [2016-07-17 Sun 11:25]
 CLOSED: [2016-07-17 Sun 11:38]
 **** DONE memq
 CLOSED: [2016-07-17 Sun 11:38]
-**** TODO assq
-**** TODO assv
-**** TODO assoc
+**** DONE assq
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE assv
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE assoc
+CLOSED: [2016-07-17 Sun 12:03]
 **** DONE list->vector
 **** DONE vector->list
 **** DONE list->string

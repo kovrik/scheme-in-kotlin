@@ -6,10 +6,7 @@ import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.*;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
-import core.procedures.lists.Length;
-import core.procedures.lists.Member;
-import core.procedures.lists.Memq;
-import core.procedures.lists.Memv;
+import core.procedures.lists.*;
 import core.procedures.math.bool.Negation;
 import core.procedures.math.numeric.*;
 import core.procedures.strings.*;
@@ -151,6 +148,9 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("member"), new Member());
     put(new SCMSymbol("memq"),   new Memq());
     put(new SCMSymbol("memv"),   new Memv());
+    put(new SCMSymbol("assoc"),  new Assoc());
+    put(new SCMSymbol("assq"),   new Assq());
+    put(new SCMSymbol("assv"),   new Assv());
 
     /* Symbols */
     put(new SCMSymbol("symbol->string"), new SymbolToString());
