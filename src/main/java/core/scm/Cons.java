@@ -96,6 +96,7 @@ public class Cons {
   /**
    * Static helper methods
    */
+  @Deprecated
   public static Cons cons(Object car, Object cdr) {
     if (car == null && cdr == null) {
       return NIL;
@@ -103,26 +104,32 @@ public class Cons {
     return new Cons(car, cdr);
   }
 
+  @Deprecated
   public static Object car(Cons cons) {
     return cons.car;
   }
 
+  @Deprecated
   public static Object cdr(Cons cons) {
     return cons.cdr;
   }
 
+  @Deprecated
   public static boolean isNil(Object o) {
     return o == null || NIL.equals(o);
   }
 
+  @Deprecated
   public static boolean isPair(Object o) {
     return (o instanceof Cons) && !NIL.equals(o);
   }
 
+  @Deprecated
   public static boolean isList(Object o) {
     return (o instanceof Cons) && (NIL.equals(o) || NIL.equals(((Cons) o).last));
   }
 
+  @Deprecated
   public static Cons list(Object... elements) {
     if (elements == null || elements.length == 0) {
       return NIL;
@@ -134,6 +141,7 @@ public class Cons {
     return list;
   }
 
+  @Deprecated
   public static Cons list(List list) {
     Cons result = NIL;
     if (list == null || list.isEmpty()) {
@@ -146,6 +154,7 @@ public class Cons {
     return result;
   }
 
+  @Deprecated
   public static long length(Cons list) {
     return list.length;
   }

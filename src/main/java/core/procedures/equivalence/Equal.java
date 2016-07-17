@@ -1,8 +1,8 @@
 package core.procedures.equivalence;
 
-import core.scm.SCMBoolean;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
+import core.scm.SCMBoolean;
 
 public class Equal extends AFn implements IOperation {
 
@@ -22,6 +22,10 @@ public class Equal extends AFn implements IOperation {
   }
 
   public Boolean apply(Object first, Object second) {
+    return equal(first, second);
+  }
+
+  public static boolean equal(Object first, Object second) {
     return first.equals(second);
   }
 
