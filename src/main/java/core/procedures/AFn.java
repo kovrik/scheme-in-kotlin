@@ -47,6 +47,15 @@ public abstract class AFn implements IFn {
   }
 
   public Object throwArity(int n) {
-    throw new ArityException(n, getClass().getSimpleName());
+    throw new ArityException(n, getName());
+  }
+
+  public String getName() {
+    return getClass().getSimpleName();
+  }
+
+  @Override
+  public String toString() {
+    return "#<procedure " + getName() + ">";
   }
 }

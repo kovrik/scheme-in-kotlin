@@ -21,6 +21,11 @@ public class Eqv extends AFn implements IOperation {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
+  public Object invoke(Object arg1, Object arg2) {
+    return SCMBoolean.toSCMBoolean(eqv(arg1, arg2));
+  }
+
   public Boolean zero() {
     return Boolean.TRUE;
   }

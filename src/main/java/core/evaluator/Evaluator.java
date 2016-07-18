@@ -55,7 +55,7 @@ public class Evaluator implements IEvaluator {
     } else {
       /* Variadic arity procedure */
       if (args.length < params.size() - 1) {
-        throw new ArityException(args.length, ((SCMProcedure) fn).getName().getValue());
+        throw new ArityException(args.length, ((SCMProcedure) fn).getName());
       }
       /* Put mandatory params first */
       for (int i = 0; i < params.size() - 1; i++) {
@@ -107,7 +107,7 @@ public class Evaluator implements IEvaluator {
       return apply(fn, args, closure);
     }
     try {
-      return ((IFn)fn).invoke(args);
+      return ((IFn) fn).invoke(args);
     } catch (ExecutionException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {

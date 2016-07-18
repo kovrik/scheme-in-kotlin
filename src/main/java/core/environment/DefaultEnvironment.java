@@ -145,9 +145,9 @@ public final class DefaultEnvironment extends Environment {
 
     /* Lists */
     put(new SCMSymbol("length"), new Length());
-    put(new SCMSymbol("member"), MemberFactory.createMemberFn("member", new Equal()));
-    put(new SCMSymbol("memq"),   MemberFactory.createMemberFn("memq",   new Eq()));
-    put(new SCMSymbol("memv"),   MemberFactory.createMemberFn("memv",   new Eqv()));
+    put(new SCMSymbol("member"), new MemberProc("member", new Equal()));
+    put(new SCMSymbol("memq"),   new MemberProc("memq",   new Eq()));
+    put(new SCMSymbol("memv"),   new MemberProc("memv",   new Eqv()));
     put(new SCMSymbol("assoc"),  new Assoc());
     put(new SCMSymbol("assq"),   new Assq());
     put(new SCMSymbol("assv"),   new Assv());

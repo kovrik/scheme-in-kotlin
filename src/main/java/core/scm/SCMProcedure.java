@@ -69,8 +69,11 @@ public class SCMProcedure extends AFn {
     return params;
   }
 
-  public SCMSymbol getName() {
-    return name;
+  public String getName() {
+    if (name == null) {
+      return "#<procedure " + hashCode() + ">";
+    }
+    return name.getValue();
   }
 
   public Object apply(IEvaluator evaluator, IEnvironment env) {

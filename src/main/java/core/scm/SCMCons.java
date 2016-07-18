@@ -139,7 +139,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   /* Return true if o is a List or SCMCons and a list */
   public static boolean isList(Object o) {
-    return ((o instanceof List)  && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
+    return ((o instanceof List) && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
   }
 
   public static boolean isPair(Object o) {
