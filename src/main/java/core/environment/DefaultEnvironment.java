@@ -148,9 +148,9 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("member"), new MemberProc("member", new Equal()));
     put(new SCMSymbol("memq"),   new MemberProc("memq",   new Eq()));
     put(new SCMSymbol("memv"),   new MemberProc("memv",   new Eqv()));
-    put(new SCMSymbol("assoc"),  new Assoc());
-    put(new SCMSymbol("assq"),   new Assq());
-    put(new SCMSymbol("assv"),   new Assv());
+    put(new SCMSymbol("assoc"),  new AssocProc("assoc",   new Equal()));
+    put(new SCMSymbol("assq"),   new AssocProc("assq",    new Eq()));
+    put(new SCMSymbol("assv"),   new AssocProc("assv",    new Eqv()));
 
     /* Symbols */
     put(new SCMSymbol("symbol->string"), new SymbolToString());
