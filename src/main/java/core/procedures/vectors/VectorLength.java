@@ -3,6 +3,7 @@ package core.procedures.vectors;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
+import core.writer.Writer;
 
 public class VectorLength extends AFn {
 
@@ -12,7 +13,7 @@ public class VectorLength extends AFn {
       if (args[0] instanceof SCMVector) {
         return ((Integer)((SCMVector)args[0]).length()).longValue();
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + args[0].getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 1, "vector-length");
   }

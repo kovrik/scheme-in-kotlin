@@ -1,8 +1,9 @@
 package core.procedures.equivalence;
 
-import core.scm.SCMBoolean;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
+import core.scm.SCMBoolean;
+import core.writer.Writer;
 
 public class CharEqCi extends AFn implements IOperation {
 
@@ -24,8 +25,11 @@ public class CharEqCi extends AFn implements IOperation {
 
   @Override
   public Boolean apply(Object first, Object second) {
-    if (!(first instanceof Character) || !(second instanceof Character)) {
-      throw new IllegalArgumentException("Wrong type of argument to `char-ci=?`");
+    if (!(first instanceof Character)) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Character, actual: " + Writer.write(first));
+    }
+    if (!(second instanceof Character)) {
+      throw new IllegalArgumentException("Wrong argument type. Expected: Character, actual: " + Writer.write(second));
     }
     return Character.toLowerCase((Character)first) == Character.toLowerCase((Character)second);
   }

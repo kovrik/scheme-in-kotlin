@@ -2,6 +2,7 @@ package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -23,6 +24,9 @@ public class Subtraction extends AFn implements INumericalOperation {
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
+      if (!(args[0] instanceof Number)) {
+        throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
+      }
       result = apply((Number)result, (Number)args[i]);
     }
     return result;

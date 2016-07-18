@@ -2,6 +2,7 @@ package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -17,7 +18,7 @@ public class Abs extends AFn implements INumericalOperation {
       } else if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).abs();
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + args[0].getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 1, "abs");
   }

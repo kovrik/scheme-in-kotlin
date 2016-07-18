@@ -5,6 +5,7 @@ import core.procedures.AFn;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.scm.SCMBoolean;
+import core.writer.Writer;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +25,7 @@ public class MemberProc extends AFn {
   public Object invoke(Object arg1, Object arg2) {
     if (!(arg2 instanceof List)) {
       throw new IllegalArgumentException(
-          String.format("Wrong type argument to `%s`! Expected: List, Actual: %s", name, arg2));
+          String.format("Wrong type argument to `%s`! Expected: List, Actual: %s", getName(), Writer.write(arg2)));
     }
     List list = (List) arg2;
     if (list.isEmpty()) {
@@ -45,7 +46,7 @@ public class MemberProc extends AFn {
       return SCMBoolean.FALSE;
     }
     throw new IllegalArgumentException(String.format("Wrong type argument in position %s (expecting list): %s",
-                                                     p + 1, list));
+                                                     p + 1, Writer.write(list)));
   }
 
 // TODO Is this faster?

@@ -18,6 +18,8 @@ CLOSED: [2016-07-17 Sun 10:11]
 ** DONE [#A] Fix toString everywhere for Chars and Lists
 CLOSED: [2016-07-10 Sun 20:13]
 ** TODO [#A] Equality for procedures?
+** TODO [#A] Error messages: use Writer class
+** TODO [#A] Wrong type generic error
 ** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding

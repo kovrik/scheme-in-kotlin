@@ -6,6 +6,7 @@ import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -29,14 +30,14 @@ public class Append extends SCMProcedure {
     }
     Object result = es.get(0);
     if (!SCMCons.isList(result)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", result));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", Writer.write(result)));
     }
 
     for (int i = 1; i < es.size(); i++) {
       Object current = es.get(i);
       /* Do not check last element */
       if ((i != es.size() - 1) && !SCMCons.isList(current)) {
-        throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", current));
+        throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", Writer.write(current)));
       }
       result = append2(result, current);
     }

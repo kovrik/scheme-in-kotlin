@@ -8,6 +8,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class MakeVector extends SCMProcedure {
     Object o = env.get(size);
     if (!(o instanceof Long)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       o.getClass().getSimpleName()));
+                                                       Writer.write(o)));
     }
     Long s = (Long)o;
     if (s < 0) {

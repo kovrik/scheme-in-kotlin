@@ -1,6 +1,7 @@
 package core.procedures.math.numeric;
 
 import core.procedures.AFn;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -38,8 +39,11 @@ public class Addition extends AFn implements INumericalOperation {
   public Object invoke(Object... args) {
     Object result = zero();
     if (args != null) {
-      for (Object number : args) {
-        result = apply((Number) result, (Number) number);
+      for (Object obj : args) {
+        if (!(obj instanceof Number)) {
+          throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(obj));
+        }
+        result = apply((Number) result, (Number) obj);
       }
     }
     return result;

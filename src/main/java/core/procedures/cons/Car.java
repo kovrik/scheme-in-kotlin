@@ -2,7 +2,11 @@ package core.procedures.cons;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.*;
+import core.scm.ICons;
+import core.scm.SCMCons;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -28,11 +32,10 @@ public class Car extends SCMProcedure {
     if (o instanceof List) {
       List list = (List) o;
       if (list.isEmpty()) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+        throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: " + Writer.write(list));
       }
       return list.get(0);
     }
-    throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s",
-        o.getClass().getSimpleName()));
+    throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", Writer.write(o)));
   }
 }

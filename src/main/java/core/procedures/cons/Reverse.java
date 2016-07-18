@@ -5,6 +5,7 @@ import core.evaluator.IEvaluator;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Reverse extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object l = env.get(lst);
     if (!SCMCons.isList(l)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", l));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: List, actual: %s", Writer.write(l)));
     }
     List list = (List)l;
     SCMCons<Object> result = SCMCons.list();

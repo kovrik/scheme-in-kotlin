@@ -1,6 +1,7 @@
 package core.procedures.math.numeric;
 
 import core.procedures.AFn;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -68,7 +69,7 @@ public class LCM extends AFn implements INumericalOperation {
       }
       Object result = args[0];
       if (!(result instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + result);
+        throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(result));
       }
       if (args.length == 1) {
         if (args[0] instanceof Long) {
@@ -82,7 +83,7 @@ public class LCM extends AFn implements INumericalOperation {
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
         if (!(args[i] instanceof Number)) {
-          throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + args[i]);
+          throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(args[i]));
         }
         result = apply(first, (Number)args[i]);
       }

@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
+import core.writer.Writer;
 
 import java.util.Arrays;
 
@@ -17,7 +18,7 @@ public class VectorFill extends AFn {
         Arrays.fill(vector.getArray(), args[1]);
         return SCMSpecialForm.UNSPECIFIED;
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + args[0].getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 2, "vector-fill!");
   }

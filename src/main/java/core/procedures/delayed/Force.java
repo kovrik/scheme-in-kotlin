@@ -5,6 +5,7 @@ import core.evaluator.IEvaluator;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 public class Force extends SCMProcedure {
 
@@ -20,7 +21,7 @@ public class Force extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object promise = env.get(PROMISE);
     if (!(promise instanceof SCMPromise)) {
-      throw new IllegalArgumentException("Wrong type argument to `force`");
+      throw new IllegalArgumentException("Wrong argument type. Expected: Promise, actual: " + Writer.write(promise));
     }
     return super.apply(evaluator, env);
   }

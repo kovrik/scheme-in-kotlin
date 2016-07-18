@@ -3,6 +3,7 @@ package core.procedures.symbols;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 public class SymbolToString extends AFn {
 
@@ -12,7 +13,7 @@ public class SymbolToString extends AFn {
       if (args[0] instanceof SCMSymbol) {
         return ((SCMSymbol)args[0]).getValue();
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Symbol, actual: " + args[0].getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Symbol, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 1, "symbol->string");
   }

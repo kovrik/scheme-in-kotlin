@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class AssocProc extends AFn {
     if (args != null && args.length == 2) {
       if (!(args[1] instanceof List)) {
         throw new IllegalArgumentException(
-            String.format("Wrong type argument to `%s`! Expected: List, Actual: %s", getName(), args[1]));
+            String.format("Wrong type argument to `%s`! Expected: List, Actual: %s", getName(), Writer.write(args[1])));
       }
       Object obj = args[0];
       List list = (List)args[1];
@@ -35,7 +36,7 @@ public class AssocProc extends AFn {
           }
         } else {
           throw new IllegalArgumentException(
-              String.format("Wrong type argument in position %s (expecting association list): %s", n, list));
+              String.format("Wrong type argument in position %s (expecting association list): %s", n, Writer.write(list)));
         }
       }
       return SCMBoolean.FALSE;

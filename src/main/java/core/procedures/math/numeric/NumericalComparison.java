@@ -3,6 +3,7 @@ package core.procedures.math.numeric;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
 import core.scm.SCMBoolean;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -52,10 +53,10 @@ public class NumericalComparison extends AFn implements IOperation {
   public Boolean apply(Object first, Object second) {
 
     if (!(first instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + first.getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(first));
     }
     if (!(second instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + second.getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(second));
     }
 
     Number f = (Number)first;

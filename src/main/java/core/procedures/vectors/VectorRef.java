@@ -6,6 +6,7 @@ import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -25,14 +26,14 @@ public class VectorRef extends SCMProcedure {
     Object o = env.get(vector);
     if (!(o instanceof SCMVector)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Vector, actual: %s",
-                                                       o));
+                                                       Writer.write(o)));
     }
     SCMVector vec = (SCMVector)o;
 
     Object p = env.get(pos);
     if (!(p instanceof Long)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       p));
+                                                       Writer.write(p)));
     }
     Long pos = (Long)p;
     if ((pos < 0) || (pos >= vec.length())) {

@@ -2,6 +2,7 @@ package core.procedures.strings;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.writer.Writer;
 
 public class StringLength extends AFn {
 
@@ -11,7 +12,7 @@ public class StringLength extends AFn {
       if (args[0] instanceof String) {
         return ((Integer)((String)args[0]).length()).longValue();
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: String, actual: " + args[0].getClass().getSimpleName());
+      throw new IllegalArgumentException("Wrong argument type. Expected: String, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 1, "string-length");
   }

@@ -86,7 +86,7 @@ public class EvaluatorTest {
       eval("(abs \"not-a-number\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: String"));
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: \"not-a-number\""));
     }
 
     // sqrt
@@ -301,7 +301,7 @@ public class EvaluatorTest {
       eval("(string 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: Long", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
     }
   }
 
@@ -320,13 +320,13 @@ public class EvaluatorTest {
       eval("(make-string \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: \"test\""));
     }
     try {
       eval("(make-string 2 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: Long"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: 1"));
     }
     try {
       eval("(make-string)", env);
@@ -353,7 +353,7 @@ public class EvaluatorTest {
       eval("(string-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: Long"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: 1"));
     }
   }
 
@@ -454,7 +454,7 @@ public class EvaluatorTest {
       eval("(make-vector \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: String"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: \"test\""));
     }
   }
 
@@ -468,7 +468,7 @@ public class EvaluatorTest {
       eval("(vector-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: Long"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: 1"));
     }
   }
 
@@ -576,7 +576,7 @@ public class EvaluatorTest {
       eval("(list->vector #(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: List, actual: SCMVector", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #(1 2 3)", e.getMessage());
     }
   }
 
@@ -590,7 +590,7 @@ public class EvaluatorTest {
       eval("(vector->list '(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: SCMCons", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
     }
   }
 
@@ -614,7 +614,7 @@ public class EvaluatorTest {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: SCMCons", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
     }
   }
 
@@ -1155,7 +1155,7 @@ public class EvaluatorTest {
       eval("(zero? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1170,7 +1170,7 @@ public class EvaluatorTest {
       eval("(negative? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1185,7 +1185,7 @@ public class EvaluatorTest {
       eval("(positive? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1202,7 +1202,7 @@ public class EvaluatorTest {
       eval("(even? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1220,7 +1220,7 @@ public class EvaluatorTest {
       eval("(odd? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1243,7 +1243,7 @@ public class EvaluatorTest {
       eval("(round \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1259,7 +1259,7 @@ public class EvaluatorTest {
       eval("(floor \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1275,7 +1275,7 @@ public class EvaluatorTest {
       eval("(ceiling \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1292,7 +1292,7 @@ public class EvaluatorTest {
       eval("(truncate \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1308,14 +1308,14 @@ public class EvaluatorTest {
       eval("(max \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
 
     try {
       eval("(max 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1330,14 +1330,14 @@ public class EvaluatorTest {
       eval("(min \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
 
     try {
       eval("(min 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1430,7 +1430,7 @@ public class EvaluatorTest {
       eval("(expt \"test\" 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
     try {
       eval("(expt 1)", env);
@@ -1514,7 +1514,7 @@ public class EvaluatorTest {
       eval("(integer? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: String", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -1636,13 +1636,13 @@ public class EvaluatorTest {
       eval("(symbol->string 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: Long"));
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: 1"));
     }
     try {
       eval("(string->symbol 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: Long"));
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: 1"));
     }
   }
 
@@ -1709,7 +1709,7 @@ public class EvaluatorTest {
     try {
       eval("(car 1)", env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Pair, actual: Long", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
   }
 
@@ -1730,7 +1730,7 @@ public class EvaluatorTest {
     try {
       eval("(cdr 1)", env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Pair, actual: Long", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
   }
 
@@ -1868,7 +1868,7 @@ public class EvaluatorTest {
     try {
       eval("(list->string (list 1 2))", env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: Long", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
     }
   }
 

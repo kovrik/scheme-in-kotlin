@@ -6,6 +6,7 @@ import core.exceptions.ArityException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class MakeString extends SCMProcedure {
     Object o = env.get(size);
     if (!(o instanceof Long)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       o.getClass().getSimpleName()));
+                                                       Writer.write(o)));
     }
     Long s = (Long)o;
     if (s < 0) {
@@ -38,7 +39,7 @@ public class MakeString extends SCMProcedure {
     Object c = vals.isEmpty() ? Character.MIN_VALUE : vals.get(0);
     if (!(c instanceof Character)) {
       throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Character, actual: %s",
-                                                       c.getClass().getSimpleName()));
+                                                       Writer.write(c)));
     }
     StringBuilder sb = new StringBuilder();
     for (long i = 0; i < s; i++) {

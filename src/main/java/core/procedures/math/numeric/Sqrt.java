@@ -2,6 +2,7 @@ package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -17,7 +18,7 @@ public class Sqrt extends AFn implements INumericalOperation {
       } else if (args[0] instanceof BigDecimal) {
         return Double.POSITIVE_INFINITY;
       }
-      throw new IllegalArgumentException("Wrong type argument to `sqrt`");
+      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
     }
     throw new ArityException(args.length, 1, "sqrt");
   }

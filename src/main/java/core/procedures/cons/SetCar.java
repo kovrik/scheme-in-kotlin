@@ -6,6 +6,7 @@ import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class SetCar extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object p = env.get(pair);
     if (!SCMCons.isPair(p)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", p));
+      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Pair, actual: %s", Writer.write(p)));
     }
     List cons = (List)p;
     cons.set(0, env.get(car));
