@@ -21,6 +21,7 @@ public class Remainder extends AFn implements INumericalOperation {
     throw new ArityException(args.length, 2, "remainder");
   }
 
+  @Override
   public Number zero() {
     throw new ArityException(0, 2, "remainder");
   }
@@ -32,6 +33,7 @@ public class Remainder extends AFn implements INumericalOperation {
     return first.remainder(second);
   }
 
+  @Override
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
@@ -71,6 +73,7 @@ public class Remainder extends AFn implements INumericalOperation {
     throw new IllegalArgumentException("Wrong type argument to `remainder`");
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return invoke(first, second);
   }

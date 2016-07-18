@@ -17,10 +17,12 @@ public class CharEqCi extends AFn implements IOperation {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
   public Boolean zero() {
     return Boolean.TRUE;
   }
 
+  @Override
   public Boolean apply(Object first, Object second) {
     if (!(first instanceof Character) || !(second instanceof Character)) {
       throw new IllegalArgumentException("Wrong type of argument to `char-ci=?`");

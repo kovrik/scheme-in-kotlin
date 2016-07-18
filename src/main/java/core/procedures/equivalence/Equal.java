@@ -22,10 +22,12 @@ public class Equal extends AFn implements IOperation {
     return SCMBoolean.toSCMBoolean(equal(arg1, arg2));
   }
 
+  @Override
   public Boolean zero() {
     return Boolean.TRUE;
   }
 
+  @Override
   public Boolean apply(Object first, Object second) {
     return equal(first, second);
   }

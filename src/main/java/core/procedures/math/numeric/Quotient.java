@@ -21,6 +21,7 @@ public class Quotient extends AFn implements INumericalOperation {
     throw new ArityException(args.length, 2, "quotient");
   }
 
+  @Override
   public Number zero() {
     throw new ArityException(0, 2, "quotient");
   }
@@ -32,6 +33,7 @@ public class Quotient extends AFn implements INumericalOperation {
     return first.divideToIntegralValue(second);
   }
 
+  @Override
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
@@ -63,6 +65,7 @@ public class Quotient extends AFn implements INumericalOperation {
     return first.longValue() / second.longValue();
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return invoke(first, second);
   }

@@ -24,6 +24,7 @@ public class Modulo extends AFn implements INumericalOperation {
     throw new ArityException(args.length, 2, "modulo");
   }
 
+  @Override
   public Number zero() {
     throw new ArityException(0, 2, "modulo");
   }
@@ -42,6 +43,7 @@ public class Modulo extends AFn implements INumericalOperation {
     return second.add(remainder);
   }
 
+  @Override
   public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
@@ -79,6 +81,7 @@ public class Modulo extends AFn implements INumericalOperation {
     }
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return invoke(first, second);
   }

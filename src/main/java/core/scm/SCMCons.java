@@ -52,14 +52,17 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     setCdr(cdr);
   }
 
+  @Override
   public boolean isList() {
     return isList;
   }
 
+  @Override
   public boolean isPair() {
     return !NIL.equals(this);
   }
 
+  @Override
   public boolean isNull() {
     return NIL.equals(this);
   }
@@ -68,6 +71,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     isList = list;
   }
 
+  @Override
   public E car() {
     if (isEmpty()) {
       throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
@@ -75,6 +79,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     return getFirst();
   }
 
+  @Override
   public Object cdr() {
     if (isList) {
       return subList(1, size());

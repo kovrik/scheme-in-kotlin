@@ -28,10 +28,12 @@ public class Environment implements IEnvironment {
     this.outer = outer;
   }
 
+  @Override
   public Object get(Object key) {
     return context.get(key);
   }
 
+  @Override
   public Object find(Object key) {
     Object value = context.get(key);
     if (value == null) {
@@ -43,6 +45,7 @@ public class Environment implements IEnvironment {
     return value;
   }
 
+  @Override
   public Object findAndPut(Object key, Object value) {
     Object v = context.get(key);
     if (v == null) {
@@ -54,14 +57,12 @@ public class Environment implements IEnvironment {
     return context.put(key, value);
   }
 
+  @Override
   public Object put(Object key, Object value) {
     return context.put(key, value);
   }
 
-  public void putAll(Map<?, ?> params) {
-    context.putAll(params);
-  }
-
+  @Override
   public Set<Map.Entry<Object, Object>> entrySet() {
     return context.entrySet();
   }

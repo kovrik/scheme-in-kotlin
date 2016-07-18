@@ -69,6 +69,7 @@ public class SCMProcedure extends AFn {
     return params;
   }
 
+  @Override
   public String getName() {
     if (name == null) {
       return "#<procedure " + hashCode() + ">";

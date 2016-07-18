@@ -89,10 +89,6 @@ public final class DefaultEnvironment extends Environment {
 
     put(new SCMSymbol("not"), new Negation());
 
-    /* nil */
-    // TODO?
-    put(new SCMSymbol("#nil"), null);
-
     /* math */
     put(new SCMSymbol("+"),    new Addition());
     put(new SCMSymbol("-"),    new Subtraction());

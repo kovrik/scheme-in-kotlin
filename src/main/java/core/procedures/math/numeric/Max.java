@@ -6,14 +6,17 @@ import java.math.BigDecimal;
 
 public class Max extends AFn implements INumericalOperation {
 
+  @Override
   public Number zero() {
     return 1L;
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return apply((Number)first, (Number)second);
   }
 
+  @Override
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);

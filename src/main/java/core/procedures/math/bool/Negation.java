@@ -14,14 +14,17 @@ public class Negation extends AFn implements IBooleanOperation {
     throw new ArityException(args.length, "not");
   }
 
+  @Override
   public Boolean zero() {
     throw new ArityException(0, "not");
   }
 
+  @Override
   public Boolean apply(Boolean first, Boolean second) {
     throw new ArityException(2, "not");
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     throw new ArityException(2, "not");
   }

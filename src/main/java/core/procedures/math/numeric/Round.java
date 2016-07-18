@@ -23,14 +23,17 @@ public class Round extends AFn implements INumericalOperation {
     throw new ArityException(args.length, 1, "round");
   }
 
+  @Override
   public Number zero() {
     throw new ArityException(0, 1, "round");
   }
 
+  @Override
   public Number apply(Number first, Number second) {
     throw new ArityException(2, 1, "round");
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     throw new ArityException(2, 1, "round");
   }

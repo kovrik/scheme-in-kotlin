@@ -176,6 +176,7 @@ public class Reader implements IReader {
     throw new IllegalArgumentException("Bad radix: " + radix);
   }
 
+  @Override
   public Object read(String string) {
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
@@ -188,6 +189,7 @@ public class Reader implements IReader {
     return null;
   }
 
+  @Override
   public Object read(InputStream inputStream) {
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {

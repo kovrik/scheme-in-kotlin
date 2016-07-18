@@ -7,12 +7,12 @@ import java.math.BigInteger;
 
 public class LCM extends AFn implements INumericalOperation {
 
-  private static final GCD gcd = new GCD();
-
+  @Override
   public Number zero() {
     return 1L;
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return apply((Number)first, (Number)second);
   }
@@ -41,6 +41,7 @@ public class LCM extends AFn implements INumericalOperation {
     return new BigDecimal((a.toBigIntegerExact().divide(gcd)).multiply(b.toBigIntegerExact()));
   }
 
+  @Override
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);

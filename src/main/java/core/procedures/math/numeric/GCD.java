@@ -6,10 +6,12 @@ import java.math.BigDecimal;
 
 public class GCD extends AFn implements INumericalOperation {
 
+  @Override
   public Number zero() {
     return 1L;
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return apply((Number)first, (Number)second);
   }
@@ -38,7 +40,7 @@ public class GCD extends AFn implements INumericalOperation {
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 
-  // FIXME BigInt? Double?
+  @Override
   public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);

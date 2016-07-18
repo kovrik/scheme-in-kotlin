@@ -7,14 +7,17 @@ import java.math.BigDecimal;
 
 public class Division extends AFn implements INumericalOperation {
 
+  @Override
   public Number zero() {
     return 1L;
   }
 
+  @Override
   public Number apply(Object numenator, Object denominator) {
     return apply((Number)numenator, (Number)denominator);
   }
 
+  @Override
   public Number apply(Number numenator, Number denominator) {
 
     if ((numenator instanceof Long) &&
@@ -39,7 +42,6 @@ public class Division extends AFn implements INumericalOperation {
 
   @Override
   public Number invoke(Object... args) {
-
     if (args == null || args.length == 0) {
       throw new ArityException(0, "/");
     }

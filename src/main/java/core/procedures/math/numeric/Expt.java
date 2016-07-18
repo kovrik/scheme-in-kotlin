@@ -21,10 +21,12 @@ public class Expt extends AFn implements INumericalOperation {
     throw new ArityException(args.length, 2, "expt");
   }
 
+  @Override
   public Number zero() {
     throw new ArityException(0, 2, "expt");
   }
 
+  @Override
   public Number apply(Number first, Number second) {
     double result = Math.pow(first.doubleValue(), second.doubleValue());
     if (Double.isInfinite(result)) {
@@ -33,6 +35,7 @@ public class Expt extends AFn implements INumericalOperation {
     return result;
   }
 
+  @Override
   public Object apply(Object first, Object second) {
     return invoke(first, second);
   }

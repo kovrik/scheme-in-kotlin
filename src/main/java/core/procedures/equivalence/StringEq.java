@@ -17,10 +17,12 @@ public class StringEq extends AFn implements IOperation {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
   public Boolean zero() {
     return Boolean.TRUE;
   }
 
+  @Override
   public Boolean apply(Object first, Object second) {
     if (!(first instanceof String) || !(second instanceof String)) {
       throw new IllegalArgumentException("Wrong type of argument to `string=?`");
