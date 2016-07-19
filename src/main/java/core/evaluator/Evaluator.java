@@ -3,6 +3,7 @@ package core.evaluator;
 import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import core.procedures.IFn;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
@@ -27,7 +28,7 @@ public class Evaluator implements IEvaluator {
       }
       return env.find(sexp);
     } else if (sexp instanceof SCMSpecialForm) {
-      throw new IllegalArgumentException("Bad syntax in form: " + sexp);
+      throw new IllegalSyntaxException("Bad syntax in form: " + sexp);
     } else if (!(sexp instanceof List)) {
       return sexp;
     } else if (sexp instanceof SCMCons) {
@@ -77,7 +78,7 @@ public class Evaluator implements IEvaluator {
   private Object evlis(Object sexp, IEnvironment env) {
     SCMCons list = (SCMCons)sexp;
     if (list.isEmpty()) {
-      throw new IllegalArgumentException("Unexpected syntax in form " + list);
+      throw new IllegalSyntaxException("Unexpected syntax in form " + list);
     }
     Object op = list.getFirst();
 

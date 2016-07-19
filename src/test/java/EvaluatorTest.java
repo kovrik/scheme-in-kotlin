@@ -3,6 +3,7 @@ import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
@@ -716,7 +717,7 @@ public class EvaluatorTest {
     try {
       eval(f1, env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().contains("bad lambda in form: " + f1));
     }
   }
@@ -759,13 +760,13 @@ public class EvaluatorTest {
     try {
       eval("'(1 2 3 . 4 5)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Error: bad dotted pair form: (1 2 3 . 4 5)", e.getMessage());
     }
     try {
       eval("'( . 1 2 3 4 5)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Error: bad dotted pair form: (. 1 2 3 4 5)", e.getMessage());
     }
   }
@@ -789,13 +790,13 @@ public class EvaluatorTest {
     try {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().contains("let: duplicate bound variable"));
     }
     try {
       eval("(let ((c 123))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().contains("let: bad let in form:"));
     }
     try {
@@ -812,7 +813,7 @@ public class EvaluatorTest {
     try {
       eval("(let* ((c 123)))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue("Test bad let* form", e.getMessage().contains("let*: bad let* in form:"));
     }
   }
@@ -831,28 +832,28 @@ public class EvaluatorTest {
     try {
       eval("(cond)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
     }
     // "Invalid clause in subform "
     try {
       eval("(cond 1)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
     }
     // "cond: else must be the last clause in subform"
     try {
       eval("(cond (else 1) (#t 5))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("cond: else must be the last clause in subform"));
     }
     // "Source expression failed to match any pattern in form (cond)"
     try {
       eval("(cond)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
     }
 
@@ -868,19 +869,19 @@ public class EvaluatorTest {
     try {
       eval("(case)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (case)"));
     }
     try {
       eval("(case 1 1)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
     }
     try {
       eval("(case (* 2 3) (else 'prime) ((1 4 6 8 9) 'composite))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("case: else must be the last clause in subform"));
     }
     String caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 6 8 9) 'composite))";
@@ -1655,7 +1656,7 @@ public class EvaluatorTest {
     try {
       eval("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertTrue(e.getMessage().equals("let: duplicate bound variable: n"));
     }
   }

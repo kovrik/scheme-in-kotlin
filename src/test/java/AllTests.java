@@ -9,8 +9,7 @@ import s7.S7Tests;
     WriterTest.class,
     SCMConsTest.class,
     /* S7 Test Suite: https://ccrma.stanford.edu/software/snd/snd/s7.html */
-    S7Tests.class,
-    ConsTest.class
+    S7Tests.class
 })
 public class AllTests {
 }

@@ -4,6 +4,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMSymbol;
@@ -84,6 +85,8 @@ public class Main {
       } catch (UnsupportedOperationException e) {
         error(e);
       } catch (IllegalArgumentException e) {
+        error(e);
+      } catch (IllegalSyntaxException e) {
         error(e);
       } catch (ArithmeticException e) {
         error(e);

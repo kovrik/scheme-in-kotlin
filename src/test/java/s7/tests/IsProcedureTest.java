@@ -1,6 +1,7 @@
 package s7.tests;
 
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -24,13 +25,13 @@ public class IsProcedureTest extends AbstractS7Test {
     try {
       eval("(procedure? begin)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: begin", e.getMessage());
     }
     try {
       eval("(procedure? lambda)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: lambda", e.getMessage());
     }
     assertEquals(FALSE, eval("(procedure? 'and)", env));
@@ -45,37 +46,37 @@ public class IsProcedureTest extends AbstractS7Test {
     try {
       eval("(procedure? and)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: and", e.getMessage());
     }
     try {
       eval("(procedure? let)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: let", e.getMessage());
     }
     try {
       eval("(procedure? quasiquote)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: quasiquote", e.getMessage());
     }
     try {
       eval("(procedure? cond)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: cond", e.getMessage());
     }
     try {
       eval("(procedure? do)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: do", e.getMessage());
     }
     try {
       eval("(procedure? set!)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: set!", e.getMessage());
     }
     try {

@@ -4,6 +4,7 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.Eqv;
 import core.scm.SCMBoolean;
@@ -41,7 +42,7 @@ public enum SCMSpecialForm implements ISpecialForm {
          *              |   0   | 1 definition           | 3 body      |
          */
         if (((SCMCons) definition).isEmpty()) {
-          throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
+          throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
         }
         /* Add implicit `begin` */
         SCMCons body = SCMCons.list(BEGIN);
@@ -62,7 +63,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           env.put(name, new SCMProcedure(name, params, body, env, true));
         }
       } else {
-        throw new IllegalArgumentException("define: bad `define` in form: " + expression);
+        throw new IllegalSyntaxException("define: bad `define` in form: " + expression);
       }
       return UNSPECIFIED;
     }
@@ -70,7 +71,7 @@ public enum SCMSpecialForm implements ISpecialForm {
   LAMBDA("lambda") {
     public SCMProcedure eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("lambda: bad lambda in form: " + expression);
+        throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
       }
       Object args = expression.get(1);
 
@@ -197,7 +198,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
 
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let: bad let in form: " + expression);
+        throw new IllegalSyntaxException("let: bad let in form: " + expression);
       }
 
       if (expression.get(1) instanceof List) {
@@ -206,7 +207,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           Object var = ((List)binding).get(0);
           Object init = ((List)binding).get(1);
           if (localEnv.get(var) != null) {
-            throw new IllegalArgumentException("let: duplicate bound variable " + var);
+            throw new IllegalSyntaxException("let: duplicate bound variable " + var);
           }
           localEnv.put(var, evaluator.eval(init, env));
         }
@@ -221,7 +222,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         /* Named let via letrec */
         Object o = expression.get(1);
         if (!(o instanceof SCMSymbol)) {
-          throw new IllegalArgumentException("let: bad let in form: " + expression);
+          throw new IllegalSyntaxException("let: bad let in form: " + expression);
         }
         // lambda
         SCMCons lambdaArgs = SCMCons.list();
@@ -229,7 +230,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         for (Object binding : (List<SCMSymbol>)expression.get(2)) {
           Object arg = ((List)binding).get(0);
           if (lambdaArgs.contains(arg)) {
-            throw new IllegalArgumentException("let: duplicate bound variable: " + arg);
+            throw new IllegalSyntaxException("let: duplicate bound variable: " + arg);
           }
           lambdaArgs.add(arg);
           initValues.add(((List)binding).get(1));
@@ -248,13 +249,13 @@ public enum SCMSpecialForm implements ISpecialForm {
         letrec.add(body);
         return LETREC.eval(letrec, new Environment(env), evaluator);
       }
-      throw new IllegalArgumentException("let: bad let in form: " + expression);
+      throw new IllegalSyntaxException("let: bad let in form: " + expression);
     }
   },
   LET_S("let*") {
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("let*: bad let* in form: " + expression);
+        throw new IllegalSyntaxException("let*: bad let* in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
@@ -281,7 +282,7 @@ public enum SCMSpecialForm implements ISpecialForm {
      */
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
-        throw new IllegalArgumentException("letrec: bad letrec in form: " + expression);
+        throw new IllegalSyntaxException("letrec: bad letrec in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
@@ -306,12 +307,12 @@ public enum SCMSpecialForm implements ISpecialForm {
 
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
-        throw new IllegalArgumentException("Source expression failed to match any pattern in form (cond)");
+        throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
       }
       for (int i = 1; i < expression.size(); i++) {
         Object node = expression.get(i);
         if (!(node instanceof List)) {
-          throw new IllegalArgumentException("Invalid clause in subform " + node);
+          throw new IllegalSyntaxException("Invalid clause in subform " + node);
         }
         List<Object> subform = (List<Object>) node;
         Object clause = subform.get(0);
@@ -322,7 +323,7 @@ public enum SCMSpecialForm implements ISpecialForm {
             }
             return evaluator.eval(subform.get(subform.size() - 1), env);
           }
-          throw new IllegalArgumentException("cond: else must be the last clause in subform");
+          throw new IllegalSyntaxException("cond: else must be the last clause in subform");
         }
         if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
           for (int s = 1; s < subform.size() - 1; s++) {
@@ -331,7 +332,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           return evaluator.eval(subform.get(subform.size() - 1), env);
         }
       }
-      throw new IllegalArgumentException("Source expression failed to match any pattern in form (cond)");
+      throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
     }
   },
   CASE("case") {
@@ -340,13 +341,13 @@ public enum SCMSpecialForm implements ISpecialForm {
 
     public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
-        throw new IllegalArgumentException("Source expression failed to match any pattern in form (case)");
+        throw new IllegalSyntaxException("Source expression failed to match any pattern in form (case)");
       }
       Object key = evaluator.eval(expression.get(1), env);
       for (int i = 2; i < expression.size(); i++) {
         Object node = expression.get(i);
         if (!(node instanceof List)) {
-          throw new IllegalArgumentException("Invalid clause in subform " + node);
+          throw new IllegalSyntaxException("Invalid clause in subform " + node);
         }
         List<Object> subform = (List<Object>)node;
         Object datum = subform.get(0);
@@ -357,10 +358,10 @@ public enum SCMSpecialForm implements ISpecialForm {
             }
             return evaluator.eval(subform.get(subform.size() - 1), env);
           }
-          throw new IllegalArgumentException("case: else must be the last clause in subform");
+          throw new IllegalSyntaxException("case: else must be the last clause in subform");
         }
         if (!(datum instanceof List)) {
-          throw new IllegalArgumentException("Invalid clause in subform " + datum);
+          throw new IllegalSyntaxException("Invalid clause in subform " + datum);
         }
         for (Object n : ((List<Object>)datum)) {
           if (eqv.apply(key, n)) {
@@ -413,7 +414,7 @@ public enum SCMSpecialForm implements ISpecialForm {
   DELAY("delay") {
     public SCMPromise eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 2) {
-        throw new IllegalArgumentException("delay: bad `delay` in form: " + expression);
+        throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
       return new SCMPromise(Collections.emptyList(), expression.get(1));
     }

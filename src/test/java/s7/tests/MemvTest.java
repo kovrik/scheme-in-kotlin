@@ -1,6 +1,7 @@
 package s7.tests;
 
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class MemvTest extends AbstractS7Test {
     try {
       eval("(memv 'a (list 'a 'b . 'c))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad syntax in form: quote", e.getMessage());
     }
     try {

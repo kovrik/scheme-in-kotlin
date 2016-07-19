@@ -1,5 +1,6 @@
 package core.reader;
 
+import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
@@ -173,7 +174,7 @@ public class Reader implements IReader {
     if (radix.equals('x')) {
       return "+-.0123456789abcdefABCDEF".indexOf(c) > -1;
     }
-    throw new IllegalArgumentException("Bad radix: " + radix);
+    throw new IllegalSyntaxException("Bad radix: " + radix);
   }
 
   @Override
@@ -233,7 +234,7 @@ public class Reader implements IReader {
       case '(':
         return readList(reader);
       case ')':
-        throw new IllegalArgumentException("Unexpected list terminator: ')'");
+        throw new IllegalSyntaxException("Unexpected list terminator: ')'");
       default: {
         if (Character.isWhitespace(c)) {
           // skip
@@ -303,14 +304,14 @@ public class Reader implements IReader {
           if (isRadix(next)) {
             if (radix != null) {
               /* Met radix twice */
-              throw new IllegalArgumentException("Bad number!");
+              throw new IllegalSyntaxException("Bad number!");
             }
             radix = next;
           }
           if (isExactness(next)) {
             if (exactness != null) {
               /* Met exactness twice */
-              throw new IllegalArgumentException("Bad number!");
+              throw new IllegalSyntaxException("Bad number!");
             }
             exactness = next;
           }
@@ -336,7 +337,7 @@ public class Reader implements IReader {
       return readIdentifier(reader);
     }
     reader.unread(c);
-    throw new IllegalArgumentException("Unknown atom!");
+    throw new IllegalSyntaxException("Unknown atom!");
   }
 
   /* Check if string represents a valid number */
@@ -529,7 +530,7 @@ public class Reader implements IReader {
         (number.indexOf("-") != number.lastIndexOf("-")) ||
         (number.indexOf(".") != number.lastIndexOf("."))) {
 
-      throw new IllegalArgumentException("Bad number!");
+      throw new IllegalSyntaxException("Bad number!");
     }
     reader.unread(c);
     if (number.length() > 0 && number.charAt(number.length() - 1) == '.') {
@@ -561,7 +562,7 @@ public class Reader implements IReader {
         i = reader.read();
         char next = (char)i;
         if (next == '>') {
-          throw new IllegalArgumentException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
+          throw new IllegalSyntaxException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
         } else if (next == '"') {
           string.append(c).append(next);
           continue;
@@ -608,7 +609,7 @@ public class Reader implements IReader {
         cp = Integer.parseInt(codepoint, 16);
       }
       if (!Character.isValidCodePoint(cp)) {
-        throw new IllegalArgumentException("Bad codepoint: " + cp);
+        throw new IllegalSyntaxException("Bad codepoint: " + cp);
       }
       /* Is it a named char? */
       return (char)cp;
@@ -629,7 +630,7 @@ public class Reader implements IReader {
     if (character.length() > 1) {
       Character namedChar = NAMED_CHARS.get(character.toString());
       if (namedChar == null) {
-        throw new IllegalArgumentException("Error: unknown named character: \"" + character + "\"");
+        throw new IllegalSyntaxException("Error: unknown named character: \"" + character + "\"");
       }
       return namedChar;
     }
@@ -683,7 +684,7 @@ public class Reader implements IReader {
       /* Process dotted pair notation */
       if (dotPos != list.size() - 2) {
         /* Malformed dotted pair */
-        throw new IllegalArgumentException("Error: bad dotted pair form: " + list);
+        throw new IllegalSyntaxException("Error: bad dotted pair form: " + list);
       }
       /* Remove dot */
       list.remove(dotPos);
