@@ -1,8 +1,8 @@
 package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -12,10 +12,10 @@ public class Expt extends AFn implements INumericalOperation {
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
       if (!(args[0] instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
+        throw new WrongTypeException("Number", args[0]);
       }
       if (!(args[1] instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[1]));
+        throw new WrongTypeException("Number", args[1]);
       }
       return apply((Number)args[0], (Number)args[1]);
     }

@@ -1,8 +1,8 @@
 package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -28,7 +28,7 @@ public class Truncate extends AFn implements INumericalOperation {
           return arg.setScale(0, BigDecimal.ROUND_DOWN);
         }
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
+      throw new WrongTypeException("Number", args[0]);
     }
     throw new ArityException(args.length, 1, "truncate");
   }

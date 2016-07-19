@@ -1,8 +1,8 @@
 package core.procedures.lists;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -14,8 +14,7 @@ public class Length extends AFn {
       if (args[0] instanceof List) {
         return (long)((List)args[0]).size();
       }
-      throw new IllegalArgumentException(
-          String.format("Wrong type argument to `length`! Expected: List, Actual: %s", Writer.write(args[0])));
+      throw new WrongTypeException("List", args[0]);
     }
     throw new ArityException(args.length, 1, "length");
   }

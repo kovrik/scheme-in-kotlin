@@ -985,7 +985,7 @@ public class EvaluatorTest {
       eval("(length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `length`! Expected: List, Actual: 1", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
     }
   }
 

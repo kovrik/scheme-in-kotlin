@@ -2,10 +2,10 @@ package core.procedures.strings;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ListToString extends SCMProcedure {
   public Object apply(IEvaluator evaluator, IEnvironment env) {
     Object o = env.get(lst);
     if (!(o instanceof List) || ((o instanceof SCMCons) && !((SCMCons)o).isList())) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: List, actual: " + Writer.write(o));
+      throw new WrongTypeException("List", o);
     }
 
     List cs = (List)env.get(lst);
@@ -32,7 +32,7 @@ public class ListToString extends SCMProcedure {
     StringBuilder sb = new StringBuilder(cs.size());
     for (Object c : cs) {
       if (!(c instanceof Character)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Character, actual: " + Writer.write(c));
+        throw new WrongTypeException("Character", c);
       }
       sb.append(c);
     }

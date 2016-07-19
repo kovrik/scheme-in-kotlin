@@ -2,10 +2,10 @@ package core.procedures.strings;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class StringProc extends SCMProcedure {
     StringBuilder sb = new StringBuilder(cs.size());
     for (Object c : cs) {
       if (!(c instanceof Character)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Character, actual: " + Writer.write(c));
+        throw new WrongTypeException("Character", c);
       }
       sb.append(c);
     }

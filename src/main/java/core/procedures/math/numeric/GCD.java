@@ -1,7 +1,7 @@
 package core.procedures.math.numeric;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -28,10 +28,10 @@ public class GCD extends AFn implements INumericalOperation {
 
   public static Double gcd(Double a, Double b) {
     if (a.isInfinite() || a.isNaN() || a.longValue() != a) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(a));
+      throw new WrongTypeException("Integer", a);
     }
     if (b.isInfinite() || b.isNaN() || b.longValue() != b) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(b));
+      throw new WrongTypeException("Integer", b);
     }
     return (double)gcd(a.longValue(), b.longValue());
   }
@@ -68,7 +68,7 @@ public class GCD extends AFn implements INumericalOperation {
       }
       Object result = args[0];
       if (!(result instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(result));
+        throw new WrongTypeException("Integer", result);
       }
       if (args.length == 1) {
         if (args[0] instanceof Long) {
@@ -82,7 +82,7 @@ public class GCD extends AFn implements INumericalOperation {
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
         if (!(args[i] instanceof Number)) {
-          throw new IllegalArgumentException("Wrong argument type. Expected: Integer, actual: " + Writer.write(args[i]));
+          throw new WrongTypeException("Integer", args[i]);
         }
         result = apply(first, (Number)args[i]);
       }

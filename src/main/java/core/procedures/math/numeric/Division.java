@@ -1,8 +1,8 @@
 package core.procedures.math.numeric;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -47,7 +47,7 @@ public class Division extends AFn implements INumericalOperation {
       throw new ArityException(0, "/");
     }
     if (!(args[0] instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[0]));
+      throw new WrongTypeException("Number", args[0]);
     }
     Number result;
     if (args.length == 1) {
@@ -57,7 +57,7 @@ public class Division extends AFn implements INumericalOperation {
     }
     for (int d = 1; d <= args.length - 1; d++) {
       if (!(args[d] instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[d]));
+        throw new WrongTypeException("Number", args[d]);
       }
       result = apply(result, args[d]);
     }

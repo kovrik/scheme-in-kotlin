@@ -1,7 +1,7 @@
 package core.procedures.math.numeric;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -44,12 +44,12 @@ public class Max extends AFn implements INumericalOperation {
       }
       Object result = args[0];
       if (!(result instanceof Number)) {
-        throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(result));
+        throw new WrongTypeException("Number", result);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
         if (!(args[i] instanceof Number)) {
-          throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(args[i]));
+          throw new WrongTypeException("Number", args[i]);
         }
         Number second = (Number)args[i];
         result = apply(first, second);

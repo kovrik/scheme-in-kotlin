@@ -1,10 +1,10 @@
 package core.procedures.vectors;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMCons;
 import core.scm.SCMVector;
-import core.writer.Writer;
 
 public class VectorToList extends AFn {
 
@@ -15,7 +15,7 @@ public class VectorToList extends AFn {
         SCMVector vector = (SCMVector) args[0];
         return SCMCons.list(vector.getArray());
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: Vector, actual: " + Writer.write(args[0]));
+      throw new WrongTypeException("Vector", args[0]);
     }
     throw new ArityException(args.length, 1, "vector->list");
   }

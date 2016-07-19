@@ -3,12 +3,12 @@ package core.procedures.vectors;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -24,11 +24,9 @@ public class MakeVector extends SCMProcedure {
 
   @Override
   public SCMVector apply(IEvaluator evaluator, IEnvironment env) {
-
     Object o = env.get(size);
     if (!(o instanceof Long)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       Writer.write(o)));
+      throw new WrongTypeException("Integer", o);
     }
     Long s = (Long)o;
     if (s < 0) {

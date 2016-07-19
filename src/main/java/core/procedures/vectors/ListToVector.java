@@ -1,9 +1,9 @@
 package core.procedures.vectors;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class ListToVector extends AFn {
         List list = (List) args[0];
         return new SCMVector(list.toArray());
       }
-      throw new IllegalArgumentException("Wrong argument type. Expected: List, actual: " + Writer.write(args[0]));
+      throw new WrongTypeException("List", args[0]);
     }
     throw new ArityException(args.length, 1, "list->vector");
   }

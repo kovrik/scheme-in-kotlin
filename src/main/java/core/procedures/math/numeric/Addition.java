@@ -1,7 +1,7 @@
 package core.procedures.math.numeric;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -41,7 +41,7 @@ public class Addition extends AFn implements INumericalOperation {
     if (args != null) {
       for (Object obj : args) {
         if (!(obj instanceof Number)) {
-          throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(obj));
+          throw new WrongTypeException("Number", obj);
         }
         result = apply((Number) result, (Number) obj);
       }

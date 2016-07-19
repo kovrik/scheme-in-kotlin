@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.exceptions.WrongTypeException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -30,12 +32,12 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
     @Override
     public Object car() {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+      throw new WrongTypeException("Pair", NIL);
     }
 
     @Override
     public Object cdr() {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+      throw new WrongTypeException("Pair", NIL);
     }
   };
 
@@ -74,7 +76,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
   @Override
   public E car() {
     if (isEmpty()) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+      throw new WrongTypeException("Pair", NIL);
     }
     return getFirst();
   }
@@ -90,7 +92,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
 
   public void setCdr(Object cdr) {
     if (isEmpty()) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Pair, actual: ()");
+      throw new WrongTypeException("Pair", NIL);
     }
     subList(1, size()).clear();
 

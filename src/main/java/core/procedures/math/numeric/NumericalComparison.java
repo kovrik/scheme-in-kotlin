@@ -1,9 +1,9 @@
 package core.procedures.math.numeric;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
 import core.scm.SCMBoolean;
-import core.writer.Writer;
 
 import java.math.BigDecimal;
 
@@ -51,12 +51,11 @@ public class NumericalComparison extends AFn implements IOperation {
 
   @Override
   public Boolean apply(Object first, Object second) {
-
     if (!(first instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(first));
+      throw new WrongTypeException("Number", first);
     }
     if (!(second instanceof Number)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: Number, actual: " + Writer.write(second));
+      throw new WrongTypeException("Number", second);
     }
 
     Number f = (Number)first;

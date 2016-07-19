@@ -2,10 +2,10 @@ package core.procedures.strings;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ public class StringRef extends SCMProcedure {
 
     Object o = env.get(string);
     if (!(o instanceof String)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: String, actual: %s", Writer.write(o)));
+      throw new WrongTypeException("String", o);
     }
     String s = (String)o;
 
     Object p = env.get(pos);
     if (!(p instanceof Long)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s", Writer.write(p)));
+      throw new WrongTypeException("Integer", p);
     }
     Long pos = (Long)p;
     if ((pos < 0) || (pos >= s.length())) {

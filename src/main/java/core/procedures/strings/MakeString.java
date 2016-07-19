@@ -3,10 +3,10 @@ package core.procedures.strings;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -25,8 +25,7 @@ public class MakeString extends SCMProcedure {
 
     Object o = env.get(size);
     if (!(o instanceof Long)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s",
-                                                       Writer.write(o)));
+      throw new WrongTypeException("Integer", o);
     }
     Long s = (Long)o;
     if (s < 0) {
@@ -38,8 +37,7 @@ public class MakeString extends SCMProcedure {
     }
     Object c = vals.isEmpty() ? Character.MIN_VALUE : vals.get(0);
     if (!(c instanceof Character)) {
-      throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Character, actual: %s",
-                                                       Writer.write(c)));
+      throw new WrongTypeException("Character", c);
     }
     StringBuilder sb = new StringBuilder();
     for (long i = 0; i < s; i++) {

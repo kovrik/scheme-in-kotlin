@@ -2,11 +2,11 @@ package core.procedures.system;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
-import core.writer.Writer;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Exit extends SCMProcedure {
     } else {
       Object o = l.get(0);
       if (!(l.get(0) instanceof Long)) {
-        throw new IllegalArgumentException(String.format("Wrong argument type. Expected: Integer, actual: %s", Writer.write(o)));
+        throw new WrongTypeException("Integer", o);
       }
       System.exit(((Long)o).intValue());
     }

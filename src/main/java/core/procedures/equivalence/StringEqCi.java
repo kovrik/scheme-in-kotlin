@@ -1,9 +1,9 @@
 package core.procedures.equivalence;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.math.IOperation;
 import core.scm.SCMBoolean;
-import core.writer.Writer;
 
 public class StringEqCi extends AFn implements IOperation {
 
@@ -26,10 +26,10 @@ public class StringEqCi extends AFn implements IOperation {
   @Override
   public Boolean apply(Object first, Object second) {
     if (!(first instanceof String)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: String, actual: " + Writer.write(first));
+      throw new WrongTypeException("String", first);
     }
     if (!(second instanceof String)) {
-      throw new IllegalArgumentException("Wrong argument type. Expected: String, actual: " + Writer.write(second));
+      throw new WrongTypeException("String", second);
     }
     return ((String)first).equalsIgnoreCase((String)second);
   }
