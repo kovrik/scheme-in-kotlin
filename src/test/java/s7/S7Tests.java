@@ -13,7 +13,8 @@ import s7.tests.*;
     IsSymbolTest.class,
     IsProcedureTest.class,
     IsCharTest.class,
-    MemqTest.class
+    MemqTest.class,
+    MemvTest.class
 })
 public class S7Tests {
 }
