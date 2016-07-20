@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [19/37]
+* TODO: [20/37]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -19,8 +19,9 @@ CLOSED: [2016-07-17 Sun 10:11]
 CLOSED: [2016-07-10 Sun 20:13]
 ** DONE [#A] Error messages: use Writer class
 CLOSED: [2016-07-19 Tue 21:45]
+** DONE [#A] Wrong type generic error
+CLOSED: [2016-07-20 Wed 22:51]
 ** TODO [#A] Equality for procedures?
-** TODO [#A] Wrong type generic error
 ** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
@@ -109,7 +110,7 @@ CLOSED: [2016-05-13 Fri 20:56]
 CLOSED: [2016-05-13 Fri 20:40]
 *** DONE Procedure
 CLOSED: [2016-05-13 Fri 20:40]
-** TODO Standard forms [0/2]
+** TODO Standard forms [1/2]
 *** TODO Fundamental forms: [5/12]
 **** DONE define
 CLOSED: [2016-04-21 Thu 21:36]
@@ -129,8 +130,10 @@ CLOSED: [2016-04-21 Thu 21:36]
 **** DONE set!
 CLOSED: [2016-04-21 Thu 21:36]
 
-*** TODO Library forms: [11/12]
-**** TODO do
+*** DONE Library forms: [12/12]
+CLOSED: [2016-07-20 Wed 22:51]
+**** DONE do
+CLOSED: [2016-07-20 Wed 22:51]
 **** DONE let
 CLOSED: [2016-04-21 Thu 21:37]
 **** DONE let*
