@@ -799,6 +799,13 @@ public class EvaluatorTest {
 
     String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
     assertEquals("DONE", eval(doTest3, env));
+
+    try {
+      eval("(do ((a 1) (b 2) (a 3)) (= 1 1) 5)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("let: duplicate identifier: a", e.getMessage());
+    }
   }
 
   @Test

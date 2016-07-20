@@ -51,7 +51,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
         }
         /* Add implicit `begin` */
-        SCMCons body = SCMCons.list(BEGIN);
+        SCMCons<Object> body = SCMCons.list(BEGIN);
         /* Add all body forms */
         body.addAll(expression.subList(2, expression.size()));
 
@@ -83,13 +83,14 @@ public enum SCMSpecialForm implements ISpecialForm {
       Object args = expression.get(1);
 
       // implicit `begin`
-      SCMCons body = SCMCons.list(BEGIN);
+      SCMCons<Object> body = SCMCons.list(BEGIN);
       body.addAll(expression.subList(2, expression.size()));
+      /* Check if args is a proper list or a pair (cons) */
       if (args instanceof List) {
         return new SCMProcedure("", (List<SCMSymbol>)args, body, env);
       } else {
         /* Variadic arity */
-        return new SCMProcedure("", SCMCons.<SCMSymbol>list((SCMSymbol)expression.get(1)), body, env, true);
+        return new SCMProcedure("", SCMCons.list((SCMSymbol)expression.get(1)), body, env, true);
       }
     }
   },
@@ -138,7 +139,8 @@ public enum SCMSpecialForm implements ISpecialForm {
         return SCMCons.NIL;
       }
       /* Numerical constants, string constants, character constants, and boolean constants
-       * evaluate "to themselves"; they need not be quoted */
+       * evaluate "to themselves"; they need not be quoted.
+       * Numbers, strings and chars are "evaluated" by Reader */
       if (SCMBoolean.TRUE.equals(exp)) {
         return SCMBoolean.TRUE;
       }
@@ -244,7 +246,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (!tempEnv.containsKey(variable)) {
           tempEnv.put(variable, evaluator.eval(init, tempEnv));
         } else {
-          throw new IllegalSyntaxException("let: duplicate identifier");
+          throw new IllegalSyntaxException("let: duplicate identifier: " + variable);
         }
       }
 
@@ -292,7 +294,6 @@ public enum SCMSpecialForm implements ISpecialForm {
   LET("let") {
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let: bad let in form: " + expression);
       }
@@ -301,7 +302,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         IEnvironment localEnv = new Environment(env);
         List bindings = (List) expression.get(1);
         for (Object binding : bindings) {
-          Object var = ((List)binding).get(0);
+          Object var  = ((List)binding).get(0);
           Object init = ((List)binding).get(1);
           if (localEnv.get(var) != null) {
             throw new IllegalSyntaxException("let: duplicate identifier: " + var);
@@ -322,8 +323,8 @@ public enum SCMSpecialForm implements ISpecialForm {
           throw new IllegalSyntaxException("let: bad let in form: " + expression);
         }
         // lambda
-        SCMCons lambdaArgs = SCMCons.list();
-        SCMCons initValues = SCMCons.list();
+        SCMCons<Object> lambdaArgs = SCMCons.list();
+        SCMCons<Object> initValues = SCMCons.list();
         List bindings = (List)expression.get(2);
         for (Object binding : bindings) {
           Object arg = ((List)binding).get(0);
@@ -336,13 +337,13 @@ public enum SCMSpecialForm implements ISpecialForm {
         Object lambdaBody = expression.get(3);
         SCMCons lambda = SCMCons.list(LAMBDA, lambdaArgs, lambdaBody);
         SCMSymbol name = (SCMSymbol)o;
-        SCMCons l = SCMCons.list();
+        SCMCons<SCMCons> l = SCMCons.list();
         l.add(SCMCons.list(name, lambda));
 
-        SCMCons body = SCMCons.list(name);
+        SCMCons<Object> body = SCMCons.list(name);
         body.addAll(initValues);
 
-        SCMCons letrec = SCMCons.list(LETREC);
+        SCMCons<Object> letrec = SCMCons.list(LETREC);
         letrec.add(l);
         letrec.add(body);
         return LETREC.eval(letrec, new Environment(env), evaluator);
@@ -356,12 +357,11 @@ public enum SCMSpecialForm implements ISpecialForm {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let*: bad let* in form: " + expression);
       }
-
       IEnvironment localEnv = new Environment(env);
       List bindings = (List)expression.get(1);
       for (Object binding : bindings) {
-        Object var = ((List<Object>)binding).get(0);
-        Object init = ((List<Object>)binding).get(1);
+        Object var  = ((List)binding).get(0);
+        Object init = ((List)binding).get(1);
         localEnv.put(var, evaluator.eval(init, localEnv));
       }
 
@@ -415,7 +415,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (!(node instanceof List)) {
           throw new IllegalSyntaxException("Invalid clause in subform " + node);
         }
-        List<Object> subform = (List<Object>) node;
+        List<Object> subform = (List)node;
         Object clause = subform.get(0);
         if (ELSE.equals(clause)) {
           if (i == expression.size() - 1) {
@@ -449,7 +449,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (!(node instanceof List)) {
           throw new IllegalSyntaxException("Invalid clause in subform " + node);
         }
-        List<Object> subform = (List<Object>)node;
+        List<Object> subform = (List)node;
         Object datum = subform.get(0);
         if (ELSE.equals(datum)) {
           if (i == expression.size() - 1) {
@@ -463,7 +463,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (!(datum instanceof List)) {
           throw new IllegalSyntaxException("Invalid clause in subform " + datum);
         }
-        for (Object n : ((List<Object>)datum)) {
+        for (Object n : ((List)datum)) {
           if (Eqv.eqv(key, n)) {
             for (int s = 1; i < subform.size() - 1; i++) {
               evaluator.eval(subform.get(s), env);
@@ -478,16 +478,16 @@ public enum SCMSpecialForm implements ISpecialForm {
   AND("and") {
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      Object eval = SCMBoolean.TRUE;
+      Object result = SCMBoolean.TRUE;
       if (expression.size() > 1) {
-        for (Object arg : expression.subList(1, expression.size())) {
-          eval = evaluator.eval(arg, env);
-          if (!SCMBoolean.valueOf(eval)) {
-            return eval;
+        for (int i = 1; i < expression.size(); i++) {
+          result = evaluator.eval(expression.get(i), env);
+          if (!SCMBoolean.valueOf(result)) {
+            return result;
           }
         }
       }
-      return eval;
+      return result;
     }
   },
   OR("or") {
@@ -536,7 +536,6 @@ public enum SCMSpecialForm implements ISpecialForm {
   private final String syntax;
 
   private static final Map<String, SCMSpecialForm> SPECIAL_FORMS = new HashMap<>(values().length);
-
   static {
     for (SCMSpecialForm specialForm : values()) {
       SPECIAL_FORMS.put(specialForm.getSyntax(), specialForm);
@@ -551,7 +550,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     this.syntax = syntax;
   }
 
-  public String getSyntax() {
+  protected String getSyntax() {
     return syntax;
   }
 
