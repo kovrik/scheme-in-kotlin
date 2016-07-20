@@ -34,6 +34,11 @@ public class Environment implements IEnvironment {
   }
 
   @Override
+  public boolean containsKey(Object key) {
+    return context.containsKey(key);
+  }
+
+  @Override
   public Object find(Object key) {
     Object value = context.get(key);
     if (value == null) {

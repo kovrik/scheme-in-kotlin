@@ -11,34 +11,18 @@ import static core.writer.Writer.write;
 
 public class SCMCons<E> extends LinkedList<E> implements ICons {
 
-  /* Empty list constant */
+  /* Nil constant: empty list, but not a pair */
   public static final SCMCons NIL = new SCMCons() {
     @Override
-    public boolean isList() {
-      /* Nil is a list */
-      return true;
-    }
-
+    public boolean isList() { return true; }
     @Override
-    public boolean isPair() {
-      /* Nil is not a pair */
-      return false;
-    }
-
+    public boolean isPair() { return false; }
     @Override
-    public boolean isNull() {
-      return true;
-    }
-
+    public boolean isNull() { return true; }
     @Override
-    public Object car() {
-      throw new WrongTypeException("Pair", NIL);
-    }
-
+    public Object car() { throw new WrongTypeException("Pair", NIL); }
     @Override
-    public Object cdr() {
-      throw new WrongTypeException("Pair", NIL);
-    }
+    public Object cdr() { throw new WrongTypeException("Pair", NIL); }
   };
 
   /* By default every cons is a cons, not a list */

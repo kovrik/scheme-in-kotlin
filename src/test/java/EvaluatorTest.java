@@ -784,6 +784,24 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalDo() {
+    String doTest1 = "(do ((vec (make-vector 5))" +
+                   "     (i 0 (+ i 1)))" +
+                   "    ((= i 5) vec)" +
+                   "  (vector-set! vec i i))";
+    assertEquals(new SCMVector(0L, 1L, 2L, 3L, 4L), eval(doTest1, env));
+
+    String doTest2 = "(let ((x '(1 3 5 7 9)))" +
+                     "  (do ((x x (cdr x))" +
+                     "       (sum 0 (+ sum (car x))))" +
+                     "      ((null? x) sum)))";
+    assertEquals(25L, eval(doTest2, env));
+
+    String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
+    assertEquals("DONE", eval(doTest3, env));
+  }
+
+  @Test
   public void testEvalLet() {
     assertEquals(124L, eval("(let ((c 123)) (+ c 1))", env));
     assertEquals(555L, eval("(let ((c 123) (b 432)) (+ c b))", env));
@@ -791,7 +809,7 @@ public class EvaluatorTest {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().contains("let: duplicate bound variable"));
+      assertTrue(e.getMessage().contains("let: duplicate identifier: c"));
     }
     try {
       eval("(let ((c 123))", env);
@@ -1657,7 +1675,7 @@ public class EvaluatorTest {
       eval("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("let: duplicate bound variable: n"));
+      assertTrue(e.getMessage().equals("let: duplicate identifier: n"));
     }
   }
 

@@ -13,24 +13,30 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public enum SCMSpecialForm implements ISpecialForm {
 
   UNSPECIFIED("#<unspecified>") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       return UNSPECIFIED;
     }
   },
   DOT(".") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       return DOT;
     }
   },
   /* Fundamental forms */
   // TODO Check that internal definitions are at the beginning only!
   DEFINE("define") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object definition = expression.get(1);
       if (definition instanceof SCMSymbol) {
         /* Normal definition */
@@ -69,7 +75,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LAMBDA("lambda") {
-    public SCMProcedure eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public SCMProcedure eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
       }
@@ -87,7 +94,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   IF("if") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object test = expression.get(1);
       Object consequence = expression.get(2);
       if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
@@ -102,7 +110,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   WHEN("when") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new ArityException(0, getSyntax());
       }
@@ -122,7 +131,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   QUOTE("quote") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object exp = expression.get(1);
       if ((exp instanceof SCMCons) && (((SCMCons)exp).isEmpty())) {
         return SCMCons.NIL;
@@ -140,62 +150,148 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   UNQUOTE("unquote") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   UNQUOTE_SPLICING("unquote-splicing") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   QUASIQUOTE("quasiquote") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      // TODO
+    // TODO
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       return expression;
     }
   },
   DEFINE_SYNTAX("define-syntax") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LET_SYNTAX("let-syntax") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LETREC_SYNTAX("letrec-syntax") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   SYNTAX_RULES("syntax-rules") {
     // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   SET("set!") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       env.findAndPut(expression.get(1), evaluator.eval(expression.get(2), env));
       return UNSPECIFIED;
     }
   },
   /* Library forms */
   DO("do") {
-    // TODO
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
-      throw new UnsupportedOperationException("NOT IMPLEMENTED!");
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+      /* Syntax:     do <bindings> <clause> <body>
+       * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
+       * <clause>:   (<test> <expression> ...),
+       **/
+      if (expression.size() < 3) {
+        throw new IllegalSyntaxException("do: bad syntax");
+      }
+
+      Object bs = expression.get(1);
+      if (!(bs instanceof List)) {
+        throw new IllegalSyntaxException("do: bad syntax");
+      }
+      IEnvironment tempEnv = new Environment(env);
+      List bindings = (List) bs;
+      List<SCMCons> steps = SCMCons.list();
+      /* Init bindings */
+      for (Object binding : bindings) {
+        if (!(binding instanceof List)) {
+          throw new IllegalSyntaxException("do: bad syntax");
+        }
+        /* Check that init value exists */
+        if (((List)binding).size() < 2) {
+          throw new IllegalSyntaxException("do: bad syntax");
+        }
+        Object variable = ((List) binding).get(0);
+        Object init = ((List) binding).get(1);
+        Object step = null;
+        if (((List) binding).size() == 3) {
+          step = ((List) binding).get(2);
+          /* Put pair of Var and Step */
+          steps.add(SCMCons.cons(variable, step));
+        }
+        /* Check that we have no duplicates among variables */
+        if (!tempEnv.containsKey(variable)) {
+          tempEnv.put(variable, evaluator.eval(init, tempEnv));
+        } else {
+          throw new IllegalSyntaxException("let: duplicate identifier");
+        }
+      }
+
+      Object cl = expression.get(2);
+      if (!(cl instanceof List)) {
+        throw new IllegalSyntaxException("do: bad syntax");
+      }
+      List clause = (List)cl;
+      if (clause.isEmpty()) {
+        throw new IllegalSyntaxException("do: bad syntax");
+      }
+      Object test = clause.get(0);
+
+      List body = expression.subList(3, expression.size());
+      /* While test evaluates to #f */
+      while (!SCMBoolean.valueOf(evaluator.eval(test, tempEnv))) {
+        /* Evaluate command expressions */
+        for (Object exp : body) {
+          /* Evaluate each expression */
+          evaluator.eval(exp, tempEnv);
+        }
+        /* Evaluate steps */
+        Map<Object, Object> freshLocations = new HashMap<>(steps.size());
+        for (SCMCons step : steps) {
+          Object variable = step.car();
+          Object s = step.cdr();
+          freshLocations.put(variable, evaluator.eval(s, tempEnv));
+        }
+        /* Now store results */
+        for (Map.Entry<Object, Object> entry : freshLocations.entrySet()) {
+          tempEnv.put(entry.getKey(), entry.getValue());
+        }
+      }
+      /* Test evaluated to #f */
+      List expressions = clause.subList(1, clause.size());
+      Object value = UNSPECIFIED;
+      for (Object exp : expressions) {
+        /* Evaluate each expression */
+        value = evaluator.eval(exp, tempEnv);
+      }
+      /* Return value of last expression or UNSPECIFIED */
+      return value;
     }
   },
   LET("let") {
-
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
 
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let: bad let in form: " + expression);
@@ -203,11 +299,12 @@ public enum SCMSpecialForm implements ISpecialForm {
 
       if (expression.get(1) instanceof List) {
         IEnvironment localEnv = new Environment(env);
-        for (Object binding : ((List)expression.get(1))) {
+        List bindings = (List) expression.get(1);
+        for (Object binding : bindings) {
           Object var = ((List)binding).get(0);
           Object init = ((List)binding).get(1);
           if (localEnv.get(var) != null) {
-            throw new IllegalSyntaxException("let: duplicate bound variable " + var);
+            throw new IllegalSyntaxException("let: duplicate identifier: " + var);
           }
           localEnv.put(var, evaluator.eval(init, env));
         }
@@ -215,7 +312,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         for (int i = 2; i < expression.size() - 1; i++) {
           evaluator.eval(expression.get(i), localEnv);
         }
-        return evaluator.eval(expression.getLast(), localEnv);
+        return evaluator.eval(expression.get(expression.size() - 1), localEnv);
 
       } else if (expression.get(1) instanceof SCMSymbol) {
         // TODO Optimize and cleanup
@@ -227,10 +324,11 @@ public enum SCMSpecialForm implements ISpecialForm {
         // lambda
         SCMCons lambdaArgs = SCMCons.list();
         SCMCons initValues = SCMCons.list();
-        for (Object binding : (List<SCMSymbol>)expression.get(2)) {
+        List bindings = (List)expression.get(2);
+        for (Object binding : bindings) {
           Object arg = ((List)binding).get(0);
           if (lambdaArgs.contains(arg)) {
-            throw new IllegalSyntaxException("let: duplicate bound variable: " + arg);
+            throw new IllegalSyntaxException("let: duplicate identifier: " + arg);
           }
           lambdaArgs.add(arg);
           initValues.add(((List)binding).get(1));
@@ -253,22 +351,24 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LET_S("let*") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let*: bad let* in form: " + expression);
       }
 
       IEnvironment localEnv = new Environment(env);
-      for (Object node : ((List<Object>) expression.get(1))) {
-        Object var = ((List<Object>) node).get(0);
-        Object init = ((List<Object>) node).get(1);
+      List bindings = (List)expression.get(1);
+      for (Object binding : bindings) {
+        Object var = ((List<Object>)binding).get(0);
+        Object init = ((List<Object>)binding).get(1);
         localEnv.put(var, evaluator.eval(init, localEnv));
       }
 
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
-      return evaluator.eval(expression.getLast(), localEnv);
+      return evaluator.eval(expression.get(expression.size() - 1), localEnv);
     }
   },
   LETREC("letrec") {
@@ -280,32 +380,33 @@ public enum SCMSpecialForm implements ISpecialForm {
      * The restriction is necessary because Scheme passes arguments by value rather than by name.
      * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
      */
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("letrec: bad letrec in form: " + expression);
       }
-
       IEnvironment localEnv = new Environment(env);
-      for (Object node : ((List<Object>) expression.get(1))) {
-        Object var = ((List<Object>) node).get(0);
-        localEnv.put(var, UNSPECIFIED);
-      }
-      for (Object node : ((List<Object>) expression.get(1))) {
-        Object var = ((List<Object>) node).get(0);
-        Object init = ((List<Object>) node).get(1);
+      List bindings = (List)expression.get(1);
+//      for (Object binding : bindings) {
+//        Object var = ((List)binding).get(0);
+//        localEnv.put(var, UNSPECIFIED);
+//      }
+      for (Object binding : bindings) {
+        Object var  = ((List)binding).get(0);
+        Object init = ((List)binding).get(1);
         localEnv.put(var, evaluator.eval(init, localEnv));
       }
-
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
-      return evaluator.eval(expression.getLast(), localEnv);
+      return evaluator.eval(expression.get(expression.size() - 1), localEnv);
     }
   },
   COND("cond") {
     private final SCMSymbol ELSE = new SCMSymbol("else");
 
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
       }
@@ -337,9 +438,8 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   CASE("case") {
     private final SCMSymbol ELSE = new SCMSymbol("else");
-    private final Eqv eqv = new Eqv();
-
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalSyntaxException("Source expression failed to match any pattern in form (case)");
       }
@@ -364,7 +464,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           throw new IllegalSyntaxException("Invalid clause in subform " + datum);
         }
         for (Object n : ((List<Object>)datum)) {
-          if (eqv.apply(key, n)) {
+          if (Eqv.eqv(key, n)) {
             for (int s = 1; i < subform.size() - 1; i++) {
               evaluator.eval(subform.get(s), env);
             }
@@ -376,7 +476,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   AND("and") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object eval = SCMBoolean.TRUE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
@@ -390,7 +491,8 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   OR("or") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object eval = SCMBoolean.FALSE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
@@ -404,15 +506,17 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   BEGIN("begin") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       for (int i = 1; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), env);
       }
-      return evaluator.eval(expression.getLast(), env);
+      return evaluator.eval(expression.get(expression.size() - 1), env);
     }
   },
   DELAY("delay") {
-    public SCMPromise eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public SCMPromise eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 2) {
         throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
@@ -420,18 +524,18 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   ERROR("error") {
-    public Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator) {
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() > 2) {
         throw new ArityException(expression.size() - 1, "error");
       }
       throw new SCMError(evaluator.eval(expression.get(1), env).toString());
     }
-  }
-  ;
+  };
 
   private final String syntax;
 
-  private static final Map<String, SCMSpecialForm> SPECIAL_FORMS = new HashMap<String, SCMSpecialForm>(values().length);
+  private static final Map<String, SCMSpecialForm> SPECIAL_FORMS = new HashMap<>(values().length);
 
   static {
     for (SCMSpecialForm specialForm : values()) {

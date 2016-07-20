@@ -14,4 +14,6 @@ public interface IEnvironment {
   Object put(Object key, Object value);
 
   Set<Map.Entry<Object, Object>> entrySet();
+
+  boolean containsKey(Object key);
 }

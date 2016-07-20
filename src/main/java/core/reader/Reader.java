@@ -28,7 +28,7 @@ public class Reader implements IReader {
               [V]  )            |
               [V]  #(           |
               [V]  '            |
-              [ ]  `            |
+              [V]  `            |
               [ ]  ,            |
               [ ]  ,@           |
               [ ]  .
@@ -205,11 +205,6 @@ public class Reader implements IReader {
 
   /**
    * Read next token
-   *
-   * @param reader
-   * @return
-   * @throws IOException
-   * @throws ParseException
    */
   private static Object nextToken(PushbackReader reader) throws IOException, ParseException {
     int i;
@@ -249,18 +244,12 @@ public class Reader implements IReader {
 
   /**
    * Read atom
-   *
-   * @param reader
-   * @return
-   * @throws IOException
-   * @throws ParseException
    */
   private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
 
     char c = (char) reader.read();
     char next = (char) reader.read();
     reader.unread(next);
-
     /* Decimal number */
     if (isValidForRadix(c, 'd')) {
       // dot?
@@ -378,7 +367,6 @@ public class Reader implements IReader {
     int dot = number.indexOf('.');
     Integer r = RADICES.get(radix);
     Integer threshold = RADIX_THRESHOLDS.get(radix);
-
     if (number.length() > (threshold + hasSign)) {
       if (dot > -1) {
         /* Remove dot */
@@ -406,13 +394,7 @@ public class Reader implements IReader {
    * Read a quoted form
    *
    * Syntax:
-   *
    * <quote> -> '<form>
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
     List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE);
@@ -428,13 +410,7 @@ public class Reader implements IReader {
    * Read a quasi-quoted form
    *
    * Syntax:
-   *
    * <quasiquote> -> `<form>
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
     List<Object> quote = SCMCons.list(SCMSpecialForm.QUASIQUOTE);
@@ -450,12 +426,7 @@ public class Reader implements IReader {
    * Read identifier
    *
    * Syntax:
-   *
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
-   *
-   * @param reader
-   * @return
-   * @throws IOException
    */
   private static Object readIdentifier(PushbackReader reader) throws IOException {
     StringBuilder identifier = new StringBuilder();
@@ -480,12 +451,7 @@ public class Reader implements IReader {
    * Read a comment
    *
    * Syntax:
-   *
    * <comment> --> ;  <all subsequent characters up to a line break>
-   *
-   * @param reader
-   * @return
-   * @throws IOException
    */
   private static String readComment(PushbackReader reader) throws IOException {
     StringBuilder comment = new StringBuilder();
@@ -504,14 +470,7 @@ public class Reader implements IReader {
    * Read a Number
    *
    * Syntax:
-   *
    * (See above for full syntax)
-   * <digit> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static String readNumber(PushbackReader reader, Character radix) throws ParseException, IOException {
     StringBuilder number = new StringBuilder();
@@ -543,14 +502,8 @@ public class Reader implements IReader {
    * Read a String
    *
    * Syntax:
-   *
    * <string> --> " <string element>* "
    * <string element> --> <any character other than " or \> | \" | \\
-   *
-   * @param reader
-   * @return String
-   * @throws ParseException
-   * @throws IOException
    */
   private static String readString(PushbackReader reader) throws ParseException, IOException {
     StringBuilder string = new StringBuilder();
@@ -577,14 +530,8 @@ public class Reader implements IReader {
    * Read a Character
    *
    * Syntax:
-   *
    * <character> --> #\ <any character> | #\ <character name>
    * <character name> --> space | newline
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
     int i;
@@ -641,13 +588,7 @@ public class Reader implements IReader {
    * Read list
    *
    * Syntax:
-   *
    * <list> -> (<list_contents>)
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = SCMCons.NIL;
@@ -705,13 +646,7 @@ public class Reader implements IReader {
    * Read vector
    *
    * Syntax:
-   *
    * <vector> -> </vector>#(<vector_contents>)
-   *
-   * @param reader
-   * @return
-   * @throws ParseException
-   * @throws IOException
    */
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
     List<Object> list = readList(reader);

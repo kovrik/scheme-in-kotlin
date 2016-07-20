@@ -2,9 +2,10 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.SCMCons;
+
+import java.util.List;
 
 public interface ISpecialForm {
 
-  Object eval(SCMCons expression, IEnvironment env, IEvaluator evaluator);
+  Object eval(List expression, IEnvironment env, IEvaluator evaluator);
 }

@@ -4,11 +4,9 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
-import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMSymbol;
-import core.scm.errors.SCMError;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -41,7 +39,6 @@ public class Main {
   };
 
   public static void main(String[] args) throws ParseException, IOException {
-
     /* Eval lib procedures */
     for (Map.Entry<String, String> entry : ((DefaultEnvironment)defaultEnvironment).getProcs().entrySet()) {
       defaultEnvironment.put(entry.getKey(), evaluator.eval(reader.read(entry.getValue()), defaultEnvironment));
@@ -54,7 +51,6 @@ public class Main {
   }
 
   private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
-
     System.out.println(welcomeMessage);
     while (true) {
       try {
@@ -77,20 +73,11 @@ public class Main {
           // Print
           System.out.println(id + " = " + writer.toString(result));
           System.out.flush();
-
           /* Store sexp in a history */
           HISTORY.put(id, sexp);
         }
         // TODO Proper Error handling
-      } catch (UnsupportedOperationException e) {
-        error(e);
-      } catch (IllegalArgumentException e) {
-        error(e);
-      } catch (IllegalSyntaxException e) {
-        error(e);
-      } catch (ArithmeticException e) {
-        error(e);
-      } catch (SCMError e) {
+      } catch (Exception e) {
         error(e);
       }
     }

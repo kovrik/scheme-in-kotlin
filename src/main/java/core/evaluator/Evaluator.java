@@ -31,7 +31,7 @@ public class Evaluator implements IEvaluator {
       throw new IllegalSyntaxException("Bad syntax in form: " + sexp);
     } else if (!(sexp instanceof List)) {
       return sexp;
-    } else if (sexp instanceof SCMCons) {
+    } else if (sexp instanceof List) {
       return evlis(sexp, env);
     }
     throw new IllegalArgumentException("Evaluation error: " + sexp);
@@ -76,11 +76,11 @@ public class Evaluator implements IEvaluator {
    * Evaluate a list
    */
   private Object evlis(Object sexp, IEnvironment env) {
-    SCMCons list = (SCMCons)sexp;
+    List list = (List)sexp;
     if (list.isEmpty()) {
       throw new IllegalSyntaxException("Unexpected syntax in form " + list);
     }
-    Object op = list.getFirst();
+    Object op = list.get(0);
 
     /* Special Form */
     if (op instanceof SCMSpecialForm) {
