@@ -11,10 +11,8 @@ public class SCMBoolean extends SCMSymbol {
   private static final Map<Object, Boolean> VALUES = new HashMap<Object, Boolean>();
 
   public SCMBoolean(String value) {
-    super("");
-    if ("#t".equals(value) || "#f".equals(value)) {
-      this.value = value;
-    } else {
+    super(value);
+    if (!"#t".equals(value) && !"#f".equals(value)) {
       throw new IllegalArgumentException("Unknown boolean: " + value);
     }
   }

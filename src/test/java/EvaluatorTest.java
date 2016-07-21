@@ -15,13 +15,13 @@ import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Map;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
@@ -36,9 +36,14 @@ public class EvaluatorTest {
   private final DefaultEnvironment env = new DefaultEnvironment();
   {
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : env.getProcs().entrySet()) {
-      env.put(entry.getKey(), eval(entry.getValue(), env));
+    for (String proc : env.getLibraryProcedures()) {
+      eval(proc, env);
     }
+  }
+
+  @Before
+  public void setUp() throws Exception {
+    // TODO Create new environment for each test?
   }
 
   @Test
@@ -698,8 +703,8 @@ public class EvaluatorTest {
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
-      tempEnv.put(entry.getKey(), eval(entry.getValue(), tempEnv));
+    for (String proc : tempEnv.getLibraryProcedures()) {
+      eval(proc, tempEnv);
     }
     tempEnv.put(new SCMSymbol("display"), new Display(System.out));
 
@@ -745,7 +750,7 @@ public class EvaluatorTest {
   public void testEvalQuote() {
     assertEquals(0L, eval("'0", env));
     assertEquals("test", eval("'\"test\"", env));
-    assertEquals(SCMCons.<Object>list(SCMSpecialForm.QUOTE, "test"), eval("''\"test\"", env));
+    assertEquals(SCMCons.<Object>list(new SCMSymbol(SCMSpecialForm.QUOTE.toString()), "test"), eval("''\"test\"", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("'(+ 1 2)", env));
     assertEquals(new SCMSymbol("0eab"), eval("'0eab", env));
     assertEquals(new SCMSymbol("000eab"), eval("'000eab", env));
@@ -952,8 +957,8 @@ public class EvaluatorTest {
     System.setOut(new PrintStream(baos));
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
-      tempEnv.put(entry.getKey(), eval(entry.getValue(), tempEnv));
+    for (String proc : tempEnv.getLibraryProcedures()) {
+      eval(proc, tempEnv);
     }
     tempEnv.put(new SCMSymbol("display"), new Display(System.out));
     assertEquals(UNSPECIFIED, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
@@ -1592,8 +1597,8 @@ public class EvaluatorTest {
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
-      tempEnv.put(entry.getKey(), eval(entry.getValue(), tempEnv));
+    for (String proc : tempEnv.getLibraryProcedures()) {
+      eval(proc, tempEnv);
     }
     tempEnv.put(new SCMSymbol("display"), new Display(System.out));
     tempEnv.put(new SCMSymbol("newline"), new Newline(System.out));
@@ -2115,8 +2120,8 @@ public class EvaluatorTest {
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : ((DefaultEnvironment)tempEnv).getProcs().entrySet()) {
-      tempEnv.put(entry.getKey(), eval(entry.getValue(), tempEnv));
+    for (String proc : tempEnv.getLibraryProcedures()) {
+      eval(proc, tempEnv);
     }
     tempEnv.put(new SCMSymbol("display"), new Display(System.out));
 
@@ -2171,6 +2176,23 @@ public class EvaluatorTest {
                    "               (cons (car numbers) neg)))))";
 
     assertEquals(list(list(6L, 1L, 3L), list(-5L, -2L)), eval(group, env));
+  }
+
+  @Test
+  public void testRedefineSpecialForms() {
+    IEnvironment tempEnv = new DefaultEnvironment();
+    eval("(define (and . args) #f)", tempEnv);
+    eval("(define begin 5)", tempEnv);
+    eval("(define if 4)", tempEnv);
+    eval("(define quote 3)", tempEnv);
+    eval("(define let 2)", tempEnv);
+    eval("(define lambda 1)", tempEnv);
+    assertEquals(15L, eval("(+ begin if quote let lambda)", tempEnv));
+    // FIXME
+//    assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
+
+    assertEquals(3L, eval("(and 1 2 3)", env));
+
   }
 
   /* Helper method */

@@ -1,8 +1,6 @@
 package core.environment;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Environment implements IEnvironment {
 
@@ -36,6 +34,12 @@ public class Environment implements IEnvironment {
   @Override
   public boolean containsKey(Object key) {
     return context.containsKey(key);
+  }
+
+  @Override
+  public List<String> getLibraryProcedures() {
+    /* No pre-defined procedures. Override if required */
+    return Collections.emptyList();
   }
 
   @Override

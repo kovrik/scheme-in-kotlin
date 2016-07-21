@@ -7,17 +7,15 @@ import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 
-import java.util.Map;
-
 public abstract class AbstractS7Test {
 
-  protected final IReader reader = new Reader();
+  private final IReader reader = new Reader();
   protected final IEvaluator eval = new Evaluator();
   protected final DefaultEnvironment env = new DefaultEnvironment();
   {
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : env.getProcs().entrySet()) {
-      env.put(entry.getKey(), eval(entry.getValue(), env));
+    for (String proc : env.getLibraryProcedures()) {
+      eval(proc, env);
     }
   }
   /* Helper method */

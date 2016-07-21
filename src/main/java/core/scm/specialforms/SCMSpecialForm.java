@@ -55,8 +55,9 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (((SCMCons) definition).isEmpty()) {
           throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
         }
+        // TODO Do not add BEGIN, but simulate the same behaviour!
         /* Add implicit `begin` */
-        SCMCons<Object> body = SCMCons.list(BEGIN);
+        SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
         /* Add all body forms */
         body.addAll(expression.subList(2, expression.size()));
 
@@ -96,7 +97,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       Object args = expression.get(1);
 
       // implicit `begin`
-      SCMCons<Object> body = SCMCons.list(BEGIN);
+      SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
       body.addAll(expression.subList(2, expression.size()));
       /* Check if args is a proper list or a pair (cons) */
       if (args instanceof List) {
@@ -136,7 +137,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
-        throw new ArityException(0, getSyntax());
+        throw new ArityException(0, toString());
       }
       Object test = expression.get(1);
       if (!SCMBoolean.valueOf(evaluator.eval(test, env))) {
@@ -162,20 +163,20 @@ public enum SCMSpecialForm implements ISpecialForm {
      */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      Object exp = expression.get(1);
-      if ((exp instanceof SCMCons) && (((SCMCons)exp).isEmpty())) {
+      Object form = expression.get(1);
+      if ((form instanceof SCMCons) && (((SCMCons)form).isEmpty())) {
         return SCMCons.NIL;
       }
       /* Numerical constants, string constants, character constants, and boolean constants
        * evaluate "to themselves"; they need not be quoted.
        * Numbers, strings and chars are "evaluated" by Reader */
-      if (SCMBoolean.TRUE.equals(exp)) {
+      if (SCMBoolean.TRUE.equals(form)) {
         return SCMBoolean.TRUE;
       }
-      if (SCMBoolean.FALSE.equals(exp)) {
+      if (SCMBoolean.FALSE.equals(form)) {
         return SCMBoolean.FALSE;
       }
-      return exp;
+      return form;
     }
   },
   UNQUOTE("unquote") {
@@ -196,7 +197,7 @@ public enum SCMSpecialForm implements ISpecialForm {
     // TODO
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      return expression;
+      return expression.get(1);
     }
   },
   DEFINE_SYNTAX("define-syntax") {
@@ -297,9 +298,9 @@ public enum SCMSpecialForm implements ISpecialForm {
       /* While test evaluates to #f */
       while (!SCMBoolean.valueOf(evaluator.eval(test, tempEnv))) {
         /* Evaluate command expressions */
-        for (Object exp : body) {
+        for (Object e : body) {
           /* Evaluate each expression */
-          evaluator.eval(exp, tempEnv);
+          evaluator.eval(e, tempEnv);
         }
         /* Evaluate steps */
         Map<Object, Object> freshLocations = new HashMap<>(steps.size());
@@ -316,9 +317,9 @@ public enum SCMSpecialForm implements ISpecialForm {
       /* Test evaluated to #f */
       List expressions = clause.subList(1, clause.size());
       Object value = UNSPECIFIED;
-      for (Object exp : expressions) {
+      for (Object e : expressions) {
         /* Evaluate each expression */
-        value = evaluator.eval(exp, tempEnv);
+        value = evaluator.eval(e, tempEnv);
       }
       /* Return value of last expression or UNSPECIFIED */
       return value;
@@ -373,7 +374,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           initValues.add(((List)binding).get(1));
         }
         Object lambdaBody = expression.get(3);
-        SCMCons lambda = SCMCons.list(LAMBDA, lambdaArgs, lambdaBody);
+        SCMCons lambda = SCMCons.list(LAMBDA.symbol(), lambdaArgs, lambdaBody);
         SCMSymbol name = (SCMSymbol)o;
         SCMCons<SCMCons> l = SCMCons.list();
         l.add(SCMCons.list(name, lambda));
@@ -381,7 +382,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         SCMCons<Object> body = SCMCons.list(name);
         body.addAll(initValues);
 
-        SCMCons<Object> letrec = SCMCons.list(LETREC);
+        SCMCons<Object> letrec = SCMCons.list(LETREC.symbol());
         letrec.add(l);
         letrec.add(body);
         return LETREC.eval(letrec, new Environment(env), evaluator);
@@ -435,6 +436,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       }
       IEnvironment localEnv = new Environment(env);
       List bindings = (List)expression.get(1);
+      // TODO?
 //      for (Object binding : bindings) {
 //        Object var = ((List)binding).get(0);
 //        localEnv.put(var, UNSPECIFIED);
@@ -613,11 +615,12 @@ public enum SCMSpecialForm implements ISpecialForm {
   };
 
   private final String syntax;
+  private final SCMSymbol symbol;
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>(values().length);
   static {
-    for (SCMSpecialForm specialForm : values()) {
-      SPECIAL_FORMS.put(specialForm.getSyntax(), specialForm);
+    for (ISpecialForm specialForm : values()) {
+      SPECIAL_FORMS.put(specialForm.toString(), specialForm);
     }
   }
 
@@ -627,10 +630,11 @@ public enum SCMSpecialForm implements ISpecialForm {
 
   SCMSpecialForm(String syntax) {
     this.syntax = syntax;
+    this.symbol = new SCMSymbol(this.syntax);
   }
 
-  protected String getSyntax() {
-    return syntax;
+  public SCMSymbol symbol() {
+    return symbol;
   }
 
   @Override

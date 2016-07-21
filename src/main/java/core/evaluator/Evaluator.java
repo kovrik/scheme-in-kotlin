@@ -26,9 +26,15 @@ public class Evaluator implements IEvaluator {
         /* Meta */
         return evmeta(((SCMSymbol)sexp).getValue());
       }
-      return env.find(sexp);
-    } else if (sexp instanceof ISpecialForm) {
-      throw new IllegalSyntaxException("Bad syntax in form: " + sexp);
+      /* Check if it is a Special Form */
+      Object o = env.find(sexp);
+      if (o instanceof ISpecialForm) {
+        /* I think this will always throw `Unexpected syntax in form' exception,
+         * because there are no Special Forms that can evaluate themselves yet */
+//        return ((ISpecialForm) o).eval(o, env, this);
+        throw new IllegalSyntaxException("Unexpected syntax in form: " + o);
+      }
+      return o;
     } else if (!(sexp instanceof List)) {
       return sexp;
     } else if (sexp instanceof List) {
@@ -82,9 +88,14 @@ public class Evaluator implements IEvaluator {
     }
     Object op = list.get(0);
 
-    /* Special Form */
-    if (op instanceof ISpecialForm) {
-      return ((ISpecialForm)op).eval(list, env, this);
+    /* Check if symbol is a Special Form */
+    if (op instanceof SCMSymbol) {
+//    ISpecialForm specialForm = SCMSpecialForm.get(op.toString());
+      /* Get it from the environment: let user redefine special forms */
+      Object specialForm = env.find(op);
+      if (specialForm instanceof ISpecialForm) {
+        return ((ISpecialForm) specialForm).eval(list, env, this);
+      }
     }
     /* Function */
     Object fn = eval(op, env);

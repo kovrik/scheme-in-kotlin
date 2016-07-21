@@ -4,7 +4,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
-import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.*;
@@ -398,7 +397,7 @@ public class Reader implements IReader {
    * <quote> -> '<form>
    */
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE);
+    List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE.symbol());
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
@@ -414,7 +413,7 @@ public class Reader implements IReader {
    * <quasiquote> -> `<form>
    */
   private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(SCMSpecialForm.QUASIQUOTE);
+    List<Object> quote = SCMCons.list(SCMSpecialForm.QUASIQUOTE.symbol());
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
@@ -439,14 +438,7 @@ public class Reader implements IReader {
       c = (char)i;
     }
     reader.unread(c);
-    // TODO Return Symbol and process SpecialForms in Evaluator?
-    ISpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
-    /* Check if it is a Special Form */
-    if (specialForm != null) {
-      return specialForm;
-    } else {
-      return new SCMSymbol(identifier.toString());
-    }
+    return new SCMSymbol(identifier.toString());
   }
 
   /**

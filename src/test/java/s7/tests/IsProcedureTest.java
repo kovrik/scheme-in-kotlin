@@ -26,13 +26,13 @@ public class IsProcedureTest extends AbstractS7Test {
       eval("(procedure? begin)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: begin", e.getMessage());
+      assertEquals("Unexpected syntax in form: begin", e.getMessage());
     }
     try {
       eval("(procedure? lambda)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: lambda", e.getMessage());
+      assertEquals("Unexpected syntax in form: lambda", e.getMessage());
     }
     assertEquals(FALSE, eval("(procedure? 'and)", env));
     assertEquals(FALSE, eval("(procedure? 'let)", env));
@@ -47,37 +47,37 @@ public class IsProcedureTest extends AbstractS7Test {
       eval("(procedure? and)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: and", e.getMessage());
+      assertEquals("Unexpected syntax in form: and", e.getMessage());
     }
     try {
       eval("(procedure? let)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: let", e.getMessage());
+      assertEquals("Unexpected syntax in form: let", e.getMessage());
     }
     try {
       eval("(procedure? quasiquote)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: quasiquote", e.getMessage());
+      assertEquals("Unexpected syntax in form: quasiquote", e.getMessage());
     }
     try {
       eval("(procedure? cond)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: cond", e.getMessage());
+      assertEquals("Unexpected syntax in form: cond", e.getMessage());
     }
     try {
       eval("(procedure? do)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: do", e.getMessage());
+      assertEquals("Unexpected syntax in form: do", e.getMessage());
     }
     try {
       eval("(procedure? set!)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad syntax in form: set!", e.getMessage());
+      assertEquals("Unexpected syntax in form: set!", e.getMessage());
     }
     try {
       eval("(procedure?)", env);

@@ -40,8 +40,8 @@ public class Main {
 
   public static void main(String[] args) throws ParseException, IOException {
     /* Eval lib procedures */
-    for (Map.Entry<String, String> entry : ((DefaultEnvironment)defaultEnvironment).getProcs().entrySet()) {
-      defaultEnvironment.put(entry.getKey(), evaluator.eval(reader.read(entry.getValue()), defaultEnvironment));
+    for (String proc : defaultEnvironment.getLibraryProcedures()) {
+      evaluator.eval(reader.read(proc), defaultEnvironment);
     }
     repl(WELCOME, PROMPT, defaultEnvironment);
   }

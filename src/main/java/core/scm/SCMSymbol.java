@@ -2,7 +2,7 @@ package core.scm;
 
 public class SCMSymbol {
 
-  protected String value;
+  private final String value;
 
   public SCMSymbol(String value) {
     this.value = value;

@@ -115,16 +115,16 @@ public class ReaderTest {
 
   @Test
   public void testReadQuote() {
-    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, 1L), reader.read("'1"));
-    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(1L, "test")), reader.read("'(1 \"test\")"));
-    assertEquals(SCMCons.list(SCMSpecialForm.QUOTE, SCMCons.list(SCMSpecialForm.QUOTE, 1L)), reader.read("''1"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUOTE.toString()), 1L), reader.read("'1"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUOTE.toString()), SCMCons.list(1L, "test")), reader.read("'(1 \"test\")"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUOTE.toString()), SCMCons.list(s(SCMSpecialForm.QUOTE.toString()), 1L)), reader.read("''1"));
   }
 
   @Test
   public void testReadQuasiquote() {
-    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, 1L), reader.read("`1"));
-    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, SCMCons.list(1L, "test")), reader.read("`(1 \"test\")"));
-    assertEquals(SCMCons.list(SCMSpecialForm.QUASIQUOTE, SCMCons.list(SCMSpecialForm.QUOTE, 1L)), reader.read("`'1"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUASIQUOTE.toString()), 1L), reader.read("`1"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUASIQUOTE.toString()), SCMCons.list(1L, "test")), reader.read("`(1 \"test\")"));
+    assertEquals(SCMCons.list(s(SCMSpecialForm.QUASIQUOTE.toString()), SCMCons.list(s(SCMSpecialForm.QUOTE.toString()), 1L)), reader.read("`'1"));
   }
 
   @Test
@@ -171,7 +171,7 @@ public class ReaderTest {
   @Test
   public void testReadIdentifier() {
     assertEquals(new SCMSymbol("test"), reader.read("test"));
-    assertEquals(SCMSpecialForm.LAMBDA, reader.read("lambda"));
+    assertEquals(new SCMSymbol(SCMSpecialForm.LAMBDA.toString()), reader.read("lambda"));
     assertEquals(new SCMSymbol("list->vector"), reader.read("list->vector"));
     assertEquals(new SCMSymbol("+"), reader.read("+"));
     assertEquals(new SCMSymbol("<=?"), reader.read("<=?"));
@@ -181,5 +181,9 @@ public class ReaderTest {
     assertEquals(new SCMSymbol("soup"), reader.read("soup"));
     assertEquals(new SCMSymbol("a"), reader.read("a"));
     assertEquals(new SCMSymbol("ab"), reader.read("ab"));
+  }
+
+  private static SCMSymbol s(String str) {
+    return new SCMSymbol(str);
   }
 }

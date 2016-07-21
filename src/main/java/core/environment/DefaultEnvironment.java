@@ -26,50 +26,48 @@ import core.scm.specialforms.SCMSpecialForm;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class DefaultEnvironment extends Environment {
 
-  private final Map<String, String> procs = new HashMap<String, String>();
-  {
-    procs.put("promise?",   String.format("(define (promise?   o) (string=? \"%s\" (class-of o)))", SCMPromise.class.getName()));
-    procs.put("char?",      String.format("(define (char?      o) (string=? \"%s\" (class-of o)))", Character.class.getName()));
-    procs.put("string?",    String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
-    procs.put("vector?",    String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
-    procs.put("symbol?",    String.format("(define (symbol?    o) (or (string=? \"%s\" (class-of o))" +
-                                                                     "(string=? \"%s\" (class-of o))" + "))",
-                                                                     SCMSymbol.class.getName(),
-                                                                     SCMSpecialForm.class.getName()));
+  private static final List<String> procs = new ArrayList<>();
+  static {
+    procs.add(String.format("(define (promise?   o) (string=? \"%s\" (class-of o)))", SCMPromise.class.getName()));
+    procs.add(String.format("(define (char?      o) (string=? \"%s\" (class-of o)))", Character.class.getName()));
+    procs.add(String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
+    procs.add(String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
+    procs.add(String.format("(define (symbol?    o) (or (string=? \"%s\" (class-of o))" +
+                                                       "(string=? \"%s\" (class-of o))" + "))",
+                                                       SCMSymbol.class.getName(),
+                                                       SCMSpecialForm.class.getName()));
 
-//    procs.put("list?",      String.format("(define (list?      o) (string=? \"%s\" (class-of o)))", SCMList.class.getName()));
-    procs.put("boolean?",   String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
-    procs.put("procedure?", String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
-    procs.put("number?",    String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
-                                                                     "(string=? \"%s\" (class-of o))" +
-                                                                     "(string=? \"%s\" (class-of o))" +
-                                                                     "(string=? \"%s\" (class-of o))))",
-                                                                     Long.class.getName(),
-                                                                     Double.class.getName(),
-                                                                     BigInteger.class.getName(),
-                                                                     BigDecimal.class.getName()));
+    procs.add(String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
+    procs.add(String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
+    procs.add(String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
+                                                       "(string=? \"%s\" (class-of o))" +
+                                                       "(string=? \"%s\" (class-of o))" +
+                                                       "(string=? \"%s\" (class-of o))))",
+                                                       Long.class.getName(),
+                                                       Double.class.getName(),
+                                                       BigInteger.class.getName(),
+                                                       BigDecimal.class.getName()));
 
-//    procs.put("integer?",   String.format("(define (integer?   o) (string=? \"%s\" (class-of o)))", Long.class.getName()));
-    procs.put("integer?",   "(define (integer? x) (= x (round x)))");
+    procs.add("(define (integer? x) (= x (round x)))");
 
-    procs.put("list",       "(define (list . elements) elements)");
-//    procs.put("null?",      "(define (null?  l) (eq? l '()))");
-    procs.put("empty?",     "(define empty? null?)");
+    procs.add("(define (list . elements) elements)");
+    procs.add("(define empty? null?)");
 
     // Miscellaneous predicates
-    procs.put("zero?",      "(define (zero? n) (= n 0))");
-    procs.put("negative?",  "(define (negative? n) (< n 0))");
-    procs.put("positive?",  "(define (positive? n) (> n 0))");
-    procs.put("even?",      "(define (even? n) (= 0 (remainder n 2)))");
-    procs.put("odd?",       "(define (odd? n) (not (even? n)))");
+    procs.add("(define (zero? n) (= n 0))");
+    procs.add("(define (negative? n) (< n 0))");
+    procs.add("(define (positive? n) (> n 0))");
+    procs.add("(define (even? n) (= 0 (remainder n 2)))");
+    procs.add("(define (odd? n) (not (even? n)))");
   }
 
-  public Map<String, String> getProcs() {
+  @Override
+  public List<String> getLibraryProcedures() {
     return procs;
   }
 
@@ -79,7 +77,7 @@ public final class DefaultEnvironment extends Environment {
 
     /* Special Forms */
     for (ISpecialForm specialForm : SCMSpecialForm.values()) {
-      put(specialForm, specialForm);
+      put(new SCMSymbol(specialForm.toString()), specialForm);
     }
 
     /* System */
