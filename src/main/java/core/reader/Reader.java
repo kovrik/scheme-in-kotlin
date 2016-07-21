@@ -4,6 +4,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
+import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.*;
@@ -438,7 +439,7 @@ public class Reader implements IReader {
       c = (char)i;
     }
     reader.unread(c);
-    SCMSpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
+    ISpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
     /* Check if it is a Special Form */
     if (specialForm != null) {
       return specialForm;

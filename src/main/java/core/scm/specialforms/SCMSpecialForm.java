@@ -35,6 +35,11 @@ public enum SCMSpecialForm implements ISpecialForm {
   /* Fundamental forms */
   // TODO Check that internal definitions are at the beginning only!
   DEFINE("define") {
+    /* Syntax:
+     * (define <variable> <expression>)
+     * (define (<variable> <formals>) <body>)
+     * (define (<variable> . <formal>) <body>)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object definition = expression.get(1);
@@ -75,6 +80,14 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LAMBDA("lambda") {
+    /* Syntax:
+     * (lambda <formals> <body>)
+     *
+     * <formals>:
+     * (<variable1> ...)
+     * <variable>
+     * (<variable1> ... <variablen> . <variablen+1>)
+     */
     @Override
     public SCMProcedure eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
@@ -95,6 +108,10 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   IF("if") {
+    /* Syntax:
+     * (if <test> <consequent> <alternate>)
+     * (if <test> <consequent>)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object test = expression.get(1);
@@ -110,7 +127,12 @@ public enum SCMSpecialForm implements ISpecialForm {
       }
     }
   },
+  // TODO Remove as `if` has the same effect?
   WHEN("when") {
+    /* Syntax:
+     * (if <test> <consequent> <alternate>)
+     * (if <test> <consequent>)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
@@ -132,6 +154,12 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   QUOTE("quote") {
+    /* Literal expressions
+     * Syntax:
+     * (quote <datum>)
+     * '<datum>
+     * <constant>
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object exp = expression.get(1);
@@ -200,6 +228,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   SET("set!") {
+    /* Syntax:
+     * (set! <variable> <expression>)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       env.findAndPut(expression.get(1), evaluator.eval(expression.get(2), env));
@@ -208,12 +239,14 @@ public enum SCMSpecialForm implements ISpecialForm {
   },
   /* Library forms */
   DO("do") {
+    /* Syntax:
+     * (do <bindings> <clause> <body>)
+     *
+     * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
+     * <clause>:   (<test> <expression> ...),
+     **/
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      /* Syntax:     do <bindings> <clause> <body>
-       * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
-       * <clause>:   (<test> <expression> ...),
-       **/
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("do: bad syntax");
       }
@@ -292,6 +325,11 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LET("let") {
+    /* Syntax:
+     * (let <bindings> <body>)
+     *
+     * <bindings>: ((<variable1> <init1>) ...)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
@@ -352,6 +390,11 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LET_S("let*") {
+    /* Syntax:
+     * (let* <bindings> <body>)
+     *
+     * <bindings>: ((<variable1> <init1>) ...)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
@@ -372,6 +415,11 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   LETREC("letrec") {
+    /* Syntax:
+     * (letrec <bindings> <body>)
+     *
+     * <bindings>: ((<variable1> <init1>) ...)
+     */
     /*
      * TODO:
      * One restriction on letrec is very important:
@@ -403,6 +451,15 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   COND("cond") {
+    /* Syntax:
+     * (cond <clause1> <clause2> ...)
+     *
+     * <clause>: (<test> <expression1> ...)
+     *
+     * Last clause may be:
+     * (else <expression1> <expression2> ...)
+     */
+
     private final SCMSymbol ELSE = new SCMSymbol("else");
 
     @Override
@@ -437,7 +494,17 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   CASE("case") {
+    /* Syntax:
+     * (case <key> <clause1> <clause2> ...)
+     *
+     * <clause>: ((<datum1> ...) <expression1> <expression2> ...)
+     *
+     * Last clause may be:
+     * (else <expression1> <expression2> ...)
+     */
+
     private final SCMSymbol ELSE = new SCMSymbol("else");
+
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
@@ -476,6 +543,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   AND("and") {
+    /* Syntax:
+     * (and <test1> ...)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object result = SCMBoolean.TRUE;
@@ -491,6 +561,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   OR("or") {
+    /* Syntax:
+     * (or <test1> ...)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       Object eval = SCMBoolean.FALSE;
@@ -506,6 +579,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   BEGIN("begin") {
+    /* Syntax:
+     * (begin <expression1> <expression2> ...)
+     */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       for (int i = 1; i < expression.size() - 1; i++) {
@@ -515,6 +591,9 @@ public enum SCMSpecialForm implements ISpecialForm {
     }
   },
   DELAY("delay") {
+    /* Syntax:
+     * (delay <expression>)
+     */
     @Override
     public SCMPromise eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 2) {
@@ -535,14 +614,14 @@ public enum SCMSpecialForm implements ISpecialForm {
 
   private final String syntax;
 
-  private static final Map<String, SCMSpecialForm> SPECIAL_FORMS = new HashMap<>(values().length);
+  private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>(values().length);
   static {
     for (SCMSpecialForm specialForm : values()) {
       SPECIAL_FORMS.put(specialForm.getSyntax(), specialForm);
     }
   }
 
-  public static SCMSpecialForm get(String key) {
+  public static ISpecialForm get(String key) {
     return SPECIAL_FORMS.get(key);
   }
 
