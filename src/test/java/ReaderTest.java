@@ -166,6 +166,8 @@ public class ReaderTest {
   public void testReadBoolean() {
     assertEquals(SCMBoolean.TRUE,  reader.read("#t"));
     assertEquals(SCMBoolean.FALSE, reader.read("#f"));
+    assertEquals(SCMBoolean.TRUE,  reader.read("#T"));
+    assertEquals(SCMBoolean.FALSE, reader.read("#F"));
   }
 
   @Test

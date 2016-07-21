@@ -2188,11 +2188,10 @@ public class EvaluatorTest {
     eval("(define let 2)", tempEnv);
     eval("(define lambda 1)", tempEnv);
     assertEquals(15L, eval("(+ begin if quote let lambda)", tempEnv));
-    // FIXME
-//    assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
-
     assertEquals(3L, eval("(and 1 2 3)", env));
 
+    // FIXME Do not use BEGIN in lambda, but simulate same behaviour
+//    assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
   }
 
   /* Helper method */

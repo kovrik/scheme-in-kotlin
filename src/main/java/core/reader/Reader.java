@@ -254,7 +254,7 @@ public class Reader implements IReader {
     if (isValidForRadix(c, 'd')) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
-        return SCMSpecialForm.DOT;
+        return SCMSpecialForm.DOT.symbol();
       }
       reader.unread(c);
       /* Read identifier, not a number */
@@ -270,9 +270,9 @@ public class Reader implements IReader {
       if (next == '\\') {
         reader.read();
         return readCharacter(reader);
-      } else if (next == 't' || next == 'f') {
-        // <boolean> --> #t | #f
-        return new SCMSymbol("#" + (char) reader.read());
+      } else if (next == 't' || next == 'f' || next == 'T' || next == 'F') {
+        // <boolean> --> #t | #f | #T | #F
+        return new SCMSymbol("#" + Character.toLowerCase((char)reader.read()));
       } else if (isRadix(next) || isExactness(next)) {
         /* Read radix and/or exactness and a number */
         Character radix = null;
@@ -316,7 +316,6 @@ public class Reader implements IReader {
         if (radix == null) {
           radix = 'd';
         }
-
         /* Read identifier, not a number */
         String number = readIdentifier(reader).toString();
         return preProcessNumber(number, exactness, radix);
@@ -603,7 +602,7 @@ public class Reader implements IReader {
           list = SCMCons.list();
         }
         /* Check if current token is a dot */
-        if (SCMSpecialForm.DOT.equals(token)) {
+        if (SCMSpecialForm.DOT.symbol().equals(token)) {
           /* Remember the position */
           dotPos = pos;
         }
