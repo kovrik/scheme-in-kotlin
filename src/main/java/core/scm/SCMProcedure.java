@@ -4,6 +4,7 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +79,18 @@ public class SCMProcedure extends AFn {
   }
 
   public Object apply(IEvaluator evaluator, IEnvironment env) {
+    /* Here we avoid passing first implicit `begin` (added by `define` Special Form) Symbol to evaluator,
+     * but let `begin` SpecialForm evaluate the body.
+     * Otherwise, it would be impossible to define and apply procedures
+     * if user has redefined `begin` symbol to something else:
+     * Evaluator would try to evaluate implicit `begin`,
+     * but will get redefined `begin` Symbol from environment.
+     *
+     * See EvaluatorTest.testRedefineSpecialForms() */
+    if ((body instanceof SCMCons) && (SCMSpecialForm.BEGIN.symbol().equals(((SCMCons)body).car()))) {
+      return SCMSpecialForm.BEGIN.eval((SCMCons)body, env, evaluator);
+    }
+    /* No implicit `begin`, evaluate as usual */
     return evaluator.eval(body, env);
   }
 

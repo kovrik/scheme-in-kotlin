@@ -55,7 +55,6 @@ public enum SCMSpecialForm implements ISpecialForm {
         if (((SCMCons) definition).isEmpty()) {
           throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
         }
-        // TODO Do not add BEGIN, but simulate the same behaviour!
         /* Add implicit `begin` */
         SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
         /* Add all body forms */
@@ -96,7 +95,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       }
       Object args = expression.get(1);
 
-      // implicit `begin`
+      /* Add implicit `begin` */
       SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
       body.addAll(expression.subList(2, expression.size()));
       /* Check if args is a proper list or a pair (cons) */
