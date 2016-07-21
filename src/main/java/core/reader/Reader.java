@@ -439,6 +439,7 @@ public class Reader implements IReader {
       c = (char)i;
     }
     reader.unread(c);
+    // TODO Return Symbol and process SpecialForms in Evaluator?
     ISpecialForm specialForm = SCMSpecialForm.get(identifier.toString());
     /* Check if it is a Special Form */
     if (specialForm != null) {

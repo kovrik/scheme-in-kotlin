@@ -8,7 +8,7 @@ import core.procedures.IFn;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.scm.specialforms.SCMSpecialForm;
+import core.scm.specialforms.ISpecialForm;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class Evaluator implements IEvaluator {
         return evmeta(((SCMSymbol)sexp).getValue());
       }
       return env.find(sexp);
-    } else if (sexp instanceof SCMSpecialForm) {
+    } else if (sexp instanceof ISpecialForm) {
       throw new IllegalSyntaxException("Bad syntax in form: " + sexp);
     } else if (!(sexp instanceof List)) {
       return sexp;
@@ -83,8 +83,8 @@ public class Evaluator implements IEvaluator {
     Object op = list.get(0);
 
     /* Special Form */
-    if (op instanceof SCMSpecialForm) {
-      return ((SCMSpecialForm)op).eval(list, env, this);
+    if (op instanceof ISpecialForm) {
+      return ((ISpecialForm)op).eval(list, env, this);
     }
     /* Function */
     Object fn = eval(op, env);

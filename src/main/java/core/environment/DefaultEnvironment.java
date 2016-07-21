@@ -21,6 +21,7 @@ import core.scm.SCMBoolean;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
+import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.math.BigDecimal;
@@ -77,7 +78,7 @@ public final class DefaultEnvironment extends Environment {
     super(null);
 
     /* Special Forms */
-    for (SCMSpecialForm specialForm : SCMSpecialForm.values()) {
+    for (ISpecialForm specialForm : SCMSpecialForm.values()) {
       put(specialForm, specialForm);
     }
 
