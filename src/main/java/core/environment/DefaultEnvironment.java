@@ -136,8 +136,6 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("string-set!"), new StringSet());
 
     /* Characters */
-    put(new SCMSymbol("char=?"), new CharEq());
-    put(new SCMSymbol("char-ci=?"), new CharEqCi());
     put(new SCMSymbol("char-whitespace?"), CharProc.CHAR_WHITESPACE);
     put(new SCMSymbol("char-alphabetic?"), CharProc.CHAR_ALPHABETIC);
     put(new SCMSymbol("char-upper-case?"), CharProc.CHAR_UPPER_CASE);
@@ -155,6 +153,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("char-ci<?"), CharComparison.CHAR_LE_CI);
     put(new SCMSymbol("char<=?"), CharComparison.CHAR_LE_OR_EQ);
     put(new SCMSymbol("char-ci<=?"), CharComparison.CHAR_LE_OR_EQ_CI);
+    put(new SCMSymbol("char=?"), CharComparison.CHAR_EQ);
+    put(new SCMSymbol("char-ci=?"), CharComparison.CHAR_EQ_CI);
 
     put(new SCMSymbol("force"),   new Force());
     put(new SCMSymbol("display"), new Display(System.out));
