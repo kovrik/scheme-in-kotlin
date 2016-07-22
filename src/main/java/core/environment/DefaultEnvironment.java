@@ -1,5 +1,6 @@
 package core.environment;
 
+import core.procedures.characters.CharPredicate;
 import core.procedures.cons.*;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
@@ -90,7 +91,7 @@ public final class DefaultEnvironment extends Environment {
 
     put(new SCMSymbol("not"), new Negation());
 
-    /* math */
+    /* Math */
     put(new SCMSymbol("+"),    new Addition());
     put(new SCMSymbol("-"),    new Subtraction());
     put(new SCMSymbol("*"),    new Multiplication());
@@ -133,8 +134,14 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("string-ref"), new StringRef());
     put(new SCMSymbol("string-set!"), new StringSet());
 
+    /* Characters */
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
+    put(new SCMSymbol("char-whitespace?"), CharPredicate.CHAR_WHITESPACE);
+    put(new SCMSymbol("char-alphabetic?"), CharPredicate.CHAR_ALPHABETIC);
+    put(new SCMSymbol("char-upper-case?"), CharPredicate.CHAR_UPPER_CASE);
+    put(new SCMSymbol("char-lower-case?"), CharPredicate.CHAR_LOWER_CASE);
+    put(new SCMSymbol("char-numeric?"), CharPredicate.CHAR_NUMERIC);
 
     put(new SCMSymbol("force"),   new Force());
     put(new SCMSymbol("display"), new Display(System.out));

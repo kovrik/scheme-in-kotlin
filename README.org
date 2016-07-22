@@ -325,7 +325,7 @@ CLOSED: [2016-07-10 Sun 18:33]
 CLOSED: [2016-07-10 Sun 18:33]
 **** TODO string-copy
 **** TODO string-fill!
-*** TODO Characters [3/16]
+*** TODO Characters [8/16]
 **** DONE char?
 CLOSED: [2016-05-11 Wed 18:08]
 **** DONE char=?
@@ -336,11 +336,16 @@ CLOSED: [2016-05-11 Wed 17:56]
 **** TODO char<=? char-ci<=?
 **** TODO char>? char-ci>?
 **** TODO char>=? char-ci>=?
-**** TODO char-alphabetic?
-**** TODO char-numeric?
-**** TODO char-whitespace?
-**** TODO char-upper-case?
-**** TODO char-lower-case?
+**** DONE char-alphabetic?
+CLOSED: [2016-07-22 Fri 21:24]
+**** DONE char-numeric?
+CLOSED: [2016-07-22 Fri 21:23]
+**** DONE char-whitespace?
+CLOSED: [2016-07-22 Fri 21:24]
+**** DONE char-upper-case?
+CLOSED: [2016-07-22 Fri 21:30]
+**** DONE char-lower-case?
+CLOSED: [2016-07-22 Fri 21:35]
 **** TODO char->integer
 **** TODO integer->char
 **** TODO char-upcase
@@ -411,10 +416,11 @@ CLOSED: [2016-07-17 Sun 12:03]
 CLOSED: [2016-07-10 Sun 12:08]
 **** DONE string->list
 CLOSED: [2016-07-10 Sun 17:53]
-*** TODO Identity predicates [7/9]
+*** TODO Identity predicates [8/9]
 **** DONE boolean?
 CLOSED: [2016-05-15 Sun 22:24]
-**** TODO pair?
+**** DONE pair?
+CLOSED: [2016-07-22 Fri 21:11]
 **** DONE symbol?
 CLOSED: [2016-05-15 Sun 22:21]
 **** DONE number?
