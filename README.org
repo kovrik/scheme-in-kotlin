@@ -157,7 +157,7 @@ CLOSED: [2016-06-04 Sat 22:33]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
-** TODO Standard procedures [7/17]
+** TODO Standard procedures [8/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -325,17 +325,30 @@ CLOSED: [2016-07-10 Sun 18:33]
 CLOSED: [2016-07-10 Sun 18:33]
 **** TODO string-copy
 **** TODO string-fill!
-*** TODO Characters [8/16]
+*** DONE Characters [20/20]
+CLOSED: [2016-07-22 Fri 22:54]
 **** DONE char?
 CLOSED: [2016-05-11 Wed 18:08]
 **** DONE char=?
 CLOSED: [2016-05-11 Wed 17:56]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:56]
-**** TODO char<? char-ci<?
-**** TODO char<=? char-ci<=?
-**** TODO char>? char-ci>?
-**** TODO char>=? char-ci>=?
+**** DONE char<?
+CLOSED: [2016-07-22 Fri 22:52]
+**** DONE char-ci<?
+CLOSED: [2016-07-22 Fri 22:52]
+**** DONE char<=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char-ci<=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char>?
+CLOSED: [2016-07-22 Fri 22:37]
+**** DONE char-ci>?
+CLOSED: [2016-07-22 Fri 22:37]
+**** DONE char>=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char-ci>=?
+CLOSED: [2016-07-22 Fri 22:54]
 **** DONE char-alphabetic?
 CLOSED: [2016-07-22 Fri 21:24]
 **** DONE char-numeric?
@@ -346,10 +359,14 @@ CLOSED: [2016-07-22 Fri 21:24]
 CLOSED: [2016-07-22 Fri 21:30]
 **** DONE char-lower-case?
 CLOSED: [2016-07-22 Fri 21:35]
-**** TODO char->integer
-**** TODO integer->char
-**** TODO char-upcase
-**** TODO char-downcase
+**** DONE char->integer
+CLOSED: [2016-07-22 Fri 22:02]
+**** DONE integer->char
+CLOSED: [2016-07-22 Fri 22:11]
+**** DONE char-upcase
+CLOSED: [2016-07-22 Fri 22:03]
+**** DONE char-downcase
+CLOSED: [2016-07-22 Fri 22:03]
 *** DONE Vectors [9/9]
 **** DONE make-vector
 **** DONE vector

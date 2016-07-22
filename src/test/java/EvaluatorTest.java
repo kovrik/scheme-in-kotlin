@@ -391,6 +391,66 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalCharToInteger() {
+    assertEquals(49L, eval("(char->integer #\\1)", env));
+    assertEquals(48L, eval("(char->integer #\\0)", env));
+    assertEquals(57L, eval("(char->integer #\\9)", env));
+    assertEquals(98L, eval("(char->integer #\\b)", env));
+    assertEquals(46L, eval("(char->integer #\\.)", env));
+    try {
+      eval("(char->integer 1)", env);
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalIntegerToChar() {
+    assertEquals('1', eval("(integer->char (char->integer #\\1))", env));
+    assertEquals('0', eval("(integer->char (char->integer #\\0))", env));
+    assertEquals('9', eval("(integer->char (char->integer #\\9))", env));
+    assertEquals('b', eval("(integer->char (char->integer #\\b))", env));
+    assertEquals('.', eval("(integer->char (char->integer #\\.))", env));
+    try {
+      eval("(integer->char #\\a)", env);
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Integer, actual: #\\a", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalCharUpcase() {
+    assertEquals('1', eval("(char-upcase #\\1)", env));
+    assertEquals('0', eval("(char-upcase #\\0)", env));
+    assertEquals('9', eval("(char-upcase #\\9)", env));
+    assertEquals('B', eval("(char-upcase #\\b)", env));
+    assertEquals('Z', eval("(char-upcase #\\z)", env));
+    assertEquals('.', eval("(char-upcase #\\.)", env));
+    try {
+      eval("(char-upcase 1)", env);
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testEvalCharDowncase() {
+    assertEquals('1', eval("(char-downcase #\\1)", env));
+    assertEquals('0', eval("(char-downcase #\\0)", env));
+    assertEquals('9', eval("(char-downcase #\\9)", env));
+    assertEquals('b', eval("(char-downcase #\\B)", env));
+    assertEquals('z', eval("(char-downcase #\\Z)", env));
+    assertEquals('.', eval("(char-downcase #\\.)", env));
+    try {
+      eval("(char-downcase 1)", env);
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+    }
+  }
+
+  // TODO Char comparison tests (#\z #\A #\H #\a #\X)
+
+  @Test
   public void testEvalStringEq() {
     assertEquals(TRUE,  eval("(string=? \"test\" \"test\")", env));
     assertEquals(FALSE, eval("(string=? \"test\" \"test123\")", env));

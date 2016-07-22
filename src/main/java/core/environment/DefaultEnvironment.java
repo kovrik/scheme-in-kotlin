@@ -1,6 +1,7 @@
 package core.environment;
 
-import core.procedures.characters.CharPredicate;
+import core.procedures.characters.CharComparison;
+import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
@@ -137,11 +138,23 @@ public final class DefaultEnvironment extends Environment {
     /* Characters */
     put(new SCMSymbol("char=?"), new CharEq());
     put(new SCMSymbol("char-ci=?"), new CharEqCi());
-    put(new SCMSymbol("char-whitespace?"), CharPredicate.CHAR_WHITESPACE);
-    put(new SCMSymbol("char-alphabetic?"), CharPredicate.CHAR_ALPHABETIC);
-    put(new SCMSymbol("char-upper-case?"), CharPredicate.CHAR_UPPER_CASE);
-    put(new SCMSymbol("char-lower-case?"), CharPredicate.CHAR_LOWER_CASE);
-    put(new SCMSymbol("char-numeric?"), CharPredicate.CHAR_NUMERIC);
+    put(new SCMSymbol("char-whitespace?"), CharProc.CHAR_WHITESPACE);
+    put(new SCMSymbol("char-alphabetic?"), CharProc.CHAR_ALPHABETIC);
+    put(new SCMSymbol("char-upper-case?"), CharProc.CHAR_UPPER_CASE);
+    put(new SCMSymbol("char-lower-case?"), CharProc.CHAR_LOWER_CASE);
+    put(new SCMSymbol("char-numeric?"), CharProc.CHAR_NUMERIC);
+    put(new SCMSymbol("char->integer"), CharProc.CHAR_TO_INTEGER);
+    put(new SCMSymbol("integer->char"), CharProc.INTEGER_TO_CHAR);
+    put(new SCMSymbol("char-upcase"), CharProc.CHAR_UPCASE);
+    put(new SCMSymbol("char-downcase"), CharProc.CHAR_DOWNCASE);
+    put(new SCMSymbol("char>?"), CharComparison.CHAR_GR);
+    put(new SCMSymbol("char-ci>?"), CharComparison.CHAR_GR_CI);
+    put(new SCMSymbol("char>=?"), CharComparison.CHAR_GR_OR_EQ);
+    put(new SCMSymbol("char-ci>=?"), CharComparison.CHAR_GR_OR_EQ_CI);
+    put(new SCMSymbol("char<?"), CharComparison.CHAR_LE);
+    put(new SCMSymbol("char-ci<?"), CharComparison.CHAR_LE_CI);
+    put(new SCMSymbol("char<=?"), CharComparison.CHAR_LE_OR_EQ);
+    put(new SCMSymbol("char-ci<=?"), CharComparison.CHAR_LE_OR_EQ_CI);
 
     put(new SCMSymbol("force"),   new Force());
     put(new SCMSymbol("display"), new Display(System.out));
