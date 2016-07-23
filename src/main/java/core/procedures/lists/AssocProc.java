@@ -48,14 +48,4 @@ public class AssocProc extends AFn {
   public String getName() {
     return name;
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

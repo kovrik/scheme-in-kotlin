@@ -28,14 +28,4 @@ public class Negation extends AFn implements IBooleanOperation {
   public Object apply(Object first, Object second) {
     throw new ArityException(2, "not");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

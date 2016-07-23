@@ -26,14 +26,4 @@ public class VectorFill extends AFn {
   public Number zero() {
     throw new ArityException(0, 2, "vector-fill!");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

@@ -77,14 +77,4 @@ public class Remainder extends AFn implements INumericalOperation {
   public Object apply(Object first, Object second) {
     return invoke(first, second);
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

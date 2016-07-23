@@ -90,14 +90,4 @@ public class GCD extends AFn implements INumericalOperation {
     }
     return 0L;
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

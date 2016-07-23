@@ -50,14 +50,4 @@ public class Eqv extends AFn implements IOperation {
     }
     return first == second;
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

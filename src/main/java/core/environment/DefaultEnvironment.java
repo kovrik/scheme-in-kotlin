@@ -1,11 +1,14 @@
 package core.environment;
 
+import core.functional.MapProc;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
-import core.procedures.equivalence.*;
+import core.procedures.equivalence.Eq;
+import core.procedures.equivalence.Equal;
+import core.procedures.equivalence.Eqv;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.procedures.lists.AssocProc;
@@ -208,5 +211,8 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("reverse"), new Reverse());
     put(new SCMSymbol("list-tail"), new ListTail());
     put(new SCMSymbol("list-ref"), new ListRef());
+
+    /* Functional */
+    put(new SCMSymbol("map"), new MapProc());
   }
 }

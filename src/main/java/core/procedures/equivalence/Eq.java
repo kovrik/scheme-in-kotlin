@@ -41,14 +41,4 @@ public class Eq extends AFn implements IOperation {
     }
     return NIL.equals(first) && (NIL.equals(second)) || first == second;
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

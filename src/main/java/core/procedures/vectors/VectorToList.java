@@ -31,14 +31,4 @@ public class VectorToList extends AFn {
   public Object apply(Object first, Object second) {
     throw new ArityException(2, 1, "vector->list");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

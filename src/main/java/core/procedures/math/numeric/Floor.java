@@ -38,14 +38,4 @@ public class Floor extends AFn implements INumericalOperation {
   public Object apply(Object first, Object second) {
     throw new ArityException(2, 1, "floor");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

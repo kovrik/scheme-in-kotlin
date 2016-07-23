@@ -57,14 +57,4 @@ public class Min extends AFn implements INumericalOperation {
     }
     return throwArity(1);
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

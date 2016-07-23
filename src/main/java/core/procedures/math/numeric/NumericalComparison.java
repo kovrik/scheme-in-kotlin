@@ -87,14 +87,4 @@ public class NumericalComparison extends AFn implements IOperation {
     }
     throw new IllegalArgumentException("Unknown comparison type!");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

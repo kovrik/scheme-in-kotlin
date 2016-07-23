@@ -48,14 +48,4 @@ public class Addition extends AFn implements INumericalOperation {
     }
     return result;
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

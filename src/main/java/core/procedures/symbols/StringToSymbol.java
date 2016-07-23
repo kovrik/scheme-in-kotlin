@@ -29,14 +29,4 @@ public class StringToSymbol extends AFn {
   public Object apply(Object first, Object second) {
     throw new ArityException(2, 1, "string->symbol");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

@@ -35,14 +35,4 @@ public class Equal extends AFn implements IOperation {
   public static boolean equal(Object first, Object second) {
     return first.equals(second);
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }

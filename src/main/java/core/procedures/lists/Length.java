@@ -18,14 +18,4 @@ public class Length extends AFn {
     }
     throw new ArityException(args.length, 1, "length");
   }
-
-  @Override
-  public Object call() throws Exception {
-    return invoke();
-  }
-
-  @Override
-  public void run() {
-    invoke();
-  }
 }
