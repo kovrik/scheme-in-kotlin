@@ -1,3 +1,5 @@
+package unittests;
+
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMBoolean;

@@ -1,3 +1,5 @@
+package unittests;
+
 import core.scm.SCMCons;
 import core.writer.IWriter;
 import core.writer.Writer;

@@ -1,8 +1,8 @@
-package s7;
+package unittests.s7;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import s7.tests.*;
+import unittests.s7.tests.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

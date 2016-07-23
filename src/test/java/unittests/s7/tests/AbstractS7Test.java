@@ -1,4 +1,4 @@
-package s7.tests;
+package unittests.s7.tests;
 
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
