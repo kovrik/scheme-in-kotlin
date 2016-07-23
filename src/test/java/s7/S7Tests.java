@@ -14,7 +14,8 @@ import s7.tests.*;
     IsProcedureTest.class,
     IsCharTest.class,
     MemqTest.class,
-    MemvTest.class
+    MemvTest.class,
+    MemberTest.class
 })
 public class S7Tests {
 }

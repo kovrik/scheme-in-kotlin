@@ -2,10 +2,7 @@ package core.scm;
 
 import core.exceptions.WrongTypeException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static core.writer.Writer.write;
 
@@ -188,6 +185,34 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
         result.add(e);
       }
     }
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null) return false;
+    if (!(o instanceof List)) return false;
+    /* Two empty lists (NILs) are equal */
+    if ((o instanceof SCMCons) && (((SCMCons) o).isEmpty()) && (this.isEmpty())) return true;
+    if ((o instanceof SCMCons) && (isList != ((SCMCons) o).isList)) return false;
+    if (this.size() != ((List)o).size()) return false;
+    Iterator<E> thisIterator = this.iterator();
+    Iterator oIterator = ((List) o).iterator();
+    while (thisIterator.hasNext() && oIterator.hasNext()) {
+      Object thisNext = thisIterator.next();
+      Object oNext = oIterator.next();
+      if (!thisNext.equals(oNext)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (isList ? 1 : 0);
     return result;
   }
 }
