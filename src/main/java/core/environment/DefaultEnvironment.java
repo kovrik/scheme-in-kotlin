@@ -125,15 +125,27 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("equal?"), new Equal());
 
     /* Strings */
-    put(new SCMSymbol("string=?"), new StringEq());
-    put(new SCMSymbol("string-ci=?"), new StringEqCi());
     put(new SCMSymbol("string-length"), new StringLength());
+    put(new SCMSymbol("string-copy"), new StringCopy());
     put(new SCMSymbol("string"), new StringProc());
+    put(new SCMSymbol("substring"), new Substring());
+    put(new SCMSymbol("string-append"), new StringAppend());
+    put(new SCMSymbol("string-fill!"), new StringFill());
     put(new SCMSymbol("make-string"), new MakeString());
     put(new SCMSymbol("list->string"), new ListToString());
     put(new SCMSymbol("string->list"), new StringToList());
     put(new SCMSymbol("string-ref"), new StringRef());
     put(new SCMSymbol("string-set!"), new StringSet());
+    put(new SCMSymbol("string>?"), StringComparison.STRING_GR);
+    put(new SCMSymbol("string-ci>?"), StringComparison.STRING_GR_CI);
+    put(new SCMSymbol("string>=?"), StringComparison.STRING_GR_OR_EQ);
+    put(new SCMSymbol("string-ci>=?"), StringComparison.STRING_GR_OR_EQ_CI);
+    put(new SCMSymbol("string<?"), StringComparison.STRING_LE);
+    put(new SCMSymbol("string-ci<?"), StringComparison.STRING_LE_CI);
+    put(new SCMSymbol("string<=?"), StringComparison.STRING_LE_OR_EQ);
+    put(new SCMSymbol("string-ci<=?"), StringComparison.STRING_LE_OR_EQ_CI);
+    put(new SCMSymbol("string=?"), StringComparison.STRING_EQ);
+    put(new SCMSymbol("string-ci=?"), StringComparison.STRING_EQ_CI);
 
     /* Characters */
     put(new SCMSymbol("char-whitespace?"), CharProc.CHAR_WHITESPACE);

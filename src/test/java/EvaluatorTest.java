@@ -519,6 +519,29 @@ public class EvaluatorTest {
   }
 
   @Test
+  public void testEvalStringFill() {
+    assertEquals("", eval("(string-fill! \"\" #\\a)", env));
+    assertEquals("a", eval("(string-fill! \"z\" #\\a)", env));
+    assertEquals("aaaaa", eval("(string-fill! \"test1\" #\\a)", env));
+  }
+
+  @Test
+  public void testEvalStringCopy() {
+    assertEquals("", eval("(string-copy \"\")", env));
+    assertEquals("test", eval("(string-copy \"test\")", env));
+    assertEquals("t", eval("(string-copy \"t\")", env));
+  }
+
+  @Test
+  public void testEvalStringAppend() {
+    assertEquals("", eval("(string-append)", env));
+    assertEquals("", eval("(string-append \"\")", env));
+    assertEquals("Apple", eval("(string-append \"Apple\")", env));
+    assertEquals("AppleBanana", eval("(string-append \"Apple\" \"Banana\")", env));
+    assertEquals("AppleBananaCoconut", eval("(string-append \"Apple\" \"Banana\" \"Coconut\")", env));
+  }
+
+  @Test
   public void testEvalStringLength() {
     assertEquals(0L, eval("(string-length \"\")", env));
     assertEquals(0L, eval("(string-length (string))", env));

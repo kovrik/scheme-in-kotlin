@@ -4,16 +4,16 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
-public class StringLength extends AFn {
+public class StringCopy extends AFn {
 
   @Override
-  public Long invoke(Object... args) {
+  public String invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof String) {
-        return ((Integer)((String)args[0]).length()).longValue();
+        return new String((String)args[0]);
       }
       throw new WrongTypeException("String", args[0]);
     }
-    throw new ArityException(args.length, 1, "string-length");
+    throw new ArityException(args.length, 1, "string-copy");
   }
 }

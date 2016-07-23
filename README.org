@@ -157,7 +157,7 @@ CLOSED: [2016-06-04 Sat 22:33]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE when 
 CLOSED: [2016-05-11 Wed 21:43]
-** TODO Standard procedures [8/17]
+** TODO Standard procedures [9/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -182,15 +182,17 @@ CLOSED: [2016-05-11 Wed 17:51]
 CLOSED: [2016-05-11 Wed 17:55]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:55]
-*** TODO Type conversion [6/10]
+*** TODO Type conversion [8/10]
 **** DONE vector->list
 **** DONE list->vector
 **** TODO number->string
 **** TODO string->number
 **** DONE symbol->string
 **** DONE string->symbol
-**** TODO char->integer
-**** TODO integer->char
+**** DONE char->integer
+CLOSED: [2016-07-23 Sat 13:01]
+**** DONE integer->char
+CLOSED: [2016-07-23 Sat 13:01]
 **** DONE string->list
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
@@ -298,7 +300,8 @@ CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO complex?
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]
-*** TODO Strings [10/18]
+*** DONE Strings [22/22]
+CLOSED: [2016-07-23 Sat 12:57]
 **** DONE string?
 CLOSED: [2016-05-11 Wed 18:08]
 **** DONE make-string
@@ -313,18 +316,34 @@ CLOSED: [2016-07-10 Sun 20:13]
 CLOSED: [2016-05-11 Wed 17:56]
 **** DONE string-ci=?
 CLOSED: [2016-05-11 Wed 17:56]
-**** TODO string<? string-ci<?
-**** TODO string<=? string-ci<=?
-**** TODO string>? string-ci>?
-**** TODO string>=? string-ci>=?
-**** TODO substring
-**** TODO string-append
+**** DONE string<?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci<?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci<=?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string<=?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci>?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string>?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string-ci>=?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string>=?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE substring
+CLOSED: [2016-07-23 Sat 12:40]
+**** DONE string-append
+CLOSED: [2016-07-23 Sat 12:55]
 **** DONE string->list
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-**** TODO string-copy
-**** TODO string-fill!
+**** DONE string-copy
+CLOSED: [2016-07-23 Sat 12:39]
+**** DONE string-fill!
+CLOSED: [2016-07-23 Sat 12:56]
 *** DONE Characters [20/20]
 CLOSED: [2016-07-22 Fri 22:54]
 **** DONE char?
