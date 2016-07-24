@@ -6,11 +6,12 @@ import core.procedures.AFn;
 import core.scm.SCMCons;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MapProc extends AFn {
 
   @Override
-  public List invoke(Object... args) {
+  public List invoke(Object... args) throws ExecutionException, InterruptedException {
     if (args != null && args.length == 2) {
       if (!(args[0] instanceof AFn)) {
         throw new WrongTypeException("Procedure", args[0]);

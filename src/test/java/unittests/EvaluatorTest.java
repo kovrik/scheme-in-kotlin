@@ -117,31 +117,10 @@ public class EvaluatorTest {
                        "    (recursive (- n 1))))";
     eval(recursive, env);
 
-//    assertEquals("DONE", eval("(recursive 5)", env));
-//    assertEquals("DONE", eval("(recursive 489)", env));
-//    assertEquals("DONE", eval("(recursive 490)", env));
+    assertEquals("DONE", eval("(recursive 5)", env));
+    assertEquals("DONE", eval("(recursive 489)", env));
+//    assertEquals("DONE", eval("(recursive 496)", env));
 //    assertEquals("DONE", eval("(recursive 1000000)", env));
-  }
-
-  @Test
-  public void testEvalSymbolStringConversion() {
-
-    assertEquals("test", eval("(symbol->string 'test)", env));
-    assertEquals("test", eval("(symbol->string (string->symbol (symbol->string 'test)))", env));
-    assertEquals(new SCMSymbol("test"), eval("(string->symbol (symbol->string 'test))", env));
-
-    try {
-      eval("(symbol->string 1)", env);
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: 1"));
-    }
-    try {
-      eval("(string->symbol 1)", env);
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: 1"));
-    }
   }
 
   @Test

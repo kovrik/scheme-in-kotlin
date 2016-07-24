@@ -182,10 +182,11 @@ CLOSED: [2016-05-11 Wed 17:51]
 CLOSED: [2016-05-11 Wed 17:55]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:55]
-*** TODO Type conversion [8/10]
+*** TODO Type conversion [9/10]
 **** DONE vector->list
 **** DONE list->vector
-**** TODO number->string
+**** DONE number->string
+CLOSED: [2016-07-24 Sun 18:16]
 **** TODO string->number
 **** DONE symbol->string
 **** DONE string->symbol

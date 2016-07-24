@@ -137,6 +137,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("make-string"), new MakeString());
     put(new SCMSymbol("list->string"), new ListToString());
     put(new SCMSymbol("number->string"), new NumberToString());
+    put(new SCMSymbol("string->number"), new StringToNumber());
     put(new SCMSymbol("string->list"), new StringToList());
     put(new SCMSymbol("string-ref"), new StringRef());
     put(new SCMSymbol("string-set!"), new StringSet());

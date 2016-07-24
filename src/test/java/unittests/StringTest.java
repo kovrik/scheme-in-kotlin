@@ -6,6 +6,7 @@ import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
+import core.scm.SCMSymbol;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -253,4 +254,22 @@ public class StringTest {
     // FIXME Mutable string?
   }
 
+  @Test
+  public void testEvalSymbolStringConversion() {
+    assertEquals("test", eval("(symbol->string 'test)", env));
+    assertEquals("test", eval("(symbol->string (string->symbol (symbol->string 'test)))", env));
+    assertEquals(new SCMSymbol("test"), eval("(string->symbol (symbol->string 'test))", env));
+    try {
+      eval("(symbol->string 1)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: 1"));
+    }
+    try {
+      eval("(string->symbol 1)", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: 1"));
+    }
+  }
 }

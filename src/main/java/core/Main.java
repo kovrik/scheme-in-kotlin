@@ -54,7 +54,6 @@ public class Main {
     System.out.println(welcomeMessage);
     while (true) {
       try {
-        System.err.flush();
         System.out.print(prompt);
         System.out.flush();
 
@@ -84,8 +83,8 @@ public class Main {
   }
 
   private static void error(Exception e) {
-    System.err.println("ERROR: " + e.getMessage());
-    System.err.flush();
+    System.out.println("ERROR: " + e.getMessage());
+    System.out.flush();
   }
 
   // TODO

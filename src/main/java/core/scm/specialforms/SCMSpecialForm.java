@@ -114,6 +114,9 @@ public enum SCMSpecialForm implements ISpecialForm {
      */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+      if (expression.size() > 4) {
+        throw new IllegalSyntaxException(String.format("if: bad syntax: has %s parts after keyword", expression.size() - 1));
+      }
       Object test = expression.get(1);
       Object consequence = expression.get(2);
       if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
@@ -127,30 +130,23 @@ public enum SCMSpecialForm implements ISpecialForm {
       }
     }
   },
-  // TODO Remove as `if` has the same effect?
   WHEN("when") {
     /* Syntax:
-     * (if <test> <consequent> <alternate>)
-     * (if <test> <consequent>)
+     * (if <test> <consequent1> ...)
      */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new ArityException(0, toString());
       }
-      Object test = expression.get(1);
-      if (!SCMBoolean.valueOf(evaluator.eval(test, env))) {
-        return UNSPECIFIED;
-      } else {
-        if (expression.size() > 1) {
-          Object result = null;
-          for (int i = 2; i < expression.size(); i++) {
-            result = evaluator.eval(expression.get(i), env);
-          }
-          return result;
+      boolean test = SCMBoolean.valueOf(evaluator.eval(expression.get(1), env));
+      Object result = UNSPECIFIED;
+      if (test && expression.size() > 1) {
+        for (int i = 2; i < expression.size(); i++) {
+          result = evaluator.eval(expression.get(i), env);
         }
-        return UNSPECIFIED;
       }
+      return result;
     }
   },
   QUOTE("quote") {
@@ -165,15 +161,6 @@ public enum SCMSpecialForm implements ISpecialForm {
       Object form = expression.get(1);
       if ((form instanceof SCMCons) && (((SCMCons)form).isEmpty())) {
         return SCMCons.NIL;
-      }
-      /* Numerical constants, string constants, character constants, and boolean constants
-       * evaluate "to themselves"; they need not be quoted.
-       * Numbers, strings and chars are "evaluated" by Reader */
-      if (SCMBoolean.TRUE.equals(form)) {
-        return SCMBoolean.TRUE;
-      }
-      if (SCMBoolean.FALSE.equals(form)) {
-        return SCMBoolean.FALSE;
       }
       return form;
     }

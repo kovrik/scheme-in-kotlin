@@ -1,6 +1,7 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
+import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
@@ -194,7 +195,9 @@ public class Reader implements IReader {
   public Object read(InputStream inputStream) {
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {
-      return nextToken(reader);
+      Object token;
+      while ((token = nextToken(reader)) == null) {/* Read */}
+      return token;
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ParseException e) {
@@ -208,10 +211,10 @@ public class Reader implements IReader {
    */
   private static Object nextToken(PushbackReader reader) throws IOException, ParseException {
     int i;
-    if ((i = reader.read()) == -1) {
+    if (!isValid(i = reader.read())) {
       return null;
     }
-    char c = (char) i;
+    char c = (char)i;
     switch (c) {
       case '\'':
         return readQuote(reader);
@@ -232,7 +235,10 @@ public class Reader implements IReader {
         throw new IllegalSyntaxException("Unexpected list terminator: ')'");
       default: {
         if (Character.isWhitespace(c)) {
-          // skip
+          while (isValid(c = (char)reader.read()) && Character.isWhitespace(c)) {
+            /* Skip whitespaces */
+          }
+          reader.unread(c);
           return null;
         } else {
           reader.unread(c);
@@ -246,9 +252,8 @@ public class Reader implements IReader {
    * Read atom
    */
   private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
-
-    char c = (char) reader.read();
-    char next = (char) reader.read();
+    char c = (char)reader.read();
+    char next = (char)reader.read();
     reader.unread(next);
     /* Decimal number */
     if (isValidForRadix(c, 'd')) {
@@ -262,70 +267,73 @@ public class Reader implements IReader {
       /* Now check if it IS a valid number */
       return preProcessNumber(number, 'e', 'd');
     } else if (c == ';') {
-      String comment = readComment(reader);
-      return null;
+      return readComment(reader);
     } else if (c == '"') {
       return readString(reader);
     } else if (c == '#') {
-      if (next == '\\') {
-        reader.read();
-        return readCharacter(reader);
-      } else if (next == 't' || next == 'f' || next == 'T' || next == 'F') {
-        // <boolean> --> #t | #f | #T | #F
-        return new SCMSymbol("#" + Character.toLowerCase((char)reader.read()));
-      } else if (isRadix(next) || isExactness(next)) {
-        /* Read radix and/or exactness and a number */
-        Character radix = null;
-        Character exactness = null;
-        /* We know that next char is either radix or exactness
-         * So just check which one and set it */
-        if (isRadix(next)) {
-          radix = (char)reader.read();
-        }
-        if (isExactness(next)) {
-          exactness = (char)reader.read();
-        }
-        /* Now read next char: should be either # or numeric */
-        next = (char) reader.read();
-        /* If it is #, then we expect radix or exactness */
-        if (next == '#') {
-          next = (char) reader.read();
-          if (isRadix(next)) {
-            if (radix != null) {
-              /* Met radix twice */
-              throw new IllegalSyntaxException("Bad number!");
-            }
-            radix = next;
-          }
-          if (isExactness(next)) {
-            if (exactness != null) {
-              /* Met exactness twice */
-              throw new IllegalSyntaxException("Bad number!");
-            }
-            exactness = next;
-          }
-        } else {
-          /* Should be the first digit of a number, so unread it */
-          reader.unread(next);
-        }
-
-        /* Check if we got exactness or radix */
-        if (exactness == null) {
-          exactness = 'e';
-        }
-        if (radix == null) {
-          radix = 'd';
-        }
-        /* Read identifier, not a number */
-        String number = readIdentifier(reader).toString();
-        return preProcessNumber(number, exactness, radix);
+      Object result = readHash(reader);
+      if (result != null) {
+        return result;
       }
     } else {
       reader.unread(c);
       return readIdentifier(reader);
     }
-    reader.unread(c);
     throw new IllegalSyntaxException("Unknown atom!");
+  }
+
+  private static Object readHash(PushbackReader reader) throws ParseException, IOException {
+    char next = (char)reader.read();
+    if (next == '\\') {
+      return readCharacter(reader);
+    } else if (next == 't' || next == 'T') {
+      return SCMBoolean.TRUE;
+    } else if (next == 'f' || next == 'F') {
+      return SCMBoolean.FALSE;
+    } else if (isRadix(next) || isExactness(next)) {
+      /* Read radix and/or exactness and a number */
+      Character radix = null;
+      Character exactness = null;
+      /* We know that next char is either radix or exactness
+       * So just check which one and set it */
+      if (isRadix(next)) {
+        radix = next;
+      }
+      if (isExactness(next)) {
+        exactness = next;
+      }
+      /* Now read next char: should be either # or numeric */
+      next = (char)reader.read();
+      /* If it is #, then we expect radix or exactness */
+      if (next == '#') {
+        next = (char) reader.read();
+        if (isRadix(next)) {
+          /* Met radix twice */
+          if (radix != null) {
+            throw new IllegalSyntaxException("Bad number!");
+          }
+          radix = next;
+        }
+        if (isExactness(next)) {
+            /* Met exactness twice */
+          if (exactness != null) {
+            throw new IllegalSyntaxException("Bad number!");
+          }
+          exactness = next;
+        }
+      } else {
+        /* Should be the first digit of a number, so unread it */
+        reader.unread(next);
+      }
+      /* Check if we got exactness or radix */
+      exactness = (exactness == null) ? 'e' : exactness;
+      radix = (radix == null) ? 'd' : radix;
+
+      /* Read identifier, not a number */
+      String number = readIdentifier(reader).toString();
+      return preProcessNumber(number, exactness, radix);
+    }
+    return null;
   }
 
   /* Check if string represents a valid number */
@@ -334,7 +342,6 @@ public class Reader implements IReader {
     boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
     boolean isSignCharOnly = (number.length() == 1) && (number.charAt(0) == '+' || number.charAt(0) == '-');
     boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
-
     /* Validate all digits */
     boolean allDigitsAreValid = true;
     for (char c : number.toCharArray()){
@@ -347,12 +354,10 @@ public class Reader implements IReader {
       /* Not a number! */
       return new SCMSymbol(number);
     }
-
     /* Drop + sign if exists */
     if (number.charAt(0) == '+') {
       number = number.substring(1);
     }
-
     /* Check exactness */
     // TODO Exactness
 
@@ -361,7 +366,6 @@ public class Reader implements IReader {
 
   /* Parse string into a number */
   private static Number processNumber(String number, char radix, char exactness) {
-
     int hasSign = (number.charAt(0) == '-') ? 1 : 0;
     int dot = number.indexOf('.');
     Integer r = RADICES.get(radix);
@@ -447,16 +451,12 @@ public class Reader implements IReader {
    * <comment> --> ;  <all subsequent characters up to a line break>
    */
   private static String readComment(PushbackReader reader) throws IOException {
-    StringBuilder comment = new StringBuilder();
-    int i = reader.read();
-    char c = (char)i;
-    /* Read everything until line break */
-    while (isValid(i) && (LINE_BREAKS.indexOf(c) < 0)) {
-      comment.append(c);
-      i = reader.read();
-      c = (char)i;
+    int i;
+    while (isValid(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
+      /* Read everything until line break */
     }
-    return comment.toString();
+    /* Comments are ignored, so just return null */
+    return null;
   }
 
   /**
@@ -561,7 +561,7 @@ public class Reader implements IReader {
     while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
       character.append(c);
     }
-    if (character.length () == 0) {
+    if (character.length() == 0) {
       character.append((char)i);
     } else {
       reader.unread((char)i);
@@ -642,7 +642,6 @@ public class Reader implements IReader {
    * <vector> -> </vector>#(<vector_contents>)
    */
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
-    List<Object> list = readList(reader);
-    return new SCMVector(list.toArray());
+    return new SCMVector(readList(reader).toArray());
   }
 }

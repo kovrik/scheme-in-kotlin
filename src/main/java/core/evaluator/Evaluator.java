@@ -22,7 +22,7 @@ public class Evaluator implements IEvaluator {
   public Object eval(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Symbol */
-      if (((SCMSymbol) sexp).getValue().startsWith(",")) {
+      if (((SCMSymbol)sexp).getValue().startsWith(",")) {
         /* Meta */
         return evmeta(((SCMSymbol)sexp).getValue());
       }
@@ -43,18 +43,15 @@ public class Evaluator implements IEvaluator {
     throw new IllegalArgumentException("Evaluation error: " + sexp);
   }
 
-  /**
-   * Gets a procedure `fn`, parameters `args`, environment `env`,
-   * invokes the procedure and returns a result.
-   */
   private Object apply(Object fn, Object[] args, IEnvironment env) {
-    SCMProcedure procedure = (SCMProcedure) fn;
+    SCMProcedure procedure = (SCMProcedure)fn;
     List<SCMSymbol> params = procedure.getParams();
-    if (!procedure.isVariableArity()) {
-      if (args.length != params.size()) {
-        procedure.throwArity(args.length);
-      }
+
+    /* Check arity */
+    if (!procedure.isVariableArity() && (args.length != params.size())) {
+      throw new ArityException(args.length, params.size(), ((SCMProcedure) fn).getName());
     }
+
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
     if (!procedure.isVariableArity()) {
       for (int i = 0; i < params.size(); i++) {
@@ -62,6 +59,7 @@ public class Evaluator implements IEvaluator {
       }
     } else {
       /* Variadic arity procedure */
+      /* Check arity */
       if (args.length < params.size() - 1) {
         throw new ArityException(args.length, ((SCMProcedure) fn).getName());
       }
@@ -90,37 +88,35 @@ public class Evaluator implements IEvaluator {
 
     /* Check if symbol is a Special Form */
     if (op instanceof SCMSymbol) {
-//    ISpecialForm specialForm = SCMSpecialForm.get(op.toString());
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
       if (specialForm instanceof ISpecialForm) {
-        return ((ISpecialForm) specialForm).eval(list, env, this);
+        return ((ISpecialForm)specialForm).eval(list, env, this);
       }
     }
-    /* Function */
+
+    /* Must be a procedure */
     Object fn = eval(op, env);
-    if (fn == null) {
-      throw new UnsupportedOperationException("Unbound variable: " + op);
+    if (!(fn instanceof IFn)) {
+      throw new IllegalArgumentException("Wrong type to apply: " + fn);
     }
+
     /* Evaluate arguments */
     Object[] args = new Object[list.size() - 1];
     for (int i = 1; i < list.size(); i++) {
       args[i - 1] = eval(list.get(i), env);
     }
-    /* Procedure */
-    if (!(fn instanceof IFn)) {
-      throw new IllegalArgumentException("Wrong type to apply: " + fn);
-    }
+
     // FIXME Make generic as IFn?
     if (fn instanceof SCMProcedure) {
-      IEnvironment closure = ((SCMProcedure) fn).getClosure();
+      IEnvironment closure = ((SCMProcedure)fn).getClosure();
       if (closure == null) {
         closure = env;
       }
       return apply(fn, args, closure);
     }
     try {
-      return ((IFn) fn).invoke(args);
+      return ((IFn)fn).invoke(args);
     } catch (ExecutionException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {
