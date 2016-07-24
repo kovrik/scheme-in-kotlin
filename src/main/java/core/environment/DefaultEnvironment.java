@@ -1,6 +1,5 @@
 package core.environment;
 
-import core.functional.MapProc;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
@@ -69,6 +68,30 @@ public final class DefaultEnvironment extends Environment {
     procs.add("(define (positive? n) (> n 0))");
     procs.add("(define (even? n) (= 0 (remainder n 2)))");
     procs.add("(define (odd? n) (not (even? n)))");
+
+    // simple map
+    procs.add("(define (map proc lis)" +
+              "   (cond ((null? lis) '())" +
+              "         ((pair? lis) (cons (proc (car lis))" +
+              "                            (map proc (cdr lis))))" +
+              "          (else (error \"Not a proper list!\"))))");
+
+    // SRFI-1 Reference Map implementation
+//    procs.add("(define map map-in-order)");
+//    procs.add("(define (map f lis1 . lists)" +
+//              "  (if (pair? lists)" +
+//              "      (let recur ((lists (cons lis1 lists)))" +
+//              "        (receive (cars cdrs) (%cars+cdrs lists)" +
+//              "          (if (pair? cars)" +
+//              "              (let ((x (apply f cars)))" +       // ; Do head first
+//              "                (cons x (recur cdrs))) '())))" + // ; then tail
+//                      ;; Fast path. +
+//              "      (let recur ((lis lis1))" +
+//              "        (if (null? lis) lis" +
+//              "            (let ((tail (cdr lis))" +
+//              "                  (x (f (car lis))))" +     // ; Do head first,
+//              "              (cons x (recur tail)))))))"); // ; then tail
+
   }
 
   @Override
@@ -215,6 +238,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("list-ref"), new ListRef());
 
     /* Functional */
-    put(new SCMSymbol("map"), new MapProc());
+    // TODO
+//    put(new SCMSymbol("map"), new MapProc());
   }
 }

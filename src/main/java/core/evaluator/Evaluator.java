@@ -10,7 +10,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +29,6 @@ public class Evaluator implements IEvaluator {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
       if (o instanceof ISpecialForm) {
-        /* I think this will always throw `Unexpected syntax in form' exception,
-         * because there are no Special Forms that can evaluate themselves yet */
-//        return ((ISpecialForm) o).eval(o, env, this);
         throw new IllegalSyntaxException("Unexpected syntax in form: " + o);
       }
       return o;
@@ -43,39 +40,6 @@ public class Evaluator implements IEvaluator {
     throw new IllegalArgumentException("Evaluation error: " + sexp);
   }
 
-  private Object apply(Object fn, Object[] args, IEnvironment env) {
-    SCMProcedure procedure = (SCMProcedure)fn;
-    List<SCMSymbol> params = procedure.getParams();
-
-    /* Check arity */
-    if (!procedure.isVariableArity() && (args.length != params.size())) {
-      throw new ArityException(args.length, params.size(), ((SCMProcedure) fn).getName());
-    }
-
-    Map<Object, Object> values = new HashMap<Object, Object>(params.size());
-    if (!procedure.isVariableArity()) {
-      for (int i = 0; i < params.size(); i++) {
-        values.put(params.get(i), args[i]);
-      }
-    } else {
-      /* Variadic arity procedure */
-      /* Check arity */
-      if (args.length < params.size() - 1) {
-        throw new ArityException(args.length, ((SCMProcedure) fn).getName());
-      }
-      /* Put mandatory params first */
-      for (int i = 0; i < params.size() - 1; i++) {
-        values.put(params.get(i), args[i]);
-      }
-      /* Then rest */
-      // TODO Cleanup and optimize
-      List<Object> varargs = SCMCons.list();
-      varargs.addAll(Arrays.asList(Arrays.copyOfRange(args, params.size() - 1, args.length)));
-      values.put(params.get(params.size() - 1), varargs);
-    }
-    return procedure.apply(this, new Environment(values, env));
-  }
-
   /**
    * Evaluate a list
    */
@@ -84,9 +48,8 @@ public class Evaluator implements IEvaluator {
     if (list.isEmpty()) {
       throw new IllegalSyntaxException("Unexpected syntax in form " + list);
     }
+    /* Check if op is a Special Form */
     Object op = list.get(0);
-
-    /* Check if symbol is a Special Form */
     if (op instanceof SCMSymbol) {
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
@@ -102,27 +65,55 @@ public class Evaluator implements IEvaluator {
     }
 
     /* Evaluate arguments */
-    Object[] args = new Object[list.size() - 1];
+    List<Object> args = new ArrayList<Object>(list.size() - 1);
     for (int i = 1; i < list.size(); i++) {
-      args[i - 1] = eval(list.get(i), env);
+      args.add(eval(list.get(i), env));
     }
 
     // FIXME Make generic as IFn?
     if (fn instanceof SCMProcedure) {
       IEnvironment closure = ((SCMProcedure)fn).getClosure();
-      if (closure == null) {
-        closure = env;
-      }
+      closure = (closure == null) ? env : closure;
       return apply(fn, args, closure);
     }
     try {
-      return ((IFn)fn).invoke(args);
+      return ((IFn)fn).invoke(args.toArray());
     } catch (ExecutionException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
     throw new IllegalArgumentException("Evaluation error: " + sexp);
+  }
+
+  private Object apply(Object fn, List<Object> args, IEnvironment env) {
+    SCMProcedure procedure = (SCMProcedure)fn;
+    List<SCMSymbol> params = procedure.getParams();
+    /* Check arity */
+    if (!procedure.isVariableArity() && (args.size() != params.size())) {
+      throw new ArityException(args.size(), params.size(), ((SCMProcedure) fn).getName());
+    }
+
+    Map<Object, Object> values = new HashMap<Object, Object>(params.size());
+    if (!procedure.isVariableArity()) {
+      for (int i = 0; i < params.size(); i++) {
+        values.put(params.get(i), args.get(i));
+      }
+    } else {
+      /* Variadic arity procedure */
+      /* Check arity */
+      if (args.size() < params.size() - 1) {
+        throw new ArityException(args.size(), ((SCMProcedure) fn).getName());
+      }
+      /* Put mandatory params first */
+      for (int i = 0; i < params.size() - 1; i++) {
+        values.put(params.get(i), args.get(i));
+      }
+      /* Then rest */
+      List<Object> varargs = SCMCons.list(args.subList(params.size() - 1, args.size()));
+      values.put(params.get(params.size() - 1), varargs);
+    }
+    return procedure.apply(this, new Environment(values, env));
   }
 
   /**
