@@ -1,26 +1,18 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 
-import java.util.List;
-
-public class StringToList extends SCMProcedure {
-
-  private static final SCMSymbol str = new SCMSymbol("str");
-  private static final List<SCMSymbol> params = SCMCons.list(str);
-
-  public StringToList() {
-    super("string->list", params, null, null, false);
-  }
+public class StringToList extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(str);
+  public SCMCons<Character> invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "string->list");
+    }
+    Object o = args[0];
     if (!(o instanceof String)) {
       throw new WrongTypeException("String", o);
     }

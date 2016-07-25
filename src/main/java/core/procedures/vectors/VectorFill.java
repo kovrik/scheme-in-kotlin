@@ -22,8 +22,4 @@ public class VectorFill extends AFn {
     }
     throw new ArityException(args.length, 2, "vector-fill!");
   }
-
-  public Number zero() {
-    throw new ArityException(0, 2, "vector-fill!");
-  }
 }

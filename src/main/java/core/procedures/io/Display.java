@@ -1,37 +1,33 @@
 package core.procedures.io;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.exceptions.ArityException;
+import core.procedures.AFn;
 import core.scm.specialforms.SCMSpecialForm;
 import core.writer.IWriter;
 import core.writer.Writer;
 
 import java.io.PrintStream;
-import java.util.List;
 
-public class Display extends SCMProcedure {
+public class Display extends AFn {
 
   private static final IWriter writer = new Writer();
-  private static final SCMSymbol value = new SCMSymbol("value");
-  private static final List<SCMSymbol> params = SCMCons.list(value);
 
   private PrintStream printStream;
 
   public Display(PrintStream printStream) {
-    super("display", params, value);
     this.printStream = printStream;
   }
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object result = super.apply(evaluator, env);
-    if (result instanceof String) {
-      printStream.print(result);
+  public Object invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "display");
+    }
+    Object arg = args[0];
+    if (arg instanceof String) {
+      printStream.print(arg);
     } else {
-      printStream.print(writer.toString(result));
+      printStream.print(writer.toString(arg));
     }
     return SCMSpecialForm.UNSPECIFIED;
   }

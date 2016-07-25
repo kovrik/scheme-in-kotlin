@@ -1,35 +1,25 @@
 package core.procedures.vectors;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 import core.scm.SCMVector;
 
-import java.util.List;
-
-public class VectorRef extends SCMProcedure {
-
-  private static final SCMSymbol vector  = new SCMSymbol("vector");
-  private static final SCMSymbol pos = new SCMSymbol("pos");
-  private static final List<SCMSymbol> params = SCMCons.list(vector, pos);
-
-  public VectorRef() {
-    super("vector-ref", params, null, null, false);
-  }
+public class VectorRef extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
+  public Object invoke(Object... args) {
+    if (args.length != 2) {
+      throw new ArityException(args.length, 2, "vector-ref");
+    }
 
-    Object o = env.get(vector);
+    Object o = args[0];
     if (!(o instanceof SCMVector)) {
       throw new WrongTypeException("Vector", o);
     }
     SCMVector vec = (SCMVector)o;
 
-    Object p = env.get(pos);
+    Object p = args[1];
     if (!(p instanceof Long)) {
       throw new WrongTypeException("Integer", p);
     }

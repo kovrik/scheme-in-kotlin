@@ -1,28 +1,21 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
 
-public class SetCdr extends SCMProcedure {
-
-  private static final SCMSymbol pair  = new SCMSymbol("pair");
-  private static final SCMSymbol cdr = new SCMSymbol("object");
-  private static final List<SCMSymbol> params = SCMCons.list(pair, cdr);
-
-  public SetCdr() {
-    super("set-cdr!", params, null, null, false);
-  }
+public class SetCdr extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object p = env.get(pair);
+  public Object invoke(Object... args) {
+    if (args.length != 2) {
+      throw new ArityException(args.length, 2, "set-cdr!");
+    }
+    Object p = args[0];
     if (!SCMCons.isPair(p)) {
       throw new WrongTypeException("Pair", p);
     }
@@ -32,7 +25,7 @@ public class SetCdr extends SCMProcedure {
     list.subList(1, list.size()).clear();
 
     /* Set new tail */
-    Object o = env.get(cdr);
+    Object o = args[1];
     if (o instanceof List) {
       list.addAll((List)o);
     } else {

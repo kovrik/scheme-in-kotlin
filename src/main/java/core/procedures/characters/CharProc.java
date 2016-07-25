@@ -5,53 +5,57 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
 
-import java.util.concurrent.ExecutionException;
-
 public class CharProc extends AFn {
 
-  public static final CharProc CHAR_WHITESPACE = new CharProc("char-whitespace?", new AFn() {
+  private static class CharFn extends AFn {
+    public Object invoke(Object ch) {
+      return super.invoke(ch);
+    }
+  }
+
+  public static final CharProc CHAR_WHITESPACE = new CharProc("char-whitespace?", new CharFn() {
     @Override
     public SCMBoolean invoke(Object ch) {
       return SCMBoolean.toSCMBoolean(Character.isWhitespace((Character)ch));
     }
   });
 
-  public static final CharProc CHAR_ALPHABETIC = new CharProc("char-alphabetic?", new AFn() {
+  public static final CharProc CHAR_ALPHABETIC = new CharProc("char-alphabetic?", new CharFn() {
     @Override
     public SCMBoolean invoke(Object ch) {
       return SCMBoolean.toSCMBoolean(Character.isAlphabetic((Character)ch));
     }
   });
 
-  public static final CharProc CHAR_UPPER_CASE = new CharProc("char-upper-case?", new AFn() {
+  public static final CharProc CHAR_UPPER_CASE = new CharProc("char-upper-case?", new CharFn() {
     @Override
     public SCMBoolean invoke(Object ch) {
       return SCMBoolean.toSCMBoolean(Character.isUpperCase((Character)ch));
     }
   });
 
-  public static final CharProc CHAR_LOWER_CASE = new CharProc("char-lower-case?", new AFn() {
+  public static final CharProc CHAR_LOWER_CASE = new CharProc("char-lower-case?", new CharFn() {
     @Override
     public SCMBoolean invoke(Object ch) {
       return SCMBoolean.toSCMBoolean(Character.isLowerCase((Character)ch));
     }
   });
 
-  public static final CharProc CHAR_NUMERIC = new CharProc("char-numeric?", new AFn() {
+  public static final CharProc CHAR_NUMERIC = new CharProc("char-numeric?", new CharFn() {
     @Override
     public SCMBoolean invoke(Object ch) {
       return SCMBoolean.toSCMBoolean(Character.isDigit((Character)ch));
     }
   });
 
-  public static final CharProc CHAR_TO_INTEGER = new CharProc("char->integer", new AFn() {
+  public static final CharProc CHAR_TO_INTEGER = new CharProc("char->integer", new CharFn() {
     @Override
     public Long invoke(Object ch) {
       return (long)((char)ch);
     }
   });
 
-  public static final CharProc INTEGER_TO_CHAR = new CharProc("integer->char", new AFn() {
+  public static final CharProc INTEGER_TO_CHAR = new CharProc("integer->char", new CharFn() {
     @Override
     public Character invoke(Object ch) {
       return (char) ((long) ch);
@@ -66,14 +70,14 @@ public class CharProc extends AFn {
     }
   };
 
-  public static final CharProc CHAR_UPCASE = new CharProc("char-upcase", new AFn() {
+  public static final CharProc CHAR_UPCASE = new CharProc("char-upcase", new CharFn() {
     @Override
     public Character invoke(Object ch) {
       return Character.toUpperCase((Character)ch);
     }
   });
 
-  public static final CharProc CHAR_DOWNCASE = new CharProc("char-downcase", new AFn() {
+  public static final CharProc CHAR_DOWNCASE = new CharProc("char-downcase", new CharFn() {
     @Override
     public Character invoke(Object ch) {
       return Character.toLowerCase((Character)ch);
@@ -81,14 +85,13 @@ public class CharProc extends AFn {
   });
 
   private final String name;
-  protected final AFn predicate;
+  protected final CharFn predicate;
 
-  private CharProc(String name, AFn predicate) {
+  private CharProc(String name, CharFn predicate) {
     this.name = name;
     this.predicate = predicate;
   }
 
-  @Override
   public Object invoke(Object ch) {
     if (ch instanceof Character) {
       return predicate.invoke(ch);
@@ -97,7 +100,7 @@ public class CharProc extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) throws ExecutionException, InterruptedException {
+  public Object invoke(Object... args) {
     if (args.length == 1) {
       return invoke(args[0]);
     }

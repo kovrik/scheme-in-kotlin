@@ -1,4 +1,4 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
@@ -6,7 +6,7 @@ import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Modulo extends AFn implements INumericalOperation {
+public class Modulo extends AFn {
 
   // TODO move out
   private static final Remainder rem = new Remainder();
@@ -20,17 +20,12 @@ public class Modulo extends AFn implements INumericalOperation {
       if (!(args[1] instanceof Number)) {
         throw new WrongTypeException("Integer", args[1]);
       }
-      return apply((Number)args[0], (Number)args[1]);
+      return invoke((Number)args[0], (Number)args[1]);
     }
     throw new ArityException(args.length, 2, "modulo");
   }
 
-  @Override
-  public Number zero() {
-    throw new ArityException(0, 2, "modulo");
-  }
-
-  public BigDecimal apply(BigDecimal first, BigDecimal second) {
+  public BigDecimal invoke(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException("Error: (modulo) undefined for 0");
     }
@@ -44,17 +39,16 @@ public class Modulo extends AFn implements INumericalOperation {
     return second.add(remainder);
   }
 
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return apply((BigDecimal) first, (BigDecimal)second);
+      return invoke((BigDecimal) first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal) first, new BigDecimal(second.toString()));
+      return invoke((BigDecimal) first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return apply((BigDecimal) second, new BigDecimal(first.toString()));
+      return invoke((BigDecimal) second, new BigDecimal(first.toString()));
     }
 
     // check if they are integral
@@ -68,7 +62,7 @@ public class Modulo extends AFn implements INumericalOperation {
       throw new ArithmeticException("Error: (modulo) undefined for 0");
     }
 
-    Number m = rem.apply(first, second);
+    Number m = rem.invoke(first, second);
     if (m.intValue() == 0) {
       return m;
     }
@@ -80,10 +74,5 @@ public class Modulo extends AFn implements INumericalOperation {
     } else {
       return m.longValue() + second.longValue();
     }
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return invoke(first, second);
   }
 }

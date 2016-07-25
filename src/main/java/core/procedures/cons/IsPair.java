@@ -1,24 +1,20 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.*;
+import core.exceptions.ArityException;
+import core.procedures.AFn;
+import core.scm.ICons;
+import core.scm.SCMBoolean;
 
 import java.util.List;
 
-public class IsPair extends SCMProcedure {
-
-  private static final SCMSymbol obj = new SCMSymbol("obj");
-  private static final List<SCMSymbol> params = SCMCons.list(obj);
-
-  public IsPair() {
-    super("pair?", params, null, null, false);
-  }
+public class IsPair extends AFn {
 
   @Override
-  public SCMBoolean apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(obj);
-    return isPair(o);
+  public SCMBoolean invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "null?");
+    }
+    return isPair(args[0]);
   }
 
   public static SCMBoolean isPair(Object object) {

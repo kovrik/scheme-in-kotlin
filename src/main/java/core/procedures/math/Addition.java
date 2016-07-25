@@ -1,24 +1,19 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Addition extends AFn implements INumericalOperation {
+public class Addition extends AFn {
 
-  @Override
-  public Number zero() {
-    return 0L;
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return apply((Number)first, (Number)second);
-  }
-
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Object first, Object second) {
+    if (!(first instanceof Number)) {
+      throw new WrongTypeException("Number", first);
+    }
+    if (!(second instanceof Number)) {
+      throw new WrongTypeException("Number", second);
+    }
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first + (Long)second;
     }
@@ -28,7 +23,7 @@ public class Addition extends AFn implements INumericalOperation {
     if (second instanceof BigDecimal) {
       return ((BigDecimal)second).add(new BigDecimal(first.toString()));
     }
-    double result = first.doubleValue() + second.doubleValue();
+    double result = ((Number)first).doubleValue() + ((Number)second).doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
       return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
     }
@@ -37,13 +32,13 @@ public class Addition extends AFn implements INumericalOperation {
 
   @Override
   public Object invoke(Object... args) {
-    Object result = zero();
+    Object result = 0L;
     if (args != null) {
       for (Object obj : args) {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = apply((Number) result, (Number) obj);
+        result = invoke(result, obj);
       }
     }
     return result;

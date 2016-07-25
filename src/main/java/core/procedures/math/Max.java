@@ -1,24 +1,13 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Max extends AFn implements INumericalOperation {
+public class Max extends AFn {
 
-  @Override
-  public Number zero() {
-    return 1L;
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return apply((Number)first, (Number)second);
-  }
-
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);
     }
@@ -51,8 +40,7 @@ public class Max extends AFn implements INumericalOperation {
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Number", args[i]);
         }
-        Number second = (Number)args[i];
-        result = apply(first, second);
+        result = invoke((Number)first, (Number)args[i]);
       }
       return result;
     }

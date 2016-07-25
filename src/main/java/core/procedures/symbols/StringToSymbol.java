@@ -17,16 +17,4 @@ public class StringToSymbol extends AFn {
     }
     throw new ArityException(args.length, 1, "string->symbol");
   }
-
-  public Number zero() {
-    throw new ArityException(0, 1, "string->symbol");
-  }
-
-  public Number apply(Number first, Number second) {
-    throw new ArityException(2, 1, "string->symbol");
-  }
-
-  public Object apply(Object first, Object second) {
-    throw new ArityException(2, 1, "string->symbol");
-  }
 }

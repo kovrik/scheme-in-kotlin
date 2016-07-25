@@ -1,37 +1,25 @@
 package core.procedures.vectors;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 
-import java.util.List;
-
-public class VectorSet extends SCMProcedure {
-
-  private static final SCMSymbol vector  = new SCMSymbol("vector");
-  private static final SCMSymbol pos = new SCMSymbol("pos");
-  private static final SCMSymbol v = new SCMSymbol("v");
-  private static final List<SCMSymbol> params = SCMCons.list(vector, pos, v);
-
-  public VectorSet() {
-    super("vector-set!", params, null, null, false);
-  }
+public class VectorSet extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-
-    Object o = env.get(vector);
+  public Object invoke(Object... args) {
+    if (args.length != 3) {
+      throw new ArityException(args.length, 3, "vector-set!");
+    }
+    Object o = args[0];
     if (!(o instanceof SCMVector)) {
       throw new WrongTypeException("Vector", o);
     }
     SCMVector vec = (SCMVector)o;
 
-    Object p = env.get(pos);
+    Object p = args[1];
     if (!(p instanceof Long)) {
       throw new WrongTypeException("Integer", p);
     }
@@ -39,7 +27,7 @@ public class VectorSet extends SCMProcedure {
     if ((pos < 0) || (pos >= vec.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }
-    vec.set(pos.intValue(), env.get(v));
+    vec.set(pos.intValue(), args[2]);
     return SCMSpecialForm.UNSPECIFIED;
   }
 }

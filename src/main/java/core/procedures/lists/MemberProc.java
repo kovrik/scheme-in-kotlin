@@ -8,7 +8,6 @@ import core.scm.SCMBoolean;
 import core.writer.Writer;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MemberProc extends AFn {
 
@@ -21,7 +20,6 @@ public class MemberProc extends AFn {
     this.predicate = predicate;
   }
 
-  @Override
   public Object invoke(Object arg1, Object arg2) {
     if (!(arg2 instanceof List)) {
       throw new IllegalArgumentException(
@@ -50,7 +48,7 @@ public class MemberProc extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) throws ExecutionException, InterruptedException {
+  public Object invoke(Object... args) {
     if (args.length == 2) {
       return invoke(args[0], args[1]);
     }

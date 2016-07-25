@@ -1,28 +1,20 @@
 package core.procedures.io;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.PrintStream;
-import java.util.List;
 
-public class Newline extends SCMProcedure {
-
-  private static final List<SCMSymbol> params = SCMCons.list();
+public class Newline extends AFn {
 
   private PrintStream printStream;
 
   public Newline(PrintStream printStream) {
-    super("newline", params, null);
     this.printStream = printStream;
   }
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
+  public Object invoke(Object... args) {
     printStream.println();
     return SCMSpecialForm.UNSPECIFIED;
   }

@@ -1,33 +1,27 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
 
-public class SetCar extends SCMProcedure {
-
-  private static final SCMSymbol pair  = new SCMSymbol("pair");
-  private static final SCMSymbol car = new SCMSymbol("car");
-  private static final List<SCMSymbol> params = SCMCons.list(pair, car);
-
-  public SetCar() {
-    super("set-car!", params, null, null, false);
-  }
+public class SetCar extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object p = env.get(pair);
+  public Object invoke(Object... args) {
+    if (args.length != 2) {
+      throw new ArityException(args.length, 2, "set-car!");
+
+    }
+    Object p = args[0];
     if (!SCMCons.isPair(p)) {
       throw new WrongTypeException("Pair", p);
     }
     List cons = (List)p;
-    cons.set(0, env.get(car));
+    cons.set(0, args[1]);
     return SCMSpecialForm.UNSPECIFIED;
   }
 }

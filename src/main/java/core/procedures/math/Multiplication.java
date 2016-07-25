@@ -1,24 +1,13 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Multiplication extends AFn implements INumericalOperation {
+public class Multiplication extends AFn {
 
-  @Override
-  public Number zero() {
-    return 1L;
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return apply((Number)first, (Number)second);
-  }
-
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first * (Long)second;
     }
@@ -37,13 +26,13 @@ public class Multiplication extends AFn implements INumericalOperation {
 
   @Override
   public Object invoke(Object... args) {
-    Object result = zero();
+    Object result = 1L;
     if (args != null) {
       for (Object obj : args) {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = apply((Number) result, (Number) obj);
+        result = invoke((Number)result, (Number)obj);
       }
     }
     return result;

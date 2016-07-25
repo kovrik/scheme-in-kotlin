@@ -32,4 +32,9 @@ public class SCMPromise extends SCMProcedure {
     this.result = result;
     return result;
   }
+
+  @Override
+  public String getName() {
+    return "#<promise " + hashCode() + ">";
+  }
 }

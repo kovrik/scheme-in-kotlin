@@ -1,24 +1,20 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.*;
+import core.exceptions.ArityException;
+import core.procedures.AFn;
+import core.scm.ICons;
+import core.scm.SCMBoolean;
 
 import java.util.List;
 
-public class IsList extends SCMProcedure {
-
-  private static final SCMSymbol obj = new SCMSymbol("obj");
-  private static final List<SCMSymbol> params = SCMCons.list(obj);
-
-  public IsList() {
-    super("list?", params, null, null, false);
-  }
+public class IsList extends AFn {
 
   @Override
-  public SCMBoolean apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(obj);
-    return isList(o);
+  public SCMBoolean invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "list?");
+    }
+    return isList(args[0]);
   }
 
   public static SCMBoolean isList(Object object) {

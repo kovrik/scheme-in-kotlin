@@ -1,9 +1,9 @@
 package core.environment;
 
+import core.procedures.IFn;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
-import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
@@ -13,8 +13,7 @@ import core.procedures.io.Newline;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
-import core.procedures.math.bool.Negation;
-import core.procedures.math.numeric.*;
+import core.procedures.math.*;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -47,7 +46,11 @@ public final class DefaultEnvironment extends Environment {
                                                        SCMSpecialForm.class.getName()));
 
     procs.add(String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
-    procs.add(String.format("(define (procedure? o) (string=? \"%s\" (class-of o)))", SCMProcedure.class.getName()));
+    procs.add(String.format("(define (procedure? o) (or (string=? \"%s\" (class-of o))" +
+                                                       "(string=? \"%s\" (class-of o))" + "))",
+                                                       SCMProcedure.class.getName(),
+                                                       IFn.class.getName()));
+
     procs.add(String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
                                                        "(string=? \"%s\" (class-of o))" +
                                                        "(string=? \"%s\" (class-of o))" +
@@ -68,6 +71,7 @@ public final class DefaultEnvironment extends Environment {
     procs.add("(define (positive? n) (> n 0))");
     procs.add("(define (even? n) (= 0 (remainder n 2)))");
     procs.add("(define (odd? n) (not (even? n)))");
+    procs.add("(define (force p) (if (promise? p) (p) p))");
 
     // simple map
     procs.add("(define (map proc lis)" +
@@ -196,7 +200,6 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("char=?"), CharComparison.CHAR_EQ);
     put(new SCMSymbol("char-ci=?"), CharComparison.CHAR_EQ_CI);
 
-    put(new SCMSymbol("force"),   new Force());
     put(new SCMSymbol("display"), new Display(System.out));
     put(new SCMSymbol("newline"), new Newline(System.out));
 

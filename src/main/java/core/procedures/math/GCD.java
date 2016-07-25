@@ -1,21 +1,11 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class GCD extends AFn implements INumericalOperation {
-
-  @Override
-  public Number zero() {
-    return 1L;
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return apply((Number)first, (Number)second);
-  }
+public class GCD extends AFn {
 
   public static long gcd(Long a, Long b) {
     while (b > 0) {
@@ -41,8 +31,7 @@ public class GCD extends AFn implements INumericalOperation {
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);
     }
@@ -84,7 +73,7 @@ public class GCD extends AFn implements INumericalOperation {
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Integer", args[i]);
         }
-        result = apply(first, (Number)args[i]);
+        result = invoke((Number)first, (Number)args[i]);
       }
       return result;
     }

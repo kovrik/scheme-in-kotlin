@@ -19,16 +19,4 @@ public class VectorToList extends AFn {
     }
     throw new ArityException(args.length, 1, "vector->list");
   }
-
-  public Number zero() {
-    throw new ArityException(0, 1, "vector->list");
-  }
-
-  public Number apply(Number first, Number second) {
-    throw new ArityException(2, 1, "vector->list");
-  }
-
-  public Object apply(Object first, Object second) {
-    throw new ArityException(2, 1, "vector->list");
-  }
 }

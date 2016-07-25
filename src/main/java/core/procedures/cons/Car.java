@@ -1,28 +1,20 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.ICons;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 
 import java.util.List;
 
-public class Car extends SCMProcedure {
-
-  private static final SCMSymbol car = new SCMSymbol("car");
-  private static final List<SCMSymbol> params = SCMCons.list(car);
-
-  public Car() {
-    super("car", params, null, null, false);
-  }
+public class Car extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(car);
-    return car(o);
+  public Object invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "car");
+    }
+    return car(args[0]);
   }
 
   public static Object car(Object o) {

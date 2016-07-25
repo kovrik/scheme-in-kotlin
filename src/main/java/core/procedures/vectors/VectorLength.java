@@ -17,16 +17,4 @@ public class VectorLength extends AFn {
     }
     throw new ArityException(args.length, 1, "vector-length");
   }
-
-  public Number zero() {
-    throw new ArityException(0, 1, "vector-length");
-  }
-
-  public Number apply(Number first, Number second) {
-    throw new ArityException(2, 1, "vector-length");
-  }
-
-  public Object apply(Object first, Object second) {
-    throw new ArityException(2, 1, "vector-length");
-  }
 }

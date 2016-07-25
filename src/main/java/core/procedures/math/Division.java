@@ -1,4 +1,4 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
@@ -6,21 +6,9 @@ import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Division extends AFn implements INumericalOperation {
+public class Division extends AFn {
 
-  @Override
-  public Number zero() {
-    return 1L;
-  }
-
-  @Override
-  public Number apply(Object numenator, Object denominator) {
-    return apply((Number)numenator, (Number)denominator);
-  }
-
-  @Override
-  public Number apply(Number numenator, Number denominator) {
-
+  public Number invoke(Number numenator, Number denominator) {
     if ((numenator instanceof Long) &&
         (denominator instanceof Long) &&
         // FIXME Optimize?
@@ -51,7 +39,7 @@ public class Division extends AFn implements INumericalOperation {
     }
     Number result;
     if (args.length == 1) {
-      return apply(1, args[0]);
+      return invoke((Number)1L, (Number)args[0]);
     } else {
       result = (Number)args[0];
     }
@@ -59,7 +47,7 @@ public class Division extends AFn implements INumericalOperation {
       if (!(args[d] instanceof Number)) {
         throw new WrongTypeException("Number", args[d]);
       }
-      result = apply(result, args[d]);
+      result = invoke((Number)result, (Number)args[d]);
     }
     return result;
   }

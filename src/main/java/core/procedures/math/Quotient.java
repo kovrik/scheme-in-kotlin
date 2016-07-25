@@ -1,4 +1,4 @@
-package core.procedures.math.numeric;
+package core.procedures.math;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
@@ -6,7 +6,7 @@ import core.procedures.AFn;
 
 import java.math.BigDecimal;
 
-public class Quotient extends AFn implements INumericalOperation {
+public class Quotient extends AFn {
 
   @Override
   public Number invoke(Object... args) {
@@ -17,34 +17,28 @@ public class Quotient extends AFn implements INumericalOperation {
       if (!(args[1] instanceof Number)) {
         throw new WrongTypeException("Integer", args[1]);
       }
-      return apply((Number)args[0], (Number)args[1]);
+      return invoke((Number)args[0], (Number)args[1]);
     }
     throw new ArityException(args.length, 2, "quotient");
   }
 
-  @Override
-  public Number zero() {
-    throw new ArityException(0, 2, "quotient");
-  }
-
-  public Number apply(BigDecimal first, BigDecimal second) {
+  public Number invoke(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException("Error: (quotient) undefined for 0");
     }
     return first.divideToIntegralValue(second);
   }
 
-  @Override
-  public Number apply(Number first, Number second) {
+  public Number invoke(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return apply((BigDecimal)first, (BigDecimal)second);
+      return invoke((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, new BigDecimal(second.toString()));
+      return invoke((BigDecimal)first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {
@@ -64,10 +58,5 @@ public class Quotient extends AFn implements INumericalOperation {
       throw new ArithmeticException("Error: (quotient) undefined for 0");
     }
     return first.longValue() / second.longValue();
-  }
-
-  @Override
-  public Object apply(Object first, Object second) {
-    return invoke(first, second);
   }
 }

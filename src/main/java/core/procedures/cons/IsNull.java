@@ -1,24 +1,20 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.*;
+import core.exceptions.ArityException;
+import core.procedures.AFn;
+import core.scm.ICons;
+import core.scm.SCMBoolean;
 
 import java.util.List;
 
-public class IsNull extends SCMProcedure {
-
-  private static final SCMSymbol obj = new SCMSymbol("obj");
-  private static final List<SCMSymbol> params = SCMCons.list(obj);
-
-  public IsNull() {
-    super("null?", params, null, null, false);
-  }
+public class IsNull extends AFn {
 
   @Override
-  public SCMBoolean apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(obj);
-    return isNull(o);
+  public SCMBoolean invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "null?");
+    }
+    return isNull(args[0]);
   }
 
   public static SCMBoolean isNull(Object object) {

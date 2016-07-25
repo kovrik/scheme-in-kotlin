@@ -1,29 +1,18 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class MakeString extends SCMProcedure {
-
-  private static final SCMSymbol size  = new SCMSymbol("size");
-  private static final SCMSymbol value = new SCMSymbol("value");
-  private static final List<SCMSymbol> params = SCMCons.list(size, value);
-
-  public MakeString() {
-    super("make-string", params, null, null, true);
-  }
+public class MakeString extends AFn {
 
   @Override
-  public String apply(IEvaluator evaluator, IEnvironment env) {
+  public String invoke(Object... args) {
+    if (args.length < 1) {
+      throw new ArityException(args.length, "make-string");
+    }
 
-    Object o = env.get(size);
+    Object o = args[0];
     if (!(o instanceof Long)) {
       throw new WrongTypeException("Integer", o);
     }
@@ -31,11 +20,10 @@ public class MakeString extends SCMProcedure {
     if (s < 0) {
       throw new IllegalArgumentException("Size value is out of range in `make-string`");
     }
-    List vals = (List)env.get(value);
-    if (vals.size() > 1) {
-      throw new ArityException(vals.size() + 1, "make-string");
+    if (args.length > 2) {
+      throw new ArityException(args.length, "make-string");
     }
-    Object c = vals.isEmpty() ? Character.MIN_VALUE : vals.get(0);
+    Object c = (args.length == 1) ? Character.MIN_VALUE : args[1];
     if (!(c instanceof Character)) {
       throw new WrongTypeException("Character", c);
     }

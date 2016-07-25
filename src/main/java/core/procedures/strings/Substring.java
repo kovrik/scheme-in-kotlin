@@ -1,35 +1,24 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class Substring extends SCMProcedure {
-
-  private static final SCMSymbol string  = new SCMSymbol("string");
-  private static final SCMSymbol start = new SCMSymbol("start");
-  private static final SCMSymbol end = new SCMSymbol("end");
-  private static final List<SCMSymbol> params = SCMCons.list(string, start, end);
-
-  public Substring() {
-    super("substring", params, null, null, true);
-  }
+public class Substring extends AFn {
 
   @Override
-  public String apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(string);
+  public String invoke(Object... args) {
+    if (args.length < 2) {
+      throw new ArityException(args.length, "substring");
+    }
+
+    Object o = args[0];
     if (!(o instanceof String)) {
       throw new WrongTypeException("String", o);
     }
     String s = (String)o;
 
-    Object p = env.get(start);
+    Object p = args[1];
     if (!(p instanceof Long)) {
       throw new WrongTypeException("Integer", p);
     }
@@ -39,19 +28,16 @@ public class Substring extends SCMProcedure {
     }
     long end = (long)s.length();
 
-    List e = (List) env.get(Substring.end);
-    if (e.size() > 1) {
-      throw new ArityException(e.size() + 1, "substring");
+    if (args.length > 3) {
+      throw new ArityException(args.length, "substring");
     }
-    if (!e.isEmpty()) {
-      Object oe = e.get(0);
-      if (!(oe instanceof Long)) {
-        throw new WrongTypeException("Integer", oe);
-      }
-      end = (long) oe;
-      if ((end < 0) || (end >= s.length())) {
-        throw new IllegalArgumentException(String.format("Value out of range: %s", end));
-      }
+    Object oe = args[2];
+    if (!(oe instanceof Long)) {
+      throw new WrongTypeException("Integer", oe);
+    }
+    end = (long) oe;
+    if ((end < 0) || (end >= s.length())) {
+      throw new IllegalArgumentException(String.format("Value out of range: %s", end));
     }
     return s.substring((int)start, (int)end);
   }

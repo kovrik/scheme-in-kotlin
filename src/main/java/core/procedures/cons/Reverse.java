@@ -1,26 +1,21 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 
 import java.util.List;
 
-public class Reverse extends SCMProcedure {
-
-  private static final SCMSymbol lst = new SCMSymbol("list");
-  private static final List<SCMSymbol> params = SCMCons.list(lst);
-
-  public Reverse() {
-    super("reverse", params, null, null, false);
-  }
+public class Reverse extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object l = env.get(lst);
+  public Object invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "reverse");
+    }
+
+    Object l = args[0];
     if (!SCMCons.isList(l)) {
       throw new WrongTypeException("List", l);
     }

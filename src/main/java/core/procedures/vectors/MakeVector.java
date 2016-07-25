@@ -1,30 +1,19 @@
 package core.procedures.vectors;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 import core.scm.SCMVector;
 import core.scm.specialforms.SCMSpecialForm;
 
-import java.util.List;
-
-public class MakeVector extends SCMProcedure {
-
-  private static final SCMSymbol size  = new SCMSymbol("size");
-  private static final SCMSymbol value = new SCMSymbol("value");
-  private static final List<SCMSymbol> params = SCMCons.list(size, value);
-
-  public MakeVector() {
-    super("make-vector", params, null, null, true);
-  }
+public class MakeVector extends AFn {
 
   @Override
-  public SCMVector apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(size);
+  public Object invoke(Object... args) {
+    if (args.length < 1) {
+      throw new ArityException(args.length, "make-vector");
+    }
+    Object o = args[0];
     if (!(o instanceof Long)) {
       throw new WrongTypeException("Integer", o);
     }
@@ -32,14 +21,12 @@ public class MakeVector extends SCMProcedure {
     if (s < 0) {
       throw new IllegalArgumentException("Size value is out of range in `make-vector`");
     }
-    List vals = (List)env.get(value);
-    if (vals.size() > 1) {
-      throw new ArityException(vals.size() + 1, "make-vector");
+    Object init = SCMSpecialForm.UNSPECIFIED;
+    if (args.length == 2) {
+      init = args[1];
+    } else if (args.length > 2) {
+      throw new ArityException(args.length, "make-vector");
     }
-    if (vals.isEmpty()) {
-      return new SCMVector(s.intValue(), SCMSpecialForm.UNSPECIFIED);
-    }
-    Object init = vals.get(0);
     return new SCMVector(s.intValue(), init);
   }
 }

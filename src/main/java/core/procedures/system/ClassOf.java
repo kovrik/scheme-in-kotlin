@@ -1,27 +1,21 @@
 package core.procedures.system;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
+import core.procedures.AFn;
+import core.procedures.IFn;
 import core.procedures.delayed.SCMPromise;
-import core.scm.SCMCons;
 import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 import core.scm.specialforms.SCMSpecialForm;
 
-import java.util.List;
-
-public class ClassOf extends SCMProcedure {
-
-  private static final SCMSymbol obj = new SCMSymbol("obj");
-  private static final List<SCMSymbol> params = SCMCons.list(obj);
-
-  public ClassOf() {
-    super("class-of", params, null, null, false);
-  }
+public class ClassOf extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object object = env.get(obj);
+  public Object invoke(Object... args) {
+    if (args.length != 1) {
+      throw new ArityException(args.length, 1, "class-of");
+    }
+
+    Object object = args[0];
     /* All special forms have the same SCMSpecialForm class */
     if (SCMSpecialForm.class.equals(object.getClass().getSuperclass())) {
       return SCMSpecialForm.class.getName();
@@ -33,6 +27,9 @@ public class ClassOf extends SCMProcedure {
     /* Do not return exact class of procedure */
     if (object instanceof SCMProcedure) {
       return SCMProcedure.class.getName();
+    }
+    if (object instanceof IFn) {
+      return IFn.class.getName();
     }
     return object.getClass().getName();
   }

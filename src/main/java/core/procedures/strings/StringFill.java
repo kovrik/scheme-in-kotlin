@@ -1,33 +1,23 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class StringFill extends SCMProcedure {
-
-  private static final SCMSymbol string  = new SCMSymbol("string");
-  private static final SCMSymbol ch = new SCMSymbol("ch");
-  private static final List<SCMSymbol> params = SCMCons.list(string, ch);
-
-  public StringFill() {
-    super("string-fill!", params, null, null, false);
-  }
+public class StringFill extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(string);
+  public Object invoke(Object... args) {
+    if (args.length != 2) {
+      throw new ArityException(args.length, 2, "string-fill!");
+    }
+    Object o = args[0];
     if (!(o instanceof String)) {
       throw new WrongTypeException("String", o);
     }
     String s = (String)o;
 
-    Object c = env.get(ch);
+    Object c = args[1];
     if (!(c instanceof Character)) {
       throw new WrongTypeException("Character", c);
     }

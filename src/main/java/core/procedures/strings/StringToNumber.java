@@ -1,28 +1,17 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class StringToNumber extends SCMProcedure {
-
-  private static final SCMSymbol str = new SCMSymbol("str");
-  private static final SCMSymbol rad = new SCMSymbol("rad");
-  private static final List<SCMSymbol> params = SCMCons.list(str, rad);
-
-  public StringToNumber() {
-    super("string->number", params, null, null, true);
-  }
+public class StringToNumber extends AFn {
 
   @Override
-  public String apply(IEvaluator evaluator, IEnvironment env) {
-    Object o = env.get(str);
+  public String invoke(Object... args) {
+    if (args.length < 1) {
+      throw new ArityException(args.length, "string->number");
+    }
+    Object o = args[0];
     if (!(o instanceof String)) {
       throw new WrongTypeException("String", o);
     }
@@ -32,13 +21,12 @@ public class StringToNumber extends SCMProcedure {
     // TODO
 
     /* Get radix */
-    List r = (List)env.get(rad);
-    if (r.size() > 1) {
-      throw new ArityException(r.size() + 1, "string->number");
+    if (args.length > 2) {
+      throw new ArityException(args.length, "string->number");
     }
     Object o1 = null;
-    if (r.size() == 1) {
-      o1 = r.get(0);
+    if (args.length == 2) {
+      o1 = args[1];
       if (!(o1 instanceof Long)) {
         throw new WrongTypeException("Integer", o);
       }

@@ -1,34 +1,17 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class StringProc extends SCMProcedure {
-
-  private static final SCMSymbol chars = new SCMSymbol("chars");
-  private static final List<SCMSymbol> params = SCMCons.list(chars);
-
-  public StringProc() {
-    super("string", params, null, null, true);
-  }
+public class StringProc extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    List cs = (List)env.get(chars);
-    if (cs.isEmpty()) {
+  public String invoke(Object... args) {
+    if (args.length == 0) {
       return "";
-      // TODO?
-      /* Return new String object */
-      // return new String();
     }
-    StringBuilder sb = new StringBuilder(cs.size());
-    for (Object c : cs) {
+    StringBuilder sb = new StringBuilder(args.length);
+    for (Object c : args) {
       if (!(c instanceof Character)) {
         throw new WrongTypeException("Character", c);
       }

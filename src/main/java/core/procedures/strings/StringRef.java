@@ -1,34 +1,24 @@
 package core.procedures.strings;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.procedures.AFn;
 
-import java.util.List;
-
-public class StringRef extends SCMProcedure {
-
-  private static final SCMSymbol string  = new SCMSymbol("string");
-  private static final SCMSymbol pos = new SCMSymbol("pos");
-  private static final List<SCMSymbol> params = SCMCons.list(string, pos);
-
-  public StringRef() {
-    super("string-ref", params, null, null, false);
-  }
+public class StringRef extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
+  public Object invoke(Object... args) {
+    if (args.length != 2) {
+      throw new ArityException(args.length, 2, "string-ref");
+    }
 
-    Object o = env.get(string);
+    Object o = args[0];
     if (!(o instanceof String)) {
       throw new WrongTypeException("String", o);
     }
     String s = (String)o;
 
-    Object p = env.get(pos);
+    Object p = args[1];
     if (!(p instanceof Long)) {
       throw new WrongTypeException("Integer", p);
     }

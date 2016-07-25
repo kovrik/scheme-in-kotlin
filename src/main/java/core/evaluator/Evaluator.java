@@ -9,12 +9,12 @@ import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
+import core.writer.Writer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class Evaluator implements IEvaluator {
 
@@ -22,9 +22,9 @@ public class Evaluator implements IEvaluator {
   public Object eval(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Symbol */
-      if (((SCMSymbol)sexp).getValue().startsWith(",")) {
+      if (((SCMSymbol) sexp).getValue().startsWith(",")) {
         /* Meta */
-        return evmeta(((SCMSymbol)sexp).getValue());
+        return evmeta(((SCMSymbol) sexp).getValue());
       }
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
@@ -61,7 +61,7 @@ public class Evaluator implements IEvaluator {
     /* Must be a procedure */
     Object fn = eval(op, env);
     if (!(fn instanceof IFn)) {
-      throw new IllegalArgumentException("Wrong type to apply: " + fn);
+      throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
     }
 
     /* Evaluate arguments */
@@ -74,28 +74,20 @@ public class Evaluator implements IEvaluator {
     if (fn instanceof SCMProcedure) {
       IEnvironment closure = ((SCMProcedure)fn).getClosure();
       closure = (closure == null) ? env : closure;
-      return apply(fn, args, closure);
+      return apply((SCMProcedure)fn, args, closure);
     }
-    try {
-      return ((IFn)fn).invoke(args.toArray());
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    throw new IllegalArgumentException("Evaluation error: " + sexp);
+    return ((IFn)fn).invoke(args.toArray());
   }
 
-  private Object apply(Object fn, List<Object> args, IEnvironment env) {
-    SCMProcedure procedure = (SCMProcedure)fn;
-    List<SCMSymbol> params = procedure.getParams();
+  private Object apply(SCMProcedure fn, List<Object> args, IEnvironment env) {
+    List<SCMSymbol> params = fn.getParams();
     /* Check arity */
-    if (!procedure.isVariableArity() && (args.size() != params.size())) {
-      throw new ArityException(args.size(), params.size(), ((SCMProcedure) fn).getName());
+    if (!fn.isVariableArity() && (args.size() != params.size())) {
+      throw new ArityException(args.size(), params.size(), fn.getName());
     }
 
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
-    if (!procedure.isVariableArity()) {
+    if (!fn.isVariableArity()) {
       for (int i = 0; i < params.size(); i++) {
         values.put(params.get(i), args.get(i));
       }
@@ -103,7 +95,7 @@ public class Evaluator implements IEvaluator {
       /* Variadic arity procedure */
       /* Check arity */
       if (args.size() < params.size() - 1) {
-        throw new ArityException(args.size(), ((SCMProcedure) fn).getName());
+        throw new ArityException(args.size(), fn.getName());
       }
       /* Put mandatory params first */
       for (int i = 0; i < params.size() - 1; i++) {
@@ -113,7 +105,7 @@ public class Evaluator implements IEvaluator {
       List<Object> varargs = SCMCons.list(args.subList(params.size() - 1, args.size()));
       values.put(params.get(params.size() - 1), varargs);
     }
-    return procedure.apply(this, new Environment(values, env));
+    return evlis(fn.getBody(), new Environment(values, env));
   }
 
   /**

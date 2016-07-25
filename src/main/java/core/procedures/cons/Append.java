@@ -1,42 +1,29 @@
 package core.procedures.cons;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 
-import java.util.List;
-
-public class Append extends SCMProcedure {
-
-  private static final SCMSymbol args = new SCMSymbol("args");
-  private static final List<SCMSymbol> params = SCMCons.list(args);
-
-  public Append() {
-    super("append", params, null, null, true);
-  }
+public class Append extends AFn {
 
   @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    List es = (List)env.get(args);
-    if (es.isEmpty()) {
+  public Object invoke(Object... args) {
+    if (args.length == 0) {
       return SCMCons.NIL;
     }
-    if (es.size() == 1) {
-      return es.get(0);
+    if (args.length == 1) {
+      return args[0];
     }
-    Object result = es.get(0);
+    Object result = args[0];
     if (!SCMCons.isList(result)) {
       throw new WrongTypeException("List", result);
     }
 
-    for (int i = 1; i < es.size(); i++) {
-      Object current = es.get(i);
+    for (int i = 1; i < args.length; i++) {
+      Object current = args[i];
       /* Do not check last element */
-      if ((i != es.size() - 1) && !SCMCons.isList(current)) {
+      if ((i != args.length - 1) && !SCMCons.isList(current)) {
         throw new WrongTypeException("List", current);
       }
       result = append2(result, current);
