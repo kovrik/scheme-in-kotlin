@@ -5,6 +5,7 @@ import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.IFn;
+import core.procedures.delayed.SCMPromise;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
@@ -21,9 +22,7 @@ public class Evaluator implements IEvaluator {
   @Override
   public Object eval(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
-      /* Symbol */
-      if (((SCMSymbol) sexp).getValue().startsWith(",")) {
-        /* Meta */
+      if (((SCMSymbol)sexp).getValue().startsWith(",")) {
         return evmeta(((SCMSymbol) sexp).getValue());
       }
       /* Check if it is a Special Form */
@@ -48,8 +47,15 @@ public class Evaluator implements IEvaluator {
     if (list.isEmpty()) {
       throw new IllegalSyntaxException("Unexpected syntax in form " + list);
     }
-    /* Check if op is a Special Form */
+    /* Check if op is a Special Form.
+     * This is used for implicit Special Forms
+     * used in other Special Forms (like BEGIN in LAMBDA).
+     * We should be able to eval such forms even if user
+     * has redefined implicit Special Form */
     Object op = list.get(0);
+    if (op instanceof ISpecialForm) {
+      return ((ISpecialForm)op).eval(list, env, this);
+    }
     if (op instanceof SCMSymbol) {
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
@@ -60,17 +66,16 @@ public class Evaluator implements IEvaluator {
 
     /* Must be a procedure */
     Object fn = eval(op, env);
-    if (!(fn instanceof IFn)) {
+    if (!(fn instanceof IFn) || (fn instanceof SCMPromise)) {
       throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
     }
 
-    /* Evaluate arguments */
+    /* Evaluate arguments (because applicative order) */
     List<Object> args = new ArrayList<Object>(list.size() - 1);
     for (int i = 1; i < list.size(); i++) {
       args.add(eval(list.get(i), env));
     }
 
-    // FIXME Make generic as IFn?
     if (fn instanceof SCMProcedure) {
       IEnvironment closure = ((SCMProcedure)fn).getClosure();
       closure = (closure == null) ? env : closure;

@@ -460,7 +460,6 @@ public class SpecialFormTest {
     eval("(define lambda 1)", tempEnv);
     assertEquals(15L, eval("(+ begin if quote let lambda)", tempEnv));
     assertEquals(3L, eval("(and 1 2 3)", env));
-    // FIXME
-//    assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
+    assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
   }
 }

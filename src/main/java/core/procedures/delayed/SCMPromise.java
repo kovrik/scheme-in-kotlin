@@ -1,9 +1,7 @@
 package core.procedures.delayed;
 
-import core.scm.SCMSymbol;
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
 import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
 
 import java.util.List;
 
@@ -21,16 +19,6 @@ public class SCMPromise extends SCMProcedure {
 
   public void setResult(Object result) {
     this.result = result;
-  }
-
-  @Override
-  public Object apply(IEvaluator evaluator, IEnvironment env) {
-    if (this.result != null) {
-      return this.result;
-    }
-    Object result = super.apply(evaluator, env);
-    this.result = result;
-    return result;
   }
 
   @Override

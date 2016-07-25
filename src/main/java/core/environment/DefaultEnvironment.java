@@ -71,7 +71,7 @@ public final class DefaultEnvironment extends Environment {
     procs.add("(define (positive? n) (> n 0))");
     procs.add("(define (even? n) (= 0 (remainder n 2)))");
     procs.add("(define (odd? n) (not (even? n)))");
-    procs.add("(define (force p) (if (promise? p) (p) p))");
+//    procs.add("(define (force p) (if (promise? p) (p) p))");
 
     // simple map
     procs.add("(define (map proc lis)" +

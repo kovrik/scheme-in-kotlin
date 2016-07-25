@@ -56,7 +56,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
         }
         /* Add implicit `begin` */
-        SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
+        SCMCons<Object> body = SCMCons.list(BEGIN);
         /* Add all body forms */
         body.addAll(expression.subList(2, expression.size()));
 
@@ -96,7 +96,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       Object args = expression.get(1);
 
       /* Add implicit `begin` */
-      SCMCons<Object> body = SCMCons.list(BEGIN.symbol());
+      SCMCons<Object> body = SCMCons.list(BEGIN);
       body.addAll(expression.subList(2, expression.size()));
       /* Check if args is a proper list or a pair (cons) */
       if (args instanceof List) {
@@ -360,7 +360,7 @@ public enum SCMSpecialForm implements ISpecialForm {
           initValues.add(((List)binding).get(1));
         }
         Object lambdaBody = expression.get(3);
-        SCMCons lambda = SCMCons.list(LAMBDA.symbol(), lambdaArgs, lambdaBody);
+        SCMCons lambda = SCMCons.list(LAMBDA, lambdaArgs, lambdaBody);
         SCMSymbol name = (SCMSymbol)o;
         SCMCons<SCMCons> l = SCMCons.list();
         l.add(SCMCons.list(name, lambda));
@@ -368,7 +368,7 @@ public enum SCMSpecialForm implements ISpecialForm {
         SCMCons<Object> body = SCMCons.list(name);
         body.addAll(initValues);
 
-        SCMCons<Object> letrec = SCMCons.list(LETREC.symbol());
+        SCMCons<Object> letrec = SCMCons.list(LETREC);
         letrec.add(l);
         letrec.add(body);
         return LETREC.eval(letrec, new Environment(env), evaluator);
@@ -588,6 +588,35 @@ public enum SCMSpecialForm implements ISpecialForm {
         throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
       return new SCMPromise(Collections.emptyList(), expression.get(1));
+    }
+  },
+  FORCE("force") {
+    // FIXME Make it a Procedure, not a Special Form
+    /* Syntax:
+     * (force <promise>)
+     */
+    @Override
+    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+      if (expression.size() < 2) {
+        throw new IllegalSyntaxException("force: bad `delay` in form: " + expression);
+      }
+      /* Eval arg */
+      Object o = evaluator.eval(expression.get(1), env);
+      /* If arg is not a promise, then just return it */
+      if (!(o instanceof SCMPromise)) {
+        return o;
+      }
+      SCMPromise promise = (SCMPromise) o;
+      /* Check if we have already evaluated that promise */
+      Object result = promise.getResult();
+      if (result != null) {
+        return result;
+      } else {
+        /* Evaluate and set result */
+        result = evaluator.eval(promise.getBody(), env);
+        promise.setResult(result);
+      }
+      return result;
     }
   },
   ERROR("error") {
