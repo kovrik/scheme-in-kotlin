@@ -3,7 +3,7 @@ package core.scm;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SCMBoolean extends SCMSymbol {
+public class SCMBoolean extends SCMSymbol implements ISCMClass {
 
   public static final SCMBoolean TRUE  = new SCMBoolean("#t");
   public static final SCMBoolean FALSE = new SCMBoolean("#f");
@@ -15,6 +15,11 @@ public class SCMBoolean extends SCMSymbol {
     if (!"#t".equals(value) && !"#f".equals(value)) {
       throw new IllegalArgumentException("Unknown boolean: " + value);
     }
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.BOOLEAN;
   }
 
   static {

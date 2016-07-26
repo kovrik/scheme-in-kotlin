@@ -3,6 +3,7 @@ package core.procedures.delayed;
 import core.exceptions.ArityException;
 import core.exceptions.ReentrantPromiseException;
 import core.procedures.AFn;
+import core.scm.SCMPromise;
 
 public class Force extends AFn {
 

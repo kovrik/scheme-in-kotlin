@@ -5,15 +5,10 @@ import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.delayed.SCMPromise;
+import core.scm.*;
 import core.procedures.io.Display;
 import core.reader.IReader;
 import core.reader.Reader;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
-import core.scm.SCMVector;
-import core.scm.errors.SCMError;
 import core.scm.specialforms.SCMSpecialForm;
 import org.junit.Before;
 import org.junit.Test;
@@ -433,9 +428,22 @@ public class SpecialFormTest {
   @Test
   public void testEvalClassOf() {
     // class-of
-    assertEquals(Long.class.getName(), eval("(class-of 1)", env));
-    assertEquals(Double.class.getName(), eval("(class-of 1.0)", env));
-    assertEquals(SCMPromise.class.getName(), eval("(class-of (delay 1))", env));
+    assertEquals(SCMClass.INTEGER, eval("(class-of 1)", env));
+    assertEquals(SCMClass.INTEGER, eval("(class-of 9999999999999999999999999999999999)", env));
+    assertEquals(SCMClass.DOUBLE,  eval("(class-of 9999999999999999999999999999999999.000)", env));
+    assertEquals(SCMClass.DOUBLE,  eval("(class-of -1.0)", env));
+    assertEquals(SCMClass.STRING,  eval("(class-of \"test\")", env));
+    assertEquals(SCMClass.CHARACTER, eval("(class-of #\\A)", env));
+    assertEquals(SCMClass.SYMBOL, eval("(class-of 'test)", env));
+    assertEquals(SCMClass.CLASS, eval("(class-of (class-of 'test))", env));
+    assertEquals(SCMClass.VECTOR, eval("(class-of #(1 2 3))", env));
+    assertEquals(SCMClass.PAIR, eval("(class-of '(1 2 3))", env));
+    assertEquals(SCMClass.NIL, eval("(class-of '())", env));
+    assertEquals(SCMClass.BOOLEAN, eval("(class-of #t)", env));
+    assertEquals(SCMClass.BOOLEAN, eval("(class-of (= 1 2))", env));
+    assertEquals(SCMClass.PROCEDURE, eval("(class-of +)", env));
+    assertEquals(SCMClass.PROCEDURE, eval("(class-of (lambda (n) n))", env));
+    assertEquals(SCMClass.PROMISE, eval("(class-of (delay (+ 1 2)))", env));
   }
 
   @Test

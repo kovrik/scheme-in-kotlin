@@ -2,37 +2,61 @@ package core.procedures.system;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.procedures.IFn;
-import core.procedures.delayed.SCMPromise;
-import core.scm.SCMProcedure;
-import core.scm.specialforms.SCMSpecialForm;
+import core.scm.ISCMClass;
+import core.scm.SCMClass;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ClassOf extends AFn {
 
-  // TODO Create SCMClass class?
+  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<Class, SCMClass>();
+  static {
+    JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
+    JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);
+    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.DOUBLE);
+    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.DOUBLE);
+    JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.STRING);
+    JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
+    JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
+  }
 
   @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, "class-of");
     }
-
     Object object = args[0];
-    /* All special forms have the same SCMSpecialForm class */
-    if (SCMSpecialForm.class.equals(object.getClass().getSuperclass())) {
-      return SCMSpecialForm.class.getName();
+    if (object == null) {
+      return SCMClass.NIL;
     }
-    /* Promise is a procedure, but want it to have a separate class */
-    if (object instanceof SCMPromise) {
-      return SCMPromise.class.getName();
+
+    /* All custom SCM Classes should implement ISCMClass interface */
+    if (object instanceof ISCMClass) {
+      return ((ISCMClass)object).getSCMClass();
     }
-    /* Do not return exact class of procedure */
-    if (object instanceof SCMProcedure) {
-      return SCMProcedure.class.getName();
+
+    /* Must be a Java object */
+    if (object instanceof BigDecimal) {
+      /* Check if it is integral */
+      if (((BigDecimal)object).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+        return SCMClass.INTEGER;
+      }
+      return SCMClass.DOUBLE;
     }
-    if (object instanceof IFn) {
-      return IFn.class.getName();
+    /* Check Pair and Nil */
+    if (object instanceof List) {
+      if (((List) object).isEmpty()) {
+        return SCMClass.NIL;
+      }
+      return SCMClass.PAIR;
     }
-    return object.getClass().getName();
+    SCMClass scmClass = JAVA_TO_SCM_CLASSES.get(object.getClass());
+    if (scmClass == null) {
+      throw new IllegalArgumentException("Unknown class: " + object.getClass());
+    }
+    return scmClass;
   }
 }

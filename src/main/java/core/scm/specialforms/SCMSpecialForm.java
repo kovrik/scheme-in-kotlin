@@ -5,19 +5,15 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.delayed.SCMPromise;
+import core.scm.SCMPromise;
 import core.procedures.equivalence.Eqv;
-import core.scm.SCMBoolean;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
-import core.scm.errors.SCMError;
+import core.scm.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum SCMSpecialForm implements ISpecialForm {
+public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
 
   UNSPECIFIED("#<unspecified>") {
     @Override
@@ -625,5 +621,10 @@ public enum SCMSpecialForm implements ISpecialForm {
   @Override
   public String toString() {
     return syntax;
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.SPECIALFORM;
   }
 }

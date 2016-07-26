@@ -1,6 +1,6 @@
 package core.scm;
 
-public class SCMSymbol {
+public class SCMSymbol implements ISCMClass {
 
   private final String value;
 
@@ -10,6 +10,11 @@ public class SCMSymbol {
 
   public String getValue() {
     return value;
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.SYMBOL;
   }
 
   @Override

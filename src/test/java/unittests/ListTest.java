@@ -7,6 +7,7 @@ import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.reader.IReader;
 import core.reader.Reader;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
@@ -44,7 +45,7 @@ public class ListTest {
 
   @Test
   public void testEvalList() {
-    assertEquals(SCMCons.class.getName(), eval("(class-of (list 1 2 3 4 5))", env));
+    assertEquals(SCMClass.PAIR, eval("(class-of (list 1 2 3 4 5))", env));
     assertEquals(list(1L, 2L, 3L), eval("(list 1 2 3)", env));
   }
 

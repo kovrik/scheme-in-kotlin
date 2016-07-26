@@ -1,8 +1,11 @@
 package core.environment;
 
+import core.scm.ISCMClass;
+import core.scm.SCMClass;
+
 import java.util.*;
 
-public class Environment implements IEnvironment {
+public class Environment implements IEnvironment, ISCMClass {
 
   private Map<Object, Object> context = new HashMap<Object, Object>();
 
@@ -74,5 +77,10 @@ public class Environment implements IEnvironment {
   @Override
   public Set<Map.Entry<Object, Object>> entrySet() {
     return context.entrySet();
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.ENVIRONMENT;
   }
 }

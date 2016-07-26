@@ -1,8 +1,10 @@
 package core.procedures;
 
 import core.exceptions.ArityException;
+import core.scm.ISCMClass;
+import core.scm.SCMClass;
 
-public abstract class AFn implements IFn {
+public abstract class AFn implements IFn, ISCMClass {
 
   @Override
   public Object invoke(Object... args) {
@@ -20,5 +22,10 @@ public abstract class AFn implements IFn {
   @Override
   public String toString() {
     return "#<procedure " + getName() + ">";
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.PROCEDURE;
   }
 }

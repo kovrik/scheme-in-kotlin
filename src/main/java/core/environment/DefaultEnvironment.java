@@ -1,11 +1,9 @@
 package core.environment;
 
-import core.procedures.IFn;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
 import core.procedures.delayed.Force;
-import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
@@ -22,14 +20,10 @@ import core.procedures.system.ClassOf;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
 import core.scm.SCMBoolean;
-import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.scm.SCMVector;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.SCMSpecialForm;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,37 +31,23 @@ public final class DefaultEnvironment extends Environment {
 
   private static final List<String> procs = new ArrayList<>();
   static {
-    procs.add(String.format("(define (promise?   o) (string=? \"%s\" (class-of o)))", SCMPromise.class.getName()));
-    procs.add(String.format("(define (char?      o) (string=? \"%s\" (class-of o)))", Character.class.getName()));
-    procs.add(String.format("(define (string?    o) (string=? \"%s\" (class-of o)))", String.class.getName()));
-    procs.add(String.format("(define (vector?    o) (string=? \"%s\" (class-of o)))", SCMVector.class.getName()));
-    procs.add(String.format("(define (symbol?    o) (or (string=? \"%s\" (class-of o))" +
-                                                       "(string=? \"%s\" (class-of o))" + "))",
-                                                       SCMSymbol.class.getName(),
-                                                       SCMSpecialForm.class.getName()));
-
-    procs.add(String.format("(define (boolean?   o) (string=? \"%s\" (class-of o)))", SCMBoolean.class.getName()));
-    procs.add(String.format("(define (procedure? o) (or (string=? \"%s\" (class-of o))" +
-                                                       "(string=? \"%s\" (class-of o))" + "))",
-                                                       SCMProcedure.class.getName(),
-                                                       IFn.class.getName()));
-
-    procs.add(String.format("(define (number?    o) (or (string=? \"%s\" (class-of o)) " +
-                                                       "(string=? \"%s\" (class-of o))" +
-                                                       "(string=? \"%s\" (class-of o))" +
-                                                       "(string=? \"%s\" (class-of o))))",
-                                                       Long.class.getName(),
-                                                       Double.class.getName(),
-                                                       BigInteger.class.getName(),
-                                                       BigDecimal.class.getName()));
-
-    procs.add("(define (integer? x) (= x (round x)))");
+    procs.add("(define (promise?   o) (eq? (class-of (delay 1)) (class-of o)))");
+    procs.add("(define (char?      o) (eq? (class-of #\\A) (class-of o)))");
+    procs.add("(define (string?    o) (eq? (class-of \"str\") (class-of o)))");
+    procs.add("(define (vector?    o) (eq? (class-of #()) (class-of o)))");
+    procs.add("(define (symbol?    o) (eq? (class-of 'sym) (class-of o)))");
+    procs.add("(define (boolean?   o) (eq? (class-of #t) (class-of o)))");
+    procs.add("(define (procedure? o) (eq? (class-of (lambda () n)) (class-of o)))");
+    procs.add("(define (number?    o) (if  (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))))");
+    procs.add("(define (null?      o) (eq? (class-of '()) (class-of o)))");
+    procs.add("(define (pair?      o) (eq? (class-of (cons 1 2)) (class-of o)))");
 
     procs.add("(define (list . elements) elements)");
     procs.add("(define empty? null?)");
 
     // Miscellaneous predicates
     procs.add("(define (zero? n) (= n 0))");
+    procs.add("(define (integer? x) (= x (round x)))");
     procs.add("(define (negative? n) (< n 0))");
     procs.add("(define (positive? n) (> n 0))");
     procs.add("(define (even? n) (= 0 (remainder n 2)))");
@@ -230,14 +210,12 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("vector-fill!"), new VectorFill());
 
     /* Cons */
+    put(new SCMSymbol("list?"),  new IsList());
     put(new SCMSymbol("cons"),   new ConsProc());
     put(new SCMSymbol("car"),    new Car());
     put(new SCMSymbol("cdr"),    new Cdr());
     put(new SCMSymbol("set-car!"), new SetCar());
     put(new SCMSymbol("set-cdr!"), new SetCdr());
-    put(new SCMSymbol("pair?"),  new IsPair());
-    put(new SCMSymbol("null?"),  new IsNull());
-    put(new SCMSymbol("list?"),  new IsList());
     put(new SCMSymbol("append"), new Append());
     put(new SCMSymbol("reverse"), new Reverse());
     put(new SCMSymbol("list-tail"), new ListTail());

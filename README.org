@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [20/37]
+* TODO: [24/37]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -21,10 +21,11 @@ CLOSED: [2016-07-10 Sun 20:13]
 CLOSED: [2016-07-19 Tue 21:45]
 ** DONE [#A] Wrong type generic error
 CLOSED: [2016-07-20 Wed 22:51]
-** TODO [#A] Environment: Make key of type SCMSymbol?
-** TODO [#A] Equality for procedures?
+** DONE [#A] Equality for procedures?
+CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Properly implement IFn and Procedure classes
+CLOSED: [2016-07-26 Tue 23:00]
 ** TODO [#A] Make modifiable SCMString
-** TODO [#A] Properly implement IFn and Procedure classes
 ** TODO [#A] Refactor Environment creation and Lexical Binding
 ** TODO [#A] Do not create new Environments on eacn named let/letrec call
 ** TODO [#B] Make `append` proc iterative!
@@ -33,7 +34,8 @@ CLOSED: [2016-07-20 Wed 22:51]
 ** TODO [#C] Tail-call elimination
 ** TODO [#C] Proper LOGGING
 ** TODO [#C] Macroexpansion
-** TODO [#C] Correct error messages (Long -> Integer? etc.)
+** DONE [#C] Correct error messages (Long -> Integer? etc.)
+CLOSED: [2016-07-26 Tue 23:01]
 ** DONE Nil value
 CLOSED: [2016-07-02 Sat 19:54]
 ** DONE [#A] Internal (local) define
@@ -63,24 +65,29 @@ CLOSED: [2016-04-21 Thu 16:59]
 *** DONE [#A] REPL is not handling newlines/empty lines properly
 CLOSED: [2016-04-28 Thu 19:44]
 
-** TODO General [4/6]
+** DONE General [6/6]
+CLOSED: [2016-07-26 Tue 23:01]
 *** DONE [#A] Clojure or ***Scheme*** syntax? Or custom?
 CLOSED: [2016-04-28 Thu 19:45]
 *** DONE [#A] *Special Forms, Symbols -> Functions etc.*
 CLOSED: [2016-05-21 Sat 11:26]
-*** TODO [#B] Clean up code
-*** TODO [#B] Error handling
+*** DONE [#B] Clean up code
+CLOSED: [2016-07-26 Tue 23:01]
+*** DONE [#B] Error handling
+CLOSED: [2016-07-26 Tue 23:01]
 *** DONE [#B] Separate classes (Reader, Parser, Evaluator etc.)
 CLOSED: [2016-05-11 Wed 21:03]
 *** DONE [#B] Test coverage
 CLOSED: [2016-05-31 Tue 22:15]
 ** TODO Performance [0/2]
 *** TODO [#B] Caching
+*** TODO [#B] TCO 
+*** TODO [#B] Optimize environment creation 
 ** TODO Features [2/4]
 *** TODO [#B] Trampolining (explicit recur)
+*** TODO [#C] User-friendly REPL
 *** DONE [#C] Shortcut for lambda definition (define (name args) body)
 CLOSED: [2016-04-28 Thu 21:14]
-*** TODO [#C] User-friendly REPL
 *** DONE [#C] Automatic conversion to BigDecimal
 
 ** DONE Basics [4/4]

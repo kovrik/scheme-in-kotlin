@@ -6,7 +6,7 @@ import java.util.*;
 
 import static core.writer.Writer.write;
 
-public class SCMCons<E> extends LinkedList<E> implements ICons {
+public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   /* Nil constant: empty list, but not a pair */
   public static final SCMCons NIL = new SCMCons() {
@@ -20,6 +20,8 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
     public Object car() { throw new WrongTypeException("Pair", NIL); }
     @Override
     public Object cdr() { throw new WrongTypeException("Pair", NIL); }
+    @Override
+    public SCMClass getSCMClass() { return SCMClass.NIL; }
   };
 
   /* By default every cons is a cons, not a list */
@@ -86,6 +88,11 @@ public class SCMCons<E> extends LinkedList<E> implements ICons {
       setList(false);
       add((E)cdr);
     }
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.PAIR;
   }
 
   @Override

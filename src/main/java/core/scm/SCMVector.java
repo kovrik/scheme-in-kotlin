@@ -3,7 +3,7 @@ package core.scm;
 import java.util.Arrays;
 
 /* Mutable vector */
-public class SCMVector {
+public class SCMVector implements ISCMClass {
 
   private final Object[] vector;
 
@@ -42,6 +42,11 @@ public class SCMVector {
 
   public Object[] getArray() {
     return vector;
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.VECTOR;
   }
 
   @Override

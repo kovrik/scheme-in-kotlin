@@ -1,6 +1,9 @@
 package core.exceptions;
 
-public class ArityException extends IllegalArgumentException {
+import core.scm.ISCMClass;
+import core.scm.SCMClass;
+
+public class ArityException extends IllegalArgumentException implements ISCMClass {
 
   public ArityException(int actual, String name) {
     this(actual, name, null);
@@ -16,5 +19,10 @@ public class ArityException extends IllegalArgumentException {
 
   public ArityException(int actual, int expected, String name, Throwable cause) {
     super("Wrong number of arguments (actual: " + actual + ", expected: " + expected + ") passed to: " + name, cause);
+  }
+
+  @Override
+  public SCMClass getSCMClass() {
+    return SCMClass.ERROR;
   }
 }

@@ -1,10 +1,8 @@
-package core.procedures.delayed;
+package core.scm;
 
-import core.scm.SCMProcedure;
+import static core.scm.SCMPromise.State.PENDING;
 
-import static core.procedures.delayed.SCMPromise.State.PENDING;
-
-public class SCMPromise extends SCMProcedure {
+public class SCMPromise extends SCMProcedure implements ISCMClass {
 
   public enum State {
     PENDING,
@@ -38,7 +36,12 @@ public class SCMPromise extends SCMProcedure {
   }
 
   @Override
-  public String getName() {
+  public SCMClass getSCMClass() {
+    return SCMClass.PROMISE;
+  }
+
+  @Override
+  public String toString() {
     return "#<promise " + hashCode() + ": " + state + ">";
   }
 }

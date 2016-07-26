@@ -5,7 +5,7 @@ import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.IFn;
-import core.procedures.delayed.SCMPromise;
+import core.scm.SCMPromise;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
