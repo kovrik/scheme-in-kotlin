@@ -5,9 +5,9 @@ import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.IFn;
-import core.scm.SCMPromise;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
+import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
@@ -33,10 +33,9 @@ public class Evaluator implements IEvaluator {
       return o;
     } else if (!(sexp instanceof List)) {
       return sexp;
-    } else if (sexp instanceof List) {
+    } else {
       return evlis(sexp, env);
     }
-    throw new IllegalArgumentException("Evaluation error: " + sexp);
   }
 
   /**
@@ -56,6 +55,7 @@ public class Evaluator implements IEvaluator {
     if (op instanceof ISpecialForm) {
       return ((ISpecialForm)op).eval(list, env, this);
     }
+    /* Check if Symbol refers to a Special Form */
     if (op instanceof SCMSymbol) {
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
@@ -67,6 +67,7 @@ public class Evaluator implements IEvaluator {
     /* Must be a procedure */
     Object fn = eval(op, env);
     if (!(fn instanceof IFn) || (fn instanceof SCMPromise)) {
+      /* Can apply IFn only */
       throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
     }
 
@@ -76,28 +77,30 @@ public class Evaluator implements IEvaluator {
       args.add(eval(list.get(i), env));
     }
 
+    /* Scheme procedure */
     if (fn instanceof SCMProcedure) {
       IEnvironment closure = ((SCMProcedure)fn).getClosure();
       closure = (closure == null) ? env : closure;
       return apply((SCMProcedure)fn, args, closure);
     }
+
+    /* IFn */
     Object result = ((IFn)fn).invoke(args.toArray());
-    if ((result instanceof SCMPromise) && (((SCMPromise) result).getState() == SCMPromise.State.FORCED)) {
-      /* Handle Promise */
-      return evalPromise((SCMPromise)result, env);
+    if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
+      /* Handle forced Promise */
+      result = evalForcedPromise((SCMPromise)result, env);
     }
     return result;
   }
 
   private Object apply(SCMProcedure fn, List<Object> args, IEnvironment env) {
     List<SCMSymbol> params = fn.getParams();
-    /* Check arity */
-    if (!fn.isVariableArity() && (args.size() != params.size())) {
-      throw new ArityException(args.size(), params.size(), fn.getName());
-    }
-
     Map<Object, Object> values = new HashMap<Object, Object>(params.size());
     if (!fn.isVariableArity()) {
+      /* Check arity */
+      if (!fn.isVariableArity() && (args.size() != params.size())) {
+        throw new ArityException(args.size(), params.size(), fn.getName());
+      }
       for (int i = 0; i < params.size(); i++) {
         values.put(params.get(i), args.get(i));
       }
@@ -119,16 +122,16 @@ public class Evaluator implements IEvaluator {
   }
 
   /**
-   * Evaluate Promise
+   * Evaluate forced Promise
    */
-  private Object evalPromise(SCMPromise promise, IEnvironment env) {
-    if (promise.getState() == SCMPromise.State.FORCED) {
-      Object result = eval(promise.getBody(), env);
-      promise.setResult(result);
-      promise.setState(SCMPromise.State.FULFILLED);
-      return result;
-    }
-    return promise;
+  private Object evalForcedPromise(SCMPromise promise, IEnvironment env) {
+    /* Evaluate the body */
+    Object result = eval(promise.getBody(), env);
+    /* Memoize the result */
+    promise.setResult(result);
+    /* Mark Promise as FULFILLED */
+    promise.setState(SCMPromise.State.FULFILLED);
+    return result;
   }
 
   /**

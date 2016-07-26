@@ -2,7 +2,7 @@ package core.scm;
 
 import static core.scm.SCMPromise.State.PENDING;
 
-public class SCMPromise extends SCMProcedure implements ISCMClass {
+public class SCMPromise implements ISCMClass {
 
   public enum State {
     PENDING,
@@ -11,12 +11,17 @@ public class SCMPromise extends SCMProcedure implements ISCMClass {
     REJECTED
   }
 
+  private final Object body;
   private Object result;
   private State state;
 
   public SCMPromise(Object body) {
-    super("promise", null, body);
+    this.body = body;
     this.state = PENDING;
+  }
+
+  public Object getBody() {
+    return body;
   }
 
   public Object getResult() {
