@@ -13,7 +13,6 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.errors.SCMError;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -587,36 +586,7 @@ public enum SCMSpecialForm implements ISpecialForm {
       if (expression.size() < 2) {
         throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
-      return new SCMPromise(Collections.emptyList(), expression.get(1));
-    }
-  },
-  FORCE("force") {
-    // FIXME Make it a Procedure, not a Special Form
-    /* Syntax:
-     * (force <promise>)
-     */
-    @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      if (expression.size() < 2) {
-        throw new IllegalSyntaxException("force: bad `delay` in form: " + expression);
-      }
-      /* Eval arg */
-      Object o = evaluator.eval(expression.get(1), env);
-      /* If arg is not a promise, then just return it */
-      if (!(o instanceof SCMPromise)) {
-        return o;
-      }
-      SCMPromise promise = (SCMPromise) o;
-      /* Check if we have already evaluated that promise */
-      Object result = promise.getResult();
-      if (result != null) {
-        return result;
-      } else {
-        /* Evaluate and set result */
-        result = evaluator.eval(promise.getBody(), env);
-        promise.setResult(result);
-      }
-      return result;
+      return new SCMPromise(expression.get(1));
     }
   },
   ERROR("error") {

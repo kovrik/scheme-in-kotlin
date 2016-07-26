@@ -1,16 +1,24 @@
 package core.procedures.delayed;
 
 import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 
-import java.util.List;
+import static core.procedures.delayed.SCMPromise.State.PENDING;
 
 public class SCMPromise extends SCMProcedure {
 
-  private Object result;
+  public enum State {
+    PENDING,
+    FORCED, // TODO Get rid of this status
+    FULFILLED,
+    REJECTED
+  }
 
-  public SCMPromise(List<SCMSymbol> params, Object body) {
-    super("promise", params, body);
+  private Object result;
+  private State state;
+
+  public SCMPromise(Object body) {
+    super("promise", null, body);
+    this.state = PENDING;
   }
 
   public Object getResult() {
@@ -21,8 +29,16 @@ public class SCMPromise extends SCMProcedure {
     this.result = result;
   }
 
+  public State getState() {
+    return state;
+  }
+
+  public void setState(State state) {
+    this.state = state;
+  }
+
   @Override
   public String getName() {
-    return "#<promise " + hashCode() + ">";
+    return "#<promise " + hashCode() + ": " + state + ">";
   }
 }

@@ -81,7 +81,12 @@ public class Evaluator implements IEvaluator {
       closure = (closure == null) ? env : closure;
       return apply((SCMProcedure)fn, args, closure);
     }
-    return ((IFn)fn).invoke(args.toArray());
+    Object result = ((IFn)fn).invoke(args.toArray());
+    if ((result instanceof SCMPromise) && (((SCMPromise) result).getState() == SCMPromise.State.FORCED)) {
+      /* Handle Promise */
+      return evalPromise((SCMPromise)result, env);
+    }
+    return result;
   }
 
   private Object apply(SCMProcedure fn, List<Object> args, IEnvironment env) {
@@ -111,6 +116,19 @@ public class Evaluator implements IEvaluator {
       values.put(params.get(params.size() - 1), varargs);
     }
     return evlis(fn.getBody(), new Environment(values, env));
+  }
+
+  /**
+   * Evaluate Promise
+   */
+  private Object evalPromise(SCMPromise promise, IEnvironment env) {
+    if (promise.getState() == SCMPromise.State.FORCED) {
+      Object result = eval(promise.getBody(), env);
+      promise.setResult(result);
+      promise.setState(SCMPromise.State.FULFILLED);
+      return result;
+    }
+    return promise;
   }
 
   /**

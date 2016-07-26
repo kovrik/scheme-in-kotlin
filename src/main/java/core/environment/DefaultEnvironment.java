@@ -4,6 +4,7 @@ import core.procedures.IFn;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
+import core.procedures.delayed.Force;
 import core.procedures.delayed.SCMPromise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
@@ -120,9 +121,11 @@ public final class DefaultEnvironment extends Environment {
     put(SCMBoolean.TRUE,  SCMBoolean.TRUE);
     put(SCMBoolean.FALSE, SCMBoolean.FALSE);
 
-    put(new SCMSymbol("not"), new Negation());
+    /* Delayed */
+    put(new SCMSymbol("force"), new Force());
 
     /* Math */
+    put(new SCMSymbol("not"), new Negation());
     put(new SCMSymbol("+"),    new Addition());
     put(new SCMSymbol("-"),    new Subtraction());
     put(new SCMSymbol("*"),    new Multiplication());

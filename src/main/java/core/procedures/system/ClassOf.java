@@ -9,6 +9,8 @@ import core.scm.specialforms.SCMSpecialForm;
 
 public class ClassOf extends AFn {
 
+  // TODO Create SCMClass class?
+
   @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
