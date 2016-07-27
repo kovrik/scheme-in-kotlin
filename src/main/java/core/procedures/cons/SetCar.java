@@ -12,9 +12,14 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public class SetCar extends AFn {
 
   @Override
+  public String getName() {
+    return "set-car!";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 2) {
-      throw new ArityException(args.length, 2, "set-car!");
+      throw new ArityException(args.length, 2, getName());
 
     }
     Object p = args[0];

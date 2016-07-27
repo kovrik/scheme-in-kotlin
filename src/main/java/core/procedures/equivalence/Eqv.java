@@ -10,6 +10,11 @@ import java.util.List;
 public class Eqv extends AFn {
 
   @Override
+  public String getName() {
+    return "eqv?";
+  }
+
+  @Override
   public SCMBoolean invoke(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {

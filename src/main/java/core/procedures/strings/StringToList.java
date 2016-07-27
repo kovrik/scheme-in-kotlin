@@ -8,9 +8,14 @@ import core.scm.SCMCons;
 public class StringToList extends AFn {
 
   @Override
+  public String getName() {
+    return "string->list";
+  }
+
+  @Override
   public SCMCons<Character> invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "string->list");
+      throw new ArityException(args.length, 1, getName());
     }
     Object o = args[0];
     if (!(o instanceof String)) {

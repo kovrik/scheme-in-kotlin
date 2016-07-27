@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Truncate extends AFn {
 
   @Override
+  public String getName() {
+    return "truncate";
+  }
+
+  @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof Long) {
@@ -30,6 +35,6 @@ public class Truncate extends AFn {
       }
       throw new WrongTypeException("Number", args[0]);
     }
-    throw new ArityException(args.length, 1, "truncate");
+    throw new ArityException(args.length, 1, getName());
   }
 }

@@ -10,9 +10,14 @@ import java.util.List;
 public class Cdr extends AFn {
 
   @Override
+  public String getName() {
+    return "cdr";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "cdr");
+      throw new ArityException(args.length, 1, getName());
     }
     return cdr(args[0]);
   }

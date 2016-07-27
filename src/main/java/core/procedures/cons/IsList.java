@@ -10,9 +10,14 @@ import java.util.List;
 public class IsList extends AFn {
 
   @Override
+  public String getName() {
+    return "list?";
+  }
+
+  @Override
   public SCMBoolean invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "list?");
+      throw new ArityException(args.length, 1, getName());
     }
     return isList(args[0]);
   }

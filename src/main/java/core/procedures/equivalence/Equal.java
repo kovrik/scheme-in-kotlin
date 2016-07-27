@@ -6,6 +6,11 @@ import core.scm.SCMBoolean;
 public class Equal extends AFn {
 
   @Override
+  public String getName() {
+    return "equal?";
+  }
+
+  @Override
   public SCMBoolean invoke(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args.length > 1) {

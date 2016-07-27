@@ -8,6 +8,11 @@ import java.math.BigInteger;
 
 public class LCM extends AFn {
 
+  @Override
+  public String getName() {
+    return "lcm";
+  }
+
   private static long lcm(Long a, Long b) {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0L;

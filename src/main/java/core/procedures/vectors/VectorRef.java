@@ -8,9 +8,14 @@ import core.scm.SCMVector;
 public class VectorRef extends AFn {
 
   @Override
+  public String getName() {
+    return "vector-ref";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 2) {
-      throw new ArityException(args.length, 2, "vector-ref");
+      throw new ArityException(args.length, 2, getName());
     }
 
     Object o = args[0];

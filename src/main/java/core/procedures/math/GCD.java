@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class GCD extends AFn {
 
+  @Override
+  public String getName() {
+    return "gcd";
+  }
+
   public static long gcd(Long a, Long b) {
     while (b > 0) {
       long temp = b;

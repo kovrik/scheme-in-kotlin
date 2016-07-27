@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Subtraction extends AFn {
 
   @Override
+  public String getName() {
+    return "-";
+  }
+
+  @Override
   public Object invoke(Object... args) {
 
     if (args == null || args.length == 0) {

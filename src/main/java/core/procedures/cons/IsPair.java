@@ -10,9 +10,14 @@ import java.util.List;
 public class IsPair extends AFn {
 
   @Override
+  public String getName() {
+    return "pair?";
+  }
+
+  @Override
   public SCMBoolean invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "null?");
+      throw new ArityException(args.length, 1, getName());
     }
     return isPair(args[0]);
   }

@@ -7,9 +7,14 @@ import core.procedures.AFn;
 public class StringFill extends AFn {
 
   @Override
+  public String getName() {
+    return "string-fill!";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 2) {
-      throw new ArityException(args.length, 2, "string-fill!");
+      throw new ArityException(args.length, 2, getName());
     }
     Object o = args[0];
     if (!(o instanceof String)) {

@@ -8,9 +8,14 @@ import core.scm.SCMPromise;
 public class Force extends AFn {
 
   @Override
+  public String getName() {
+    return "force";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "force");
+      throw new ArityException(args.length, 1, getName());
     }
     Object o = args[0];
     if (!(o instanceof SCMPromise)) {

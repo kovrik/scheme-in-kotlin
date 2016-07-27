@@ -9,16 +9,21 @@ import java.math.BigDecimal;
 public class NumberToString extends AFn {
 
   @Override
+  public String getName() {
+    return "number->string";
+  }
+
+  @Override
   public String invoke(Object... args) {
     if (args.length < 1) {
-      throw new ArityException(args.length, "number->string");
+      throw new ArityException(args.length, getName());
     }
     Object o = args[0];
     if (!(o instanceof Number)) {
       throw new WrongTypeException("Number", o);
     }
     if (args.length > 2) {
-      throw new ArityException(args.length, "number->string");
+      throw new ArityException(args.length, getName());
     }
     Object o1 = null;
     if (args.length == 2) {
@@ -36,7 +41,7 @@ public class NumberToString extends AFn {
     }
     if (o instanceof Double) {
       if (radix != 10) {
-        throw new IllegalArgumentException("number->string: inexact numbers can only be printed in base 10");
+        throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
       }
       return o.toString();
     }
@@ -50,7 +55,7 @@ public class NumberToString extends AFn {
       if (bigDecimal.remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
         return bigDecimal.toBigInteger().toString(radix);
       }
-      throw new IllegalArgumentException("number->string: inexact numbers can only be printed in base 10");
+      throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
     }
     return o.toString();
   }

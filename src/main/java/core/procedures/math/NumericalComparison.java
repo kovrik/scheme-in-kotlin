@@ -26,6 +26,11 @@ public class NumericalComparison extends AFn {
     }
   }
 
+  @Override
+  public String getName() {
+    return type.getSyntax();
+  }
+
   private Type type;
 
   public NumericalComparison(Type type) {

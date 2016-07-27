@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Remainder extends AFn {
 
   @Override
+  public String getName() {
+    return "remainder";
+  }
+
+  @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
       if (!(args[0] instanceof Number)) {
@@ -19,12 +24,12 @@ public class Remainder extends AFn {
       }
       return invoke((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, 2, "remainder");
+    throw new ArityException(args.length, 2, getName());
   }
 
   public Number invoke(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
-      throw new ArithmeticException("Error: (remainder) undefined for 0");
+      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
     return first.remainder(second);
   }
@@ -43,13 +48,13 @@ public class Remainder extends AFn {
     if ((first instanceof Double) || (second instanceof Double)) {
       // check if they are integral
       if (first.doubleValue() != Math.floor(first.doubleValue())) {
-        throw new IllegalArgumentException("Error: (remainder) bad argument type - not an integer: " + first);
+        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
       }
       if (second.doubleValue() != Math.floor(second.doubleValue())) {
-        throw new IllegalArgumentException("Error: (remainder) bad argument type - not an integer: " + second);
+        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
       }
       if (second.intValue() == 0) {
-        throw new ArithmeticException("Error: (remainder) undefined for 0");
+        throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
       }
 
       double result = first.doubleValue() % second.doubleValue();
@@ -60,10 +65,10 @@ public class Remainder extends AFn {
       return result;
     } else if ((first instanceof Long) && (second instanceof Long)) {
       if (second.intValue() == 0) {
-        throw new ArithmeticException("Error: (remainder) undefined for 0");
+        throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
       }
       return (Long)first % (Long)second;
     }
-    throw new IllegalArgumentException("Wrong type argument to `remainder`");
+    throw new IllegalArgumentException(String.format("Wrong type argument to `%s`", getName()));
   }
 }

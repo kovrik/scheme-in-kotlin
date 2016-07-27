@@ -9,6 +9,11 @@ import static core.scm.SCMCons.NIL;
 public class Eq extends AFn {
 
   @Override
+  public String getName() {
+    return "eq?";
+  }
+
+  @Override
   public SCMBoolean invoke(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {

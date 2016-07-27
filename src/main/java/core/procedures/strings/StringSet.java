@@ -7,9 +7,14 @@ import core.procedures.AFn;
 public class StringSet extends AFn {
 
   @Override
+  public String getName() {
+    return "string-set!";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 3) {
-      throw new ArityException(args.length, 3, "string-set!");
+      throw new ArityException(args.length, 3, getName());
     }
 
     Object o = args[0];

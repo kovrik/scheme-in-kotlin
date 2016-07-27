@@ -8,6 +8,11 @@ import core.scm.SCMCons;
 public class Append extends AFn {
 
   @Override
+  public String getName() {
+    return "append";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length == 0) {
       return SCMCons.NIL;

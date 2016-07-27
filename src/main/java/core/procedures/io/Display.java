@@ -11,6 +11,11 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Display extends AFn {
 
+  @Override
+  public String getName() {
+    return "display";
+  }
+
   private static final IWriter writer = new Writer();
 
   private PrintStream printStream;
@@ -22,7 +27,7 @@ public class Display extends AFn {
   @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "display");
+      throw new ArityException(args.length, 1, getName());
     }
     Object arg = args[0];
     if (arg instanceof String) {

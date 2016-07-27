@@ -8,6 +8,11 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Newline extends AFn {
 
+  @Override
+  public String getName() {
+    return "newline";
+  }
+
   private PrintStream printStream;
 
   public Newline(PrintStream printStream) {

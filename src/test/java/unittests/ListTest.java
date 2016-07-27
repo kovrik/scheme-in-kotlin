@@ -264,7 +264,7 @@ public class ListTest {
     try {
       eval("(list-ref 1 2)", env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
     try {
       eval("(list-ref '(1 2) 2.5)", env);

@@ -24,9 +24,14 @@ public class ClassOf extends AFn {
   }
 
   @Override
+  public String getName() {
+    return "class-of";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "class-of");
+      throw new ArityException(args.length, 1, getName());
     }
     Object object = args[0];
     if (object == null) {

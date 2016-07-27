@@ -10,9 +10,14 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public class VectorSet extends AFn {
 
   @Override
+  public String getName() {
+    return "vector-set!";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 3) {
-      throw new ArityException(args.length, 3, "vector-set!");
+      throw new ArityException(args.length, 3, getName());
     }
     Object o = args[0];
     if (!(o instanceof SCMVector)) {

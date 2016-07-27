@@ -6,6 +6,11 @@ import core.procedures.AFn;
 public class StringAppend extends AFn {
 
   @Override
+  public String getName() {
+    return "string-append";
+  }
+
+  @Override
   public String invoke(Object... args) {
     if (args.length == 0) {
       return "";

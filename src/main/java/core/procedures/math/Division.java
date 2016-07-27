@@ -8,6 +8,11 @@ import java.math.BigDecimal;
 
 public class Division extends AFn {
 
+  @Override
+  public String getName() {
+    return "/";
+  }
+
   public Number invoke(Number numenator, Number denominator) {
     if ((numenator instanceof Long) &&
         (denominator instanceof Long) &&
@@ -32,7 +37,7 @@ public class Division extends AFn {
   @Override
   public Number invoke(Object... args) {
     if (args == null || args.length == 0) {
-      throw new ArityException(0, "/");
+      throw new ArityException(0, getName());
     }
     if (!(args[0] instanceof Number)) {
       throw new WrongTypeException("Number", args[0]);

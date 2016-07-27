@@ -8,6 +8,11 @@ import core.scm.SCMVector;
 public class VectorLength extends AFn {
 
   @Override
+  public String getName() {
+    return "vector-length";
+  }
+
+  @Override
   public Long invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof SCMVector) {
@@ -15,6 +20,6 @@ public class VectorLength extends AFn {
       }
       throw new WrongTypeException("Vector", args[0]);
     }
-    throw new ArityException(args.length, 1, "vector-length");
+    throw new ArityException(args.length, 1, getName());
   }
 }

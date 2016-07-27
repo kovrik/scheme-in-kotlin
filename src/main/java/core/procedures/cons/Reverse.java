@@ -10,9 +10,14 @@ import java.util.List;
 public class Reverse extends AFn {
 
   @Override
+  public String getName() {
+    return "reverse";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "reverse");
+      throw new ArityException(args.length, 1, getName());
     }
 
     Object l = args[0];

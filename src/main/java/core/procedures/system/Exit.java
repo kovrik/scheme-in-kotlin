@@ -8,6 +8,11 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public class Exit extends AFn {
 
   @Override
+  public String getName() {
+    return "exit";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length == 0) {
       System.exit(0);

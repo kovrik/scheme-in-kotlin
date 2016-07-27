@@ -10,9 +10,14 @@ import java.util.List;
 public class ListToString extends AFn {
 
   @Override
+  public String getName() {
+    return "list->string";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "list->string");
+      throw new ArityException(args.length, 1, getName());
     }
 
     Object o = args[0];

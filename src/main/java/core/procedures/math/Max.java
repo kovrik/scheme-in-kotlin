@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class Max extends AFn {
 
+  @Override
+  public String getName() {
+    return "max";
+  }
+
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);

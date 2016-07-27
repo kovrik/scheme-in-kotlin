@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class Addition extends AFn {
 
+  @Override
+  public String getName() {
+    return "+";
+  }
+
   public Number invoke(Object first, Object second) {
     if (!(first instanceof Number)) {
       throw new WrongTypeException("Number", first);

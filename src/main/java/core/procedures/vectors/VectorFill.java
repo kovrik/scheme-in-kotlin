@@ -12,6 +12,11 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public class VectorFill extends AFn {
 
   @Override
+  public String getName() {
+    return "vector-fill!";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args != null && args.length == 2) {
       if (args[0] instanceof SCMVector) {
@@ -21,6 +26,6 @@ public class VectorFill extends AFn {
       }
       throw new WrongTypeException("Vector", args[0]);
     }
-    throw new ArityException(args.length, 2, "vector-fill!");
+    throw new ArityException(args.length, 2, getName());
   }
 }

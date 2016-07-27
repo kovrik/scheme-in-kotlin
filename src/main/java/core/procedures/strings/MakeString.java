@@ -7,9 +7,14 @@ import core.procedures.AFn;
 public class MakeString extends AFn {
 
   @Override
+  public String getName() {
+    return "make-string";
+  }
+
+  @Override
   public String invoke(Object... args) {
     if (args.length < 1) {
-      throw new ArityException(args.length, "make-string");
+      throw new ArityException(args.length, getName());
     }
 
     Object o = args[0];
@@ -18,10 +23,10 @@ public class MakeString extends AFn {
     }
     Long s = (Long)o;
     if (s < 0) {
-      throw new IllegalArgumentException("Size value is out of range in `make-string`");
+      throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
     }
     if (args.length > 2) {
-      throw new ArityException(args.length, "make-string");
+      throw new ArityException(args.length, getName());
     }
     Object c = (args.length == 1) ? Character.MIN_VALUE : args[1];
     if (!(c instanceof Character)) {

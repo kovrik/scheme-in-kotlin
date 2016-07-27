@@ -7,9 +7,14 @@ import core.procedures.AFn;
 public class Substring extends AFn {
 
   @Override
+  public String getName() {
+    return "substring";
+  }
+
+  @Override
   public String invoke(Object... args) {
     if (args.length < 2) {
-      throw new ArityException(args.length, "substring");
+      throw new ArityException(args.length, getName());
     }
 
     Object o = args[0];
@@ -29,7 +34,7 @@ public class Substring extends AFn {
     long end = (long)s.length();
 
     if (args.length > 3) {
-      throw new ArityException(args.length, "substring");
+      throw new ArityException(args.length, getName());
     }
     Object oe = args[2];
     if (!(oe instanceof Long)) {

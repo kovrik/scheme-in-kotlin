@@ -10,9 +10,14 @@ import java.util.List;
 public class Car extends AFn {
 
   @Override
+  public String getName() {
+    return "car";
+  }
+
+  @Override
   public Object invoke(Object... args) {
     if (args.length != 1) {
-      throw new ArityException(args.length, 1, "car");
+      throw new ArityException(args.length, 1, getName());
     }
     return car(args[0]);
   }

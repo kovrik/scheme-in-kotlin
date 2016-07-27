@@ -12,6 +12,11 @@ public class Modulo extends AFn {
   private static final Remainder rem = new Remainder();
 
   @Override
+  public String getName() {
+    return "modulo";
+  }
+
+  @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
       if (!(args[0] instanceof Number)) {
@@ -22,12 +27,12 @@ public class Modulo extends AFn {
       }
       return invoke((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, 2, "modulo");
+    throw new ArityException(args.length, 2, getName());
   }
 
   public BigDecimal invoke(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
-      throw new ArithmeticException("Error: (modulo) undefined for 0");
+      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
     BigDecimal remainder = first.remainder(second);
     if (remainder.compareTo(BigDecimal.ZERO) == 0) {
@@ -53,13 +58,13 @@ public class Modulo extends AFn {
 
     // check if they are integral
     if (first.doubleValue() != Math.floor(first.doubleValue())) {
-      throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + first);
+      throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
     }
     if (second.doubleValue() != Math.floor(second.doubleValue())) {
-      throw new IllegalArgumentException("Error: (modulo) bad argument type - not an integer: " + second);
+      throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
     }
     if (second.intValue() == 0) {
-      throw new ArithmeticException("Error: (modulo) undefined for 0");
+      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
 
     Number m = rem.invoke(first, second);

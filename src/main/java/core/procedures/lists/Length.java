@@ -9,6 +9,11 @@ import java.util.List;
 public class Length extends AFn {
 
   @Override
+  public String getName() {
+    return "length";
+  }
+
+  @Override
   public Long invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof List) {
@@ -16,6 +21,6 @@ public class Length extends AFn {
       }
       throw new WrongTypeException("List", args[0]);
     }
-    throw new ArityException(args.length, 1, "length");
+    throw new ArityException(args.length, 1, getName());
   }
 }

@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Ceiling extends AFn {
 
   @Override
+  public String getName() {
+    return "ceiling";
+  }
+
+  @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof Long) {
@@ -21,6 +26,6 @@ public class Ceiling extends AFn {
       }
       throw new WrongTypeException("Number", args[0]);
     }
-    throw new ArityException(args.length, 1, "ceiling");
+    throw new ArityException(args.length, 1, getName());
   }
 }

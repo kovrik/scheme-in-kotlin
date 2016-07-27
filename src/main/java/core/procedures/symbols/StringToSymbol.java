@@ -8,6 +8,11 @@ import core.scm.SCMSymbol;
 public class StringToSymbol extends AFn {
 
   @Override
+  public String getName() {
+    return "string->symbol";
+  }
+
+  @Override
   public SCMSymbol invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof String) {
@@ -15,6 +20,6 @@ public class StringToSymbol extends AFn {
       }
       throw new WrongTypeException("String", args[0]);
     }
-    throw new ArityException(args.length, 1, "string->symbol");
+    throw new ArityException(args.length, 1, getName());
   }
 }

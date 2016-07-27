@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Expt extends AFn {
 
   @Override
+  public String getName() {
+    return "expt";
+  }
+
+  @Override
   public Number invoke(Object... args) {
     if (args != null && args.length == 2) {
       if (!(args[0] instanceof Number)) {
@@ -19,7 +24,7 @@ public class Expt extends AFn {
       }
       return invoke((Number)args[0], (Number)args[1]);
     }
-    throw new ArityException(args.length, 2, "expt");
+    throw new ArityException(args.length, 2, getName());
   }
 
   public Number invoke(Number first, Number second) {

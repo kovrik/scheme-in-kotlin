@@ -7,9 +7,14 @@ import core.procedures.AFn;
 public class StringToNumber extends AFn {
 
   @Override
+  public String getName() {
+    return "string->number";
+  }
+
+  @Override
   public String invoke(Object... args) {
     if (args.length < 1) {
-      throw new ArityException(args.length, "string->number");
+      throw new ArityException(args.length, getName());
     }
     Object o = args[0];
     if (!(o instanceof String)) {
@@ -22,7 +27,7 @@ public class StringToNumber extends AFn {
 
     /* Get radix */
     if (args.length > 2) {
-      throw new ArityException(args.length, "string->number");
+      throw new ArityException(args.length, getName());
     }
     Object o1 = null;
     if (args.length == 2) {

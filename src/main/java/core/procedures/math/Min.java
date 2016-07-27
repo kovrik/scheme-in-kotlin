@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class Min extends AFn {
 
+  @Override
+  public String getName() {
+    return "min";
+  }
+
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.min((Long)first, (Long)second);

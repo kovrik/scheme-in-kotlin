@@ -9,6 +9,11 @@ import core.scm.SCMVector;
 public class VectorToList extends AFn {
 
   @Override
+  public String getName() {
+    return "vector->list";
+  }
+
+  @Override
   public SCMCons invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof SCMVector) {
@@ -17,6 +22,6 @@ public class VectorToList extends AFn {
       }
       throw new WrongTypeException("Vector", args[0]);
     }
-    throw new ArityException(args.length, 1, "vector->list");
+    throw new ArityException(args.length, 1, getName());
   }
 }

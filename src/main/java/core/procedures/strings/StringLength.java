@@ -7,6 +7,11 @@ import core.procedures.AFn;
 public class StringLength extends AFn {
 
   @Override
+  public String getName() {
+    return "string-length";
+  }
+
+  @Override
   public Long invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof String) {
@@ -14,6 +19,6 @@ public class StringLength extends AFn {
       }
       throw new WrongTypeException("String", args[0]);
     }
-    throw new ArityException(args.length, 1, "string-length");
+    throw new ArityException(args.length, 1, getName());
   }
 }

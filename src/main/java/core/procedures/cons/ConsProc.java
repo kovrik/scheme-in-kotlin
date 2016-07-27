@@ -7,9 +7,14 @@ import core.scm.SCMCons;
 public class ConsProc extends AFn {
 
   @Override
+  public String getName() {
+    return "cons";
+  }
+
+  @Override
   public SCMCons invoke(Object... args) {
     if (args.length != 2) {
-      throw new ArityException(args.length, 2, "cons");
+      throw new ArityException(args.length, 2, getName());
     }
     return cons(args[0], args[1]);
   }

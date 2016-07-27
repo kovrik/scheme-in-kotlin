@@ -58,10 +58,7 @@ public class SCMProcedure extends AFn {
 
   @Override
   public String getName() {
-    if (name == null) {
-      return "#<procedure " + hashCode() + ">";
-    }
-    return name.getValue();
+    return name.toString();
   }
 
   public IEnvironment getClosure() {

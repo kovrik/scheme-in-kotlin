@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class Multiplication extends AFn {
 
+  @Override
+  public String getName() {
+    return "*";
+  }
+
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return (Long)first * (Long)second;
