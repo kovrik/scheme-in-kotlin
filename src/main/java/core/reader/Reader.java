@@ -88,7 +88,7 @@ public class Reader implements IReader {
 
   // TODO Create Reader for each Type
 
-  private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+  private static final SCMSymbol DOT = new SCMSymbol(".");
 
   private static final String LINE_BREAKS = "\n\f\r";
 
@@ -182,7 +182,11 @@ public class Reader implements IReader {
   public Object read(String string) {
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
-      return nextToken(reader);
+      Object token = nextToken(reader);
+      if (DOT.equals(token)) {
+        throw new IllegalSyntaxException("Illegal use of '.'");
+      }
+      return token;
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ParseException e) {
@@ -197,6 +201,9 @@ public class Reader implements IReader {
     try {
       Object token;
       while ((token = nextToken(reader)) == null) {/* Read */}
+      if (DOT.equals(token)) {
+        throw new IllegalSyntaxException("Illegal use of '.'");
+      }
       return token;
     } catch (IOException e) {
       e.printStackTrace();
@@ -259,7 +266,7 @@ public class Reader implements IReader {
     if (isValidForRadix(c, 'd')) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
-        return SCMSpecialForm.DOT.symbol();
+        return DOT;
       }
       reader.unread(c);
       /* Read identifier, not a number */
@@ -602,7 +609,7 @@ public class Reader implements IReader {
           list = SCMCons.list();
         }
         /* Check if current token is a dot */
-        if (SCMSpecialForm.DOT.symbol().equals(token)) {
+        if (DOT.equals(token)) {
           /* Remember the position */
           dotPos = pos;
         }

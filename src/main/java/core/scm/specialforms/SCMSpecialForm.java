@@ -17,12 +17,6 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
 
-  DOT(".") {
-    @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      return DOT;
-    }
-  },
   /* Fundamental forms */
   // TODO Check that internal definitions are at the beginning only!
   DEFINE("define") {
