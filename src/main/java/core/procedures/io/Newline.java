@@ -1,9 +1,10 @@
 package core.procedures.io;
 
 import core.procedures.AFn;
-import core.scm.specialforms.SCMSpecialForm;
 
 import java.io.PrintStream;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Newline extends AFn {
 
@@ -16,6 +17,6 @@ public class Newline extends AFn {
   @Override
   public Object invoke(Object... args) {
     printStream.println();
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }

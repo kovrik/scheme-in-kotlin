@@ -13,7 +13,7 @@ import org.junit.Test;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.*;
-import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 import static org.junit.Assert.*;
 
 public class VectorTest {

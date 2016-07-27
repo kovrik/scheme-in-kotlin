@@ -21,6 +21,8 @@ public class SCMClass implements ISCMClass {
   public static final SCMClass ERROR       = new SCMClass("Error");
   public static final SCMClass CLASS       = new SCMClass("Class");
 
+  public static final SCMClass UNSPECIFIED = new SCMClass("Unspecified");
+
   private final String name;
 
   public SCMClass(String name) {

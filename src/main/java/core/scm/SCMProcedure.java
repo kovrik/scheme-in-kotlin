@@ -40,10 +40,6 @@ public class SCMProcedure extends AFn {
     this.variableArity = variableArity;
   }
 
-  public SCMProcedure(String name, List<SCMSymbol> params, Object body) {
-    this(new SCMSymbol(name), params, body);
-  }
-
   public SCMProcedure(String name, List<SCMSymbol> params, Object body, IEnvironment closure) {
     this(new SCMSymbol(name), params, body, closure);
   }

@@ -2,11 +2,12 @@ package core.procedures.io;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.specialforms.SCMSpecialForm;
 import core.writer.IWriter;
 import core.writer.Writer;
 
 import java.io.PrintStream;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Display extends AFn {
 
@@ -29,6 +30,6 @@ public class Display extends AFn {
     } else {
       printStream.print(writer.toString(arg));
     }
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }

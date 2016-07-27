@@ -4,9 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
-import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.Arrays;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class VectorFill extends AFn {
 
@@ -16,7 +17,7 @@ public class VectorFill extends AFn {
       if (args[0] instanceof SCMVector) {
         SCMVector vector = (SCMVector) args[0];
         Arrays.fill(vector.getArray(), args[1]);
-        return SCMSpecialForm.UNSPECIFIED;
+        return UNSPECIFIED;
       }
       throw new WrongTypeException("Vector", args[0]);
     }

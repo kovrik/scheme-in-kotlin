@@ -4,9 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class SetCdr extends AFn {
 
@@ -35,6 +36,6 @@ public class SetCdr extends AFn {
         ((SCMCons)list).setList(false);
       }
     }
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }

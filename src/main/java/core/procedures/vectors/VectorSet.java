@@ -4,7 +4,8 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
-import core.scm.specialforms.SCMSpecialForm;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class VectorSet extends AFn {
 
@@ -28,6 +29,6 @@ public class VectorSet extends AFn {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }
     vec.set(pos.intValue(), args[2]);
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }

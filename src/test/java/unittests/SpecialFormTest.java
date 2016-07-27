@@ -19,7 +19,7 @@ import java.io.PrintStream;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.*;
-import static core.scm.specialforms.SCMSpecialForm.UNSPECIFIED;
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -311,9 +311,18 @@ public class SpecialFormTest {
   @Test
   public void testEvalLetRec() {
     String letrec1 = "(letrec ((is-even? (lambda (n) (or (= n 0) (is-odd? (- n 1))))) " +
-        "(is-odd?  (lambda (n) (and (not (= n 0)) (is-even? (- n 1))))))" +
-        "  (is-odd? 11))";
+                     "         (is-odd?  (lambda (n) (and (not (= n 0)) (is-even? (- n 1))))))" +
+                     "  (is-odd? 11))";
     assertEquals(TRUE, eval(letrec1, env));
+
+    String letrec2 = "(letrec ((a a)) a)";
+    assertEquals(UNSPECIFIED, eval(letrec2, env));
+
+    String letrec3 = "(letrec ((a a)) (set! a 1) a)";
+    assertEquals(1L, eval(letrec3, env));
+
+    String letrec4 = "(eq? (letrec ((a a)) a) (when #f 0) (letrec ((a a)) a))";
+    assertEquals(TRUE, eval(letrec4, env));
   }
 
   @Test

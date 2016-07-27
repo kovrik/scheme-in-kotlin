@@ -13,14 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static core.scm.SCMUnspecified.UNSPECIFIED;
+
 public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
 
-  UNSPECIFIED("#<unspecified>") {
-    @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      return UNSPECIFIED;
-    }
-  },
   DOT(".") {
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
@@ -416,20 +412,23 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
         throw new IllegalSyntaxException("letrec: bad letrec in form: " + expression);
       }
       IEnvironment localEnv = new Environment(env);
-      List bindings = (List)expression.get(1);
-      // TODO?
-//      for (Object binding : bindings) {
-//        Object var = ((List)binding).get(0);
-//        localEnv.put(var, UNSPECIFIED);
-//      }
-      for (Object binding : bindings) {
-        Object var  = ((List)binding).get(0);
-        Object init = ((List)binding).get(1);
+      List<List> bindings = (List<List>)expression.get(1);
+      /* Bind variables to fresh locations holding undefined values */
+      for (List binding : bindings) {
+        Object var = binding.get(0);
+        localEnv.put(var, UNSPECIFIED);
+      }
+      /* Evaluate inits */
+      for (List binding : bindings) {
+        Object var  = binding.get(0);
+        Object init = binding.get(1);
         localEnv.put(var, evaluator.eval(init, localEnv));
       }
+      /* Evaluate body */
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
+      /* Return the values of the last expression */
       return evaluator.eval(expression.get(expression.size() - 1), localEnv);
     }
   },

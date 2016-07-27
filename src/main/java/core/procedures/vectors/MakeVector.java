@@ -4,7 +4,8 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMVector;
-import core.scm.specialforms.SCMSpecialForm;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class MakeVector extends AFn {
 
@@ -21,7 +22,7 @@ public class MakeVector extends AFn {
     if (s < 0) {
       throw new IllegalArgumentException("Size value is out of range in `make-vector`");
     }
-    Object init = SCMSpecialForm.UNSPECIFIED;
+    Object init = UNSPECIFIED;
     if (args.length == 2) {
       init = args[1];
     } else if (args.length > 2) {

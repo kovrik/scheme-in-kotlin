@@ -2,7 +2,8 @@ package core.procedures.system;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.specialforms.SCMSpecialForm;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Exit extends AFn {
 
@@ -17,6 +18,6 @@ public class Exit extends AFn {
       }
       System.exit(((Long)o).intValue());
     }
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }

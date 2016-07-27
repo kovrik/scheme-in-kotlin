@@ -4,9 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMCons;
-import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.List;
+
+import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class SetCar extends AFn {
 
@@ -22,6 +23,6 @@ public class SetCar extends AFn {
     }
     List cons = (List)p;
     cons.set(0, args[1]);
-    return SCMSpecialForm.UNSPECIFIED;
+    return UNSPECIFIED;
   }
 }
