@@ -20,6 +20,9 @@ public class Force extends AFn {
     if (promise.getState() == SCMPromise.State.FULFILLED) {
       return promise.getResult();
     }
+    if (promise.getState() == SCMPromise.State.REJECTED) {
+      throw (RuntimeException)promise.getResult();
+    }
     if (promise.getState() == SCMPromise.State.FORCED) {
       throw new ReentrantPromiseException(promise);
     }

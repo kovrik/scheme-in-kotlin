@@ -1,6 +1,10 @@
 package core.scm;
 
+import core.writer.Writer;
+
+import static core.scm.SCMPromise.State.FULFILLED;
 import static core.scm.SCMPromise.State.PENDING;
+import static core.scm.SCMPromise.State.REJECTED;
 
 public class SCMPromise implements ISCMClass {
 
@@ -47,6 +51,13 @@ public class SCMPromise implements ISCMClass {
 
   @Override
   public String toString() {
-    return "#<promise " + hashCode() + ": " + state + ">";
+    StringBuilder sb = new StringBuilder("#<promise");
+    if (state == REJECTED) {
+      sb.append("!error!").append(Writer.write(result));
+    }
+    if (state == FULFILLED) {
+      sb.append("!").append(Writer.write(result));
+    }
+    return sb.append(">").toString();
   }
 }

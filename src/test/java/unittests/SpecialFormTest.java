@@ -92,6 +92,20 @@ public class SpecialFormTest {
     assertEquals(TRUE, eval("(promise? (delay 1.0))", env));
     assertEquals(3L, eval("(force (delay (+ 1 2)))", env));
     assertEquals(list(3L, 3L), eval("(let ((p (delay (+ 1 2))))(list (force p) (force p)))", env));
+
+    eval("(define perr (delay (error \"BOOM\")))", env);
+    try {
+      eval("(force perr)", env);
+      fail();
+    } catch (SCMError e) {
+      assertEquals("BOOM", e.getMessage());
+    }
+    try {
+      eval("(force perr)", env);
+      fail();
+    } catch (SCMError e) {
+      assertEquals("BOOM", e.getMessage());
+    }
   }
 
   @Test

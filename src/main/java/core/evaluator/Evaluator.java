@@ -126,11 +126,21 @@ public class Evaluator implements IEvaluator {
    */
   private Object evalForcedPromise(SCMPromise promise, IEnvironment env) {
     /* Evaluate the body */
-    Object result = eval(promise.getBody(), env);
-    /* Memoize the result */
-    promise.setResult(result);
-    /* Mark Promise as FULFILLED */
-    promise.setState(SCMPromise.State.FULFILLED);
+    Object result;
+    try {
+      result = eval(promise.getBody(), env);
+      /* Mark Promise as FULFILLED */
+      promise.setState(SCMPromise.State.FULFILLED);
+      /* Memoize the result */
+      promise.setResult(result);
+    } catch (Exception e) {
+      result = e;
+      /* Mark Promise as REJECTED */
+      promise.setState(SCMPromise.State.REJECTED);
+      /* Memoize the result */
+      promise.setResult(result);
+      throw e;
+    }
     return result;
   }
 

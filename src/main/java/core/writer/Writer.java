@@ -29,6 +29,9 @@ public class Writer implements IWriter {
       }
       return "#\\" + o;
     }
+    if (o instanceof Exception) {
+      return ((Exception) o).getMessage();
+    }
     return o.toString();
   }
 }
