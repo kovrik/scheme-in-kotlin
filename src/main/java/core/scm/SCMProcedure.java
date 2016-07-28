@@ -7,70 +7,66 @@ import core.procedures.AFn;
 import java.util.Collections;
 import java.util.List;
 
+/* Lambda */
 public class SCMProcedure extends AFn {
 
-  private SCMSymbol name;
-  private List<SCMSymbol> params;
+  private String name;
+
+  /* List of arguments the procedure expects */
+  private List<SCMSymbol> args;
+
+  /* Body form of the procedure */
   private Object body;
 
-  // TODO Implement as a separate class?
-  private IEnvironment closure = null;
+  /* Lexical environment */
+  private IEnvironment localEnvironment = null;
 
-  private boolean variableArity = false;
+  /* Is it a variadic function? False by default.
+   * If set to `true`, then list of all optional params is bound to the last argument */
+  private boolean isVariadic = false;
 
-  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body) {
+  public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment) {
     this.name = name;
-    this.params = (params == null) ? Collections.emptyList() : params;
+    this.args = (args == null) ? Collections.emptyList() : args;
     this.body = body;
-    this.closure = null;
+    this.localEnvironment = localEnvironment;
   }
 
-  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure) {
+  public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment, boolean isVariadic) {
     this.name = name;
-    this.params = (params == null) ? Collections.emptyList() : params;
+    this.args = (args == null) ? Collections.emptyList() : args;
     this.body = body;
-    this.closure = closure;
-  }
-
-  public SCMProcedure(SCMSymbol name, List<SCMSymbol> params, Object body, IEnvironment closure, boolean variableArity) {
-    this.name = name;
-    this.params = (params == null) ? Collections.emptyList() : params;
-    this.body = body;
-    this.closure = closure;
-    this.variableArity = variableArity;
-  }
-
-  public SCMProcedure(String name, List<SCMSymbol> params, Object body, IEnvironment closure) {
-    this(new SCMSymbol(name), params, body, closure);
-  }
-
-  public SCMProcedure(String name, List<SCMSymbol> params, Object body, IEnvironment closure, boolean variableArity) {
-    this(new SCMSymbol(name), params, body, closure, variableArity);
+    this.localEnvironment = localEnvironment;
+    this.isVariadic = isVariadic;
   }
 
   public Object getBody() {
     return body;
   }
 
-  public List<SCMSymbol> getParams() {
-    return params;
+  public List<SCMSymbol> getArgs() {
+    return args;
   }
 
   @Override
   public String getName() {
-    return name.toString();
+    return name;
   }
 
-  public IEnvironment getClosure() {
-    return closure;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public IEnvironment getLocalEnvironment() {
+    return localEnvironment;
   }
 
   @Override
   public Object throwArity(int actual) {
-    throw new ArityException(actual, params.size(), name.getValue());
+    throw new ArityException(actual, args.size(), name);
   }
 
-  public boolean isVariableArity() {
-    return variableArity;
+  public boolean isVariadic() {
+    return isVariadic;
   }
 }

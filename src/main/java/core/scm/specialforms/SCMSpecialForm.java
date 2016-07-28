@@ -5,7 +5,6 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMPromise;
 import core.procedures.equivalence.Eqv;
 import core.scm.*;
 
@@ -27,37 +26,24 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      Object definition = expression.get(1);
-      if (definition instanceof SCMSymbol) {
-        /* Normal definition */
+      Object id = expression.get(1);
+      if (id instanceof SCMSymbol) {
+        /* Variable definition */
         Object body = expression.get(2);
-        env.put(definition, evaluator.eval(body, env));
-      } else if (definition instanceof SCMCons) {
+        env.put(id, evaluator.eval(body, env));
+      } else if (id instanceof SCMCons) {
         /* Function shorthand definition
          * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
          *              |   0   | 1 definition           | 3 body      |
          */
-        if (((SCMCons) definition).isEmpty()) {
-          throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
-        }
-        /* Add implicit `begin` */
-        SCMCons<Object> body = SCMCons.list(BEGIN);
-        /* Add all body forms */
-        body.addAll(expression.subList(2, expression.size()));
-
-        /* Get name and remove it */
-        SCMSymbol name = (SCMSymbol)((SCMCons)definition).pop();
-        /* Everything that remains should be a list of params */
-        /* Check if it is a cons, not a list (hence, we have a dotted notation) */
-        if (((SCMCons)definition).isList()) {
-          /* No varargs */
-          env.put(name, new SCMProcedure(name, (SCMCons<SCMSymbol>) definition, body, env, false));
-        } else {
-          /* Varargs */
-          /* Flatten chain of conses into a list of params */
-          List<SCMSymbol> params = SCMCons.flatten((List<SCMSymbol>)definition);
-          env.put(name, new SCMProcedure(name, params, body, env, true));
-        }
+        /* Get procedure's name */
+        SCMSymbol name = (SCMSymbol)((SCMCons)id).pop();
+        /* Evaluate lambda */
+        expression.set(0, LAMBDA);
+        SCMProcedure lambda = (SCMProcedure)LAMBDA.eval(expression, env, evaluator);
+        /* Set name */
+        lambda.setName(name.getValue());
+        env.put(name, lambda);
       } else {
         throw new IllegalSyntaxException("define: bad `define` in form: " + expression);
       }
@@ -78,17 +64,26 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
       }
-      Object args = expression.get(1);
-
       /* Add implicit `begin` */
       SCMCons<Object> body = SCMCons.list(BEGIN);
       body.addAll(expression.subList(2, expression.size()));
-      /* Check if args is a proper list or a pair (cons) */
+      /* Check if args is a List or not */
+      Object args = expression.get(1);
       if (args instanceof List) {
-        return new SCMProcedure("", (List<SCMSymbol>)args, body, env);
+        /* (lambda (arg-id ...+) body ...+) OR
+         * (lambda (arg-id ...+ . rest-id) body ...+) */
+        if (SCMCons.isList(args)) {
+          /* args is a proper list, hence non-variadic lambda */
+          return new SCMProcedure("", (List<SCMSymbol>)args, body, env);
+        } else {
+          /* args is an improper list, hence variadic lambda */
+          List<SCMSymbol> params = SCMCons.flatten((List<SCMSymbol>)args);
+          return new SCMProcedure("", params, body, env, true);
+        }
       } else {
         /* Variadic arity */
-        return new SCMProcedure("", SCMCons.list((SCMSymbol)expression.get(1)), body, env, true);
+        /* (lambda rest-id body ...+) */
+        return new SCMProcedure("", SCMCons.list((SCMSymbol)args), body, env, true);
       }
     }
   },
@@ -115,25 +110,6 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
       }
     }
   },
-  WHEN("when") {
-    /* Syntax:
-     * (if <test> <consequent1> ...)
-     */
-    @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      if (expression.size() <= 1) {
-        throw new ArityException(0, toString());
-      }
-      boolean test = SCMBoolean.valueOf(evaluator.eval(expression.get(1), env));
-      Object result = UNSPECIFIED;
-      if (test && expression.size() > 1) {
-        for (int i = 2; i < expression.size(); i++) {
-          result = evaluator.eval(expression.get(i), env);
-        }
-      }
-      return result;
-    }
-  },
   QUOTE("quote") {
     /* Literal expressions
      * Syntax:
@@ -143,11 +119,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      */
     @Override
     public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
-      Object form = expression.get(1);
-      if ((form instanceof SCMCons) && (((SCMCons)form).isEmpty())) {
-        return SCMCons.NIL;
-      }
-      return form;
+      return expression.get(1);
     }
   },
   UNQUOTE("unquote") {

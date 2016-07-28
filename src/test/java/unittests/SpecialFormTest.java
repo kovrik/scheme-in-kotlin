@@ -118,6 +118,14 @@ public class SpecialFormTest {
     assertEquals(8L, eval("(fib 5)", env));
 
     assertEquals(6L, eval("((lambda (n) (+ n 1)) 5)", env));
+
+    // rest arguments
+    assertEquals(list(1L, 2L, 3L), eval("((lambda x x) 1 2 3)", env));
+    assertEquals(NIL, eval("((lambda x x))", env));
+    assertEquals(1L, eval("((lambda x (car x)) 1 2 3)", env));
+    assertEquals(1L, eval("((lambda (f s . rs) f) 1 2 3 4)", env));
+    assertEquals(2L, eval("((lambda (f s . rs) s) 1 2 3 4)", env));
+    assertEquals(list(3L, 4L), eval("((lambda (f s . rs) rs) 1 2 3 4)", env));
   }
 
   @Test
@@ -200,12 +208,6 @@ public class SpecialFormTest {
     assertEquals(new SCMSymbol("no"), eval("(if (> 2 3) 'yes 'no)", env));
     assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env));
     assertEquals(UNSPECIFIED, eval("(if #f 5)", env));
-  }
-
-  @Test
-  public void testEvalWhen() {
-    assertEquals(0L, eval("(when #t 5 4 3 2 1 0)", env));
-    assertEquals(UNSPECIFIED, eval("(when #f 5 4 3 2 1 0)", env));
   }
 
   @Test
@@ -335,7 +337,7 @@ public class SpecialFormTest {
     String letrec3 = "(letrec ((a a)) (set! a 1) a)";
     assertEquals(1L, eval(letrec3, env));
 
-    String letrec4 = "(eq? (letrec ((a a)) a) (when #f 0) (letrec ((a a)) a))";
+    String letrec4 = "(eq? (letrec ((a a)) a) (if #f 0) (letrec ((a a)) a))";
     assertEquals(TRUE, eval(letrec4, env));
   }
 

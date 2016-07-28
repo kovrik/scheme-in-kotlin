@@ -13,9 +13,7 @@ import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Evaluator implements IEvaluator {
 
@@ -79,9 +77,7 @@ public class Evaluator implements IEvaluator {
 
     /* Scheme procedure */
     if (fn instanceof SCMProcedure) {
-      IEnvironment closure = ((SCMProcedure)fn).getClosure();
-      closure = (closure == null) ? env : closure;
-      return apply((SCMProcedure)fn, args, closure);
+      return apply((SCMProcedure)fn, args);
     }
 
     /* IFn */
@@ -93,32 +89,39 @@ public class Evaluator implements IEvaluator {
     return result;
   }
 
-  private Object apply(SCMProcedure fn, List<Object> args, IEnvironment env) {
-    List<SCMSymbol> params = fn.getParams();
-    Map<Object, Object> values = new HashMap<Object, Object>(params.size());
-    if (!fn.isVariableArity()) {
-      /* Check arity */
-      if (!fn.isVariableArity() && (args.size() != params.size())) {
-        throw new ArityException(args.size(), params.size(), fn.getName());
-      }
-      for (int i = 0; i < params.size(); i++) {
-        values.put(params.get(i), args.get(i));
-      }
-    } else {
-      /* Variadic arity procedure */
-      /* Check arity */
-      if (args.size() < params.size() - 1) {
-        throw new ArityException(args.size(), fn.getName());
-      }
-      /* Put mandatory params first */
-      for (int i = 0; i < params.size() - 1; i++) {
-        values.put(params.get(i), args.get(i));
-      }
-      /* Then rest */
-      List<Object> varargs = SCMCons.list(args.subList(params.size() - 1, args.size()));
-      values.put(params.get(params.size() - 1), varargs);
+  /**
+   * Apply SCMProcedure
+   */
+  private Object apply(SCMProcedure fn, List<Object> args) {
+    List<SCMSymbol> params = fn.getArgs();
+
+    /* Variadic procedures keep last param to store list of rest (optional) params */
+    int mandatoryParamsSize = fn.isVariadic() ? params.size() - 1 : params.size();
+
+    /* Check arity (mandatory params):
+     * - non-variadic function should get expected number of mandatory arguments
+     * - variadic function should get expected number of mandatory arguments or more (but not less) */
+    if ((fn.isVariadic()  && (args.size() <  mandatoryParamsSize)) ||
+        (!fn.isVariadic() && (args.size() != mandatoryParamsSize))) {
+
+      throw new ArityException(args.size(), params.size(), fn.getName());
     }
-    return evlis(fn.getBody(), new Environment(values, env));
+    // TODO Is it always necessary to create new local Environment every time?
+    /* Evaluate mandatory params and put values into new local environment */
+    IEnvironment localEnvironment = new Environment(fn.getLocalEnvironment());
+    for (int i = 0; i < mandatoryParamsSize; i++) {
+      localEnvironment.put(params.get(i), args.get(i));
+    }
+
+    /* If it is a variadic function, then evaluate rest params */
+    if (fn.isVariadic()) {
+      /* Optional params: pass them as a list bound to the last param.
+       * Everything AFTER mandatory params goes to that list. */
+      List<Object> varargs = SCMCons.list(args.subList(mandatoryParamsSize, args.size()));
+      localEnvironment.put(params.get(mandatoryParamsSize), varargs);
+    }
+    /* Closure is ready to be evaluated */
+    return evlis(fn.getBody(), localEnvironment);
   }
 
   /**

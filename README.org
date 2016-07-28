@@ -162,8 +162,6 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-**** DONE when 
-CLOSED: [2016-05-11 Wed 21:43]
 ** TODO Standard procedures [9/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
