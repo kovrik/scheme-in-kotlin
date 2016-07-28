@@ -25,7 +25,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (define (<variable> . <formal>) <body>)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object id = expression.get(1);
       if (id instanceof SCMSymbol) {
         /* Variable definition */
@@ -60,7 +60,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (<variable1> ... <variablen> . <variablen+1>)
      */
     @Override
-    public SCMProcedure eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public SCMProcedure eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
       }
@@ -93,7 +93,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (if <test> <consequent>)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() > 4) {
         throw new IllegalSyntaxException(String.format("if: bad syntax: has %s parts after keyword", expression.size() - 1));
       }
@@ -103,6 +103,8 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
         return evaluator.eval(consequence, env);
       } else {
         if (expression.size() < 4) {
+          /* Here we make `if` behave like `when` if no alternative is specified.
+           * Another option is to throw an exception (if: missing an "else" expression) */
           return UNSPECIFIED;
         }
         Object alternative = expression.get(3);
@@ -118,56 +120,56 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * <constant>
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return expression.get(1);
     }
   },
   UNQUOTE("unquote") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   UNQUOTE_SPLICING("unquote-splicing") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   QUASIQUOTE("quasiquote") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       return expression.get(1);
     }
   },
   DEFINE_SYNTAX("define-syntax") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LET_SYNTAX("let-syntax") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   LETREC_SYNTAX("letrec-syntax") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
   SYNTAX_RULES("syntax-rules") {
     // TODO
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       throw new UnsupportedOperationException("NOT IMPLEMENTED!");
     }
   },
@@ -176,7 +178,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (set! <variable> <expression>)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       env.findAndPut(expression.get(1), evaluator.eval(expression.get(2), env));
       return UNSPECIFIED;
     }
@@ -190,7 +192,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * <clause>:   (<test> <expression> ...),
      **/
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("do: bad syntax");
       }
@@ -275,13 +277,15 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * <bindings>: ((<variable1> <init1>) ...)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let: bad let in form: " + expression);
       }
-
+      /* Normal let:
+       * (let ((id expr) ...) body ...+) */
       if (expression.get(1) instanceof List) {
         IEnvironment localEnv = new Environment(env);
+        /* Evaluate inits */
         List bindings = (List) expression.get(1);
         for (Object binding : bindings) {
           Object var  = ((List)binding).get(0);
@@ -292,19 +296,22 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
           localEnv.put(var, evaluator.eval(init, env));
         }
 
+        /* Evaluate body */
         for (int i = 2; i < expression.size() - 1; i++) {
           evaluator.eval(expression.get(i), localEnv);
         }
+        /* Return the values of the last expression */
         return evaluator.eval(expression.get(expression.size() - 1), localEnv);
 
       } else if (expression.get(1) instanceof SCMSymbol) {
         // TODO Optimize and cleanup
-        /* Named let via letrec */
+        /* Named let:
+         * (let proc-id ((arg-id init-expr) ...) body ...+) */
         Object o = expression.get(1);
         if (!(o instanceof SCMSymbol)) {
           throw new IllegalSyntaxException("let: bad let in form: " + expression);
         }
-        // lambda
+        /* Construct lambda */
         SCMCons<Object> lambdaArgs = SCMCons.list();
         SCMCons<Object> initValues = SCMCons.list();
         List bindings = (List)expression.get(2);
@@ -325,6 +332,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
         SCMCons<Object> body = SCMCons.list(name);
         body.addAll(initValues);
 
+        /* Named let is implemented via letrec */
         SCMCons<Object> letrec = SCMCons.list(LETREC);
         letrec.add(l);
         letrec.add(body);
@@ -340,21 +348,23 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * <bindings>: ((<variable1> <init1>) ...)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("let*: bad let* in form: " + expression);
       }
       IEnvironment localEnv = new Environment(env);
       List bindings = (List)expression.get(1);
+      /* Evaluate inits */
       for (Object binding : bindings) {
         Object var  = ((List)binding).get(0);
         Object init = ((List)binding).get(1);
         localEnv.put(var, evaluator.eval(init, localEnv));
       }
-
+      /* Evaluate body */
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
+      /* Return the values of the last expression */
       return evaluator.eval(expression.get(expression.size() - 1), localEnv);
     }
   },
@@ -373,7 +383,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 3) {
         throw new IllegalSyntaxException("letrec: bad letrec in form: " + expression);
       }
@@ -411,7 +421,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
     private final SCMSymbol ELSE = new SCMSymbol("else");
 
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
       }
@@ -454,7 +464,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
     private final SCMSymbol ELSE = new SCMSymbol("else");
 
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() <= 1) {
         throw new IllegalSyntaxException("Source expression failed to match any pattern in form (case)");
       }
@@ -495,7 +505,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (and <test1> ...)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object result = SCMBoolean.TRUE;
       if (expression.size() > 1) {
         for (int i = 1; i < expression.size(); i++) {
@@ -513,7 +523,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (or <test1> ...)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object eval = SCMBoolean.FALSE;
       if (expression.size() > 1) {
         for (Object arg : expression.subList(1, expression.size())) {
@@ -531,7 +541,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (begin <expression1> <expression2> ...)
      */
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       for (int i = 1; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), env);
       }
@@ -543,7 +553,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (delay <expression>)
      */
     @Override
-    public SCMPromise eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public SCMPromise eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() < 2) {
         throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
@@ -552,9 +562,9 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
   },
   ERROR("error") {
     @Override
-    public Object eval(List expression, IEnvironment env, IEvaluator evaluator) {
+    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       if (expression.size() > 2) {
-        throw new ArityException(expression.size() - 1, "error");
+        throw new ArityException(expression.size() - 1, 1, "error");
       }
       throw new SCMError(evaluator.eval(expression.get(1), env).toString());
     }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ISpecialForm {
 
-  Object eval(List expression, IEnvironment env, IEvaluator evaluator);
+  Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator);
 }

@@ -64,23 +64,23 @@ public class Evaluator implements IEvaluator {
 
     /* Must be a procedure */
     Object fn = eval(op, env);
-    if (!(fn instanceof IFn) || (fn instanceof SCMPromise)) {
+    if (!(fn instanceof IFn)) {
       /* Can apply IFn only */
       throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
     }
 
-    /* Evaluate arguments (because applicative order) */
+    /* Evaluate arguments first (because applicative order) */
     List<Object> args = new ArrayList<Object>(list.size() - 1);
     for (int i = 1; i < list.size(); i++) {
       args.add(eval(list.get(i), env));
     }
 
-    /* Scheme procedure */
+    /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
       return apply((SCMProcedure)fn, args);
     }
 
-    /* IFn */
+    /* IFn (built-in Java function) */
     Object result = ((IFn)fn).invoke(args.toArray());
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
       /* Handle Promise forced to evaluation by Force procedure */
