@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 
 public class GCD extends AFn {
 
+  private static final Abs ABS = new Abs();
+
   @Override
   public String getName() {
     return "gcd";
@@ -65,13 +67,7 @@ public class GCD extends AFn {
         throw new WrongTypeException("Integer", result);
       }
       if (args.length == 1) {
-        if (args[0] instanceof Long) {
-          return Math.abs((Long)args[0]);
-        } else if (args[0] instanceof Double) {
-          return Math.abs((Double) args[0]);
-        } else if (args[0] instanceof BigDecimal) {
-          return ((BigDecimal)args[0]).abs();
-        }
+        return ABS.invoke(args[0]);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;

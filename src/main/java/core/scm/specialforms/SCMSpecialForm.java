@@ -215,7 +215,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
         }
         Object variable = ((List) binding).get(0);
         Object init = ((List) binding).get(1);
-        Object step = null;
+        Object step;
         if (((List) binding).size() == 3) {
           step = ((List) binding).get(2);
           /* Put pair of Var and Step */

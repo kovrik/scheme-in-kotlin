@@ -15,7 +15,7 @@ public class StringCopy extends AFn {
   public String invoke(Object... args) {
     if (args != null && args.length == 1) {
       if (args[0] instanceof String) {
-        return new String((String)args[0]);
+        return args[0].toString();
       }
       throw new WrongTypeException("String", args[0]);
     }

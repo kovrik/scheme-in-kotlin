@@ -31,8 +31,8 @@ public class Substring extends AFn {
     if ((start < 0) || (start >= s.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", start));
     }
-    long end = (long)s.length();
 
+    long end;
     if (args.length > 3) {
       throw new ArityException(args.length, getName());
     }

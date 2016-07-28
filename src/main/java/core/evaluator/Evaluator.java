@@ -81,9 +81,11 @@ public class Evaluator implements IEvaluator {
     }
 
     /* IFn (built-in Java function) */
+    // TODO Introduce 0,1,2..N-arity invoke() to improve performance?
     Object result = ((IFn)fn).invoke(args.toArray());
+
+    /* Handle Promise forced to evaluation by Force procedure */
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
-      /* Handle Promise forced to evaluation by Force procedure */
       result = evalForcedPromise((SCMPromise)result, env);
     }
     return result;
@@ -92,6 +94,7 @@ public class Evaluator implements IEvaluator {
   /**
    * Apply SCMProcedure
    */
+  // TODO Replace args with Object[] array?
   private Object apply(SCMProcedure fn, List<Object> args) {
     List<SCMSymbol> params = fn.getArgs();
 
