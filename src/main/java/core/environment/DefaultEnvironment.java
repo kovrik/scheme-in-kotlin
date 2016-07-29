@@ -21,7 +21,6 @@ import core.procedures.system.ClassOf;
 import core.procedures.system.ErrorProc;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
-import core.scm.SCMBoolean;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
 
@@ -263,10 +262,6 @@ public final class DefaultEnvironment extends Environment {
 
   public DefaultEnvironment() {
     super(null);
-
-    /* Booleans */
-    put(SCMBoolean.TRUE,  SCMBoolean.TRUE);
-    put(SCMBoolean.FALSE, SCMBoolean.FALSE);
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS.values()) {

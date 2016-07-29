@@ -21,13 +21,7 @@ public class Unquote implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     // Implemented in quasiquote
-//    if (!evaluator.isInQuasiquote()) {
-//      throw new IllegalSyntaxException("unquote: not in quasiquote");
-//    }
-    if (expression.size() != 2) {
-      throw new IllegalSyntaxException("unquote: expects exactly one expression");
-    }
-    return evaluator.eval(expression, env);
+    throw new IllegalSyntaxException("unquote: not in quasiquote");
   }
 
   public SCMSymbol symbol() {

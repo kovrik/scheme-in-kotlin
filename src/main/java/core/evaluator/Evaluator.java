@@ -17,14 +17,9 @@ import java.util.List;
 
 public class Evaluator implements IEvaluator {
 
-  private boolean isInQuasiquote = false;
-
   @Override
   public Object eval(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
-      if (((SCMSymbol)sexp).getValue().startsWith(",")) {
-        return evmeta(((SCMSymbol) sexp).getValue());
-      }
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
       if (o instanceof ISpecialForm) {
@@ -150,16 +145,5 @@ public class Evaluator implements IEvaluator {
       throw e;
     }
     return result;
-  }
-
-  /**
-   * Evaluate meta
-   */
-  private Object evmeta(String sexp) {
-    if (",q".equals(sexp)) {
-      System.out.println("Bye!");
-      System.exit(0);
-    }
-    throw new IllegalArgumentException("Evaluation error: " + sexp);
   }
 }

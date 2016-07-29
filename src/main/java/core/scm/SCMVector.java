@@ -73,6 +73,20 @@ public class SCMVector implements ISCMClass {
     return sb.toString();
   }
 
+  public Object first() {
+    if (vector.length == 0) {
+      throw new IllegalArgumentException("Value out of range");
+    }
+    return vector[0];
+  }
+
+  public SCMVector rest() {
+    if (vector.length < 2) {
+      return new SCMVector();
+    }
+    return new SCMVector(Arrays.copyOfRange(vector, 1, vector.length));
+  }
+
   @Override
   public int hashCode() {
     return super.hashCode();
@@ -80,7 +94,6 @@ public class SCMVector implements ISCMClass {
 
   @Override
   public boolean equals(Object obj) {
-
     return obj instanceof SCMVector && Arrays.equals(vector, ((SCMVector) obj).vector);
   }
 }

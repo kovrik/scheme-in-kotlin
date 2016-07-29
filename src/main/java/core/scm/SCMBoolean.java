@@ -3,15 +3,23 @@ package core.scm;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SCMBoolean extends SCMSymbol implements ISCMClass {
+public class SCMBoolean implements ISCMClass {
 
   public static final SCMBoolean TRUE  = new SCMBoolean("#t");
   public static final SCMBoolean FALSE = new SCMBoolean("#f");
 
   private static final Map<Object, Boolean> VALUES = new HashMap<Object, Boolean>();
+  static {
+    VALUES.put(Boolean.TRUE, true);
+    VALUES.put(TRUE, true);
+    VALUES.put(Boolean.FALSE, false);
+    VALUES.put(FALSE, false);
+  }
 
-  public SCMBoolean(String value) {
-    super(value);
+  private final String value;
+
+  private SCMBoolean(String value) {
+    this.value = value;
     if (!"#t".equals(value) && !"#f".equals(value)) {
       throw new IllegalArgumentException("Unknown boolean: " + value);
     }
@@ -22,26 +30,17 @@ public class SCMBoolean extends SCMSymbol implements ISCMClass {
     return SCMClass.BOOLEAN;
   }
 
-  static {
-    VALUES.put(Boolean.TRUE, true);
-    VALUES.put(TRUE, true);
-    VALUES.put(Boolean.FALSE, false);
-    VALUES.put(FALSE, false);
-//    VALUES.put(SCMCons.NIL, false);
+  @Override
+  public String toString() {
+    return value;
   }
 
   public static boolean valueOf(Object value) {
     Boolean result = VALUES.get(value);
-    if (result == null) {
-      return true;
-    }
-    return result;
+    return (result == null) ? true : result;
   }
 
   public static SCMBoolean toSCMBoolean(Boolean value) {
-    if (value) {
-      return TRUE;
-    }
-    return FALSE;
+    return value ? TRUE : FALSE;
   }
 }
