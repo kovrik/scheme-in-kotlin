@@ -5,11 +5,11 @@ import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.*;
 import core.procedures.io.Display;
 import core.reader.IReader;
 import core.reader.Reader;
-import core.scm.specialforms.SCMSpecialForm;
+import core.scm.*;
+import core.scm.specialforms.Quote;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,9 +20,7 @@ import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.*;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class SpecialFormTest {
 
@@ -214,7 +212,7 @@ public class SpecialFormTest {
   public void testEvalQuote() {
     assertEquals(0L, eval("'0", env));
     assertEquals("test", eval("'\"test\"", env));
-    assertEquals(SCMCons.<Object>list(new SCMSymbol(SCMSpecialForm.QUOTE.toString()), "test"), eval("''\"test\"", env));
+    assertEquals(SCMCons.<Object>list(new SCMSymbol(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("'(+ 1 2)", env));
     assertEquals(new SCMSymbol("0eab"), eval("'0eab", env));
     assertEquals(new SCMSymbol("000eab"), eval("'000eab", env));

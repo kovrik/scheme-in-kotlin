@@ -24,10 +24,34 @@ import core.procedures.vectors.*;
 import core.scm.SCMBoolean;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
-import core.scm.specialforms.SCMSpecialForm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static core.scm.specialforms.And.AND;
+import static core.scm.specialforms.Begin.BEGIN;
+import static core.scm.specialforms.Case.CASE;
+import static core.scm.specialforms.Cond.COND;
+import static core.scm.specialforms.Define.DEFINE;
+import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
+import static core.scm.specialforms.Delay.DELAY;
+import static core.scm.specialforms.Do.DO;
+import static core.scm.specialforms.If.IF;
+import static core.scm.specialforms.Lambda.LAMBDA;
+import static core.scm.specialforms.Let.LET;
+import static core.scm.specialforms.LetRec.LETREC;
+import static core.scm.specialforms.LetRecSyntax.LETREC_SYNTAX;
+import static core.scm.specialforms.LetSeq.LETSEQ;
+import static core.scm.specialforms.LetSyntax.LET_SYNTAX;
+import static core.scm.specialforms.Or.OR;
+import static core.scm.specialforms.Quasiquote.QUASIQUOTE;
+import static core.scm.specialforms.Quote.QUOTE;
+import static core.scm.specialforms.Set.SET;
+import static core.scm.specialforms.SyntaxRules.SYNTAX_RULES;
+import static core.scm.specialforms.Unquote.UNQUOTE;
+import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING;
 
 public final class DefaultEnvironment extends Environment {
 
@@ -157,6 +181,33 @@ public final class DefaultEnvironment extends Environment {
       /* Functional */
   };
 
+  private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
+  static {
+    SPECIAL_FORMS.put(DELAY.toString(), DELAY);
+    SPECIAL_FORMS.put(BEGIN.toString(), BEGIN);
+    SPECIAL_FORMS.put(OR.toString(), OR);
+    SPECIAL_FORMS.put(AND.toString(), AND);
+    SPECIAL_FORMS.put(CASE.toString(), CASE);
+    SPECIAL_FORMS.put(COND.toString(), COND);
+    SPECIAL_FORMS.put(LAMBDA.toString(), LAMBDA);
+    SPECIAL_FORMS.put(DO.toString(), DO);
+    SPECIAL_FORMS.put(DEFINE.toString(), DEFINE);
+    SPECIAL_FORMS.put(IF.toString(), IF);
+    SPECIAL_FORMS.put(QUOTE.toString(), QUOTE);
+    SPECIAL_FORMS.put(SET.toString(), SET);
+    SPECIAL_FORMS.put(LET.toString(), LET);
+    SPECIAL_FORMS.put(LETSEQ.toString(), LETSEQ);
+    SPECIAL_FORMS.put(LETREC.toString(), LETREC);
+
+    SPECIAL_FORMS.put(QUASIQUOTE.toString(), QUASIQUOTE);
+    SPECIAL_FORMS.put(UNQUOTE.toString(), UNQUOTE);
+    SPECIAL_FORMS.put(UNQUOTE_SPLICING.toString(), UNQUOTE_SPLICING);
+    SPECIAL_FORMS.put(DEFINE_SYNTAX.toString(), DEFINE_SYNTAX);
+    SPECIAL_FORMS.put(LET_SYNTAX.toString(), LET_SYNTAX);
+    SPECIAL_FORMS.put(LETREC_SYNTAX.toString(), LETREC_SYNTAX);
+    SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
+  }
+
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     LIBRARY_PROCEDURES.add("(define (promise?   o) (eq? (class-of (delay 1)) (class-of o)))");
@@ -218,7 +269,7 @@ public final class DefaultEnvironment extends Environment {
     put(SCMBoolean.FALSE, SCMBoolean.FALSE);
 
     /* Special Forms */
-    for (ISpecialForm specialForm : SCMSpecialForm.values()) {
+    for (ISpecialForm specialForm : SPECIAL_FORMS.values()) {
       put(new SCMSymbol(specialForm.toString()), specialForm);
     }
 

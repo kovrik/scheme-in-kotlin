@@ -5,7 +5,8 @@ import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
-import core.scm.specialforms.SCMSpecialForm;
+import core.scm.specialforms.Quasiquote;
+import core.scm.specialforms.Quote;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -407,7 +408,7 @@ public class Reader implements IReader {
    * <quote> -> '<form>
    */
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(SCMSpecialForm.QUOTE.symbol());
+    List<Object> quote = SCMCons.list(Quote.QUOTE.symbol());
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
@@ -423,7 +424,7 @@ public class Reader implements IReader {
    * <quasiquote> -> `<form>
    */
   private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(SCMSpecialForm.QUASIQUOTE.symbol());
+    List<Object> quote = SCMCons.list(Quasiquote.QUASIQUOTE.symbol());
     Object next = nextToken(reader);
     while (next == null) {
       next = nextToken(reader);
