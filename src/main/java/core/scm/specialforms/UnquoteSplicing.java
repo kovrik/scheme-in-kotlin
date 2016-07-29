@@ -2,13 +2,13 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 
 import java.util.List;
 
-// TODO
 public class UnquoteSplicing implements ISpecialForm, ISCMClass {
 
   public static final UnquoteSplicing UNQUOTE_SPLICING = new UnquoteSplicing();
@@ -20,7 +20,8 @@ public class UnquoteSplicing implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
+    // Implemented in quasiquote
+    throw new IllegalSyntaxException("unquote-splicing: not in quasiquote");
   }
 
   public SCMSymbol symbol() {

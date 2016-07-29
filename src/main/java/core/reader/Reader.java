@@ -7,6 +7,8 @@ import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
+import core.scm.specialforms.Unquote;
+import core.scm.specialforms.UnquoteSplicing;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -228,6 +230,15 @@ public class Reader implements IReader {
         return readQuote(reader);
       case '`':
         return readQuasiquote(reader);
+      case ',': {
+        char next = (char) reader.read();
+        if (next == '@') {
+          return readUnquoteSplicing(reader);
+        } else {
+          reader.unread(next);
+          return readUnquote(reader);
+        }
+      }
       case '#':
         char next = (char) reader.read();
         if (next == '(') {
@@ -402,7 +413,7 @@ public class Reader implements IReader {
   }
 
   /**
-   * Read a quoted form
+   * Read a quoted form abbreviation
    *
    * Syntax:
    * <quote> -> '<form>
@@ -418,7 +429,7 @@ public class Reader implements IReader {
   }
 
   /**
-   * Read a quasi-quoted form
+   * Read a quasi-quoted form abbreviation
    *
    * Syntax:
    * <quasiquote> -> `<form>
@@ -431,6 +442,38 @@ public class Reader implements IReader {
     }
     quote.add(next);
     return quote;
+  }
+
+  /**
+   * Read unquote abbreviation
+   *
+   * Syntax:
+   * <unquote> -> ,<form>
+   */
+  private static Object readUnquote(PushbackReader reader) throws ParseException, IOException {
+    List<Object> unquote = SCMCons.list(Unquote.UNQUOTE.symbol());
+    Object next = nextToken(reader);
+    while (next == null) {
+      next = nextToken(reader);
+    }
+    unquote.add(next);
+    return unquote;
+  }
+
+  /**
+   * Read unquote splicing abbreviation
+   *
+   * Syntax:
+   * <unquote-splicing> -> ,@<form>
+   */
+  private static Object readUnquoteSplicing(PushbackReader reader) throws ParseException, IOException {
+    List<Object> unquote = SCMCons.list(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
+    Object next = nextToken(reader);
+    while (next == null) {
+      next = nextToken(reader);
+    }
+    unquote.add(next);
+    return unquote;
   }
 
   /**

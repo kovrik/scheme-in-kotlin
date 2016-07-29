@@ -2,13 +2,13 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 
 import java.util.List;
 
-// TODO
 public class Unquote implements ISpecialForm, ISCMClass {
 
   public static final Unquote UNQUOTE = new Unquote();
@@ -20,7 +20,14 @@ public class Unquote implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
+    // Implemented in quasiquote
+//    if (!evaluator.isInQuasiquote()) {
+//      throw new IllegalSyntaxException("unquote: not in quasiquote");
+//    }
+    if (expression.size() != 2) {
+      throw new IllegalSyntaxException("unquote: expects exactly one expression");
+    }
+    return evaluator.eval(expression, env);
   }
 
   public SCMSymbol symbol() {

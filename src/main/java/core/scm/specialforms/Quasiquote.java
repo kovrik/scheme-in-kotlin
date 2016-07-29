@@ -2,11 +2,12 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 
-import java.util.List;
+import java.util.*;
 
 // TODO
 public class Quasiquote implements ISpecialForm, ISCMClass {
@@ -20,7 +21,18 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
+    if (expression.size() != 2) {
+      throw new IllegalSyntaxException("quasiquote: bad syntax");
+    }
+    Object expr = expression.get(1);
+    if (!(expr instanceof List)) {
+      return expr;
+    }
+    /* Process a list */
+    // (quasiquote (list (list (cdr (list 1 (car unquote (+ 1 2)))))))
+    // (quasiquote (list (list (cdr (list 1 (car unquote (+ 1 2)) 4 5)))))
+    // (quasiquote (list (unquote) (+ 1 2)))
+    return expr;
   }
 
   public SCMSymbol symbol() {

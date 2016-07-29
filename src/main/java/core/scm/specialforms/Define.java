@@ -30,6 +30,9 @@ public class Define implements ISpecialForm, ISCMClass {
     Object id = expression.get(1);
     if (id instanceof SCMSymbol) {
       /* Variable definition */
+      if (expression.size() > 3) {
+        throw new IllegalSyntaxException("define: bad syntax (multiple expressions after identifier)");
+      }
       Object body = expression.get(2);
       env.put(id, evaluator.eval(body, env));
     } else if (id instanceof SCMCons) {
