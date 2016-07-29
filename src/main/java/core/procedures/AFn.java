@@ -8,11 +8,7 @@ public abstract class AFn implements IFn, ISCMClass {
 
   @Override
   public Object invoke(Object... args) {
-    return throwArity(args.length);
-  }
-
-  public Object throwArity(int n) {
-    throw new ArityException(n, getName());
+    throw new ArityException(args.length, getName());
   }
 
   public String getName() {

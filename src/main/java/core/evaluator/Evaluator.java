@@ -40,7 +40,7 @@ public class Evaluator implements IEvaluator {
    * Evaluate a list
    */
   private Object evlis(Object sexp, IEnvironment env) {
-    List list = (List)sexp;
+    List<Object> list = (List<Object>)sexp;
     if (list.isEmpty()) {
       throw new IllegalSyntaxException("Unexpected syntax in form " + list);
     }

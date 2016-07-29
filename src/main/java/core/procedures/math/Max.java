@@ -1,5 +1,6 @@
 package core.procedures.math;
 
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 
@@ -32,7 +33,7 @@ public class Max extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args != null) {
+    if (args != null && args.length > 0) {
       if (args.length == 1) {
         return args[0];
       }
@@ -49,6 +50,6 @@ public class Max extends AFn {
       }
       return result;
     }
-    return throwArity(1);
+    throw new ArityException(args.length, 1, getName());
   }
 }

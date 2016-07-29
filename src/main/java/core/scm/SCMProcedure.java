@@ -1,7 +1,6 @@
 package core.scm;
 
 import core.environment.IEnvironment;
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 
 import java.util.Collections;
@@ -22,7 +21,7 @@ public class SCMProcedure extends AFn {
   private IEnvironment localEnvironment = null;
 
   /* Is it a variadic function? False by default.
-   * If set to `true`, then list of all optional params is bound to the last argument */
+   * If set to `true`, then list of all optional params is to be bound to the last argument */
   private boolean isVariadic = false;
 
   public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment) {
@@ -34,7 +33,7 @@ public class SCMProcedure extends AFn {
 
   public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment, boolean isVariadic) {
     this.name = name;
-    this.args = (args == null) ? Collections.emptyList() : args;
+    this.args = (args == null) ? SCMCons.NIL : args;
     this.body = body;
     this.localEnvironment = localEnvironment;
     this.isVariadic = isVariadic;
@@ -59,11 +58,6 @@ public class SCMProcedure extends AFn {
 
   public IEnvironment getLocalEnvironment() {
     return localEnvironment;
-  }
-
-  @Override
-  public Object throwArity(int actual) {
-    throw new ArityException(actual, args.size(), name);
   }
 
   public boolean isVariadic() {

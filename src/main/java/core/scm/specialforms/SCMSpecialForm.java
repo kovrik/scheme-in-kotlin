@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
 import core.scm.*;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
+// TODO Split into multiple classes
 public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
 
   /* Fundamental forms */
@@ -25,7 +25,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (define (<variable> . <formal>) <body>)
      */
     @Override
-    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+    public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       Object id = expression.get(1);
       if (id instanceof SCMSymbol) {
         /* Variable definition */
@@ -178,7 +178,7 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
      * (set! <variable> <expression>)
      */
     @Override
-    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+    public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
       env.findAndPut(expression.get(1), evaluator.eval(expression.get(2), env));
       return UNSPECIFIED;
     }
@@ -237,8 +237,8 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
       if (clause.isEmpty()) {
         throw new IllegalSyntaxException("do: bad syntax");
       }
-      Object test = clause.get(0);
 
+      Object test = clause.get(0);
       List body = expression.subList(3, expression.size());
       /* While test evaluates to #f */
       while (!SCMBoolean.valueOf(evaluator.eval(test, tempEnv))) {
@@ -558,15 +558,6 @@ public enum SCMSpecialForm implements ISpecialForm, ISCMClass {
         throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
       }
       return new SCMPromise(expression.get(1));
-    }
-  },
-  ERROR("error") {
-    @Override
-    public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-      if (expression.size() > 2) {
-        throw new ArityException(expression.size() - 1, 1, "error");
-      }
-      throw new SCMError(evaluator.eval(expression.get(1), env).toString());
     }
   };
 

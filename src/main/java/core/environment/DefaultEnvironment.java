@@ -18,6 +18,7 @@ import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.ClassOf;
+import core.procedures.system.ErrorProc;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
 import core.scm.SCMBoolean;
@@ -34,6 +35,7 @@ public final class DefaultEnvironment extends Environment {
       /* System */
       new Exit(),
       new ClassOf(),
+      new ErrorProc(),
 
       /* Delayed */
       new Force(),
