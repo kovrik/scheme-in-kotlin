@@ -23,7 +23,7 @@ public class Main {
   private static final AtomicLong SYM_COUNTER = new AtomicLong(0);
 
   private static final String WELCOME = "Welcome to Scheme in Java!";
-  private static final String PROMPT = "scheme@(user)> ";
+  private static final String PROMPT = "> ";
 
   private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader();

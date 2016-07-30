@@ -61,6 +61,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
     }
     /* (quasiquote (unquote datum)) => datum */
     Object o = list.get(0);
+    /* unquote */
     if ((o instanceof SCMSymbol) && ("unquote".equals(((SCMSymbol) o).getValue()))) {
       if (list.size() != 2) {
         throw new IllegalSyntaxException("unquote: expects exactly one expression");
