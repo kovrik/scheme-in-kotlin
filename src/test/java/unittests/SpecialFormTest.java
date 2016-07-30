@@ -493,4 +493,39 @@ public class SpecialFormTest {
     assertEquals(3L, eval("(and 1 2 3)", env));
     assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv));
   }
+
+  @Test
+  public void testQuasiquote() {
+    assertEquals(1L, eval("(quasiquote 1)", env));
+    assertEquals(1L, eval("`1", env));
+    assertEquals(15.5, eval("(quasiquote 15.5)", env));
+    assertEquals(15.5, eval("`15.5", env));
+    assertEquals("test", eval("(quasiquote \"test\")", env));
+    assertEquals("test", eval("`\"test\"", env));
+    assertEquals(new SCMSymbol("quote"), eval("(quasiquote quote)", env));
+    assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("`(+ 1 2)", env));
+    assertEquals(3L, eval("`,(+ 1 2)", env));
+    assertEquals(13L, eval("`,(+ 1 (* 3 4))", env));
+    assertEquals(13L, eval("(quasiquote ,(+ 1 (* 3 4)))", env));
+    assertEquals(13L, eval("(quasiquote (unquote (+ 1 (* 3 4))))", env));
+    assertEquals(list(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env));
+    assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, 5L))), 4L),
+                 eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env));
+
+    assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, new SCMVector(new SCMSymbol("+"), 2L, 3L)))), 4L),
+                 eval("`(1 `,(+ 1 ,#(+ 2 3)) 4)", env));
+
+    try {
+      eval("unquote", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("Unexpected syntax in form: unquote", e.getMessage());
+    }
+    try {
+      eval("(quasiquote (unquote 1 2))", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("unquote: expects exactly one expression", e.getMessage());
+    }
+  }
 }

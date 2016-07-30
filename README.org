@@ -118,7 +118,7 @@ CLOSED: [2016-05-13 Fri 20:40]
 *** DONE Procedure
 CLOSED: [2016-05-13 Fri 20:40]
 ** TODO Standard forms [1/2]
-*** TODO Fundamental forms: [5/12]
+*** TODO Fundamental forms: [7/12]
 **** DONE define
 CLOSED: [2016-04-21 Thu 21:36]
 **** DONE lambda
@@ -127,9 +127,11 @@ CLOSED: [2016-04-21 Thu 21:36]
 CLOSED: [2016-04-21 Thu 21:36]
 **** DONE quote
 CLOSED: [2016-04-21 Thu 21:36]
-**** TODO unquote
+**** DONE quasiquote
+CLOSED: [2016-07-30 Sat 13:03]
+**** DONE unquote
+CLOSED: [2016-07-30 Sat 13:03]
 **** TODO unquote-splicing
-**** TODO quasiquote
 **** TODO define-syntax
 **** TODO let-syntax
 **** TODO letrec-syntax

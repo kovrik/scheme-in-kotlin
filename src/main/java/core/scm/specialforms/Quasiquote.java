@@ -39,20 +39,20 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
     if (expression.size() != 2) {
       throw new IllegalSyntaxException("quasiquote: bad syntax");
     }
-    return quasiquote(expression.get(1), env, evaluator);
+    return quasiquote(0, expression.get(1), env, evaluator);
   }
 
-  private Object quasiquote(Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquote(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
     if (expr instanceof SCMVector) {
-      return quasiquoteVector(expr, env, evaluator);
+      return quasiquoteVector(level, expr, env, evaluator);
     } else if (expr instanceof List) {
-      return quasiquoteList(expr, env, evaluator);
+      return quasiquoteList(level, expr, env, evaluator);
     }
     /* (quasiquote datum) => (quote datum) */
     return expr;
   }
 
-  private Object quasiquoteList(Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquoteList(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
 
     List list = (List)expr;
     /* (quasiquote datum) => (quote datum) */
@@ -65,17 +65,28 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       if (list.size() != 2) {
         throw new IllegalSyntaxException("unquote: expects exactly one expression");
       }
-      return evaluator.eval(list.get(1), env);
+      if (level == 0) {
+        return evaluator.eval(list.get(1), env);
+      } else {
+        SCMCons<Object> result = SCMCons.list();
+        result.add(o);
+        result.add(quasiquote(level - 1, list.get(1), env, evaluator));
+        return result;
+      }
+    }
+
+    if ((o instanceof SCMSymbol) && ("quasiquote".equals(((SCMSymbol) o).getValue()))) {
+      level += 1;
     }
     // TODO unquote-splicing
 
     /* (quasiquote (car . cdr)) => (cons (quasiquote car) (quasiquote cdr)) */
-    Object car = quasiquote(Car.car(list), env, evaluator);
-    Object cdr = quasiquote(Cdr.cdr(list), env, evaluator);
+    Object car = quasiquote(level, Car.car(list), env, evaluator);
+    Object cdr = quasiquote(level, Cdr.cdr(list), env, evaluator);
     return SCMCons.cons(car, cdr);
   }
 
-  private Object quasiquoteVector(Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquoteVector(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
 
     SCMVector vector = (SCMVector)expr;
     /* (quasiquote datum) => (quote datum) */
@@ -88,13 +99,25 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       if (vector.length() != 2) {
         throw new IllegalSyntaxException("unquote: expects exactly one expression");
       }
-      return evaluator.eval(vector.get(1), env);
+      if (level == 0) {
+        return evaluator.eval(vector.get(1), env);
+      } else {
+        SCMVector result = new SCMVector(2);
+        result.set(0, o);
+        result.set(1, quasiquote(level - 1, vector.get(1), env, evaluator));
+        return result;
+      }
     }
+
+    if ((o instanceof SCMSymbol) && ("quasiquote".equals(((SCMSymbol) o).getValue()))) {
+      level += 1;
+    }
+    // TODO Nested quasiquotation
     // TODO unquote-splicing
 
     /* (quasiquote #(first . rest)) => #((quasiquote first) (quasiquote rest)) */
-    Object car = quasiquote(vector.get(0), env, evaluator);
-    SCMVector cdr = (SCMVector)quasiquote(vector.rest(), env, evaluator);
+    Object car = quasiquote(level, vector.get(0), env, evaluator);
+    SCMVector cdr = (SCMVector)quasiquote(level, vector.rest(), env, evaluator);
 
     SCMVector result = new SCMVector(vector.length());
     result.set(0, car);
