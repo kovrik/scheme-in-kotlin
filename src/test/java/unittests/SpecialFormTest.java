@@ -515,6 +515,7 @@ public class SpecialFormTest {
     assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, new SCMVector(new SCMSymbol("+"), 2L, 3L)))), 4L),
                  eval("`(1 `,(+ 1 ,#(+ 2 3)) 4)", env));
 
+    assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env));
     try {
       eval("unquote", env);
       fail();

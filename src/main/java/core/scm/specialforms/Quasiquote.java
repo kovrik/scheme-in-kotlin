@@ -3,8 +3,7 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.cons.Car;
-import core.procedures.cons.Cdr;
+import core.procedures.cons.Append;
 import core.scm.*;
 
 import java.util.List;
@@ -46,6 +45,16 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
     if (expr instanceof SCMVector) {
       return quasiquoteVector(level, expr, env, evaluator);
     } else if (expr instanceof List) {
+      List list = (List) expr;
+      if (list.size() > 0 && (Unquote.UNQUOTE.symbol().equals(list.get(0)))) {
+        if (list.size() != 2) {
+          throw new IllegalSyntaxException("unquote: expects exactly one expression");
+        }
+        return evaluator.eval(list.get(1), env);
+      }
+      if (list.size() > 0 && (UnquoteSplicing.UNQUOTE_SPLICING.symbol().equals(list.get(0)))) {
+        throw new IllegalSyntaxException("unquote-splicing: invalid context within quasiquote");
+      }
       return quasiquoteList(level, expr, env, evaluator);
     }
     /* (quasiquote datum) => (quote datum) */
@@ -53,39 +62,80 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
   }
 
   private Object quasiquoteList(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
-
     List list = (List)expr;
-    /* (quasiquote datum) => (quote datum) */
-    if (list.isEmpty()) {
-      return list;
-    }
-    /* (quasiquote (unquote datum)) => datum */
-    Object o = list.get(0);
-    /* unquote */
-    if ((o instanceof SCMSymbol) && ("unquote".equals(((SCMSymbol) o).getValue()))) {
-      if (list.size() != 2) {
-        throw new IllegalSyntaxException("unquote: expects exactly one expression");
-      }
-      if (level == 0) {
-        return evaluator.eval(list.get(1), env);
+    SCMCons result = SCMCons.list();
+    for (Object o : list) {
+      /* Append quoted forms recursively */
+      if (!(o instanceof List) || (SCMCons.NIL.equals(o))) {
+        result = (SCMCons) Append.append2(result, SCMCons.list(o));
       } else {
-        SCMCons<Object> result = SCMCons.list();
-        result.add(o);
-        result.add(quasiquote(level - 1, list.get(1), env, evaluator));
-        return result;
+        List el = (List) o;
+        Object op = el.get(0);
+        if (QUASIQUOTE.symbol().equals(op)) {
+          /* Increase level of quasiquotation */
+          result = (SCMCons) Append.append2(result, SCMCons.list(quasiquoteList(level + 1, o, env, evaluator)));
+        } else if (Unquote.UNQUOTE.symbol().equals(op) || (UnquoteSplicing.UNQUOTE_SPLICING.symbol().equals(op))) {
+          if (el.size() != 2) {
+            throw new IllegalSyntaxException(String.format("%s: expects exactly one expression", op));
+          }
+          if (level == 0) {
+            /* Level of quasiquotation is 0 - eval! */
+            if (Unquote.UNQUOTE.symbol().equals(op)) {
+              /* Unquote */
+              result = (SCMCons) Append.append2(result, SCMCons.list(evaluator.eval(el.get(1), env)));
+            } else {
+              /* Unquote-Splicing */
+              result = (SCMCons) Append.append2(result, evaluator.eval(el.get(1), env));
+            }
+          } else {
+            /* Decrease level of quasiquotation */
+            result = (SCMCons) Append.append2(result, SCMCons.list(quasiquoteList(level - 1, o, env, evaluator)));
+          }
+        } else {
+          result = (SCMCons) Append.append2(result, SCMCons.list(quasiquoteList(level, o, env, evaluator)));
+        }
       }
     }
-
-    if ((o instanceof SCMSymbol) && ("quasiquote".equals(((SCMSymbol) o).getValue()))) {
-      level += 1;
-    }
-    // TODO unquote-splicing
-
-    /* (quasiquote (car . cdr)) => (cons (quasiquote car) (quasiquote cdr)) */
-    Object car = quasiquote(level, Car.car(list), env, evaluator);
-    Object cdr = quasiquote(level, Cdr.cdr(list), env, evaluator);
-    return SCMCons.cons(car, cdr);
+    return result;
   }
+
+//  private Object quasiquoteList(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
+//
+//    List list = (List)expr;
+//    /* (quasiquote datum) => (quote datum) */
+//    if (list.isEmpty()) {
+//      return list;
+//    }
+//    /* (quasiquote (unquote datum)) => datum */
+//    Object o = list.get(0);
+//    /* unquote */
+//    if ((o instanceof SCMSymbol) && ("unquote".equals(((SCMSymbol) o).getValue()))) {
+//      if (list.size() != 2) {
+//        throw new IllegalSyntaxException("unquote: expects exactly one expression");
+//      }
+//      if (level == 0) {
+//        return evaluator.eval(list.get(1), env);
+//      } else {
+//        SCMCons<Object> result = SCMCons.list();
+//        result.add(o);
+//        result.add(quasiquote(level - 1, list.get(1), env, evaluator));
+//        return result;
+//      }
+//    }
+//
+//    if ((o instanceof SCMSymbol) && ("quasiquote".equals(((SCMSymbol) o).getValue()))) {
+//      level += 1;
+//    }
+//    // TODO unquote-splicing
+//
+//    Object car = Car.car(list);
+//    Object carResult = quasiquote(level, car, env, evaluator);
+//
+//    Object cdr = Cdr.cdr(list);
+//    Object cdrResult = quasiquote(level, cdr, env, evaluator);
+//
+//    return SCMCons.cons(carResult, cdrResult);
+//  }
 
   private Object quasiquoteVector(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
 
