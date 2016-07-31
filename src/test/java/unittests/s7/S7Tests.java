@@ -15,7 +15,8 @@ import unittests.s7.tests.*;
     IsCharTest.class,
     MemqTest.class,
     MemvTest.class,
-    MemberTest.class
+    MemberTest.class,
+    QuasiquoteTest.class
 })
 public class S7Tests {
 }
