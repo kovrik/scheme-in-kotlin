@@ -5,6 +5,7 @@ import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.WrongTypeException;
 import core.procedures.io.Display;
 import core.reader.IReader;
 import core.reader.Reader;
@@ -526,6 +527,20 @@ public class SpecialFormTest {
     assertEquals(5L, eval("`,(+ 2 3)", env));
 
     assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env));
+    assertEquals(list(1L, 2L, 7L), eval("`(1 2 ,`,(+ 3 4))", env));
+    assertEquals(1L, eval("`,`,`,`,`,1", env));
+    assertEquals(1L, eval("`,`,`,`,`,`1", env));
+    assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env));
+    assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env));
+
+    assertEquals(new SCMVector(1L, 5L), eval("`#(1 ,(+ 2 3))", env));
+    assertEquals(new SCMVector(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(1L, 5L)))),
+                 eval("`#(1 `,(1 ,(+ 2 3)))", env));
+
+    assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env));
+    assertEquals(cons(new SCMSymbol("unquote-splicing"), new SCMSymbol("foo")), eval("`(unquote-splicing . foo)", env));
+    assertEquals(cons(new SCMSymbol("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
+
     try {
       eval("unquote", env);
       fail();
@@ -537,6 +552,12 @@ public class SpecialFormTest {
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("unquote: expects exactly one expression", e.getMessage());
+    }
+    try {
+      eval("`#(1 unquote 2)", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: List, actual: (1 . 2)", e.getMessage());
     }
   }
 }
