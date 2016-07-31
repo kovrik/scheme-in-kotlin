@@ -515,6 +515,16 @@ public class SpecialFormTest {
     assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, new SCMVector(new SCMSymbol("+"), 2L, 3L)))), 4L),
                  eval("`(1 `,(+ 1 ,#(+ 2 3)) 4)", env));
 
+    assertEquals(list(new SCMSymbol("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
+    assertEquals(list(new SCMSymbol("list"), new SCMSymbol("a"), list(new SCMSymbol("quote"), new SCMSymbol("a"))),
+                 eval("(let ((name 'a)) `(list ,name ',name))", env));
+
+    assertEquals(list(new SCMSymbol("a"), 3L, 4L, 5L, 6L, new SCMSymbol("b")),
+                 eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env));
+
+    assertEquals(cons(list(new SCMSymbol("foo"), 7L), new SCMSymbol("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env));
+    assertEquals(5L, eval("`,(+ 2 3)", env));
+
     assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env));
     try {
       eval("unquote", env);
