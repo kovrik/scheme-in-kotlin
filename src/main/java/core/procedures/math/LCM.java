@@ -61,7 +61,7 @@ public class LCM extends AFn {
   public Object invoke(Object... args) {
     if (args != null) {
       if (args.length == 0) {
-        return 0L;
+        return 1L;
       }
       Object result = args[0];
       if (!(result instanceof Number)) {
@@ -79,6 +79,6 @@ public class LCM extends AFn {
       }
       return result;
     }
-    return 0L;
+    return 1L;
   }
 }

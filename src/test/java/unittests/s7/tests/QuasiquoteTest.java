@@ -13,7 +13,7 @@ public class QuasiquoteTest extends AbstractS7Test {
 
   @Test
   public void testQuasiquote() {
-//    assertEquals(list(1L), eval("`(1 ,@())", env));  // ???
+//    assertEquals(list(1L), eval("`(1 ,@())", env));  // r6rs, not r5rs?
 //    assertEquals(list(1L), eval("`(1 . ,())", env)); // ???
 
     assertEquals(list(1L, 2L, 3L), eval("`(1 2 3)", env));

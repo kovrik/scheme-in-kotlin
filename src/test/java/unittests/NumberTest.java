@@ -39,6 +39,16 @@ public class NumberTest {
   }
 
   @Test
+  public void testIdentityElement() {
+    assertEquals(0L, eval("(+)", env));
+    assertEquals(1L, eval("(*)", env));
+    assertEquals(1L, eval("(lcm)", env));
+    assertEquals(0L, eval("(gcd)", env));
+    assertEquals(TRUE, eval("(and)", env));
+    assertEquals(FALSE, eval("(or)", env));
+  }
+
+  @Test
   public void testEvalNumbers() {
     assertEquals(1L, eval("1", env));
     assertEquals(-15L, eval("-15", env));
@@ -414,7 +424,7 @@ public class NumberTest {
   @Test
   public void testEvalLCM() {
     // lcm of no args is 0
-    assertEquals(0L, eval("(lcm)", env));
+    assertEquals(1L, eval("(lcm)", env));
     // lcm of 0(s) is 0
     assertEquals(0L, eval("(lcm 0)", env));
     assertEquals(0d, eval("(lcm 0.0)", env));
