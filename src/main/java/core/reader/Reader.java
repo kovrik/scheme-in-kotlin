@@ -202,8 +202,7 @@ public class Reader implements IReader {
   public Object read(InputStream inputStream) {
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {
-      Object token;
-      while ((token = nextToken(reader)) == null) {/* Read */}
+      Object token = nextNonNullToken(reader);
       if (DOT.equals(token)) {
         throw new IllegalSyntaxException("Illegal use of '.'");
       }
@@ -214,6 +213,13 @@ public class Reader implements IReader {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /* Skip all null tokens and return the first non-null */
+  private static Object nextNonNullToken(PushbackReader reader) throws IOException, ParseException {
+    Object token;
+    while ((token = nextToken(reader)) == null) {/* Read */};
+    return token;
   }
 
   /**
@@ -420,11 +426,7 @@ public class Reader implements IReader {
    */
   private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
     List<Object> quote = SCMCons.list(Quote.QUOTE.symbol());
-    Object next = nextToken(reader);
-    while (next == null) {
-      next = nextToken(reader);
-    }
-    quote.add(next);
+    quote.add(nextNonNullToken(reader));
     return quote;
   }
 
@@ -435,13 +437,9 @@ public class Reader implements IReader {
    * <quasiquote> -> `<form>
    */
   private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(Quasiquote.QUASIQUOTE.symbol());
-    Object next = nextToken(reader);
-    while (next == null) {
-      next = nextToken(reader);
-    }
-    quote.add(next);
-    return quote;
+    List<Object> quasiquote = SCMCons.list(Quasiquote.QUASIQUOTE.symbol());
+    quasiquote.add(nextNonNullToken(reader));
+    return quasiquote;
   }
 
   /**
@@ -452,11 +450,7 @@ public class Reader implements IReader {
    */
   private static Object readUnquote(PushbackReader reader) throws ParseException, IOException {
     List<Object> unquote = SCMCons.list(Unquote.UNQUOTE.symbol());
-    Object next = nextToken(reader);
-    while (next == null) {
-      next = nextToken(reader);
-    }
-    unquote.add(next);
+    unquote.add(nextNonNullToken(reader));
     return unquote;
   }
 
@@ -467,13 +461,9 @@ public class Reader implements IReader {
    * <unquote-splicing> -> ,@<form>
    */
   private static Object readUnquoteSplicing(PushbackReader reader) throws ParseException, IOException {
-    List<Object> unquote = SCMCons.list(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
-    Object next = nextToken(reader);
-    while (next == null) {
-      next = nextToken(reader);
-    }
-    unquote.add(next);
-    return unquote;
+    List<Object> unquoteSplicing = SCMCons.list(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
+    unquoteSplicing.add(nextNonNullToken(reader));
+    return unquoteSplicing;
   }
 
   /**
