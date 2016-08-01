@@ -541,6 +541,11 @@ public class SpecialFormTest {
     assertEquals(cons(new SCMSymbol("unquote-splicing"), new SCMSymbol("foo")), eval("`(unquote-splicing . foo)", env));
     assertEquals(cons(new SCMSymbol("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
 
+    assertEquals(NIL, eval("`()", env));
+    assertEquals(new SCMVector(), eval("`#()", env));
+    assertEquals(list(1L, 2L, list(NIL)), eval("`(1 2 ())", env));
+    assertEquals(list(1L, 2L, list(new SCMSymbol("quote"), NIL)), eval("`(1 2 '())", env));
+
     try {
       eval("unquote", env);
       fail();

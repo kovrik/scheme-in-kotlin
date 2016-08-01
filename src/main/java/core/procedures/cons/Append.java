@@ -31,16 +31,16 @@ public class Append extends AFn {
       if ((i != args.length - 1) && !SCMCons.isList(current)) {
         throw new WrongTypeException("List", current);
       }
-      result = append2(result, current);
+      result = append(result, current);
     }
     return result;
   }
 
   // FIXME Make iterative!
-  public static Object append2(Object first, Object second) {
+  public static Object append(Object first, Object second) {
     if (SCMBoolean.valueOf(IsNull.isNull(first))) {
       return second;
     }
-    return SCMCons.cons(Car.car(first), append2(Cdr.cdr(first), second));
+    return SCMCons.cons(Car.car(first), append(Cdr.cdr(first), second));
   }
 }
