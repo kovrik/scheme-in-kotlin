@@ -500,6 +500,8 @@ public class NumberTest {
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")).subtract(new BigDecimal(big0)),
         eval(String.format("(- (* 2 %s) %s)", big0, big0), env));
 
+    assertEquals(new BigDecimal("999999999999997000000000000002999999999999999"),
+                 eval("(* 999999999999999 999999999999999 999999999999999)", env));
 
     assertEquals(new BigDecimal(big0), eval(String.format("(truncate (+ 0.2 %s))", big0),  env));
     assertEquals(new BigDecimal(big0).negate(), eval(String.format("(truncate (+ 0.2 -%s))", big0),  env));

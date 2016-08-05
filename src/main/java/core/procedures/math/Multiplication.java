@@ -14,7 +14,11 @@ public class Multiplication extends AFn {
 
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
-      return (Long)first * (Long)second;
+      try {
+        return Math.multiplyExact((Long) first, (Long) second);
+      } catch (ArithmeticException e) {
+        return new BigDecimal(first.toString()).multiply(new BigDecimal(second.toString()));
+      }
     }
     if (first instanceof BigDecimal) {
       return ((BigDecimal)first).multiply(new BigDecimal(second.toString()));

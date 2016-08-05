@@ -21,83 +21,9 @@ import java.util.Map;
 
 public class Reader implements IReader {
 
-  /* R5RS Grammar
-
-  <token> --> [V]  <identifier> |
-              [V]  <boolean>    |
-              [V]  <number>     |
-              [V]  <character>  |
-              [V]  <string>     |
-              [V]  (            |
-              [V]  )            |
-              [V]  #(           |
-              [V]  '            |
-              [V]  `            |
-              [ ]  ,            |
-              [ ]  ,@           |
-              [ ]  .
-
-  <comment> --> ;  <all subsequent characters up to a line break>
-
-  <atmosphere> --> <whitespace> | <comment>
-
-  <intertoken space> --> <atmosphere>*
-
-  <identifier> --> <initial> <subsequent>* | <peculiar identifier>
-
-  <initial> --> <letter> | <special initial>
-
-  <letter> --> a | b | c | ... | z
-
-  <special initial> --> ! | $ | % | & | * | / | : | < | = | > | ? | ^ | _ | ~
-
-  <subsequent> --> <initial> | <digit> | <special subsequent>
-
-  <special subsequent> --> + | - | . | @
-
-  <peculiar identifier> --> + | - | ...
-
-  <syntactic keyword> --> <expression keyword> | else | => | define | unquote | unquote-splicing
-
-  <expression keyword> --> quote | lambda | if | set! | begin | cond | and | or | case | let | let* | letrec | do | delay | quasiquote
-
-  <variable> => <'any <identifier> that isn't also a <syntactic keyword>>
-
-  <number> --> <num 2>| <num 8> | <num 10>| <num 16>
-
-  // NUMBERS -------------------------------------
-  TODO
-
-  <num R>      --> <prefix R> <complex R>
-  <complex R>  --> <real R> | <real R> @ <real R> | <real R> + <ureal R> i | <real R> - <ureal R> i | <real R> + i | <real R> - i | + <ureal R> i | - <ureal R> i | + i | - i
-  <real R>     --> <sign> <ureal R>
-  <ureal R>    --> <uinteger R> | <uinteger R> / <uinteger R> | <decimal R>
-  <decimal 10> --> <uinteger 10> <suffix> | . <digit 10>+ #* <suffix> | <digit 10>+ . <digit 10>* #* <suffix> | <digit 10>+ #+ . #* <suffix>
-  <uinteger R> --> <digit R>+ #*
-  <prefix R>   --> <radix R> <exactness> | <exactness> <radix R>
-  <suffix>     --> <empty> | <exponent marker> <sign> <digit 10>+
-  <exponent marker> --> e | s | f | d | l
-  <sign>      --> <empty>  | + |  -
-  <exactness> --> <empty> | #i | #e
-  <radix 2>   --> #b
-  <radix 8>   --> #o
-  <radix 10>  --> <empty> | #d
-  <radix 16>  --> #x
-  <digit 2>   --> 0 | 1
-  <digit 8>   --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
-  <digit 10>  --> <digit>
-  <digit 16>  --> <digit 10> | a | b | c | d | e | f
-  */
-
-  // TODO Create Reader for each Type
-
   private static final SCMSymbol DOT = new SCMSymbol(".");
-
   private static final String LINE_BREAKS = "\n\f\r";
-
-  // <whitespace> --> <space or newline>
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
-
   // <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + "()\";" + '\u0000' + '\uffff';
 
@@ -144,8 +70,13 @@ public class Reader implements IReader {
     RADIX_THRESHOLDS.put('x', 15);
   }
 
-  public static Character namedCharToChar(String named) {
-    return NAMED_CHARS.get(named);
+  /* Valid chars for each radix */
+  private static final Map<Character, String> RADIX_CHARS = new HashMap<>();
+  static {
+    RADIX_CHARS.put('b', "+-.01");
+    RADIX_CHARS.put('o', "+-.01234567");
+    RADIX_CHARS.put('d', "+-.0123456789");
+    RADIX_CHARS.put('x', "+-.0123456789abcdefABCDEF");
   }
 
   public static String charToNamedChar(Character ch) {
@@ -153,7 +84,7 @@ public class Reader implements IReader {
   }
 
   private static boolean isValid(int i) {
-    return i > -1 && i != 65535;
+    return i > -1 && i < 65535;
   }
 
   private static boolean isExactness(char c) {
@@ -166,19 +97,11 @@ public class Reader implements IReader {
 
   /* Check if digit is valid for a number in a specific radix */
   private static boolean isValidForRadix(char c, Character radix) {
-    if (radix == null || radix.equals('d')) {
-      return "+-.0123456789".indexOf(c) > -1;
+    String s = RADIX_CHARS.get(radix);
+    if (s == null) {
+      throw new IllegalSyntaxException("Bad radix: " + radix);
     }
-    if (radix.equals('b')) {
-      return "+-.01".indexOf(c) > -1;
-    }
-    if (radix.equals('o')) {
-      return "+-.01234567".indexOf(c) > -1;
-    }
-    if (radix.equals('x')) {
-      return "+-.0123456789abcdefABCDEF".indexOf(c) > -1;
-    }
-    throw new IllegalSyntaxException("Bad radix: " + radix);
+    return s.indexOf(c) > -1;
   }
 
   @Override
@@ -233,16 +156,16 @@ public class Reader implements IReader {
     char c = (char)i;
     switch (c) {
       case '\'':
-        return readQuote(reader);
+        return readQuote(reader, Quote.QUOTE.symbol());
       case '`':
-        return readQuasiquote(reader);
+        return readQuote(reader, Quasiquote.QUASIQUOTE.symbol());
       case ',': {
         char next = (char) reader.read();
         if (next == '@') {
-          return readUnquoteSplicing(reader);
+          return readQuote(reader, UnquoteSplicing.UNQUOTE_SPLICING.symbol());
         } else {
           reader.unread(next);
-          return readUnquote(reader);
+          return readQuote(reader, Unquote.UNQUOTE.symbol());
         }
       }
       case '#':
@@ -363,7 +286,6 @@ public class Reader implements IReader {
 
   /* Check if string represents a valid number */
   private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
-
     boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
     boolean isSignCharOnly = (number.length() == 1) && (number.charAt(0) == '+' || number.charAt(0) == '-');
     boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
@@ -411,8 +333,7 @@ public class Reader implements IReader {
       } else {
         /* Remove dot */
         number = number.replace(".", "");
-        long l = Long.parseLong(number, r);
-        return l / Math.pow(r.doubleValue(), number.length() - hasSign - dot);
+        return Long.parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - hasSign - dot);
       }
     }
     return Long.parseLong(number, r);
@@ -423,47 +344,14 @@ public class Reader implements IReader {
    *
    * Syntax:
    * <quote> -> '<form>
-   */
-  private static Object readQuote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(Quote.QUOTE.symbol());
-    quote.add(nextNonNullToken(reader));
-    return quote;
-  }
-
-  /**
-   * Read a quasi-quoted form abbreviation
-   *
-   * Syntax:
    * <quasiquote> -> `<form>
-   */
-  private static Object readQuasiquote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> quasiquote = SCMCons.list(Quasiquote.QUASIQUOTE.symbol());
-    quasiquote.add(nextNonNullToken(reader));
-    return quasiquote;
-  }
-
-  /**
-   * Read unquote abbreviation
-   *
-   * Syntax:
    * <unquote> -> ,<form>
-   */
-  private static Object readUnquote(PushbackReader reader) throws ParseException, IOException {
-    List<Object> unquote = SCMCons.list(Unquote.UNQUOTE.symbol());
-    unquote.add(nextNonNullToken(reader));
-    return unquote;
-  }
-
-  /**
-   * Read unquote splicing abbreviation
-   *
-   * Syntax:
    * <unquote-splicing> -> ,@<form>
    */
-  private static Object readUnquoteSplicing(PushbackReader reader) throws ParseException, IOException {
-    List<Object> unquoteSplicing = SCMCons.list(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
-    unquoteSplicing.add(nextNonNullToken(reader));
-    return unquoteSplicing;
+  private static Object readQuote(PushbackReader reader, SCMSymbol symbol) throws ParseException, IOException {
+    List<Object> quote = SCMCons.list(symbol);
+    quote.add(nextNonNullToken(reader));
+    return quote;
   }
 
   /**
@@ -592,21 +480,17 @@ public class Reader implements IReader {
       if (!Character.isValidCodePoint(cp)) {
         throw new IllegalSyntaxException("Bad codepoint: " + cp);
       }
-      /* Is it a named char? */
       return (char)cp;
     }
     reader.unread((char)i);
 
-    char c;
     StringBuilder character = new StringBuilder();
-    while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0)) {
+    char c = (char)reader.read();
+    do {
       character.append(c);
-    }
-    if (character.length() == 0) {
-      character.append((char)i);
-    } else {
-      reader.unread((char)i);
-    }
+    } while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0));
+    reader.unread((char)i);
+
     // <character name>
     if (character.length() > 1) {
       Character namedChar = NAMED_CHARS.get(character.toString());
@@ -624,8 +508,8 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private static List<Object> readList(PushbackReader reader) throws ParseException, IOException {
-    List<Object> list = SCMCons.NIL;
+  private static SCMCons<Object> readList(PushbackReader reader) throws ParseException, IOException {
+    SCMCons<Object> list = SCMCons.NIL;
     int i;
     char c;
     /* Position of a dot (if we have it) */
@@ -651,29 +535,27 @@ public class Reader implements IReader {
         list.add(token);
       }
     }
-    /* Did we have a dot? */
+    /* It was a proper list */
     if (dotPos < 0) {
-      /* No. Return result */
       return list;
-    } else {
-      /* Process dotted pair notation */
-      if (dotPos != list.size() - 2) {
-        /* Malformed dotted pair */
-        throw new IllegalSyntaxException("Error: bad dotted pair form: " + list);
-      }
-      /* Remove dot */
-      list.remove(dotPos);
-      /* Convert list into cons */
-      Object last = list.get(list.size() - 1);
-      Object beforeLast = list.get(list.size() - 2);
-      SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
-      /* Cons backwars */
-      // TODO Do not iterate the same list again?
-      for (int n = list.size() - 3; n >= 0; n--) {
-        cons = SCMCons.cons(list.get(n), cons);
-      }
-      return cons;
     }
+
+    /* Process improper list */
+    if (dotPos != list.size() - 2) {
+      throw new IllegalSyntaxException("Error: bad dotted pair form: " + list);
+    }
+    /* Remove dot */
+    list.remove(dotPos);
+    /* Convert list into cons */
+    Object last = list.get(list.size() - 1);
+    Object beforeLast = list.get(list.size() - 2);
+    SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
+      /* Cons backwars */
+    // TODO Do not iterate the same list again?
+    for (int n = list.size() - 3; n >= 0; n--) {
+      cons = SCMCons.cons(list.get(n), cons);
+    }
+    return cons;
   }
 
   /**
