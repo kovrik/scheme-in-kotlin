@@ -11,13 +11,14 @@ import core.scm.specialforms.Unquote;
 import core.scm.specialforms.UnquoteSplicing;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static core.utils.NumberUtils.getRadixByChar;
+import static core.utils.NumberUtils.isValidForRadix;
+import static core.utils.NumberUtils.preProcessNumber;
 
 public class Reader implements IReader {
 
@@ -53,32 +54,6 @@ public class Reader implements IReader {
     }
   }
 
-  private static final Map<Character, Integer> RADICES = new HashMap<>();
-  static {
-    RADICES.put('b', 2);
-    RADICES.put('o', 8);
-    RADICES.put('d', 10);
-    RADICES.put('x', 16);
-  }
-
-  /* Threshold after which we switch to BigDecimals */
-  private static final Map<Character, Integer> RADIX_THRESHOLDS = new HashMap<>();
-  static {
-    RADIX_THRESHOLDS.put('b', 63);
-    RADIX_THRESHOLDS.put('o', 21);
-    RADIX_THRESHOLDS.put('d', 18);
-    RADIX_THRESHOLDS.put('x', 15);
-  }
-
-  /* Valid chars for each radix */
-  private static final Map<Character, String> RADIX_CHARS = new HashMap<>();
-  static {
-    RADIX_CHARS.put('b', "+-.01");
-    RADIX_CHARS.put('o', "+-.01234567");
-    RADIX_CHARS.put('d', "+-.0123456789");
-    RADIX_CHARS.put('x', "+-.0123456789abcdefABCDEF");
-  }
-
   public static String charToNamedChar(Character ch) {
     return CODEPOINTS.get(ch);
   }
@@ -93,15 +68,6 @@ public class Reader implements IReader {
 
   private static boolean isRadix(char c) {
     return c == 'b' || c == 'o' || c == 'd' || c == 'x';
-  }
-
-  /* Check if digit is valid for a number in a specific radix */
-  private static boolean isValidForRadix(char c, Character radix) {
-    String s = RADIX_CHARS.get(radix);
-    if (s == null) {
-      throw new IllegalSyntaxException("Bad radix: " + radix);
-    }
-    return s.indexOf(c) > -1;
   }
 
   @Override
@@ -204,7 +170,7 @@ public class Reader implements IReader {
     char next = (char)reader.read();
     reader.unread(next);
     /* Decimal number */
-    if (isValidForRadix(c, 'd')) {
+    if (isValidForRadix(c, 10)) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
         return DOT;
@@ -213,7 +179,7 @@ public class Reader implements IReader {
       /* Read identifier, not a number */
       String number = readIdentifier(reader).toString();
       /* Now check if it IS a valid number */
-      return preProcessNumber(number, 'e', 'd');
+      return preProcessNumber(number, 'e', 10);
     } else if (c == ';') {
       return readComment(reader);
     } else if (c == '"') {
@@ -240,12 +206,12 @@ public class Reader implements IReader {
       return SCMBoolean.FALSE;
     } else if (isRadix(next) || isExactness(next)) {
       /* Read radix and/or exactness and a number */
-      Character radix = null;
+      Character radixChar = null;
       Character exactness = null;
       /* We know that next char is either radix or exactness
        * So just check which one and set it */
       if (isRadix(next)) {
-        radix = next;
+        radixChar = next;
       }
       if (isExactness(next)) {
         exactness = next;
@@ -257,10 +223,10 @@ public class Reader implements IReader {
         next = (char) reader.read();
         if (isRadix(next)) {
           /* Met radix twice */
-          if (radix != null) {
+          if (radixChar != null) {
             throw new IllegalSyntaxException("Bad number!");
           }
-          radix = next;
+          radixChar = next;
         }
         if (isExactness(next)) {
             /* Met exactness twice */
@@ -275,68 +241,13 @@ public class Reader implements IReader {
       }
       /* Check if we got exactness or radix */
       exactness = (exactness == null) ? 'e' : exactness;
-      radix = (radix == null) ? 'd' : radix;
+      radixChar = (radixChar == null) ? 'd' : radixChar;
 
       /* Read identifier, not a number */
       String number = readIdentifier(reader).toString();
-      return preProcessNumber(number, exactness, radix);
+      return preProcessNumber(number, exactness, getRadixByChar(radixChar));
     }
     return null;
-  }
-
-  /* Check if string represents a valid number */
-  private static Object preProcessNumber(String number, char exactness, char radix) throws ParseException {
-    boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
-    boolean isSignCharOnly = (number.length() == 1) && (number.charAt(0) == '+' || number.charAt(0) == '-');
-    boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
-    /* Validate all digits */
-    boolean allDigitsAreValid = true;
-    for (char c : number.toCharArray()){
-      if (!isValidForRadix(c, radix)) {
-        allDigitsAreValid = false;
-        break;
-      }
-    }
-    if (hasTwoDots || isSignCharOnly || hasBadSignPos || !allDigitsAreValid) {
-      /* Not a number! */
-      return new SCMSymbol(number);
-    }
-    /* Drop + sign if exists */
-    if (number.charAt(0) == '+') {
-      number = number.substring(1);
-    }
-    /* Check exactness */
-    // TODO Exactness
-
-    return processNumber(number, radix, exactness);
-  }
-
-  /* Parse string into a number */
-  private static Number processNumber(String number, char radix, char exactness) {
-    int hasSign = (number.charAt(0) == '-') ? 1 : 0;
-    int dot = number.indexOf('.');
-    Integer r = RADICES.get(radix);
-    Integer threshold = RADIX_THRESHOLDS.get(radix);
-    if (number.length() > (threshold + hasSign)) {
-      if (dot > -1) {
-        /* Remove dot */
-        number = number.replace(".", "");
-        BigInteger bigInteger = new BigInteger(number, r);
-        return new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - hasSign - dot), MathContext.DECIMAL32);
-      }
-      BigInteger bigInteger = new BigInteger(number, r);
-      return new BigDecimal(bigInteger);
-    }
-    if (dot > -1) {
-      if (r == 10) {
-        return Double.parseDouble(number);
-      } else {
-        /* Remove dot */
-        number = number.replace(".", "");
-        return Long.parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - hasSign - dot);
-      }
-    }
-    return Long.parseLong(number, r);
   }
 
   /**
@@ -394,7 +305,7 @@ public class Reader implements IReader {
    * Syntax:
    * (See above for full syntax)
    */
-  private static String readNumber(PushbackReader reader, Character radix) throws ParseException, IOException {
+  private static String readNumber(PushbackReader reader, int radix) throws ParseException, IOException {
     StringBuilder number = new StringBuilder();
     int i = reader.read();
     char c = (char)i;
@@ -459,19 +370,19 @@ public class Reader implements IReader {
     int i;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'x'))) {
-      char radix = ((char)i == 'x') ? 'x' : 'd';
-      if (radix != 'x') {
+      char radixChar = ((char)i == 'x') ? 'x' : 'd';
+      if (radixChar != 'x') {
         reader.unread((char)i);
       }
-      String codepoint = readNumber(reader, radix);
+      String codepoint = readNumber(reader, getRadixByChar(radixChar));
       int cp = -1;
-      if (radix == 'd') {
+      if (radixChar == 'd') {
         /* Decimal digits, not a codepoint */
         if (codepoint.length() == 1) {
           return codepoint.charAt(0);
         }
         cp = Integer.parseInt(codepoint, 10);
-      } else if (radix == 'x') {
+      } else if (radixChar == 'x') {
         if (codepoint.isEmpty()) {
           return 'x';
         }

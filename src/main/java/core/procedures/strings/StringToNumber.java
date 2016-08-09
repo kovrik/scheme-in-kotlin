@@ -3,6 +3,10 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBoolean;
+import core.utils.NumberUtils;
+
+import java.text.ParseException;
 
 public class StringToNumber extends AFn {
 
@@ -12,8 +16,8 @@ public class StringToNumber extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
-    if (args.length < 1) {
+  public Object invoke(Object... args) {
+    if (args.length < 1 || args.length > 2) {
       throw new ArityException(args.length, getName());
     }
     Object o = args[0];
@@ -21,35 +25,53 @@ public class StringToNumber extends AFn {
       throw new WrongTypeException("String", o);
     }
 
-    /* Read number */
-    Integer radix  = null;
-    // TODO
-
-    /* Get radix */
-    if (args.length > 2) {
-      throw new ArityException(args.length, getName());
+    String arg = (String)o;
+    /* Check if we should override optional radix */
+    boolean override = false;
+    int radix = 10;
+    if (arg.contains("#b")) {
+      radix = 2;
+      override = true;
+      arg = arg.replace("#b", "");
+    } else if (arg.contains("#o")) {
+      radix = 8;
+      override = true;
+      arg = arg.replace("#o", "");
+    } else if (arg.contains("#d")) {
+      radix = 10;
+      override = true;
+      arg = arg.replace("#d", "");
+    } else if (arg.contains("#x")) {
+      radix = 16;
+      override = true;
+      arg = arg.replace("#x", "");
     }
-    Object o1 = null;
+
+    /* Get default (optional) radix if present */
     if (args.length == 2) {
-      o1 = args[1];
+      Object o1 = args[1];
       if (!(o1 instanceof Long)) {
         throw new WrongTypeException("Integer", o);
       }
-      if (!(o1.equals(2L) || o1.equals(8L) || o1.equals(10L) || o1.equals(16L))) {
-        throw new IllegalArgumentException("Wrong radix: " + o1);
+
+      int optRadix = ((Long)o1).intValue();
+      if (optRadix < 2 || optRadix > 16) {
+        throw new IllegalArgumentException("string->number: expected radix from 2 to 16!");
+      }
+      if (!override) {
+        radix = optRadix;
       }
     }
 
-    // TODO
-    /* Convert */
-    if (radix == null) {
-      if (o1 != null) {
-        radix = (Integer)o1;
-      } else {
-        radix = 10;
+    /* Read number */
+    try {
+      Object result = NumberUtils.preProcessNumber(arg, 'e', radix);
+      if (result instanceof Number) {
+        return result;
       }
+    } catch (ParseException e) {
+      // ignore
     }
-
-    return o.toString();
+    return SCMBoolean.FALSE;
   }
 }

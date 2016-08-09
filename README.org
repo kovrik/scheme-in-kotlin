@@ -165,7 +165,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [9/17]
+** TODO Standard procedures [10/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -190,12 +190,14 @@ CLOSED: [2016-05-11 Wed 17:51]
 CLOSED: [2016-05-11 Wed 17:55]
 **** DONE char-ci=?
 CLOSED: [2016-05-11 Wed 17:55]
-*** TODO Type conversion [9/10]
+*** DONE Type conversion [10/10]
+CLOSED: [2016-08-08 Mon 21:47]
 **** DONE vector->list
 **** DONE list->vector
 **** DONE number->string
 CLOSED: [2016-07-24 Sun 18:16]
-**** TODO string->number
+**** DONE string->number
+CLOSED: [2016-08-08 Mon 21:47]
 **** DONE symbol->string
 **** DONE string->symbol
 **** DONE char->integer

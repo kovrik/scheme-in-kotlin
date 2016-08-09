@@ -584,4 +584,9 @@ public class NumberTest {
     assertEquals("-3a885", eval("(number->string -239749 16)", env));
     assertEquals("-777777777777777777777777777777777777", eval("(number->string #x-fffffffffffffffffffffffffff 8)", env));
   }
+
+  @Test
+  public void testStringToNumber() {
+    // TODO
+  }
 }
