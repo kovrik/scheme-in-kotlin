@@ -54,8 +54,11 @@ public class NumberTest {
     assertEquals(-15L, eval("-15", env));
     assertEquals(-2.5d, eval("-2.5", env));
     assertEquals(5L, eval("#x5", env));
+    assertEquals(5L, eval("#X5", env));
     assertEquals(15L, eval("#xf", env));
+    assertEquals(15L, eval("#Xf", env));
     assertEquals(13L, eval("#b1101", env));
+    assertEquals(13L, eval("#B1101", env));
   }
 
   @Test
@@ -566,10 +569,12 @@ public class NumberTest {
 
     assertEquals("5", eval("(number->string #b101)", env));
     assertEquals("309461373397964671249896789", eval("(number->string #b1111111111111010111111101010101010111011010101101010101010101110110101010101010101010101)", env));
+    assertEquals("309461373397964671249896789", eval("(number->string #B1111111111111010111111101010101010111011010101101010101010101110110101010101010101010101)", env));
 
     assertEquals("449", eval("(number->string #o701)", env));
     assertEquals("29889", eval("(number->string #o72301)", env));
     assertEquals("1237940039285380274899121345", eval("(number->string #o777777777777777777777777772301)", env));
+    assertEquals("1237940039285380274899121345", eval("(number->string #O777777777777777777777777772301)", env));
 
     assertEquals("0", eval("(number->string #x0)", env));
     assertEquals("15", eval("(number->string #xf)", env));
@@ -587,6 +592,40 @@ public class NumberTest {
 
   @Test
   public void testStringToNumber() {
+    assertEquals(100L, eval("(string->number \"100\")", env));
+    assertEquals(256L, eval("(string->number \"100\" 16)", env));
+    assertEquals(FALSE, eval("(string->number \"hello\")", env));
+    assertEquals(57L, eval("(string->number \"111\" 7)", env));
+    assertEquals(7L, eval("(string->number \"#b111\" 7)", env));
+    assertEquals(new BigDecimal("26623333280885243903"), eval("(string->number \"bbbbbbbbbbbbbbbbbb\" 12)", env));
+    assertEquals(new BigDecimal("26623333280885243903"), eval("(string->number \"BBBBBBBBBBBBBBBBBB\" 12)", env));
+    assertEquals(new BigDecimal("110573323209400121422731899656355381011962890624"), eval("(string->number \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\" 15)", env));
+    assertEquals(FALSE, eval("(string->number \"eeef\" 15)", env));
+    assertEquals(85L, eval("(string->number \"1010101\" 2)", env));
+    assertEquals(new BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env));
+
     // TODO
+//    assertEquals(100.0, eval("(string->number \"1e2\")", env));
+//    assertEquals(1500.0, eval("(string->number \"15##\")", env));
+  }
+
+  @Test
+  public void testSpecialNumbers() {
+    assertEquals(Double.NaN, eval("+nan.0", env));
+    assertEquals(Double.NaN, eval("-nan.0", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("+inf.0", env));
+    assertEquals(Double.NEGATIVE_INFINITY, eval("-inf.0", env));
+  }
+
+  @Test
+  public void testThresholds() {
+    String chars = "123456789abcdef";
+    for (int r = 2; r <= 16; r++) {
+      StringBuilder sb = new StringBuilder();
+      for (int c = 1; c <= 70; c++) {
+        sb.append(chars.charAt(r - 2));
+        assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", sb.toString(), r), env));
+      }
+    }
   }
 }

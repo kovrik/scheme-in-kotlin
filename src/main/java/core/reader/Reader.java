@@ -9,6 +9,7 @@ import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import core.scm.specialforms.Unquote;
 import core.scm.specialforms.UnquoteSplicing;
+import core.utils.NumberUtils;
 
 import java.io.*;
 import java.text.ParseException;
@@ -16,9 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static core.utils.NumberUtils.getRadixByChar;
-import static core.utils.NumberUtils.isValidForRadix;
-import static core.utils.NumberUtils.preProcessNumber;
+import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
@@ -67,7 +66,7 @@ public class Reader implements IReader {
   }
 
   private static boolean isRadix(char c) {
-    return c == 'b' || c == 'o' || c == 'd' || c == 'x';
+    return "bodxBODX".indexOf(c) > -1;
   }
 
   @Override
@@ -178,6 +177,9 @@ public class Reader implements IReader {
       reader.unread(c);
       /* Read identifier, not a number */
       String number = readIdentifier(reader).toString();
+      if (NumberUtils.SPECIAL_NUMBERS.containsKey(number)) {
+        return NumberUtils.SPECIAL_NUMBERS.get(number);
+      }
       /* Now check if it IS a valid number */
       return preProcessNumber(number, 'e', 10);
     } else if (c == ';') {
@@ -370,7 +372,7 @@ public class Reader implements IReader {
     int i;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'x'))) {
-      char radixChar = ((char)i == 'x') ? 'x' : 'd';
+      char radixChar = (((char)i == 'x') || ((char)i == 'X')) ? 'x' : 'd';
       if (radixChar != 'x') {
         reader.unread((char)i);
       }

@@ -91,7 +91,6 @@ public class Evaluator implements IEvaluator {
   /**
    * Apply SCMProcedure
    */
-  // TODO Replace args with Object[] array?
   private Object apply(SCMProcedure fn, List<Object> args) {
     List<SCMSymbol> params = fn.getArgs();
 

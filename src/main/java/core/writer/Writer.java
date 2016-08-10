@@ -2,8 +2,10 @@ package core.writer;
 
 import core.reader.Reader;
 import core.scm.SCMCons;
+import core.utils.NumberUtils;
 
 import java.util.List;
+import java.util.Map;
 
 public class Writer implements IWriter {
 
@@ -17,6 +19,16 @@ public class Writer implements IWriter {
     }
     if (o instanceof List) {
       return SCMCons.toString((List)o);
+    }
+    if (o instanceof Number) {
+      if (Double.isNaN(((Number)o).doubleValue())) {
+        return "+nan.0";
+      }
+      for (Map.Entry<String, Number> entry : NumberUtils.SPECIAL_NUMBERS.entrySet()) {
+        if (entry.getValue().equals(o)) {
+          return entry.getKey();
+        }
+      }
     }
     if (o instanceof String) {
       return "\"" + o + "\"";

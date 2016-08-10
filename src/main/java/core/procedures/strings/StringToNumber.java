@@ -27,6 +27,8 @@ public class StringToNumber extends AFn {
 
     String arg = (String)o;
     /* Check if we should override optional radix */
+    // FIXME (string->number "1234#d") + exactness
+
     boolean override = false;
     int radix = 10;
     if (arg.contains("#b")) {
@@ -53,7 +55,6 @@ public class StringToNumber extends AFn {
       if (!(o1 instanceof Long)) {
         throw new WrongTypeException("Integer", o);
       }
-
       int optRadix = ((Long)o1).intValue();
       if (optRadix < 2 || optRadix > 16) {
         throw new IllegalArgumentException("string->number: expected radix from 2 to 16!");

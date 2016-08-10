@@ -14,12 +14,24 @@ public class NumberUtils {
 
   private NumberUtils() {}
 
+  public static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
+  static {
+    SPECIAL_NUMBERS.put("+nan.0", Double.NaN);
+    SPECIAL_NUMBERS.put("-nan.0", Double.NaN);
+    SPECIAL_NUMBERS.put("+inf.0", Double.POSITIVE_INFINITY);
+    SPECIAL_NUMBERS.put("-inf.0", Double.NEGATIVE_INFINITY);
+  }
+
   private static final Map<Character, Integer> NAMED_RADICES = new HashMap<>();
   static {
     NAMED_RADICES.put('b', 2);
+    NAMED_RADICES.put('B', 2);
     NAMED_RADICES.put('o', 8);
+    NAMED_RADICES.put('O', 8);
     NAMED_RADICES.put('d', 10);
+    NAMED_RADICES.put('D', 10);
     NAMED_RADICES.put('x', 16);
+    NAMED_RADICES.put('X', 16);
   }
 
   public static int getRadixByChar(char radixChar) {
