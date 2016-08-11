@@ -9,10 +9,13 @@ import java.math.MathContext;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class NumberUtils {
 
   private NumberUtils() {}
+
+  private static final Pattern HASH_PATTERN = Pattern.compile(".+#+$");
 
   public static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
   static {
@@ -60,21 +63,21 @@ public class NumberUtils {
 
   private static final Map<Integer, String> RADIX_CHARS = new HashMap<>();
   static {
-    RADIX_CHARS.put(2,  "+-.01");
-    RADIX_CHARS.put(3,  "+-.012");
-    RADIX_CHARS.put(4,  "+-.0123");
-    RADIX_CHARS.put(5,  "+-.01234");
-    RADIX_CHARS.put(6,  "+-.012345");
-    RADIX_CHARS.put(7,  "+-.0123456");
-    RADIX_CHARS.put(8,  "+-.01234567");
-    RADIX_CHARS.put(9,  "+-.012345678");
-    RADIX_CHARS.put(10, "+-.0123456789");
-    RADIX_CHARS.put(11, "+-.0123456789aA");
-    RADIX_CHARS.put(12, "+-.0123456789abAB");
-    RADIX_CHARS.put(13, "+-.0123456789abcABC");
-    RADIX_CHARS.put(14, "+-.0123456789abcdABCD");
-    RADIX_CHARS.put(15, "+-.0123456789abcdeABCDE");
-    RADIX_CHARS.put(16, "+-.0123456789abcdefABCDEF");
+    RADIX_CHARS.put(2,  "#+-.01");
+    RADIX_CHARS.put(3,  "#+-.012");
+    RADIX_CHARS.put(4,  "#+-.0123");
+    RADIX_CHARS.put(5,  "#+-.01234");
+    RADIX_CHARS.put(6,  "#+-.012345");
+    RADIX_CHARS.put(7,  "#+-.0123456");
+    RADIX_CHARS.put(8,  "#+-.01234567");
+    RADIX_CHARS.put(9,  "#+-.012345678");
+    RADIX_CHARS.put(10, "#+-.0123456789");
+    RADIX_CHARS.put(11, "#+-.0123456789aA");
+    RADIX_CHARS.put(12, "#+-.0123456789abAB");
+    RADIX_CHARS.put(13, "#+-.0123456789abcABC");
+    RADIX_CHARS.put(14, "#+-.0123456789abcdABCD");
+    RADIX_CHARS.put(15, "#+-.0123456789abcdeABCDE");
+    RADIX_CHARS.put(16, "#+-.0123456789abcdefABCDEF");
   }
 
   /* Check if digit is valid for a number in a specific radix */
@@ -93,13 +96,34 @@ public class NumberUtils {
     boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
     /* Validate all digits */
     boolean allDigitsAreValid = true;
+    boolean hasAtLeastOneDigit = false;
     for (char c : number.toCharArray()) {
-      if (!isValidForRadix(c, radix)) {
+      /* Check if char is valid for this radix AND
+       * that we don't have # before digits
+       */
+      if (!isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
         allDigitsAreValid = false;
         break;
       }
+      /* Check if we have a digit char */
+      if ("#+-.".indexOf(c) == -1) {
+        hasAtLeastOneDigit = true;
+      }
     }
-    if (hasTwoDots || isSignCharOnly || hasBadSignPos || !allDigitsAreValid) {
+
+    boolean validHashChars = true;
+    if (hasAtLeastOneDigit && number.indexOf('#') > -1) {
+      if (HASH_PATTERN.matcher(number).matches()) {
+        number = number.replaceAll("#", "0");
+        number = number + ".0";
+      } else {
+        validHashChars = false;
+      }
+    }
+
+    // TODO Exponent
+
+    if (hasTwoDots || isSignCharOnly || hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit) {
       /* Not a number! */
       return new SCMSymbol(number);
     }

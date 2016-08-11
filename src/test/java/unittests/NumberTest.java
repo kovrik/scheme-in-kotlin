@@ -59,6 +59,31 @@ public class NumberTest {
     assertEquals(15L, eval("#Xf", env));
     assertEquals(13L, eval("#b1101", env));
     assertEquals(13L, eval("#B1101", env));
+
+    assertEquals(2.0, eval("#b1#", env));
+    assertEquals(2.0, eval("#B1#", env));
+    assertEquals(2L, eval("#B10", env));
+    assertEquals(150.0, eval("15#", env));
+    assertEquals(10.0, eval("+1#", env));
+    assertEquals(100.0, eval("#i#d10#", env));
+    assertEquals(100.0, eval("#d10#", env));
+    assertEquals(4.0, eval("#b10#", env));
+    assertEquals(150.0, eval("+15#", env));
+    // TODO
+//    assertEquals(100, eval("#e#d10#", env));
+
+    try {
+      eval("+#", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Unbound variable: +#", e.getMessage());
+    }
+    try {
+      eval("+1#1", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("Unbound variable: +1#1", e.getMessage());
+    }
   }
 
   @Test
@@ -403,7 +428,6 @@ public class NumberTest {
     assertEquals(5L, eval("(gcd 5 10)", env));
     assertEquals(1L, eval("(gcd 3 6 8)", env));
 
-    // TODO Doubles
     assertEquals(3d, eval("(gcd 3.0 6)", env));
     assertEquals(40000d, eval("(gcd 200000.0 40000.0)", env));
     try {
@@ -443,7 +467,6 @@ public class NumberTest {
     assertEquals(24L, eval("(lcm 3 6 8)", env));
     assertEquals(24d, eval("(lcm 3 6 8.0)", env));
 
-    // TODO Doubles
     assertEquals(6d, eval("(lcm 3.0 6)", env));
     assertEquals(200000d, eval("(lcm 200000.0 40000.0)", env));
     try {
@@ -536,7 +559,6 @@ public class NumberTest {
     assertEquals(TRUE, eval(String.format("(> (+ 1 %s) %s)", big2, big2), env));
     assertEquals(TRUE, eval(String.format("(< (+ 1 2) %s)", big2), env));
 
-    // FIXME
     assertEquals(Double.POSITIVE_INFINITY, eval(String.format("(sqrt %s)", big2), env));
   }
 
@@ -603,10 +625,12 @@ public class NumberTest {
     assertEquals(FALSE, eval("(string->number \"eeef\" 15)", env));
     assertEquals(85L, eval("(string->number \"1010101\" 2)", env));
     assertEquals(new BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env));
-
+    assertEquals(1500.0, eval("(string->number \"15##\")", env));
     // TODO
 //    assertEquals(100.0, eval("(string->number \"1e2\")", env));
-//    assertEquals(1500.0, eval("(string->number \"15##\")", env));
+//    assertEquals(, eval("(string->number \"#b1e-1\")", env));
+//    assertEquals(, eval("(string->number \"#b1e5\")", env));
+//    assertEquals(, eval("(string->number \"#o1234e+25\")", env));
   }
 
   @Test

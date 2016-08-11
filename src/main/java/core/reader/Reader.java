@@ -169,7 +169,7 @@ public class Reader implements IReader {
     char next = (char)reader.read();
     reader.unread(next);
     /* Decimal number */
-    if (isValidForRadix(c, 10)) {
+    if (c != '#' && isValidForRadix(c, 10)) {
       // dot?
       if (c == '.' && DELIMITERS.indexOf(next) > -1) {
         return DOT;
