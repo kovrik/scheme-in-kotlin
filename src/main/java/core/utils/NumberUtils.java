@@ -1,6 +1,7 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
+import core.reader.parsers.StringParser;
 import core.scm.SCMSymbol;
 
 import java.math.BigDecimal;
@@ -14,6 +15,14 @@ import java.util.regex.Pattern;
 public class NumberUtils {
 
   private NumberUtils() {}
+
+  public static final StringParser EXACTNESS = new StringParser("#e").or("#i").or("#E").or("#I");
+  public static final StringParser RADIX = new StringParser("#b").or("#o").or("#d").or("#x")
+                                                        .or("#B").or("#O").or("#D").or("#X");
+
+  public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
+  public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);
+
 
   private static final Pattern HASH_PATTERN = Pattern.compile(".+#+$");
 
@@ -120,7 +129,6 @@ public class NumberUtils {
         validHashChars = false;
       }
     }
-
     // TODO Exponent
 
     if (hasTwoDots || isSignCharOnly || hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit) {

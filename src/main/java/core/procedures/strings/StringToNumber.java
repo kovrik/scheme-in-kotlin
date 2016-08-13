@@ -3,10 +3,15 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.reader.parsers.Result;
 import core.scm.SCMBoolean;
 import core.utils.NumberUtils;
 
 import java.text.ParseException;
+import java.util.List;
+
+import static core.utils.NumberUtils.EXACTNESS_RADIX;
+import static core.utils.NumberUtils.RADIX_EXACTNESS;
 
 public class StringToNumber extends AFn {
 
@@ -25,29 +30,38 @@ public class StringToNumber extends AFn {
       throw new WrongTypeException("String", o);
     }
 
-    String arg = (String)o;
-    /* Check if we should override optional radix */
-    // FIXME (string->number "1234#d") + exactness
+    String number = (String)o;
 
+    /* Check if we should override optional radix */
+    /* Read radix and/or exactness and a number */
     boolean override = false;
-    int radix = 10;
-    if (arg.contains("#b")) {
-      radix = 2;
-      override = true;
-      arg = arg.replace("#b", "");
-    } else if (arg.contains("#o")) {
-      radix = 8;
-      override = true;
-      arg = arg.replace("#o", "");
-    } else if (arg.contains("#d")) {
-      radix = 10;
-      override = true;
-      arg = arg.replace("#d", "");
-    } else if (arg.contains("#x")) {
-      radix = 16;
-      override = true;
-      arg = arg.replace("#x", "");
+    Character radixChar = null;
+    Character exactness = null;
+
+    Result parse = EXACTNESS_RADIX.parse(number);
+    if (parse.getType() == Result.Type.SUCCESS) {
+      List<String> match = parse.getMatch();
+      exactness = match.get(0).charAt(1);
+      if (match.size() > 1) {
+        override = true;
+        radixChar = match.get(1).charAt(1);
+      }
+    } else {
+      parse = RADIX_EXACTNESS.parse(number);
+      if (parse.getType() == Result.Type.SUCCESS) {
+        override = true;
+        List<String> match = parse.getMatch();
+        radixChar = match.get(0).charAt(1);
+        if (match.size() > 1) {
+          exactness = match.get(1).charAt(1);
+        }
+      }
     }
+    number = parse.getRest();
+    exactness = (exactness == null) ? 'e' : exactness;
+    radixChar = (radixChar == null) ? 'd' : radixChar;
+
+    int radix = NumberUtils.getRadixByChar(radixChar);
 
     /* Get default (optional) radix if present */
     if (args.length == 2) {
@@ -66,7 +80,7 @@ public class StringToNumber extends AFn {
 
     /* Read number */
     try {
-      Object result = NumberUtils.preProcessNumber(arg, 'e', radix);
+      Object result = NumberUtils.preProcessNumber(number, 'e', radix);
       if (result instanceof Number) {
         return result;
       }

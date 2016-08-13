@@ -1,6 +1,7 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
+import core.reader.parsers.Result;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
@@ -207,46 +208,41 @@ public class Reader implements IReader {
     } else if (next == 'f' || next == 'F') {
       return SCMBoolean.FALSE;
     } else if (isRadix(next) || isExactness(next)) {
-      /* Read radix and/or exactness and a number */
-      Character radixChar = null;
-      Character exactness = null;
-      /* We know that next char is either radix or exactness
-       * So just check which one and set it */
-      if (isRadix(next)) {
-        radixChar = next;
-      }
-      if (isExactness(next)) {
-        exactness = next;
-      }
-      /* Now read next char: should be either # or numeric */
-      next = (char)reader.read();
-      /* If it is #, then we expect radix or exactness */
-      if (next == '#') {
-        next = (char) reader.read();
-        if (isRadix(next)) {
-          /* Met radix twice */
-          if (radixChar != null) {
-            throw new IllegalSyntaxException("Bad number!");
-          }
-          radixChar = next;
-        }
-        if (isExactness(next)) {
-            /* Met exactness twice */
-          if (exactness != null) {
-            throw new IllegalSyntaxException("Bad number!");
-          }
-          exactness = next;
-        }
-      } else {
-        /* Should be the first digit of a number, so unread it */
-        reader.unread(next);
-      }
-      /* Check if we got exactness or radix */
-      exactness = (exactness == null) ? 'e' : exactness;
-      radixChar = (radixChar == null) ? 'd' : radixChar;
+      reader.unread(next);
+      reader.unread('#');
 
       /* Read identifier, not a number */
       String number = readIdentifier(reader).toString();
+
+      /* Read radix and/or exactness and a number */
+      Character radixChar = null;
+      Character exactness = null;
+      Result parse = EXACTNESS_RADIX.parse(number);
+      if (parse.getType() == Result.Type.SUCCESS) {
+        List<String> match = parse.getMatch();
+        exactness = match.get(0).charAt(1);
+        if (match.size() > 1) {
+          radixChar = match.get(1).charAt(1);
+        }
+      } else {
+        parse = RADIX_EXACTNESS.parse(number);
+        if (parse.getType() == Result.Type.SUCCESS) {
+          List<String> match = parse.getMatch();
+          radixChar = match.get(0).charAt(1);
+          if (match.size() > 1) {
+            exactness = match.get(1).charAt(1);
+          }
+        }
+      }
+      exactness = (exactness == null) ? 'e' : exactness;
+      radixChar = (radixChar == null) ? 'd' : radixChar;
+
+      number = parse.getRest();
+      if (number.isEmpty()) {
+        throw new IllegalSyntaxException("Bad number: no digits!");
+      }
+
+      /* Check if we got exactness or radix */
       return preProcessNumber(number, exactness, getRadixByChar(radixChar));
     }
     return null;

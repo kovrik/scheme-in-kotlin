@@ -626,6 +626,7 @@ public class NumberTest {
     assertEquals(85L, eval("(string->number \"1010101\" 2)", env));
     assertEquals(new BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env));
     assertEquals(1500.0, eval("(string->number \"15##\")", env));
+    assertEquals(FALSE, eval("(string->number \"1234#d\")", env));
     // TODO
 //    assertEquals(100.0, eval("(string->number \"1e2\")", env));
 //    assertEquals(, eval("(string->number \"#b1e-1\")", env));

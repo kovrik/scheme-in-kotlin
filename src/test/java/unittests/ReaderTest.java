@@ -1,5 +1,6 @@
 package unittests;
 
+import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMBoolean;
@@ -45,32 +46,32 @@ public class ReaderTest {
     assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.read("#xfffffffffffffffffffffffffff"));
     try {
       reader.read("#o9999");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     try {
       reader.read("#df999");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     try {
       reader.read("#xz999");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     try {
       reader.read("#b2222");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     try {
       reader.read("#d+5+5");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     try {
       reader.read("+5+5");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalSyntaxException e) {
       assertEquals("Bad number!", e.getMessage());
     }
     assertEquals(255.99609375, reader.read("#d255.99609375"));
