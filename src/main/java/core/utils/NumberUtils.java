@@ -16,9 +16,8 @@ public class NumberUtils {
 
   private NumberUtils() {}
 
-  public static final StringParser EXACTNESS = new StringParser("#e").or("#i").or("#E").or("#I");
-  public static final StringParser RADIX = new StringParser("#b").or("#o").or("#d").or("#x")
-                                                        .or("#B").or("#O").or("#D").or("#X");
+  public static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
+  public static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
 
   public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
   public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);

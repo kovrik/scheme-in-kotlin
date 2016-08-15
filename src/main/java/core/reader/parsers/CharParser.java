@@ -8,30 +8,30 @@ import static core.reader.parsers.Result.Type.FAILURE;
 import static core.reader.parsers.Result.Type.SUCCESS;
 import static core.reader.parsers.Result.failure;
 
-public class StringParser implements IReader {
+public class CharParser implements IReader {
 
-  private final String str;
+  private final char c;
 
-  public StringParser(String str) {
-    this.str = str;
+  public CharParser(char c) {
+    this.c = c;
   }
 
   public Result parse(String input) {
-    if (str.equals(input)) {
-      return new Result(str, Result.Type.SUCCESS, "");
+    if (input == null || input.isEmpty()) {
+      return failure(input);
     }
-    if (input.startsWith(str)) {
-      return new Result(str, Result.Type.SUCCESS, input.substring(str.length(), input.length()));
+    if (input.charAt(0) == c) {
+      return new Result(Character.toString(c), Result.Type.SUCCESS, input.substring(1, input.length()));
     }
     return failure(input);
   }
 
   /** Parser Combinators **/
-  public StringParser andThen(StringParser then) {
-    return new StringParser(str) {
+  public CharParser andThen(CharParser then) {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result first = StringParser.this.parse(input);
+        Result first = CharParser.this.parse(input);
         if (first.getType() == FAILURE) {
           return first;
         }
@@ -44,15 +44,15 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser andThen(String str) {
-    return this.andThen(new StringParser(str));
+  public CharParser andThen(char c) {
+    return this.andThen(new CharParser(c));
   }
 
-  public StringParser andThenMaybe(StringParser then) {
-    return new StringParser(str) {
+  public CharParser andThenMaybe(CharParser then) {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result first = StringParser.this.parse(input);
+        Result first = CharParser.this.parse(input);
         if (first.getType() == FAILURE) {
           return first;
         }
@@ -65,15 +65,15 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser andThenMaybe(String str) {
-    return this.andThenMaybe(new StringParser(str));
+  public CharParser andThenMaybe(char c) {
+    return this.andThenMaybe(new CharParser(c));
   }
 
-  public StringParser or(StringParser then) {
-    return new StringParser(str) {
+  public CharParser or(CharParser then) {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result first = StringParser.this.parse(input);
+        Result first = CharParser.this.parse(input);
         if (first.getType() == SUCCESS) {
           return first;
         }
@@ -86,29 +86,29 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser or(String str) {
-    return this.or(new StringParser(str));
+  public CharParser or(char c) {
+    return this.or(new CharParser(c));
   }
 
-  private static final StringParser ANY = new StringParser("") {
+  private static final CharParser ANY = new CharParser(Character.MIN_VALUE) {
     @Override
     public Result parse(String input) {
       if (input == null || input.isEmpty()) {
         return failure(input);
       }
-      return new Result(input, SUCCESS, "");
+      return new Result(Character.toString(input.charAt(0)), SUCCESS, input.substring(1, input.length()));
     }
   };
 
-  public static StringParser any() {
+  public static CharParser any() {
     return ANY;
   }
 
-  public StringParser notFollowedBy(StringParser then) {
-    return new StringParser(str) {
+  public CharParser notFollowedBy(CharParser then) {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result first = StringParser.this.parse(input);
+        Result first = CharParser.this.parse(input);
         if (first.getType() == FAILURE) {
           return first;
         }
@@ -121,52 +121,52 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser notFollowedBy(String str) {
-    return this.notFollowedBy(new StringParser(str));
+  public CharParser notFollowedBy(String str) {
+    return this.notFollowedBy(new CharParser(c));
   }
 
-  public StringParser many() {
-    return new StringParser(str) {
+  public CharParser many() {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result parse = StringParser.this.parse(input);
+        Result parse = CharParser.this.parse(input);
         Result result = new Result((String)null, SUCCESS, parse.getRest());
         while (parse.getType() == SUCCESS) {
           result = result.merge(parse);
-          parse = StringParser.this.parse(parse.getRest());
+          parse = CharParser.this.parse(parse.getRest());
         }
         return result;
       }
     };
   }
 
-  public StringParser many1() {
-    return new StringParser(str) {
+  public CharParser many1() {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
-        Result parse = StringParser.this.parse(input);
+        Result parse = CharParser.this.parse(input);
         if (parse.getType() == FAILURE) {
           return parse;
         }
         Result result = new Result((String)null, SUCCESS, parse.getRest());
         while (parse.getType() == SUCCESS) {
           result = result.merge(parse);
-          parse = StringParser.this.parse(parse.getRest());
+          parse = CharParser.this.parse(parse.getRest());
         }
         return result;
       }
     };
   }
 
-  public StringParser eof() {
+  public CharParser eof() {
     return this.notFollowedBy(any());
   }
 
-  public static StringParser choice(StringParser... parsers) {
-    return new StringParser("") {
+  public static CharParser choice(CharParser... parsers) {
+    return new CharParser(Character.MIN_VALUE) {
       @Override
       public Result parse(String input) {
-        for (StringParser parser : parsers) {
+        for (CharParser parser : parsers) {
           Result result = parser.parse(input);
           if (result.getType() == SUCCESS) {
             return result;
@@ -177,24 +177,8 @@ public class StringParser implements IReader {
     };
   }
 
-  public static StringParser choice(String... strs) {
-    return new StringParser("") {
-      @Override
-      public Result parse(String input) {
-        for (String str : strs) {
-          StringParser parser = new StringParser(str);
-          Result result = parser.parse(input);
-          if (result.getType() == SUCCESS) {
-            return result;
-          }
-        }
-        return failure(input);
-      }
-    };
-  }
-
-  public static StringParser sequence(StringParser... parsers) {
-    return new StringParser("") {
+  public static CharParser sequence(CharParser... parsers) {
+    return new CharParser(Character.MIN_VALUE) {
       @Override
       public Result parse(String input) {
         Result parse = parsers[0].parse(input);
@@ -212,14 +196,14 @@ public class StringParser implements IReader {
     };
   }
 
-  public static StringParser sequence(String... strings) {
-    return new StringParser("") {
+  public static CharParser sequence(char... chars) {
+    return new CharParser(Character.MIN_VALUE) {
       @Override
       public Result parse(String input) {
-        Result parse = new StringParser(strings[0]).parse(input);
+        Result parse = new CharParser(chars[0]).parse(input);
         Result result = parse;
-        for (int i = 1; i < strings.length; i++) {
-          parse = new StringParser(strings[i]).parse(parse.getRest());
+        for (int i = 1; i < chars.length; i++) {
+          parse = new CharParser(chars[i]).parse(parse.getRest());
           if (parse.getType() == SUCCESS) {
             result = result.merge(parse);
           } else {
@@ -231,15 +215,39 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser between(StringParser open, StringParser close) {
-    return new StringParser(str) {
+  public static CharParser sequence(String chars) {
+    return sequence(chars.toCharArray());
+  }
+
+  public static CharParser choice(String chars) {
+    return choice(chars.toCharArray());
+  }
+
+  public static CharParser choice(char... chars) {
+    return new CharParser(Character.MIN_VALUE) {
+      @Override
+      public Result parse(String input) {
+        for (char c : chars) {
+          CharParser parser = new CharParser(c);
+          Result result = parser.parse(input);
+          if (result.getType() == SUCCESS) {
+            return result;
+          }
+        }
+        return failure(input);
+      }
+    };
+  }
+
+  public CharParser between(CharParser open, CharParser close) {
+    return new CharParser(c) {
       @Override
       public Result parse(String input) {
         Result o = open.parse(input);
         if (o.getType() == FAILURE) {
           return failure(input);
         }
-        Result parse = StringParser.this.parse(o.getRest());
+        Result parse = CharParser.this.parse(o.getRest());
         if (parse.getType() == FAILURE) {
           return failure(input);
         }
@@ -252,8 +260,8 @@ public class StringParser implements IReader {
     };
   }
 
-  public StringParser between(String open, String close) {
-    return this.between(new StringParser(open), new StringParser(close));
+  public CharParser between(char open, char close) {
+    return this.between(new CharParser(open), new CharParser(close));
   }
 
   @Override

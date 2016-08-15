@@ -208,7 +208,7 @@ CLOSED: [2016-07-23 Sat 13:01]
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-*** TODO Numbers [5/12]
+*** TODO Numbers [6/12]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -300,9 +300,12 @@ CLOSED: [2016-06-17 Fri 18:39]
 ***** TODO magnitude
 ***** TODO angle
 ***** TODO complex?
-**** TODO Input-output [0/2]
-***** TODO number->string
-***** TODO string->number
+**** DONE Input-output [2/2]
+CLOSED: [2016-08-13 Sat 21:03]
+***** DONE number->string
+CLOSED: [2016-08-13 Sat 21:03]
+***** DONE string->number
+CLOSED: [2016-08-13 Sat 21:03]
 **** TODO Type predicates [2/5]
 ***** DONE integer?
 CLOSED: [2016-06-17 Fri 18:07]
