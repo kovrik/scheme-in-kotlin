@@ -1,5 +1,6 @@
 package unittests.s7.tests;
 
+import core.exceptions.IllegalSyntaxException;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -39,6 +40,10 @@ public class IsSymbolTest extends AbstractS7Test {
     assertEquals(FALSE, eval("(symbol? #b1)", env));
     assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0e) #t)", env));
     assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0000eeesve) #t)", env));
-    assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env));
+    try {
+      eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env);
+    } catch (IllegalSyntaxException e) {
+      assertEquals("Bad number: #xff0000eeesve!", e.getMessage());
+    }
   }
 }

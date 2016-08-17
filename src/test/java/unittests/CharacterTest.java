@@ -39,8 +39,8 @@ public class CharacterTest {
   @Test
   public void testEvalIsChar() {
     assertEquals(TRUE, eval("(char? #\\A)", env));
-    assertEquals(TRUE, eval("(char? #\\x0000)", env));
-    assertEquals(TRUE, eval("(char? #\\x0300)", env));
+    assertEquals(TRUE, eval("(char? #\\u0000)", env));
+    assertEquals(TRUE, eval("(char? #\\u0300)", env));
     assertEquals(FALSE, eval("(char? \"A\")", env));
   }
 

@@ -237,13 +237,17 @@ public class Reader implements IReader {
       exactness = (exactness == null) ? 'e' : exactness;
       radixChar = (radixChar == null) ? 'd' : radixChar;
 
-      number = parse.getRest();
-      if (number.isEmpty()) {
+      String restNumber = parse.getRest();
+      if (restNumber.isEmpty() || "+".equals(restNumber) || "-".equals(restNumber)) {
         throw new IllegalSyntaxException("Bad number: no digits!");
       }
 
-      /* Check if we got exactness or radix */
-      return preProcessNumber(number, exactness, getRadixByChar(radixChar));
+      /* Check if this is a proper number */
+      Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radixChar));
+      if (!(result instanceof Number)) {
+        throw new IllegalSyntaxException(String.format("Bad number: %s!", number));
+      }
+      return result;
     }
     return null;
   }
@@ -298,38 +302,6 @@ public class Reader implements IReader {
   }
 
   /**
-   * Read a Number
-   *
-   * Syntax:
-   * (See above for full syntax)
-   */
-  private static String readNumber(PushbackReader reader, int radix) throws ParseException, IOException {
-    StringBuilder number = new StringBuilder();
-    int i = reader.read();
-    char c = (char)i;
-    if (c == '.') {
-      number.append('0');
-    }
-    while (isValid(i) && (isValidForRadix(c, radix))) {
-      number.append(c);
-      i = reader.read();
-      c = (char)i;
-    }
-    /* Ensure we have 1 sign/dot max */
-    if ((number.indexOf("+") != number.lastIndexOf("+")) ||
-        (number.indexOf("-") != number.lastIndexOf("-")) ||
-        (number.indexOf(".") != number.lastIndexOf("."))) {
-
-      throw new IllegalSyntaxException("Bad number!");
-    }
-    reader.unread(c);
-    if (number.length() > 0 && number.charAt(number.length() - 1) == '.') {
-      number.append('0');
-    }
-    return number.toString();
-  }
-
-  /**
    * Read a String
    *
    * Syntax:
@@ -364,32 +336,30 @@ public class Reader implements IReader {
    * <character> --> #\ <any character> | #\ <character name>
    * <character name> --> space | newline
    */
+  // TODO Implement SRFI-75 instead? u/U or x for Unicode?
   private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
     int i;
     /* Check if it is a codepoint */
-    if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'x'))) {
-      char radixChar = (((char)i == 'x') || ((char)i == 'X')) ? 'x' : 'd';
-      if (radixChar != 'x') {
-        reader.unread((char)i);
+    if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
+      /* Hex or Octal? */
+      char radixChar;
+      if (((char)i == 'u') || ((char)i == 'U')) {
+        radixChar = 'x';
+      } else {
+        radixChar = 'o';
+        reader.unread((char) i);
       }
-      String codepoint = readNumber(reader, getRadixByChar(radixChar));
-      int cp = -1;
-      if (radixChar == 'd') {
-        /* Decimal digits, not a codepoint */
-        if (codepoint.length() == 1) {
-          return codepoint.charAt(0);
-        }
-        cp = Integer.parseInt(codepoint, 10);
-      } else if (radixChar == 'x') {
-        if (codepoint.isEmpty()) {
-          return 'x';
-        }
-        cp = Integer.parseInt(codepoint, 16);
+
+      String identifier = readIdentifier(reader).toString();
+      if (identifier.isEmpty()) {
+        /* #\x char */
+        return 'x';
       }
-      if (!Character.isValidCodePoint(cp)) {
-        throw new IllegalSyntaxException("Bad codepoint: " + cp);
+      int radix = NumberUtils.getRadixByChar(radixChar);
+      if (radix == 8  && identifier.length() == 1) {
+        return identifier.charAt(0);
       }
-      return (char)cp;
+      return (char)((Number)preProcessNumber(identifier, 'e', radix)).intValue();
     }
     reader.unread((char)i);
 

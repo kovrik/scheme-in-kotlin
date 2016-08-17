@@ -99,8 +99,9 @@ public class NumberUtils {
 
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(String number, char exactness, int radix) throws ParseException {
-    boolean hasTwoDots = number.indexOf('.') != number.lastIndexOf('.');
-    boolean isSignCharOnly = (number.length() == 1) && (number.charAt(0) == '+' || number.charAt(0) == '-');
+    if (number.indexOf('.') != number.lastIndexOf('.')) {
+      throw new IllegalSyntaxException("Multiple decimal points: " + number);
+    }
     boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
     /* Validate all digits */
     boolean allDigitsAreValid = true;
@@ -130,7 +131,7 @@ public class NumberUtils {
     }
     // TODO Exponent
 
-    if (hasTwoDots || isSignCharOnly || hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit) {
+    if (hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit) {
       /* Not a number! */
       return new SCMSymbol(number);
     }

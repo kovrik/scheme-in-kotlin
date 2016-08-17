@@ -47,32 +47,32 @@ public class ReaderTest {
     try {
       reader.read("#o9999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: #o9999!", e.getMessage());
     }
     try {
       reader.read("#df999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: #df999!", e.getMessage());
     }
     try {
       reader.read("#xz999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: #xz999!", e.getMessage());
     }
     try {
       reader.read("#b2222");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: #b2222!", e.getMessage());
     }
     try {
       reader.read("#d+5+5");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: #d+5+5!", e.getMessage());
     }
     try {
       reader.read("+5+5");
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number!", e.getMessage());
+      assertEquals("Bad number: +5+5!", e.getMessage());
     }
     assertEquals(255.99609375, reader.read("#d255.99609375"));
     assertEquals(255.99609375, reader.read("#xff.ff"));
@@ -149,22 +149,21 @@ public class ReaderTest {
     assertEquals('5', reader.read("#\\5"));
     assertEquals(' ', reader.read("#\\space"));
     assertEquals('\n', reader.read("#\\newline"));
-    assertEquals('\r', reader.read("#\\13"));
-    assertEquals('\u000b', reader.read("#\\11"));
+    assertEquals('\u000B', reader.read("#\\13"));
+    assertEquals('\u0009', reader.read("#\\11"));
     assertEquals('0', reader.read("#\\0"));
     assertEquals('8', reader.read("#\\8"));
     assertEquals('3', reader.read("#\\3"));
-    assertEquals('\r', reader.read("#\\13"));
     assertEquals('\u0007', reader.read("#\\alarm"));
     assertEquals('\u0000', reader.read("#\\nul"));
     assertEquals('\u0000', reader.read("#\\null"));
     assertEquals(Character.MIN_VALUE, reader.read("#\\null"));
-    assertEquals(Character.MIN_VALUE, reader.read("#\\x00000"));
-    assertEquals(Character.MIN_VALUE, reader.read("#\\x0"));
-    assertEquals('\r', reader.read("#\\xd"));
-    assertEquals('\u000b', reader.read("#\\xb"));
-    assertEquals('\u000b', reader.read("#\\x000b"));
-    assertEquals('\u000b', reader.read("#\\x000000b"));
+    assertEquals(Character.MIN_VALUE, reader.read("#\\u00000"));
+    assertEquals(Character.MIN_VALUE, reader.read("#\\u0"));
+    assertEquals('\r', reader.read("#\\ud"));
+    assertEquals('\u000b', reader.read("#\\ub"));
+    assertEquals('\u000b', reader.read("#\\u000b"));
+    assertEquals('\u000b', reader.read("#\\u000000b"));
   }
 
   @Test
