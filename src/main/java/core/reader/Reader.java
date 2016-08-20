@@ -314,12 +314,13 @@ public class Reader implements IReader {
     char c;
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
       // escaping
+      // FIXME \n \t etc.
       if (c == '\\') {
         i = reader.read();
         char next = (char)i;
         if (next == '>') {
           throw new IllegalSyntaxException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
-        } else if (next == '"') {
+        } else {
           string.append(c).append(next);
           continue;
         }

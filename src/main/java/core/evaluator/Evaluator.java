@@ -72,6 +72,8 @@ public class Evaluator implements IEvaluator {
       args.add(eval(list.get(i), env));
     }
 
+    // TODO Convert to CPS
+
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
       return apply((SCMProcedure)fn, args);
