@@ -209,25 +209,35 @@ public class RosettaCodeTest {
     tempEnv.put(new SCMSymbol("display"), new Display(System.out));
     tempEnv.put(new SCMSymbol("newline"), new Newline(System.out));
 
-    String hanoi = "(define (hanoi n a b c) (if (> n 0) (begin (hanoi (- n 1) a c b) (display \"Move disk from pole \") (display a) (display \" to pole \") (display b) (newline) (hanoi (- n 1) c b a)) #t))";
+    String hanoi = "(define (hanoi n a b c) " +
+                   "  (if (> n 0)" +
+                   "    (begin" +
+                   "      (hanoi (- n 1) a c b)" +
+                   "      (display \"Move disk from pole \")" +
+                   "      (display a)" +
+                   "      (display \" to pole \")" +
+                   "      (display b)" +
+                   "      (newline)" +
+                   "      (hanoi (- n 1) c b a))" +
+                   " #t))";
     eval(hanoi, tempEnv);
     eval("(hanoi 4 1 2 3)", tempEnv);
 
     String solution = "Move disk from pole 1 to pole 3\n" +
-        "Move disk from pole 1 to pole 2\n" +
-        "Move disk from pole 3 to pole 2\n" +
-        "Move disk from pole 1 to pole 3\n" +
-        "Move disk from pole 2 to pole 1\n" +
-        "Move disk from pole 2 to pole 3\n" +
-        "Move disk from pole 1 to pole 3\n" +
-        "Move disk from pole 1 to pole 2\n" +
-        "Move disk from pole 3 to pole 2\n" +
-        "Move disk from pole 3 to pole 1\n" +
-        "Move disk from pole 2 to pole 1\n" +
-        "Move disk from pole 3 to pole 2\n" +
-        "Move disk from pole 1 to pole 3\n" +
-        "Move disk from pole 1 to pole 2\n" +
-        "Move disk from pole 3 to pole 2";
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 2 to pole 1\n" +
+                      "Move disk from pole 2 to pole 3\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 3 to pole 1\n" +
+                      "Move disk from pole 2 to pole 1\n" +
+                      "Move disk from pole 3 to pole 2\n" +
+                      "Move disk from pole 1 to pole 3\n" +
+                      "Move disk from pole 1 to pole 2\n" +
+                      "Move disk from pole 3 to pole 2";
 
     assertEquals(solution, baos.toString().trim());
     System.setOut(old);

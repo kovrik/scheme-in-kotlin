@@ -10,6 +10,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
+import core.scm.specialforms.tco.TailCall;
 import core.writer.Writer;
 
 import java.util.ArrayList;
@@ -19,6 +20,15 @@ public class Evaluator implements IEvaluator {
 
   @Override
   public Object eval(Object sexp, IEnvironment env) {
+    /* TCO: Trampoline */
+    Object result = evalp(sexp, env);
+    while (result instanceof TailCall) {
+      result = evalp(((TailCall)result).getExpr(), ((TailCall) result).getContext());
+    }
+    return result;
+  }
+
+  public Object evalp(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);

@@ -30,14 +30,12 @@ import java.util.List;
 import java.util.Map;
 
 import static core.scm.specialforms.And.AND;
-import static core.scm.specialforms.Begin.BEGIN;
 import static core.scm.specialforms.Case.CASE;
 import static core.scm.specialforms.Cond.COND;
 import static core.scm.specialforms.Define.DEFINE;
 import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
 import static core.scm.specialforms.Delay.DELAY;
 import static core.scm.specialforms.Do.DO;
-import static core.scm.specialforms.If.IF;
 import static core.scm.specialforms.Lambda.LAMBDA;
 import static core.scm.specialforms.Let.LET;
 import static core.scm.specialforms.LetRec.LETREC;
@@ -183,7 +181,7 @@ public final class DefaultEnvironment extends Environment {
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
   static {
     SPECIAL_FORMS.put(DELAY.toString(), DELAY);
-    SPECIAL_FORMS.put(BEGIN.toString(), BEGIN);
+//    SPECIAL_FORMS.put(BEGIN.toString(), BEGIN);
     SPECIAL_FORMS.put(OR.toString(), OR);
     SPECIAL_FORMS.put(AND.toString(), AND);
     SPECIAL_FORMS.put(CASE.toString(), CASE);
@@ -191,7 +189,7 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(LAMBDA.toString(), LAMBDA);
     SPECIAL_FORMS.put(DO.toString(), DO);
     SPECIAL_FORMS.put(DEFINE.toString(), DEFINE);
-    SPECIAL_FORMS.put(IF.toString(), IF);
+//    SPECIAL_FORMS.put(IF.toString(), IF);
     SPECIAL_FORMS.put(QUOTE.toString(), QUOTE);
     SPECIAL_FORMS.put(SET.toString(), SET);
     SPECIAL_FORMS.put(LET.toString(), LET);
@@ -207,7 +205,8 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
 
     // TCO
-//    SPECIAL_FORMS.put(core.scm.specialforms.tco.If.IF.toString(), core.scm.specialforms.tco.If.IF);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.If.IF.toString(), core.scm.specialforms.tco.If.IF);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Begin.BEGIN.toString(), core.scm.specialforms.tco.Begin.BEGIN);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();

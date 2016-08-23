@@ -114,13 +114,11 @@ public class EvaluatorTest {
     String recursive = "(define (recursive n)" +
                        "  (if (zero? n)" +
                        "      \"DONE\"" +
-                       "    (recursive (- n 1))))";
+                       "      (recursive (- n 1))))";
     eval(recursive, env);
 
     assertEquals("DONE", eval("(recursive 5)", env));
-//    assertEquals("DONE", eval("(recursive 489)", env));
-//    assertEquals("DONE", eval("(recursive 496)", env));
-//    assertEquals("DONE", eval("(recursive 1000000)", env));
+    assertEquals("DONE", eval("(recursive 100000)", env));
   }
 
   @Test

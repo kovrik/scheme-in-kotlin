@@ -7,7 +7,6 @@ import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMSymbol;
-import core.scm.specialforms.tco.TailCall;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -68,10 +67,10 @@ public class Main {
         Object result = evaluator.eval(expanded, env);
 
         // TODO Move out of here
-        /* TCO: Trampoline */
-        while (result instanceof TailCall) {
-          result = evaluator.eval(((TailCall)result).getExpr(), ((TailCall) result).getContext());
-        }
+//        /* TCO: Trampoline */
+//        while (result instanceof TailCall) {
+//          result = evaluator.eval(((TailCall)result).getExpr(), ((TailCall) result).getContext());
+//        }
 
         if (result != null && result != UNSPECIFIED) {
           // Put result into environment
