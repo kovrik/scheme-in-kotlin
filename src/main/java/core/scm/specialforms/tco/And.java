@@ -3,6 +3,7 @@ package core.scm.specialforms.tco;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.ISCMClass;
+import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
@@ -10,23 +11,30 @@ import core.scm.specialforms.ISpecialForm;
 import java.util.List;
 
 /* Syntax:
- * (begin <expression1> <expression2> ...)
+ * (and <test1> ...)
  */
-public class Begin implements ISpecialForm, ISCMClass {
+public class And implements ISpecialForm, ISCMClass {
 
-  public static final Begin BEGIN = new Begin();
+  public static final And AND = new And();
 
-  private final String syntax = "begin";
+  private final String syntax = "and";
   private final SCMSymbol symbol = new SCMSymbol(this.syntax);
 
-  private Begin() {}
+  private And() {}
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    for (int i = 1; i < expression.size() - 1; i++) {
-      evaluator.eval(expression.get(i), env);
+    Object result = SCMBoolean.TRUE;
+    if (expression.size() > 1) {
+      for (int i = 1; i < expression.size() - 1; i++) {
+        result = evaluator.eval(expression.get(i), env);
+        if (!SCMBoolean.valueOf(result)) {
+          return result;
+        }
+      }
+      result = new TailCall(expression.get(expression.size() - 1), env);
     }
-    return new TailCall(expression.get(expression.size() - 1), env);
+    return result;
   }
 
   public SCMSymbol symbol() {

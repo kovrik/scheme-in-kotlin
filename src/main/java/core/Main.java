@@ -66,12 +66,6 @@ public class Main {
         // Eval
         Object result = evaluator.eval(expanded, env);
 
-        // TODO Move out of here
-//        /* TCO: Trampoline */
-//        while (result instanceof TailCall) {
-//          result = evaluator.eval(((TailCall)result).getExpr(), ((TailCall) result).getContext());
-//        }
-
         if (result != null && result != UNSPECIFIED) {
           // Put result into environment
           SCMSymbol id = getNextID();

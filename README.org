@@ -28,6 +28,32 @@ CLOSED: [2016-07-26 Tue 23:00]
 ** DONE [#A] Fix display with named chars (\n, \t etc.)
 CLOSED: [2016-08-23 Tue 20:37]
 ** TODO [#A] Tail-call elimination
+*** TODO (lambda <formals> <definition>* <expression>* <tail expression>)
+*** DONE (if <expression> <tail expression> <tail expression>)
+CLOSED: [2016-08-24 Wed 08:02]
+*** DONE (if <expression> <tail expression>)
+CLOSED: [2016-08-24 Wed 08:02]
+*** TODO (cond <cond clause>+) (cond <cond clause>* (else <tail sequence>))
+*** TODO (case <expression> <case clause>+) (case <expression> <case clause>* (else <tail sequence>))
+*** DONE (and <expression>* <tail expression>)
+CLOSED: [2016-08-24 Wed 08:09]
+*** DONE (or <expression>* <tail expression>)
+CLOSED: [2016-08-24 Wed 08:09]
+*** TODO (let (<binding spec>*) <tail body>)
+*** TODO (let <variable> (<binding spec>*) <tail body>)
+*** TODO (let* (<binding spec>*) <tail body>)
+*** TODO (letrec (<binding spec>*) <tail body>)
+*** TODO (let-syntax (<syntax spec>*) <tail body>)
+*** TODO (letrec-syntax (<syntax spec>*) <tail body>)
+*** DONE (begin <tail sequence>)
+CLOSED: [2016-08-24 Wed 08:01]
+*** TODO (do (<iteration spec>*) (<test> <tail sequence>) <expression>*)
+*** where
+<cond clause> ---> (<test> <tail sequence>)
+<case clause> ---> ((<datum>*) <tail sequence>)
+<tail body> ---> <definition>* <tail sequence>
+<tail sequence> ---> <expression>* <tail expression>
+
 ** TODO [#C] Read multiple forms on one line (not the first one only)
 ** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Refactor Environment creation and Lexical Binding

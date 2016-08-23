@@ -25,8 +25,8 @@ public class Or implements ISpecialForm, ISCMClass {
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     Object eval = SCMBoolean.FALSE;
     if (expression.size() > 1) {
-      for (Object arg : expression.subList(1, expression.size())) {
-        eval = evaluator.eval(arg, env);
+      for (int i = 1; i < expression.size(); i++) {
+        eval = evaluator.eval(expression.get(i), env);
         if (SCMBoolean.valueOf(eval)) {
           return eval;
         }

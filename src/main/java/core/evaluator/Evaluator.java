@@ -28,7 +28,8 @@ public class Evaluator implements IEvaluator {
     return result;
   }
 
-  public Object evalp(Object sexp, IEnvironment env) {
+  // TODO Rename
+  private Object evalp(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
