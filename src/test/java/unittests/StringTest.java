@@ -47,7 +47,7 @@ public class StringTest {
   public void testEvalStrings() {
     assertEquals("1", eval("\"1\"", env));
     assertEquals("Lorem ipsum", eval("\"Lorem ipsum\"", env));
-    assertEquals("Lorem \\\"ipsum\\\" ", eval("\"Lorem \\\"ipsum\\\" \"", env));
+    assertEquals("Lorem \"ipsum\" ", eval("\"Lorem \\\"ipsum\\\" \"", env));
     assertEquals("", eval("\"\"", env));
   }
 

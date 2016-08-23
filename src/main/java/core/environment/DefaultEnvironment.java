@@ -207,6 +207,7 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
 
     // TCO
+//    SPECIAL_FORMS.put(core.scm.specialforms.tco.If.IF.toString(), core.scm.specialforms.tco.If.IF);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();

@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [24/37]
+* TODO: [25/38]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -25,8 +25,9 @@ CLOSED: [2016-07-20 Wed 22:51]
 CLOSED: [2016-07-26 Tue 23:00]
 ** DONE [#A] Properly implement IFn and Procedure classes
 CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Fix display with named chars (\n, \t etc.)
+CLOSED: [2016-08-23 Tue 20:37]
 ** TODO [#A] Tail-call elimination
-** TODO [#A] Fix display with named chars (\n, \t etc.)
 ** TODO [#C] Read multiple forms on one line (not the first one only)
 ** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Refactor Environment creation and Lexical Binding

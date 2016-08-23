@@ -47,6 +47,18 @@ public class Reader implements IReader {
     NAMED_CHARS.put("nul",       Character.MIN_VALUE);
   }
 
+  private static final Map<Character, Character> SPECIAL_CHARS = new HashMap<>();
+  static {
+    SPECIAL_CHARS.put('t',  '\t');
+    SPECIAL_CHARS.put('b',  '\b');
+    SPECIAL_CHARS.put('n',  '\n');
+    SPECIAL_CHARS.put('r',  '\r');
+    SPECIAL_CHARS.put('f',  '\f');
+    SPECIAL_CHARS.put('\'', '\'');
+    SPECIAL_CHARS.put('\"', '\"');
+    SPECIAL_CHARS.put('\\', '\\');
+  }
+
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
   static {
     for (Map.Entry<String, Character> entry : NAMED_CHARS.entrySet()) {
@@ -314,13 +326,18 @@ public class Reader implements IReader {
     char c;
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
       // escaping
-      // FIXME \n \t etc.
       if (c == '\\') {
         i = reader.read();
         char next = (char)i;
         if (next == '>') {
           throw new IllegalSyntaxException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
         } else {
+          // TODO Unescape in `display` only?
+          Character character = SPECIAL_CHARS.get(next);
+          if (character != null) {
+            string.append(character);
+            continue;
+          }
           string.append(c).append(next);
           continue;
         }
