@@ -55,5 +55,14 @@ public class TCOTest {
     assertEquals(TRUE, eval("(recOr 100000)", env));
   }
 
+  @Test
+  public void testDefineAndBeginTCO() {
+    String recursive = "(define (foo n) (if (= n 100000) n (foo (+ n 1)))";
+    eval(recursive, env);
+    assertEquals(100000L, eval("(foo 5)", env));
+  }
+
+  // TODO Check `cond`
   // TODO Tests for other Special Forms
+
 }

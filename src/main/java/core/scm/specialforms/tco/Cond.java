@@ -54,7 +54,6 @@ public class Cond implements ISpecialForm, ISCMClass {
         for (int s = 1; s < subform.size() - 1; s++) {
           evaluator.eval(subform.get(s), env);
         }
-        // TODO Is that correct?
         return new TailCall(subform.get(subform.size() - 1), env);
       }
     }
