@@ -1,13 +1,16 @@
-package core.scm.specialforms;
+package core.scm.specialforms.tco;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.*;
+import core.scm.specialforms.ISpecialForm;
 
 import java.util.List;
 
 import static core.scm.specialforms.tco.Begin.BEGIN;
+
+//import static core.scm.specialforms.Begin.BEGIN;
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -32,6 +35,7 @@ public class Lambda implements ISpecialForm, ISCMClass {
       throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
     }
     /* Add implicit `begin` */
+    // TODO Is implicit BEGIN enough to have TCO?
     SCMCons<Object> body = SCMCons.list(BEGIN);
     body.addAll(expression.subList(2, expression.size()));
     /* Check if args is a List or not */

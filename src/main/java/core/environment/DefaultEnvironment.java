@@ -31,15 +31,10 @@ import java.util.Map;
 
 import static core.scm.specialforms.Case.CASE;
 import static core.scm.specialforms.Cond.COND;
-import static core.scm.specialforms.Define.DEFINE;
 import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
 import static core.scm.specialforms.Delay.DELAY;
 import static core.scm.specialforms.Do.DO;
-import static core.scm.specialforms.Lambda.LAMBDA;
-import static core.scm.specialforms.Let.LET;
-import static core.scm.specialforms.LetRec.LETREC;
 import static core.scm.specialforms.LetRecSyntax.LETREC_SYNTAX;
-import static core.scm.specialforms.LetSeq.LETSEQ;
 import static core.scm.specialforms.LetSyntax.LET_SYNTAX;
 import static core.scm.specialforms.Quasiquote.QUASIQUOTE;
 import static core.scm.specialforms.Quote.QUOTE;
@@ -184,15 +179,15 @@ public final class DefaultEnvironment extends Environment {
 //    SPECIAL_FORMS.put(AND.toString(), AND);
     SPECIAL_FORMS.put(CASE.toString(), CASE);
     SPECIAL_FORMS.put(COND.toString(), COND);
-    SPECIAL_FORMS.put(LAMBDA.toString(), LAMBDA);
+//    SPECIAL_FORMS.put(LAMBDA.toString(), LAMBDA);
     SPECIAL_FORMS.put(DO.toString(), DO);
-    SPECIAL_FORMS.put(DEFINE.toString(), DEFINE);
+//    SPECIAL_FORMS.put(DEFINE.toString(), DEFINE);
 //    SPECIAL_FORMS.put(IF.toString(), IF);
     SPECIAL_FORMS.put(QUOTE.toString(), QUOTE);
     SPECIAL_FORMS.put(SET.toString(), SET);
-    SPECIAL_FORMS.put(LET.toString(), LET);
-    SPECIAL_FORMS.put(LETSEQ.toString(), LETSEQ);
-    SPECIAL_FORMS.put(LETREC.toString(), LETREC);
+//    SPECIAL_FORMS.put(LET.toString(), LET);
+//    SPECIAL_FORMS.put(LETSEQ.toString(), LETSEQ);
+//    SPECIAL_FORMS.put(LETREC.toString(), LETREC);
 
     SPECIAL_FORMS.put(QUASIQUOTE.toString(), QUASIQUOTE);
     SPECIAL_FORMS.put(UNQUOTE.toString(), UNQUOTE);
@@ -207,6 +202,11 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(core.scm.specialforms.tco.Begin.BEGIN.toString(), core.scm.specialforms.tco.Begin.BEGIN);
     SPECIAL_FORMS.put(core.scm.specialforms.tco.And.AND.toString(), core.scm.specialforms.tco.And.AND);
     SPECIAL_FORMS.put(core.scm.specialforms.tco.Or.OR.toString(), core.scm.specialforms.tco.Or.OR);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Lambda.LAMBDA.toString(), core.scm.specialforms.tco.Lambda.LAMBDA);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Define.DEFINE.toString(), core.scm.specialforms.tco.Define.DEFINE);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Let.LET.toString(), core.scm.specialforms.tco.Let.LET);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.LetRec.LETREC.toString(), core.scm.specialforms.tco.LetRec.LETREC);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.LetSeq.LETSEQ.toString(), core.scm.specialforms.tco.LetSeq.LETSEQ);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
