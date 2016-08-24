@@ -28,14 +28,17 @@ CLOSED: [2016-07-26 Tue 23:00]
 ** DONE [#A] Fix display with named chars (\n, \t etc.)
 CLOSED: [2016-08-23 Tue 20:37]
 ** TODO [#A] Tail-call elimination
+*** TODO Unit Tests
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 20:45]
 *** DONE (if <expression> <tail expression> <tail expression>)
 CLOSED: [2016-08-24 Wed 08:02]
 *** DONE (if <expression> <tail expression>)
 CLOSED: [2016-08-24 Wed 08:02]
-*** TODO (cond <cond clause>+) (cond <cond clause>* (else <tail sequence>))
-*** TODO (case <expression> <case clause>+) (case <expression> <case clause>* (else <tail sequence>))
+*** DONE (cond <cond clause>+) (cond <cond clause>* (else <tail sequence>))
+CLOSED: [2016-08-24 Wed 21:02]
+*** DONE (case <expression> <case clause>+) (case <expression> <case clause>* (else <tail sequence>))
+CLOSED: [2016-08-24 Wed 20:59]
 *** DONE (and <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 08:09]
 *** DONE (or <expression>* <tail expression>)
@@ -52,7 +55,8 @@ CLOSED: [2016-08-24 Wed 20:45]
 *** TODO (letrec-syntax (<syntax spec>*) <tail body>)
 *** DONE (begin <tail sequence>)
 CLOSED: [2016-08-24 Wed 08:01]
-*** TODO (do (<iteration spec>*) (<test> <tail sequence>) <expression>*)
+*** DONE (do (<iteration spec>*) (<test> <tail sequence>) <expression>*)
+CLOSED: [2016-08-24 Wed 20:56]
 *** where
 <cond clause> ---> (<test> <tail sequence>)
 <case clause> ---> ((<datum>*) <tail sequence>)

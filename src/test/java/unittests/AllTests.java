@@ -9,6 +9,7 @@ import unittests.s7.S7Tests;
     ReaderTest.class,
     WriterTest.class,
     EvaluatorTest.class,
+    TCOTest.class,
     SpecialFormTest.class,
     DelayedTest.class,
     NumberTest.class,

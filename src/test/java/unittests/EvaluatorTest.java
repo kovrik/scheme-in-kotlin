@@ -108,19 +108,6 @@ public class EvaluatorTest {
     assertEquals(TRUE,  eval("(equal? \"1fe\" \"1fe\")", env));
   }
 
-  // TODO
-  @Test
-  public void testTCO() {
-    String recursive = "(define (recursive n)" +
-                       "  (if (zero? n)" +
-                       "      \"DONE\"" +
-                       "      (recursive (- n 1))))";
-    eval(recursive, env);
-
-    assertEquals("DONE", eval("(recursive 5)", env));
-    assertEquals("DONE", eval("(recursive 100000)", env));
-  }
-
   @Test
   public void testEvalDisplay() {
 

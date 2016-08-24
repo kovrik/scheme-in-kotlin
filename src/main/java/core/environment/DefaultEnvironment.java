@@ -29,11 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static core.scm.specialforms.Case.CASE;
 import static core.scm.specialforms.Cond.COND;
 import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
 import static core.scm.specialforms.Delay.DELAY;
-import static core.scm.specialforms.Do.DO;
 import static core.scm.specialforms.LetRecSyntax.LETREC_SYNTAX;
 import static core.scm.specialforms.LetSyntax.LET_SYNTAX;
 import static core.scm.specialforms.Quasiquote.QUASIQUOTE;
@@ -177,10 +175,10 @@ public final class DefaultEnvironment extends Environment {
 //    SPECIAL_FORMS.put(BEGIN.toString(), BEGIN);
 //    SPECIAL_FORMS.put(OR.toString(), OR);
 //    SPECIAL_FORMS.put(AND.toString(), AND);
-    SPECIAL_FORMS.put(CASE.toString(), CASE);
+//    SPECIAL_FORMS.put(CASE.toString(), CASE);
     SPECIAL_FORMS.put(COND.toString(), COND);
 //    SPECIAL_FORMS.put(LAMBDA.toString(), LAMBDA);
-    SPECIAL_FORMS.put(DO.toString(), DO);
+//    SPECIAL_FORMS.put(DO.toString(), DO);
 //    SPECIAL_FORMS.put(DEFINE.toString(), DEFINE);
 //    SPECIAL_FORMS.put(IF.toString(), IF);
     SPECIAL_FORMS.put(QUOTE.toString(), QUOTE);
@@ -207,6 +205,9 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(core.scm.specialforms.tco.Let.LET.toString(), core.scm.specialforms.tco.Let.LET);
     SPECIAL_FORMS.put(core.scm.specialforms.tco.LetRec.LETREC.toString(), core.scm.specialforms.tco.LetRec.LETREC);
     SPECIAL_FORMS.put(core.scm.specialforms.tco.LetSeq.LETSEQ.toString(), core.scm.specialforms.tco.LetSeq.LETSEQ);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Do.DO.toString(), core.scm.specialforms.tco.Do.DO);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Case.CASE.toString(), core.scm.specialforms.tco.Case.CASE);
+    SPECIAL_FORMS.put(core.scm.specialforms.tco.Cond.COND.toString(), core.scm.specialforms.tco.Cond.COND);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
