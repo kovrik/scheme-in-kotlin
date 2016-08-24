@@ -14,6 +14,31 @@ public class GCD extends AFn {
     return "gcd";
   }
 
+  @Override
+  public Object invoke(Object... args) {
+    if (args != null) {
+      if (args.length == 0) {
+        return 0L;
+      }
+      Object result = args[0];
+      if (!(result instanceof Number)) {
+        throw new WrongTypeException("Integer", result);
+      }
+      if (args.length == 1) {
+        return ABS.invoke(args[0]);
+      }
+      for (int i = 1; i < args.length; i++) {
+        Number first = (Number)result;
+        if (!(args[i] instanceof Number)) {
+          throw new WrongTypeException("Integer", args[i]);
+        }
+        result = invoke((Number)first, (Number)args[i]);
+      }
+      return result;
+    }
+    return 0L;
+  }
+
   public static long gcd(Long a, Long b) {
     while (b > 0) {
       long temp = b;
@@ -54,30 +79,5 @@ public class GCD extends AFn {
     }
 
     return gcd(first.doubleValue(), second.doubleValue());
-  }
-
-  @Override
-  public Object invoke(Object... args) {
-    if (args != null) {
-      if (args.length == 0) {
-        return 0L;
-      }
-      Object result = args[0];
-      if (!(result instanceof Number)) {
-        throw new WrongTypeException("Integer", result);
-      }
-      if (args.length == 1) {
-        return ABS.invoke(args[0]);
-      }
-      for (int i = 1; i < args.length; i++) {
-        Number first = (Number)result;
-        if (!(args[i] instanceof Number)) {
-          throw new WrongTypeException("Integer", args[i]);
-        }
-        result = invoke((Number)first, (Number)args[i]);
-      }
-      return result;
-    }
-    return 0L;
   }
 }

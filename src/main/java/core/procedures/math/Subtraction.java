@@ -20,7 +20,10 @@ public class Subtraction extends AFn {
       throw new ArityException(0, "-");
     }
     if (args.length == 1) {
-      return invoke(0L, (Number)args[0]);
+      if (args[0] instanceof BigDecimal) {
+        return ((BigDecimal)args[0]).negate();
+      }
+      return invoke(0L, args[0]);
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
@@ -34,13 +37,17 @@ public class Subtraction extends AFn {
 
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
-      return (Long)first - (Long)second;
+      try {
+        return Math.subtractExact((Long)first, (Long)second);
+      } catch (ArithmeticException e) {
+        return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+      }
     }
     if (first instanceof BigDecimal) {
       return ((BigDecimal)first).subtract(new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).subtract(new BigDecimal(first.toString()));
+      return new BigDecimal(first.toString()).subtract((BigDecimal)second);
     }
     double result = first.doubleValue() - second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

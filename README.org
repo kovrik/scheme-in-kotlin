@@ -1,7 +1,7 @@
 *JISP*
 ----
 
-* TODO: [25/38]
+* TODO: [26/39]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -27,6 +27,8 @@ CLOSED: [2016-07-26 Tue 23:00]
 CLOSED: [2016-07-26 Tue 23:00]
 ** DONE [#A] Fix display with named chars (\n, \t etc.)
 CLOSED: [2016-08-23 Tue 20:37]
+** DONE [#A] Long overflow (~fib 155)
+CLOSED: [2016-08-25 Thu 08:14]
 ** TODO [#A] Tail-call elimination [13/17]
 *** TODO Unit Tests
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)

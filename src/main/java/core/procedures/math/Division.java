@@ -13,27 +13,6 @@ public class Division extends AFn {
     return "/";
   }
 
-  public Number invoke(Number numenator, Number denominator) {
-    if ((numenator instanceof Long) &&
-        (denominator instanceof Long) &&
-        // FIXME Optimize?
-        ((Long)numenator % (Long)denominator) == 0) {
-
-      return (Long)numenator / (Long)denominator;
-    }
-    if (numenator instanceof BigDecimal) {
-      return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()));
-    }
-    if (denominator instanceof BigDecimal) {
-      return ((BigDecimal)denominator).divide(new BigDecimal(numenator.toString()));
-    }
-    double result = numenator.doubleValue() / denominator.doubleValue();
-    if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), BigDecimal.ROUND_HALF_UP);
-    }
-    return result;
-  }
-
   @Override
   public Number invoke(Object... args) {
     if (args == null || args.length == 0) {
@@ -53,6 +32,27 @@ public class Division extends AFn {
         throw new WrongTypeException("Number", args[d]);
       }
       result = invoke((Number)result, (Number)args[d]);
+    }
+    return result;
+  }
+
+  public Number invoke(Number numenator, Number denominator) {
+    if ((numenator instanceof Long) &&
+        (denominator instanceof Long) &&
+        // FIXME Optimize?
+        ((Long)numenator % (Long)denominator) == 0) {
+
+      return (Long)numenator / (Long)denominator;
+    }
+    if (numenator instanceof BigDecimal) {
+      return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()));
+    }
+    if (denominator instanceof BigDecimal) {
+      return ((BigDecimal)denominator).divide(new BigDecimal(numenator.toString()));
+    }
+    double result = numenator.doubleValue() / denominator.doubleValue();
+    if (Double.isNaN(result) || Double.isInfinite(result)) {
+      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), BigDecimal.ROUND_HALF_UP);
     }
     return result;
   }

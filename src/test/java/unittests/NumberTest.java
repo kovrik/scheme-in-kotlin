@@ -560,6 +560,8 @@ public class NumberTest {
     assertEquals(TRUE, eval(String.format("(< (+ 1 2) %s)", big2), env));
 
     assertEquals(Double.POSITIVE_INFINITY, eval(String.format("(sqrt %s)", big2), env));
+    assertEquals(new BigDecimal("-99999999999999999999999999999999999999999999999999"),
+                 eval("(- 99999999999999999999999999999999999999999999999999)", env));
   }
 
   @Test

@@ -20,7 +20,11 @@ public class Addition extends AFn {
       throw new WrongTypeException("Number", second);
     }
     if ((first instanceof Long) && (second instanceof Long)) {
-      return (Long)first + (Long)second;
+      try {
+        return Math.addExact((Long)first, (Long)second);
+      } catch (ArithmeticException e) {
+        return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
+      }
     }
     if (first instanceof BigDecimal) {
       return ((BigDecimal)first).add(new BigDecimal(second.toString()));
