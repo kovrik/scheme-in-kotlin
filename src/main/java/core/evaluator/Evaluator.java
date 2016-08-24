@@ -20,16 +20,16 @@ public class Evaluator implements IEvaluator {
 
   @Override
   public Object eval(Object sexp, IEnvironment env) {
-    /* TCO: Trampoline */
-    Object result = evalp(sexp, env);
+    /* TCO: This is our Trampoline */
+    Object result = evalIter(sexp, env);
     while (result instanceof TailCall) {
-      result = evalp(((TailCall)result).getExpr(), ((TailCall) result).getContext());
+      result = evalIter(((TailCall)result).getExpr(), ((TailCall) result).getContext());
     }
     return result;
   }
 
   // TODO Rename
-  private Object evalp(Object sexp, IEnvironment env) {
+  private Object evalIter(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
@@ -82,8 +82,6 @@ public class Evaluator implements IEvaluator {
     for (int i = 1; i < list.size(); i++) {
       args.add(eval(list.get(i), env));
     }
-
-    // TODO Convert to CPS
 
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
