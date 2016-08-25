@@ -36,7 +36,6 @@ public class SetCdr extends AFn {
       list.addAll((List)o);
     } else {
       list.add(o);
-      // FIXME How to make it Cons if it is a SubList?
       if (list instanceof SCMCons) {
         ((SCMCons)list).setList(false);
       }

@@ -7,6 +7,7 @@ import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
+import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
 
@@ -126,10 +127,9 @@ public class ReaderTest {
 
   @Test
   public void testReadQuasiquote() {
-    // TODO
-//    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.read("`1"));
-//    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(1L, "test")), reader.read("`(1 \"test\")"));
-//    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(s(Quote.QUOTE.toString()), 1L)), reader.read("`'1"));
+    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.read("`1"));
+    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(1L, "test")), reader.read("`(1 \"test\")"));
+    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(s(Quote.QUOTE.toString()), 1L)), reader.read("`'1"));
   }
 
   @Test

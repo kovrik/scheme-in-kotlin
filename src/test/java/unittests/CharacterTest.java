@@ -7,7 +7,6 @@ import core.evaluator.IEvaluator;
 import core.exceptions.WrongTypeException;
 import core.reader.IReader;
 import core.reader.Reader;
-import org.junit.Before;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -29,11 +28,6 @@ public class CharacterTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
   }
 
   @Test

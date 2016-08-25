@@ -141,7 +141,6 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return (o instanceof List) && !(((List)o).isEmpty());
   }
 
-  // TODO Move to Writer?
   /* Use this method to print all lists */
   public static String toString(List list) {
 

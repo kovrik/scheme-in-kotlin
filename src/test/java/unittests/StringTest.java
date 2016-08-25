@@ -7,7 +7,6 @@ import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMSymbol;
-import org.junit.Before;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -30,11 +29,6 @@ public class StringTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
   }
 
   @Test
@@ -251,7 +245,6 @@ public class StringTest {
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: ()"));
     }
-    // FIXME Mutable string?
   }
 
   @Test

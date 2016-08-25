@@ -11,7 +11,6 @@ import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
-import org.junit.Before;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -36,11 +35,6 @@ public class ListTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
   }
 
   @Test
@@ -259,7 +253,7 @@ public class ListTest {
     assertEquals(3L, eval("(list-ref '(1 2 3) 2)", env));
     assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env));
     assertEquals(new SCMSymbol("c"), eval("(list-ref (list 'a 'b 'c) 2)", env));
-//  FIXME assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env));
+    assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env));
     assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env));
     try {
       eval("(list-ref 1 2)", env);

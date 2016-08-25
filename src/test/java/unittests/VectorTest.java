@@ -7,12 +7,11 @@ import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMVector;
-import org.junit.Before;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
-import static core.scm.SCMCons.*;
+import static core.scm.SCMCons.list;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 import static org.junit.Assert.*;
 
@@ -31,11 +30,6 @@ public class VectorTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
   }
 
   @Test

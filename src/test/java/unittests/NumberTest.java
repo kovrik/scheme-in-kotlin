@@ -33,11 +33,6 @@ public class NumberTest {
     return eval.eval(reader.read(sexp), env);
   }
 
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
-  }
-
   @Test
   public void testIdentityElement() {
     assertEquals(0L, eval("(+)", env));

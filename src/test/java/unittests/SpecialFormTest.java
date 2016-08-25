@@ -40,11 +40,6 @@ public class SpecialFormTest {
     return eval.eval(reader.read(sexp), env);
   }
 
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
-  }
-
   @Test
   public void testEvalImplicitBegin() {
     assertEquals(3L, eval("((lambda () 1 2 (+ 1 2)))", env));

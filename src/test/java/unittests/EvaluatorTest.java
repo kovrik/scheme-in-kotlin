@@ -8,7 +8,6 @@ import core.procedures.io.Display;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMSymbol;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -16,7 +15,7 @@ import java.io.PrintStream;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class EvaluatorTest {
 
@@ -33,11 +32,6 @@ public class EvaluatorTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    // TODO Create new environment for each test?
   }
 
   @Test
