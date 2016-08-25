@@ -247,12 +247,6 @@ public class RosettaCodeTest {
   public void testIntegerRoots() {
 
     String integerRoots = "(define (root a b)" +
-                          "  (define // quotient)" +
-                          "  (define (y a a1 b c d e)" +
-                          "    (if (or (= c d) (= c e))" +
-                          "        (min d e)" +
-                          "      (y a a1 b d e (// (+ (* a1 e)" +
-                          "                           (// b (expt e a1))) a))))" +
                           "  (if (< b 2)" +
                           "      b" +
                           "    (let* ((a1 (- a 1))" +
@@ -262,7 +256,16 @@ public class RosettaCodeTest {
                           "      (y a a1 b c d e))))";
 
     IEnvironment tempEnv = new DefaultEnvironment();
+    eval("(define // quotient", tempEnv);
+
+    eval("(define (y a a1 b c d e)" +
+         "  (if (or (= c d) (= c e))" +
+         "      (min d e)" +
+         "    (y a a1 b d e (// (+ (* a1 e)" +
+         "                         (// b (expt e a1))) a))))", tempEnv);
+
     eval(integerRoots, tempEnv);
+    assertEquals(2.0, eval("(root 3 25)", tempEnv));
     // TODO Optimize: No StackOverflow anymore, but veeery slow!
 //    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 2000)))", tempEnv));
   }

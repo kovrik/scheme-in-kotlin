@@ -45,10 +45,10 @@ public class Division extends AFn {
       return (Long)numenator / (Long)denominator;
     }
     if (numenator instanceof BigDecimal) {
-      return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()));
+      return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()), BigDecimal.ROUND_HALF_UP);
     }
     if (denominator instanceof BigDecimal) {
-      return ((BigDecimal)denominator).divide(new BigDecimal(numenator.toString()));
+      return ((BigDecimal)denominator).divide(new BigDecimal(numenator.toString()), BigDecimal.ROUND_HALF_UP);
     }
     double result = numenator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
