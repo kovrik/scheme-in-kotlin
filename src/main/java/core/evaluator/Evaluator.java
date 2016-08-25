@@ -23,7 +23,7 @@ public class Evaluator implements IEvaluator {
     /* TCO: This is our Trampoline */
     Object result = evalIter(sexp, env);
     while (result instanceof TailCall) {
-      result = evalIter(((TailCall)result).getExpr(), ((TailCall) result).getContext());
+      result = evalIter(((TailCall)result).getExpr(), ((TailCall)result).getContext());
     }
     return result;
   }
@@ -37,10 +37,10 @@ public class Evaluator implements IEvaluator {
         throw new IllegalSyntaxException("Unexpected syntax in form: " + o);
       }
       return o;
-    } else if (!(sexp instanceof List)) {
-      return sexp;
-    } else {
+    } else if (sexp instanceof List) {
       return evlis(sexp, env);
+    } else {
+      return sexp;
     }
   }
 

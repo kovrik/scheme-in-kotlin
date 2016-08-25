@@ -267,6 +267,8 @@ public class RosettaCodeTest {
     eval(integerRoots, tempEnv);
     assertEquals(2.0, eval("(root 3 25)", tempEnv));
     // TODO Optimize: No StackOverflow anymore, but veeery slow!
+//    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 20)))", tempEnv));
+//    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 200)))", tempEnv));
 //    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 2000)))", tempEnv));
   }
 
