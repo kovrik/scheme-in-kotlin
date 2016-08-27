@@ -15,20 +15,6 @@ public class Environment implements IEnvironment, ISCMClass {
     this.outer = outer;
   }
 
-  public Environment(Map<?, ?> params, IEnvironment outer) {
-    this.context.putAll(params);
-    this.outer = outer;
-  }
-
-  public Environment(IEnvironment params, IEnvironment outer) {
-    if (params != null) {
-      for (Map.Entry<Object, Object> entry : params.entrySet()) {
-        this.context.put(entry.getKey(), entry.getValue());
-      }
-    }
-    this.outer = outer;
-  }
-
   @Override
   public Object get(Object key) {
     return context.get(key);
