@@ -30,6 +30,7 @@ public class Expt extends AFn {
   public Number invoke(Number first, Number second) {
     double result = Math.pow(first.doubleValue(), second.doubleValue());
     if (Double.isInfinite(result)) {
+      // FIXME Fractional power?
       return new BigDecimal(first.longValue()).pow(second.intValue());
     }
     return result;

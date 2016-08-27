@@ -7,7 +7,6 @@ import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.reader.IReader;
 import core.reader.Reader;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -143,12 +142,12 @@ public class NumberTest {
   public void testNumberTheoreticDivision() {
     // quotient
     assertEquals(3L,  eval("(quotient 13 4)", env));
-    assertEquals(3d,  eval("(quotient 13.0 4)", env));
+    assertEquals(new BigDecimal("3"),  eval("(quotient 13.0 4)", env));
     assertEquals(1L,  eval("(quotient 5 5)", env));
-    assertEquals(1d,  eval("(quotient 5.0 5)", env));
-    assertEquals(1d,  eval("(quotient -5 -5.0)", env));
+    assertEquals(new BigDecimal("1"),  eval("(quotient 5.0 5)", env));
+    assertEquals(new BigDecimal("1"),  eval("(quotient -5 -5.0)", env));
     assertEquals(-1L, eval("(quotient -5 5)", env));
-    assertEquals(-1d, eval("(quotient -5 5.)", env));
+    assertEquals(new BigDecimal("-1"), eval("(quotient -5 5.)", env));
     try {
       eval("(quotient -10 0.0001)", env);
       fail();

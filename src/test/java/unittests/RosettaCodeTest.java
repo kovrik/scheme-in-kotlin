@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import static core.scm.SCMCons.list;
@@ -265,10 +266,15 @@ public class RosettaCodeTest {
          "                         (// b (expt e a1))) a))))", tempEnv);
 
     eval(integerRoots, tempEnv);
-    assertEquals(2.0, eval("(root 3 25)", tempEnv));
-    // TODO Optimize: No StackOverflow anymore, but veeery slow!
-//    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 20)))", tempEnv));
-//    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 200)))", tempEnv));
+    assertEquals(new BigDecimal("2"), eval("(root 3 25)", tempEnv));
+    assertEquals(new BigDecimal("125"), eval("(root 3 (* 2 (expt 1000 2)))", tempEnv));
+    assertEquals(new BigDecimal("10000000"), eval("(root 3 (expt 1000 7))", tempEnv));
+
+    // TODO Precision loss because Expt for BigDecimals does not support fractional powers!
+    // TODO Optimize: Slooooow!
+//    assertEquals(new BigDecimal("125992104989487316476"),
+//                 eval("(root 3 (* 2 (expt 1000 20)))", tempEnv));
+
 //    assertEquals(2.0, eval("(root 3 (* 2 (expt 1000 2000)))", tempEnv));
   }
 
