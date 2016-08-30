@@ -142,9 +142,9 @@ public class NumberTest {
   public void testNumberTheoreticDivision() {
     // quotient
     assertEquals(3L,  eval("(quotient 13 4)", env));
-    assertEquals(new BigDecimal("3"),  eval("(quotient 13.0 4)", env));
+    assertEquals(new BigDecimal("3.0"),  eval("(quotient 13.0 4)", env));
     assertEquals(1L,  eval("(quotient 5 5)", env));
-    assertEquals(new BigDecimal("1"),  eval("(quotient 5.0 5)", env));
+    assertEquals(new BigDecimal("1.0"),  eval("(quotient 5.0 5)", env));
     assertEquals(new BigDecimal("1"),  eval("(quotient -5 -5.0)", env));
     assertEquals(-1L, eval("(quotient -5 5)", env));
     assertEquals(new BigDecimal("-1"), eval("(quotient -5 5.)", env));

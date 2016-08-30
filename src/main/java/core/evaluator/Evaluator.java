@@ -116,7 +116,6 @@ public class Evaluator implements IEvaluator {
 
       throw new ArityException(args.size(), params.size(), fn.getName());
     }
-    // TODO Is it always necessary to create new local Environment every time?
     /* Evaluate mandatory params and put values into new local environment */
     IEnvironment localEnvironment = new Environment(fn.getLocalEnvironment());
     for (int i = 0; i < mandatoryParamsSize; i++) {

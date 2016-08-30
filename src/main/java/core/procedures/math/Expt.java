@@ -27,11 +27,14 @@ public class Expt extends AFn {
     throw new ArityException(args.length, 2, getName());
   }
 
+  // FIXME Fractional power for BigDecimals?
   public Number invoke(Number first, Number second) {
+    if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      return new BigDecimal(first.toString()).pow(second.intValue());
+    }
     double result = Math.pow(first.doubleValue(), second.doubleValue());
     if (Double.isInfinite(result)) {
-      // FIXME Fractional power?
-      return new BigDecimal(first.longValue()).pow(second.intValue());
+      return new BigDecimal(first.toString()).pow(second.intValue());
     }
     return result;
   }

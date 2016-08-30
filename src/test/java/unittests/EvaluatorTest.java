@@ -4,6 +4,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
 import core.reader.IReader;
 import core.reader.Reader;
@@ -32,6 +33,15 @@ public class EvaluatorTest {
   /* Helper method */
   private Object eval(String sexp, IEnvironment env) {
     return eval.eval(reader.read(sexp), env);
+  }
+
+  @Test
+  public void testEvalEmptyList() {
+    try {
+      eval("(())", env);
+    } catch (IllegalSyntaxException e) {
+      assertEquals("Unexpected syntax in form ()", e.getMessage());
+    }
   }
 
   @Test

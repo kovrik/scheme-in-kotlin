@@ -58,7 +58,7 @@ public class Quotient extends AFn {
         throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
       }
       // TODO Optimize? Do not return BigDecimal if Long is enough?
-      return new BigDecimal(first.toString()).divideToIntegralValue(new BigDecimal(second.toString())).stripTrailingZeros();
+      return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
     if (second.intValue() == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
