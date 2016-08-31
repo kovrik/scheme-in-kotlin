@@ -7,6 +7,7 @@ import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
 import core.reader.IReader;
 import core.reader.Reader;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -648,5 +649,14 @@ public class NumberTest {
         assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", sb.toString(), r), env));
       }
     }
+  }
+
+  // FIXME
+  @Ignore
+  @Test
+  public void testQuotientViaTruncate() {
+    // quotient = (truncate (/ n m))
+    eval("(define // (lambda (n m) (truncate (/ n m))))", env);
+    assertEquals(eval("(quotient 5 4)", env), eval("(// 5 4)", env));
   }
 }

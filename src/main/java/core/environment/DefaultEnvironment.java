@@ -232,6 +232,8 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
 
+//    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
+
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
 
     // simple map

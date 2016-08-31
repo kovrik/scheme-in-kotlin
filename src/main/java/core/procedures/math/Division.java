@@ -50,7 +50,7 @@ public class Division extends AFn {
       return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
     }
     if (denominator instanceof BigDecimal) {
-      return ((BigDecimal)denominator).divide(new BigDecimal(numenator.toString()), DEFAULT_ROUNDING_MODE);
+      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
     }
     double result = numenator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

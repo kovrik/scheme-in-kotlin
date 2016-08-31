@@ -30,6 +30,7 @@ CLOSED: [2016-08-23 Tue 20:37]
 ** DONE [#A] Long overflow (~fib 155)
 CLOSED: [2016-08-25 Thu 08:14]
 ** TODO [#A] Expt with fractional power for BigDecimals
+** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 ** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
 ** TODO [#A] Tail-call elimination [13/17]
 *** TODO Unit Tests
