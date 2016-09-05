@@ -3,6 +3,7 @@ package unittests.s7.tests;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
@@ -10,7 +11,7 @@ import static core.scm.SCMCons.cons;
 import static core.scm.SCMCons.list;
 import static junit.framework.TestCase.assertEquals;
 
-public class MemqTest extends AbstractS7Test {
+public class MemqTest extends AbstractTest {
 
   @Test
   public void testMemq() {

@@ -5,13 +5,14 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMCons.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 
-public class MemvTest extends AbstractS7Test {
+public class MemvTest extends AbstractTest {
 
   @Test
   public void testMemv() {

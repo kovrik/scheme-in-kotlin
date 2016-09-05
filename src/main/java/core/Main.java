@@ -13,6 +13,7 @@ import core.writer.Writer;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,7 +42,9 @@ public class Main {
   public static void main(String[] args) throws ParseException, IOException {
     /* Eval lib procedures */
     for (String proc : defaultEnvironment.getLibraryProcedures()) {
-      evaluator.eval(reader.read(proc), defaultEnvironment);
+      for (Object s : reader.read(proc)) {
+        evaluator.eval(s, defaultEnvironment);
+      }
     }
     repl(WELCOME, PROMPT, defaultEnvironment);
   }
@@ -57,24 +60,23 @@ public class Main {
         System.out.print(prompt);
         System.out.flush();
 
-        // Read, Tokenize, Parse
-        Object sexp = reader.read(System.in);
-
-        // TODO Macroexpand
-        Object expanded = macroexpand(sexp);
-
-        // Eval
-        Object result = evaluator.eval(expanded, env);
-
-        if (result != null && result != UNSPECIFIED) {
-          // Put result into environment
-          SCMSymbol id = getNextID();
-          env.put(id, result);
-          // Print
-          System.out.println(id + " = " + writer.toString(result));
-          System.out.flush();
-          /* Store sexp in a history */
-          HISTORY.put(id, sexp);
+        /* Read and parse a list of S-expressions from Stdin */
+        List<Object> sexps = reader.read(System.in);
+        for (Object expr : sexps) {
+          // TODO Macroexpand
+          Object expanded = macroexpand(expr);
+          /* Evaluate each S-expression */
+          Object result = evaluator.eval(expanded, env);
+          if (result != null && result != UNSPECIFIED) {
+            /* Put result into environment */
+            SCMSymbol id = getNextID();
+            env.put(id, result);
+            /* Print */
+            System.out.println(id + " = " + writer.toString(result));
+            System.out.flush();
+            /* Store sexp in a history */
+            HISTORY.put(id, expr);
+          }
         }
         // TODO Proper Error handling
       } catch (Exception e) {

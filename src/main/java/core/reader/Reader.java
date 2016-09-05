@@ -14,6 +14,7 @@ import core.utils.NumberUtils;
 
 import java.io.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class Reader implements IReader {
   }
 
   @Override
-  public Object read(String string) {
+  public Object readFirst(String string) {
     PushbackReader reader = new PushbackReader(new StringReader(string), 2);
     try {
       Object token = nextToken(reader);
@@ -100,14 +101,43 @@ public class Reader implements IReader {
   }
 
   @Override
-  public Object read(InputStream inputStream) {
+  public List<Object> read(String string) {
+    PushbackReader reader = new PushbackReader(new StringReader(string), 2);
+    try {
+      List<Object> tokens = new ArrayList<>();
+      Object token;
+      while ((token = nextToken(reader)) != null) {
+        /* Read */
+        if (DOT.equals(token)) {
+          throw new IllegalSyntaxException("Illegal use of '.'");
+        }
+        tokens.add(token);
+      }
+      return tokens;
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  @Override
+  public List<Object> read(InputStream inputStream) {
     PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
     try {
-      Object token = nextNonNullToken(reader);
-      if (DOT.equals(token)) {
-        throw new IllegalSyntaxException("Illegal use of '.'");
+      List<Object> tokens = new ArrayList<>();
+      Object token;
+      while (((token = nextToken(reader)) != null) || tokens.isEmpty()) {
+        /* Read */
+        if (DOT.equals(token)) {
+          throw new IllegalSyntaxException("Illegal use of '.'");
+        }
+        if (token != null) {
+          tokens.add(token);
+        }
       }
-      return token;
+      return tokens;
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ParseException e) {
@@ -132,6 +162,9 @@ public class Reader implements IReader {
       return null;
     }
     char c = (char)i;
+    if (LINE_BREAKS.indexOf(c) > -1) {
+      return null;
+    }
     switch (c) {
       case '\'':
         return readQuote(reader, Quote.QUOTE.symbol());
@@ -161,11 +194,11 @@ public class Reader implements IReader {
         throw new IllegalSyntaxException("Unexpected list terminator: ')'");
       default: {
         if (Character.isWhitespace(c)) {
-          while (isValid(c = (char)reader.read()) && Character.isWhitespace(c)) {
-            /* Skip whitespaces */
+          while (isValid(c = (char)reader.read()) && Character.isWhitespace(c) && (LINE_BREAKS.indexOf(c) == -1)) {
+            /* Skip whitespaces until line break */
           }
           reader.unread(c);
-          return null;
+          return nextToken(reader);
         } else {
           reader.unread(c);
           return readAtom(reader);
@@ -414,6 +447,13 @@ public class Reader implements IReader {
     /* Current index */
     int pos = -1;
     while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
+      while (c == ' ') {
+        i = reader.read();
+        c = (char)i;
+      }
+      if (c == ')') {
+        break;
+      }
       reader.unread(c);
       Object token = nextToken(reader);
       if (token != null) {

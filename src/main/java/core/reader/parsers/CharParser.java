@@ -1,14 +1,10 @@
 package core.reader.parsers;
 
-import core.reader.IReader;
-
-import java.io.InputStream;
-
 import static core.reader.parsers.Result.Type.FAILURE;
 import static core.reader.parsers.Result.Type.SUCCESS;
 import static core.reader.parsers.Result.failure;
 
-public class CharParser implements IReader {
+public class CharParser {
 
   private final char c;
 
@@ -262,15 +258,5 @@ public class CharParser implements IReader {
 
   public CharParser between(char open, char close) {
     return this.between(new CharParser(open), new CharParser(close));
-  }
-
-  @Override
-  public Object read(InputStream inputStream) {
-    return null;
-  }
-
-  @Override
-  public Object read(String string) {
-    return null;
   }
 }

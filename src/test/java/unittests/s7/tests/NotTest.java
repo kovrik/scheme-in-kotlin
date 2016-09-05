@@ -1,12 +1,13 @@
 package unittests.s7.tests;
 
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
 
-public class NotTest extends AbstractS7Test {
+public class NotTest extends AbstractTest {
 
   @Test
   public void testNot() {

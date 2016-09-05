@@ -3,13 +3,14 @@ package unittests.s7.tests;
 import core.procedures.cons.ConsProc;
 import core.scm.SCMSymbol;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMCons.NIL;
 import static core.scm.SCMCons.list;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 
-public class QuasiquoteTest extends AbstractS7Test {
+public class QuasiquoteTest extends AbstractTest {
 
   @Test
   public void testQuasiquote() {

@@ -3,6 +3,7 @@ package unittests.s7.tests;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.procedures.cons.ConsProc.cons;
 import static core.scm.SCMBoolean.FALSE;
@@ -10,7 +11,7 @@ import static core.scm.SCMCons.list;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 
-public class MemberTest extends AbstractS7Test {
+public class MemberTest extends AbstractTest {
 
   @Test
   public void testMember() {

@@ -2,13 +2,14 @@ package unittests.s7.tests;
 
 import core.exceptions.ArityException;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 
-public class IsCharTest extends AbstractS7Test {
+public class IsCharTest extends AbstractTest {
 
   @Test
   public void testIsChar() {

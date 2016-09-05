@@ -2,12 +2,13 @@ package unittests.s7.tests;
 
 import core.exceptions.IllegalSyntaxException;
 import org.junit.Test;
+import unittests.AbstractTest;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
 
-public class IsSymbolTest extends AbstractS7Test {
+public class IsSymbolTest extends AbstractTest {
 
   @Test
   public void testIsSymbol() {

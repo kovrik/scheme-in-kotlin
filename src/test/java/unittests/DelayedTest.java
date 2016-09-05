@@ -1,34 +1,13 @@
 package unittests;
 
-import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
-import core.evaluator.Evaluator;
-import core.evaluator.IEvaluator;
 import core.exceptions.ReentrantPromiseException;
-import core.reader.IReader;
-import core.reader.Reader;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static org.junit.Assert.*;
 
-public class DelayedTest {
-
-  private final IReader reader = new Reader();
-  private final IEvaluator eval = new Evaluator();
-  private final DefaultEnvironment env = new DefaultEnvironment();
-  {
-    /* Eval lib procedures */
-    for (String proc : env.getLibraryProcedures()) {
-      eval(proc, env);
-    }
-  }
-
-  /* Helper method */
-  private Object eval(String sexp, IEnvironment env) {
-    return eval.eval(reader.read(sexp), env);
-  }
+public class DelayedTest extends AbstractTest {
 
   @Test
   public void testEvalDelay() {

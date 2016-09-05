@@ -1,12 +1,6 @@
 package unittests;
 
-import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
-import core.evaluator.Evaluator;
-import core.evaluator.IEvaluator;
 import core.exceptions.ArityException;
-import core.reader.IReader;
-import core.reader.Reader;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
@@ -20,22 +14,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class ListTest {
-
-  private final IReader reader = new Reader();
-  private final IEvaluator eval = new Evaluator();
-  private final DefaultEnvironment env = new DefaultEnvironment();
-  {
-    /* Eval lib procedures */
-    for (String proc : env.getLibraryProcedures()) {
-      eval(proc, env);
-    }
-  }
-
-  /* Helper method */
-  private Object eval(String sexp, IEnvironment env) {
-    return eval.eval(reader.read(sexp), env);
-  }
+public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalList() {
