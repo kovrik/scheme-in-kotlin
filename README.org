@@ -105,7 +105,6 @@ CLOSED: [2016-05-13 Fri 19:54]
 ** DONE Make `force` a Procedure, not Special Form
 CLOSED: [2016-05-11 Wed 19:42]
 
-
 ** DONE Bugs [2/2]
 CLOSED: [2016-05-04 Wed 07:09]
 *** DONE [#A] Recursive functions are not working
@@ -127,12 +126,7 @@ CLOSED: [2016-07-26 Tue 23:01]
 CLOSED: [2016-05-11 Wed 21:03]
 *** DONE [#B] Test coverage
 CLOSED: [2016-05-31 Tue 22:15]
-** TODO Performance [0/2]
-*** TODO [#B] Caching
-*** TODO [#B] TCO 
-*** TODO [#B] Optimize environment creation 
-** TODO Features [2/4]
-*** TODO [#B] Trampolining (explicit recur)
+** TODO Features [2/3]
 *** TODO [#C] User-friendly REPL
 *** DONE [#C] Shortcut for lambda definition (define (name args) body)
 CLOSED: [2016-04-28 Thu 21:14]
