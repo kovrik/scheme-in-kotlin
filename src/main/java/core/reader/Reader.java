@@ -146,6 +146,16 @@ public class Reader implements IReader {
     return null;
   }
 
+  private static String readUntilDelimiter(PushbackReader reader) throws IOException {
+    StringBuilder token = new StringBuilder();
+    int i;
+    while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
+      token.append((char)i);
+    }
+    reader.unread((char)i);
+    return token.toString();
+  }
+
   /* Skip all null tokens and return the first non-null */
   private static Object nextNonNullToken(PushbackReader reader) throws IOException, ParseException {
     Object token;
@@ -233,15 +243,11 @@ public class Reader implements IReader {
     } else if (c == '"') {
       return readString(reader);
     } else if (c == '#') {
-      Object result = readHash(reader);
-      if (result != null) {
-        return result;
-      }
+      return readHash(reader);
     } else {
       reader.unread(c);
       return readIdentifier(reader);
     }
-    throw new IllegalSyntaxException("Unknown atom!");
   }
 
   private static Object readHash(PushbackReader reader) throws ParseException, IOException {
@@ -294,22 +300,22 @@ public class Reader implements IReader {
       }
       return result;
     }
-    return null;
+    /* Bad hash syntax: read token and throw exception */
+    StringBuilder token = new StringBuilder().append('#').append(next).append(readUntilDelimiter(reader));
+    throw new IllegalSyntaxException("Bad syntax: " + token);
   }
 
   /**
    * Read a quoted form abbreviation
    *
    * Syntax:
-   * <quote> -> '<form>
-   * <quasiquote> -> `<form>
-   * <unquote> -> ,<form>
+   * <quote>            -> '<form>
+   * <quasiquote>       -> `<form>
+   * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
   private static Object readQuote(PushbackReader reader, SCMSymbol symbol) throws ParseException, IOException {
-    List<Object> quote = SCMCons.list(symbol);
-    quote.add(nextNonNullToken(reader));
-    return quote;
+    return SCMCons.list(symbol, nextNonNullToken(reader));
   }
 
   /**
@@ -319,16 +325,7 @@ public class Reader implements IReader {
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
    */
   private static Object readIdentifier(PushbackReader reader) throws IOException {
-    StringBuilder identifier = new StringBuilder();
-    int i = reader.read();
-    char c = (char)i;
-    while (isValid(i) && DELIMITERS.indexOf(c) < 0) {
-      identifier.append(c);
-      i = reader.read();
-      c = (char)i;
-    }
-    reader.unread(c);
-    return new SCMSymbol(identifier.toString());
+    return new SCMSymbol(readUntilDelimiter(reader));
   }
 
   /**
@@ -412,16 +409,9 @@ public class Reader implements IReader {
       }
       return (char)((Number)preProcessNumber(identifier, 'e', radix)).intValue();
     }
-    reader.unread((char)i);
 
-    StringBuilder character = new StringBuilder();
-    char c = (char)reader.read();
-    do {
-      character.append(c);
-    } while ((isValid(i = reader.read())) && (DELIMITERS.indexOf(c = (char)i) < 0));
-    reader.unread((char)i);
-
-    // <character name>
+    StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter(reader));
+    /* Check if it is a Named Character */
     if (character.length() > 1) {
       Character namedChar = NAMED_CHARS.get(character.toString());
       if (namedChar == null) {
@@ -440,16 +430,16 @@ public class Reader implements IReader {
    */
   private static SCMCons<Object> readList(PushbackReader reader) throws ParseException, IOException {
     SCMCons<Object> list = SCMCons.NIL;
-    int i;
-    char c;
     /* Position of a dot (if we have it) */
     int dotPos = -1;
     /* Current index */
     int pos = -1;
+    int i;
+    char c;
     while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
-      while (c == ' ') {
-        i = reader.read();
-        c = (char)i;
+      /* Skip whitespaces */
+      while (Character.isWhitespace(c)) {
+        c = (char)reader.read();
       }
       if (c == ')') {
         break;
@@ -458,21 +448,21 @@ public class Reader implements IReader {
       Object token = nextToken(reader);
       if (token != null) {
         pos += 1;
-        /* Have no elements in a result list yet */
-        if (SCMCons.NIL.equals(list)) {
-          /* Create empty list (can't modify NIL) */
-          list = SCMCons.list();
-        }
         /* Check if current token is a dot */
         if (DOT.equals(token)) {
           /* Remember the position */
           dotPos = pos;
         }
-        /* Add token read */
+        /* Have no elements in a result list yet */
+        if (SCMCons.NIL.equals(list)) {
+          /* Create empty list (can't modify NIL) */
+          list = SCMCons.list();
+        }
+        /* Add list element */
         list.add(token);
       }
     }
-    /* It was a proper list */
+    /* Was it a proper list? */
     if (dotPos < 0) {
       return list;
     }
@@ -487,7 +477,7 @@ public class Reader implements IReader {
     Object last = list.get(list.size() - 1);
     Object beforeLast = list.get(list.size() - 2);
     SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
-      /* Cons backwars */
+    /* Cons backwars */
     // TODO Do not iterate the same list again?
     for (int n = list.size() - 3; n >= 0; n--) {
       cons = SCMCons.cons(list.get(n), cons);
@@ -499,7 +489,7 @@ public class Reader implements IReader {
    * Read vector
    *
    * Syntax:
-   * <vector> -> </vector>#(<vector_contents>)
+   * <vector> -> #(<vector_contents>)
    */
   private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
     return new SCMVector(readList(reader).toArray());

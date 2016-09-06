@@ -4,7 +4,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMBoolean;
-import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.Quasiquote;
@@ -13,6 +12,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static core.scm.SCMCons.list;
 import static core.scm.specialforms.Lambda.LAMBDA;
 import static org.junit.Assert.assertEquals;
 
@@ -103,12 +103,12 @@ public class ReaderTest {
 
   @Test
   public void testReadList() {
-    assertEquals(SCMCons.list(), reader.readFirst("()"));
-    assertEquals(SCMCons.list(0L), reader.readFirst("(0)"));
-    assertEquals(SCMCons.list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
-    assertEquals(SCMCons.list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
-    assertEquals(SCMCons.list(1L, new SCMVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
-    assertEquals(SCMCons.list(1L, SCMCons.list(2L), 3L), reader.readFirst("(1 (2) 3)"));
+    assertEquals(list(), reader.readFirst("()"));
+    assertEquals(list(0L), reader.readFirst("(0)"));
+    assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
+    assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
+    assertEquals(list(1L, new SCMVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
+    assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
   }
 
   @Test
@@ -116,20 +116,21 @@ public class ReaderTest {
     assertEquals(null, reader.readFirst(""));
     assertEquals(null, reader.readFirst("\t"));
     assertEquals(null, reader.readFirst("\n\r"));
+    assertEquals(list(s("+"), 1L, 2L, 3L), reader.readFirst("(+ 1 2 \t \n    \f \r 3\t\n\r\f)"));
   }
 
   @Test
   public void testReadQuote() {
-    assertEquals(SCMCons.list(s(Quote.QUOTE.toString()), 1L), reader.readFirst("'1"));
-    assertEquals(SCMCons.list(s(Quote.QUOTE.toString()), SCMCons.list(1L, "test")), reader.readFirst("'(1 \"test\")"));
-    assertEquals(SCMCons.list(s(Quote.QUOTE.toString()), SCMCons.list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"));
+    assertEquals(list(s(Quote.QUOTE.toString()), 1L), reader.readFirst("'1"));
+    assertEquals(list(s(Quote.QUOTE.toString()), list(1L, "test")), reader.readFirst("'(1 \"test\")"));
+    assertEquals(list(s(Quote.QUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"));
   }
 
   @Test
   public void testReadQuasiquote() {
-    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.readFirst("`1"));
-    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(1L, "test")), reader.readFirst("`(1 \"test\")"));
-    assertEquals(SCMCons.list(s(Quasiquote.QUASIQUOTE.toString()), SCMCons.list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"));
+    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.readFirst("`1"));
+    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(1L, "test")), reader.readFirst("`(1 \"test\")"));
+    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"));
   }
 
   @Test
