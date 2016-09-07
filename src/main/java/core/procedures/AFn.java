@@ -19,7 +19,7 @@ public abstract class AFn implements IFn, ISCMClass {
   public String toString() {
     String name = getName();
     if (name == null || name.isEmpty()) {
-      return "#<procedure:" + hashCode() + ">";
+      return "#<procedure>";
     }
     return "#<procedure:" + name + ">";
   }

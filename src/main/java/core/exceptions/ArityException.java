@@ -14,11 +14,11 @@ public class ArityException extends IllegalArgumentException implements ISCMClas
   }
 
   public ArityException(int actual, String name, Throwable cause) {
-    super("Wrong number of arguments (" + actual + ") passed to: " + name, cause);
+    super("Wrong number of arguments (" + actual + ") passed to: " + (name.isEmpty() ? "#<procedure>" : name), cause);
   }
 
   public ArityException(int actual, int expected, String name, Throwable cause) {
-    super("Wrong number of arguments (actual: " + actual + ", expected: " + expected + ") passed to: " + name, cause);
+    super("Wrong number of arguments (actual: " + actual + ", expected: " + expected + ") passed to: " + (name.isEmpty() ? "#<procedure>" : name), cause);
   }
 
   @Override
