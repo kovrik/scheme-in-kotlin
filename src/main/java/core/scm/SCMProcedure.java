@@ -15,7 +15,7 @@ public class SCMProcedure extends AFn {
   private List<SCMSymbol> args;
 
   /* Body form of the procedure */
-  private Object body;
+  private List<Object> body;
 
   /* Lexical environment */
   private IEnvironment localEnvironment = null;
@@ -24,14 +24,14 @@ public class SCMProcedure extends AFn {
    * If set to `true`, then list of all optional params is to be bound to the last argument */
   private boolean isVariadic = false;
 
-  public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment) {
+  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment) {
     this.name = name;
     this.args = (args == null) ? Collections.emptyList() : args;
     this.body = body;
     this.localEnvironment = localEnvironment;
   }
 
-  public SCMProcedure(String name, List<SCMSymbol> args, Object body, IEnvironment localEnvironment, boolean isVariadic) {
+  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.NIL : args;
     this.body = body;
@@ -39,7 +39,7 @@ public class SCMProcedure extends AFn {
     this.isVariadic = isVariadic;
   }
 
-  public Object getBody() {
+  public List<Object> getBody() {
     return body;
   }
 

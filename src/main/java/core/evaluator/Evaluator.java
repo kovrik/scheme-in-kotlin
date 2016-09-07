@@ -38,7 +38,7 @@ public class Evaluator implements IEvaluator {
       }
       return o;
     } else if (sexp instanceof List) {
-      return evlis(sexp, env);
+      return evlis((List<Object>)sexp, env);
     } else {
       return sexp;
     }
@@ -47,26 +47,25 @@ public class Evaluator implements IEvaluator {
   /**
    * Evaluate a list
    */
-  private Object evlis(Object sexp, IEnvironment env) {
-    List<Object> list = (List<Object>)sexp;
-    if (list.isEmpty()) {
-      throw new IllegalSyntaxException("Unexpected syntax in form " + list);
+  private Object evlis(List<Object> sexp, IEnvironment env) {
+    if (sexp.isEmpty()) {
+      throw new IllegalSyntaxException("Unexpected syntax in form " + sexp);
     }
     /* Check if op is a Special Form.
      * This is used for implicit Special Forms
      * used in other Special Forms (like BEGIN in LAMBDA).
      * We should be able to eval such forms even if user
      * has redefined implicit Special Form */
-    Object op = list.get(0);
+    Object op = sexp.get(0);
     if (op instanceof ISpecialForm) {
-      return ((ISpecialForm)op).eval(list, env, this);
+      return ((ISpecialForm)op).eval(sexp, env, this);
     }
     /* Check if Symbol refers to a Special Form */
     if (op instanceof SCMSymbol) {
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
       if (specialForm instanceof ISpecialForm) {
-        return ((ISpecialForm)specialForm).eval(list, env, this);
+        return ((ISpecialForm)specialForm).eval(sexp, env, this);
       }
     }
 
@@ -78,9 +77,9 @@ public class Evaluator implements IEvaluator {
     }
 
     /* Evaluate arguments first (because applicative order) */
-    List<Object> args = new ArrayList<Object>(list.size() - 1);
-    for (int i = 1; i < list.size(); i++) {
-      args.add(eval(list.get(i), env));
+    List<Object> args = new ArrayList<Object>(sexp.size() - 1);
+    for (int i = 1; i < sexp.size(); i++) {
+      args.add(eval(sexp.get(i), env));
     }
 
     /* Scheme procedure (lambda) */
@@ -103,8 +102,8 @@ public class Evaluator implements IEvaluator {
    * Apply SCMProcedure
    */
   private Object apply(SCMProcedure fn, List<Object> args) {
-    List<SCMSymbol> params = fn.getArgs();
 
+    List<SCMSymbol> params = fn.getArgs();
     /* Variadic procedures keep last param to store list of rest (optional) params */
     int mandatoryParamsSize = fn.isVariadic() ? params.size() - 1 : params.size();
 
