@@ -25,6 +25,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * The restriction is necessary because Scheme passes arguments by value rather than by name.
  * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
  */
+@Deprecated
 public class LetRec implements ISpecialForm, ISCMClass {
 
   public static final LetRec LETREC = new LetRec();

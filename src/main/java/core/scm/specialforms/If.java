@@ -16,6 +16,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
+@Deprecated
 public class If implements ISpecialForm, ISCMClass {
 
   public static final If IF = new If();

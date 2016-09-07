@@ -11,6 +11,7 @@ import java.util.List;
 /* Syntax:
  * (begin <expression1> <expression2> ...)
  */
+@Deprecated
 public class Begin implements ISpecialForm, ISCMClass {
 
   public static final Begin BEGIN = new Begin();

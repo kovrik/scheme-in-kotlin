@@ -12,6 +12,7 @@ import java.util.List;
 /* Syntax:
  * (or <test1> ...)
  */
+@Deprecated
 public class Or implements ISpecialForm, ISCMClass {
 
   public static final Or OR = new Or();

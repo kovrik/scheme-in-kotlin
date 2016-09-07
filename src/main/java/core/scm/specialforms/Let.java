@@ -19,6 +19,7 @@ import static core.scm.specialforms.LetRec.LETREC;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
+@Deprecated
 public class Let implements ISpecialForm, ISCMClass {
 
   public static final Let LET = new Let();

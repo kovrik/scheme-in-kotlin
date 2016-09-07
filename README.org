@@ -80,8 +80,8 @@ CLOSED: [2016-09-03 Sat 15:13]
 ** TODO [#B] Make `append` proc iterative!
 ** TODO [#B] Internal `define`: can be top-form only
 ** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
+** TODO [#B] Macroexpansion
 ** TODO [#C] Proper logging
-** TODO [#C] Macroexpansion
 ** DONE [#C] Correct error messages (Long -> Integer? etc.)
 CLOSED: [2016-07-26 Tue 23:01]
 ** DONE Nil value

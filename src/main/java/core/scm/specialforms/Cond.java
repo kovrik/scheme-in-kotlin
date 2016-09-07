@@ -18,6 +18,7 @@ import java.util.List;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
+@Deprecated
 public class Cond implements ISpecialForm, ISCMClass {
 
   public static final Cond COND = new Cond();

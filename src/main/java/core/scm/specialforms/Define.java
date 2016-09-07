@@ -15,6 +15,7 @@ import static core.scm.specialforms.Lambda.LAMBDA;
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
+@Deprecated
 public class Define implements ISpecialForm, ISCMClass {
 
   public static final Define DEFINE = new Define();

@@ -11,7 +11,9 @@ import core.writer.IWriter;
 import core.writer.Writer;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,8 @@ public class Main {
   private static final IReader reader = new Reader();
   private static final IEvaluator evaluator = new Evaluator();
   private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
+
+  private static final DateFormat DF = new SimpleDateFormat("[HH:mm:ss.S]");
 
   /* REPL History */
   private static final int MAX_ENTRIES = 10;
@@ -57,6 +61,7 @@ public class Main {
     System.out.println(welcomeMessage);
     while (true) {
       try {
+//        System.out.print(DF.format(System.currentTimeMillis()));
         System.out.print(prompt);
         System.out.flush();
 

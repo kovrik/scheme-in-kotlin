@@ -20,6 +20,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
+@Deprecated
 public class Case implements ISpecialForm, ISCMClass {
 
   public static final Case CASE = new Case();

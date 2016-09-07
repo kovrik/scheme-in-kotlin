@@ -17,6 +17,7 @@ import static core.scm.specialforms.tco.Begin.BEGIN;
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
+@Deprecated
 public class Lambda implements ISpecialForm, ISCMClass {
 
   public static final Lambda LAMBDA = new Lambda();

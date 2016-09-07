@@ -18,6 +18,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
+@Deprecated
 public class Do implements ISpecialForm, ISCMClass {
 
   public static final Do DO = new Do();

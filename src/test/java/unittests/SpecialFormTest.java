@@ -540,4 +540,15 @@ public class SpecialFormTest extends AbstractTest {
       assertEquals("Wrong argument type. Expected: List, actual: (1 . 2)", e.getMessage());
     }
   }
+
+  @Test
+  public void testTime() {
+    String form = "(time" +
+                  " (define (perf n)" +
+                  "   (if (zero? n)" +
+                  "       \"DONE\"" +
+                  "     (perf (- n 1))))" +
+                  " (perf 10000))";
+    assertEquals(UNSPECIFIED, eval(form, env));
+  }
 }

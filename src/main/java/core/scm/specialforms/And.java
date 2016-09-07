@@ -12,6 +12,7 @@ import java.util.List;
 /* Syntax:
  * (and <test1> ...)
  */
+@Deprecated
 public class And implements ISpecialForm, ISCMClass {
 
   public static final And AND = new And();

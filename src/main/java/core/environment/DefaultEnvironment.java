@@ -37,6 +37,7 @@ import static core.scm.specialforms.Quasiquote.QUASIQUOTE;
 import static core.scm.specialforms.Quote.QUOTE;
 import static core.scm.specialforms.Set.SET;
 import static core.scm.specialforms.SyntaxRules.SYNTAX_RULES;
+import static core.scm.specialforms.Time.TIME;
 import static core.scm.specialforms.Unquote.UNQUOTE;
 import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING;
 
@@ -190,6 +191,7 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(QUASIQUOTE.toString(), QUASIQUOTE);
     SPECIAL_FORMS.put(UNQUOTE.toString(), UNQUOTE);
     SPECIAL_FORMS.put(UNQUOTE_SPLICING.toString(), UNQUOTE_SPLICING);
+    SPECIAL_FORMS.put(TIME.toString(), TIME);
 
     // TODO
     SPECIAL_FORMS.put(DEFINE_SYNTAX.toString(), DEFINE_SYNTAX);

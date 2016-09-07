@@ -15,6 +15,7 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
+@Deprecated
 public class LetSeq implements ISpecialForm, ISCMClass {
 
   public static final LetSeq LETSEQ = new LetSeq();
