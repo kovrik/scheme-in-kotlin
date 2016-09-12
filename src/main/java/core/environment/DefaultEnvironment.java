@@ -225,7 +225,7 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (procedure? o) (eq? (class-of (lambda () n)) (class-of o)))");
     LIBRARY_PROCEDURES.add("(define (number?    o) (if  (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))");
     LIBRARY_PROCEDURES.add("(define (null?      o) (eq? (class-of '()) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (pair?      o) (eq? (class-of (cons 1 2)) (class-of o)))");
+    LIBRARY_PROCEDURES.add("(define (pair?      o) (eq? (class-of '(1 . 2)) (class-of o)))");
     LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (zero? n) (= n 0))");
     LIBRARY_PROCEDURES.add("(define (integer? x) (= x (round x)))");
