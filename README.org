@@ -1,6 +1,27 @@
 *JISP*
 ----
 
+*Disclaimer*
+
+This is a hobby project and work is still in progress.
+
+*Description*
+
+This is my [first] attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) in Java.
+The goal is to have +some fun+ Scheme implementation which is as close to R5RS as possible.
+
+On the other hand, this is a sandbox project where I'm trying different techniques and doing some experiments (for learning purposes mostly).
+
+See TODO list below for things implementated.
+
+*Known issues*
+
+1. Numerical Tower
+2. Big numbers
+3. Performance
+4. Mutable strings
+5. Cons lists
+
 * TODO: [27/42]
 
 ** DONE [#A] Implement CONS cells
@@ -581,6 +602,11 @@ CLOSED: [2016-05-15 Sun 22:32]
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
 
+** TODO Performance [/]
+*** TODO Predicates (pair? promise? etc.)
+*** TODO Cache environment lookup
+*** TODO Evaluator.evlis()
+*** TODO Procedure inlining
 * Useful links:
 
 ** https://en.wikipedia.org/wiki/Scheme_(programming_language)
