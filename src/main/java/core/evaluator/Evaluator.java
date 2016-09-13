@@ -10,7 +10,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
-import core.scm.specialforms.tco.TailCall;
+import core.scm.specialforms.TailCall;
 import core.writer.Writer;
 
 import java.util.ArrayList;

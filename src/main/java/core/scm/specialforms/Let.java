@@ -11,15 +11,11 @@ import core.scm.SCMSymbol;
 
 import java.util.List;
 
-import static core.scm.specialforms.Lambda.LAMBDA;
-import static core.scm.specialforms.LetRec.LETREC;
-
 /* Syntax:
  * (let <bindings> <body>)
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-@Deprecated
 public class Let implements ISpecialForm, ISCMClass {
 
   public static final Let LET = new Let();
@@ -53,8 +49,8 @@ public class Let implements ISpecialForm, ISCMClass {
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
-      /* Return the values of the last expression */
-      return evaluator.eval(expression.get(expression.size() - 1), localEnv);
+      /* Return Tail Call of the last expression */
+      return new TailCall(expression.get(expression.size() - 1), localEnv);
 
     } else if (expression.get(1) instanceof SCMSymbol) {
       // TODO Optimize and cleanup
@@ -77,7 +73,7 @@ public class Let implements ISpecialForm, ISCMClass {
         initValues.add(((List)binding).get(1));
       }
       Object lambdaBody = expression.get(3);
-      SCMCons lambda = SCMCons.list(LAMBDA, lambdaArgs, lambdaBody);
+      SCMCons lambda = SCMCons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody);
       SCMSymbol name = (SCMSymbol)o;
       SCMCons<SCMCons> l = SCMCons.list();
       l.add(SCMCons.list(name, lambda));
@@ -86,10 +82,11 @@ public class Let implements ISpecialForm, ISCMClass {
       body.addAll(initValues);
 
       /* Named let is implemented via letrec */
-      SCMCons<Object> letrec = SCMCons.list(LETREC);
+      SCMCons<Object> letrec = SCMCons.list(LetRec.LETREC);
       letrec.add(l);
       letrec.add(body);
-      return LETREC.eval(letrec, new Environment(env), evaluator);
+      /* Letrec has TCO */
+      return LetRec.LETREC.eval(letrec, new Environment(env), evaluator);
     }
     throw new IllegalSyntaxException("let: bad let in form: " + expression);
   }

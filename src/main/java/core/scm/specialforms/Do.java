@@ -18,7 +18,6 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
-@Deprecated
 public class Do implements ISpecialForm, ISCMClass {
 
   public static final Do DO = new Do();
@@ -99,12 +98,13 @@ public class Do implements ISpecialForm, ISCMClass {
     /* Test evaluated to #f */
     List expressions = clause.subList(1, clause.size());
     Object value = UNSPECIFIED;
-    for (Object e : expressions) {
+    for (int i = 0; i < expressions.size() - 1; i++) {
       /* Evaluate each expression */
-      value = evaluator.eval(e, tempEnv);
+      value = evaluator.eval(expressions.get(i), tempEnv);
     }
-    /* Return value of last expression or UNSPECIFIED */
-    return value;
+    /* Return Tail Call of last expression or UNSPECIFIED */
+    // TODO Check UNSPECIFIED value?
+    return new TailCall(expressions.get(expressions.size() - 1), tempEnv);
   }
 
   public SCMSymbol symbol() {

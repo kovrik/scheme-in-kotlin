@@ -15,7 +15,6 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-@Deprecated
 public class LetSeq implements ISpecialForm, ISCMClass {
 
   public static final LetSeq LETSEQ = new LetSeq();
@@ -42,8 +41,8 @@ public class LetSeq implements ISpecialForm, ISCMClass {
     for (int i = 2; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), localEnv);
     }
-    /* Return the values of the last expression */
-    return evaluator.eval(expression.get(expression.size() - 1), localEnv);
+    /* Return Tail Call of the last expression */
+    return new TailCall(expression.get(expression.size() - 1), localEnv);
   }
 
   public SCMSymbol symbol() {

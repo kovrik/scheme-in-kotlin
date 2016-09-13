@@ -11,7 +11,6 @@ import java.util.List;
 /* Syntax:
  * (begin <expression1> <expression2> ...)
  */
-@Deprecated
 public class Begin implements ISpecialForm, ISCMClass {
 
   public static final Begin BEGIN = new Begin();
@@ -26,7 +25,7 @@ public class Begin implements ISpecialForm, ISCMClass {
     for (int i = 1; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), env);
     }
-    return evaluator.eval(expression.get(expression.size() - 1), env);
+    return new TailCall(expression.get(expression.size() - 1), env);
   }
 
   public SCMSymbol symbol() {

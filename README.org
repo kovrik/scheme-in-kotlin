@@ -602,7 +602,7 @@ CLOSED: [2016-05-15 Sun 22:32]
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
 
-** TODO Performance [/]
+** TODO Performance [0/4]
 *** TODO Predicates (pair? promise? etc.)
 *** TODO Cache environment lookup
 *** TODO Evaluator.evlis()

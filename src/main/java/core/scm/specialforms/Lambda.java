@@ -7,8 +7,6 @@ import core.scm.*;
 
 import java.util.List;
 
-import static core.scm.specialforms.tco.Begin.BEGIN;
-
 /* Syntax:
  * (lambda <formals> <body>)
  *
@@ -17,7 +15,6 @@ import static core.scm.specialforms.tco.Begin.BEGIN;
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
-@Deprecated
 public class Lambda implements ISpecialForm, ISCMClass {
 
   public static final Lambda LAMBDA = new Lambda();
@@ -33,7 +30,8 @@ public class Lambda implements ISpecialForm, ISCMClass {
       throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
     }
     /* Add implicit `begin` */
-    SCMCons<Object> body = SCMCons.list(BEGIN);
+    // TODO Is implicit BEGIN enough to have TCO?
+    SCMCons<Object> body = SCMCons.list(Begin.BEGIN);
     body.addAll(expression.subList(2, expression.size()));
     /* Check if args is a List or not */
     Object args = expression.get(1);

@@ -8,14 +8,12 @@ import core.scm.*;
 import java.util.List;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
-import static core.scm.specialforms.Lambda.LAMBDA;
 
 /* Syntax:
  * (define <variable> <expression>)
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
-@Deprecated
 public class Define implements ISpecialForm, ISCMClass {
 
   public static final Define DEFINE = new Define();
@@ -44,8 +42,8 @@ public class Define implements ISpecialForm, ISCMClass {
       /* Get procedure's name */
       SCMSymbol name = (SCMSymbol)((SCMCons)id).pop();
       /* Evaluate lambda */
-      expression.set(0, LAMBDA);
-      SCMProcedure lambda = LAMBDA.eval(expression, env, evaluator);
+      expression.set(0, Lambda.LAMBDA);
+      SCMProcedure lambda = Lambda.LAMBDA.eval(expression, env, evaluator);
       /* Set name */
       lambda.setName(name.getValue());
       env.put(name, lambda);

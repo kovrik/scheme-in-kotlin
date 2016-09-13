@@ -18,7 +18,6 @@ import java.util.List;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-@Deprecated
 public class Cond implements ISpecialForm, ISCMClass {
 
   public static final Cond COND = new Cond();
@@ -46,7 +45,7 @@ public class Cond implements ISpecialForm, ISCMClass {
           for (int s = 1; i < subform.size() - 1; i++) {
             evaluator.eval(subform.get(s), env);
           }
-          return evaluator.eval(subform.get(subform.size() - 1), env);
+          return new TailCall(subform.get(subform.size() - 1), env);
         }
         throw new IllegalSyntaxException("cond: else must be the last clause in subform");
       }
@@ -54,7 +53,7 @@ public class Cond implements ISpecialForm, ISCMClass {
         for (int s = 1; s < subform.size() - 1; s++) {
           evaluator.eval(subform.get(s), env);
         }
-        return evaluator.eval(subform.get(subform.size() - 1), env);
+        return new TailCall(subform.get(subform.size() - 1), env);
       }
     }
     throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");

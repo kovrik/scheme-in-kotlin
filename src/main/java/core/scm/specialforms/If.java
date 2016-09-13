@@ -16,7 +16,6 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
-@Deprecated
 public class If implements ISpecialForm, ISCMClass {
 
   public static final If IF = new If();
@@ -34,7 +33,7 @@ public class If implements ISpecialForm, ISCMClass {
     Object test = expression.get(1);
     Object consequence = expression.get(2);
     if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
-      return evaluator.eval(consequence, env);
+      return new TailCall(consequence, env);
     } else {
       if (expression.size() < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
@@ -42,7 +41,7 @@ public class If implements ISpecialForm, ISCMClass {
         return UNSPECIFIED;
       }
       Object alternative = expression.get(3);
-      return evaluator.eval(alternative, env);
+      return new TailCall(alternative, env);
     }
   }
 
