@@ -3,6 +3,7 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.procedures.AFn;
 import core.scm.*;
 
 import java.util.LinkedList;
@@ -90,8 +91,10 @@ public class Lambda implements ISpecialForm, ISCMClass {
           /* Not a list, but an SCMSymbol, candidate for inlining */
           if (next instanceof SCMSymbol) {
             Object o = env.findOrNull(next);
-            if (o instanceof ISpecialForm) {
-              /* Inline Special Form to avoid further lookups */
+            if ((o instanceof ISpecialForm) ||
+                ((o instanceof AFn) && !(o instanceof SCMProcedure))) {
+
+              /* Inline Special Forms and AFns to avoid further lookups */
               listIterator.set(o);
             }
           }

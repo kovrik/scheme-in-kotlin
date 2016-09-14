@@ -543,6 +543,77 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testTime() {
+    /*
+     * 1) Procedure inlining (zero? pair? null? etc.)
+     *
+     * 2) Reduce & Optimize (cache) expensive calls:
+     *
+     * -------------------+----------
+     * Method             | Time (ms)
+     * -------------------+----------
+     * Environment.find() |  71,818
+     * Evaluator.evlis()  |  37,296
+     * Reader.nextToken() |  29,801
+     * Environment.put()  |  11,328
+     * -------------------+----------
+     *
+     * Env.find:
+     * Before:
+     *
+     *  (perf 1)
+     *    [ENV.FIND: perf]     [ENV.FIND: =]        [ENV.FIND: perf]
+     *    [ENV.FIND: perf]     [ENV.FIND: MISS!]    [ENV.FIND: zero?]
+     *    [ENV.FIND: if]       [ENV.FIND: =]        [ENV.FIND: MISS!]
+     *    [MISS!]              [ENV.FIND: =]        [ENV.FIND: zero?]
+     *    [ENV.FIND: if]       [ENV.FIND: MISS!]    [ENV.FIND: zero?]
+     *    [ENV.FIND: zero?]    [ENV.FIND: =]        [ENV.FIND: MISS!]
+     *    [MISS!]              [ENV.FIND: n]        [ENV.FIND: zero?]
+     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: n]
+     *    [ENV.FIND: zero?]    [ENV.FIND: MISS!]    [ENV.FIND: n]
+     *    [MISS!]              [ENV.FIND: perf]     [ENV.FIND: perf]
+     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: MISS!]
+     *    [ENV.FIND: n]        [ENV.FIND: MISS!]    [ENV.FIND: perf]
+     *    [ENV.FIND: =]        [ENV.FIND: perf]     [ENV.FIND: perf]
+     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: MISS!]
+     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: perf]
+     *    [ENV.FIND: =]        [ENV.FIND: -]        [ENV.FIND: n]
+     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: zero?]
+     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: MISS!]
+     *    [ENV.FIND: n]        [ENV.FIND: -]        [ENV.FIND: zero?]
+     *    [ENV.FIND: perf]     [ENV.FIND: n]        [ENV.FIND: zero?]
+     *    [MISS!]              [ENV.FIND: zero?]    [ENV.FIND: MISS!]
+     *    [ENV.FIND: perf]     [ENV.FIND: MISS!]    [ENV.FIND: zero?]
+     *    [ENV.FIND: perf]     [ENV.FIND: zero?]    [ENV.FIND: n]
+     *    [MISS!]              [ENV.FIND: zero?]    [ENV.FIND: n]
+     *    [ENV.FIND: perf]     [ENV.FIND: MISS!]
+     *    [ENV.FIND: -]        [ENV.FIND: zero?]
+     *    [MISS!]              [ENV.FIND: n]
+     *    [ENV.FIND: -]        [ENV.FIND: =]
+     *    [ENV.FIND: -]        [ENV.FIND: MISS!]
+     *    [MISS!]              [ENV.FIND: =]
+     *    [ENV.FIND: -]        [ENV.FIND: =]
+     *    [ENV.FIND: n]        [ENV.FIND: MISS!]
+     *    [ENV.FIND: if]       [ENV.FIND: =]
+     *    [MISS!]              [ENV.FIND: n]
+     *    [ENV.FIND: if]
+     *    [ENV.FIND: zero?]
+     *    [MISS!]
+     *    [ENV.FIND: zero?]
+     *    [ENV.FIND: zero?]
+     *    [MISS!]
+     *    [ENV.FIND: zero?]
+     *    [ENV.FIND: n]
+     *    [ENV.FIND: =]
+     *    [MISS!]
+     *    [ENV.FIND: =]
+     *    [ENV.FIND: =]
+     *    [MISS!]
+     *    [ENV.FIND: =]
+     *    [ENV.FIND: n]
+     *    $1 = "DONE"
+     *
+     *    [ENV.FIND: perf]
+     */
     String form = "(time" +
                   " (define (perf n)" +
                   "   (if (zero? n)" +
