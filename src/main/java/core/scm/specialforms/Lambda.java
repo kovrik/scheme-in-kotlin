@@ -5,7 +5,9 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.*;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -33,6 +35,10 @@ public class Lambda implements ISpecialForm, ISCMClass {
     // TODO Is implicit BEGIN enough to have TCO?
     SCMCons<Object> body = SCMCons.list(Begin.BEGIN);
     body.addAll(expression.subList(2, expression.size()));
+
+    /* Optimization: replace some symbols with their values */
+    inline(body, env);
+
     /* Check if args is a List or not */
     Object args = expression.get(1);
     if (args instanceof List) {
@@ -65,5 +71,32 @@ public class Lambda implements ISpecialForm, ISCMClass {
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.SPECIALFORM;
+  }
+
+  private static void inline(List<Object> body, IEnvironment env) {
+    LinkedList<List> queue = new LinkedList<List>();
+    /* Queue will hold body and all nested lists (if any) */
+    queue.add(body);
+    while (!queue.isEmpty()) {
+      List list = queue.remove();
+      /* Using ListIterator because it allows element modification */
+      ListIterator listIterator = list.listIterator();
+      while (listIterator.hasNext()) {
+        Object next = listIterator.next();
+        if (next instanceof List) {
+          /* Add nested list to the queue */
+          queue.add((List) next);
+        } else {
+          /* Not a list, but an SCMSymbol, candidate for inlining */
+          if (next instanceof SCMSymbol) {
+            Object o = env.findOrNull(next);
+            if (o instanceof ISpecialForm) {
+              /* Inline Special Form to avoid further lookups */
+              listIterator.set(o);
+            }
+          }
+        }
+      }
+    }
   }
 }

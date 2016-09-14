@@ -9,6 +9,9 @@ public interface IEnvironment {
   /* Get key from this environment */
   Object get(Object key);
 
+  /* Try to find key recursively and return null if not found */
+  Object findOrNull(Object key);
+
   /* Try to find key recursively and throw exception if not found */
   Object find(Object key);
 

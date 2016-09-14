@@ -44,6 +44,18 @@ public class Environment implements IEnvironment, ISCMClass {
   }
 
   @Override
+  public Object findOrNull(Object key) {
+    Object value = context.get(key);
+    if (value == null) {
+      if (outer == null) {
+        return null;
+      }
+      return outer.findOrNull(key);
+    }
+    return value;
+  }
+
+  @Override
   public Object findAndPut(Object key, Object value) {
     Object v = context.get(key);
     if (v == null) {
