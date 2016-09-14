@@ -70,12 +70,17 @@ public class Evaluator implements IEvaluator {
     }
 
     /* Must be a procedure */
-    Object fn = eval(op, env);
-    if (!(fn instanceof IFn)) {
+    Object fn;
+    /* If procedure was inlined, then just apply it */
+    if ((op instanceof IFn) && !(op instanceof SCMProcedure) ) {
+      fn = op;
+    } else {
+      fn = eval(op, env);
+      if (!(fn instanceof IFn)) {
       /* Can apply IFn only */
-      throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
+        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
+      }
     }
-
     /* Evaluate arguments first (because applicative order) */
     List<Object> args = new ArrayList<Object>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
