@@ -5,7 +5,9 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.*;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
@@ -46,11 +48,37 @@ public class Define implements ISpecialForm, ISCMClass {
       SCMProcedure lambda = Lambda.LAMBDA.eval(expression, env, evaluator);
       /* Set name */
       lambda.setName(name.getValue());
+      // TODO Optimize
+      replaceSelfCalls(lambda);
       env.put(name, lambda);
     } else {
       throw new IllegalSyntaxException("define: bad `define` in form: " + expression);
     }
     return UNSPECIFIED;
+  }
+
+  /* TODO Generify */
+  private static void replaceSelfCalls(SCMProcedure lambda) {
+    LinkedList<List> queue = new LinkedList<List>();
+    /* Queue will hold body and all nested lists (if any) */
+    queue.add(lambda.getBody());
+    while (!queue.isEmpty()) {
+      List list = queue.remove();
+      /* Using ListIterator because it allows element modification */
+      ListIterator listIterator = list.listIterator();
+      while (listIterator.hasNext()) {
+        Object next = listIterator.next();
+        if (next instanceof List) {
+          /* Add nested list to the queue */
+          queue.add((List) next);
+        } else {
+          if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
+            /* Replace symbol with procedure (self-call) */
+            listIterator.set(lambda);
+          }
+        }
+      }
+    }
   }
 
   public SCMSymbol symbol() {

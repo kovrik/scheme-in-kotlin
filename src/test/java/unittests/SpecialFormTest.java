@@ -561,25 +561,25 @@ public class SpecialFormTest extends AbstractTest {
      * Before:
      *
      *  (perf 1)
-     *    [ENV.FIND: perf]     [ENV.FIND: =]        [ENV.FIND: perf]
-     *    [ENV.FIND: perf]     [ENV.FIND: MISS!]    [ENV.FIND: zero?]
-     *    [ENV.FIND: if]       [ENV.FIND: =]        [ENV.FIND: MISS!]
-     *    [MISS!]              [ENV.FIND: =]        [ENV.FIND: zero?]
-     *    [ENV.FIND: if]       [ENV.FIND: MISS!]    [ENV.FIND: zero?]
-     *    [ENV.FIND: zero?]    [ENV.FIND: =]        [ENV.FIND: MISS!]
-     *    [MISS!]              [ENV.FIND: n]        [ENV.FIND: zero?]
-     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: n]
-     *    [ENV.FIND: zero?]    [ENV.FIND: MISS!]    [ENV.FIND: n]
-     *    [MISS!]              [ENV.FIND: perf]     [ENV.FIND: perf]
-     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: MISS!]
-     *    [ENV.FIND: n]        [ENV.FIND: MISS!]    [ENV.FIND: perf]
-     *    [ENV.FIND: =]        [ENV.FIND: perf]     [ENV.FIND: perf]
-     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: MISS!]
-     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: perf]
-     *    [ENV.FIND: =]        [ENV.FIND: -]        [ENV.FIND: n]
-     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: zero?]
-     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: MISS!]
-     *    [ENV.FIND: n]        [ENV.FIND: -]        [ENV.FIND: zero?]
+     *    [ENV.FIND: perf]     [ENV.FIND: =]        [ENV.FIND: perf]   [ENV.FIND: perf]
+     *    [ENV.FIND: perf]     [ENV.FIND: MISS!]    [ENV.FIND: zero?]  [ENV.FIND: perf]
+     *    [ENV.FIND: if]       [ENV.FIND: =]        [ENV.FIND: MISS!]  [ENV.FIND: zero?]
+     *    [MISS!]              [ENV.FIND: =]        [ENV.FIND: zero?]  [ENV.FIND: MISS!]
+     *    [ENV.FIND: if]       [ENV.FIND: MISS!]    [ENV.FIND: zero?]  [ENV.FIND: zero?]
+     *    [ENV.FIND: zero?]    [ENV.FIND: =]        [ENV.FIND: MISS!]  [ENV.FIND: zero?]
+     *    [MISS!]              [ENV.FIND: n]        [ENV.FIND: zero?]  [ENV.FIND: MISS!]
+     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: n]      [ENV.FIND: zero?]
+     *    [ENV.FIND: zero?]    [ENV.FIND: MISS!]    [ENV.FIND: n]      [ENV.FIND: n]
+     *    [MISS!]              [ENV.FIND: perf]     [ENV.FIND: perf]   [ENV.FIND: n]
+     *    [ENV.FIND: zero?]    [ENV.FIND: perf]     [ENV.FIND: MISS!]  [ENV.FIND: n]
+     *    [ENV.FIND: n]        [ENV.FIND: MISS!]    [ENV.FIND: perf]   [ENV.FIND: zero?]
+     *    [ENV.FIND: =]        [ENV.FIND: perf]     [ENV.FIND: perf]   [ENV.FIND: MISS!]
+     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: MISS!]  [ENV.FIND: zero?]
+     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: perf]   [ENV.FIND: zero?]
+     *    [ENV.FIND: =]        [ENV.FIND: -]        [ENV.FIND: n]      [ENV.FIND: MISS!]
+     *    [MISS!]              [ENV.FIND: -]        [ENV.FIND: zero?]  [ENV.FIND: zero?]
+     *    [ENV.FIND: =]        [ENV.FIND: MISS!]    [ENV.FIND: MISS!]  [ENV.FIND: n]
+     *    [ENV.FIND: n]        [ENV.FIND: -]        [ENV.FIND: zero?]  [ENV.FIND: n]
      *    [ENV.FIND: perf]     [ENV.FIND: n]        [ENV.FIND: zero?]
      *    [MISS!]              [ENV.FIND: zero?]    [ENV.FIND: MISS!]
      *    [ENV.FIND: perf]     [ENV.FIND: MISS!]    [ENV.FIND: zero?]
@@ -611,8 +611,6 @@ public class SpecialFormTest extends AbstractTest {
      *    [ENV.FIND: =]
      *    [ENV.FIND: n]
      *    $1 = "DONE"
-     *
-     *    [ENV.FIND: perf]
      */
     String form = "(time" +
                   " (define (perf n)" +
