@@ -39,7 +39,7 @@ public class StringSet extends AFn {
     String before = str.substring(0, pos.intValue());
     String after = str.substring(pos.intValue() + 1, str.length());
     return before + character + after;
-    // FIXME Make modifiable string!
-//    return SCMSpecialForm.UNSPECIFIED;
+    // FIXME Modify String and return it instead of creating new one
+    // return SCMSpecialForm.UNSPECIFIED;
   }
 }

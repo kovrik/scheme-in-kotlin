@@ -41,7 +41,6 @@ public class Division extends AFn {
   public Number invoke(Number numenator, Number denominator) {
     if ((numenator instanceof Long) &&
         (denominator instanceof Long) &&
-        // FIXME Optimize?
         ((Long)numenator % (Long)denominator) == 0) {
 
       return (Long)numenator / (Long)denominator;

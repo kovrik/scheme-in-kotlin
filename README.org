@@ -1,4 +1,4 @@
-*JISP*
+*Scheme in Java*
 ----
 
 *Disclaimer*
@@ -7,21 +7,22 @@ This is a hobby project and work is still in progress.
 
 *Description*
 
-This is my [first] attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) in Java.
+This is my attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) in Java.
 The goal is to have +some fun+ Scheme implementation which is as close to R5RS as possible.
 
 On the other hand, this is a sandbox project where I'm trying different techniques and doing some experiments (for learning purposes mostly).
+Also, I'm trying to make code simple, readable and easily understandable.
 
-See TODO list below for things implementated.
+See TODO list below for things implementeted (and not).
 
 *Known issues*
 
-1. Numerical Tower
-2. Big numbers
-3. Performance
-4. Mutable strings
-5. Cons lists
-
+1. Numerical Tower is not implemented
+2. Big numbers are slow (because Java's BigDecimals is quite expensive)
+3. Strings are immutable
+4. Cons lists are not proper cons lists
+5. Not optimized
+   
 * TODO: [27/42]
 
 ** DONE [#A] Implement CONS cells
@@ -54,7 +55,6 @@ CLOSED: [2016-08-25 Thu 08:14]
 ** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 ** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
 ** TODO [#A] Tail-call elimination [13/17]
-*** TODO Unit Tests
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 20:45]
 *** DONE (if <expression> <tail expression> <tail expression>)
@@ -93,17 +93,17 @@ CLOSED: [2016-08-24 Wed 20:56]
 **** TODO call-with-current-continuation — tail call to the procedure receiving the new continuation
 **** TODO call-with-values — tail call to the values-receiving procedure
 **** TODO eval — tail call to evaluate the form
-**** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached) 
+**** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
 ** DONE [#C] Read multiple forms on one line (not the first one only)
 CLOSED: [2016-09-03 Sat 15:13]
 ** TODO [#A] Make modifiable SCMString
 ** TODO [#A] Refactor Environment creation and Lexical Binding
-** TODO [#B] Make `append` proc iterative!
+** TODO [#B] Make `append` proc iterative, not recursive
 ** TODO [#B] Internal `define`: can be top-form only
-** TODO [#B] Optimize, fix and properly implement GCD and LCM procs
-** TODO [#B] Macroexpansion
-** TODO [#C] Proper logging
-** DONE [#C] Correct error messages (Long -> Integer? etc.)
+** TODO [#B] Optimize, fix and properly implement GCD and LCM procedures
+** TODO [#B] Macros
+** TODO [#C] Logging framework
+** DONE [#C] Correct error messages
 CLOSED: [2016-07-26 Tue 23:01]
 ** DONE Nil value
 CLOSED: [2016-07-02 Sat 19:54]
@@ -125,33 +125,6 @@ CLOSED: [2016-04-28 Thu 19:44]
 CLOSED: [2016-05-13 Fri 19:54]
 ** DONE Make `force` a Procedure, not Special Form
 CLOSED: [2016-05-11 Wed 19:42]
-
-** DONE Bugs [2/2]
-CLOSED: [2016-05-04 Wed 07:09]
-*** DONE [#A] Recursive functions are not working
-CLOSED: [2016-04-21 Thu 16:59]
-*** DONE [#A] REPL is not handling newlines/empty lines properly
-CLOSED: [2016-04-28 Thu 19:44]
-
-** DONE General [6/6]
-CLOSED: [2016-07-26 Tue 23:01]
-*** DONE [#A] Clojure or ***Scheme*** syntax? Or custom?
-CLOSED: [2016-04-28 Thu 19:45]
-*** DONE [#A] *Special Forms, Symbols -> Functions etc.*
-CLOSED: [2016-05-21 Sat 11:26]
-*** DONE [#B] Clean up code
-CLOSED: [2016-07-26 Tue 23:01]
-*** DONE [#B] Error handling
-CLOSED: [2016-07-26 Tue 23:01]
-*** DONE [#B] Separate classes (Reader, Parser, Evaluator etc.)
-CLOSED: [2016-05-11 Wed 21:03]
-*** DONE [#B] Test coverage
-CLOSED: [2016-05-31 Tue 22:15]
-** TODO Features [2/3]
-*** TODO [#C] User-friendly REPL
-*** DONE [#C] Shortcut for lambda definition (define (name args) body)
-CLOSED: [2016-04-28 Thu 21:14]
-*** DONE [#C] Automatic conversion to BigDecimal
 
 ** DONE Basics [4/4]
 CLOSED: [2016-04-28 Thu 19:45]
@@ -602,14 +575,14 @@ CLOSED: [2016-05-15 Sun 22:32]
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
 
-** TODO Performance [0/4]
-*** TODO Predicates (pair? promise? etc.)
-*** TODO Cache environment lookup
-*** TODO Evaluator.evlis()
+** TODO Performance [0/0]
+*** TODO Optimize predicates (pair? promise? etc.)
+*** TODO Evaluator.evlis() is slow
+*** TODO Environment.find() is slow + many redundant calls
 *** TODO Procedure inlining
-* Useful links:
 
+* Useful links:
 ** https://en.wikipedia.org/wiki/Scheme_(programming_language)
-** https://en.wikipedia.org/wiki/Scheme_(programming_language)#Review_of_standard_forms_and_procedures
 ** http://sicp.ai.mit.edu/Fall-2003/manuals/scheme-7.5.5/doc/scheme_3.html
-** http://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Numerical-operations.html
+** http://norvig.com/lispy.html
+** http://norvig.com/lispy2.html

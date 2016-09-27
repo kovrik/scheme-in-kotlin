@@ -59,7 +59,7 @@ public class LCM extends AFn {
     if ((BigDecimal.ZERO.compareTo(a) == 0) && (BigDecimal.ZERO.compareTo(b) == 0)) {
       return BigDecimal.ZERO;
     }
-    // FIXME Check if numbers are integral!
+    // FIXME Check if numbers are integral?
     BigInteger gcd = a.toBigInteger().gcd(b.toBigInteger());
     return new BigDecimal((a.toBigIntegerExact().divide(gcd)).multiply(b.toBigIntegerExact()));
   }

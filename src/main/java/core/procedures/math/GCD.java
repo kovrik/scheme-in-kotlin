@@ -59,7 +59,7 @@ public class GCD extends AFn {
   }
 
   public static BigDecimal gcd(BigDecimal a, BigDecimal b) {
-    // FIXME Check if numbers are integral!
+    // FIXME Check if numbers are integral?
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 

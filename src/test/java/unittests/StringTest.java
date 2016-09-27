@@ -183,7 +183,7 @@ public class StringTest extends AbstractTest {
   // FIXME Make modifiable String
   @Test
   public void testEvalStringSet() {
-    assertEquals("z", eval("(string-set! \"a\" 0 #\\z)", env));
+    assertEquals("z",   eval("(string-set! \"a\" 0 #\\z)",   env));
     assertEquals("zbc", eval("(string-set! \"abc\" 0 #\\z)", env));
     assertEquals("azc", eval("(string-set! \"abc\" 1 #\\z)", env));
     assertEquals("abz", eval("(string-set! \"abc\" 2 #\\z)", env));
