@@ -1,0 +1,557 @@
+* TODO: [27/42]
+
+** DONE [#A] Implement CONS cells
+CLOSED: [2016-07-07 Thu 19:06]
+** DONE [#A] Implement SCMList using CONS?
+CLOSED: [2016-07-07 Thu 19:06]
+** DONE [#A] Reader: read dotted notation
+CLOSED: [2016-07-09 Sat 21:55]
+** DONE [#A] Now properly implement dotted pair notation everywhere
+CLOSED: [2016-07-15 Fri 22:34]
+** DONE [#A] Binary/Octal/Hex numbers with fraction
+CLOSED: [2016-07-16 Sat 23:20]
+** DONE [#A] Fix readQuote ('0e)
+CLOSED: [2016-07-17 Sun 10:11]
+** DONE [#A] Fix toString everywhere for Chars and Lists
+CLOSED: [2016-07-10 Sun 20:13]
+** DONE [#A] Error messages: use Writer class
+CLOSED: [2016-07-19 Tue 21:45]
+** DONE [#A] Wrong type generic error
+CLOSED: [2016-07-20 Wed 22:51]
+** DONE [#A] Equality for procedures?
+CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Properly implement IFn and Procedure classes
+CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Fix display with named chars (\n, \t etc.)
+CLOSED: [2016-08-23 Tue 20:37]
+** DONE [#A] Long overflow (~fib 155)
+CLOSED: [2016-08-25 Thu 08:14]
+** TODO [#A] Expt with fractional power for BigDecimals
+** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
+** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
+** TODO [#A] Tail-call elimination [13/17]
+*** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
+CLOSED: [2016-08-24 Wed 20:45]
+*** DONE (if <expression> <tail expression> <tail expression>)
+CLOSED: [2016-08-24 Wed 08:02]
+*** DONE (if <expression> <tail expression>)
+CLOSED: [2016-08-24 Wed 08:02]
+*** DONE (cond <cond clause>+) (cond <cond clause>* (else <tail sequence>))
+CLOSED: [2016-08-24 Wed 21:02]
+*** DONE (case <expression> <case clause>+) (case <expression> <case clause>* (else <tail sequence>))
+CLOSED: [2016-08-24 Wed 20:59]
+*** DONE (and <expression>* <tail expression>)
+CLOSED: [2016-08-24 Wed 08:09]
+*** DONE (or <expression>* <tail expression>)
+CLOSED: [2016-08-24 Wed 08:09]
+*** DONE (let (<binding spec>*) <tail body>)
+CLOSED: [2016-08-24 Wed 20:45]
+*** DONE (let <variable> (<binding spec>*) <tail body>)
+CLOSED: [2016-08-24 Wed 20:45]
+*** DONE (let* (<binding spec>*) <tail body>)
+CLOSED: [2016-08-24 Wed 20:46]
+*** DONE (letrec (<binding spec>*) <tail body>)
+CLOSED: [2016-08-24 Wed 20:45]
+*** TODO (let-syntax (<syntax spec>*) <tail body>)
+*** TODO (letrec-syntax (<syntax spec>*) <tail body>)
+*** DONE (begin <tail sequence>)
+CLOSED: [2016-08-24 Wed 08:01]
+*** DONE (do (<iteration spec>*) (<test> <tail sequence>) <expression>*)
+CLOSED: [2016-08-24 Wed 20:56]
+*** where
+<cond clause> ---> (<test> <tail sequence>)
+<case clause> ---> ((<datum>*) <tail sequence>)
+<tail body> ---> <definition>* <tail sequence>
+<tail sequence> ---> <expression>* <tail expression>
+*** TODO Procedures [0/5]
+**** TODO apply — tail call to given procedure
+**** TODO call-with-current-continuation — tail call to the procedure receiving the new continuation
+**** TODO call-with-values — tail call to the values-receiving procedure
+**** TODO eval — tail call to evaluate the form
+**** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
+** DONE [#C] Read multiple forms on one line (not the first one only)
+CLOSED: [2016-09-03 Sat 15:13]
+** TODO [#A] Make modifiable SCMString
+** TODO [#A] Refactor Environment creation and Lexical Binding
+** TODO [#B] Make `append` proc iterative, not recursive
+** TODO [#B] Internal `define`: can be top-form only
+** TODO [#B] Optimize, fix and properly implement GCD and LCM procedures
+** TODO [#B] Macros
+** TODO [#C] Logging framework
+** DONE [#C] Correct error messages
+CLOSED: [2016-07-26 Tue 23:01]
+** DONE Nil value
+CLOSED: [2016-07-02 Sat 19:54]
+** DONE [#A] Internal (local) define
+CLOSED: [2016-06-05 Sun 09:26]
+** DONE [#A] Decouple Procedure and Evaluator
+CLOSED: [2016-05-15 Sun 19:09]
+** DONE [#A] Varargs
+CLOSED: [2016-06-02 Thu 18:29]
+*** DONE lambda syntax
+CLOSED: [2016-05-31 Tue 22:15]
+*** DONE define syntax
+CLOSED: [2016-06-02 Thu 18:29]
+** DONE [#A] Recursive Descent Parser
+CLOSED: [2016-04-28 Thu 19:44]
+** DONE Get rid of `node`s
+CLOSED: [2016-04-28 Thu 19:44]
+** DONE Java Booleans -> SCMBoolean
+CLOSED: [2016-05-13 Fri 19:54]
+** DONE Make `force` a Procedure, not Special Form
+CLOSED: [2016-05-11 Wed 19:42]
+
+** DONE Basics [4/4]
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Reader
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Tokenizer
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Evaluator
+CLOSED: [2016-04-28 Thu 19:45]
+*** DONE Printer
+CLOSED: [2016-04-28 Thu 19:45]
+** DONE Primitives [8/8]
+CLOSED: [2016-05-13 Fri 20:56]
+*** DONE Number
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Boolean
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE String
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Char
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE List
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Vector
+CLOSED: [2016-05-13 Fri 20:56]
+*** DONE Symbol
+CLOSED: [2016-05-13 Fri 20:40]
+*** DONE Procedure
+CLOSED: [2016-05-13 Fri 20:40]
+** TODO Standard forms [1/2]
+*** TODO Fundamental forms: [8/12]
+**** DONE define
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE lambda
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE if
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE quote
+CLOSED: [2016-04-21 Thu 21:36]
+**** DONE quasiquote
+CLOSED: [2016-07-30 Sat 13:03]
+**** DONE unquote
+CLOSED: [2016-07-30 Sat 13:03]
+**** DONE unquote-splicing
+CLOSED: [2016-07-31 Sun 20:46]
+**** TODO define-syntax
+**** TODO let-syntax
+**** TODO letrec-syntax
+**** TODO syntax-rules
+**** DONE set!
+CLOSED: [2016-04-21 Thu 21:36]
+
+*** DONE Library forms: [12/12]
+CLOSED: [2016-07-20 Wed 22:51]
+**** DONE do
+CLOSED: [2016-07-20 Wed 22:51]
+**** DONE let
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE let*
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE letrec
+CLOSED: [2016-05-04 Wed 07:39]
+**** DONE cond
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE case
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE and
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE or
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE begin
+CLOSED: [2016-04-21 Thu 21:37]
+**** DONE named let [?]
+CLOSED: [2016-06-04 Sat 22:33]
+**** DONE delay
+CLOSED: [2016-05-11 Wed 17:43]
+** TODO Standard procedures [10/17]
+*** DONE Construction [4/4]
+CLOSED: [2016-07-07 Thu 19:41]
+**** DONE vector
+**** DONE make-vector
+**** DONE make-string
+CLOSED: [2016-07-07 Thu 19:41]
+**** DONE list
+CLOSED: [2016-06-02 Thu 18:47]
+*** DONE Equivalence predicates [7/7]
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE eq?
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE eqv?
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE equal?
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE string=?
+CLOSED: [2016-05-11 Wed 17:50]
+**** DONE string-ci=?
+CLOSED: [2016-05-11 Wed 17:51]
+**** DONE char=?
+CLOSED: [2016-05-11 Wed 17:55]
+**** DONE char-ci=?
+CLOSED: [2016-05-11 Wed 17:55]
+*** DONE Type conversion [10/10]
+CLOSED: [2016-08-08 Mon 21:47]
+**** DONE vector->list
+**** DONE list->vector
+**** DONE number->string
+CLOSED: [2016-07-24 Sun 18:16]
+**** DONE string->number
+CLOSED: [2016-08-08 Mon 21:47]
+**** DONE symbol->string
+**** DONE string->symbol
+**** DONE char->integer
+CLOSED: [2016-07-23 Sat 13:01]
+**** DONE integer->char
+CLOSED: [2016-07-23 Sat 13:01]
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 18:33]
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 18:33]
+*** TODO Numbers [6/12]
+**** DONE Basic arithmetic operators [12/12]
+***** DONE +
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE -
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE *
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE /
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE abs
+CLOSED: [2016-06-05 Sun 11:50]
+***** DONE quotient
+CLOSED: [2016-06-10 Fri 22:08]
+***** DONE remainder
+CLOSED: [2016-06-10 Fri 22:08]
+***** DONE modulo
+CLOSED: [2016-06-22 Wed 22:15]
+***** DONE gcd
+***** DONE lcm
+***** DONE expt
+CLOSED: [2016-06-18 Sat 20:48]
+***** DONE sqrt
+CLOSED: [2016-06-05 Sun 21:32]
+**** TODO Rational numbers [0/4]
+***** TODO numerator
+***** TODO denominator
+***** TODO rational?
+***** TODO rationalize
+**** DONE Approximation [4/4]
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE floor
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE ceiling
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE truncate
+CLOSED: [2016-06-17 Fri 18:24]
+***** DONE round
+CLOSED: [2016-06-17 Fri 18:07]
+**** TODO Exactness [0/4]
+***** TODO inexact->exact
+***** TODO exact->inexact
+***** TODO exact?
+***** TODO inexact?
+**** DONE Inequalities [5/5]
+CLOSED: [2016-04-21 Thu 22:04]
+***** DONE <
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE <=
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE >
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE >=
+CLOSED: [2016-04-21 Thu 22:03]
+***** DONE =
+CLOSED: [2016-04-21 Thu 22:03]
+**** DONE Miscellaneous predicates [5/5]
+CLOSED: [2016-06-14 Tue 22:43]
+***** DONE zero?
+CLOSED: [2016-06-14 Tue 22:24]
+***** DONE negative?
+CLOSED: [2016-06-14 Tue 22:26]
+***** DONE positive?
+CLOSED: [2016-06-14 Tue 22:28]
+***** DONE odd?
+CLOSED: [2016-06-14 Tue 22:43]
+***** DONE even?
+CLOSED: [2016-06-14 Tue 22:40]
+**** DONE Maximum and minimum [2/2]
+CLOSED: [2016-06-17 Fri 18:39]
+***** DONE max
+CLOSED: [2016-06-17 Fri 18:39]
+***** DONE min
+CLOSED: [2016-06-17 Fri 18:39]
+**** TODO Trigonometry [0/6]
+***** TODO sin
+***** TODO cos
+***** TODO tan
+***** TODO asin
+***** TODO acos
+***** TODO atan
+**** TODO Exponentials [0/2]
+***** TODO exp
+***** TODO log
+**** TODO Complex numbers [0/7]
+***** TODO make-rectangular
+***** TODO make-polar
+***** TODO real-part
+***** TODO imag-part
+***** TODO magnitude
+***** TODO angle
+***** TODO complex?
+**** DONE Input-output [2/2]
+CLOSED: [2016-08-13 Sat 21:03]
+***** DONE number->string
+CLOSED: [2016-08-13 Sat 21:03]
+***** DONE string->number
+CLOSED: [2016-08-13 Sat 21:03]
+**** TODO Type predicates [2/5]
+***** DONE integer?
+CLOSED: [2016-06-17 Fri 18:07]
+***** TODO rational?
+***** TODO real?
+***** TODO complex?
+***** DONE number?
+CLOSED: [2016-05-15 Sun 22:33]
+*** DONE Strings [22/22]
+CLOSED: [2016-07-23 Sat 12:57]
+**** DONE string?
+CLOSED: [2016-05-11 Wed 18:08]
+**** DONE make-string
+CLOSED: [2016-07-07 Thu 19:50]
+**** DONE string
+**** DONE string-length
+**** DONE string-ref
+CLOSED: [2016-07-10 Sun 18:40]
+**** DONE string-set!
+CLOSED: [2016-07-10 Sun 20:13]
+**** DONE string=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE string-ci=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE string<?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci<?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci<=?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string<=?
+CLOSED: [2016-07-23 Sat 12:01]
+**** DONE string-ci>?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string>?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string-ci>=?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE string>=?
+CLOSED: [2016-07-23 Sat 12:02]
+**** DONE substring
+CLOSED: [2016-07-23 Sat 12:40]
+**** DONE string-append
+CLOSED: [2016-07-23 Sat 12:55]
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 18:33]
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 18:33]
+**** DONE string-copy
+CLOSED: [2016-07-23 Sat 12:39]
+**** DONE string-fill!
+CLOSED: [2016-07-23 Sat 12:56]
+*** DONE Characters [20/20]
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char?
+CLOSED: [2016-05-11 Wed 18:08]
+**** DONE char=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE char-ci=?
+CLOSED: [2016-05-11 Wed 17:56]
+**** DONE char<?
+CLOSED: [2016-07-22 Fri 22:52]
+**** DONE char-ci<?
+CLOSED: [2016-07-22 Fri 22:52]
+**** DONE char<=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char-ci<=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char>?
+CLOSED: [2016-07-22 Fri 22:37]
+**** DONE char-ci>?
+CLOSED: [2016-07-22 Fri 22:37]
+**** DONE char>=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char-ci>=?
+CLOSED: [2016-07-22 Fri 22:54]
+**** DONE char-alphabetic?
+CLOSED: [2016-07-22 Fri 21:24]
+**** DONE char-numeric?
+CLOSED: [2016-07-22 Fri 21:23]
+**** DONE char-whitespace?
+CLOSED: [2016-07-22 Fri 21:24]
+**** DONE char-upper-case?
+CLOSED: [2016-07-22 Fri 21:30]
+**** DONE char-lower-case?
+CLOSED: [2016-07-22 Fri 21:35]
+**** DONE char->integer
+CLOSED: [2016-07-22 Fri 22:02]
+**** DONE integer->char
+CLOSED: [2016-07-22 Fri 22:11]
+**** DONE char-upcase
+CLOSED: [2016-07-22 Fri 22:03]
+**** DONE char-downcase
+CLOSED: [2016-07-22 Fri 22:03]
+*** DONE Vectors [9/9]
+**** DONE make-vector
+**** DONE vector
+**** DONE vector?
+CLOSED: [2016-05-15 Sun 22:19]
+**** DONE vector-length
+**** DONE vector-ref
+**** DONE vector-set!
+**** DONE vector->list
+**** DONE list->vector
+**** DONE vector-fill!
+*** DONE Symbols [3/3]
+**** DONE symbol->string
+**** DONE string->symbol
+**** DONE symbol?
+CLOSED: [2016-05-15 Sun 22:19]
+*** DONE Pairs and lists [25/25]
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE pair?
+CLOSED: [2016-07-02 Sat 22:58]
+**** DONE cons
+CLOSED: [2016-07-02 Sat 19:32]
+**** DONE car
+CLOSED: [2016-07-02 Sat 22:53]
+**** DONE cdr
+CLOSED: [2016-07-02 Sat 22:54]
+**** DONE set-car!
+CLOSED: [2016-07-08 Fri 23:07]
+**** DONE set-cdr!
+CLOSED: [2016-07-08 Fri 23:25]
+**** DONE null?
+CLOSED: [2016-06-02 Thu 21:30]
+**** DONE empty?
+CLOSED: [2016-06-02 Thu 21:30]
+**** DONE list?
+CLOSED: [2016-05-15 Sun 22:20]
+**** DONE list
+CLOSED: [2016-06-02 Thu 18:47]
+**** DONE length
+CLOSED: [2016-06-02 Thu 21:54]
+**** DONE append
+CLOSED: [2016-07-09 Sat 20:53]
+**** DONE reverse
+CLOSED: [2016-07-10 Sun 10:01]
+**** DONE list-tail
+CLOSED: [2016-07-10 Sun 12:00]
+**** DONE list-ref
+CLOSED: [2016-07-10 Sun 12:20]
+**** DONE member
+CLOSED: [2016-07-17 Sun 11:25]
+**** DONE memv
+CLOSED: [2016-07-17 Sun 11:38]
+**** DONE memq
+CLOSED: [2016-07-17 Sun 11:38]
+**** DONE assq
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE assv
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE assoc
+CLOSED: [2016-07-17 Sun 12:03]
+**** DONE list->vector
+**** DONE vector->list
+**** DONE list->string
+CLOSED: [2016-07-10 Sun 12:08]
+**** DONE string->list
+CLOSED: [2016-07-10 Sun 17:53]
+*** TODO Identity predicates [8/9]
+**** DONE boolean?
+CLOSED: [2016-05-15 Sun 22:24]
+**** DONE pair?
+CLOSED: [2016-07-22 Fri 21:11]
+**** DONE symbol?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE number?
+CLOSED: [2016-05-15 Sun 22:23]
+**** DONE char?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE string?
+CLOSED: [2016-05-15 Sun 22:21]
+**** DONE vector?
+CLOSED: [2016-05-15 Sun 22:21]
+**** TODO port?
+**** DONE procedure?
+CLOSED: [2016-05-15 Sun 22:28]
+*** TODO Continuations [0/4]
+**** TODO call-with-current-continuation (call/cc)
+**** TODO values
+**** TODO call-with-values
+**** TODO dynamic-wind
+*** TODO Environments [1/4]
+**** DONE eval
+CLOSED: [2016-05-15 Sun 22:28]
+**** TODO scheme-report-environment
+**** TODO null-environment
+**** TODO interaction-environment (optional)
+*** TODO Input/output [2/20]
+**** DONE display
+CLOSED: [2016-05-28 Sat 20:15]
+**** DONE newline
+**** TODO read
+**** TODO write
+**** TODO read-char
+**** TODO write-char
+**** TODO peek-char
+**** TODO char-ready?
+**** TODO eof-object? open-input-file
+**** TODO open-output-file
+**** TODO close-input-port
+**** TODO close-output-port
+**** TODO input-port?
+**** TODO output-port?
+**** TODO current-input-port
+**** TODO current-output-port
+**** TODO call-with-input-file
+**** TODO call-with-output-file
+**** TODO with-input-from-file(optional)
+**** TODO with-output-to-file(optional)
+*** TODO System interface [0/3]
+**** TODO load (optional)
+**** TODO transcript-on (optional)
+**** TODO transcript-off (optional)
+*** DONE Delayed evaluation [1/1]
+CLOSED: [2016-05-11 Wed 17:43]
+**** DONE force
+CLOSED: [2016-05-11 Wed 17:43]
+*** TODO Functional programming [2/4]
+**** DONE procedure?
+CLOSED: [2016-05-15 Sun 22:32]
+**** TODO apply
+**** DONE map
+CLOSED: [2016-07-24 Sun 22:36]
+**** TODO for-each
+*** DONE Booleans [2/2]
+CLOSED: [2016-05-15 Sun 22:32]
+**** DONE boolean?
+CLOSED: [2016-05-15 Sun 22:32]
+**** DONE not
+CLOSED: [2016-04-21 Thu 22:05]
+
+** TODO Performance [0/0]
+*** TODO Optimize predicates (pair? promise? etc.)
+*** TODO Evaluator.evlis() is slow
+*** TODO Environment.find() is slow + many redundant calls
+*** TODO Procedure inlining
