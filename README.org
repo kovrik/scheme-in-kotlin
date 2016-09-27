@@ -22,8 +22,9 @@ See TODO list for things already implementeted (and not yet).
 4. Cons lists are not proper cons lists
 5. Not optimized
 
-* Useful links:
-** https://en.wikipedia.org/wiki/Scheme_(programming_language)
-** http://sicp.ai.mit.edu/Fall-2003/manuals/scheme-7.5.5/doc/scheme_3.html
-** http://norvig.com/lispy.html
-** http://norvig.com/lispy2.html
+*Useful links*
+
+https://en.wikipedia.org/wiki/Scheme_(programming_language)
+http://sicp.ai.mit.edu/Fall-2003/manuals/scheme-7.5.5/doc/scheme_3.html
+http://norvig.com/lispy.html
+http://norvig.com/lispy2.html
