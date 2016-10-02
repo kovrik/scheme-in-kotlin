@@ -151,5 +151,8 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testEvalApply() {
     assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env));
+    assertEquals(list(list(new SCMSymbol("a"), 1L), list(new SCMSymbol("b"), 2L), list(new SCMSymbol("c"), 3L)),
+                 eval("(apply map list '((a b c) (1 2 3)))", env));
+
   }
 }

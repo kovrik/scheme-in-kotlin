@@ -2,6 +2,7 @@ package core.environment;
 
 import core.procedures.AFn;
 import core.procedures.Apply;
+import core.procedures.MapProc;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
@@ -167,6 +168,7 @@ public final class DefaultEnvironment extends Environment {
 
       /* Functional */
       new Apply(),
+      new MapProc(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();

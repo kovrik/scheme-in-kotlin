@@ -35,11 +35,7 @@ public class Apply extends AFn {
       throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not a List: %s", getName(), last));
     }
     for (Object o : (List) last) {
-      if (o instanceof List) {
-        sexp.add((Object)SCMCons.list(Quote.QUOTE, o));
-      } else {
-        sexp.add(o);
-      }
+      sexp.add((Object)SCMCons.list(Quote.QUOTE, o));
     }
     return new TailCall(sexp, null);
   }
