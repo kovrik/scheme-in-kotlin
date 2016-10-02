@@ -12,6 +12,7 @@ import java.io.PrintStream;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
+import static core.scm.SCMCons.list;
 import static org.junit.Assert.assertEquals;
 
 public class EvaluatorTest extends AbstractTest {
@@ -140,5 +141,15 @@ public class EvaluatorTest extends AbstractTest {
     baos.reset();
 
     System.setOut(old);
+  }
+
+  @Test
+  public void testEvalMap() {
+    assertEquals(list(2L, 3L, 4L, 5L, 6L), eval("(map (lambda (n) (+ n 1)) '(1 2 3 4 5))", env));
+  }
+
+  @Test
+  public void testEvalApply() {
+    assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env));
   }
 }

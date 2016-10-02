@@ -536,12 +536,11 @@ CLOSED: [2016-05-28 Sat 20:15]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE force
 CLOSED: [2016-05-11 Wed 17:43]
-*** TODO Functional programming [2/4]
+*** TODO Functional programming [1/4]
 **** DONE procedure?
 CLOSED: [2016-05-15 Sun 22:32]
 **** TODO apply
-**** DONE map
-CLOSED: [2016-07-24 Sun 22:36]
+**** TODO map
 **** TODO for-each
 *** DONE Booleans [2/2]
 CLOSED: [2016-05-15 Sun 22:32]

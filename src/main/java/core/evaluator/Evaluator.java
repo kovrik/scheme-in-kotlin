@@ -23,7 +23,11 @@ public class Evaluator implements IEvaluator {
     /* TCO: This is our Trampoline */
     Object result = evalIter(sexp, env);
     while (result instanceof TailCall) {
-      result = evalIter(((TailCall)result).getExpr(), ((TailCall)result).getContext());
+      IEnvironment context = ((TailCall) result).getContext();
+      if (context == null) {
+        context = env;
+      }
+      result = evalIter(((TailCall)result).getExpr(), context);
     }
     return result;
   }

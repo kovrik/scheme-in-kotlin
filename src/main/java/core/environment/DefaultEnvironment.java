@@ -1,6 +1,7 @@
 package core.environment;
 
 import core.procedures.AFn;
+import core.procedures.Apply;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
@@ -165,6 +166,7 @@ public final class DefaultEnvironment extends Environment {
       new VectorFill(),
 
       /* Functional */
+      new Apply(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
@@ -223,28 +225,12 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
 
     // simple map
-    LIBRARY_PROCEDURES.add("(define (map proc lis)" +
-                           "   (cond ((null? lis) '())" +
-                           "         ((pair? lis) (cons (proc (car lis))" +
-                           "                            (map proc (cdr lis))))" +
-                           "          (else (error \"Not a proper list!\"))))");
-
-    // SRFI-1 Reference Map implementation
-//    LIBRARY_PROCEDURES.add("(define map map-in-order)");
-//    LIBRARY_PROCEDURES.add("(define (map f lis1 . lists)" +
-//              "  (if (pair? lists)" +
-//              "      (let recur ((lists (cons lis1 lists)))" +
-//              "        (receive (cars cdrs) (%cars+cdrs lists)" +
-//              "          (if (pair? cars)" +
-//              "              (let ((x (apply f cars)))" +       // ; Do head first
-//              "                (cons x (recur cdrs))) '())))" + // ; then tail
-//                      ;; Fast path. +
-//              "      (let recur ((lis lis1))" +
-//              "        (if (null? lis) lis" +
-//              "            (let ((tail (cdr lis))" +
-//              "                  (x (f (car lis))))" +     // ; Do head first,
-//              "              (cons x (recur tail)))))))"); // ; then tail
-
+    // FIXME Implement variadic map proc
+//    LIBRARY_PROCEDURES.add("(define (map proc lis)" +
+//                           "   (cond ((null? lis) '())" +
+//                           "         ((pair? lis) (cons (proc (car lis))" +
+//                           "                            (map proc (cdr lis))))" +
+//                           "          (else (error \"Not a proper list!\"))))");
   }
 
 
