@@ -1,5 +1,7 @@
 *Scheme in Java*
 
+[[./screenshot.png]]
+
 *Disclaimer*
 
 This is a hobby project and work is still in progress.
