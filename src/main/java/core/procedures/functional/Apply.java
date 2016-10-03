@@ -1,6 +1,7 @@
-package core.procedures;
+package core.procedures.functional;
 
 import core.exceptions.ArityException;
+import core.procedures.AFn;
 import core.procedures.cons.Append;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;

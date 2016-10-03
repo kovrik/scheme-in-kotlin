@@ -1,6 +1,8 @@
-package core.procedures;
+package core.procedures.functional;
 
 import core.exceptions.ArityException;
+import core.procedures.AFn;
+import core.procedures.IFn;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.Quote;
@@ -9,17 +11,17 @@ import core.scm.specialforms.TailCall;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapProc extends AFn {
+public class ForEach extends AFn {
 
   @Override
   public String getName() {
-    return "map";
+    return "for-each";
   }
 
   @Override
   public Object invoke(Object... args) {
     if (args.length < 2) {
-      throw new ArityException(args.length, "map");
+      throw new ArityException(args.length, "for-each");
     }
     Object fn = args[0];
     if (!(fn instanceof IFn)) {
@@ -52,6 +54,9 @@ public class MapProc extends AFn {
       }
     }
     result.addAll(lists);
+
+    /* Void results */
+    result = SCMCons.list(Void.INSTANCE, result);
     return new TailCall(result, null);
   }
 }

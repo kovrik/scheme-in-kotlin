@@ -5,6 +5,7 @@ import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
 import core.scm.SCMSymbol;
+import core.scm.SCMUnspecified;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -152,6 +153,7 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals(list(1L, 4L), eval("(map car '((1 2 3) (4 5 6)))", env));
     assertEquals(list(3L, 2L, 4L), eval("(map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") ))", env));
     assertEquals(list(12L, 15L, 16L), eval("(map * '(2 3 4) '(6 5 4))", env));
+    assertEquals(list(0L, 1L, 2L), eval("(map length '(() (a) (a b)))", env));
   }
 
   @Test
@@ -162,5 +164,10 @@ public class EvaluatorTest extends AbstractTest {
 
     eval("(define (sqr x) (* x x))", env);
     assertEquals(385L, eval("(apply + (map sqr '(1 2 3 4 5 6 7 8 9 10)))", env));
+  }
+
+  @Test
+  public void testForEach() {
+    assertEquals(SCMUnspecified.UNSPECIFIED, eval("(for-each length '(() (a) (a b)))", env));
   }
 }

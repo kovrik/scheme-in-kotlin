@@ -1,8 +1,9 @@
 package core.environment;
 
 import core.procedures.AFn;
-import core.procedures.Apply;
-import core.procedures.MapProc;
+import core.procedures.functional.Apply;
+import core.procedures.functional.ForEach;
+import core.procedures.functional.MapProc;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
@@ -10,6 +11,7 @@ import core.procedures.delayed.Force;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
+import core.procedures.functional.Void;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.procedures.lists.AssocProc;
@@ -169,6 +171,8 @@ public final class DefaultEnvironment extends Environment {
       /* Functional */
       new Apply(),
       new MapProc(),
+      new ForEach(),
+      new Void(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
