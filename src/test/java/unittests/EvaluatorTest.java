@@ -146,6 +146,12 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testEvalMap() {
     assertEquals(list(2L, 3L, 4L, 5L, 6L), eval("(map (lambda (n) (+ n 1)) '(1 2 3 4 5))", env));
+    assertEquals(list(11L, 102L, 1003L, 10004L),
+        eval("(map (lambda (number1 number2) (+ number1 number2)) '(1 2 3 4) '(10 100 1000 10000))", env));
+
+    assertEquals(list(1L, 4L), eval("(map car '((1 2 3) (4 5 6)))", env));
+    assertEquals(list(3L, 2L, 4L), eval("(map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") ))", env));
+    assertEquals(list(12L, 15L, 16L), eval("(map * '(2 3 4) '(6 5 4))", env));
   }
 
   @Test
@@ -154,5 +160,7 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals(list(list(new SCMSymbol("a"), 1L), list(new SCMSymbol("b"), 2L), list(new SCMSymbol("c"), 3L)),
                  eval("(apply map list '((a b c) (1 2 3)))", env));
 
+    eval("(define (sqr x) (* x x))", env);
+    assertEquals(385L, eval("(apply + (map sqr '(1 2 3 4 5 6 7 8 9 10)))", env));
   }
 }
