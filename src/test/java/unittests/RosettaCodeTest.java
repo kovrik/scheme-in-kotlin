@@ -6,6 +6,7 @@ import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -306,5 +307,22 @@ public class RosettaCodeTest extends AbstractTest {
     assertEquals(quine, baos.toString().trim());
 
     System.setOut(old);
+  }
+
+  @Test
+  @Ignore
+  // FIXME
+  public void testManOrBoy() {
+    String A = "(define (A k x1 x2 x3 x4 x5)" +
+               "  (define (B)" +
+               "    (set! k (- k 1))" +
+               "    (A k B x1 x2 x3 x4))" +
+               "  (if (<= k 0)" +
+               "      (+ (x4) (x5))" +
+               "    (B)))";
+    eval(A, env);
+
+    String code = "(A 10 (lambda () 1) (lambda () -1) (lambda () -1) (lambda () 1) (lambda () 0))";
+    assertEquals(-67L, eval(code, env));
   }
 }

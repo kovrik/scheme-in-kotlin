@@ -28,7 +28,6 @@ CLOSED: [2016-08-23 Tue 20:37]
 CLOSED: [2016-08-25 Thu 08:14]
 ** TODO [#A] Expt with fractional power for BigDecimals
 ** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
-** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 20:45]
@@ -69,6 +68,8 @@ CLOSED: [2016-08-24 Wed 20:56]
 **** TODO call-with-values — tail call to the values-receiving procedure
 **** TODO eval — tail call to evaluate the form
 **** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
+** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
+** TODO [#B] Read and execute sources from files
 ** DONE [#C] Read multiple forms on one line (not the first one only)
 CLOSED: [2016-09-03 Sat 15:13]
 ** TODO [#A] Make modifiable SCMString
