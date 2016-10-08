@@ -41,11 +41,19 @@ public class Define implements ISpecialForm, ISCMClass {
        * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
        *              |   0   | 1 definition           | 3 body      |
        */
+      // TODO Cleanup
       /* Get procedure's name */
-      SCMSymbol name = (SCMSymbol)((SCMCons)id).pop();
+      SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
       /* Evaluate lambda */
-      expression.set(0, Lambda.LAMBDA);
-      SCMProcedure lambda = Lambda.LAMBDA.eval(expression, env, evaluator);
+      SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
+      /* Args */
+      SCMCons args = SCMCons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
+      args.setIsList(SCMCons.isList(expression.get(1)));
+      l.add((Object)args);
+      /* Body */
+      l.addAll(expression.subList(2, expression.size()));
+
+      SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
       /* Set name */
       lambda.setName(name.getValue());
       // TODO Optimize

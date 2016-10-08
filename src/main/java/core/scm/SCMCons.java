@@ -52,7 +52,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return NIL.equals(this);
   }
 
-  public void setList(boolean list) {
+  public void setIsList(boolean list) {
     isList = list;
   }
 
@@ -82,10 +82,10 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     /* Add all elements only if it is a list (not cons) */
     if (isList(cdr)) {
       /* cons becomes a list */
-      setList(true);
+      setIsList(true);
       addAll((List)cdr);
     } else {
-      setList(false);
+      setIsList(false);
       add((E)cdr);
     }
   }
@@ -112,7 +112,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   public static <E> SCMCons<E> list() {
     SCMCons<E> list = new SCMCons<E>();
-    list.setList(true);
+    list.setIsList(true);
     return list;
   }
 

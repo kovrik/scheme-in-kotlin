@@ -37,7 +37,7 @@ public class SetCdr extends AFn {
     } else {
       list.add(o);
       if (list instanceof SCMCons) {
-        ((SCMCons)list).setList(false);
+        ((SCMCons)list).setIsList(false);
       }
     }
     return UNSPECIFIED;
