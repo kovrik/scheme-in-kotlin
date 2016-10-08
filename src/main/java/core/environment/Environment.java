@@ -34,9 +34,7 @@ public class Environment implements IEnvironment, ISCMClass {
   @Override
   public Object find(Object key) {
     Object value = context.get(key);
-//    System.out.println("[ENV.FIND: " + key + "]");
     if (value == null) {
-//      System.out.println("[ENV.FIND: MISS!]");
       if (outer == null) {
         throw new IllegalArgumentException("Unbound variable: " + key);
       }
@@ -82,5 +80,15 @@ public class Environment implements IEnvironment, ISCMClass {
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.ENVIRONMENT;
+  }
+
+  @Override
+  public IEnvironment getOuter() {
+    return outer;
+  }
+
+  @Override
+  public String toString() {
+    return  (outer == null) ? "GLOBAL" : "" + super.toString();
   }
 }

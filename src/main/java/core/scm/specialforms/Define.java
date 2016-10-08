@@ -29,6 +29,12 @@ public class Define implements ISpecialForm, ISCMClass {
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     Object id = expression.get(1);
+
+    // TODO Check if this is an Internal Definition (has non-null outer environment)
+    if (env.getOuter() != null) {
+      // TODO Check that DEFINES are top-only forms!!!
+    }
+
     if (id instanceof SCMSymbol) {
       /* Variable definition */
       if (expression.size() > 3) {
@@ -45,10 +51,11 @@ public class Define implements ISpecialForm, ISCMClass {
       /* Get procedure's name */
       SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
       /* Evaluate lambda */
-      SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
       /* Args */
       SCMCons args = SCMCons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
       args.setIsList(SCMCons.isList(expression.get(1)));
+
+      SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
       l.add((Object)args);
       /* Body */
       l.addAll(expression.subList(2, expression.size()));

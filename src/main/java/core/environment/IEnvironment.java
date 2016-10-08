@@ -25,4 +25,6 @@ public interface IEnvironment {
 
   /* Return a list of pre-defined (standard) library procedures in form of strings (Scheme expressions) */
   List<String> getLibraryProcedures();
+
+  IEnvironment getOuter();
 }
