@@ -65,7 +65,7 @@ public class Define implements ISpecialForm, ISCMClass {
       lambda.setName(name.getValue());
 
       // TODO Fix (inline pure proc calls only and at call site only) and optimize
-      replaceSelfCalls(lambda);
+      // replaceSelfCalls(lambda);
       env.put(name, lambda);
     } else {
       throw new IllegalSyntaxException("define: bad `define` in form: " + expression);
@@ -83,26 +83,26 @@ public class Define implements ISpecialForm, ISCMClass {
     LinkedList<List> queue = new LinkedList<List>();
     /* Queue will hold body and all nested lists (if any) */
     queue.add(lambda.getBody());
-    /* Counter is used to track if current element is the first element of a List,
+    /* `first` flag is used to track if current element is the first element of a List,
      * hence assuming it is a proc call site, therefore we can inline it.
      * Otherwise, it is just a symbol, do not inline it.
      * See: Knuth's Man or Boy test */
-    int counter = -1;
     while (!queue.isEmpty()) {
       List list = queue.remove();
       /* Using ListIterator because it allows element modification */
+      boolean first = true;
       ListIterator listIterator = list.listIterator();
       while (listIterator.hasNext()) {
         Object next = listIterator.next();
-        counter = counter + 1;
         if (next instanceof List) {
           /* Add nested list to the queue */
           queue.add((List) next);
-          counter = -1;
+          first = true;
         } else {
-          if (counter == 0) {
+          if (first) {
+            first = false;
             if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
-            /* Replace symbol with procedure (self-call) */
+              /* Replace symbol with procedure (self-call) */
               listIterator.set(lambda);
             }
           }

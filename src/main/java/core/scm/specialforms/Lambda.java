@@ -74,6 +74,7 @@ public class Lambda implements ISpecialForm, ISCMClass {
     return SCMClass.SPECIALFORM;
   }
 
+  // TODO Check if it works properly. See Define.replaceSelfCalls()
   private static void inline(List<Object> body, IEnvironment env) {
     LinkedList<List> queue = new LinkedList<List>();
     /* Queue will hold body and all nested lists (if any) */
