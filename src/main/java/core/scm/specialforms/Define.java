@@ -65,28 +65,28 @@ public class Define implements ISpecialForm, ISCMClass {
     return UNSPECIFIED;
   }
 
-  /* TODO Generify */
+  /* TODO Fix (not always inline, only if lambda is pure!) and generify */
   private static void replaceSelfCalls(SCMProcedure lambda) {
-    LinkedList<List> queue = new LinkedList<List>();
-    /* Queue will hold body and all nested lists (if any) */
-    queue.add(lambda.getBody());
-    while (!queue.isEmpty()) {
-      List list = queue.remove();
-      /* Using ListIterator because it allows element modification */
-      ListIterator listIterator = list.listIterator();
-      while (listIterator.hasNext()) {
-        Object next = listIterator.next();
-        if (next instanceof List) {
-          /* Add nested list to the queue */
-          queue.add((List) next);
-        } else {
-          if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
-            /* Replace symbol with procedure (self-call) */
-            listIterator.set(lambda);
-          }
-        }
-      }
-    }
+//    LinkedList<List> queue = new LinkedList<List>();
+//    /* Queue will hold body and all nested lists (if any) */
+//    queue.add(lambda.getBody());
+//    while (!queue.isEmpty()) {
+//      List list = queue.remove();
+//      /* Using ListIterator because it allows element modification */
+//      ListIterator listIterator = list.listIterator();
+//      while (listIterator.hasNext()) {
+//        Object next = listIterator.next();
+//        if (next instanceof List) {
+//          /* Add nested list to the queue */
+//          queue.add((List) next);
+//        } else {
+//          if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
+//            /* Replace symbol with procedure (self-call) */
+//            listIterator.set(lambda);
+//          }
+//        }
+//      }
+//    }
   }
 
   public SCMSymbol symbol() {

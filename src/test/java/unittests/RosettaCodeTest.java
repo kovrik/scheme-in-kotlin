@@ -6,7 +6,6 @@ import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -310,8 +309,6 @@ public class RosettaCodeTest extends AbstractTest {
   }
 
   @Test
-  @Ignore
-  // FIXME
   public void testManOrBoy() {
     String A = "(define (A k x1 x2 x3 x4 x5)" +
                "  (define (B)" +
