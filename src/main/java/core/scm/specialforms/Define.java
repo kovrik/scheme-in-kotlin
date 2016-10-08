@@ -56,7 +56,8 @@ public class Define implements ISpecialForm, ISCMClass {
       SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
       /* Set name */
       lambda.setName(name.getValue());
-      // TODO Optimize
+
+      // TODO Fix (inline pure proc calls only and at call site only) and optimize
       replaceSelfCalls(lambda);
       env.put(name, lambda);
     } else {
@@ -65,28 +66,42 @@ public class Define implements ISpecialForm, ISCMClass {
     return UNSPECIFIED;
   }
 
-  /* TODO Fix (not always inline, only if lambda is pure!) and generify */
+  /* TODO Fixme:
+   * - not sure if works in all cases
+   * - generify
+   * - inline pure functions only?
+   * - inline at call sites only?
+   */
   private static void replaceSelfCalls(SCMProcedure lambda) {
-//    LinkedList<List> queue = new LinkedList<List>();
-//    /* Queue will hold body and all nested lists (if any) */
-//    queue.add(lambda.getBody());
-//    while (!queue.isEmpty()) {
-//      List list = queue.remove();
-//      /* Using ListIterator because it allows element modification */
-//      ListIterator listIterator = list.listIterator();
-//      while (listIterator.hasNext()) {
-//        Object next = listIterator.next();
-//        if (next instanceof List) {
-//          /* Add nested list to the queue */
-//          queue.add((List) next);
-//        } else {
-//          if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
-//            /* Replace symbol with procedure (self-call) */
-//            listIterator.set(lambda);
-//          }
-//        }
-//      }
-//    }
+    LinkedList<List> queue = new LinkedList<List>();
+    /* Queue will hold body and all nested lists (if any) */
+    queue.add(lambda.getBody());
+    /* Counter is used to track if current element is the first element of a List,
+     * hence assuming it is a proc call site, therefore we can inline it.
+     * Otherwise, it is just a symbol, do not inline it.
+     * See: Knuth's Man or Boy test */
+    int counter = -1;
+    while (!queue.isEmpty()) {
+      List list = queue.remove();
+      /* Using ListIterator because it allows element modification */
+      ListIterator listIterator = list.listIterator();
+      while (listIterator.hasNext()) {
+        Object next = listIterator.next();
+        counter = counter + 1;
+        if (next instanceof List) {
+          /* Add nested list to the queue */
+          queue.add((List) next);
+          counter = -1;
+        } else {
+          if (counter == 0) {
+            if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
+            /* Replace symbol with procedure (self-call) */
+              listIterator.set(lambda);
+            }
+          }
+        }
+      }
+    }
   }
 
   public SCMSymbol symbol() {
