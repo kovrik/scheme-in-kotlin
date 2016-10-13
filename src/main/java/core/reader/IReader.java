@@ -1,5 +1,6 @@
 package core.reader;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface IReader {
   /* Reads and returns the first S-expression
    * (used in Tests) */
   Object readFirst(String string);
+
+  /* Read all expressions from a file until EOF */
+  List<Object> read(File file);
 }

@@ -1,6 +1,7 @@
 package core.procedures.functional;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.cons.Append;
 import core.scm.SCMCons;
@@ -33,7 +34,7 @@ public class Apply extends AFn {
 
     Object last = args[args.length - 1];
     if (!(last instanceof List)) {
-      throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not a List: %s", getName(), last));
+      throw new WrongTypeException("List", last);
     }
     for (Object o : (List) last) {
       sexp.add((Object)SCMCons.list(Quote.QUOTE, o));

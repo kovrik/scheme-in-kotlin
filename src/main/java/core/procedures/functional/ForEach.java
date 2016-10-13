@@ -1,6 +1,7 @@
 package core.procedures.functional;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.scm.SCMCons;
@@ -25,7 +26,7 @@ public class ForEach extends AFn {
     }
     Object fn = args[0];
     if (!(fn instanceof IFn)) {
-      throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not a Procedure: %s", getName(), fn));
+      throw new WrongTypeException("Procedure", fn);
     }
 
     SCMCons<Object> result = SCMCons.list(new SCMSymbol("list"));
@@ -34,14 +35,14 @@ public class ForEach extends AFn {
     /* Check lists and their sizes */
     for (int i = 1; i < args.length; i++) {
       if (!(args[i] instanceof List)) {
-        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not a List: %s", getName(), args[i]));
+        throw new WrongTypeException("List", args[i]);
       }
       List l = (List)args[i];
       if (size == -1) {
         size = l.size();
       }
       if (l.size() != size) {
-        throw new IllegalArgumentException(String.format("Error: (%s) all lists must be of the same size", getName()));
+        throw new IllegalArgumentException(String.format("%s: all lists must be of the same size", getName()));
       }
     }
 

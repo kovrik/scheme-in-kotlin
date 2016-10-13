@@ -85,16 +85,13 @@ public class Reader implements IReader {
 
   @Override
   public Object readFirst(String string) {
-    PushbackReader reader = new PushbackReader(new StringReader(string), 2);
-    try {
+    try (PushbackReader reader = new PushbackReader(new StringReader(string), 2)) {
       Object token = nextToken(reader);
       if (DOT.equals(token)) {
         throw new IllegalSyntaxException("Illegal use of '.'");
       }
       return token;
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
+    } catch (IOException | ParseException e) {
       e.printStackTrace();
     }
     return null;
@@ -102,8 +99,7 @@ public class Reader implements IReader {
 
   @Override
   public List<Object> read(String string) {
-    PushbackReader reader = new PushbackReader(new StringReader(string), 2);
-    try {
+    try (PushbackReader reader = new PushbackReader(new StringReader(string), 2)) {
       List<Object> tokens = new ArrayList<>();
       Object token;
       while ((token = nextToken(reader)) != null) {
@@ -114,9 +110,7 @@ public class Reader implements IReader {
         tokens.add(token);
       }
       return tokens;
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
+    } catch (IOException | ParseException e) {
       e.printStackTrace();
     }
     return null;
@@ -138,12 +132,38 @@ public class Reader implements IReader {
         }
       }
       return tokens;
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
+    } catch (IOException | ParseException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  // TODO cleanup
+  @Override
+  public List<Object> read(File file) {
+    List<Object> tokens = new ArrayList<>();
+    try (PushbackReader reader = new PushbackReader(new BufferedReader(new FileReader(file)), 2)) {
+      Object token;
+      try {
+        int read;
+        while ((read = reader.read()) != -1) {
+          reader.unread(read);
+          token = nextToken(reader);
+          /* Read */
+          if (DOT.equals(token)) {
+            throw new IllegalSyntaxException("Illegal use of '.'");
+          }
+          if (token != null) {
+            tokens.add(token);
+          }
+        }
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return tokens;
   }
 
   private static String readUntilDelimiter(PushbackReader reader) throws IOException {

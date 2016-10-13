@@ -13,6 +13,7 @@ import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
 import core.procedures.functional.Void;
 import core.procedures.io.Display;
+import core.procedures.io.Load;
 import core.procedures.io.Newline;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
@@ -134,6 +135,7 @@ public final class DefaultEnvironment extends Environment {
       /* IO */
       new Display(System.out),
       new Newline(System.out),
+      new Load(),
 
       /* Pairs */
       new Length(),

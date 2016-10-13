@@ -25,14 +25,13 @@ public class Define implements ISpecialForm, ISCMClass {
 
   private Define() {}
 
-  // TODO Check that internal definitions are at the beginning only!
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     Object id = expression.get(1);
 
     // TODO Check if this is an Internal Definition (has non-null outer environment)
     if (env.getOuter() != null) {
-      // TODO Check that DEFINES are top-only forms!!!
+      // TODO Check that internal DEFINES are top-only forms!!!
     }
 
     if (id instanceof SCMSymbol) {
