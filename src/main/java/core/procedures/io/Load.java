@@ -5,6 +5,8 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.reader.IReader;
 import core.reader.Reader;
+import core.scm.SCMCons;
+import core.scm.specialforms.Begin;
 import core.scm.specialforms.TailCall;
 
 import java.io.File;
@@ -26,8 +28,9 @@ public class Load extends AFn {
     }
     if (args[0] instanceof String) {
       File file = new File((String) args[0]);
-      // FIXME
-      List<Object> sexps = reader.read(file);
+      // TODO Is BEGIN Ok here?
+      List<Object> sexps = SCMCons.list(Begin.BEGIN);
+      sexps.addAll(reader.read(file));
       return new TailCall(sexps, null);
     }
     throw new WrongTypeException("String", args[0]);
