@@ -528,8 +528,9 @@ CLOSED: [2016-05-28 Sat 20:15]
 **** TODO call-with-output-file
 **** TODO with-input-from-file(optional)
 **** TODO with-output-to-file(optional)
-*** TODO System interface [0/3]
-**** TODO load (optional)
+*** TODO System interface [1/3]
+**** DONE load (optional)
+CLOSED: [2016-10-30 Sun 09:18]
 **** TODO transcript-on (optional)
 **** TODO transcript-off (optional)
 *** DONE Delayed evaluation [1/1]

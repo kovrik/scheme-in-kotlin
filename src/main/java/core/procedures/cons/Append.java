@@ -2,6 +2,7 @@ package core.procedures.cons;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.procedures.predicates.IsNull;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 

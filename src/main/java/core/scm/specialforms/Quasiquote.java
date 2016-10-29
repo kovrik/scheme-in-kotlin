@@ -4,6 +4,8 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.cons.*;
+import core.procedures.predicates.IsList;
+import core.procedures.predicates.IsNull;
 import core.procedures.vectors.ListToVector;
 import core.scm.*;
 

@@ -1,4 +1,4 @@
-package core.procedures.cons;
+package core.procedures.predicates;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;

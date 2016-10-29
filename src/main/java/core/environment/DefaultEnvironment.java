@@ -1,9 +1,6 @@
 package core.environment;
 
 import core.procedures.AFn;
-import core.procedures.functional.Apply;
-import core.procedures.functional.ForEach;
-import core.procedures.functional.MapProc;
 import core.procedures.characters.CharComparison;
 import core.procedures.characters.CharProc;
 import core.procedures.cons.*;
@@ -11,6 +8,9 @@ import core.procedures.delayed.Force;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
+import core.procedures.functional.Apply;
+import core.procedures.functional.ForEach;
+import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
 import core.procedures.io.Display;
 import core.procedures.io.Load;
@@ -19,6 +19,9 @@ import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
+import core.procedures.predicates.IsList;
+import core.procedures.predicates.IsNull;
+import core.procedures.predicates.IsPair;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -26,11 +29,13 @@ import core.procedures.system.ClassOf;
 import core.procedures.system.ErrorProc;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
-import core.procedures.vectors.Vector;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
 import static core.scm.specialforms.Delay.DELAY;
@@ -145,7 +150,6 @@ public final class DefaultEnvironment extends Environment {
       new AssocProc("assoc", new Equal()),
       new AssocProc("assq", new Eq()),
       new AssocProc("assv", new Eqv()),
-      new IsList(),
       new ConsProc(),
       new Car(),
       new Cdr(),
@@ -175,6 +179,11 @@ public final class DefaultEnvironment extends Environment {
       new MapProc(),
       new ForEach(),
       new Void(),
+
+      /* Predicates */
+      new IsNull(),
+      new IsPair(),
+      new IsList(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
@@ -218,8 +227,6 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (boolean?   o) (eq? (class-of #t) (class-of o)))");
     LIBRARY_PROCEDURES.add("(define (procedure? o) (eq? (class-of (lambda () n)) (class-of o)))");
     LIBRARY_PROCEDURES.add("(define (number?    o) (if  (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))");
-    LIBRARY_PROCEDURES.add("(define (null?      o) (eq? (class-of '()) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (pair?      o) (eq? (class-of '(1 . 2)) (class-of o)))");
     LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (zero? n) (= n 0))");
     LIBRARY_PROCEDURES.add("(define (integer? x) (= x (round x)))");

@@ -1,8 +1,7 @@
-package core.procedures.cons;
+package core.procedures.predicates;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.ICons;
 import core.scm.SCMBoolean;
 
 import java.util.List;
@@ -25,9 +24,6 @@ public class IsNull extends AFn {
   public static SCMBoolean isNull(Object object) {
     if (object == null) {
       return SCMBoolean.TRUE;
-    }
-    if (object instanceof ICons) {
-      return SCMBoolean.toSCMBoolean(((ICons)object).isNull());
     }
     if (object instanceof List) {
       return SCMBoolean.toSCMBoolean(((List)object).isEmpty());

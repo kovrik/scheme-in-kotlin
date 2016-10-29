@@ -3,7 +3,7 @@ package core.procedures.vectors;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.cons.IsList;
+import core.procedures.predicates.IsList;
 import core.scm.SCMVector;
 
 import java.util.List;
