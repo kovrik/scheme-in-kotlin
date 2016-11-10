@@ -19,9 +19,7 @@ import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
-import core.procedures.predicates.IsList;
-import core.procedures.predicates.IsNull;
-import core.procedures.predicates.IsPair;
+import core.procedures.predicates.*;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -181,9 +179,17 @@ public final class DefaultEnvironment extends Environment {
       new Void(),
 
       /* Predicates */
+      // TODO Generify
       new IsNull(),
       new IsPair(),
       new IsList(),
+      new IsPromise(),
+      new IsChar(),
+      new IsString(),
+      new IsVector(),
+      new IsSymbol(),
+      new IsBoolean(),
+      new IsProcedure(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
@@ -219,14 +225,8 @@ public final class DefaultEnvironment extends Environment {
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
-    LIBRARY_PROCEDURES.add("(define (promise?   o) (eq? (class-of (delay 1)) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (char?      o) (eq? (class-of #\\A) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (string?    o) (eq? (class-of \"str\") (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (vector?    o) (eq? (class-of #()) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (symbol?    o) (eq? (class-of 'sym) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (boolean?   o) (eq? (class-of #t) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (procedure? o) (eq? (class-of (lambda () n)) (class-of o)))");
-    LIBRARY_PROCEDURES.add("(define (number?    o) (if  (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))");
+    // TODO Implement as Fns
+    LIBRARY_PROCEDURES.add("(define (number? o) (if (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))");
     LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (zero? n) (= n 0))");
     LIBRARY_PROCEDURES.add("(define (integer? x) (= x (round x)))");
