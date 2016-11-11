@@ -14,7 +14,7 @@ Also, I'm trying to make code simple, readable and easily understandable.
 
 See TODO list for things already implementeted (and not yet).
 
-*Known issues*
+*Known issues/Not implemented yet*
 
 1. Numerical Tower is not implemented
 2. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
