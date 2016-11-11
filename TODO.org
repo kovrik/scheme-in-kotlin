@@ -318,11 +318,12 @@ CLOSED: [2016-08-13 Sat 21:03]
 CLOSED: [2016-08-13 Sat 21:03]
 ***** DONE string->number
 CLOSED: [2016-08-13 Sat 21:03]
-**** TODO Type predicates [2/5]
+**** TODO Type predicates [3/5]
 ***** DONE integer?
 CLOSED: [2016-06-17 Fri 18:07]
 ***** TODO rational?
-***** TODO real?
+***** DONE real?
+CLOSED: [2016-11-11 Fri 22:41]
 ***** TODO complex?
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]

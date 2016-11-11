@@ -193,6 +193,7 @@ public final class DefaultEnvironment extends Environment {
       new IsBoolean(),
       new IsProcedure(),
       new IsNumber(),
+      new IsReal(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
