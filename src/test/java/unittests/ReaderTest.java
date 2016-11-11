@@ -88,7 +88,7 @@ public class ReaderTest {
   public void testReadStrings() {
     assertEquals("1", reader.readFirst("\"1\""));
     assertEquals("Lorem ipsum", reader.readFirst("\"Lorem ipsum\""));
-    assertEquals("Lorem \"ipsum\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
+    assertEquals("Lorem \\\"ipsum\\\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
     assertEquals("", reader.readFirst("\"\""));
   }
 

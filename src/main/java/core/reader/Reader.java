@@ -395,7 +395,7 @@ public class Reader implements IReader {
           // TODO Unescape in `display` only?
           Character character = SPECIAL_CHARS.get(next);
           if (character != null) {
-            string.append(character);
+            string.append(c).append(character);
             continue;
           }
           string.append(c).append(next);

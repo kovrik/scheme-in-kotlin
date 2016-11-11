@@ -138,6 +138,7 @@ public final class DefaultEnvironment extends Environment {
       new Newline(System.out),
       new Load(),
       new Read(),
+      new Write(),
       new ReadChar(),
 
       /* Pairs */
