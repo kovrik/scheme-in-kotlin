@@ -190,6 +190,7 @@ public final class DefaultEnvironment extends Environment {
       new IsSymbol(),
       new IsBoolean(),
       new IsProcedure(),
+      new IsNumber(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
@@ -226,8 +227,6 @@ public final class DefaultEnvironment extends Environment {
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     // TODO Implement as Fns
-    LIBRARY_PROCEDURES.add("(define (number? o) (if (member (class-of o) (list (class-of 1) (class-of 1.5))) #t #f))");
-    LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (zero? n) (= n 0))");
     LIBRARY_PROCEDURES.add("(define (integer? x) (= x (round x)))");
     LIBRARY_PROCEDURES.add("(define (negative? n) (< n 0))");
@@ -235,8 +234,10 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
 
+    // FIXME Should work
 //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
 
+    LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
 
     // simple map
