@@ -506,14 +506,15 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [3/20]
+*** TODO Input/output [4/20]
 **** DONE display
 CLOSED: [2016-05-28 Sat 20:15]
 **** DONE newline
 **** DONE read
 CLOSED: [2016-11-11 Fri 21:15]
 **** TODO write
-**** TODO read-char
+**** DONE read-char
+CLOSED: [2016-11-11 Fri 21:23]
 **** TODO write-char
 **** TODO peek-char
 **** TODO char-ready?

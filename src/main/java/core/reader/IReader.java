@@ -20,4 +20,7 @@ public interface IReader {
 
   /* Read all expressions from a file until EOF */
   List<Object> read(File file);
+
+  /* Reads and returns the first char from stream */
+  char readChar(InputStream inputStream);
 }

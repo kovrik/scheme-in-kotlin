@@ -98,6 +98,16 @@ public class Reader implements IReader {
   }
 
   @Override
+  public char readChar(InputStream inputStream) {
+    try {
+      return (char)inputStream.read();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return 0;
+    }
+  }
+
+  @Override
   public List<Object> read(String string) {
     try (PushbackReader reader = new PushbackReader(new StringReader(string), 2)) {
       List<Object> tokens = new ArrayList<>();

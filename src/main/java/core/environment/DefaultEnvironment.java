@@ -12,10 +12,7 @@ import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
-import core.procedures.io.Display;
-import core.procedures.io.Load;
-import core.procedures.io.Newline;
-import core.procedures.io.Read;
+import core.procedures.io.*;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
@@ -141,6 +138,7 @@ public final class DefaultEnvironment extends Environment {
       new Newline(System.out),
       new Load(),
       new Read(),
+      new ReadChar(),
 
       /* Pairs */
       new Length(),
