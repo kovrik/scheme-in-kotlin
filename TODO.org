@@ -62,8 +62,9 @@ CLOSED: [2016-08-24 Wed 20:56]
 <case clause> ---> ((<datum>*) <tail sequence>)
 <tail body> ---> <definition>* <tail sequence>
 <tail sequence> ---> <expression>* <tail expression>
-*** TODO Procedures [0/5]
-**** TODO apply — tail call to given procedure
+*** TODO Procedures [1/5]
+**** DONE apply — tail call to given procedure
+CLOSED: [2016-11-11 Fri 22:32]
 **** TODO call-with-current-continuation — tail call to the procedure receiving the new continuation
 **** TODO call-with-values — tail call to the values-receiving procedure
 **** TODO eval — tail call to evaluate the form
