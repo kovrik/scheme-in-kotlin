@@ -140,6 +140,7 @@ public final class DefaultEnvironment extends Environment {
       new Read(),
       new Write(),
       new ReadChar(),
+      new WriteChar(),
 
       /* Pairs */
       new Length(),
