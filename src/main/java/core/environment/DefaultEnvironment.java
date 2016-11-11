@@ -15,6 +15,7 @@ import core.procedures.functional.Void;
 import core.procedures.io.Display;
 import core.procedures.io.Load;
 import core.procedures.io.Newline;
+import core.procedures.io.Read;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
@@ -139,6 +140,7 @@ public final class DefaultEnvironment extends Environment {
       new Display(System.out),
       new Newline(System.out),
       new Load(),
+      new Read(),
 
       /* Pairs */
       new Length(),
