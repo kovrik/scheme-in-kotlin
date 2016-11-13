@@ -18,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 
 public class RosettaCodeTest extends AbstractTest {
 
+  private static final String LS = System.getProperty("line.separator");
+
   @Test
   public void testEvalGroupNumbers() {
     String group = "(let loop ((numbers '(3 -2 1 6 -5))" +
@@ -205,20 +207,20 @@ public class RosettaCodeTest extends AbstractTest {
     eval(hanoi, tempEnv);
     eval("(hanoi 4 1 2 3)", tempEnv);
 
-    String solution = "Move disk from pole 1 to pole 3\n" +
-                      "Move disk from pole 1 to pole 2\n" +
-                      "Move disk from pole 3 to pole 2\n" +
-                      "Move disk from pole 1 to pole 3\n" +
-                      "Move disk from pole 2 to pole 1\n" +
-                      "Move disk from pole 2 to pole 3\n" +
-                      "Move disk from pole 1 to pole 3\n" +
-                      "Move disk from pole 1 to pole 2\n" +
-                      "Move disk from pole 3 to pole 2\n" +
-                      "Move disk from pole 3 to pole 1\n" +
-                      "Move disk from pole 2 to pole 1\n" +
-                      "Move disk from pole 3 to pole 2\n" +
-                      "Move disk from pole 1 to pole 3\n" +
-                      "Move disk from pole 1 to pole 2\n" +
+    String solution = "Move disk from pole 1 to pole 3" + LS +
+                      "Move disk from pole 1 to pole 2" + LS +
+                      "Move disk from pole 3 to pole 2" + LS +
+                      "Move disk from pole 1 to pole 3" + LS +
+                      "Move disk from pole 2 to pole 1" + LS +
+                      "Move disk from pole 2 to pole 3" + LS +
+                      "Move disk from pole 1 to pole 3" + LS +
+                      "Move disk from pole 1 to pole 2" + LS +
+                      "Move disk from pole 3 to pole 2" + LS +
+                      "Move disk from pole 3 to pole 1" + LS +
+                      "Move disk from pole 2 to pole 1" + LS +
+                      "Move disk from pole 3 to pole 2" + LS +
+                      "Move disk from pole 1 to pole 3" + LS +
+                      "Move disk from pole 1 to pole 2" + LS +
                       "Move disk from pole 3 to pole 2";
 
     assertEquals(solution, baos.toString().trim());
