@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Expt extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "expt";
   }

@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Abs extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "abs";
   }

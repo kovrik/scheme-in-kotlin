@@ -21,7 +21,6 @@ public class Apply extends AFn {
   @Override
   public Object invoke(Object... args) {
 
-    // TODO Implement directly(?), not via tail call + optimize
     if (args.length < 2) {
       throw new ArityException(args.length, "apply");
     }

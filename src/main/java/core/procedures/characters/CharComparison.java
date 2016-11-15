@@ -6,6 +6,11 @@ import core.scm.SCMBoolean;
 
 public class CharComparison extends AFn {
 
+  @Override
+  public boolean isPure() {
+    return true;
+  }
+
   private static class CharComparisonFn extends AFn {
     public Boolean invoke(Object arg1, Object arg2) {
       return (Boolean)super.invoke(arg1, arg2);

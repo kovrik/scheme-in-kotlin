@@ -10,6 +10,11 @@ import java.util.List;
 public class Eqv extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "eqv?";
   }

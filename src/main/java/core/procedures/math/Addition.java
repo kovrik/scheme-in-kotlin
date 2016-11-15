@@ -8,6 +8,11 @@ import java.math.BigDecimal;
 public class Addition extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "+";
   }

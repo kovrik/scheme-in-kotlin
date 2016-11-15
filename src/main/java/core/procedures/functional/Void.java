@@ -9,6 +9,11 @@ public class Void extends AFn {
   public static final Void INSTANCE = new Void();
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "void";
   }

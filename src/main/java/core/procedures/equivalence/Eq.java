@@ -9,6 +9,11 @@ import static core.scm.SCMCons.NIL;
 public class Eq extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "eq?";
   }

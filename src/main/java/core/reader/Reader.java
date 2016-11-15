@@ -507,8 +507,7 @@ public class Reader implements IReader {
     Object last = list.get(list.size() - 1);
     Object beforeLast = list.get(list.size() - 2);
     SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
-    /* Cons backwars */
-    // TODO Do not iterate the same list again?
+    /* Cons backwards */
     for (int n = list.size() - 3; n >= 0; n--) {
       cons = SCMCons.cons(list.get(n), cons);
     }

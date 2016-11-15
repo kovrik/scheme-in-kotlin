@@ -11,6 +11,11 @@ public class LCM extends AFn {
   private static final Abs ABS = new Abs();
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "lcm";
   }

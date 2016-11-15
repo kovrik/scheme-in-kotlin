@@ -9,6 +9,11 @@ import java.util.List;
 public class Length extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "length";
   }

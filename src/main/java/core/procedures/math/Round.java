@@ -10,6 +10,11 @@ import java.math.MathContext;
 public class Round extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "round";
   }

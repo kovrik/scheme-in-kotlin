@@ -560,8 +560,9 @@ CLOSED: [2016-05-15 Sun 22:32]
 **** DONE not
 CLOSED: [2016-04-21 Thu 22:05]
 
-** TODO Performance [0/0]
-*** TODO Optimize predicates (pair? promise? etc.)
+** TODO Performance [1/4]
+*** DONE Optimize predicates (pair? promise? etc.)
+CLOSED: [2016-11-12 Sat 21:42]
 *** TODO Evaluator.evlis() is slow
 *** TODO Environment.find() is slow + many redundant calls
 *** TODO Procedure inlining

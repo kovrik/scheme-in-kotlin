@@ -63,8 +63,11 @@ public class Define implements ISpecialForm, ISCMClass {
       /* Set name */
       lambda.setName(name.getValue());
 
-      // TODO Fix (inline pure proc calls only and at call site only) and optimize
-      // replaceSelfCalls(lambda);
+      /* TODO Fix (inline pure proc calls only and at call site only) and optimize
+       * See Knuth's Man Or Boy Test */
+      if (lambda.isPure()) {
+        replaceSelfCalls(lambda);
+      }
       env.put(name, lambda);
     } else {
       throw new IllegalSyntaxException("define: bad `define` in form: " + expression);

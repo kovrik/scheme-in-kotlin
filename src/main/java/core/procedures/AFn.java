@@ -6,6 +6,12 @@ import core.scm.SCMClass;
 
 public abstract class AFn implements IFn, ISCMClass {
 
+  /* Return true if function is pure (referentially transparent),
+   * false otherwise. */
+  public boolean isPure() {
+    return false;
+  }
+
   @Override
   public Object invoke(Object... args) {
     throw new ArityException(args.length, getName());

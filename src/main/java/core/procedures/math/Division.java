@@ -11,6 +11,11 @@ public class Division extends AFn {
   private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "/";
   }

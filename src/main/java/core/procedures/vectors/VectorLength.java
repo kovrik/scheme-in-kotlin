@@ -8,6 +8,11 @@ import core.scm.SCMVector;
 public class VectorLength extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "vector-length";
   }

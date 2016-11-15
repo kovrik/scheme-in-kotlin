@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Remainder extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "remainder";
   }

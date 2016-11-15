@@ -20,6 +20,11 @@ public class MemberProc extends AFn {
     this.predicate = predicate;
   }
 
+  @Override
+  public boolean isPure() {
+    return true;
+  }
+
   public Object invoke(Object arg1, Object arg2) {
     if (!(arg2 instanceof List)) {
       throw new IllegalArgumentException(

@@ -8,6 +8,11 @@ import core.scm.SCMVector;
 public class IsVector extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "vector?";
   }

@@ -311,7 +311,7 @@ public class RosettaCodeTest extends AbstractTest {
   }
 
   @Test
-  public void testManOrBoy() {
+  public void testManOrBoyKnuthsTest() {
     String A = "(define (A k x1 x2 x3 x4 x5)" +
                "  (define (B)" +
                "    (set! k (- k 1))" +

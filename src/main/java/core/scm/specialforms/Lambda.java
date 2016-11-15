@@ -38,8 +38,8 @@ public class Lambda implements ISpecialForm, ISCMClass {
     body.addAll(expression.subList(2, expression.size()));
 
     /* Optimization: replace some symbols with their values */
-    // FIXME Should inline symbols at call sites only!
-    // inline(body, env);
+    // FIXME Should inline symbols at call sites only! See Knuth's Man Or Boy Test
+//    inline(body, env);
 
     /* Check if args is a List or not */
     Object args = expression.get(1);

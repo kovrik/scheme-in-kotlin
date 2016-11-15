@@ -7,6 +7,11 @@ import core.procedures.AFn;
 public class StringRef extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "string-ref";
   }

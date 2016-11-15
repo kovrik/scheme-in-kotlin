@@ -12,6 +12,11 @@ public class Modulo extends AFn {
   private static final Remainder rem = new Remainder();
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "modulo";
   }

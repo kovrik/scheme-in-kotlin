@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 public class Subtraction extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "-";
   }

@@ -8,6 +8,11 @@ import core.scm.SCMSymbol;
 public class StringToSymbol extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "string->symbol";
   }

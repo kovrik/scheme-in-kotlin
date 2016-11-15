@@ -7,6 +7,11 @@ import core.scm.SCMBoolean;
 public class IsNumber extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "number?";
   }

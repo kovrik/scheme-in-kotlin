@@ -8,6 +8,11 @@ import core.scm.SCMPromise;
 public class IsPromise extends AFn {
 
   @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
   public String getName() {
     return "promise?";
   }
