@@ -2,6 +2,7 @@ package core.procedures.strings;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMString;
 
 public class StringProc extends AFn {
 
@@ -11,17 +12,17 @@ public class StringProc extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public SCMString invoke(Object... args) {
     if (args.length == 0) {
-      return "";
+      return new SCMString();
     }
-    StringBuilder sb = new StringBuilder(args.length);
+    SCMString string = new SCMString(args.length);
     for (Object c : args) {
       if (!(c instanceof Character)) {
         throw new WrongTypeException("Character", c);
       }
-      sb.append(c);
+      string.append(c);
     }
-    return sb.toString();
+    return string;
   }
 }

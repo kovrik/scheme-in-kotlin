@@ -3,6 +3,7 @@ package core.procedures.symbols;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMString;
 import core.scm.SCMSymbol;
 
 public class StringToSymbol extends AFn {
@@ -20,8 +21,8 @@ public class StringToSymbol extends AFn {
   @Override
   public SCMSymbol invoke(Object... args) {
     if (args != null && args.length == 1) {
-      if (args[0] instanceof String) {
-        return new SCMSymbol((String)args[0]);
+      if (args[0] instanceof String || args[0] instanceof SCMString) {
+        return new SCMSymbol(args[0].toString());
       }
       throw new WrongTypeException("String", args[0]);
     }

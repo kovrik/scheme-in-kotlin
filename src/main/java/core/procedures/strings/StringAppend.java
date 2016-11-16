@@ -2,6 +2,7 @@ package core.procedures.strings;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMString;
 
 public class StringAppend extends AFn {
 
@@ -17,14 +18,14 @@ public class StringAppend extends AFn {
     }
     if (args.length == 1) {
       Object o = args[0];
-      if (!(o instanceof String)) {
+      if (!(o instanceof String || o instanceof SCMString)) {
         throw new WrongTypeException("String", o);
       }
-      return (String)o;
+      return o.toString();
     }
     StringBuilder sb = new StringBuilder();
     for (Object str : args) {
-      if (!(str instanceof String)) {
+      if (!(str instanceof String || str instanceof SCMString)) {
         throw new WrongTypeException("String", str);
       }
       sb.append(str);

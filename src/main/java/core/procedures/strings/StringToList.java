@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMCons;
+import core.scm.SCMString;
 
 public class StringToList extends AFn {
 
@@ -18,11 +19,11 @@ public class StringToList extends AFn {
       throw new ArityException(args.length, 1, getName());
     }
     Object o = args[0];
-    if (!(o instanceof String)) {
+    if (!(o instanceof String || o instanceof SCMString)) {
       throw new WrongTypeException("String", o);
     }
     SCMCons<Character> list = SCMCons.list();
-    for (char c : ((String)o).toCharArray()) {
+    for (char c : (o.toString()).toCharArray()) {
       list.add(c);
     }
     return list;

@@ -3,6 +3,7 @@ package core.procedures.strings;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
+import core.scm.SCMString;
 
 public class StringComparison extends AFn {
 
@@ -20,70 +21,70 @@ public class StringComparison extends AFn {
   public static final StringComparison STRING_EQ = new StringComparison("string=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return arg1.equals(arg2);
+      return arg1.toString().equals(arg2.toString());
     }
   });
 
   public static final StringComparison STRING_EQ_CI = new StringComparison("string-ci=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).equalsIgnoreCase((String)arg2);
+      return (arg1.toString()).equalsIgnoreCase(arg2.toString());
     }
   });
 
   public static final StringComparison STRING_LE = new StringComparison("string<?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).compareTo(((String)arg2)) < 0;
+      return (arg1.toString()).compareTo((arg2.toString())) < 0;
     }
   });
 
   public static final StringComparison STRING_LE_CI = new StringComparison("string-ci<?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).toLowerCase().compareTo(((String)arg2).toLowerCase()) < 0;
+      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) < 0;
     }
   });
 
   public static final StringComparison STRING_LE_OR_EQ = new StringComparison("string<=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).compareTo(((String)arg2)) <= 0;
+      return (arg1.toString()).compareTo((arg2.toString())) <= 0;
     }
   });
 
   public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).toLowerCase().compareTo(((String)arg2).toLowerCase()) <= 0;
+      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) <= 0;
     }
   });
 
   public static final StringComparison STRING_GR = new StringComparison("string>?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).compareTo(((String)arg2)) > 0;
+      return (arg1.toString()).compareTo((arg2.toString())) > 0;
     }
   });
 
   public static final StringComparison STRING_GR_CI = new StringComparison("string-ci>?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).toLowerCase().compareTo(((String)arg2).toLowerCase()) > 0;
+      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) > 0;
     }
   });
 
   public static final StringComparison STRING_GR_OR_EQ = new StringComparison("string>=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).compareTo(((String)arg2)) >= 0;
+      return (arg1.toString()).compareTo((arg2.toString())) >= 0;
     }
   });
 
   public static final StringComparison STRING_GR_OR_EQ_CI = new StringComparison("string-ci>=?", new StringComparisonFn() {
     @Override
     public Boolean invoke(Object arg1, Object arg2) {
-      return ((String)arg1).toLowerCase().compareTo(((String)arg2).toLowerCase()) >= 0;
+      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) >= 0;
     }
   });
 
@@ -101,19 +102,19 @@ public class StringComparison extends AFn {
       return SCMBoolean.TRUE;
     }
     Object f = args[0];
-    if (!(f instanceof String)) {
+    if (!(f instanceof String || f instanceof SCMString)) {
       throw new WrongTypeException("String", f);
     }
-    String prev = (String)f;
+    String prev = f.toString();
     for (int i = 1; i < args.length; i++) {
       Object arg = args[i];
-      if (!(arg instanceof String)) {
+      if (!(arg instanceof String || arg instanceof SCMString)) {
         throw new WrongTypeException("String", arg);
       }
       if ((!predicate.invoke(prev, arg))) {
         return SCMBoolean.FALSE;
       }
-      prev = (String)arg;
+      prev = arg.toString();
     }
     return SCMBoolean.TRUE;
   }

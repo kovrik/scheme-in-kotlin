@@ -1,5 +1,6 @@
 package unittests;
 
+import core.scm.SCMString;
 import core.scm.SCMVector;
 import org.junit.Test;
 
@@ -66,7 +67,7 @@ public class VectorTest extends AbstractTest {
     assertEquals(1L, eval("(vector-ref (vector 1 2 3) 0)", env));
     assertEquals(2L, eval("(vector-ref (vector 1 2 3) 1)", env));
     assertEquals(3L, eval("(vector-ref (vector 1 2 3) 2)", env));
-    assertEquals("test", eval("(vector-ref (vector \"test\" 2 3) 0)", env));
+    assertEquals(new SCMString("test"), eval("(vector-ref (vector \"test\" 2 3) 0)", env));
 
     try {
       eval("(vector-ref (vector 1 2 3) -1)", env);
@@ -111,7 +112,7 @@ public class VectorTest extends AbstractTest {
     sexp = "(begin (define v (vector 1 2 3))" +
         "       (vector-set! v 2 \"test\")" +
         "       (vector-ref  v 2))";
-    assertEquals("test", eval(sexp, env));
+    assertEquals(new SCMString("test"), eval(sexp, env));
 
     sexp = "(begin (define v (vector 1 2 3))" +
         "       (vector-set! v -1 \"test\"))";
@@ -158,7 +159,7 @@ public class VectorTest extends AbstractTest {
   @Test
   public void testEvalVectorToList() {
 
-    assertEquals(list(1L, 2L, "test"), eval("(vector->list #(1 2 \"test\"))", env));
+    assertEquals(list(1L, 2L, new SCMString("test")), eval("(vector->list #(1 2 \"test\"))", env));
     assertEquals(list(), eval("(vector->list #())", env));
 
     try {

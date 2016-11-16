@@ -2,6 +2,7 @@ package core.procedures.io;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.scm.SCMString;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -30,7 +31,7 @@ public class Display extends AFn {
       throw new ArityException(args.length, 1, getName());
     }
     Object arg = args[0];
-    if (arg instanceof String) {
+    if ((arg instanceof String) || (arg instanceof SCMString)) {
       printStream.print(arg);
     } else {
       printStream.print(writer.toString(arg));

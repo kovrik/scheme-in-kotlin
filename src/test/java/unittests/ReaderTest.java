@@ -4,6 +4,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMBoolean;
+import core.scm.SCMString;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.Quasiquote;
@@ -86,10 +87,10 @@ public class ReaderTest {
 
   @Test
   public void testReadStrings() {
-    assertEquals("1", reader.readFirst("\"1\""));
-    assertEquals("Lorem ipsum", reader.readFirst("\"Lorem ipsum\""));
-    assertEquals("Lorem \\\"ipsum\\\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
-    assertEquals("", reader.readFirst("\"\""));
+    assertEquals(new SCMString("1"), reader.readFirst("\"1\""));
+    assertEquals(new SCMString("Lorem ipsum"), reader.readFirst("\"Lorem ipsum\""));
+    assertEquals(new SCMString("Lorem \\\"ipsum\\\" "), reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
+    assertEquals(new SCMString(""), reader.readFirst("\"\""));
   }
 
   @Test
@@ -97,7 +98,7 @@ public class ReaderTest {
     assertEquals(new SCMVector(), reader.readFirst("#()"));
     assertEquals(new SCMVector(0L), reader.readFirst("#(0)"));
     assertEquals(new SCMVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
-    assertEquals(new SCMVector(1L, "test", 3L), reader.readFirst("#(1 \"test\" 3)"));
+    assertEquals(new SCMVector(1L, new SCMString("test"), 3L), reader.readFirst("#(1 \"test\" 3)"));
     assertEquals(new SCMVector(1L, new SCMVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
   }
 
@@ -106,7 +107,7 @@ public class ReaderTest {
     assertEquals(list(), reader.readFirst("()"));
     assertEquals(list(0L), reader.readFirst("(0)"));
     assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
-    assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
+    assertEquals(list(1L, new SCMString("test"), 3L), reader.readFirst("(1 \"test\" 3)"));
     assertEquals(list(1L, new SCMVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
   }
@@ -122,14 +123,14 @@ public class ReaderTest {
   @Test
   public void testReadQuote() {
     assertEquals(list(s(Quote.QUOTE.toString()), 1L), reader.readFirst("'1"));
-    assertEquals(list(s(Quote.QUOTE.toString()), list(1L, "test")), reader.readFirst("'(1 \"test\")"));
+    assertEquals(list(s(Quote.QUOTE.toString()), list(1L, new SCMString("test"))), reader.readFirst("'(1 \"test\")"));
     assertEquals(list(s(Quote.QUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"));
   }
 
   @Test
   public void testReadQuasiquote() {
     assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.readFirst("`1"));
-    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(1L, "test")), reader.readFirst("`(1 \"test\")"));
+    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(1L, new SCMString("test"))), reader.readFirst("`(1 \"test\")"));
     assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"));
   }
 

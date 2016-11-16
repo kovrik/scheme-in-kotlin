@@ -5,6 +5,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.reader.parsers.Result;
 import core.scm.SCMBoolean;
+import core.scm.SCMString;
 import core.utils.NumberUtils;
 
 import java.text.ParseException;
@@ -26,11 +27,11 @@ public class StringToNumber extends AFn {
       throw new ArityException(args.length, getName());
     }
     Object o = args[0];
-    if (!(o instanceof String)) {
+    if (!(o instanceof String || o instanceof SCMString)) {
       throw new WrongTypeException("String", o);
     }
 
-    String number = (String)o;
+    String number = o.toString();
 
     /* Check if we should override optional radix */
     /* Read radix and/or exactness and a number */

@@ -2,6 +2,7 @@ package core.writer;
 
 import core.reader.Reader;
 import core.scm.SCMCons;
+import core.scm.SCMString;
 import core.utils.NumberUtils;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class Writer implements IWriter {
         }
       }
     }
-    if (o instanceof String) {
+    if ((o instanceof String) || (o instanceof SCMString)) {
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {

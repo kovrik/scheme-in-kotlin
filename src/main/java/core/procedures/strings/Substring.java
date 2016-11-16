@@ -3,6 +3,7 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMString;
 
 public class Substring extends AFn {
 
@@ -18,10 +19,10 @@ public class Substring extends AFn {
     }
 
     Object o = args[0];
-    if (!(o instanceof String)) {
+    if (!(o instanceof String || o instanceof SCMString)) {
       throw new WrongTypeException("String", o);
     }
-    String s = (String)o;
+    String s = o.toString();
 
     Object p = args[1];
     if (!(p instanceof Long)) {

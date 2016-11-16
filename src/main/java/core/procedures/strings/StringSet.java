@@ -3,6 +3,8 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMString;
+import core.scm.SCMUnspecified;
 
 public class StringSet extends AFn {
 
@@ -18,10 +20,10 @@ public class StringSet extends AFn {
     }
 
     Object o = args[0];
-    if (!(o instanceof String)) {
+    if (!(o instanceof SCMString)) {
       throw new WrongTypeException("String", o);
     }
-    String str = (String)o;
+    SCMString str = (SCMString)o;
 
     Object p = args[1];
     if (!(p instanceof Long)) {
@@ -35,11 +37,7 @@ public class StringSet extends AFn {
     if (!(ch instanceof Character)) {
       throw new WrongTypeException("Character", ch);
     }
-    Character character = (Character) ch;
-    String before = str.substring(0, pos.intValue());
-    String after = str.substring(pos.intValue() + 1, str.length());
-    return before + character + after;
-    // FIXME Modify String and return it instead of creating new one
-    // return SCMSpecialForm.UNSPECIFIED;
+    str.setCharAt(pos.intValue(), (Character) ch);
+    return SCMUnspecified.UNSPECIFIED;
   }
 }

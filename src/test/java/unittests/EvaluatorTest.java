@@ -4,6 +4,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
+import core.scm.SCMString;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class EvaluatorTest extends AbstractTest {
     eval("(define W2 (make-withdraw 100))", lenv);
     assertEquals(50L, eval("(W1 50)", lenv));
     assertEquals(30L, eval("(W2 70)", lenv));
-    assertEquals("Insufficient funds", eval("(W2 40)", lenv));
+    assertEquals(new SCMString("Insufficient funds"), eval("(W2 40)", lenv));
     assertEquals(10L, eval("(W1 40)", lenv));
 
     eval("(define a 999)", lenv);
