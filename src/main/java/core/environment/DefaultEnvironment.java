@@ -141,6 +141,11 @@ public final class DefaultEnvironment extends Environment {
       new Write(),
       new ReadChar(),
       new WriteChar(),
+      new CurrentInputPort(),
+      new CurrentOutputPort(),
+      new ClosePort(),
+      new CloseInputPort(),
+      new CloseOutputPort(),
 
       /* Pairs */
       new Length(),
@@ -194,6 +199,9 @@ public final class DefaultEnvironment extends Environment {
       new IsProcedure(),
       new IsNumber(),
       new IsReal(),
+      new IsPort(),
+      new IsInputPort(),
+      new IsOutputPort(),
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();

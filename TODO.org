@@ -178,7 +178,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [11/17]
+** TODO Standard procedures [12/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -480,7 +480,8 @@ CLOSED: [2016-07-17 Sun 12:03]
 CLOSED: [2016-07-10 Sun 12:08]
 **** DONE string->list
 CLOSED: [2016-07-10 Sun 17:53]
-*** TODO Identity predicates [8/9]
+*** DONE Identity predicates [8/9]
+CLOSED: [2016-11-17 Thu 10:05]
 **** DONE boolean?
 CLOSED: [2016-05-15 Sun 22:24]
 **** DONE pair?
@@ -495,7 +496,7 @@ CLOSED: [2016-05-15 Sun 22:21]
 CLOSED: [2016-05-15 Sun 22:21]
 **** DONE vector?
 CLOSED: [2016-05-15 Sun 22:21]
-**** TODO port?
+**** DONE port?
 **** DONE procedure?
 CLOSED: [2016-05-15 Sun 22:28]
 *** TODO Continuations [0/4]
@@ -509,7 +510,7 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [6/20]
+*** TODO Input/output [12/20]
 **** DONE display
 CLOSED: [2016-05-28 Sat 20:15]
 **** DONE newline
@@ -525,12 +526,20 @@ CLOSED: [2016-11-11 Fri 21:45]
 **** TODO char-ready?
 **** TODO eof-object? open-input-file
 **** TODO open-output-file
-**** TODO close-input-port
-**** TODO close-output-port
-**** TODO input-port?
-**** TODO output-port?
-**** TODO current-input-port
-**** TODO current-output-port
+**** DONE close-port
+CLOSED: [2016-11-17 Thu 10:22]
+**** DONE close-input-port
+CLOSED: [2016-11-17 Thu 10:22]
+**** DONE close-output-port
+CLOSED: [2016-11-17 Thu 10:22]
+**** DONE input-port?
+CLOSED: [2016-11-17 Thu 10:05]
+**** DONE output-port?
+CLOSED: [2016-11-17 Thu 10:06]
+**** DONE current-input-port
+CLOSED: [2016-11-17 Thu 10:15]
+**** DONE current-output-port
+CLOSED: [2016-11-17 Thu 10:15]
 **** TODO call-with-input-file
 **** TODO call-with-output-file
 **** TODO with-input-from-file(optional)
