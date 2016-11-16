@@ -1,4 +1,4 @@
-* TODO: [26/40]
+* TODO: [27/38]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -74,7 +74,8 @@ CLOSED: [2016-11-11 Fri 22:32]
 CLOSED: [2016-10-30 Sun 09:15]
 ** DONE [#C] Read multiple forms on one line (not the first one only)
 CLOSED: [2016-09-03 Sat 15:13]
-** TODO [#A] Make modifiable SCMString
+** DONE [#A] Make mutable SCMString
+CLOSED: [2016-11-16 Wed 20:09]
 ** TODO [#B] Make `append` proc iterative, not recursive
 ** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** TODO [#B] Macros

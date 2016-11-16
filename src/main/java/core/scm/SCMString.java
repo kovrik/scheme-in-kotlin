@@ -1,8 +1,16 @@
 package core.scm;
 
+/**
+ * Mutable Scheme String
+ *
+ * Java String is immutable, StringBuilder is mutable.
+ * But both classes are final and cannot be extended.
+ * This SCMString class holds a mutable StringBuilder instance
+ * and delegates it all string operations.
+ */
 public class SCMString implements ISCMClass {
 
-  private StringBuilder string;
+  private final StringBuilder string;
 
   public SCMString() {
     this.string = new StringBuilder();
@@ -60,6 +68,6 @@ public class SCMString implements ISCMClass {
 
   @Override
   public int hashCode() {
-    return string != null ? string.hashCode() : 0;
+    return string.hashCode();
   }
 }
