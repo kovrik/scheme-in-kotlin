@@ -18,9 +18,7 @@ See TODO list for things already implementeted (and not yet).
 
 1. Numerical Tower is not implemented
 2. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
-3. Strings are immutable
-4. Cons lists are not proper cons lists
-5. Not optimized
+3. Cons lists are not proper cons lists
    etc.
 
 *Useful links*
