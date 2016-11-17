@@ -60,7 +60,7 @@ public class SCMVector implements ISCMClass {
       Object e = vector[i];
       if (e == this) {
         sb.append("(this Vector)");
-      } else if (e instanceof String) {
+      } else if (e instanceof String || e instanceof SCMString) {
         sb.append('"').append(e).append('"');
       } else {
         sb.append(e);

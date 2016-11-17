@@ -24,7 +24,7 @@ import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
-  private static final SCMSymbol DOT = new SCMSymbol(".");
+  protected static final SCMSymbol DOT = new SCMSymbol(".");
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
   // <delimiter> --> <whitespace> | ( | ) | " | ;
@@ -83,56 +83,21 @@ public class Reader implements IReader {
     return "bodxBODX".indexOf(c) > -1;
   }
 
-  @Override
-  public Object readFirst(String string) {
-    try (PushbackReader reader = new PushbackReader(new StringReader(string), 2)) {
-      Object token = nextToken(reader);
-      if (DOT.equals(token)) {
-        throw new IllegalSyntaxException("Illegal use of '.'");
-      }
-      return token;
-    } catch (IOException | ParseException e) {
-      e.printStackTrace();
-    }
-    return null;
+  PushbackReader reader;
+
+  Reader() {
+  }
+
+  public Reader(InputStream inputStream) {
+    this.reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
   }
 
   @Override
-  public char readChar(InputStream inputStream) {
-    try {
-      return (char)inputStream.read();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return 0;
-    }
-  }
-
-  @Override
-  public List<Object> read(String string) {
-    try (PushbackReader reader = new PushbackReader(new StringReader(string), 2)) {
-      List<Object> tokens = new ArrayList<>();
-      Object token;
-      while ((token = nextToken(reader)) != null) {
-        /* Read */
-        if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("Illegal use of '.'");
-        }
-        tokens.add(token);
-      }
-      return tokens;
-    } catch (IOException | ParseException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  @Override
-  public List<Object> read(InputStream inputStream) {
-    PushbackReader reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
+  public List<Object> read() {
     try {
       List<Object> tokens = new ArrayList<>();
       Object token;
-      while (((token = nextToken(reader)) != null) || tokens.isEmpty()) {
+      while (((token = nextToken()) != null) || tokens.isEmpty()) {
         /* Read */
         if (DOT.equals(token)) {
           throw new IllegalSyntaxException("Illegal use of '.'");
@@ -148,35 +113,7 @@ public class Reader implements IReader {
     return null;
   }
 
-  // TODO cleanup
-  @Override
-  public List<Object> read(File file) {
-    List<Object> tokens = new ArrayList<>();
-    try (PushbackReader reader = new PushbackReader(new BufferedReader(new FileReader(file)), 2)) {
-      Object token;
-      try {
-        int read;
-        while ((read = reader.read()) != -1) {
-          reader.unread(read);
-          token = nextToken(reader);
-          /* Read */
-          if (DOT.equals(token)) {
-            throw new IllegalSyntaxException("Illegal use of '.'");
-          }
-          if (token != null) {
-            tokens.add(token);
-          }
-        }
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return tokens;
-  }
-
-  private String readUntilDelimiter(PushbackReader reader) throws IOException {
+  private String readUntilDelimiter() throws IOException {
     StringBuilder token = new StringBuilder();
     int i;
     while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
@@ -187,16 +124,16 @@ public class Reader implements IReader {
   }
 
   /* Skip all null tokens and return the first non-null */
-  private Object nextNonNullToken(PushbackReader reader) throws IOException, ParseException {
+  private Object nextNonNullToken() throws IOException, ParseException {
     Object token;
-    while ((token = nextToken(reader)) == null) {/* Read */};
+    while ((token = nextToken()) == null) {/* Read */};
     return token;
   }
 
   /**
    * Read next token
    */
-  private Object nextToken(PushbackReader reader) throws IOException, ParseException {
+  Object nextToken() throws IOException, ParseException {
     int i;
     if (!isValid(i = reader.read())) {
       return null;
@@ -207,29 +144,29 @@ public class Reader implements IReader {
     }
     switch (c) {
       case '\'':
-        return readQuote(reader, Quote.QUOTE.symbol());
+        return readQuote(Quote.QUOTE.symbol());
       case '`':
-        return readQuote(reader, Quasiquote.QUASIQUOTE.symbol());
+        return readQuote(Quasiquote.QUASIQUOTE.symbol());
       case ',': {
         char next = (char) reader.read();
         if (next == '@') {
-          return readQuote(reader, UnquoteSplicing.UNQUOTE_SPLICING.symbol());
+          return readQuote(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
         } else {
           reader.unread(next);
-          return readQuote(reader, Unquote.UNQUOTE.symbol());
+          return readQuote(Unquote.UNQUOTE.symbol());
         }
       }
       case '#':
         char next = (char) reader.read();
         if (next == '(') {
-          return readVector(reader);
+          return readVector();
         } else {
           reader.unread(next);
           reader.unread(c);
-          return readAtom(reader);
+          return readAtom();
         }
       case '(':
-        return readList(reader);
+        return readList();
       case ')':
         throw new IllegalSyntaxException("Unexpected list terminator: ')'");
       default: {
@@ -238,10 +175,10 @@ public class Reader implements IReader {
             /* Skip whitespaces until line break */
           }
           reader.unread(c);
-          return nextToken(reader);
+          return nextToken();
         } else {
           reader.unread(c);
-          return readAtom(reader);
+          return readAtom();
         }
       }
     }
@@ -250,7 +187,7 @@ public class Reader implements IReader {
   /**
    * Read atom
    */
-  private Object readAtom(PushbackReader reader) throws IOException, ParseException {
+  private Object readAtom() throws IOException, ParseException {
     char c = (char)reader.read();
     char next = (char)reader.read();
     reader.unread(next);
@@ -262,28 +199,28 @@ public class Reader implements IReader {
       }
       reader.unread(c);
       /* Read identifier, not a number */
-      String number = readIdentifier(reader).toString();
+      String number = readIdentifier().toString();
       if (NumberUtils.SPECIAL_NUMBERS.containsKey(number)) {
         return NumberUtils.SPECIAL_NUMBERS.get(number);
       }
       /* Now check if it IS a valid number */
       return preProcessNumber(number, 'e', 10);
     } else if (c == ';') {
-      return readComment(reader);
+      return readComment();
     } else if (c == '"') {
-      return readString(reader);
+      return readString();
     } else if (c == '#') {
-      return readHash(reader);
+      return readHash();
     } else {
       reader.unread(c);
-      return readIdentifier(reader);
+      return readIdentifier();
     }
   }
 
-  private Object readHash(PushbackReader reader) throws ParseException, IOException {
+  private Object readHash() throws ParseException, IOException {
     char next = (char)reader.read();
     if (next == '\\') {
-      return readCharacter(reader);
+      return readCharacter();
     } else if (next == 't' || next == 'T') {
       return SCMBoolean.TRUE;
     } else if (next == 'f' || next == 'F') {
@@ -293,7 +230,7 @@ public class Reader implements IReader {
       reader.unread('#');
 
       /* Read identifier, not a number */
-      String number = readIdentifier(reader).toString();
+      String number = readIdentifier().toString();
 
       /* Read radix and/or exactness and a number */
       Character radixChar = null;
@@ -331,7 +268,7 @@ public class Reader implements IReader {
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
-    StringBuilder token = new StringBuilder().append('#').append(next).append(readUntilDelimiter(reader));
+    StringBuilder token = new StringBuilder().append('#').append(next).append(readUntilDelimiter());
     throw new IllegalSyntaxException("Bad syntax: " + token);
   }
 
@@ -344,8 +281,8 @@ public class Reader implements IReader {
    * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
-  private Object readQuote(PushbackReader reader, SCMSymbol symbol) throws ParseException, IOException {
-    return SCMCons.list(symbol, nextNonNullToken(reader));
+  private Object readQuote(SCMSymbol symbol) throws ParseException, IOException {
+    return SCMCons.list(symbol, nextNonNullToken());
   }
 
   /**
@@ -354,8 +291,8 @@ public class Reader implements IReader {
    * Syntax:
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
    */
-  private Object readIdentifier(PushbackReader reader) throws IOException {
-    return new SCMSymbol(readUntilDelimiter(reader));
+  private Object readIdentifier() throws IOException {
+    return new SCMSymbol(readUntilDelimiter());
   }
 
   /**
@@ -364,7 +301,7 @@ public class Reader implements IReader {
    * Syntax:
    * <comment> --> ;  <all subsequent characters up to a line break>
    */
-  private String readComment(PushbackReader reader) throws IOException {
+  private String readComment() throws IOException {
     int i;
     while (isValid(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
       /* Read everything until line break */
@@ -380,7 +317,7 @@ public class Reader implements IReader {
    * <string> --> " <string element>* "
    * <string element> --> <any character other than " or \> | \" | \\
    */
-  private SCMString readString(PushbackReader reader) throws ParseException, IOException {
+  private SCMString readString() throws ParseException, IOException {
     SCMString string = new SCMString();
     int i;
     char c;
@@ -415,7 +352,7 @@ public class Reader implements IReader {
    * <character name> --> space | newline
    */
   // TODO Implement SRFI-75 instead? u/U or x for Unicode?
-  private Character readCharacter(PushbackReader reader) throws ParseException, IOException {
+  private Character readCharacter() throws ParseException, IOException {
     int i;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
@@ -428,7 +365,7 @@ public class Reader implements IReader {
         reader.unread((char) i);
       }
 
-      String identifier = readIdentifier(reader).toString();
+      String identifier = readIdentifier().toString();
       if (identifier.isEmpty()) {
         /* #\x char */
         return 'x';
@@ -440,7 +377,7 @@ public class Reader implements IReader {
       return (char)((Number)preProcessNumber(identifier, 'e', radix)).intValue();
     }
 
-    StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter(reader));
+    StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter());
     /* Check if it is a Named Character */
     if (character.length() > 1) {
       if ("linefeed".equals(character.toString())) {
@@ -461,7 +398,7 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private SCMCons<Object> readList(PushbackReader reader) throws ParseException, IOException {
+  private SCMCons<Object> readList() throws ParseException, IOException {
     SCMCons<Object> list = SCMCons.NIL;
     /* Position of a dot (if we have it) */
     int dotPos = -1;
@@ -478,7 +415,7 @@ public class Reader implements IReader {
         break;
       }
       reader.unread(c);
-      Object token = nextToken(reader);
+      Object token = nextToken();
       if (token != null) {
         pos += 1;
         /* Check if current token is a dot */
@@ -523,7 +460,7 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
-    return new SCMVector(readList(reader).toArray());
+  private SCMVector readVector() throws ParseException, IOException {
+    return new SCMVector(readList().toArray());
   }
 }

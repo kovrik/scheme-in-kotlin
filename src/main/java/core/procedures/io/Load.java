@@ -3,9 +3,9 @@ package core.procedures.io;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.reader.IReader;
-import core.reader.Reader;
+import core.reader.FileReader;
 import core.scm.SCMCons;
+import core.scm.SCMString;
 import core.scm.specialforms.Begin;
 import core.scm.specialforms.TailCall;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Load extends AFn {
 
-  private final IReader reader = new Reader();
+  private final FileReader reader = new FileReader();
 
   @Override
   public String getName() {
@@ -26,8 +26,8 @@ public class Load extends AFn {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, getName());
     }
-    if (args[0] instanceof String) {
-      File file = new File((String) args[0]);
+    if (args[0] instanceof String || args[0] instanceof SCMString) {
+      File file = new File(args[0].toString());
       // TODO Is BEGIN Ok here?
       List<Object> sexps = SCMCons.list(Begin.BEGIN);
       sexps.addAll(reader.read(file));

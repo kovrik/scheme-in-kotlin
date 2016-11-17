@@ -6,6 +6,7 @@ import core.evaluator.Evaluator;
 import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
+import core.reader.StringReader;
 import core.scm.SCMInputPort;
 import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
@@ -30,8 +31,6 @@ public class Main {
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "> ";
 
-  private static final IWriter writer = new Writer();
-  private static final IReader reader = new Reader();
   private static final IEvaluator evaluator = new Evaluator();
   private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
 
@@ -40,6 +39,9 @@ public class Main {
 
   private static SCMOutputPort currentOutputPort = new SCMOutputPort(System.out);
   private static final Object OUTPUT_PORT_LOCK = new Object();
+
+  private static final IWriter writer = new Writer();
+  private static final IReader reader = new Reader(currentInputPort.getInputStream());
 
   private static final DateFormat DF = new SimpleDateFormat("[HH:mm:ss.S]");
 
@@ -53,8 +55,9 @@ public class Main {
 
   public static void main(String[] args) throws ParseException, IOException {
     /* Eval lib procedures */
+    StringReader stringReader = new StringReader();
     for (String proc : defaultEnvironment.getLibraryProcedures()) {
-      for (Object s : reader.read(proc)) {
+      for (Object s : stringReader.read(proc)) {
         evaluator.eval(s, defaultEnvironment);
       }
     }
@@ -74,7 +77,7 @@ public class Main {
         currentOutputPort.flush();
 
         /* Read and parse a list of S-expressions from Stdin */
-        List<Object> sexps = reader.read(currentInputPort.getInputStream());
+        List<Object> sexps = reader.read();
         for (Object expr : sexps) {
           // TODO Macroexpand
           Object expanded = macroexpand(expr);

@@ -4,7 +4,6 @@ import core.Main;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.reader.IReader;
 import core.reader.Reader;
 import core.scm.SCMCons;
 import core.scm.SCMInputPort;
@@ -14,8 +13,6 @@ import core.scm.specialforms.TailCall;
 import java.util.List;
 
 public class Read extends AFn {
-
-  private final IReader reader = new Reader();
 
   @Override
   public String getName() {
@@ -38,7 +35,7 @@ public class Read extends AFn {
       inputPort = ((SCMInputPort)args[0]);
     }
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
-    sexps.addAll(reader.read(inputPort.getInputStream()));
+    sexps.addAll(new Reader(inputPort.getInputStream()).read());
     return new TailCall(sexps, null);
   }
 }

@@ -3,6 +3,7 @@ package unittests;
 import core.exceptions.IllegalSyntaxException;
 import core.reader.IReader;
 import core.reader.Reader;
+import core.reader.StringReader;
 import core.scm.SCMBoolean;
 import core.scm.SCMString;
 import core.scm.SCMSymbol;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ReaderTest {
 
-  private final IReader reader = new Reader();
+  private final StringReader reader = new StringReader();
 
   @Test
   public void testReadNumbers() {
