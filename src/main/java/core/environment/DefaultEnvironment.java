@@ -141,6 +141,7 @@ public final class DefaultEnvironment extends Environment {
       new Read(),
       new Write(),
       new ReadChar(),
+      new PeekChar(),
       new WriteChar(),
       new CurrentInputPort(),
       new CurrentOutputPort(),

@@ -7,6 +7,10 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
 
   private final InputStream inputStream;
 
+  private final Object lock = new Object();
+
+  private Integer next = null;
+
   public SCMInputPort(InputStream inputStream) {
     this.inputStream = inputStream;
   }
@@ -17,7 +21,27 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
   }
 
   public int read() throws IOException {
-    return inputStream.read();
+    synchronized (lock) {
+      if (next != null) {
+        int result = next;
+        next = null;
+        return result;
+      } else {
+        return inputStream.read();
+      }
+    }
+  }
+
+  // TODO Check if correctly implemented
+  public int peek() throws IOException {
+    synchronized (lock) {
+      if (next != null) {
+        return next;
+      } else {
+        next = inputStream.read();
+        return next;
+      }
+    }
   }
 
   public InputStream getInputStream() {
