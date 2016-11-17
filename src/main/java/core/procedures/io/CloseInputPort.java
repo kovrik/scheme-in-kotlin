@@ -1,6 +1,5 @@
 package core.procedures.io;
 
-import core.Main;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
