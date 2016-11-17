@@ -40,7 +40,7 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
 
   @Override
   public SCMClass getSCMClass() {
-    return SCMClass.OUTPUT_PORt;
+    return SCMClass.OUTPUT_PORT;
   }
 
   @Override
