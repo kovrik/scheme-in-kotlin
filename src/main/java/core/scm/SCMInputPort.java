@@ -48,6 +48,10 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
     return inputStream;
   }
 
+  public int available() throws IOException {
+    return inputStream.available();
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.INPUT_PORT;

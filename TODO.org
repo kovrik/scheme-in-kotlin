@@ -178,7 +178,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [13/17]
+** TODO Standard procedures [14/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -510,7 +510,8 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [19/20]
+*** DONE Input/output [20/20]
+CLOSED: [2016-11-17 Thu 21:44]
 **** DONE display
 CLOSED: [2016-05-28 Sat 20:15]
 **** DONE newline
@@ -524,7 +525,8 @@ CLOSED: [2016-11-11 Fri 21:23]
 CLOSED: [2016-11-11 Fri 21:45]
 **** DONE peek-char
 CLOSED: [2016-11-17 Thu 16:10]
-**** TODO char-ready?
+**** DONE char-ready?
+CLOSED: [2016-11-17 Thu 21:44]
 **** DONE eof-object?
 CLOSED: [2016-11-17 Thu 15:31]
 **** DONE open-input-file
