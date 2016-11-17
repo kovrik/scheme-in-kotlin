@@ -178,7 +178,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [12/17]
+** TODO Standard procedures [13/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -545,13 +545,10 @@ CLOSED: [2016-11-17 Thu 10:15]
 CLOSED: [2016-11-17 Thu 10:15]
 **** TODO call-with-input-file
 **** TODO call-with-output-file
-**** TODO with-input-from-file(optional)
-**** TODO with-output-to-file(optional)
-*** TODO System interface [1/3]
+*** DONE System interface [1/3]
+CLOSED: [2016-11-17 Thu 19:29]
 **** DONE load (optional)
 CLOSED: [2016-10-30 Sun 09:18]
-**** TODO transcript-on (optional)
-**** TODO transcript-off (optional)
 *** DONE Delayed evaluation [1/1]
 CLOSED: [2016-05-11 Wed 17:43]
 **** DONE force
