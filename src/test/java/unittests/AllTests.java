@@ -18,6 +18,7 @@ import unittests.s7.S7Tests;
     ListTest.class,
     SCMConsTest.class,
     VectorTest.class,
+    IOTest.class,
     RosettaCodeTest.class,
     /* S7 Test Suite: https://ccrma.stanford.edu/software/snd/snd/s7.html */
     S7Tests.class

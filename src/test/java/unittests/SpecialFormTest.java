@@ -11,7 +11,6 @@ import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -415,7 +414,7 @@ public class SpecialFormTest extends AbstractTest {
     }
     SCMOutputPort old = Main.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(baos));
+    Main.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {

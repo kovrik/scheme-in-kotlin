@@ -54,6 +54,19 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SCMInputPort that = (SCMInputPort) o;
+    return inputStream != null ? inputStream.equals(that.inputStream) : that.inputStream == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return inputStream != null ? inputStream.hashCode() : 0;
+  }
+
+  @Override
   public String toString() {
     if (inputStream.equals(System.in)) {
       return "#<output-port:stdin>";

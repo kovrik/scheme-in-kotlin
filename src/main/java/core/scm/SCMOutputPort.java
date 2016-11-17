@@ -44,6 +44,19 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SCMOutputPort that = (SCMOutputPort) o;
+    return outputStream != null ? outputStream.equals(that.outputStream) : that.outputStream == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return outputStream != null ? outputStream.hashCode() : 0;
+  }
+
+  @Override
   public String toString() {
     if (outputStream.equals(System.out)) {
       return "#<output-port:stdout>";
