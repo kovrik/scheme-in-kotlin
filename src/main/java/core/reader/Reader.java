@@ -34,7 +34,6 @@ public class Reader implements IReader {
   static {
     // TODO Platform-dependent line separator?
     NAMED_CHARS.put("newline",   '\n');
-    NAMED_CHARS.put("linefeed",  '\n');
     NAMED_CHARS.put("space",     ' ');
     NAMED_CHARS.put("tab",       '\t');
     NAMED_CHARS.put("return",    '\r');
@@ -444,6 +443,9 @@ public class Reader implements IReader {
     StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter(reader));
     /* Check if it is a Named Character */
     if (character.length() > 1) {
+      if ("linefeed".equals(character.toString())) {
+        return NAMED_CHARS.get("newline");
+      }
       Character namedChar = NAMED_CHARS.get(character.toString());
       if (namedChar == null) {
         throw new IllegalSyntaxException("Error: unknown named character: \"" + character + "\"");
