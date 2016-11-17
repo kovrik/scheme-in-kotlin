@@ -176,7 +176,7 @@ public class Reader implements IReader {
     return tokens;
   }
 
-  private static String readUntilDelimiter(PushbackReader reader) throws IOException {
+  private String readUntilDelimiter(PushbackReader reader) throws IOException {
     StringBuilder token = new StringBuilder();
     int i;
     while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
@@ -187,7 +187,7 @@ public class Reader implements IReader {
   }
 
   /* Skip all null tokens and return the first non-null */
-  private static Object nextNonNullToken(PushbackReader reader) throws IOException, ParseException {
+  private Object nextNonNullToken(PushbackReader reader) throws IOException, ParseException {
     Object token;
     while ((token = nextToken(reader)) == null) {/* Read */};
     return token;
@@ -196,7 +196,7 @@ public class Reader implements IReader {
   /**
    * Read next token
    */
-  private static Object nextToken(PushbackReader reader) throws IOException, ParseException {
+  private Object nextToken(PushbackReader reader) throws IOException, ParseException {
     int i;
     if (!isValid(i = reader.read())) {
       return null;
@@ -250,7 +250,7 @@ public class Reader implements IReader {
   /**
    * Read atom
    */
-  private static Object readAtom(PushbackReader reader) throws IOException, ParseException {
+  private Object readAtom(PushbackReader reader) throws IOException, ParseException {
     char c = (char)reader.read();
     char next = (char)reader.read();
     reader.unread(next);
@@ -280,7 +280,7 @@ public class Reader implements IReader {
     }
   }
 
-  private static Object readHash(PushbackReader reader) throws ParseException, IOException {
+  private Object readHash(PushbackReader reader) throws ParseException, IOException {
     char next = (char)reader.read();
     if (next == '\\') {
       return readCharacter(reader);
@@ -344,7 +344,7 @@ public class Reader implements IReader {
    * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
-  private static Object readQuote(PushbackReader reader, SCMSymbol symbol) throws ParseException, IOException {
+  private Object readQuote(PushbackReader reader, SCMSymbol symbol) throws ParseException, IOException {
     return SCMCons.list(symbol, nextNonNullToken(reader));
   }
 
@@ -354,7 +354,7 @@ public class Reader implements IReader {
    * Syntax:
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
    */
-  private static Object readIdentifier(PushbackReader reader) throws IOException {
+  private Object readIdentifier(PushbackReader reader) throws IOException {
     return new SCMSymbol(readUntilDelimiter(reader));
   }
 
@@ -364,7 +364,7 @@ public class Reader implements IReader {
    * Syntax:
    * <comment> --> ;  <all subsequent characters up to a line break>
    */
-  private static String readComment(PushbackReader reader) throws IOException {
+  private String readComment(PushbackReader reader) throws IOException {
     int i;
     while (isValid(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
       /* Read everything until line break */
@@ -380,7 +380,7 @@ public class Reader implements IReader {
    * <string> --> " <string element>* "
    * <string element> --> <any character other than " or \> | \" | \\
    */
-  private static SCMString readString(PushbackReader reader) throws ParseException, IOException {
+  private SCMString readString(PushbackReader reader) throws ParseException, IOException {
     SCMString string = new SCMString();
     int i;
     char c;
@@ -415,7 +415,7 @@ public class Reader implements IReader {
    * <character name> --> space | newline
    */
   // TODO Implement SRFI-75 instead? u/U or x for Unicode?
-  private static Character readCharacter(PushbackReader reader) throws ParseException, IOException {
+  private Character readCharacter(PushbackReader reader) throws ParseException, IOException {
     int i;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
@@ -461,7 +461,7 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private static SCMCons<Object> readList(PushbackReader reader) throws ParseException, IOException {
+  private SCMCons<Object> readList(PushbackReader reader) throws ParseException, IOException {
     SCMCons<Object> list = SCMCons.NIL;
     /* Position of a dot (if we have it) */
     int dotPos = -1;
@@ -523,7 +523,7 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private static SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
+  private SCMVector readVector(PushbackReader reader) throws ParseException, IOException {
     return new SCMVector(readList(reader).toArray());
   }
 }
