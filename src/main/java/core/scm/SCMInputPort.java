@@ -16,6 +16,14 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
     inputStream.close();
   }
 
+  public int read() throws IOException {
+    return inputStream.read();
+  }
+
+  public InputStream getInputStream() {
+    return inputStream;
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.INPUT_PORt;

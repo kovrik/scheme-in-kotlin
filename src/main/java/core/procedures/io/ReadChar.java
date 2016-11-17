@@ -1,13 +1,15 @@
 package core.procedures.io;
 
+import core.Main;
 import core.exceptions.ArityException;
+import core.exceptions.SCMIOException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.reader.IReader;
-import core.reader.Reader;
+import core.scm.SCMInputPort;
+
+import java.io.IOException;
 
 public class ReadChar extends AFn {
-
-  private final IReader reader = new Reader();
 
   @Override
   public String getName() {
@@ -16,10 +18,22 @@ public class ReadChar extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    // TODO Read input-port as first arg
-    if (args.length > 0) {
-      throw new ArityException(args.length, 0, getName());
+    if (args.length > 1) {
+      throw new ArityException(args.length, 1, getName());
     }
-    return reader.readChar(System.in);
+    SCMInputPort inputPort;
+    if (args.length == 0) {
+      inputPort = Main.getCurrentInputPort();
+    } else {
+      if (!(args[0] instanceof SCMInputPort)) {
+        throw new WrongTypeException("Input Port", args[0]);
+      }
+      inputPort = ((SCMInputPort)args[0]);
+    }
+    try {
+      return (char)inputPort.read();
+    } catch (IOException e) {
+      throw new SCMIOException(e);
+    }
   }
 }

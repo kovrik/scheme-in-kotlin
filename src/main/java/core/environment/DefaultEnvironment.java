@@ -134,8 +134,8 @@ public final class DefaultEnvironment extends Environment {
       CharComparison.CHAR_EQ_CI,
 
       /* IO */
-      new Display(System.out),
-      new Newline(System.out),
+      new Display(),
+      new Newline(),
       new Load(),
       new Read(),
       new Write(),

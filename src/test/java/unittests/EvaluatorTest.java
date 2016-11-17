@@ -108,7 +108,7 @@ public class EvaluatorTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+    tempEnv.put(new SCMSymbol("display"), new Display());
 
     eval("(display 123)", tempEnv);
     assertEquals("123", baos.toString().trim());

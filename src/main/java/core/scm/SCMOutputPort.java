@@ -16,6 +16,14 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
     outputStream.close();
   }
 
+  public void write(int b) throws IOException {
+    outputStream.write(b);
+  }
+
+  public void write(String str) throws IOException {
+    outputStream.write(str.getBytes());
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.OUTPUT_PORt;

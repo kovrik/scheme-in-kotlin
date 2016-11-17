@@ -419,7 +419,7 @@ public class SpecialFormTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+    tempEnv.put(new SCMSymbol("display"), new Display());
     assertEquals(UNSPECIFIED, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
     System.setOut(old);
   }

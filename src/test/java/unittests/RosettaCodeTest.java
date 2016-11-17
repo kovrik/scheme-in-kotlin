@@ -1,10 +1,12 @@
 package unittests;
 
+import core.Main;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.scm.SCMCons;
+import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
 import org.junit.Test;
 
@@ -183,15 +185,15 @@ public class RosettaCodeTest extends AbstractTest {
 
     PrintStream old = System.out;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(baos));
+    Main.setCurrentOutputPort(new SCMOutputPort(baos));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
-    tempEnv.put(new SCMSymbol("newline"), new Newline(System.out));
+    tempEnv.put(new SCMSymbol("display"), new Display());
+    tempEnv.put(new SCMSymbol("newline"), new Newline());
 
     String hanoi = "(define (hanoi n a b c) " +
                    "  (if (> n 0)" +
@@ -293,14 +295,14 @@ public class RosettaCodeTest extends AbstractTest {
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintStream old = System.out;
-    System.setOut(new PrintStream(baos));
+    Main.setCurrentOutputPort(new SCMOutputPort(baos));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display(System.out));
+    tempEnv.put(new SCMSymbol("display"), new Display());
 
     String quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
         " (quote (lambda (s) (display (list s (list (quote quote) s))))))";
