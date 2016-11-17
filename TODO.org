@@ -524,7 +524,8 @@ CLOSED: [2016-11-11 Fri 21:23]
 CLOSED: [2016-11-11 Fri 21:45]
 **** TODO peek-char
 **** TODO char-ready?
-**** TODO eof-object? open-input-file
+**** TODO eof-object?
+**** TODO open-input-file
 **** TODO open-output-file
 **** DONE close-port
 CLOSED: [2016-11-17 Thu 10:22]
