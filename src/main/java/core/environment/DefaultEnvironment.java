@@ -150,6 +150,8 @@ public final class DefaultEnvironment extends Environment {
       new CloseOutputPort(),
       new OpenInputFile(),
       new OpenOutputFile(),
+      new CallWithInputFile(),
+      new CallWithOutputFile(),
 
       /* Pairs */
       new Length(),

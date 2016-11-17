@@ -510,7 +510,7 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [17/20]
+*** TODO Input/output [19/20]
 **** DONE display
 CLOSED: [2016-05-28 Sat 20:15]
 **** DONE newline
@@ -545,8 +545,10 @@ CLOSED: [2016-11-17 Thu 10:06]
 CLOSED: [2016-11-17 Thu 10:15]
 **** DONE current-output-port
 CLOSED: [2016-11-17 Thu 10:15]
-**** TODO call-with-input-file
-**** TODO call-with-output-file
+**** DONE call-with-input-file
+CLOSED: [2016-11-17 Thu 21:37]
+**** DONE call-with-output-file
+CLOSED: [2016-11-17 Thu 21:37]
 *** DONE System interface [1/3]
 CLOSED: [2016-11-17 Thu 19:29]
 **** DONE load (optional)
