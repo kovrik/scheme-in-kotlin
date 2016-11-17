@@ -126,7 +126,7 @@ public class Reader implements IReader {
   /* Skip all null tokens and return the first non-null */
   private Object nextNonNullToken() throws IOException, ParseException {
     Object token;
-    while ((token = nextToken()) == null) {/* Read */};
+    while ((token = nextToken()) == null) {/* Read */}
     return token;
   }
 
