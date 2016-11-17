@@ -73,7 +73,7 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
   @Override
   public String toString() {
     if (inputStream.equals(System.in)) {
-      return "#<output-port:stdin>";
+      return "#<input-port:stdin>";
     }
     return "#<input-port:" + inputStream + ">";
   }
