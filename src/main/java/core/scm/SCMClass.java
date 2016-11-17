@@ -20,7 +20,7 @@ public class SCMClass implements ISCMClass {
   public static final SCMClass PROCEDURE   = new SCMClass("Procedure");
   public static final SCMClass ERROR       = new SCMClass("Error");
   public static final SCMClass CLASS       = new SCMClass("Class");
-  public static final SCMClass INPUT_POR T = new SCMClass("InputPort");
+  public static final SCMClass INPUT_PORT  = new SCMClass("InputPort");
   public static final SCMClass OUTPUT_PORT = new SCMClass("OutputPort");
   public static final SCMClass EOF         = new SCMClass("EOF");
 
