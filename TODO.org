@@ -510,7 +510,7 @@ CLOSED: [2016-05-15 Sun 22:28]
 **** TODO scheme-report-environment
 **** TODO null-environment
 **** TODO interaction-environment (optional)
-*** TODO Input/output [15/22]
+*** TODO Input/output [17/20]
 **** DONE display
 CLOSED: [2016-05-28 Sat 20:15]
 **** DONE newline
@@ -527,8 +527,10 @@ CLOSED: [2016-11-17 Thu 16:10]
 **** TODO char-ready?
 **** DONE eof-object?
 CLOSED: [2016-11-17 Thu 15:31]
-**** TODO open-input-file
-**** TODO open-output-file
+**** DONE open-input-file
+CLOSED: [2016-11-17 Thu 19:39]
+**** DONE open-output-file
+CLOSED: [2016-11-17 Thu 19:41]
 **** DONE close-port
 CLOSED: [2016-11-17 Thu 10:22]
 **** DONE close-input-port
