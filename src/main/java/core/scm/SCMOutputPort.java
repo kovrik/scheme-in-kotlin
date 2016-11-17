@@ -5,6 +5,8 @@ import java.io.OutputStream;
 
 public class SCMOutputPort implements ISCMClass, ISCMPort {
 
+  private static final String LS = System.getProperty("line.separator");
+
   private final OutputStream outputStream;
 
   public SCMOutputPort(OutputStream outputStream) {
@@ -22,6 +24,18 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
 
   public void write(String str) throws IOException {
     outputStream.write(str.getBytes());
+  }
+
+  public void writeln(String str) throws IOException {
+    outputStream.write((str + LS).getBytes());
+  }
+
+  public void flush() throws IOException {
+    outputStream.flush();
+  }
+
+  public OutputStream getOutputStream() {
+    return outputStream;
   }
 
   @Override

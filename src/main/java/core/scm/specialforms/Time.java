@@ -1,14 +1,17 @@
 package core.scm.specialforms;
 
+import core.Main;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.SCMIOException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
 import core.writer.Writer;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ import java.util.List;
 public class Time implements ISpecialForm, ISCMClass {
 
   public static final Time TIME = new Time();
+
+  private static final String LS = System.getProperty("line.separator");
 
   private final String syntax = "time";
   private final SCMSymbol symbol = new SCMSymbol(this.syntax);
@@ -37,9 +42,17 @@ public class Time implements ISpecialForm, ISCMClass {
     for (int i = 1; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), env);
     }
-    System.out.println(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)));
+    try {
+      Main.getCurrentOutputPort().write(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)) + LS);
+    } catch (IOException e) {
+      throw new SCMIOException(e);
+    }
     long diff = (System.nanoTime() - start) / 1000000;
-    System.out.println(String.format("time: %s ms", diff));
+    try {
+      Main.getCurrentOutputPort().write(String.format("time: %s ms", diff) + LS);
+    } catch (IOException e) {
+      throw new SCMIOException(e);
+    }
     return SCMUnspecified.UNSPECIFIED;
   }
 

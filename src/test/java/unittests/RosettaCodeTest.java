@@ -183,7 +183,7 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalHanoi() {
 
-    PrintStream old = System.out;
+    SCMOutputPort old = Main.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Main.setCurrentOutputPort(new SCMOutputPort(baos));
 
@@ -226,7 +226,7 @@ public class RosettaCodeTest extends AbstractTest {
                       "Move disk from pole 3 to pole 2";
 
     assertEquals(solution, baos.toString().trim());
-    System.setOut(old);
+    Main.setCurrentOutputPort(old);
   }
 
   @Test
@@ -293,8 +293,8 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalQuine() {
 
+    SCMOutputPort old = Main.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintStream old = System.out;
     Main.setCurrentOutputPort(new SCMOutputPort(baos));
 
     IEnvironment tempEnv = new DefaultEnvironment();
@@ -309,7 +309,7 @@ public class RosettaCodeTest extends AbstractTest {
     eval(quine, tempEnv);
     assertEquals(quine, baos.toString().trim());
 
-    System.setOut(old);
+    Main.setCurrentOutputPort(old);
   }
 
   @Test

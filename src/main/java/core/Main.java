@@ -66,15 +66,15 @@ public class Main {
   }
 
   private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
-    System.out.println(welcomeMessage);
+    currentOutputPort.writeln(welcomeMessage);
     while (true) {
       try {
-//        System.out.print(DF.format(System.currentTimeMillis()));
-        System.out.print(prompt);
-        System.out.flush();
+//        currentOutputPort.write(DF.format(System.currentTimeMillis()));
+        currentOutputPort.write(prompt);
+        currentOutputPort.flush();
 
         /* Read and parse a list of S-expressions from Stdin */
-        List<Object> sexps = reader.read(System.in);
+        List<Object> sexps = reader.read(currentInputPort.getInputStream());
         for (Object expr : sexps) {
           // TODO Macroexpand
           Object expanded = macroexpand(expr);
@@ -85,8 +85,8 @@ public class Main {
             SCMSymbol id = getNextID();
             env.put(id, result);
             /* Print */
-            System.out.println(id + " = " + writer.toString(result));
-            System.out.flush();
+            currentOutputPort.writeln(id + " = " + writer.toString(result));
+            currentOutputPort.flush();
             /* Store sexp in a history */
             HISTORY.put(id, expr);
           }
@@ -98,9 +98,9 @@ public class Main {
     }
   }
 
-  private static void error(Exception e) {
-    System.out.println("ERROR: " + e.getMessage());
-    System.out.flush();
+  private static void error(Exception e) throws IOException {
+    currentOutputPort.writeln("ERROR: " + e.getMessage());
+    currentOutputPort.flush();
   }
 
   // TODO

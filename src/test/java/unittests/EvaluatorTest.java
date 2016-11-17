@@ -1,9 +1,11 @@
 package unittests;
 
+import core.Main;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
+import core.scm.SCMOutputPort;
 import core.scm.SCMString;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
@@ -100,8 +102,8 @@ public class EvaluatorTest extends AbstractTest {
   public void testEvalDisplay() {
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintStream old = System.out;
-    System.setOut(new PrintStream(baos));
+    SCMOutputPort old = Main.getCurrentOutputPort();
+    Main.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
@@ -142,7 +144,7 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals("(3 4 5 6)", baos.toString().trim());
     baos.reset();
 
-    System.setOut(old);
+    Main.setCurrentOutputPort(old);
   }
 
   @Test

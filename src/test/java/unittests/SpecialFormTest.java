@@ -1,5 +1,6 @@
 package unittests;
 
+import core.Main;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
@@ -10,6 +11,7 @@ import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -411,7 +413,7 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Unbound variable: x", e.getMessage());
     }
-    PrintStream old = System.out;
+    SCMOutputPort old = Main.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setOut(new PrintStream(baos));
     IEnvironment tempEnv = new DefaultEnvironment();
@@ -421,7 +423,7 @@ public class SpecialFormTest extends AbstractTest {
     }
     tempEnv.put(new SCMSymbol("display"), new Display());
     assertEquals(UNSPECIFIED, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
-    System.setOut(old);
+    Main.setCurrentOutputPort(old);
   }
 
   @Test
