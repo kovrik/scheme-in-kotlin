@@ -15,6 +15,7 @@ public class FileReader extends Reader {
 
   // TODO cleanup
   public List<Object> read(File file) {
+
     try {
       reader = new PushbackReader(new BufferedReader(new java.io.FileReader(file)), 2);
     } catch (FileNotFoundException e) {
@@ -23,23 +24,19 @@ public class FileReader extends Reader {
     List<Object> tokens = new ArrayList<>();
     try {
       Object token;
-      try {
-        int read;
-        while ((read = reader.read()) != -1) {
-          reader.unread(read);
-          token = nextToken();
-          /* Read */
-          if (DOT.equals(token)) {
-            throw new IllegalSyntaxException("Illegal use of '.'");
-          }
-          if (token != null) {
-            tokens.add(token);
-          }
+      int read;
+      while ((read = reader.read()) != -1) {
+        reader.unread(read);
+        token = nextToken();
+        /* Read */
+        if (DOT.equals(token)) {
+          throw new IllegalSyntaxException("Illegal use of '.'");
         }
-      } catch (ParseException e) {
-        e.printStackTrace();
+        if (token != null) {
+          tokens.add(token);
+        }
       }
-    } catch (IOException e) {
+    } catch (IOException | ParseException e) {
       e.printStackTrace();
     } finally {
       try {

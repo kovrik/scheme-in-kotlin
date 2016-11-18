@@ -24,7 +24,8 @@ import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
-  protected static final SCMSymbol DOT = new SCMSymbol(".");
+  static final SCMSymbol DOT = new SCMSymbol(".");
+
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
   // <delimiter> --> <whitespace> | ( | ) | " | ;
