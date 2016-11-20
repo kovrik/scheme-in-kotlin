@@ -37,7 +37,6 @@ public class Append extends AFn {
     return result;
   }
 
-  // FIXME Make iterative!
   public static Object append(Object first, Object second) {
     if (SCMBoolean.valueOf(IsNull.isNull(first))) {
       return second;
