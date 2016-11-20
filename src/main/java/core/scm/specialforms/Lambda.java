@@ -6,9 +6,12 @@ import core.exceptions.IllegalSyntaxException;
 import core.procedures.AFn;
 import core.scm.*;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -44,6 +47,16 @@ public class Lambda implements ISpecialForm, ISCMClass {
     /* Check if args is a List or not */
     Object args = expression.get(1);
     if (args instanceof List) {
+      /* Check args for duplicates */
+      if (!((List) args).isEmpty()) {
+        Map<Object, Object> temp = new HashMap<>(((List) args).size());
+        for (Object o : ((List) args)) {
+          if (temp.containsKey(o)) {
+            throw new IllegalSyntaxException(syntax + ": duplicate argument identifier `" + o + "`");
+          }
+          temp.put(o, o);
+        }
+      }
       /* (lambda (arg-id ...+) body ...+) OR
        * (lambda (arg-id ...+ . rest-id) body ...+) */
       if (SCMCons.isList(args)) {

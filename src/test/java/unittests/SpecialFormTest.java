@@ -621,4 +621,20 @@ public class SpecialFormTest extends AbstractTest {
                   " (perf 10000))";
     assertEquals(UNSPECIFIED, eval(form, env));
   }
+
+  @Test
+  public void testDuplicateArgumentsAreNotAllowed() {
+    try {
+      eval("(lambda (a a) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("lambda: duplicate argument identifier `a`", e.getMessage());
+    }
+    try {
+      eval("(define (a b b) b)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("lambda: duplicate argument identifier `b`", e.getMessage());
+    }
+  }
 }

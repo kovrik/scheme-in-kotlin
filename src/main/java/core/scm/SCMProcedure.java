@@ -3,7 +3,6 @@ package core.scm;
 import core.environment.IEnvironment;
 import core.procedures.AFn;
 
-import java.util.Collections;
 import java.util.List;
 
 /* Lambda */
@@ -25,10 +24,7 @@ public class SCMProcedure extends AFn {
   private boolean isVariadic = false;
 
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment) {
-    this.name = name;
-    this.args = (args == null) ? Collections.emptyList() : args;
-    this.body = body;
-    this.localEnvironment = localEnvironment;
+    this(name, args, body, localEnvironment, false);
   }
 
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment, boolean isVariadic) {
