@@ -13,9 +13,7 @@ import java.util.List;
 
 public class FileReader extends Reader {
 
-  // TODO cleanup
   public List<Object> read(File file) {
-
     try {
       reader = new PushbackReader(new BufferedReader(new java.io.FileReader(file)), 2);
     } catch (FileNotFoundException e) {
@@ -23,11 +21,10 @@ public class FileReader extends Reader {
     }
     List<Object> tokens = new ArrayList<>();
     try {
-      Object token;
       int read;
       while ((read = reader.read()) != -1) {
         reader.unread(read);
-        token = nextToken();
+        Object token = nextToken();
         /* Read */
         if (DOT.equals(token)) {
           throw new IllegalSyntaxException("Illegal use of '.'");
