@@ -1,4 +1,4 @@
-* TODO: [27/37]
+* TODO: [27/36]
 
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
@@ -78,7 +78,6 @@ CLOSED: [2016-09-03 Sat 15:13]
 CLOSED: [2016-11-16 Wed 20:09]
 ** TODO [#B] Make `append` proc iterative, not recursive
 ** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
-** TODO [#B] Macros
 ** DONE [#C] Correct error messages
 CLOSED: [2016-07-26 Tue 23:01]
 ** DONE Nil value
