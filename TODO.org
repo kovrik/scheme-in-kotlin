@@ -1,31 +1,5 @@
 * TODO: [27/36]
 
-** DONE [#A] Implement CONS cells
-CLOSED: [2016-07-07 Thu 19:06]
-** DONE [#A] Implement SCMList using CONS?
-CLOSED: [2016-07-07 Thu 19:06]
-** DONE [#A] Reader: read dotted notation
-CLOSED: [2016-07-09 Sat 21:55]
-** DONE [#A] Now properly implement dotted pair notation everywhere
-CLOSED: [2016-07-15 Fri 22:34]
-** DONE [#A] Binary/Octal/Hex numbers with fraction
-CLOSED: [2016-07-16 Sat 23:20]
-** DONE [#A] Fix readQuote ('0e)
-CLOSED: [2016-07-17 Sun 10:11]
-** DONE [#A] Fix toString everywhere for Chars and Lists
-CLOSED: [2016-07-10 Sun 20:13]
-** DONE [#A] Error messages: use Writer class
-CLOSED: [2016-07-19 Tue 21:45]
-** DONE [#A] Wrong type generic error
-CLOSED: [2016-07-20 Wed 22:51]
-** DONE [#A] Equality for procedures?
-CLOSED: [2016-07-26 Tue 23:00]
-** DONE [#A] Properly implement IFn and Procedure classes
-CLOSED: [2016-07-26 Tue 23:00]
-** DONE [#A] Fix display with named chars (\n, \t etc.)
-CLOSED: [2016-08-23 Tue 20:37]
-** DONE [#A] Long overflow (~fib 155)
-CLOSED: [2016-08-25 Thu 08:14]
 ** TODO [#A] Expt with fractional power for BigDecimals
 ** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 ** TODO [#A] Tail-call elimination [13/17]
@@ -69,18 +43,42 @@ CLOSED: [2016-11-11 Fri 22:32]
 **** TODO call-with-values — tail call to the values-receiving procedure
 **** TODO eval — tail call to evaluate the form
 **** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
+** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
+** DONE [#A] Implement CONS cells
+CLOSED: [2016-07-07 Thu 19:06]
+** DONE [#A] Implement SCMList using CONS?
+CLOSED: [2016-07-07 Thu 19:06]
+** DONE [#A] Reader: read dotted notation
+CLOSED: [2016-07-09 Sat 21:55]
+** DONE [#A] Now properly implement dotted pair notation everywhere
+CLOSED: [2016-07-15 Fri 22:34]
+** DONE [#A] Binary/Octal/Hex numbers with fraction
+CLOSED: [2016-07-16 Sat 23:20]
+** DONE [#A] Fix readQuote ('0e)
+CLOSED: [2016-07-17 Sun 10:11]
+** DONE [#A] Fix toString everywhere for Chars and Lists
+CLOSED: [2016-07-10 Sun 20:13]
+** DONE [#A] Error messages: use Writer class
+CLOSED: [2016-07-19 Tue 21:45]
+** DONE [#A] Wrong type generic error
+CLOSED: [2016-07-20 Wed 22:51]
+** DONE [#A] Equality for procedures?
+CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Properly implement IFn and Procedure classes
+CLOSED: [2016-07-26 Tue 23:00]
+** DONE [#A] Fix display with named chars (\n, \t etc.)
+CLOSED: [2016-08-23 Tue 20:37]
+** DONE [#A] Long overflow (~fib 155)
+CLOSED: [2016-08-25 Thu 08:14]
 ** DONE [#B] Read and execute sources from files
 CLOSED: [2016-10-30 Sun 09:15]
 ** DONE [#C] Read multiple forms on one line (not the first one only)
 CLOSED: [2016-09-03 Sat 15:13]
 ** DONE [#A] Make mutable SCMString
 CLOSED: [2016-11-16 Wed 20:09]
-** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** DONE [#C] Correct error messages
 CLOSED: [2016-07-26 Tue 23:01]
-** DONE Nil value
-CLOSED: [2016-07-02 Sat 19:54]
 ** DONE [#A] Internal (local) define
 CLOSED: [2016-06-05 Sun 09:26]
 ** DONE [#A] Decouple Procedure and Evaluator
@@ -93,6 +91,8 @@ CLOSED: [2016-05-31 Tue 22:15]
 CLOSED: [2016-06-02 Thu 18:29]
 ** DONE [#A] Recursive Descent Parser
 CLOSED: [2016-04-28 Thu 19:44]
+** DONE Nil value
+CLOSED: [2016-07-02 Sat 19:54]
 ** DONE Get rid of `node`s
 CLOSED: [2016-04-28 Thu 19:44]
 ** DONE Java Booleans -> SCMBoolean
