@@ -13,7 +13,7 @@ public class ErrorProc extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length > 1) {
+    if (args.length != 1) {
       throw new ArityException(args.length, 1, "error");
     }
     throw new SCMError(args[0].toString());
