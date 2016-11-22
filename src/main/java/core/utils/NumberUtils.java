@@ -12,6 +12,7 @@ import java.math.MathContext;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class NumberUtils {
@@ -288,5 +289,19 @@ public class NumberUtils {
       }
     }
     return 1L;
+  }
+
+  public static Number toInexact(Object o) {
+    if (!isNumber(o)) {
+      throw new WrongTypeException("Number", o);
+    }
+    if (o instanceof SCMBigRational) {
+
+      return ((SCMBigRational)o).toBigDecimal();
+    }
+    if (o instanceof BigDecimal) {
+      return (BigDecimal)o;
+    }
+    return ((Number)o).doubleValue();
   }
 }

@@ -79,6 +79,7 @@ public final class DefaultEnvironment extends Environment {
       new LCM(),
       new Numerator(),
       new Denominator(),
+      new ToInexact(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),
