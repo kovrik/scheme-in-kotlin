@@ -1,10 +1,12 @@
 package unittests;
 
 import core.exceptions.ArityException;
+import core.scm.SCMBigRational;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
@@ -65,9 +67,9 @@ public class NumberTest extends AbstractTest {
     assertEquals(6L,  eval("(+ 1 2 3)", env));
     assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env));
     assertEquals(5.0, eval("(/ 10.0 2)", env));
-    assertEquals(0.1, eval("(/ 10)", env));
-    assertEquals(3.25, eval("(/ 13 4)", env));
-    assertEquals(2L, eval("(/ 10 5)", env));
+    assertEquals(new SCMBigRational(BigInteger.ONE, BigInteger.TEN), eval("(/ 10)", env));
+    assertEquals(new SCMBigRational(new BigInteger("13"), new BigInteger("4")), eval("(/ 13 4)", env));
+    assertEquals(new SCMBigRational(new BigInteger("2"), BigInteger.ONE), eval("(/ 10 5)", env));
     assertEquals(2d, eval("(/ 10.0 5)", env));
     assertEquals(2d, eval("(/ 10 5.0)", env));
 
@@ -99,7 +101,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(3d, eval("(sqrt 9.0)", env));
     assertTrue(Double.isNaN((Double)eval("(sqrt -5)", env)));
 
-    assertEquals(0.01, eval("(/ 1 10 10)", env));
+    assertEquals(new SCMBigRational(BigInteger.ONE, new BigInteger("100")), eval("(/ 1 10 10)", env));
   }
 
   @Test

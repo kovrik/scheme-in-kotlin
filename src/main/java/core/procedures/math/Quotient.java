@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -51,7 +52,9 @@ public class Quotient extends AFn {
       return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
-    if ((first instanceof Double) || (second instanceof Double)) {
+    if ((first instanceof Double) || (second instanceof Double) ||
+        (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
+
       // check if they are integral
       if (first.doubleValue() != Math.floor(first.doubleValue())) {
         throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));

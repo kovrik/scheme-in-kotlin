@@ -2,8 +2,10 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class GCD extends AFn {
 
@@ -68,11 +70,28 @@ public class GCD extends AFn {
     return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
   }
 
+  public static BigInteger gcd(BigInteger a, BigInteger b) {
+    return a.gcd(b);
+  }
+
+  public static SCMBigRational gcd(SCMBigRational first, SCMBigRational second) {
+    return new SCMBigRational(first.getNumerator().gcd(second.getNumerator()),
+                              LCM.lcm(first.getDenominator(), second.getDenominator()));
+  }
+
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);
     }
-
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return gcd((SCMBigRational) first, (SCMBigRational)second);
+    }
+    if (first instanceof SCMBigRational) {
+      return gcd(((SCMBigRational) first).toBigDecimal(), new BigDecimal(second.toString()));
+    }
+    if (second instanceof SCMBigRational) {
+      return gcd(new BigDecimal(first.toString()), ((SCMBigRational) second).toBigDecimal());
+    }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return gcd((BigDecimal) first, (BigDecimal) second);
     }

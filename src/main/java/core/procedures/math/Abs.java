@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -27,6 +28,8 @@ public class Abs extends AFn {
         return Math.abs((Double) args[0]);
       } else if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).abs();
+      } else if (args[0] instanceof SCMBigRational) {
+        return ((SCMBigRational)args[0]).abs();
       }
       throw new WrongTypeException("Number", args[0]);
     }

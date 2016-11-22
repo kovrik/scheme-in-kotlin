@@ -2,8 +2,10 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Multiplication extends AFn {
 
@@ -32,6 +34,24 @@ public class Multiplication extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
+    /* Big Rational numbers */
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return ((SCMBigRational)first).multiply((SCMBigRational)second);
+    }
+    if (first instanceof SCMBigRational) {
+      if (second instanceof Long) {
+        return ((SCMBigRational) first).multiply(new SCMBigRational(new BigInteger(second.toString()), BigInteger.ONE));
+      } else {
+        first = first.doubleValue();
+      }
+    }
+    if (second instanceof SCMBigRational) {
+      if (first instanceof Long) {
+        return ((SCMBigRational) second).multiply(new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE));
+      } else {
+        second = second.doubleValue();
+      }
+    }
     if ((first instanceof Long) && (second instanceof Long)) {
       try {
         return Math.multiplyExact((Long) first, (Long) second);

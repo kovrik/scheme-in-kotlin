@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -19,6 +20,15 @@ public class Min extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return ((SCMBigRational)first).compareTo((SCMBigRational)second) < 0 ? first : second;
+    }
+    if (first instanceof SCMBigRational) {
+      first = first.doubleValue();
+    }
+    if (second instanceof SCMBigRational) {
+      second = second.doubleValue();
+    }
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.min((Long)first, (Long)second);
     }

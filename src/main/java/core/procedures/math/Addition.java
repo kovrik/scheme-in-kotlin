@@ -2,8 +2,10 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Addition extends AFn {
 
@@ -24,6 +26,25 @@ public class Addition extends AFn {
     if (!(second instanceof Number)) {
       throw new WrongTypeException("Number", second);
     }
+    /* Big Rational numbers */
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return ((SCMBigRational)first).plus((SCMBigRational)second);
+    }
+    if (first instanceof SCMBigRational) {
+      if (second instanceof Long || second instanceof BigDecimal) {
+        return ((SCMBigRational) first).plus(new SCMBigRational(new BigInteger(second.toString()), BigInteger.ONE));
+      } else {
+        first = ((SCMBigRational)first).doubleValue();
+      }
+    }
+    if (second instanceof SCMBigRational) {
+      if (first instanceof Long || first instanceof BigDecimal) {
+        return ((SCMBigRational) second).plus(new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE));
+      } else {
+        second = ((SCMBigRational)second).doubleValue();
+      }
+    }
+
     if ((first instanceof Long) && (second instanceof Long)) {
       try {
         return Math.addExact((Long)first, (Long)second);

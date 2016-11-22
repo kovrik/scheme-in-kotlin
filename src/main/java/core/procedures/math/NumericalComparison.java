@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 import core.scm.SCMBoolean;
 
 import java.math.BigDecimal;
@@ -63,10 +64,16 @@ public class NumericalComparison extends AFn {
 
     Number f = (Number)first;
     Number s = (Number)second;
-    if ((first instanceof Double) || (second instanceof Double)) {
+    if (f instanceof SCMBigRational) {
+      f = ((SCMBigRational)f).toBigDecimal();
+    }
+    if (s instanceof SCMBigRational) {
+      s = ((SCMBigRational)s).toBigDecimal();
+    }
+    if ((f instanceof Double) || (s instanceof Double)) {
       f = f.doubleValue();
       s = s.doubleValue();
-    } else if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+    } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
       f = new BigDecimal(f.toString());
       s = new BigDecimal(s.toString());
     }

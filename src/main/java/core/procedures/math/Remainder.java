@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -40,6 +41,21 @@ public class Remainder extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
+    if (first instanceof SCMBigRational) {
+      if (!(((SCMBigRational)first).isDenominatorEqualToOne())) {
+        throw new IllegalArgumentException(
+          String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
+      }
+      first = ((SCMBigRational) first).toBigDecimal();
+    }
+    if (second instanceof SCMBigRational) {
+      if (!(((SCMBigRational) second).isDenominatorEqualToOne())) {
+        throw new IllegalArgumentException(
+          String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
+      }
+      second = ((SCMBigRational) second).toBigDecimal();
+    }
+
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return invoke((BigDecimal)first, (BigDecimal)second);
     }

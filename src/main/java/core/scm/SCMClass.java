@@ -5,6 +5,7 @@ public class SCMClass implements ISCMClass {
   /* Java Classes */
   public static final SCMClass INTEGER     = new SCMClass("Integer");
   public static final SCMClass DOUBLE      = new SCMClass("Double");
+  public static final SCMClass RATIONAL    = new SCMClass("Rational");
   public static final SCMClass STRING      = new SCMClass("String");
   public static final SCMClass CHARACTER   = new SCMClass("Character");
   public static final SCMClass BOOLEAN     = new SCMClass("Boolean");

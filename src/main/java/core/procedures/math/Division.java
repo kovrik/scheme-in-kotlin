@@ -3,8 +3,10 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Division extends AFn {
 
@@ -43,22 +45,40 @@ public class Division extends AFn {
     return result;
   }
 
-  public Number invoke(Number numenator, Number denominator) {
-    if ((numenator instanceof Long) &&
-        (denominator instanceof Long) &&
-        ((Long)numenator % (Long)denominator) == 0) {
-
-      return (Long)numenator / (Long)denominator;
+  public Number invoke(Number numerator, Number denominator) {
+    /* Big Rational numbers */
+    if ((numerator instanceof SCMBigRational) && (denominator instanceof SCMBigRational)) {
+      return ((SCMBigRational)numerator).divide((SCMBigRational)denominator);
     }
-    if (numenator instanceof BigDecimal) {
-      return ((BigDecimal)numenator).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+    if (numerator instanceof SCMBigRational) {
+      if (denominator instanceof Long) {
+        return ((SCMBigRational) numerator).divide(new SCMBigRational(new BigInteger(denominator.toString()), BigInteger.ONE));
+      } else {
+        numerator = numerator.doubleValue();
+      }
+    }
+    if (denominator instanceof SCMBigRational) {
+      if (numerator instanceof Long) {
+        return ((SCMBigRational) denominator).divide(new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE));
+      } else {
+        denominator = denominator.doubleValue();
+      }
+    }
+
+    if ((numerator instanceof Long) &&
+        (denominator instanceof Long)) {
+
+      return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
+    }
+    if (numerator instanceof BigDecimal) {
+      return ((BigDecimal)numerator).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
     }
     if (denominator instanceof BigDecimal) {
-      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+      return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
     }
-    double result = numenator.doubleValue() / denominator.doubleValue();
+    double result = numerator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return new BigDecimal(numenator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+      return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
     }
     return result;
   }

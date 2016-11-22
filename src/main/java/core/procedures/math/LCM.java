@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -59,6 +60,15 @@ public class LCM extends AFn {
     return (a / GCD.gcd(a, b)) * b;
   }
 
+  public static BigInteger lcm(BigInteger first, BigInteger second) {
+    return first.multiply(second.divide(GCD.gcd(first, second)));
+  }
+
+  public static SCMBigRational lcm(SCMBigRational first, SCMBigRational second) {
+    return new SCMBigRational(lcm(first.getNumerator(), second.getNumerator()),
+                              GCD.gcd(first.getDenominator(), second.getDenominator()));
+  }
+
   // FIXME Optmize
   private static BigDecimal lcm(BigDecimal a, BigDecimal b) {
     if ((BigDecimal.ZERO.compareTo(a) == 0) && (BigDecimal.ZERO.compareTo(b) == 0)) {
@@ -73,7 +83,15 @@ public class LCM extends AFn {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
-
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return lcm((SCMBigRational) first, (SCMBigRational)second);
+    }
+    if (first instanceof SCMBigRational) {
+      return lcm(((SCMBigRational) first).toBigDecimal(), new BigDecimal(second.toString()));
+    }
+    if (second instanceof SCMBigRational) {
+      return lcm(new BigDecimal(first.toString()), ((SCMBigRational) second).toBigDecimal());
+    }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return lcm((BigDecimal)first, (BigDecimal)second);
     }

@@ -3,8 +3,10 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Max extends AFn {
 
@@ -19,6 +21,16 @@ public class Max extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
+    /* Big Rational numbers */
+    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
+      return ((SCMBigRational)first).compareTo((SCMBigRational)second) > 0 ? first : second;
+    }
+    if (first instanceof SCMBigRational) {
+      first = first.doubleValue();
+    }
+    if (second instanceof SCMBigRational) {
+      second = second.doubleValue();
+    }
     if ((first instanceof Long) && (second instanceof Long)) {
       return Math.max((Long)first, (Long)second);
     }

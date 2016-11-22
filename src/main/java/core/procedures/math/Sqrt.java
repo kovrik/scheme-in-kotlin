@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -25,6 +26,8 @@ public class Sqrt extends AFn {
         return Math.sqrt((Long)args[0]);
       } else if (args[0] instanceof Double) {
         return Math.sqrt((Double) args[0]);
+      } else if (args[0] instanceof SCMBigRational) {
+        return Math.sqrt(((SCMBigRational)args[0]).doubleValue());
       } else if (args[0] instanceof BigDecimal) {
         return Double.POSITIVE_INFINITY;
       }

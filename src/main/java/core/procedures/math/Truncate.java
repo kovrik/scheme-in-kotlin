@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
@@ -37,6 +38,8 @@ public class Truncate extends AFn {
         } else {
           return arg.setScale(0, BigDecimal.ROUND_DOWN);
         }
+      } else if (args[0] instanceof SCMBigRational) {
+        return ((SCMBigRational)args[0]).truncate();
       }
       throw new WrongTypeException("Number", args[0]);
     }

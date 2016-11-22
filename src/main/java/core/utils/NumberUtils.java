@@ -2,6 +2,7 @@ package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
 import core.reader.parsers.StringParser;
+import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
 
 import java.math.BigDecimal;
@@ -21,7 +22,6 @@ public class NumberUtils {
 
   public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
   public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);
-
 
   private static final Pattern HASH_PATTERN = Pattern.compile(".+#+$");
 
@@ -88,6 +88,11 @@ public class NumberUtils {
     RADIX_CHARS.put(16, "#+-.0123456789abcdefABCDEF");
   }
 
+  public static boolean isValidRational(String identifier) {
+
+    return true;
+  }
+
   /* Check if digit is valid for a number in a specific radix */
   public static boolean isValidForRadix(char c, int radix) {
     String s = RADIX_CHARS.get(radix);
@@ -110,7 +115,7 @@ public class NumberUtils {
       /* Check if char is valid for this radix AND
        * that we don't have # before digits
        */
-      if (!isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
+      if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
         allDigitsAreValid = false;
         break;
       }
@@ -131,7 +136,20 @@ public class NumberUtils {
     }
     // TODO Exponent
 
-    if (hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit) {
+    /* Check if it is a rational number */
+    boolean validRational = false;
+    boolean isRational = false;
+    if (number.indexOf('/') > -1) {
+      isRational = true;
+      if (number.indexOf('/') == number.lastIndexOf('/')) {
+        validRational = true;
+      }
+      if (number.indexOf('.') > -1) {
+        validRational = false;
+      }
+    }
+
+    if (hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit || (isRational && !validRational)) {
       /* Not a number! */
       return new SCMSymbol(number);
     }
@@ -143,6 +161,16 @@ public class NumberUtils {
     // TODO Exactness
 
     int hasSign = (number.charAt(0) == '-') ? 1 : 0;
+    if (isRational) {
+      String numerator = number.substring(0, number.indexOf('/'));
+      String denominator = number.substring(number.indexOf('/') + 1);
+
+      Integer threshold = RADIX_THRESHOLDS.get(radix);
+      boolean useBigNum = (numerator.length() > (threshold + hasSign)) ||
+                          (denominator.length() > (threshold + hasSign));
+      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum);
+    }
+
     Integer threshold = RADIX_THRESHOLDS.get(radix);
     boolean useBigNum = (number.length() > (threshold + hasSign));
     return processNumber(number, radix, exactness, useBigNum);
@@ -172,5 +200,12 @@ public class NumberUtils {
       }
     }
     return Long.parseLong(number, r);
+  }
+
+  /* Parse string into a rational number */
+  private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
+    boolean useBigNum) {
+
+    return new SCMBigRational(new BigInteger(numerator), new BigInteger(denominator));
   }
 }

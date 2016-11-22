@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 
 import static core.scm.SCMCons.list;
 import static org.junit.Assert.assertEquals;
@@ -135,7 +136,11 @@ public class RosettaCodeTest extends AbstractTest {
         2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
         61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
         8L, 4L, 2L, 1L);
-    assertEquals(seq, eval("(hailstone 27)", env));
+
+    List<Number> res = (List<Number>)eval("(hailstone 27)", env);
+    for (int i = 0; i < seq.size(); i++) {
+      assertEquals(seq.get(i), res.get(i).longValue());
+    }
     assertEquals(112L, eval("(hailstone-length 27)", env));
   }
 
