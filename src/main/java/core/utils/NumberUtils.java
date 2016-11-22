@@ -1,6 +1,7 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.WrongTypeException;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
@@ -178,14 +179,13 @@ public class NumberUtils {
 
   /* Parse string into a number */
   private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum) {
-    int hasSign = (number.charAt(0) == '-') ? 1 : 0;
     int dot = number.indexOf('.');
     if (useBigNum) {
       if (dot > -1) {
         /* Remove dot */
         number = number.replace(".", "");
         BigInteger bigInteger = new BigInteger(number, r);
-        return new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - hasSign - dot), MathContext.DECIMAL32);
+        return new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - dot), MathContext.DECIMAL32);
       }
       BigInteger bigInteger = new BigInteger(number, r);
       return new BigDecimal(bigInteger);
@@ -196,7 +196,7 @@ public class NumberUtils {
       } else {
         /* Remove dot */
         number = number.replace(".", "");
-        return Long.parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - hasSign - dot);
+        return Long.parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot);
       }
     }
     return Long.parseLong(number, r);
@@ -250,5 +250,43 @@ public class NumberUtils {
     } else {
       return true;
     }
+  }
+
+  // FIXME coerce to exact!
+  public static Number numerator(Object o) {
+    if (!isRational(o)) {
+      throw new WrongTypeException("Rational", o);
+    }
+    if (o instanceof SCMBigRational) {
+      return new BigDecimal(((SCMBigRational)o).getNumerator());
+    }
+    return (Number)o;
+  }
+
+  // FIXME coerce to exact!
+  public static Number denominator(Object o) {
+    if (!isRational(o)) {
+      throw new WrongTypeException("Rational", o);
+    }
+    if (o instanceof SCMBigRational) {
+      return new BigDecimal(((SCMBigRational)o).getDenominator());
+    }
+    if (o instanceof Long || o instanceof Integer) {
+      return 1L;
+    }
+    if (o instanceof Double || o instanceof Float) {
+      return 1d;
+    }
+    if (o instanceof BigInteger) {
+      return BigInteger.ONE;
+    }
+    if (o instanceof BigDecimal) {
+      if (((BigDecimal) o).scale() == 0) {
+        return BigDecimal.ONE;
+      } else {
+        return BigDecimal.ONE.setScale(1);
+      }
+    }
+    return 1L;
   }
 }

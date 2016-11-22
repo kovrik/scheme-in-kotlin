@@ -112,6 +112,10 @@ public class NumberTest extends AbstractTest {
     assertEquals(TRUE,  eval("(= 0)", env));
     assertEquals(TRUE,  eval("(= 0.57 0.5700)", env));
     assertEquals(TRUE,  eval("(= 7 7.00)", env));
+    assertEquals(TRUE,  eval("(= -234234/234 -234234/234 )", env));
+    assertEquals(FALSE, eval("(= -134234/234 -234234/234 )", env));
+    assertEquals(TRUE,  eval("(= 2000/3000 2/3)", env));
+    assertEquals(TRUE,  eval("(= -9999999999999999999999999999999.0 -9999999999999999999999999999999.0)", env));
 
     assertEquals(TRUE,  eval("(> 2 1)", env));
     assertEquals(TRUE,  eval("(> 2 1.123)", env));
@@ -707,5 +711,25 @@ public class NumberTest extends AbstractTest {
     } catch (WrongTypeException e) {
       assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
     }
+  }
+
+  @Test
+  public void testNumerator() {
+    assertEquals(1L, eval("(numerator 1)", env));
+    assertEquals(-1234L, eval("(numerator -1234)", env));
+    assertEquals(-1234.0, eval("(numerator -1234.0)", env));
+    assertEquals(new BigDecimal(17L), eval("(numerator 17/4)", env));
+    // FIXME coerce to exact
+//    assertEquals(2589569785738035.0, eval("(numerator 2.3)", env));
+  }
+
+  @Test
+  public void testDenominator() {
+    assertEquals(1L, eval("(denominator 1)", env));
+    assertEquals(1L, eval("(denominator -1234)", env));
+    assertEquals(1.0, eval("(denominator -1234.0)", env));
+    assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
+    // FIXME coerce to exact
+    //    assertEquals(1125899906842624.0, eval("(denominator 2.3)", env));
   }
 }

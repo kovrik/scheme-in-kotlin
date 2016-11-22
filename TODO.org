@@ -242,9 +242,11 @@ CLOSED: [2016-06-22 Wed 22:15]
 CLOSED: [2016-06-18 Sat 20:48]
 ***** DONE sqrt
 CLOSED: [2016-06-05 Sun 21:32]
-**** TODO Rational numbers [1/4]
-***** TODO numerator
-***** TODO denominator
+**** TODO Rational numbers [3/4]
+***** DONE numerator
+CLOSED: [2016-11-23 Wed 10:08]
+***** DONE denominator
+CLOSED: [2016-11-23 Wed 10:15]
 ***** DONE rational?
 CLOSED: [2016-11-23 Wed 09:55]
 ***** TODO rationalize

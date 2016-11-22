@@ -77,6 +77,8 @@ public final class DefaultEnvironment extends Environment {
       new Min(),
       new GCD(),
       new LCM(),
+      new Numerator(),
+      new Denominator(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),
