@@ -207,6 +207,7 @@ public final class DefaultEnvironment extends Environment {
       new IsNumber(),
       new IsExact(),
       new IsInexact(),
+      new IsRational(),
       new IsReal(),
       new IsPort(),
       new IsInputPort(),

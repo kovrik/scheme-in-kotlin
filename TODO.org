@@ -242,10 +242,11 @@ CLOSED: [2016-06-22 Wed 22:15]
 CLOSED: [2016-06-18 Sat 20:48]
 ***** DONE sqrt
 CLOSED: [2016-06-05 Sun 21:32]
-**** TODO Rational numbers [0/4]
+**** TODO Rational numbers [1/4]
 ***** TODO numerator
 ***** TODO denominator
-***** TODO rational?
+***** DONE rational?
+CLOSED: [2016-11-23 Wed 09:55]
 ***** TODO rationalize
 **** DONE Approximation [4/4]
 CLOSED: [2016-06-17 Fri 18:24]
@@ -318,10 +319,11 @@ CLOSED: [2016-08-13 Sat 21:03]
 CLOSED: [2016-08-13 Sat 21:03]
 ***** DONE string->number
 CLOSED: [2016-08-13 Sat 21:03]
-**** TODO Type predicates [3/5]
+**** TODO Type predicates [4/5]
 ***** DONE integer?
 CLOSED: [2016-06-17 Fri 18:07]
-***** TODO rational?
+***** DONE rational?
+CLOSED: [2016-11-23 Wed 09:57]
 ***** DONE real?
 CLOSED: [2016-11-11 Fri 22:41]
 ***** TODO complex?
@@ -479,8 +481,8 @@ CLOSED: [2016-07-17 Sun 12:03]
 CLOSED: [2016-07-10 Sun 12:08]
 **** DONE string->list
 CLOSED: [2016-07-10 Sun 17:53]
-*** DONE Identity predicates [8/9]
-CLOSED: [2016-11-17 Thu 10:05]
+*** DONE Identity predicates [9/9]
+CLOSED: [2016-11-23 Wed 09:56]
 **** DONE boolean?
 CLOSED: [2016-05-15 Sun 22:24]
 **** DONE pair?

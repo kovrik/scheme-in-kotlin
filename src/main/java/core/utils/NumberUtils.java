@@ -238,4 +238,17 @@ public class NumberUtils {
     }
     return true;
   }
+
+  public static boolean isRational(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Double) {
+      return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
+    } else if (o instanceof Float) {
+      return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
+    } else {
+      return true;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 package unittests;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.scm.SCMBigRational;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -639,5 +640,72 @@ public class NumberTest extends AbstractTest {
     // quotient = (truncate (/ n m))
     eval("(define // (lambda (n m) (truncate (/ n m))))", env);
     assertEquals(eval("(quotient 5 4)", env), eval("(// 5 4)", env));
+  }
+
+  @Test
+  public void testIsRational() {
+    assertEquals(TRUE, eval("(rational? 0)", env));
+    assertEquals(TRUE, eval("(rational? 1.0)", env));
+    assertEquals(TRUE, eval("(rational? -234234/234234)", env));
+    assertEquals(TRUE, eval("(rational? -83457348957348573498573489573489573489583457389457349534.3489534895)", env));
+
+    assertEquals(FALSE, eval("(rational? +inf.0)", env));
+    assertEquals(FALSE, eval("(rational? -inf.0)", env));
+    assertEquals(FALSE, eval("(rational? +nan.0)", env));
+    assertEquals(FALSE, eval("(rational? -nan.0)", env));
+    assertEquals(FALSE, eval("(rational? \"test\")", env));
+  }
+
+  @Test
+  public void testIsReal() {
+    assertEquals(TRUE, eval("(real? 0)", env));
+    assertEquals(TRUE, eval("(real? 1.0)", env));
+    assertEquals(TRUE, eval("(real? -234234/234234)", env));
+    assertEquals(TRUE, eval("(real? -83457348957348573498573489573489573489583457389457349534.3489534895)", env));
+    assertEquals(TRUE, eval("(real? +inf.0)", env));
+    assertEquals(TRUE, eval("(real? -inf.0)", env));
+    assertEquals(TRUE, eval("(real? +nan.0)", env));
+    assertEquals(TRUE, eval("(real? -nan.0)", env));
+    assertEquals(FALSE, eval("(real? \"test\")", env));
+  }
+
+  @Test
+  public void testIsExact() {
+    assertEquals(TRUE, eval("(exact? 0)", env));
+    assertEquals(TRUE, eval("(exact? -3/5)", env));
+    assertEquals(TRUE, eval("(exact? 99999999999999999999999999999999999999999999999999999999999999999999)", env));
+
+    assertEquals(FALSE, eval("(exact? -2.5)", env));
+    assertEquals(FALSE, eval("(exact? +inf.0)", env));
+    assertEquals(FALSE, eval("(exact? -inf.0)", env));
+    assertEquals(FALSE, eval("(exact? +nan.0)", env));
+    assertEquals(FALSE, eval("(exact? -nan.0)", env));
+
+    try {
+      eval("(exact? \"test\")", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testIsInexact() {
+    assertEquals(FALSE, eval("(inexact? 0)", env));
+    assertEquals(FALSE, eval("(inexact? -3/5)", env));
+    assertEquals(FALSE, eval("(inexact? 99999999999999999999999999999999999999999999999999999999999999999999)", env));
+
+    assertEquals(TRUE, eval("(inexact? -2.5)", env));
+    assertEquals(TRUE, eval("(inexact? +inf.0)", env));
+    assertEquals(TRUE, eval("(inexact? -inf.0)", env));
+    assertEquals(TRUE, eval("(inexact? +nan.0)", env));
+    assertEquals(TRUE, eval("(inexact? -nan.0)", env));
+
+    try {
+      eval("(inexact? \"test\")", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+    }
   }
 }
