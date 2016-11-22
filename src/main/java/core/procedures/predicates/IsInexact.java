@@ -1,11 +1,12 @@
 package core.procedures.predicates;
 
 import core.exceptions.ArityException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
 import core.utils.NumberUtils;
 
-public class IsNumber extends AFn {
+public class IsInexact extends AFn {
 
   @Override
   public boolean isPure() {
@@ -14,7 +15,7 @@ public class IsNumber extends AFn {
 
   @Override
   public String getName() {
-    return "number?";
+    return "inexact?";
   }
 
   @Override
@@ -22,6 +23,9 @@ public class IsNumber extends AFn {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, getName());
     }
-    return SCMBoolean.toSCMBoolean(NumberUtils.isNumber(args[0]));
+    if (!(args[0] instanceof Number)) {
+      throw new WrongTypeException("Number", args[0]);
+    }
+    return SCMBoolean.toSCMBoolean(NumberUtils.isInexact(args[0]));
   }
 }

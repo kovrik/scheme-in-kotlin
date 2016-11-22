@@ -208,4 +208,34 @@ public class NumberUtils {
 
     return new SCMBigRational(new BigInteger(numerator), new BigInteger(denominator));
   }
+
+  public static boolean isNumber(Object o) {
+    return o instanceof Number;
+  }
+
+  public static boolean isExact(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
+      return true;
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).scale() == 0;
+    }
+    return false;
+  }
+
+  public static boolean isInexact(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
+      return false;
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).scale() != 0;
+    }
+    return true;
+  }
 }

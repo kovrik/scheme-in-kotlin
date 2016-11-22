@@ -257,11 +257,13 @@ CLOSED: [2016-06-17 Fri 18:24]
 CLOSED: [2016-06-17 Fri 18:24]
 ***** DONE round
 CLOSED: [2016-06-17 Fri 18:07]
-**** TODO Exactness [0/4]
+**** TODO Exactness [2/4]
 ***** TODO inexact->exact
 ***** TODO exact->inexact
-***** TODO exact?
-***** TODO inexact?
+***** DONE exact?
+CLOSED: [2016-11-23 Wed 08:44]
+***** DONE inexact?
+CLOSED: [2016-11-23 Wed 08:44]
 **** DONE Inequalities [5/5]
 CLOSED: [2016-04-21 Thu 22:04]
 ***** DONE <
