@@ -59,7 +59,7 @@ public class StringToNumber extends AFn {
       }
     }
     number = parse.getRest();
-    exactness = (exactness == null) ? 'e' : exactness;
+    exactness = (exactness == null) ? 'i' : exactness;
     radixChar = (radixChar == null) ? 'd' : radixChar;
 
     int radix = NumberUtils.getRadixByChar(radixChar);
@@ -81,7 +81,7 @@ public class StringToNumber extends AFn {
 
     /* Read number */
     try {
-      Object result = NumberUtils.preProcessNumber(number, 'e', radix);
+      Object result = NumberUtils.preProcessNumber(number, exactness, radix);
       if (result instanceof Number) {
         return result;
       }

@@ -12,8 +12,9 @@ import java.math.MathContext;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
+
+import static java.lang.Long.parseLong;
 
 public class NumberUtils {
 
@@ -159,8 +160,8 @@ public class NumberUtils {
     if (number.charAt(0) == '+') {
       number = number.substring(1);
     }
-    /* Check exactness */
-    // TODO Exactness
+
+    // FIXME Get rid of scientific notation?
 
     int hasSign = (number.charAt(0) == '-') ? 1 : 0;
     if (isRational) {
@@ -186,21 +187,53 @@ public class NumberUtils {
         /* Remove dot */
         number = number.replace(".", "");
         BigInteger bigInteger = new BigInteger(number, r);
-        return new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - dot), MathContext.DECIMAL32);
+        return processExactness(new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - dot), MathContext.DECIMAL32), exactness);
+      } else {
+        return processExactness(new BigDecimal(new BigInteger(number, r)), exactness);
       }
-      BigInteger bigInteger = new BigInteger(number, r);
-      return new BigDecimal(bigInteger);
     }
     if (dot > -1) {
       if (r == 10) {
-        return Double.parseDouble(number);
+        return processExactness(Double.parseDouble(number), exactness);
       } else {
         /* Remove dot */
         number = number.replace(".", "");
-        return Long.parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot);
+        return processExactness(parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot), exactness);
       }
     }
-    return Long.parseLong(number, r);
+    return processExactness(Long.parseLong(number, r), exactness);
+  }
+
+  private static Number processExactness(Number number, char exactness) {
+    if (exactness == 'e') {
+      /* For some reason (optimization?), Racket's Reader does not convert into exact numbers 'properly':
+       *
+       * #e2.3 returns 23/10
+       * but
+       * (inexact->exact 2.3) returns 2589569785738035/1125899906842624
+       *
+       * Guile returns 2589569785738035/1125899906842624 in both cases.
+       */
+      if (isExact(number)) {
+        return number;
+      } else {
+        /* Guile version */
+        return toExact(number);
+
+        /* Racket version (non-optimized) */
+        // FIXME does not work because number.toString() may format number to Scientific notaion
+//        String s = number.toString();
+//        int dot = s.indexOf('.');
+//        if (dot > -1) {
+//          /* Remove dot */
+//          s = s.replace(".", "");
+//          return new SCMBigRational(new BigInteger(s), BigInteger.TEN.pow(s.length() - dot));
+//        }
+//        return number;
+      }
+    }
+    /* Numbers are inexact by default, nothing to do */
+    return number;
   }
 
   /* Parse string into a rational number */

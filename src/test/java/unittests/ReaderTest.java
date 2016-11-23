@@ -1,18 +1,14 @@
 package unittests;
 
 import core.exceptions.IllegalSyntaxException;
-import core.reader.IReader;
-import core.reader.Reader;
 import core.reader.StringReader;
-import core.scm.SCMBoolean;
-import core.scm.SCMString;
-import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static core.scm.SCMCons.list;
 import static core.scm.specialforms.Lambda.LAMBDA;
@@ -38,7 +34,7 @@ public class ReaderTest {
     assertEquals(.5d, reader.readFirst(".5"));
     assertEquals(-.5d, reader.readFirst("-.5"));
 
-    assertEquals(-.5d, reader.readFirst("#e#d-.5"));
+    assertEquals(new SCMBigRational(new BigInteger("-1"), new BigInteger("2")), reader.readFirst("#e#d-.5"));
     assertEquals(+4.5d, reader.readFirst("#i#d+4.5"));
     assertEquals(4999999.5d, reader.readFirst("#i#d+4999999.5"));
     assertEquals(5L, reader.readFirst("#e#b101"));

@@ -730,4 +730,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
     assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
   }
+
+  // TODO inexact->exact and exact->inexact conversion
+  // (inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)
 }
