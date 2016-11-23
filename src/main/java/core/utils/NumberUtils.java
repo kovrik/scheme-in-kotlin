@@ -247,7 +247,9 @@ public class NumberUtils {
   private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
     boolean useBigNum) {
 
-    return new SCMBigRational(new BigInteger(numerator), new BigInteger(denominator));
+    Number num = processNumber(numerator, r, exactness, useBigNum);
+    Number den = processNumber(denominator, r, exactness, useBigNum);
+    return new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
   }
 
   public static boolean isNumber(Object o) {
