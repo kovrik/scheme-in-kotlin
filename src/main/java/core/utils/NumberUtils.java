@@ -361,6 +361,11 @@ public class NumberUtils {
     if (!isNumber(o)) {
       throw new WrongTypeException("Number", o);
     }
+    if (o instanceof Double && (Double.isInfinite((Double) o) || Double.isNaN((Double)o))) {
+      throw new ArithmeticException("No exact representation");
+    } else if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
+      throw new ArithmeticException("No exact representation");
+    }
     if (o instanceof Double) {
       return doubleToExact((Double) o);
     }
@@ -369,10 +374,6 @@ public class NumberUtils {
       return ((BigDecimal)o).toBigIntegerExact();
     }
     return (Number) o;
-  }
-
-  public static void main(String[] args) {
-    System.out.println(doubleToExact(-1234.0));
   }
 
   private static Number doubleToExact(Double number) {
