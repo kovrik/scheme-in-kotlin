@@ -218,7 +218,7 @@ CLOSED: [2016-07-23 Sat 13:01]
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-*** TODO Numbers [6/12]
+*** TODO Numbers [7/12]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -260,8 +260,10 @@ CLOSED: [2016-06-17 Fri 18:24]
 CLOSED: [2016-06-17 Fri 18:24]
 ***** DONE round
 CLOSED: [2016-06-17 Fri 18:07]
-**** TODO Exactness [3/4]
-***** TODO inexact->exact
+**** DONE Exactness [4/4]
+CLOSED: [2016-11-23 Wed 17:19]
+***** DONE inexact->exact
+CLOSED: [2016-11-23 Wed 17:19]
 ***** DONE exact->inexact
 CLOSED: [2016-11-23 Wed 12:15]
 ***** DONE exact?

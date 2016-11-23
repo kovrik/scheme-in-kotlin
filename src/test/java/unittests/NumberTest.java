@@ -717,19 +717,17 @@ public class NumberTest extends AbstractTest {
   public void testNumerator() {
     assertEquals(1L, eval("(numerator 1)", env));
     assertEquals(-1234L, eval("(numerator -1234)", env));
-    assertEquals(-1234.0, eval("(numerator -1234.0)", env));
+    assertEquals(new BigDecimal("-1234.0"), eval("(numerator -1234.0)", env));
     assertEquals(new BigDecimal(17L), eval("(numerator 17/4)", env));
-    // FIXME coerce to exact
-//    assertEquals(2589569785738035.0, eval("(numerator 2.3)", env));
+    assertEquals(new BigDecimal("2589569785738035.0"), eval("(numerator 2.3)", env));
   }
 
   @Test
   public void testDenominator() {
     assertEquals(1L, eval("(denominator 1)", env));
     assertEquals(1L, eval("(denominator -1234)", env));
-    assertEquals(1.0, eval("(denominator -1234.0)", env));
+    assertEquals(new BigDecimal("1.0"), eval("(denominator -1234.0)", env));
     assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
-    // FIXME coerce to exact
-    //    assertEquals(1125899906842624.0, eval("(denominator 2.3)", env));
+    assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
   }
 }

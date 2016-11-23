@@ -253,36 +253,56 @@ public class NumberUtils {
     }
   }
 
-  // FIXME coerce to exact!
   public static Number numerator(Object o) {
     if (!isRational(o)) {
       throw new WrongTypeException("Rational", o);
     }
-    if (o instanceof SCMBigRational) {
-      return new BigDecimal(((SCMBigRational)o).getNumerator());
+    boolean isExact = isExact(o);
+    Number exact;
+    if (isExact) {
+      exact = (Number)o;
+    } else {
+      exact = toExact(o);
     }
-    return (Number)o;
+    if (exact instanceof SCMBigRational) {
+      BigDecimal result = new BigDecimal(((SCMBigRational) exact).getNumerator());
+      if (!isExact) {
+        return result.setScale(1);
+      }
+      return result;
+    }
+    return exact;
   }
 
-  // FIXME coerce to exact!
   public static Number denominator(Object o) {
     if (!isRational(o)) {
       throw new WrongTypeException("Rational", o);
     }
-    if (o instanceof SCMBigRational) {
-      return new BigDecimal(((SCMBigRational)o).getDenominator());
+    Number exact;
+    boolean isExact = isExact(o);
+    if (isExact) {
+      exact = (Number)o;
+    } else {
+      exact = toExact(o);
     }
-    if (o instanceof Long || o instanceof Integer) {
+    if (exact instanceof SCMBigRational) {
+      BigDecimal result = new BigDecimal(((SCMBigRational) exact).getDenominator());
+      if (!isExact) {
+        return result.setScale(1);
+      }
+      return result;
+    }
+    if (exact instanceof Long || exact instanceof Integer) {
       return 1L;
     }
-    if (o instanceof Double || o instanceof Float) {
+    if (exact instanceof Double || exact instanceof Float) {
       return 1d;
     }
-    if (o instanceof BigInteger) {
+    if (exact instanceof BigInteger) {
       return BigInteger.ONE;
     }
-    if (o instanceof BigDecimal) {
-      if (((BigDecimal) o).scale() == 0) {
+    if (exact instanceof BigDecimal) {
+      if (((BigDecimal) exact).scale() == 0) {
         return BigDecimal.ONE;
       } else {
         return BigDecimal.ONE.setScale(1);
@@ -296,12 +316,51 @@ public class NumberUtils {
       throw new WrongTypeException("Number", o);
     }
     if (o instanceof SCMBigRational) {
-
       return ((SCMBigRational)o).toBigDecimal();
     }
     if (o instanceof BigDecimal) {
       return (BigDecimal)o;
     }
     return ((Number)o).doubleValue();
+  }
+
+  public static Number toExact(Object o) {
+    if (!isNumber(o)) {
+      throw new WrongTypeException("Number", o);
+    }
+    if (o instanceof Double) {
+      return doubleToExact((Double) o);
+    }
+    if (o instanceof BigDecimal) {
+      // TODO Check exception
+      return ((BigDecimal)o).toBigIntegerExact();
+    }
+    return (Number) o;
+  }
+
+  public static void main(String[] args) {
+    System.out.println(doubleToExact(-1234.0));
+  }
+
+  private static Number doubleToExact(Double number) {
+    long bits = Double.doubleToLongBits(number);
+    long sign = bits >>> 63;
+    long exponent = ((bits >>> 52) ^ (sign << 11)) - 1023;
+    long fraction = bits << 12;
+    long a = 1L;
+    long b = 1L;
+    for (int i = 63; i >= 12; i--) {
+      a = a * 2 + ((fraction >>> i) & 1);
+      b *= 2;
+    }
+    if (exponent > 0) {
+      a *= 1 << exponent;
+    } else {
+      b *= 1 << -exponent;
+    }
+    if (sign == 1) {
+      a *= -1;
+    }
+    return new SCMBigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 }

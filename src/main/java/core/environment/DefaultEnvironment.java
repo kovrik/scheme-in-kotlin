@@ -80,6 +80,7 @@ public final class DefaultEnvironment extends Environment {
       new Numerator(),
       new Denominator(),
       new ToInexact(),
+      new ToExact(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),
