@@ -48,6 +48,13 @@ public class NumberUtils {
     NAMED_RADICES.put('X', 16);
   }
 
+  private static final Map<Integer, BigDecimal> BIG_DECIMAL_RADICES = new HashMap<>();
+  static {
+    for (int r = 2; r <= 16; r++) {
+      BIG_DECIMAL_RADICES.put(r, new BigDecimal(r));
+    }
+  }
+
   public static int getRadixByChar(char radixChar) {
     return NAMED_RADICES.get(radixChar);
   }
@@ -89,11 +96,6 @@ public class NumberUtils {
     RADIX_CHARS.put(14, "#+-.0123456789abcdABCD");
     RADIX_CHARS.put(15, "#+-.0123456789abcdeABCDE");
     RADIX_CHARS.put(16, "#+-.0123456789abcdefABCDEF");
-  }
-
-  public static boolean isValidRational(String identifier) {
-
-    return true;
   }
 
   /* Check if digit is valid for a number in a specific radix */
@@ -187,7 +189,12 @@ public class NumberUtils {
         /* Remove dot */
         number = number.replace(".", "");
         BigInteger bigInteger = new BigInteger(number, r);
-        return processExactness(new BigDecimal(bigInteger).divide(new BigDecimal(r).pow(number.length() - dot), MathContext.DECIMAL32), exactness);
+        BigDecimal result = new BigDecimal(bigInteger)
+          .divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
+        if (result.stripTrailingZeros().scale() == 0) {
+          result = result.setScale(1, BigDecimal.ROUND_HALF_UP);
+        }
+        return processExactness(result, exactness);
       } else {
         return processExactness(new BigDecimal(new BigInteger(number, r)), exactness);
       }
@@ -361,17 +368,22 @@ public class NumberUtils {
     if (!isNumber(o)) {
       throw new WrongTypeException("Number", o);
     }
-    if (o instanceof Double && (Double.isInfinite((Double) o) || Double.isNaN((Double)o))) {
-      throw new ArithmeticException("No exact representation");
-    } else if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
+    if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
       throw new ArithmeticException("No exact representation");
     }
     if (o instanceof Double) {
+      if ((Double.isInfinite((Double) o) || Double.isNaN((Double) o))) {
+        throw new ArithmeticException("No exact representation");
+      }
       return doubleToExact((Double) o);
     }
     if (o instanceof BigDecimal) {
-      // TODO Check exception
-      return ((BigDecimal)o).toBigIntegerExact();
+      int scale = ((BigDecimal) o).scale();
+      if (scale == 0) {
+        return (BigDecimal)o;
+      } else {
+        return new SCMBigRational(((BigDecimal) o).movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+      }
     }
     return (Number) o;
   }

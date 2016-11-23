@@ -570,7 +570,7 @@ public class NumberTest extends AbstractTest {
     assertEquals("5",  eval("(number->string 5)", env));
     assertEquals("5.5",  eval("(number->string 5.5)", env));
     assertEquals("9999999999999999999999999999999",  eval("(number->string #d9999999999999999999999999999999)", env));
-    assertEquals("1.000000E+31",  eval("(number->string 9999999999999999999999999999999.5)", env));
+    assertEquals("9999999999999999999999999999999.5",  eval("(number->string 9999999999999999999999999999999.5)", env));
 
     assertEquals("5", eval("(number->string #b101)", env));
     assertEquals("309461373397964671249896789", eval("(number->string #b1111111111111010111111101010101010111011010101101010101010101110110101010101010101010101)", env));
