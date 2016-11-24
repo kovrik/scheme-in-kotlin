@@ -261,7 +261,7 @@ public class RosettaCodeTest extends AbstractTest {
 
     eval(integerRoots, tempEnv);
     assertEquals(new BigDecimal("2"), eval("(root 3 25)", tempEnv));
-    assertEquals(new BigDecimal("125.0"), eval("(root 3 (* 2 (expt 1000 2)))", tempEnv));
+    assertEquals(new BigDecimal("125"), eval("(root 3 (* 2 (expt 1000 2)))", tempEnv));
     assertEquals(new BigDecimal("10000000"), eval("(root 3 (expt 1000 7))", tempEnv));
 
     assertEquals(new BigDecimal("125992104989487316476"),

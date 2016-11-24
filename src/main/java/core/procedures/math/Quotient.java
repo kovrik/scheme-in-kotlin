@@ -37,7 +37,12 @@ public class Quotient extends AFn {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
-    return first.divideToIntegralValue(second);
+    int scale = Math.max(first.scale(), second.scale());
+    BigDecimal result = first.divideToIntegralValue(second).setScale(scale);
+    if (scale > 0 && result.stripTrailingZeros().scale() == 0) {
+      result = result.setScale(1, BigDecimal.ROUND_HALF_EVEN);
+    }
+    return result;
   }
 
   public Number invoke(Number first, Number second) {

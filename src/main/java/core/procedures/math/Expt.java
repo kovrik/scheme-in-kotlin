@@ -3,8 +3,10 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.procedures.io.Load;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Expt extends AFn {
 
@@ -34,6 +36,9 @@ public class Expt extends AFn {
 
   // FIXME Fractional power for BigDecimals?
   public Number invoke(Number first, Number second) {
+    if ((first instanceof Long) || (second instanceof Long)) {
+      return new BigDecimal(first.toString()).pow(second.intValue());
+    }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
       return new BigDecimal(first.toString()).pow(second.intValue());
     }

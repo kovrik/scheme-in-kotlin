@@ -132,9 +132,9 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("3.0"),  eval("(quotient 13.0 4)", env));
     assertEquals(1L,  eval("(quotient 5 5)", env));
     assertEquals(new BigDecimal("1.0"),  eval("(quotient 5.0 5)", env));
-    assertEquals(new BigDecimal("1"),  eval("(quotient -5 -5.0)", env));
+    assertEquals(new BigDecimal("1.0"),  eval("(quotient -5 -5.0)", env));
     assertEquals(-1L, eval("(quotient -5 5)", env));
-    assertEquals(new BigDecimal("-1"), eval("(quotient -5 5.)", env));
+    assertEquals(new BigDecimal("-1.0"), eval("(quotient -5 5.)", env));
     try {
       eval("(quotient -10 0.0001)", env);
       fail();
@@ -463,13 +463,13 @@ public class NumberTest extends AbstractTest {
 
   @Test
   public void testEvalExpt() {
-    assertEquals(1.0, eval("(expt 9 0)", env));
-    assertEquals(0.0, eval("(expt 0 10)", env));
-    assertEquals(1.0, eval("(expt 1 1)", env));
-    assertEquals(8.0, eval("(expt 2 3)", env));
-    assertEquals(16777216.0, eval("(expt 4 12)", env));
-    assertEquals(25.0, eval("(expt -5 2)", env));
-    assertEquals(-125.0, eval("(expt -5 3)", env));
+    assertEquals(BigDecimal.ONE, eval("(expt 9 0)", env));
+    assertEquals(BigDecimal.ZERO, eval("(expt 0 10)", env));
+    assertEquals(BigDecimal.ONE, eval("(expt 1 1)", env));
+    assertEquals(new BigDecimal(8), eval("(expt 2 3)", env));
+    assertEquals(new BigDecimal(16777216), eval("(expt 4 12)", env));
+    assertEquals(new BigDecimal(25), eval("(expt -5 2)", env));
+    assertEquals(new BigDecimal(-125), eval("(expt -5 3)", env));
     assertEquals(13.489468760533386, eval("(expt 2.2 3.3)", env));
     try {
       eval("(expt \"test\" 1)", env);
