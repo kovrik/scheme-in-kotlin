@@ -35,6 +35,7 @@ public class Expt extends AFn {
   }
 
   // FIXME Check other special cases: Negative infinity, NaN, zero?
+  // FIXME Negative exponent
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) || (second instanceof Long)) {
       int scale = 0;
