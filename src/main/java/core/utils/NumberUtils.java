@@ -249,7 +249,11 @@ public class NumberUtils {
 
     Number num = processNumber(numerator, r, exactness, useBigNum);
     Number den = processNumber(denominator, r, exactness, useBigNum);
-    return new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
+    SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
+    if (exactness == 'i') {
+      return toInexact(number);
+    }
+    return number;
   }
 
   public static boolean isNumber(Object o) {

@@ -205,7 +205,8 @@ public class Reader implements IReader {
         return NumberUtils.SPECIAL_NUMBERS.get(number);
       }
       /* Now check if it IS a valid number */
-      return preProcessNumber(number, 'i', 10);
+      char exactness = (number.indexOf('/') > -1) ? 'e' : 'i';
+      return preProcessNumber(number, exactness, 10);
     } else if (c == ';') {
       return readComment();
     } else if (c == '"') {
@@ -232,6 +233,7 @@ public class Reader implements IReader {
 
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
+      boolean isRational = (number.indexOf('/') > -1);
 
       /* Read radix and/or exactness and a number */
       Character radixChar = null;
@@ -253,7 +255,7 @@ public class Reader implements IReader {
           }
         }
       }
-      exactness = (exactness == null) ? 'i' : exactness;
+      exactness = (exactness == null) ? (isRational ? 'e' : 'i') : exactness;
       radixChar = (radixChar == null) ? 'd' : radixChar;
 
       String restNumber = parse.getRest();
@@ -375,7 +377,7 @@ public class Reader implements IReader {
       if (radix == 8  && identifier.length() == 1) {
         return identifier.charAt(0);
       }
-      return (char)((Number)preProcessNumber(identifier, 'i', radix)).intValue();
+      return (char)((Number)preProcessNumber(identifier, 'e', radix)).intValue();
     }
 
     StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter());

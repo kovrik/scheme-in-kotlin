@@ -34,12 +34,27 @@ public class Expt extends AFn {
     throw new ArityException(args.length, 2, getName());
   }
 
-  // FIXME Fractional power for BigDecimals?
+  // FIXME Check other special cases: Negative infinity, NaN, zero?
   public Number invoke(Number first, Number second) {
     if ((first instanceof Long) || (second instanceof Long)) {
-      return new BigDecimal(first.toString()).pow(second.intValue());
+      int scale = 0;
+      if (second instanceof Double) {
+        scale = 1;
+      } else if (second instanceof BigDecimal) {
+        scale = ((BigDecimal)second).scale();
+      }
+      return new BigDecimal(first.toString()).pow(second.intValue()).setScale(scale);
     }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      BigDecimal s;
+      if (second instanceof BigDecimal) {
+        s = (BigDecimal)second;
+      } else {
+        s = new BigDecimal(second.toString());
+      }
+      if (s.stripTrailingZeros().scale() != 0) {
+        return Double.POSITIVE_INFINITY;
+      }
       return new BigDecimal(first.toString()).pow(second.intValue());
     }
     double result = Math.pow(first.doubleValue(), second.doubleValue());

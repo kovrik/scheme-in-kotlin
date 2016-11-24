@@ -1,6 +1,5 @@
-* TODO: [27/36]
+* TODO: [28/35]
 
-** TODO [#A] Expt with fractional power for BigDecimals
 ** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
@@ -45,6 +44,8 @@ CLOSED: [2016-11-11 Fri 22:32]
 **** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
 ** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** TODO [#B] Performance (cheaper function calls, caching, less object creation etc.)
+** DONE [#A] Expt with fractional power for BigDecimals
+CLOSED: [2016-11-24 Thu 15:34]
 ** DONE [#A] Implement CONS cells
 CLOSED: [2016-07-07 Thu 19:06]
 ** DONE [#A] Implement SCMList using CONS?
