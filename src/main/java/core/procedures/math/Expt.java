@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.io.Load;
+import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,33 +34,54 @@ public class Expt extends AFn {
     throw new ArityException(args.length, 2, getName());
   }
 
+  // TODO Cleanup
+  // TODO Check exactness
   // FIXME Check other special cases: Negative infinity, NaN, zero?
-  // FIXME Negative exponent
-  public Number invoke(Number first, Number second) {
-    if ((first instanceof Long) || (second instanceof Long)) {
+  public Number invoke(Number first, Number exponent) {
+    if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
-      if (second instanceof Double) {
+      if (exponent instanceof Double) {
         scale = 1;
-      } else if (second instanceof BigDecimal) {
-        scale = ((BigDecimal)second).scale();
+      } else if (exponent instanceof BigDecimal) {
+        scale = ((BigDecimal)exponent).scale();
       }
-      return new BigDecimal(first.toString()).pow(second.intValue()).setScale(scale);
+      boolean isNegative = false;
+      int e = exponent.intValue();
+      if (exponent.intValue() < 0) {
+        isNegative = true;
+        e = Math.abs(exponent.intValue());
+      }
+      BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(scale);
+      if (isNegative) {
+        return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
+      }
+      return result;
     }
-    if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+    if ((first instanceof BigDecimal) || (exponent instanceof BigDecimal)) {
       BigDecimal s;
-      if (second instanceof BigDecimal) {
-        s = (BigDecimal)second;
+      if (exponent instanceof BigDecimal) {
+        s = (BigDecimal)exponent;
       } else {
-        s = new BigDecimal(second.toString());
+        s = new BigDecimal(exponent.toString());
       }
       if (s.stripTrailingZeros().scale() != 0) {
         return Double.POSITIVE_INFINITY;
       }
-      return new BigDecimal(first.toString()).pow(second.intValue());
+      boolean isNegative = false;
+      int e = exponent.intValue();
+      if (exponent.intValue() < 0) {
+        isNegative = true;
+        e = Math.abs(exponent.intValue());
+      }
+      BigDecimal result = new BigDecimal(first.toString()).pow(e);
+      if (isNegative) {
+        return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
+      }
+      return result;
     }
-    double result = Math.pow(first.doubleValue(), second.doubleValue());
+    double result = Math.pow(first.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
-      return new BigDecimal(first.toString()).pow(second.intValue());
+      return new BigDecimal(first.toString()).pow(exponent.intValue());
     }
     return result;
   }
