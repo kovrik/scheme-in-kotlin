@@ -44,7 +44,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public BigDecimal toBigDecimal() {
-    return new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_UP);
+    return new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_EVEN);
   }
 
   public boolean isDenominatorEqualToOne() {
@@ -92,7 +92,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public SCMBigRational round() {
-    BigDecimal round = new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_UP)
+    BigDecimal round = new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_EVEN)
                                                 .round(MathContext.DECIMAL32);
     return new SCMBigRational(round.toBigInteger(), BigInteger.ONE);
   }

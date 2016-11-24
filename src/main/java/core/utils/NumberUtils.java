@@ -192,7 +192,7 @@ public class NumberUtils {
         BigDecimal result = new BigDecimal(bigInteger)
           .divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
         if (result.stripTrailingZeros().scale() == 0) {
-          result = result.setScale(1, BigDecimal.ROUND_HALF_UP);
+          result = result.setScale(1, BigDecimal.ROUND_HALF_EVEN);
         }
         return processExactness(result, exactness);
       } else {

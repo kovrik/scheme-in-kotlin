@@ -10,7 +10,7 @@ import java.math.BigInteger;
 
 public class Division extends AFn {
 
-  private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
+  private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
 
   @Override
   public boolean isPure() {
