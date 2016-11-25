@@ -1,5 +1,6 @@
 * TODO: [28/35]
 
+** TODO [#A] Inexactness taint
 ** TODO [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)

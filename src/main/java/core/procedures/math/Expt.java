@@ -35,7 +35,6 @@ public class Expt extends AFn {
   }
 
   // TODO Cleanup
-  // TODO Check exactness
   // FIXME Check other special cases: Negative infinity, NaN, zero?
   public Number invoke(Number first, Number exponent) {
     if ((first instanceof Long) || (exponent instanceof Long)) {
