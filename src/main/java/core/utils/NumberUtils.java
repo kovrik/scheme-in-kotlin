@@ -158,7 +158,7 @@ public class NumberUtils {
     if (hasAtLeastOneDigit && number.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(number).matches()) {
         number = number.replaceAll("#", "0");
-        number = number + ".0";
+        // FIXME force user-specified exactness!
         exactness = 'i';
       } else {
         validHashChars = false;
@@ -414,6 +414,7 @@ public class NumberUtils {
       if ((Double.isInfinite((Double) o) || Double.isNaN((Double) o))) {
         throw new ArithmeticException("No exact representation");
       }
+      // FIXME There is no need to always call this method!
       return doubleToExact((Double) o);
     }
     if (o instanceof BigDecimal) {

@@ -46,8 +46,11 @@ public class NumberTest extends AbstractTest {
     assertEquals(100.0, eval("#d10#", env));
     assertEquals(4.0, eval("#b10#", env));
     assertEquals(150.0, eval("+15#", env));
+
     // TODO
 //    assertEquals(100, eval("#e#d10#", env));
+//    assertEquals(, eval("#e#d10.1", env));
+//      assertEquals(150L, eval("#e15#", env));
 
     try {
       eval("+#", env);
