@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.utils.NumberUtils;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -44,7 +46,13 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public BigDecimal toBigDecimal() {
-    return new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_EVEN);
+    return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
+  }
+
+  public BigDecimal toBigDecimalInexact() {
+    BigDecimal bigDecimal = NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
+    int scale = Math.max(1, bigDecimal.scale());
+    return bigDecimal.setScale(scale);
   }
 
   public boolean isDenominatorEqualToOne() {
@@ -92,8 +100,13 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public SCMBigRational round() {
-    BigDecimal round = new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_HALF_EVEN)
-                                                .round(MathContext.DECIMAL32);
+    BigDecimal number = toBigDecimal();
+    BigDecimal round;
+    if (number.scale() == 0) {
+      round = number.round(MathContext.UNLIMITED);
+    } else {
+      round = number.round(NumberUtils.DEFAULT_CONTEXT);
+    }
     return new SCMBigRational(round.toBigInteger(), BigInteger.ONE);
   }
 

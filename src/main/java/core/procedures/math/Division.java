@@ -4,13 +4,12 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Division extends AFn {
-
-  private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
 
   @Override
   public boolean isPure() {
@@ -71,14 +70,14 @@ public class Division extends AFn {
       return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
     }
     if (numerator instanceof BigDecimal) {
-      return ((BigDecimal)numerator).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+      return NumberUtils.safeBigDecimalDivision((BigDecimal)numerator, new BigDecimal(denominator.toString()));
     }
     if (denominator instanceof BigDecimal) {
-      return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+      return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator.toString()), (BigDecimal)denominator);
     }
     double result = numerator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), DEFAULT_ROUNDING_MODE);
+      return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator.toString()), new BigDecimal(denominator.toString()));
     }
     return result;
   }

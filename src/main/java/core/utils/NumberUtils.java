@@ -20,6 +20,8 @@ public class NumberUtils {
 
   private NumberUtils() {}
 
+  public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64;
+
   public static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
   public static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
 
@@ -107,6 +109,28 @@ public class NumberUtils {
     return s.indexOf(c) > -1;
   }
 
+  /**
+   * Coerce to DECIMAL64 context if one of the numbers has non-zero scale
+   */
+  public static MathContext getMathContext(BigDecimal first, BigDecimal second) {
+    if (first.scale() > 0 || second.scale() > 0) {
+      return MathContext.DECIMAL64;
+    }
+    return MathContext.UNLIMITED;
+  }
+
+  /**
+   * Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision
+   */
+  // FIXME Performance
+  public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
+    try {
+      return num.divide(den, NumberUtils.getMathContext(num, den));
+    } catch (ArithmeticException e) {
+      return num.divide(den, NumberUtils.DEFAULT_CONTEXT);
+    }
+  }
+
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(String number, char exactness, int radix) throws ParseException {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
@@ -135,6 +159,7 @@ public class NumberUtils {
       if (HASH_PATTERN.matcher(number).matches()) {
         number = number.replaceAll("#", "0");
         number = number + ".0";
+        exactness = 'i';
       } else {
         validHashChars = false;
       }
@@ -162,8 +187,6 @@ public class NumberUtils {
     if (number.charAt(0) == '+') {
       number = number.substring(1);
     }
-
-    // FIXME Get rid of scientific notation?
 
     int hasSign = (number.charAt(0) == '-') ? 1 : 0;
     if (isRational) {
@@ -239,7 +262,16 @@ public class NumberUtils {
 //        return number;
       }
     }
-    /* Numbers are inexact by default, nothing to do */
+    if (exactness == 'i') {
+      if (number instanceof Long) {
+        return number.doubleValue();
+      }
+      if (number instanceof BigDecimal) {
+        int scale = Math.max(1, ((BigDecimal) number).scale());
+        return ((BigDecimal) number).setScale(scale);
+      }
+    }
+    /* Other numbers are inexact by default, nothing to do */
     return number;
   }
 
@@ -362,10 +394,11 @@ public class NumberUtils {
       throw new WrongTypeException("Number", o);
     }
     if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).toBigDecimal();
+      return ((SCMBigRational)o).toBigDecimalInexact();
     }
     if (o instanceof BigDecimal) {
-      return (BigDecimal)o;
+      int scale = Math.max(1, ((BigDecimal)o).scale());
+      return ((BigDecimal)o).setScale(scale);
     }
     return ((Number)o).doubleValue();
   }
