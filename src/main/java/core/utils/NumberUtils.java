@@ -132,7 +132,7 @@ public class NumberUtils {
   }
 
   /* Check if string represents a valid number and process it */
-  public static Object preProcessNumber(String number, char exactness, int radix) throws ParseException {
+  public static Object preProcessNumber(String number, Character exactness, int radix) throws ParseException {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
       throw new IllegalSyntaxException("Multiple decimal points: " + number);
     }
@@ -158,17 +158,28 @@ public class NumberUtils {
     if (hasAtLeastOneDigit && number.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(number).matches()) {
         number = number.replaceAll("#", "0");
-        // FIXME force user-specified exactness!
-        exactness = 'i';
+        if (exactness == null) {
+          exactness = 'i';
+        }
       } else {
         validHashChars = false;
       }
     }
     // TODO Exponent
 
+    /* Default exactness for various number types */
+    boolean isRational = (number.indexOf('/') > -1);
+    boolean isIntegral = (number.indexOf('.') < 0);
+    if (exactness == null) {
+      if (isRational || isIntegral) {
+        exactness = 'e';
+      } else {
+        exactness = 'i';
+      }
+    }
+
     /* Check if it is a rational number */
     boolean validRational = false;
-    boolean isRational = false;
     if (number.indexOf('/') > -1) {
       isRational = true;
       if (number.indexOf('/') == number.lastIndexOf('/')) {
@@ -279,8 +290,8 @@ public class NumberUtils {
   private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
     boolean useBigNum) {
 
-    Number num = processNumber(numerator, r, exactness, useBigNum);
-    Number den = processNumber(denominator, r, exactness, useBigNum);
+    Number num = processNumber(numerator, r, 'e', useBigNum);
+    Number den = processNumber(denominator, r, 'e', useBigNum);
     SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
     if (exactness == 'i') {
       return toInexact(number);

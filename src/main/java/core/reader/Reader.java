@@ -205,15 +205,7 @@ public class Reader implements IReader {
         return NumberUtils.SPECIAL_NUMBERS.get(number);
       }
       /* Now check if it IS a valid number */
-      boolean isRational = (number.indexOf('/') > -1);
-      boolean isIntegral = (number.indexOf('.') < 0);
-      char exactness;
-      if (isRational || isIntegral) {
-        exactness = 'e';
-      } else {
-        exactness = 'i';
-      }
-      return preProcessNumber(number, exactness, 10);
+      return preProcessNumber(number, null, 10);
     } else if (c == ';') {
       return readComment();
     } else if (c == '"') {
@@ -240,8 +232,6 @@ public class Reader implements IReader {
 
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
-      boolean isRational = (number.indexOf('/') > -1);
-      boolean isIntegral = (number.indexOf('.') < 0);
 
       /* Read radix and/or exactness and a number */
       Character radixChar = null;
@@ -261,14 +251,6 @@ public class Reader implements IReader {
           if (match.size() > 1) {
             exactness = match.get(1).charAt(1);
           }
-        }
-      }
-      /* Default exactness for various number types */
-      if (exactness == null) {
-        if (isRational || isIntegral) {
-          exactness = 'e';
-        } else {
-          exactness = 'i';
         }
       }
       radixChar = (radixChar == null) ? 'd' : radixChar;

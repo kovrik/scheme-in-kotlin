@@ -36,11 +36,8 @@ public class StringToNumber extends AFn {
     /* Check if we should override optional radix */
     /* Read radix and/or exactness and a number */
     boolean override = false;
-    boolean isRational = (number.indexOf('/') > -1);
-    boolean isIntegral = (number.indexOf('.') < 0);
     Character radixChar = null;
     Character exactness = null;
-
     Result parse = EXACTNESS_RADIX.parse(number);
     if (parse.getType() == Result.Type.SUCCESS) {
       List<String> match = parse.getMatch();
@@ -62,15 +59,7 @@ public class StringToNumber extends AFn {
     }
     number = parse.getRest();
 
-    if (exactness == null) {
-      if (isRational || isIntegral) {
-        exactness = 'e';
-      } else {
-        exactness = 'i';
-      }
-    }
     radixChar = (radixChar == null) ? 'd' : radixChar;
-
     int radix = NumberUtils.getRadixByChar(radixChar);
 
     /* Get default (optional) radix if present */
