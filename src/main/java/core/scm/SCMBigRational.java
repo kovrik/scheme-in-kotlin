@@ -21,6 +21,18 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     init(numerator, denominator);
   }
 
+  public SCMBigRational(String numerator, String denominator) {
+    init(new BigInteger(numerator), new BigInteger(denominator));
+  }
+
+  public SCMBigRational(BigInteger numerator, String denominator) {
+    init(numerator, new BigInteger(denominator));
+  }
+
+  public SCMBigRational(String numerator, BigInteger denominator) {
+    init(new BigInteger(numerator), denominator);
+  }
+
   private void init(BigInteger numerator, BigInteger denominator) {
     if (denominator.equals(BigInteger.ZERO)) {
       throw new ArithmeticException("/ by zero");

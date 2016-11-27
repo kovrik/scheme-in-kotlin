@@ -28,7 +28,7 @@ public class NumberUtils {
   public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
   public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);
 
-  private static final Pattern HASH_PATTERN = Pattern.compile(".+#+.?+#?$");
+  private static final Pattern HASH_PATTERN = Pattern.compile(".+#+\\.?+#?$");
 
   public static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
   static {

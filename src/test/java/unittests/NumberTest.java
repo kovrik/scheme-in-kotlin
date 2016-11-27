@@ -72,8 +72,8 @@ public class NumberTest extends AbstractTest {
     assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env));
     assertEquals(5.0, eval("(/ 10.0 2)", env));
     assertEquals(new SCMBigRational(BigInteger.ONE, BigInteger.TEN), eval("(/ 10)", env));
-    assertEquals(new SCMBigRational(new BigInteger("13"), new BigInteger("4")), eval("(/ 13 4)", env));
-    assertEquals(new SCMBigRational(new BigInteger("2"), BigInteger.ONE), eval("(/ 10 5)", env));
+    assertEquals(new SCMBigRational("13", "4"), eval("(/ 13 4)", env));
+    assertEquals(new SCMBigRational("2", BigInteger.ONE), eval("(/ 10 5)", env));
     assertEquals(2d, eval("(/ 10.0 5)", env));
     assertEquals(2d, eval("(/ 10 5.0)", env));
 
@@ -105,7 +105,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(3d, eval("(sqrt 9.0)", env));
     assertTrue(Double.isNaN((Double)eval("(sqrt -5)", env)));
 
-    assertEquals(new SCMBigRational(BigInteger.ONE, new BigInteger("100")), eval("(/ 1 10 10)", env));
+    assertEquals(new SCMBigRational(BigInteger.ONE, "100"), eval("(/ 1 10 10)", env));
   }
 
   @Test
@@ -732,6 +732,6 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("1.0"), eval("(denominator -1234.0)", env));
     assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
     assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
-    assertEquals(new SCMBigRational(new BigInteger("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353"), new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
+    assertEquals(new SCMBigRational("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
 }
