@@ -46,11 +46,11 @@ public class NumberTest extends AbstractTest {
     assertEquals(100.0, eval("#d10#", env));
     assertEquals(4.0, eval("#b10#", env));
     assertEquals(150.0, eval("+15#", env));
+    assertEquals(100L, eval("#e#d10#", env));
+    assertEquals(150L, eval("#e15#", env));
 
     // TODO
-//    assertEquals(100, eval("#e#d10#", env));
-//    assertEquals(, eval("#e#d10.1", env));
-//      assertEquals(150L, eval("#e15#", env));
+//    assertEquals(1, eval("#e#d10.1", env));
 
     try {
       eval("+#", env);
@@ -732,8 +732,6 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("1.0"), eval("(denominator -1234.0)", env));
     assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
     assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
+    assertEquals(new SCMBigRational(new BigInteger("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353"), new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
-
-  // TODO inexact->exact and exact->inexact conversion
-  // (inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)
 }
