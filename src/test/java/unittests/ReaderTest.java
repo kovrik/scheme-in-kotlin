@@ -80,6 +80,10 @@ public class ReaderTest {
     assertEquals(2730.661460876465, reader.readFirst("#b101010101010.10101001010101011"));
     assertEquals(83.97128295898438, reader.readFirst("#o123.76123"));
     assertEquals(2054353.1632647514, reader.readFirst("#o7654321.1234567"));
+    assertEquals(1500d, reader.readFirst("15##"));
+    assertEquals(1500d, reader.readFirst("15##."));
+    assertEquals(1500d, reader.readFirst("15##.#"));
+    assertEquals(1500d, reader.readFirst("15##.####"));
   }
 
   @Test
