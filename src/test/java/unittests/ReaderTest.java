@@ -86,6 +86,8 @@ public class ReaderTest {
     assertEquals(1500d, reader.readFirst("15##.####"));
     assertEquals(1500d, reader.readFirst("#i15##.####"));
     assertEquals(1500d, reader.readFirst("#i15##"));
+    assertEquals(new SCMBigRational("500", BigInteger.ONE), reader.readFirst("#e5###/1#"));
+    assertEquals(new BigDecimal("500.0"), reader.readFirst(" 5###/1#"));
     assertEquals(new SCMBigRational("1500", BigInteger.ONE), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
     assertEquals(new SCMBigRational("3", "4"), reader.readFirst("#e3/4"));
