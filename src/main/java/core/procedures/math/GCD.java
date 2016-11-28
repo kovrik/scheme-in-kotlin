@@ -75,7 +75,7 @@ public class GCD extends AFn {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
       // TODO Check correctness
-      return NumberUtils.toInexact(gcd(new SCMBigRational(a), new SCMBigRational(b)));
+      return NumberUtils.toInexact(gcd(NumberUtils.bigDecimalToExact(a), NumberUtils.bigDecimalToExact(b)));
     }
   }
 

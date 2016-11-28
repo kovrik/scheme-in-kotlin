@@ -476,17 +476,18 @@ public class NumberUtils {
         throw new ArithmeticException("No exact representation");
       }
       // FIXME There is no need to always call this method?
-      return new SCMBigRational((Double)o);
+      return doubleToExact((Double)o);
     }
     if (o instanceof BigDecimal) {
-      int scale = ((BigDecimal) o).scale();
-      if (scale == 0) {
-        return (BigDecimal)o;
-      } else {
-        return new SCMBigRational(((BigDecimal) o).movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
-      }
+      return bigDecimalToExact((BigDecimal) o);
     }
     return (Number) o;
+  }
+
+  // FIXME Use the same approach as for Double!
+  public static SCMBigRational bigDecimalToExact(BigDecimal number) {
+    int scale = number.scale();
+    return new SCMBigRational(number.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
   }
 
   private static Number doubleToExact(Double number) {

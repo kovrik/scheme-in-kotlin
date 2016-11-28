@@ -37,33 +37,6 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     init(num, denominator);
   }
 
-  public SCMBigRational(BigDecimal bigDecimal) {
-    int scale = bigDecimal.scale();
-    init(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
-  }
-
-  public SCMBigRational(double number) {
-    long bits = Double.doubleToLongBits(number);
-    long sign = bits >>> 63;
-    long exponent = ((bits >>> 52) ^ (sign << 11)) - 1023;
-    long fraction = bits << 12;
-    long a = 1L;
-    long b = 1L;
-    for (int i = 63; i >= 12; i--) {
-      a = a * 2 + ((fraction >>> i) & 1);
-      b *= 2;
-    }
-    if (exponent > 0) {
-      a *= 1 << exponent;
-    } else {
-      b *= 1 << -exponent;
-    }
-    if (sign == 1) {
-      a *= -1;
-    }
-    init(BigInteger.valueOf(a), BigInteger.valueOf(b));
-  }
-
   private void init(BigInteger numerator, BigInteger denominator) {
     if (denominator.equals(BigInteger.ZERO)) {
       throw new ArithmeticException("/ by zero");

@@ -81,7 +81,7 @@ public class LCM extends AFn {
       return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
       // TODO Check correctness
-      return NumberUtils.toInexact(lcm(new SCMBigRational(a), new SCMBigRational(b)));
+      return NumberUtils.toInexact(lcm(NumberUtils.bigDecimalToExact(a), NumberUtils.bigDecimalToExact(b)));
     }
   }
 
