@@ -304,19 +304,16 @@ public class NumberUtils {
       if (isExact(number)) {
         return number;
       } else {
-        /* Guile version */
-        return toExact(number);
-
-        /* Racket version (non-optimized) */
-        // FIXME does not work because number.toString() may format number to Scientific notaion
-//        String s = number.toString();
-//        int dot = s.indexOf('.');
-//        if (dot > -1) {
-//          /* Remove dot */
-//          s = s.replace(".", "");
-//          return new SCMBigRational(new BigInteger(s), BigInteger.TEN.pow(s.length() - dot));
-//        }
-//        return number;
+        if (number instanceof Double) {
+          /* #e2.3 should return 23/10,
+           * but (inexact->exact 2.3) should return 2589569785738035/1125899906842624
+           */
+          BigDecimal bigDecimal = new BigDecimal(number.toString());
+          int scale = bigDecimal.scale();
+          return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+        } else {
+          return toExact(number);
+        }
       }
     }
     if (exactness == 'i') {
@@ -475,7 +472,7 @@ public class NumberUtils {
       if ((Double.isInfinite((Double) o) || Double.isNaN((Double) o))) {
         throw new ArithmeticException("No exact representation");
       }
-      // FIXME There is no need to always call this method!
+      // FIXME There is no need to always call this method?
       return doubleToExact((Double) o);
     }
     if (o instanceof BigDecimal) {

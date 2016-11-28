@@ -3,7 +3,6 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -76,12 +75,15 @@ public class LCM extends AFn {
     }
     int scale = Math.max(a.scale(), b.scale());
     if (scale == 0) {
-      return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
+      return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
-      // TODO Check if works
-      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
-      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
-      return NumberUtils.toInexact(lcm(first, second));
+      // TODO Check correctness
+      a = a.movePointRight(scale);
+      b = b.movePointRight(scale);
+      return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
+//      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
+//      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
+//      return NumberUtils.toInexact(lcm(first, second));
     }
   }
 

@@ -415,22 +415,18 @@ public class NumberTest extends AbstractTest {
 
     assertEquals(3d, eval("(gcd 3.0 6)", env));
     assertEquals(40000d, eval("(gcd 200000.0 40000.0)", env));
-    try {
-      eval("(gcd 3.3 6)", env);
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
-    }
-
+    assertEquals(new BigDecimal("8.8817841970012523233890533447265625E-16"), eval("(gcd 3.3 6)", env));
     assertEquals(new BigDecimal("9"), eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
 
     /* Check switch from Double to BigDecimal for big numbers */
-    assertEquals(3L,                  eval("(gcd 99999999999999999 123)", env));
-    assertEquals(3L,                  eval("(gcd 999999999999999999 123)", env));
+    assertEquals(3L,                    eval("(gcd 99999999999999999 123)", env));
+    assertEquals(3L,                    eval("(gcd 999999999999999999 123)", env));
     assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999 123)", env));
     assertEquals(new BigDecimal("123"), eval("(gcd 99999999999999999999 123)", env));
     assertEquals(new BigDecimal("3"),   eval("(gcd 999999999999999999999 123)", env));
     assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999999 123)", env));
+
+    assertEquals(BigDecimal.ONE, eval("(gcd (expt 17 34) (expt 21 19))", env));
   }
 
   @Test
@@ -454,15 +450,13 @@ public class NumberTest extends AbstractTest {
 
     assertEquals(6d, eval("(lcm 3.0 6)", env));
     assertEquals(200000d, eval("(lcm 200000.0 40000.0)", env));
-    try {
-      eval("(lcm 3.3 6)", env);
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 3.3", e.getMessage());
-    }
+    assertEquals(new Double("2.2292818155483952E+16"), eval("(lcm 3.3 6)", env));
 
     String big = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
     assertEquals(new BigDecimal(big), eval(String.format("(lcm %s 9)", big), env));
+
+    assertEquals(new BigDecimal("9066296685449845496062520942090242184133343279738102243137866423949"),
+                 eval("(lcm (expt 17 34) (expt 21 19))", env));
   }
 
   @Test

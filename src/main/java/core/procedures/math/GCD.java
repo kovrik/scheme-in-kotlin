@@ -74,10 +74,13 @@ public class GCD extends AFn {
     if (scale == 0) {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
-      // TODO Check if works
-      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
-      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
-      return NumberUtils.toInexact(gcd(first, second));
+      // TODO Check correctness
+      a = a.movePointRight(scale);
+      b = b.movePointRight(scale);
+      return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger())).movePointLeft(scale);
+//      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
+//      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
+//      return NumberUtils.toInexact(gcd(first, second));
     }
   }
 
