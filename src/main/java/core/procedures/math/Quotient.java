@@ -4,8 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class Quotient extends AFn {
 
@@ -38,11 +40,12 @@ public class Quotient extends AFn {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
     int scale = Math.max(first.scale(), second.scale());
-    BigDecimal result = first.divideToIntegralValue(second).setScale(scale);
-    if (scale > 0 && result.stripTrailingZeros().scale() == 0) {
-      result = result.setScale(1, BigDecimal.ROUND_HALF_EVEN);
+    if (scale > 0) {
+      return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, BigDecimal.ROUND_HALF_EVEN)
+                  .setScale(1, BigDecimal.ROUND_HALF_EVEN);
+    } else {
+      return first.divideToIntegralValue(second).setScale(scale, BigDecimal.ROUND_HALF_EVEN);
     }
-    return result;
   }
 
   public Number invoke(Number first, Number second) {

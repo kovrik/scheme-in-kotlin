@@ -639,13 +639,14 @@ public class NumberTest extends AbstractTest {
     }
   }
 
-  // FIXME
-  @Ignore
   @Test
   public void testQuotientViaTruncate() {
     // quotient = (truncate (/ n m))
     eval("(define // (lambda (n m) (truncate (/ n m))))", env);
-    assertEquals(eval("(quotient 5 4)", env), eval("(// 5 4)", env));
+    assertEquals(TRUE, eval("(= (quotient 5 4) (// 5 4))", env));
+    assertEquals(TRUE, eval("(= (quotient 5 4.0) (// 5 4.0))", env));
+    assertEquals(TRUE, eval("(= (quotient -5 4.0) (// -5 4.0))", env));
+    assertEquals(TRUE, eval("(= (quotient -5999999999999999999999999999999999999 4.0) (// -5999999999999999999999999999999999999 4.0))", env));
   }
 
   @Test
