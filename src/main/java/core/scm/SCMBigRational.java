@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMBigRational> {
 
   public static final SCMBigRational ZERO = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
+  public static final SCMBigRational ONE  = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
 
   private BigInteger numerator;
   private BigInteger denominator;
@@ -35,6 +36,10 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   public SCMBigRational(String numerator, BigInteger denominator) {
     BigInteger num = parseBigInteger(numerator);
     init(num, denominator);
+  }
+
+  public SCMBigRational(int numerator, int denominator) {
+    init(new BigInteger(Integer.toString(numerator)), new BigInteger(Integer.toString(denominator)));
   }
 
   private void init(BigInteger numerator, BigInteger denominator) {
@@ -199,6 +204,10 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
 
   public SCMBigRational divide(SCMBigRational other) {
     return this.multiply(other.reciprocal());
+  }
+
+  public SCMBigRational divide(int other) {
+    return divide(new SCMBigRational(other, 1));
   }
 
   @Override

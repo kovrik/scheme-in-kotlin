@@ -484,10 +484,14 @@ public class NumberUtils {
     return (Number) o;
   }
 
-  // FIXME Use the same approach as for Double!
+  // FIXME Use the same approach as for Double?
   public static SCMBigRational bigDecimalToExact(BigDecimal number) {
     int scale = number.scale();
-    return new SCMBigRational(number.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+    if (scale > 0) {
+      return new SCMBigRational(number.unscaledValue(), BigInteger.TEN.pow(scale));
+    } else {
+      return new SCMBigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
+    }
   }
 
   private static Number doubleToExact(Double number) {

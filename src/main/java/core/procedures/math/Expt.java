@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.BigDecimalMath;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,7 +35,6 @@ public class Expt extends AFn {
     throw new ArityException(args.length, 2, getName());
   }
 
-  // TODO Cleanup
   // FIXME Check other special cases: Negative infinity, NaN, zero?
   public static Number invoke(Number first, Number exponent) {
     if ((first instanceof Long) || (exponent instanceof Long)) {
@@ -56,28 +56,17 @@ public class Expt extends AFn {
       }
       return result;
     }
-    if ((first instanceof BigDecimal) || (exponent instanceof BigDecimal)) {
-      BigDecimal s;
-      if (exponent instanceof BigDecimal) {
-        s = (BigDecimal)exponent;
-      } else {
-        s = new BigDecimal(exponent.toString());
-      }
-      if (s.stripTrailingZeros().scale() != 0) {
-        return Double.POSITIVE_INFINITY;
-      }
-      boolean isNegative = false;
-      int e = exponent.intValue();
-      if (exponent.intValue() < 0) {
-        isNegative = true;
-        e = Math.abs(exponent.intValue());
-      }
-      BigDecimal result = new BigDecimal(first.toString()).pow(e);
-      if (isNegative) {
-        return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
-      }
-      return result;
+    /* BigDecimals */
+    if ((first instanceof BigDecimal) && (exponent instanceof BigDecimal)) {
+      return BigDecimalMath.pow((BigDecimal)first, (BigDecimal)exponent);
     }
+    if (first instanceof BigDecimal) {
+      return BigDecimalMath.pow((BigDecimal)first, new BigDecimal(exponent.toString()));
+    }
+    if (exponent instanceof BigDecimal) {
+      return BigDecimalMath.pow(new BigDecimal(first.toString()), (BigDecimal)exponent);
+    }
+
     double result = Math.pow(first.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
       return new BigDecimal(first.toString()).pow(exponent.intValue());

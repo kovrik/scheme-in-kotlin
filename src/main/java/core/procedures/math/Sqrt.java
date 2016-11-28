@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.BigDecimalMath;
 
 import java.math.BigDecimal;
 
@@ -29,7 +30,10 @@ public class Sqrt extends AFn {
       } else if (args[0] instanceof SCMBigRational) {
         return Math.sqrt(((SCMBigRational)args[0]).doubleValue());
       } else if (args[0] instanceof BigDecimal) {
-        return Double.POSITIVE_INFINITY;
+        if (Double.isInfinite(((BigDecimal)args[0]).doubleValue())) {
+          return Double.POSITIVE_INFINITY;
+        }
+        return BigDecimalMath.sqrt((BigDecimal)args[0]);
       }
       throw new WrongTypeException("Number", args[0]);
     }
