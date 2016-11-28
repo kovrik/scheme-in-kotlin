@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -65,9 +66,16 @@ public class GCD extends AFn {
     return (double)gcd(a.longValue(), b.longValue());
   }
 
-  public static BigDecimal gcd(BigDecimal a, BigDecimal b) {
-    // FIXME Check if numbers are integral?
-    return new BigDecimal((a).toBigIntegerExact().gcd((b).toBigIntegerExact()));
+  public static Number gcd(BigDecimal a, BigDecimal b) {
+    int scale = Math.max(a.scale(), b.scale());
+    if (scale == 0) {
+      return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
+    } else {
+      // TODO Check if works
+      SCMBigRational first = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
+      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
+      return gcd(first, second);
+    }
   }
 
   public static BigInteger gcd(BigInteger a, BigInteger b) {

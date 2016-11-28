@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -69,14 +70,19 @@ public class LCM extends AFn {
                               GCD.gcd(first.getDenominator(), second.getDenominator()));
   }
 
-  // FIXME Optmize
-  private static BigDecimal lcm(BigDecimal a, BigDecimal b) {
+  private static Number lcm(BigDecimal a, BigDecimal b) {
     if ((BigDecimal.ZERO.compareTo(a) == 0) && (BigDecimal.ZERO.compareTo(b) == 0)) {
       return BigDecimal.ZERO;
     }
-    // FIXME Check if numbers are integral?
-    BigInteger gcd = a.toBigInteger().gcd(b.toBigInteger());
-    return new BigDecimal((a.toBigIntegerExact().divide(gcd)).multiply(b.toBigIntegerExact()));
+    int scale = Math.max(a.scale(), b.scale());
+    if (scale == 0) {
+      return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
+    } else {
+      // TODO Check if works
+      SCMBigRational first = (SCMBigRational) NumberUtils.toExact(a.setScale(scale));
+      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
+      return lcm(first, second);
+    }
   }
 
   public Number invoke(Number first, Number second) {
