@@ -734,4 +734,6 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
     assertEquals(new SCMBigRational("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
+
+  // TODO Scientific notation tests
 }

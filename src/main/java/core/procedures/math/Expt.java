@@ -36,7 +36,7 @@ public class Expt extends AFn {
 
   // TODO Cleanup
   // FIXME Check other special cases: Negative infinity, NaN, zero?
-  public Number invoke(Number first, Number exponent) {
+  public static Number invoke(Number first, Number exponent) {
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
       if (exponent instanceof Double) {

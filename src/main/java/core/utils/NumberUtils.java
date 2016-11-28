@@ -2,6 +2,8 @@ package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
+import core.procedures.math.Expt;
+import core.procedures.math.Multiplication;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
@@ -136,6 +138,7 @@ public class NumberUtils {
     }
   }
 
+  // FIXME Simplify and cleanup!
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(final String number, Character exactness, int radix) throws ParseException {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
@@ -253,32 +256,39 @@ public class NumberUtils {
 
   /* Parse string into a number */
   private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum, Long exp) {
+    Number result;
     int dot = number.indexOf('.');
     if (useBigNum) {
       if (dot > -1) {
         /* Remove dot */
         number = number.replace(".", "");
         BigInteger bigInteger = new BigInteger(number, r);
-        BigDecimal result = new BigDecimal(bigInteger)
+        BigDecimal bigDecimal = new BigDecimal(bigInteger)
           .divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
-        if (result.stripTrailingZeros().scale() == 0) {
-          result = result.setScale(1, BigDecimal.ROUND_HALF_EVEN);
+        if (bigDecimal.stripTrailingZeros().scale() == 0) {
+          bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_EVEN);
         }
-        return processExactness(result, exactness);
+        result = processExactness(bigDecimal, exactness);
       } else {
-        return processExactness(new BigDecimal(new BigInteger(number, r)), exactness);
+        result = processExactness(new BigDecimal(new BigInteger(number, r)), exactness);
       }
-    }
-    if (dot > -1) {
-      if (r == 10) {
-        return processExactness(Double.parseDouble(number), exactness);
-      } else {
+    } else {
+      if (dot > -1) {
+        if (r == 10) {
+          result = processExactness(Double.parseDouble(number), exactness);
+        } else {
         /* Remove dot */
-        number = number.replace(".", "");
-        return processExactness(parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot), exactness);
+          number = number.replace(".", "");
+          result = processExactness(parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot), exactness);
+        }
+      } else {
+        result = processExactness(Long.parseLong(number, r), exactness);
       }
     }
-    return processExactness(Long.parseLong(number, r), exactness);
+    if (exp != null) {
+      result = Multiplication.invoke(result, Expt.invoke(r, exp));
+    }
+    return result;
   }
 
   private static Number processExactness(Number number, char exactness) {
@@ -330,7 +340,11 @@ public class NumberUtils {
     Number den = processNumber(denominator, r, 'e', useBigNum, null);
     SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
     if (exactness == 'i') {
-      return toInexact(number);
+      Number result = toInexact(number);
+      if (exp != null) {
+        result = Multiplication.invoke(result, Expt.invoke(r, exp));
+      }
+      return result;
     }
     return number;
   }

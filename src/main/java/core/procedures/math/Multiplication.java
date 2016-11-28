@@ -33,7 +33,7 @@ public class Multiplication extends AFn {
     return result;
   }
 
-  public Number invoke(Number first, Number second) {
+  public static Number invoke(Number first, Number second) {
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).multiply((SCMBigRational)second);
