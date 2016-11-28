@@ -30,6 +30,11 @@ public class NumberUtils {
 
   private static final Pattern HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$");
 
+  private static final String EXPONENT_MARKS_PATTERN = "(s|l|d|e|f|S|L|D|E|F)";
+  private static final String EXPONENT16_MARKS_PATTERN = "(s|l|S|L)";
+  private static final Pattern EXPONENT_PATTERN = Pattern.compile(".+" + EXPONENT_MARKS_PATTERN + "[+-]?\\d+$");
+  private static final Pattern EXPONENT16_PATTERN = Pattern.compile(".+" + EXPONENT16_MARKS_PATTERN + "[+-]?\\w+$");
+
   public static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
   static {
     SPECIAL_NUMBERS.put("+nan.0", Double.NaN);
@@ -132,18 +137,50 @@ public class NumberUtils {
   }
 
   /* Check if string represents a valid number and process it */
-  public static Object preProcessNumber(String number, Character exactness, int radix) throws ParseException {
+  public static Object preProcessNumber(final String number, Character exactness, int radix) throws ParseException {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
       throw new IllegalSyntaxException("Multiple decimal points: " + number);
     }
-    boolean hasBadSignPos = (number.lastIndexOf('+') > 0) || (number.lastIndexOf('-') > 0);
+    /* Exponent mark */
+    String n = number;
+    String exponent = null;
+    if (radix == 16) {
+      if (EXPONENT16_PATTERN.matcher(number).matches()) {
+        String[] split = number.split(EXPONENT16_MARKS_PATTERN);
+        n = split[0];
+        exponent = split[1];
+      }
+    } else {
+      if (EXPONENT_PATTERN.matcher(number).matches()) {
+        String[] split = number.split(EXPONENT_MARKS_PATTERN);
+        n = split[0];
+        exponent = split[1];
+      }
+    }
+    Long exp = null;
+    if (exponent != null) {
+      Number e;
+      try {
+        e = processNumber(exponent, radix, 'e', false, null);
+      } catch (NumberFormatException ex) {
+        throw new IllegalSyntaxException("bad exponent: " + number);
+      }
+      if (!(e instanceof Long)) {
+        /* Invalid exponent */
+        return new SCMSymbol(number);
+      }
+      exp = (Long)e;
+      if (exactness == null) {
+        exactness = 'i';
+      }
+    }
+
     /* Validate all digits */
+    boolean hasBadSignPos = (n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0);
     boolean allDigitsAreValid = true;
     boolean hasAtLeastOneDigit = false;
-    for (char c : number.toCharArray()) {
-      /* Check if char is valid for this radix AND
-       * that we don't have # before digits
-       */
+    for (char c : n.toCharArray()) {
+      /* Check if char is valid for this radix AND that we don't have # before digits */
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
         allDigitsAreValid = false;
         break;
@@ -155,9 +192,9 @@ public class NumberUtils {
     }
 
     boolean validHashChars = true;
-    if (hasAtLeastOneDigit && number.indexOf('#') > -1) {
-      if (HASH_PATTERN.matcher(number).matches()) {
-        number = number.replaceAll("#", "0");
+    if (hasAtLeastOneDigit && n.indexOf('#') > -1) {
+      if (HASH_PATTERN.matcher(n).matches()) {
+        n = n.replaceAll("#", "0");
         if (exactness == null) {
           exactness = 'i';
         }
@@ -165,11 +202,10 @@ public class NumberUtils {
         validHashChars = false;
       }
     }
-    // TODO Exponent
 
     /* Default exactness for various number types */
-    boolean isRational = (number.indexOf('/') > -1);
-    boolean isIntegral = (number.indexOf('.') < 0);
+    boolean isRational = (n.indexOf('/') > -1);
+    boolean isIntegral = (n.indexOf('.') < 0);
     if (exactness == null) {
       if (isRational || isIntegral) {
         exactness = 'e';
@@ -180,12 +216,12 @@ public class NumberUtils {
 
     /* Check if it is a rational number */
     boolean validRational = false;
-    if (number.indexOf('/') > -1) {
+    if (n.indexOf('/') > -1) {
       isRational = true;
-      if (number.indexOf('/') == number.lastIndexOf('/')) {
+      if (n.indexOf('/') == n.lastIndexOf('/')) {
         validRational = true;
       }
-      if (number.indexOf('.') > -1) {
+      if (n.indexOf('.') > -1) {
         validRational = false;
       }
     }
@@ -195,28 +231,28 @@ public class NumberUtils {
       return new SCMSymbol(number);
     }
     /* Drop + sign if exists */
-    if (number.charAt(0) == '+') {
-      number = number.substring(1);
+    if (n.charAt(0) == '+') {
+      n = n.substring(1);
     }
 
-    int hasSign = (number.charAt(0) == '-') ? 1 : 0;
+    int hasSign = (n.charAt(0) == '-') ? 1 : 0;
     if (isRational) {
-      String numerator = number.substring(0, number.indexOf('/'));
-      String denominator = number.substring(number.indexOf('/') + 1);
+      String numerator = n.substring(0, n.indexOf('/'));
+      String denominator = n.substring(n.indexOf('/') + 1);
 
       Integer threshold = RADIX_THRESHOLDS.get(radix);
       boolean useBigNum = (numerator.length() > (threshold + hasSign)) ||
                           (denominator.length() > (threshold + hasSign));
-      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum);
+      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
     }
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
-    boolean useBigNum = (number.length() > (threshold + hasSign));
-    return processNumber(number, radix, exactness, useBigNum);
+    boolean useBigNum = (n.length() > (threshold + hasSign));
+    return processNumber(n, radix, exactness, useBigNum, exp);
   }
 
   /* Parse string into a number */
-  private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum) {
+  private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum, Long exp) {
     int dot = number.indexOf('.');
     if (useBigNum) {
       if (dot > -1) {
@@ -288,10 +324,10 @@ public class NumberUtils {
 
   /* Parse string into a rational number */
   private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
-    boolean useBigNum) {
+    boolean useBigNum, Long exp) {
 
-    Number num = processNumber(numerator, r, 'e', useBigNum);
-    Number den = processNumber(denominator, r, 'e', useBigNum);
+    Number num = processNumber(numerator, r, 'e', useBigNum, null);
+    Number den = processNumber(denominator, r, 'e', useBigNum, null);
     SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
     if (exactness == 'i') {
       return toInexact(number);

@@ -44,7 +44,7 @@ public class IsSymbolTest extends AbstractTest {
     try {
       eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env);
     } catch (IllegalSyntaxException e) {
-      assertEquals("Bad number: #xff0000eeesve!", e.getMessage());
+      assertEquals("bad exponent: xff0000eeesve!", e.getMessage());
     }
   }
 }
