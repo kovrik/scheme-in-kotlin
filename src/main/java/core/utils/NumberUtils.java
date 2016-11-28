@@ -476,7 +476,7 @@ public class NumberUtils {
         throw new ArithmeticException("No exact representation");
       }
       // FIXME There is no need to always call this method?
-      return doubleToExact((Double) o);
+      return new SCMBigRational((Double)o);
     }
     if (o instanceof BigDecimal) {
       int scale = ((BigDecimal) o).scale();

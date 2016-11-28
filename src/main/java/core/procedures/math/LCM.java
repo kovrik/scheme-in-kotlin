@@ -3,9 +3,12 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import static core.procedures.math.GCD.gcd;
 
 public class LCM extends AFn {
 
@@ -50,23 +53,23 @@ public class LCM extends AFn {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0L;
     }
-    return (a / GCD.gcd(a, b)) * b;
+    return (a / gcd(a, b)) * b;
   }
 
   private static Double lcm(Double a, Double b) {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0d;
     }
-    return (a / GCD.gcd(a, b).doubleValue()) * b;
+    return (a / gcd(a, b).doubleValue()) * b;
   }
 
   public static BigInteger lcm(BigInteger first, BigInteger second) {
-    return first.multiply(second.divide(GCD.gcd(first, second)));
+    return first.multiply(second.divide(gcd(first, second)));
   }
 
   public static SCMBigRational lcm(SCMBigRational first, SCMBigRational second) {
     return new SCMBigRational(lcm(first.getNumerator(), second.getNumerator()),
-                              GCD.gcd(first.getDenominator(), second.getDenominator()));
+                              gcd(first.getDenominator(), second.getDenominator()));
   }
 
   private static Number lcm(BigDecimal a, BigDecimal b) {
@@ -78,12 +81,7 @@ public class LCM extends AFn {
       return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
       // TODO Check correctness
-      a = a.movePointRight(scale);
-      b = b.movePointRight(scale);
-      return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
-//      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
-//      SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
-//      return NumberUtils.toInexact(lcm(first, second));
+      return NumberUtils.toInexact(lcm(new SCMBigRational(a), new SCMBigRational(b)));
     }
   }
 
