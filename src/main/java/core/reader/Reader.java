@@ -33,7 +33,6 @@ public class Reader implements IReader {
 
   private static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
-    // TODO Platform-dependent line separator?
     NAMED_CHARS.put("newline",   '\n');
     NAMED_CHARS.put("space",     ' ');
     NAMED_CHARS.put("tab",       '\t');

@@ -32,7 +32,11 @@ public class Evaluator implements IEvaluator {
     return result;
   }
 
-  // TODO Rename
+  /**
+   * One iteration of evaluation.
+   * Returns the end result or TailCall object.
+   * If TailCall object is returned, then eval() method (trampoline) continues evaluation.
+   */
   private Object evalIter(Object sexp, IEnvironment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */

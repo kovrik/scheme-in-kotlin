@@ -51,7 +51,6 @@ public class NumberToString extends AFn {
         return bigDecimal.toString();
       }
       /* Check if it is integral */
-      // TODO Trailing zeros?
       if (bigDecimal.remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
         return bigDecimal.toBigInteger().toString(radix);
       }

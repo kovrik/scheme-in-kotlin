@@ -33,7 +33,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
     if (expression.size() != 2) {
       throw new IllegalSyntaxException("quasiquote: bad syntax");
     }
-    return quasiquote(0, expression.get(1), env, evaluator);
+    return quasiquote(expression.get(1), env, evaluator);
   }
 
   /**
@@ -48,7 +48,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
    * http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf
    */
   // TODO Simplify
-  private Object quasiquote(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquote(Object expr, IEnvironment env, IEvaluator evaluator) {
     if (expr instanceof SCMVector) {
       SCMVector vector = (SCMVector) expr;
       if (vector.length() == 0) {
@@ -61,7 +61,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
         throw new IllegalSyntaxException(vector.get(0) + ": invalid context within quasiquote");
       }
       /* Vector quasiquotation */
-      return quasiquoteVector(level, expr, env, evaluator);
+      return quasiquoteVector(0, expr, env, evaluator);
     } else if (expr instanceof List) {
       List list = (List) expr;
       if (list.isEmpty()) {
@@ -80,7 +80,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
         throw new IllegalSyntaxException("unquote-splicing: invalid context within quasiquote");
       }
       /* List quasiquotation */
-      return quasiquoteList(level, expr, env, evaluator);
+      return quasiquoteList(0, expr, env, evaluator);
     }
     /* (quasiquote datum) => (quote datum) */
     return expr;

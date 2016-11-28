@@ -1,6 +1,7 @@
 package unittests;
 
 import core.exceptions.ArityException;
+import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.scm.SCMBigRational;
 import org.junit.Ignore;
@@ -613,11 +614,15 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env));
     assertEquals(1500.0, eval("(string->number \"15##\")", env));
     assertEquals(FALSE, eval("(string->number \"1234#d\")", env));
-    // TODO
-//    assertEquals(100.0, eval("(string->number \"1e2\")", env));
-//    assertEquals(, eval("(string->number \"#b1e-1\")", env));
-//    assertEquals(, eval("(string->number \"#b1e5\")", env));
-//    assertEquals(, eval("(string->number \"#o1234e+25\")", env));
+    assertEquals(new BigDecimal("100.0"), eval("(string->number \"1e2\")", env));
+    assertEquals(new SCMBigRational("1", "2"), eval("(string->number \"#b1e-1\")", env));
+    assertEquals(new BigDecimal("6161212520618990239744.0"), eval("(string->number \"#o1234e+25\")", env));
+    try {
+      eval("(string->number \"#b1e5\")", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("bad exponent: 1e5", e.getMessage());
+    }
   }
 
   @Test

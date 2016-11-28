@@ -197,6 +197,12 @@ public class CharacterTest extends AbstractTest {
     }
   }
 
-  // TODO Char comparison tests (#\z #\A #\H #\a #\X)
-
+  @Test
+  public void testCharComparison() {
+    assertEquals(TRUE,  eval("(char<? #\\a #\\b)", env));
+    assertEquals(TRUE,  eval("(char<=? #\\a #\\a #\\b)", env));
+    assertEquals(FALSE, eval("(char<=? #\\a #\\A #\\b)", env));
+    assertEquals(FALSE, eval("(char>? #\\z #\\A #\\H #\\a #\\X)", env));
+    assertEquals(TRUE, eval("(char>=? #\\z #\\z #\\x)", env));
+  }
 }
