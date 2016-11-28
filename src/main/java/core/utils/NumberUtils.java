@@ -268,27 +268,27 @@ public class NumberUtils {
         if (bigDecimal.stripTrailingZeros().scale() == 0) {
           bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_EVEN);
         }
-        result = processExactness(bigDecimal, exactness);
+        result = bigDecimal;
       } else {
-        result = processExactness(new BigDecimal(new BigInteger(number, r)), exactness);
+        result = new BigDecimal(new BigInteger(number, r));
       }
     } else {
       if (dot > -1) {
         if (r == 10) {
-          result = processExactness(Double.parseDouble(number), exactness);
+          result = Double.parseDouble(number);
         } else {
-        /* Remove dot */
+          /* Remove dot */
           number = number.replace(".", "");
-          result = processExactness(parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot), exactness);
+          result = parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot);
         }
       } else {
-        result = processExactness(Long.parseLong(number, r), exactness);
+        result = Long.parseLong(number, r);
       }
     }
     if (exp != null) {
       result = Multiplication.invoke(result, Expt.invoke(r, exp));
     }
-    return result;
+    return processExactness(result, exactness);
   }
 
   private static Number processExactness(Number number, char exactness) {
