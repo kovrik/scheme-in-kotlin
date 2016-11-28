@@ -42,14 +42,14 @@ public class Multiplication extends AFn {
       if (second instanceof Long) {
         return ((SCMBigRational) first).multiply(new SCMBigRational(new BigInteger(second.toString()), BigInteger.ONE));
       } else {
-        first = first.doubleValue();
+        first = ((SCMBigRational)first).doubleOrBigDecimalValue();
       }
     }
     if (second instanceof SCMBigRational) {
       if (first instanceof Long) {
         return ((SCMBigRational) second).multiply(new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE));
       } else {
-        second = second.doubleValue();
+        second = ((SCMBigRational)second).doubleOrBigDecimalValue();
       }
     }
     if ((first instanceof Long) && (second instanceof Long)) {

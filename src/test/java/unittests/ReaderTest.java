@@ -199,6 +199,17 @@ public class ReaderTest {
     assertEquals(new SCMSymbol("ab"), reader.readFirst("ab"));
   }
 
+
+  @Test
+  public void testScientificNotation() {
+    assertEquals(new SCMBigRational("23", "1"), reader.readFirst("#e2.3e1"));
+    assertEquals(new BigDecimal("230"), reader.readFirst("#e23e1"));
+    assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
+    assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#i2.3e-51"));
+    assertEquals(new BigDecimal("92160.0"), reader.readFirst("#b101101e1011"));
+    assertEquals(new BigDecimal("4484907929698304.0"), reader.readFirst("#xfefsa"));
+  }
+
   private static SCMSymbol s(String str) {
     return new SCMSymbol(str);
   }

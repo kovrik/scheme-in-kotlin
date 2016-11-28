@@ -53,14 +53,14 @@ public class Division extends AFn {
       if (denominator instanceof Long) {
         return ((SCMBigRational) numerator).divide(new SCMBigRational(new BigInteger(denominator.toString()), BigInteger.ONE));
       } else {
-        numerator = numerator.doubleValue();
+        numerator = ((SCMBigRational) numerator).doubleOrBigDecimalValue();
       }
     }
     if (denominator instanceof SCMBigRational) {
       if (numerator instanceof Long) {
         return ((SCMBigRational) denominator).divide(new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE));
       } else {
-        denominator = denominator.doubleValue();
+        denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
       }
     }
 

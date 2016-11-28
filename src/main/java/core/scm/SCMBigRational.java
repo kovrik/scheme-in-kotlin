@@ -22,15 +22,19 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public SCMBigRational(String numerator, String denominator) {
-    init(new BigInteger(numerator), new BigInteger(denominator));
+    BigInteger num = parseBigInteger(numerator);
+    BigInteger den = parseBigInteger(denominator);
+    init(num, den);
   }
 
   public SCMBigRational(BigInteger numerator, String denominator) {
-    init(numerator, new BigInteger(denominator));
+    BigInteger den = parseBigInteger(denominator);
+    init(numerator, den);
   }
 
   public SCMBigRational(String numerator, BigInteger denominator) {
-    init(new BigInteger(numerator), denominator);
+    BigInteger num = parseBigInteger(numerator);
+    init(num, denominator);
   }
 
   private void init(BigInteger numerator, BigInteger denominator) {
@@ -47,6 +51,20 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
       this.denominator = this.denominator.negate();
       this.numerator = this.numerator.negate();
     }
+  }
+
+  public static BigInteger parseBigInteger(String number) {
+    BigInteger result;
+    if ("1".equals(number)) {
+      result = BigInteger.ONE;
+    } else if ("10".equals(number)) {
+      result = BigInteger.TEN;
+    } else if ("0".equals(number)) {
+      result = BigInteger.ZERO;
+    } else {
+      result = new BigInteger(number);
+    }
+    return result;
   }
 
   public BigInteger getNumerator() {
@@ -217,6 +235,16 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     BigDecimal denominator = new BigDecimal(this.denominator);
     BigDecimal quotient    = numerator.divide(denominator, SCALE, RoundingMode.HALF_EVEN);
     return quotient.doubleValue();
+  }
+
+  public Number doubleOrBigDecimalValue() {
+    boolean wasZero = isZero();
+    double doubleValue = doubleValue();
+    if (!wasZero && Double.compare(doubleValue, 0d) == 0) {
+      return toBigDecimal();
+    } else {
+      return doubleValue;
+    }
   }
 
   @Override
