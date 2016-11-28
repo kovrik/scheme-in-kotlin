@@ -56,12 +56,15 @@ public class GCD extends AFn {
     return a;
   }
 
-  public static Double gcd(Double a, Double b) {
-    if (a.isInfinite() || a.isNaN() || a.longValue() != a) {
+  public static Number gcd(Double a, Double b) {
+    if (a.isInfinite() || a.isNaN()) {
       throw new WrongTypeException("Integer", a);
     }
-    if (b.isInfinite() || b.isNaN() || b.longValue() != b) {
+    if (b.isInfinite() || b.isNaN()) {
       throw new WrongTypeException("Integer", b);
+    }
+    if (a.longValue() != a || b.longValue() != b) {
+      return NumberUtils.toInexact(gcd((SCMBigRational)NumberUtils.toExact(a), (SCMBigRational)NumberUtils.toExact(b)));
     }
     return (double)gcd(a.longValue(), b.longValue());
   }
@@ -72,9 +75,9 @@ public class GCD extends AFn {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
       // TODO Check if works
-      SCMBigRational first = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
+      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
       SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
-      return gcd(first, second);
+      return NumberUtils.toInexact(gcd(first, second));
     }
   }
 

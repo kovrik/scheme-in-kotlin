@@ -58,7 +58,7 @@ public class LCM extends AFn {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0d;
     }
-    return (a / GCD.gcd(a, b)) * b;
+    return (a / GCD.gcd(a, b).doubleValue()) * b;
   }
 
   public static BigInteger lcm(BigInteger first, BigInteger second) {
@@ -79,9 +79,9 @@ public class LCM extends AFn {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
       // TODO Check if works
-      SCMBigRational first = (SCMBigRational) NumberUtils.toExact(a.setScale(scale));
+      SCMBigRational first  = (SCMBigRational)NumberUtils.toExact(a.setScale(scale));
       SCMBigRational second = (SCMBigRational)NumberUtils.toExact(b.setScale(scale));
-      return lcm(first, second);
+      return NumberUtils.toInexact(lcm(first, second));
     }
   }
 
