@@ -324,6 +324,9 @@ public class NumberUtils {
         int scale = Math.max(1, ((BigDecimal) number).scale());
         return ((BigDecimal) number).setScale(scale);
       }
+      if (number instanceof SCMBigRational) {
+        return ((SCMBigRational)number).toBigDecimalInexact();
+      }
     }
     /* Other numbers are inexact by default, nothing to do */
     return number;

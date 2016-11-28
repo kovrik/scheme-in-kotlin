@@ -609,7 +609,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(1500.0, eval("(string->number \"15##\")", env));
     assertEquals(FALSE, eval("(string->number \"1234#d\")", env));
     assertEquals(new BigDecimal("100.0"), eval("(string->number \"1e2\")", env));
-    assertEquals(new SCMBigRational("1", "2"), eval("(string->number \"#b1e-1\")", env));
+    assertEquals(new BigDecimal("0.5"), eval("(string->number \"#b1e-1\")", env));
     assertEquals(new BigDecimal("6161212520618990239744.0"), eval("(string->number \"#o1234e+25\")", env));
     try {
       eval("(string->number \"#b1e5\")", env);
