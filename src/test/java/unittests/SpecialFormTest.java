@@ -208,6 +208,24 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(new SCMSymbol("no"), eval("(if (> 2 3) 'yes 'no)", env));
     assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env));
     assertEquals(UNSPECIFIED, eval("(if #f 5)", env));
+    try {
+      eval("(if)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("if: bad syntax (has 0 parts after keyword) in form: (if)", e.getMessage());
+    }
+    try {
+      eval("(if 1)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("if: bad syntax (has 1 parts after keyword) in form: (if 1)", e.getMessage());
+    }
+    try {
+      eval("(if 1 2 3 4 5)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("if: bad syntax (has 5 parts after keyword) in form: (if 1 2 3 4 5)", e.getMessage());
+    }
   }
 
   @Test

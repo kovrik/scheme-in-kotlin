@@ -27,8 +27,13 @@ public class If implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+    if (expression.size() < 3) {
+      throw new IllegalSyntaxException(
+        String.format("if: bad syntax (has %s parts after keyword) in form: %s", expression.size() - 1, expression));
+    }
     if (expression.size() > 4) {
-      throw new IllegalSyntaxException(String.format("if: bad syntax: has %s parts after keyword", expression.size() - 1));
+      throw new IllegalSyntaxException(
+        String.format("if: bad syntax (has %s parts after keyword) in form: %s", expression.size() - 1, expression));
     }
     Object test = expression.get(1);
     Object consequence = expression.get(2);
