@@ -26,7 +26,7 @@ public class EvaluatorTest extends AbstractTest {
     try {
       eval("(())", env);
     } catch (IllegalSyntaxException e) {
-      assertEquals("Unexpected syntax in form ()", e.getMessage());
+      assertEquals("eval: bad syntax (illegal empty application) in form: ()", e.getMessage());
     }
   }
 

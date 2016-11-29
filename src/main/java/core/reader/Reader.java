@@ -108,7 +108,7 @@ public class Reader implements IReader {
       while (((token = nextToken()) != null) || tokens.isEmpty()) {
         /* Read */
         if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("Illegal use of '.'");
+          throw new IllegalSyntaxException("read: illegal use of '.'");
         }
         if (token != null) {
           tokens.add(token);
@@ -176,7 +176,7 @@ public class Reader implements IReader {
       case '(':
         return readList();
       case ')':
-        throw new IllegalSyntaxException("Unexpected list terminator: ')'");
+        throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
       default: {
         if (Character.isWhitespace(c)) {
           while (isValid(c = (char)reader.read()) && Character.isWhitespace(c) && (LINE_BREAKS.indexOf(c) == -1)) {
@@ -264,19 +264,19 @@ public class Reader implements IReader {
 
       String restNumber = parse.getRest();
       if (restNumber.isEmpty() || "+".equals(restNumber) || "-".equals(restNumber)) {
-        throw new IllegalSyntaxException("Bad number: no digits!");
+        throw new IllegalSyntaxException("read: bad number (no digits)");
       }
 
       /* Check if this is a proper number */
       Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radixChar));
       if (!(result instanceof Number)) {
-        throw new IllegalSyntaxException(String.format("Bad number: %s!", number));
+        throw new IllegalSyntaxException(String.format("read: bad number: %s!", number));
       }
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
     StringBuilder token = new StringBuilder().append('#').append(next).append(readUntilDelimiter());
-    throw new IllegalSyntaxException("Bad syntax: " + token);
+    throw new IllegalSyntaxException("read: bad syntax: " + token);
   }
 
   /**
@@ -334,7 +334,7 @@ public class Reader implements IReader {
         i = reader.read();
         char next = (char)i;
         if (next == '>') {
-          throw new IllegalSyntaxException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
+          throw new IllegalSyntaxException("read: unknown escape sequence \\> in string");
         } else {
           Character character = SPECIAL_CHARS.get(next);
           if (character != null) {
@@ -406,7 +406,7 @@ public class Reader implements IReader {
       }
       Character namedChar = NAMED_CHARS.get(character.toString());
       if (namedChar == null) {
-        throw new IllegalSyntaxException("Error: unknown named character: \"" + character + "\"");
+        throw new IllegalSyntaxException("read: unknown named character: \"" + character + "\"");
       }
       return namedChar;
     }
@@ -460,7 +460,7 @@ public class Reader implements IReader {
 
     /* Process improper list */
     if (dotPos != list.size() - 2) {
-      throw new IllegalSyntaxException("Error: bad dotted pair form: " + list);
+      throw new IllegalSyntaxException("read: bad dotted pair form: " + list);
     }
     /* Remove dot */
     list.remove(dotPos);

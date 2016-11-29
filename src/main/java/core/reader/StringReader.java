@@ -15,7 +15,7 @@ public class StringReader extends Reader {
     try {
       Object token = nextToken();
       if (DOT.equals(token)) {
-        throw new IllegalSyntaxException("Illegal use of '.'");
+        throw new IllegalSyntaxException("read: illegal use of '.'");
       }
       return token;
     } catch (IOException | ParseException e) {
@@ -37,7 +37,7 @@ public class StringReader extends Reader {
       while ((token = nextToken()) != null) {
         /* Read */
         if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("Illegal use of '.'");
+          throw new IllegalSyntaxException("read: illegal use of '.'");
         }
         tokens.add(token);
       }

@@ -614,7 +614,7 @@ public class NumberTest extends AbstractTest {
       eval("(string->number \"#b1e5\")", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("bad exponent: 1e5", e.getMessage());
+      assertEquals("read: bad exponent: 1e5", e.getMessage());
     }
   }
 

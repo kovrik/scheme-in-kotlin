@@ -27,7 +27,7 @@ public class FileReader extends Reader {
         Object token = nextToken();
         /* Read */
         if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("Illegal use of '.'");
+          throw new IllegalSyntaxException("read: illegal use of '.'");
         }
         if (token != null) {
           tokens.add(token);

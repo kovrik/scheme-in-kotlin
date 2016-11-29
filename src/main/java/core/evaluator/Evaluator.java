@@ -42,7 +42,7 @@ public class Evaluator implements IEvaluator {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
       if (o instanceof ISpecialForm) {
-        throw new IllegalSyntaxException("Unexpected syntax in form: " + o);
+        throw IllegalSyntaxException.of(o.toString(), sexp);
       }
       return o;
     } else if (sexp instanceof List) {
@@ -57,7 +57,7 @@ public class Evaluator implements IEvaluator {
    */
   private Object evlis(List<Object> sexp, IEnvironment env) {
     if (sexp.isEmpty()) {
-      throw new IllegalSyntaxException("Unexpected syntax in form " + sexp);
+      throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
     }
     /* Check if op is a Special Form.
      * This is used for implicit Special Forms

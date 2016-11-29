@@ -254,13 +254,13 @@ public class SpecialFormTest extends AbstractTest {
       eval("'(1 2 3 . 4 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Error: bad dotted pair form: (1 2 3 . 4 5)", e.getMessage());
+      assertEquals("read: bad dotted pair form: (1 2 3 . 4 5)", e.getMessage());
     }
     try {
       eval("'( . 1 2 3 4 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Error: bad dotted pair form: (. 1 2 3 4 5)", e.getMessage());
+      assertEquals("read: bad dotted pair form: (. 1 2 3 4 5)", e.getMessage());
     }
   }
 
@@ -565,7 +565,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("unquote", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Unexpected syntax in form: unquote", e.getMessage());
+      assertEquals("unquote: bad syntax in form: unquote", e.getMessage());
     }
     try {
       eval("(quasiquote (unquote 1 2))", env);

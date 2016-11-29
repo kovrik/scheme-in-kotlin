@@ -42,7 +42,7 @@ public class MemvTest extends AbstractTest {
       eval("(memv 'a (list 'a 'b . 'c))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("Unexpected syntax in form: quote", e.getMessage());
+      assertEquals("quote: bad syntax in form: quote", e.getMessage());
     }
     try {
       eval("(memv)", env);

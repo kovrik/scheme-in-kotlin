@@ -116,7 +116,7 @@ public class NumberUtils {
   public static boolean isValidForRadix(char c, int radix) {
     String s = RADIX_CHARS.get(radix);
     if (s == null) {
-      throw new IllegalSyntaxException("Bad radix: " + radix);
+      throw new IllegalSyntaxException("read: bad radix: " + radix);
     }
     return s.indexOf(c) > -1;
   }
@@ -135,7 +135,7 @@ public class NumberUtils {
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(final String number, Character exactness, int radix) throws ParseException {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
-      throw new IllegalSyntaxException("Multiple decimal points: " + number);
+      throw new IllegalSyntaxException("read: multiple decimal points: " + number);
     }
     /* Exponent mark */
     String n = number;
@@ -159,7 +159,7 @@ public class NumberUtils {
       try {
         e = processNumber(exponent, radix, 'e', false, null);
       } catch (NumberFormatException ex) {
-        throw new IllegalSyntaxException("bad exponent: " + number);
+        throw new IllegalSyntaxException("read: bad exponent: " + number);
       }
       if (!(e instanceof Long)) {
         /* Invalid exponent */
