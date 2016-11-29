@@ -391,19 +391,20 @@ public class SpecialFormTest extends AbstractTest {
       eval("(case)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (case)"));
+      assertEquals("case: bad syntax (source expression failed to match any pattern) in form: (case)", e.getMessage());
     }
     try {
       eval("(case 1 1)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
+      assertEquals("case: bad syntax (invalid clause in subform) in form: (case 1 1)", e.getMessage());
+
     }
     try {
       eval("(case (* 2 3) (else 'prime) ((1 4 6 8 9) 'composite))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("case: else must be the last clause in subform"));
+      assertEquals("case: bad syntax (else must be the last clause in subform) in form: (case (* 2 3) (else (quote prime)) ((1 4 6 8 9) (quote composite)))", e.getMessage());
     }
     String caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 6 8 9) 'composite))";
     assertEquals(new SCMSymbol("composite"), eval(caseform, env));

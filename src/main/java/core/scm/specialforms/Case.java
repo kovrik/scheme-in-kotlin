@@ -33,13 +33,13 @@ public class Case implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() <= 1) {
-      throw new IllegalSyntaxException("Source expression failed to match any pattern in form (case)");
+      throw IllegalSyntaxException.of(syntax, expression, "source expression failed to match any pattern");
     }
     Object key = evaluator.eval(expression.get(1), env);
     for (int i = 2; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {
-        throw new IllegalSyntaxException("Invalid clause in subform " + node);
+        throw IllegalSyntaxException.of(syntax, expression, "invalid clause in subform");
       }
       List<Object> subform = (List)node;
       Object datum = subform.get(0);
@@ -50,10 +50,10 @@ public class Case implements ISpecialForm, ISCMClass {
           }
           return new TailCall(subform.get(subform.size() - 1), env);
         }
-        throw new IllegalSyntaxException("case: else must be the last clause in subform");
+        throw IllegalSyntaxException.of(syntax, expression, "else must be the last clause in subform");
       }
       if (!(datum instanceof List)) {
-        throw new IllegalSyntaxException("Invalid clause in subform " + datum);
+        throw IllegalSyntaxException.of(syntax, expression, "invalid clause in subform");
       }
       for (Object n : ((List)datum)) {
         if (Eqv.eqv(key, n)) {
