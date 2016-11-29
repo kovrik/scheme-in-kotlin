@@ -174,6 +174,10 @@ public class ReaderTest {
     assertEquals('\u000b', reader.readFirst("#\\ub"));
     assertEquals('\u000b', reader.readFirst("#\\u000b"));
     assertEquals('\u000b', reader.readFirst("#\\u000000b"));
+    assertEquals('u', reader.readFirst("#\\u"));
+    assertEquals('U', reader.readFirst("#\\U"));
+    assertEquals('x', reader.readFirst("#\\x"));
+    assertEquals('X', reader.readFirst("#\\X"));
   }
 
   @Test

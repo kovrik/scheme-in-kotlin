@@ -357,6 +357,7 @@ public class Reader implements IReader {
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
       /* Hex or Octal? */
       char radixChar;
+      char firstChar = (char)i;
       if (((char)i == 'u') || ((char)i == 'U')) {
         radixChar = 'x';
       } else {
@@ -366,8 +367,8 @@ public class Reader implements IReader {
 
       String identifier = readIdentifier().toString();
       if (identifier.isEmpty()) {
-        /* #\x char */
-        return 'x';
+        /* #\\u and #\\U chars */
+        return firstChar;
       }
       int radix = NumberUtils.getRadixByChar(radixChar);
       if (radix == 8  && identifier.length() == 1) {
