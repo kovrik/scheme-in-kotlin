@@ -31,7 +31,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() != 2) {
-      throw new IllegalSyntaxException("quasiquote: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     return quasiquote(expression.get(1), env, evaluator);
   }
@@ -58,7 +58,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       /* `#(unquote 1)  syntax is not valid */
       /* `,@#(list 1 2) syntax is not valid */
       if (UNQUOTE.symbol().equals(vector.get(0)) || UNQUOTE_SPLICING.symbol().equals(vector.get(0))) {
-        throw new IllegalSyntaxException(vector.get(0) + ": invalid context within quasiquote");
+        throw IllegalSyntaxException.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* Vector quasiquotation */
       return quasiquoteVector(0, expr, env, evaluator);
@@ -71,13 +71,13 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
       if (IsList.isList(list).toBoolean() && (UNQUOTE.symbol().equals(list.get(0)))) {
         if (list.size() != 2) {
-          throw new IllegalSyntaxException("unquote: expects exactly one expression");
+          throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
         }
         return evaluator.eval(list.get(1), env);
       }
       /* `,@(list 1 2) syntax is not valid */
       if (IsList.isList(list).toBoolean() && list.size() > 0 && (UNQUOTE_SPLICING.symbol().equals(list.get(0)))) {
-        throw new IllegalSyntaxException("unquote-splicing: invalid context within quasiquote");
+        throw IllegalSyntaxException.of(list.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* List quasiquotation */
       return quasiquoteList(0, expr, env, evaluator);
@@ -103,11 +103,11 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
             /* Evaluate and append last element */
             return append(result, evaluator.eval(list.get(n + 1), env));
           } else {
-            throw new IllegalSyntaxException("unquote: expects exactly one expression");
+            throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
         }
         if (IsList.isList(expr).toBoolean() && UNQUOTE_SPLICING.symbol().equals(o)) {
-          throw new IllegalSyntaxException("unquote-splicing: invalid context within quasiquote");
+          throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
         result = (SCMCons) append(result, SCMCons.list(o));
@@ -119,7 +119,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
           result = (SCMCons) append(result, SCMCons.list(quasiquoteList(level + 1, o, env, evaluator)));
         } else if (UNQUOTE.symbol().equals(op) || (UNQUOTE_SPLICING.symbol().equals(op))) {
           if (el.size() != 2) {
-            throw new IllegalSyntaxException(String.format("%s: expects exactly one expression", op));
+            throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression");
           }
           if (level == 0) {
             /* Level of quasiquotation is 0 - evaluate! */

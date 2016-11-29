@@ -571,7 +571,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(quasiquote (unquote 1 2))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("unquote: expects exactly one expression", e.getMessage());
+      assertEquals("unquote: bad syntax (unquote expects exactly one expression) in form: (unquote 1 2)", e.getMessage());
     }
     try {
       eval("`#(1 unquote 2)", env);
