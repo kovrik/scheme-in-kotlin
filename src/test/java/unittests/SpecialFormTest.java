@@ -345,7 +345,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let* ((c 123)))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let*: bad let* in form: (let* ((c 123)))", e.getMessage());
+      assertEquals("let*: bad syntax in form: (let* ((c 123)))", e.getMessage());
     }
   }
 

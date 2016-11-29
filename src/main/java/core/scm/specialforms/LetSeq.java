@@ -27,7 +27,7 @@ public class LetSeq implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 3) {
-      throw new IllegalSyntaxException("let*: bad let* in form: " + expression);
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     IEnvironment localEnv = new Environment(env);
     List bindings = (List)expression.get(1);
