@@ -361,33 +361,21 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testEvalCond() {
-    // "Source expression failed to match any pattern in form (cond)"
-    try {
-      eval("(cond)", env);
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
-    }
+    assertEquals(UNSPECIFIED, eval("(cond)", env));
     // "Invalid clause in subform "
     try {
       eval("(cond 1)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("Invalid clause in subform 1"));
+      assertEquals("cond: bad syntax (invalid clause in subform) in form: (cond 1)", e.getMessage());
     }
     // "cond: else must be the last clause in subform"
     try {
       eval("(cond (else 1) (#t 5))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("cond: else must be the last clause in subform"));
-    }
-    // "Source expression failed to match any pattern in form (cond)"
-    try {
-      eval("(cond)", env);
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("Source expression failed to match any pattern in form (cond)"));
+      assertEquals("cond: bad syntax (else must be the last clause in subform) in form: (cond (else 1) (#t 5))",
+                   e.getMessage());
     }
 
     assertEquals(1L, eval("(cond (#f 5) ((not #t) 7) (else 1))", env));

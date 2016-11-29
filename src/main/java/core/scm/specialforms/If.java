@@ -27,20 +27,16 @@ public class If implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    if (expression.size() < 3) {
-      throw new IllegalSyntaxException(
-        String.format("if: bad syntax (has %s parts after keyword) in form: %s", expression.size() - 1, expression));
-    }
-    if (expression.size() > 4) {
-      throw new IllegalSyntaxException(
-        String.format("if: bad syntax (has %s parts after keyword) in form: %s", expression.size() - 1, expression));
+    int size = expression.size();
+    if (size < 3 || size > 4) {
+      throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
     Object consequence = expression.get(2);
     if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
       return new TailCall(consequence, env);
     } else {
-      if (expression.size() < 4) {
+      if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
          * Another option is to throw an exception (if: missing an "else" expression) */
         return UNSPECIFIED;

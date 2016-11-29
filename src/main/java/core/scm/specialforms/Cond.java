@@ -3,10 +3,7 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
-import core.scm.SCMBoolean;
-import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.*;
 
 import java.util.List;
 
@@ -30,13 +27,10 @@ public class Cond implements ISpecialForm, ISCMClass {
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    if (expression.size() <= 1) {
-      throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
-    }
     for (int i = 1; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {
-        throw new IllegalSyntaxException("Invalid clause in subform " + node);
+        throw IllegalSyntaxException.of(syntax, expression, "invalid clause in subform");
       }
       List<Object> subform = (List)node;
       Object clause = subform.get(0);
@@ -47,7 +41,7 @@ public class Cond implements ISpecialForm, ISCMClass {
           }
           return new TailCall(subform.get(subform.size() - 1), env);
         }
-        throw new IllegalSyntaxException("cond: else must be the last clause in subform");
+        throw IllegalSyntaxException.of(syntax, expression, "else must be the last clause in subform");
       }
       if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
         for (int s = 1; s < subform.size() - 1; s++) {
@@ -56,7 +50,7 @@ public class Cond implements ISpecialForm, ISCMClass {
         return new TailCall(subform.get(subform.size() - 1), env);
       }
     }
-    throw new IllegalSyntaxException("Source expression failed to match any pattern in form (cond)");
+    return SCMUnspecified.UNSPECIFIED;
   }
 
   public SCMSymbol symbol() {
