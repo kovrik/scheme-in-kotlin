@@ -6,6 +6,7 @@ import core.procedures.AFn;
 import core.procedures.predicates.IsExact;
 import core.procedures.predicates.IsRational;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,7 +45,7 @@ public class Denominator extends AFn {
     if (exact instanceof SCMBigRational) {
       BigDecimal result = new BigDecimal(((SCMBigRational) exact).getDenominator());
       if (!isExact) {
-        return result.setScale(1);
+        return result.setScale(1, NumberUtils.ROUNDING_MODE);
       }
       return result;
     }
@@ -61,7 +62,7 @@ public class Denominator extends AFn {
       if (((BigDecimal) exact).scale() == 0) {
         return BigDecimal.ONE;
       } else {
-        return BigDecimal.ONE.setScale(1);
+        return BigDecimal.ONE.setScale(1, NumberUtils.ROUNDING_MODE);
       }
     }
     return 1L;

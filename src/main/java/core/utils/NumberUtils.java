@@ -14,6 +14,7 @@ import core.scm.SCMSymbol;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class NumberUtils {
   private NumberUtils() {}
 
   public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64;
+  public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
 
   private static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
   private static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
@@ -257,7 +259,7 @@ public class NumberUtils {
         BigDecimal bigDecimal = new BigDecimal(bigInteger)
           .divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
         if (bigDecimal.stripTrailingZeros().scale() == 0) {
-          bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_EVEN);
+          bigDecimal = bigDecimal.setScale(1, NumberUtils.ROUNDING_MODE);
         }
         result = bigDecimal;
       } else {
@@ -313,7 +315,7 @@ public class NumberUtils {
       }
       if (number instanceof BigDecimal) {
         int scale = Math.max(1, ((BigDecimal) number).scale());
-        return ((BigDecimal) number).setScale(scale);
+        return ((BigDecimal) number).setScale(scale, NumberUtils.ROUNDING_MODE);
       }
       if (number instanceof SCMBigRational) {
         return ((SCMBigRational)number).toBigDecimalInexact();

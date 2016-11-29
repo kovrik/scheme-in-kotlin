@@ -5,6 +5,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.predicates.IsNumber;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -37,7 +38,7 @@ public class ToInexact extends AFn {
     }
     if (o instanceof BigDecimal) {
       int scale = Math.max(1, ((BigDecimal)o).scale());
-      return ((BigDecimal)o).setScale(scale);
+      return ((BigDecimal)o).setScale(scale, NumberUtils.ROUNDING_MODE);
     }
     return ((Number)o).doubleValue();
   }

@@ -41,10 +41,10 @@ public class Quotient extends AFn {
     }
     int scale = Math.max(first.scale(), second.scale());
     if (scale > 0) {
-      return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, BigDecimal.ROUND_HALF_EVEN)
-                  .setScale(1, BigDecimal.ROUND_HALF_EVEN);
+      return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, NumberUtils.ROUNDING_MODE)
+                  .setScale(1, NumberUtils.ROUNDING_MODE);
     } else {
-      return first.divideToIntegralValue(second).setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+      return first.divideToIntegralValue(second).setScale(scale, NumberUtils.ROUNDING_MODE);
     }
   }
 

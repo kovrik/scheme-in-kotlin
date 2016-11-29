@@ -88,7 +88,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   public BigDecimal toBigDecimalInexact() {
     BigDecimal bigDecimal = Division.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
     int scale = Math.max(1, bigDecimal.scale());
-    return bigDecimal.setScale(scale);
+    return bigDecimal.setScale(scale, NumberUtils.ROUNDING_MODE);
   }
 
   public boolean isDenominatorEqualToOne() {

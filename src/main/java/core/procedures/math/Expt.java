@@ -5,6 +5,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -50,7 +51,7 @@ public class Expt extends AFn {
         isNegative = true;
         e = Math.abs(exponent.intValue());
       }
-      BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(scale);
+      BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(scale, NumberUtils.ROUNDING_MODE);
       if (isNegative) {
         return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
       }
