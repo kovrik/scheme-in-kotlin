@@ -199,7 +199,7 @@ public class SpecialFormTest extends AbstractTest {
       eval(f1, env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("lambda: bad lambda in form: " + f1, e.getMessage());
+      assertEquals("lambda: bad syntax in form: " + f1, e.getMessage());
     }
   }
 
@@ -666,13 +666,13 @@ public class SpecialFormTest extends AbstractTest {
       eval("(lambda (a a) a)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("lambda: duplicate argument identifier `a`", e.getMessage());
+      assertEquals("lambda: bad syntax (duplicate argument identifier `a`) in form: (lambda (a a) a)", e.getMessage());
     }
     try {
       eval("(define (a b b) b)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("lambda: duplicate argument identifier `b`", e.getMessage());
+      assertEquals("lambda: bad syntax (duplicate argument identifier `b`) in form: (lambda (b b) b)", e.getMessage());
     }
   }
 }

@@ -6,12 +6,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.procedures.AFn;
 import core.scm.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -33,7 +28,7 @@ public class Lambda implements ISpecialForm, ISCMClass {
   @Override
   public SCMProcedure eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 3) {
-      throw new IllegalSyntaxException("lambda: bad lambda in form: " + expression);
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     /* Add implicit `begin` */
     // TODO Is implicit BEGIN enough to have TCO?
@@ -52,7 +47,7 @@ public class Lambda implements ISpecialForm, ISCMClass {
         Map<Object, Object> temp = new HashMap<>(((List) args).size());
         for (Object o : ((List) args)) {
           if (temp.containsKey(o)) {
-            throw new IllegalSyntaxException(syntax + ": duplicate argument identifier `" + o + "`");
+            throw IllegalSyntaxException.of(syntax, expression, String.format("duplicate argument identifier `%s`", o));
           }
           temp.put(o, o);
         }
