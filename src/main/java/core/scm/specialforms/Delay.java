@@ -25,7 +25,7 @@ public class Delay implements ISpecialForm, ISCMClass {
   @Override
   public SCMPromise eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 2) {
-      throw new IllegalSyntaxException("delay: bad `delay` in form: " + expression);
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     return new SCMPromise(expression.get(1));
   }

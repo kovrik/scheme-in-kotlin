@@ -81,6 +81,12 @@ public class SpecialFormTest extends AbstractTest {
     } catch (SCMError e) {
       assertEquals("BOOM", e.getMessage());
     }
+    try {
+      eval("(delay)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("delay: bad syntax in form: (delay)", e.getMessage());
+    }
   }
 
   @Test
