@@ -30,12 +30,12 @@ public class Do implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 3) {
-      throw new IllegalSyntaxException("do: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
 
     Object bs = expression.get(1);
     if (!(bs instanceof List)) {
-      throw new IllegalSyntaxException("do: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     IEnvironment tempEnv = new Environment(env);
     List bindings = (List) bs;
@@ -43,11 +43,11 @@ public class Do implements ISpecialForm, ISCMClass {
     /* Init bindings */
     for (Object binding : bindings) {
       if (!(binding instanceof List)) {
-        throw new IllegalSyntaxException("do: bad syntax");
+        throw IllegalSyntaxException.of(syntax, expression);
       }
       /* Check that init value exists */
       if (((List)binding).size() < 2) {
-        throw new IllegalSyntaxException("do: bad syntax");
+        throw IllegalSyntaxException.of(syntax, expression);
       }
       Object variable = ((List) binding).get(0);
       Object init = ((List) binding).get(1);
@@ -61,17 +61,17 @@ public class Do implements ISpecialForm, ISCMClass {
       if (!tempEnv.containsKey(variable)) {
         tempEnv.put(variable, evaluator.eval(init, tempEnv));
       } else {
-        throw new IllegalSyntaxException("let: duplicate identifier: " + variable);
+        throw IllegalSyntaxException.of(Let.LET.toString(), expression, "duplicate identifier");
       }
     }
 
     Object cl = expression.get(2);
     if (!(cl instanceof List)) {
-      throw new IllegalSyntaxException("do: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     List clause = (List)cl;
     if (clause.isEmpty()) {
-      throw new IllegalSyntaxException("do: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
 
     Object test = clause.get(0);

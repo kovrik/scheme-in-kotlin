@@ -297,7 +297,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(do ((a 1) (b 2) (a 3)) (= 1 1) 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: duplicate identifier: a", e.getMessage());
+      assertEquals("let: bad syntax (duplicate identifier) in form: (do ((a 1) (b 2) (a 3)) (= 1 1) 5)", e.getMessage());
     }
   }
 
@@ -309,19 +309,19 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().contains("let: duplicate identifier: c"));
+      assertEquals("let: duplicate identifier: c", e.getMessage());
     }
     try {
       eval("(let ((c 123))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().contains("let: bad let in form:"));
+      assertEquals("let: bad let in form: (let ((c 123)))", e.getMessage());
     }
     try {
       eval("(let ((z 1) (b (+ z 1))) b)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Unbound variable: z"));
+      assertEquals("Unbound variable: z", e.getMessage());
     }
   }
 
@@ -333,7 +333,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().equals("let: duplicate identifier: n"));
+      assertEquals("let: duplicate identifier: n", e.getMessage());
     }
   }
 
@@ -344,7 +344,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let* ((c 123)))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue("Test bad let* form", e.getMessage().contains("let*: bad let* in form:"));
+      assertEquals("let*: bad let* in form: (let* ((c 123)))", e.getMessage());
     }
   }
 
