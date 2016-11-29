@@ -36,7 +36,7 @@ public class Time implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 2) {
-      throw new IllegalSyntaxException("time: bad syntax");
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     long start = System.nanoTime();
     for (int i = 1; i < expression.size() - 1; i++) {
