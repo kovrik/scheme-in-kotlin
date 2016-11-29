@@ -2,6 +2,7 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
+import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMSymbol;
@@ -25,7 +26,14 @@ public class Set implements ISpecialForm, ISCMClass {
 
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    env.findAndPut(expression.get(1), evaluator.eval(expression.get(2), env));
+    if (expression.size() != 3) {
+      throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", expression.size() - 1));
+    }
+    Object identifier = expression.get(1);
+    if (!(identifier instanceof SCMSymbol)) {
+      throw IllegalSyntaxException.of(syntax, expression, String.format("not an identifier: `%s`", identifier));
+    }
+    env.findAndPut(identifier, evaluator.eval(expression.get(2), env));
     return UNSPECIFIED;
   }
 
