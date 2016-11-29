@@ -70,15 +70,27 @@ public class Division extends AFn {
       return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
     }
     if (numerator instanceof BigDecimal) {
-      return NumberUtils.safeBigDecimalDivision((BigDecimal)numerator, new BigDecimal(denominator.toString()));
+      return safeBigDecimalDivision((BigDecimal)numerator, new BigDecimal(denominator.toString()));
     }
     if (denominator instanceof BigDecimal) {
-      return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator.toString()), (BigDecimal)denominator);
+      return safeBigDecimalDivision(new BigDecimal(numerator.toString()), (BigDecimal)denominator);
     }
     double result = numerator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator.toString()), new BigDecimal(denominator.toString()));
+      return safeBigDecimalDivision(new BigDecimal(numerator.toString()), new BigDecimal(denominator.toString()));
     }
     return result;
+  }
+
+  /**
+   * Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision
+   */
+  // FIXME Performance
+  public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
+    try {
+      return num.divide(den, NumberUtils.getMathContext(num, den));
+    } catch (ArithmeticException e) {
+      return num.divide(den, NumberUtils.DEFAULT_CONTEXT);
+    }
   }
 }

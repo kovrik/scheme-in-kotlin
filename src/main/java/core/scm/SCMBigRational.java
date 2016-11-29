@@ -1,5 +1,6 @@
 package core.scm;
 
+import core.procedures.math.Division;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -81,11 +82,11 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public BigDecimal toBigDecimal() {
-    return NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
+    return Division.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
   }
 
   public BigDecimal toBigDecimalInexact() {
-    BigDecimal bigDecimal = NumberUtils.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
+    BigDecimal bigDecimal = Division.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
     int scale = Math.max(1, bigDecimal.scale());
     return bigDecimal.setScale(scale);
   }

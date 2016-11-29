@@ -1,9 +1,11 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
-import core.exceptions.WrongTypeException;
 import core.procedures.math.Expt;
 import core.procedures.math.Multiplication;
+import core.procedures.math.ToExact;
+import core.procedures.math.ToInexact;
+import core.procedures.predicates.IsExact;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
@@ -124,18 +126,6 @@ public class NumberUtils {
       return MathContext.DECIMAL64;
     }
     return MathContext.UNLIMITED;
-  }
-
-  /**
-   * Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision
-   */
-  // FIXME Performance
-  public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
-    try {
-      return num.divide(den, NumberUtils.getMathContext(num, den));
-    } catch (ArithmeticException e) {
-      return num.divide(den, NumberUtils.DEFAULT_CONTEXT);
-    }
   }
 
   // FIXME Simplify and cleanup!
@@ -301,7 +291,7 @@ public class NumberUtils {
        *
        * Guile returns 2589569785738035/1125899906842624 in both cases.
        */
-      if (isExact(number)) {
+      if (IsExact.isExact(number)) {
         return number;
       } else {
         if (number instanceof Double) {
@@ -312,7 +302,7 @@ public class NumberUtils {
           int scale = bigDecimal.scale();
           return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
         } else {
-          return toExact(number);
+          return ToExact.toExact(number);
         }
       }
     }
@@ -340,7 +330,7 @@ public class NumberUtils {
     Number den = processNumber(denominator, r, 'e', useBigNum, null);
     SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
     if (exactness == 'i') {
-      Number result = toInexact(number);
+      Number result = ToInexact.toInexact(number);
       if (exp != null) {
         result = Multiplication.invoke(result, Expt.invoke(r, exp));
       }
@@ -349,170 +339,4 @@ public class NumberUtils {
     return number;
   }
 
-  public static boolean isNumber(Object o) {
-    return o instanceof Number;
-  }
-
-  public static boolean isExact(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
-      return true;
-    }
-    if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).scale() == 0;
-    }
-    return false;
-  }
-
-  public static boolean isInexact(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
-      return false;
-    }
-    if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).scale() != 0;
-    }
-    return true;
-  }
-
-  public static boolean isRational(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Double) {
-      return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
-    } else if (o instanceof Float) {
-      return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
-    } else {
-      return true;
-    }
-  }
-
-  public static Number numerator(Object o) {
-    if (!isRational(o)) {
-      throw new WrongTypeException("Rational", o);
-    }
-    boolean isExact = isExact(o);
-    Number exact;
-    if (isExact) {
-      exact = (Number)o;
-    } else {
-      exact = toExact(o);
-    }
-    if (exact instanceof SCMBigRational) {
-      BigDecimal result = new BigDecimal(((SCMBigRational) exact).getNumerator());
-      if (!isExact) {
-        return result.setScale(1);
-      }
-      return result;
-    }
-    return exact;
-  }
-
-  public static Number denominator(Object o) {
-    if (!isRational(o)) {
-      throw new WrongTypeException("Rational", o);
-    }
-    Number exact;
-    boolean isExact = isExact(o);
-    if (isExact) {
-      exact = (Number)o;
-    } else {
-      exact = toExact(o);
-    }
-    if (exact instanceof SCMBigRational) {
-      BigDecimal result = new BigDecimal(((SCMBigRational) exact).getDenominator());
-      if (!isExact) {
-        return result.setScale(1);
-      }
-      return result;
-    }
-    if (exact instanceof Long || exact instanceof Integer) {
-      return 1L;
-    }
-    if (exact instanceof Double || exact instanceof Float) {
-      return 1d;
-    }
-    if (exact instanceof BigInteger) {
-      return BigInteger.ONE;
-    }
-    if (exact instanceof BigDecimal) {
-      if (((BigDecimal) exact).scale() == 0) {
-        return BigDecimal.ONE;
-      } else {
-        return BigDecimal.ONE.setScale(1);
-      }
-    }
-    return 1L;
-  }
-
-  public static Number toInexact(Object o) {
-    if (!isNumber(o)) {
-      throw new WrongTypeException("Number", o);
-    }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).toBigDecimalInexact();
-    }
-    if (o instanceof BigDecimal) {
-      int scale = Math.max(1, ((BigDecimal)o).scale());
-      return ((BigDecimal)o).setScale(scale);
-    }
-    return ((Number)o).doubleValue();
-  }
-
-  public static Number toExact(Object o) {
-    if (!isNumber(o)) {
-      throw new WrongTypeException("Number", o);
-    }
-    if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
-      throw new ArithmeticException("No exact representation");
-    }
-    if (o instanceof Double) {
-      if ((Double.isInfinite((Double) o) || Double.isNaN((Double) o))) {
-        throw new ArithmeticException("No exact representation");
-      }
-      // FIXME There is no need to always call this method?
-      return doubleToExact((Double)o);
-    }
-    if (o instanceof BigDecimal) {
-      return bigDecimalToExact((BigDecimal) o);
-    }
-    return (Number) o;
-  }
-
-  // FIXME Use the same approach as for Double?
-  public static SCMBigRational bigDecimalToExact(BigDecimal number) {
-    int scale = number.scale();
-    if (scale > 0) {
-      return new SCMBigRational(number.unscaledValue(), BigInteger.TEN.pow(scale));
-    } else {
-      return new SCMBigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
-    }
-  }
-
-  private static Number doubleToExact(Double number) {
-    long bits = Double.doubleToLongBits(number);
-    long sign = bits >>> 63;
-    long exponent = ((bits >>> 52) ^ (sign << 11)) - 1023;
-    long fraction = bits << 12;
-    long a = 1L;
-    long b = 1L;
-    for (int i = 63; i >= 12; i--) {
-      a = a * 2 + ((fraction >>> i) & 1);
-      b *= 2;
-    }
-    if (exponent > 0) {
-      a *= 1 << exponent;
-    } else {
-      b *= 1 << -exponent;
-    }
-    if (sign == 1) {
-      a *= -1;
-    }
-    return new SCMBigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
-  }
 }

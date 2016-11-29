@@ -3,7 +3,6 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -81,7 +80,7 @@ public class LCM extends AFn {
       return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
       // TODO Check correctness
-      return NumberUtils.toInexact(lcm(NumberUtils.bigDecimalToExact(a), NumberUtils.bigDecimalToExact(b)));
+      return ToInexact.toInexact(lcm((BigDecimal)ToExact.toExact(a), (BigDecimal) ToExact.toExact(b)));
     }
   }
 

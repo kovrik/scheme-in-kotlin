@@ -3,7 +3,6 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -64,7 +63,7 @@ public class GCD extends AFn {
       throw new WrongTypeException("Integer", b);
     }
     if (a.longValue() != a || b.longValue() != b) {
-      return NumberUtils.toInexact(gcd((SCMBigRational)NumberUtils.toExact(a), (SCMBigRational)NumberUtils.toExact(b)));
+      return ToInexact.toInexact(gcd((SCMBigRational)ToExact.toExact(a), (SCMBigRational)ToExact.toExact(b)));
     }
     return (double)gcd(a.longValue(), b.longValue());
   }
@@ -75,7 +74,7 @@ public class GCD extends AFn {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
       // TODO Check correctness
-      return NumberUtils.toInexact(gcd(NumberUtils.bigDecimalToExact(a), NumberUtils.bigDecimalToExact(b)));
+      return ToInexact.toInexact(gcd((BigDecimal)ToExact.toExact(a), (BigDecimal)ToExact.toExact(b)));
     }
   }
 
