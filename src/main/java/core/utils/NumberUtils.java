@@ -6,6 +6,7 @@ import core.procedures.math.Multiplication;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
 import core.procedures.predicates.IsExact;
+import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
@@ -282,7 +283,7 @@ public class NumberUtils {
   }
 
   private static Number processExactness(Number number, char exactness) {
-    if (exactness == 'e') {
+    if (Reader.isExact(exactness)) {
       /* For some reason (optimization?), Racket's Reader does not convert into exact numbers 'properly':
        *
        * #e2.3 returns 23/10
@@ -306,7 +307,7 @@ public class NumberUtils {
         }
       }
     }
-    if (exactness == 'i') {
+    if (Reader.isInexact(exactness)) {
       if (number instanceof Long) {
         return number.doubleValue();
       }

@@ -35,11 +35,15 @@ public class ReaderTest {
     assertEquals(-.5d, reader.readFirst("-.5"));
 
     assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#e#d-.5"));
+    assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#E#d-.5"));
     assertEquals(+4.5d, reader.readFirst("#i#d+4.5"));
     assertEquals(4999999.5d, reader.readFirst("#i#d+4999999.5"));
     assertEquals(5L, reader.readFirst("#e#b101"));
     assertEquals(5L, reader.readFirst("#b#e101"));
     assertEquals(1L, reader.readFirst("#b#e0001"));
+    assertEquals(5L, reader.readFirst("#E#b101"));
+    assertEquals(5L, reader.readFirst("#b#E101"));
+    assertEquals(1L, reader.readFirst("#b#E0001"));
     assertEquals(455L, reader.readFirst("#o0707"));
     assertEquals(585L, reader.readFirst("#o1111"));
     assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
@@ -86,7 +90,10 @@ public class ReaderTest {
     assertEquals(1500d, reader.readFirst("15##.####"));
     assertEquals(1500d, reader.readFirst("#i15##.####"));
     assertEquals(1500d, reader.readFirst("#i15##"));
+    assertEquals(1500d, reader.readFirst("#I15##.####"));
+    assertEquals(1500d, reader.readFirst("#I15##"));
     assertEquals(new SCMBigRational("500", BigInteger.ONE), reader.readFirst("#e5###/1#"));
+    assertEquals(new SCMBigRational("500", BigInteger.ONE), reader.readFirst("#E5###/1#"));
     assertEquals(new BigDecimal("500.0"), reader.readFirst(" 5###/1#"));
     assertEquals(new SCMBigRational("1500", BigInteger.ONE), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
@@ -220,6 +227,8 @@ public class ReaderTest {
     assertEquals(new BigDecimal("230"), reader.readFirst("#e23e1"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
     assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#i2.3e-51"));
+    assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#I2.3e-5"));
+    assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#I2.3e-51"));
     assertEquals(new BigDecimal("92160.0"), reader.readFirst("#b101101e1011"));
     assertEquals(new BigDecimal("4484907929698304.0"), reader.readFirst("#xfefsa"));
   }

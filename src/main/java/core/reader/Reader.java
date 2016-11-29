@@ -76,7 +76,15 @@ public class Reader implements IReader {
   }
 
   private static boolean isExactness(char c) {
-    return c == 'i' || c == 'e';
+    return isExact(c) || isInexact(c);
+  }
+
+  public static boolean isExact(char c) {
+    return c == 'e' || c == 'E' ;
+  }
+
+  public static boolean isInexact(char c) {
+    return c == 'i' || c == 'I' ;
   }
 
   private static boolean isRadix(char c) {
