@@ -27,6 +27,9 @@ public class Define implements ISpecialForm, ISCMClass {
 
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+    if (expression.size() == 1) {
+      throw new IllegalSyntaxException("define: bad syntax in form: " + expression);
+    }
     Object id = expression.get(1);
 
     // TODO Check if this is an Internal Definition (has non-null outer environment)
@@ -36,8 +39,11 @@ public class Define implements ISpecialForm, ISCMClass {
 
     if (id instanceof SCMSymbol) {
       /* Variable definition */
+      if (expression.size() < 3) {
+        throw new IllegalSyntaxException("define: bad syntax (missing expression after identifier) in form: " + expression);
+      }
       if (expression.size() > 3) {
-        throw new IllegalSyntaxException("define: bad syntax (multiple expressions after identifier)");
+        throw new IllegalSyntaxException("define: bad syntax (multiple expressions after identifier) in form: " + expression);
       }
       Object body = expression.get(2);
       env.put(id, evaluator.eval(body, env));
@@ -70,7 +76,7 @@ public class Define implements ISpecialForm, ISCMClass {
       }
       env.put(name, lambda);
     } else {
-      throw new IllegalSyntaxException("define: bad `define` in form: " + expression);
+      throw new IllegalSyntaxException("define: bad syntax in form: " + expression);
     }
     return UNSPECIFIED;
   }

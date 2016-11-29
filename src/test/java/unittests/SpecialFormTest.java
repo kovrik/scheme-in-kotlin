@@ -123,13 +123,38 @@ public class SpecialFormTest extends AbstractTest {
     eval("(define (edv2 first second . rest) second)", env);
     assertEquals(1L, eval("(edv2 0 1 2 3 4 5)", env));
 
+    try {
+      eval("(define)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("define: bad syntax in form: (define)", e.getMessage());
+    }
+    try {
+      eval("(define 1)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("define: bad syntax in form: (define 1)", e.getMessage());
+    }
+    try {
+      eval("(define a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("define: bad syntax (missing expression after identifier) in form: (define a)", e.getMessage());
+    }
+    try {
+      eval("(define a b c)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("define: bad syntax (multiple expressions after identifier) in form: (define a b c)", e.getMessage());
+    }
+
     // internal define
     assertEquals(45L, eval("(let ((x 5))(define foo (lambda (y) (bar x y)))(define bar (lambda (a b) (+ (* a b) a)))(foo (+ x 3)))", env));
     try {
       eval("(foo 5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Unbound variable: foo"));
+      assertEquals("Unbound variable: foo", e.getMessage());
     }
 
     String d1 = "(define (test-internal-define)" +
@@ -168,7 +193,7 @@ public class SpecialFormTest extends AbstractTest {
       eval(f1, env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertTrue(e.getMessage().contains("bad lambda in form: " + f1));
+      assertEquals("lambda: bad lambda in form: " + f1, e.getMessage());
     }
   }
 
