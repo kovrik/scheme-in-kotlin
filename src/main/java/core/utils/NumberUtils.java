@@ -27,8 +27,8 @@ public class NumberUtils {
 
   public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64;
 
-  public static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
-  public static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
+  private static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
+  private static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
 
   public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
   public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);
@@ -94,20 +94,20 @@ public class NumberUtils {
   private static final Map<Integer, String> RADIX_CHARS = new HashMap<>();
   static {
     RADIX_CHARS.put(2,  "#+-.01");
-    RADIX_CHARS.put(3,  "#+-.012");
-    RADIX_CHARS.put(4,  "#+-.0123");
-    RADIX_CHARS.put(5,  "#+-.01234");
-    RADIX_CHARS.put(6,  "#+-.012345");
-    RADIX_CHARS.put(7,  "#+-.0123456");
-    RADIX_CHARS.put(8,  "#+-.01234567");
-    RADIX_CHARS.put(9,  "#+-.012345678");
-    RADIX_CHARS.put(10, "#+-.0123456789");
-    RADIX_CHARS.put(11, "#+-.0123456789aA");
-    RADIX_CHARS.put(12, "#+-.0123456789abAB");
-    RADIX_CHARS.put(13, "#+-.0123456789abcABC");
-    RADIX_CHARS.put(14, "#+-.0123456789abcdABCD");
-    RADIX_CHARS.put(15, "#+-.0123456789abcdeABCDE");
-    RADIX_CHARS.put(16, "#+-.0123456789abcdefABCDEF");
+    RADIX_CHARS.put(3,  RADIX_CHARS.get(2)  + "2");
+    RADIX_CHARS.put(4,  RADIX_CHARS.get(3)  + "3");
+    RADIX_CHARS.put(5,  RADIX_CHARS.get(4)  + "4");
+    RADIX_CHARS.put(6,  RADIX_CHARS.get(5)  + "5");
+    RADIX_CHARS.put(7,  RADIX_CHARS.get(6)  + "6");
+    RADIX_CHARS.put(8,  RADIX_CHARS.get(7)  + "7");
+    RADIX_CHARS.put(9,  RADIX_CHARS.get(8)  + "8");
+    RADIX_CHARS.put(10, RADIX_CHARS.get(9)  + "9");
+    RADIX_CHARS.put(11, RADIX_CHARS.get(10) + "aA");
+    RADIX_CHARS.put(12, RADIX_CHARS.get(11) + "bB");
+    RADIX_CHARS.put(13, RADIX_CHARS.get(12) + "cC");
+    RADIX_CHARS.put(14, RADIX_CHARS.get(13) + "dD");
+    RADIX_CHARS.put(15, RADIX_CHARS.get(14) + "eE");
+    RADIX_CHARS.put(16, RADIX_CHARS.get(15) + "fF");
   }
 
   /* Check if digit is valid for a number in a specific radix */
