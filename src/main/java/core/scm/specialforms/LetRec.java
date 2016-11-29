@@ -37,7 +37,7 @@ public class LetRec implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 3) {
-      throw new IllegalSyntaxException("letrec: bad letrec in form: " + expression);
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     IEnvironment localEnv = new Environment(env);
     List<List> bindings = (List<List>)expression.get(1);
