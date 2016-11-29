@@ -328,10 +328,19 @@ public class Reader implements IReader {
         if (next == '>') {
           throw new IllegalSyntaxException("Warning: undefined escape sequence in string - probably forgot backslash: #\\>");
         } else {
-          // TODO Unescape in `display` only?
           Character character = SPECIAL_CHARS.get(next);
           if (character != null) {
             string.append(c).append(character);
+            continue;
+          }
+          if (next == 'u' || next == 'U') {
+            reader.unread(next);
+            Character chr = readCharacter();
+            if (chr == next) {
+              string.append('\\').append(next);
+            } else {
+              string.append(chr);
+            }
             continue;
           }
           string.append(c).append(next);
@@ -374,7 +383,11 @@ public class Reader implements IReader {
       if (radix == 8  && identifier.length() == 1) {
         return identifier.charAt(0);
       }
-      return (char)((Number)preProcessNumber(identifier, 'e', radix)).intValue();
+      Object codepoint = preProcessNumber(identifier, 'e', radix);
+      if (!(codepoint instanceof Number)) {
+        throw new IllegalSyntaxException("read: no hex digit following \\u in string");
+      }
+      return (char)((Number)codepoint).intValue();
     }
 
     StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter());

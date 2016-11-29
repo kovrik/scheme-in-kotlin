@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.scm.SCMBigRational;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
