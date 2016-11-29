@@ -28,7 +28,7 @@ public class Let implements ISpecialForm, ISCMClass {
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     if (expression.size() < 3) {
-      throw new IllegalSyntaxException("let: bad let in form: " + expression);
+      throw IllegalSyntaxException.of(syntax, expression);
     }
     /* Normal let:
      * (let ((id expr) ...) body ...+) */
@@ -40,7 +40,7 @@ public class Let implements ISpecialForm, ISCMClass {
         Object var  = ((List)binding).get(0);
         Object init = ((List)binding).get(1);
         if (localEnv.get(var) != null) {
-          throw new IllegalSyntaxException("let: duplicate identifier: " + var);
+          throw IllegalSyntaxException.of(syntax, expression, String.format("duplicate identifier `%s`", var));
         }
         localEnv.put(var, evaluator.eval(init, env));
       }
@@ -58,7 +58,7 @@ public class Let implements ISpecialForm, ISCMClass {
        * (let proc-id ((arg-id init-expr) ...) body ...+) */
       Object o = expression.get(1);
       if (!(o instanceof SCMSymbol)) {
-        throw new IllegalSyntaxException("let: bad let in form: " + expression);
+        throw IllegalSyntaxException.of(syntax, expression);
       }
       /* Construct lambda */
       SCMCons<Object> lambdaArgs = SCMCons.list();
@@ -67,7 +67,7 @@ public class Let implements ISpecialForm, ISCMClass {
       for (Object binding : bindings) {
         Object arg = ((List)binding).get(0);
         if (lambdaArgs.contains(arg)) {
-          throw new IllegalSyntaxException("let: duplicate identifier: " + arg);
+          throw IllegalSyntaxException.of(syntax, expression, String.format("duplicate identifier `%s`", arg));
         }
         lambdaArgs.add(arg);
         initValues.add(((List)binding).get(1));
@@ -88,7 +88,7 @@ public class Let implements ISpecialForm, ISCMClass {
       /* Letrec has TCO */
       return LetRec.LETREC.eval(letrec, new Environment(env), evaluator);
     }
-    throw new IllegalSyntaxException("let: bad let in form: " + expression);
+    throw IllegalSyntaxException.of(syntax, expression);
   }
 
   public SCMSymbol symbol() {

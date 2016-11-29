@@ -309,13 +309,14 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: duplicate identifier: c", e.getMessage());
+      assertEquals("let: bad syntax (duplicate identifier `c`) in form: (let ((c 123) (c (+ 400 30 2))) (+ c b))",
+                   e.getMessage());
     }
     try {
       eval("(let ((c 123))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: bad let in form: (let ((c 123)))", e.getMessage());
+      assertEquals("let: bad syntax in form: (let ((c 123)))", e.getMessage());
     }
     try {
       eval("(let ((z 1) (b (+ z 1))) b)", env);
@@ -333,7 +334,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: duplicate identifier: n", e.getMessage());
+      assertEquals("let: bad syntax (duplicate identifier `n`) in form: (let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", e.getMessage());
     }
   }
 
