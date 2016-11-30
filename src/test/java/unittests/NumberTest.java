@@ -48,9 +48,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(150.0, eval("+15#", env));
     assertEquals(100L, eval("#e#d10#", env));
     assertEquals(150L, eval("#e15#", env));
-
-    // TODO
-//    assertEquals(1, eval("#e#d10.1", env));
+    assertEquals(new SCMBigRational("101", "10"), eval("#e#d10.1", env));
 
     try {
       eval("+#", env);

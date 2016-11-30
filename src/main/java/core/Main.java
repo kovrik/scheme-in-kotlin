@@ -79,7 +79,7 @@ public class Main {
         /* Read and parse a list of S-expressions from Stdin */
         List<Object> sexps = reader.read();
         for (Object expr : sexps) {
-          // TODO Macroexpand
+          /* Expand macros */
           Object expanded = macroexpand(expr);
           /* Evaluate each S-expression */
           Object result = evaluator.eval(expanded, env);
@@ -106,7 +106,7 @@ public class Main {
     currentOutputPort.flush();
   }
 
-  // TODO
+  // TODO Not implemented yet
   private static Object macroexpand(Object sexp) {
     return sexp;
   }

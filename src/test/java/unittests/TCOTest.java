@@ -36,7 +36,5 @@ public class TCOTest extends AbstractTest {
     assertEquals(100000L, eval("(foo 5)", env));
   }
 
-  // TODO Check `cond`
   // TODO Tests for other Special Forms
-
 }
