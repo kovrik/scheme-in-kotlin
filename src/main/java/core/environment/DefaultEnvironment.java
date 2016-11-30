@@ -17,7 +17,7 @@ import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
-import core.procedures.predicates.*;
+import core.procedures.predicates.Predicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -197,26 +197,25 @@ public final class DefaultEnvironment extends Environment {
       new Void(),
 
       /* Predicates */
-      // TODO Generify
-      new IsNull(),
-      new IsPair(),
-      new IsList(),
-      new IsPromise(),
-      new IsChar(),
-      new IsString(),
-      new IsVector(),
-      new IsSymbol(),
-      new IsBoolean(),
-      new IsProcedure(),
-      new IsNumber(),
-      new IsExact(),
-      new IsInexact(),
-      new IsRational(),
-      new IsReal(),
-      new IsPort(),
-      new IsInputPort(),
-      new IsOutputPort(),
-      new IsEof(),
+      Predicate.IS_NULL,
+      Predicate.IS_PAIR,
+      Predicate.IS_LIST,
+      Predicate.IS_PROMISE,
+      Predicate.IS_CHAR,
+      Predicate.IS_STRING,
+      Predicate.IS_VECTOR,
+      Predicate.IS_SYMBOL,
+      Predicate.IS_BOOLEAN,
+      Predicate.IS_PROC,
+      Predicate.IS_PORT,
+      Predicate.IS_INPUT_PORT,
+      Predicate.IS_OUTPUT_PORT,
+      Predicate.IS_NUMBER,
+      Predicate.IS_RATIONAL,
+      Predicate.IS_REAL,
+      Predicate.IS_EOF,
+      Predicate.IS_EXACT,
+      Predicate.IS_INEXACT,
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();

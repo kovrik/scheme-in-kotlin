@@ -5,7 +5,6 @@ import core.procedures.math.Expt;
 import core.procedures.math.Multiplication;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
-import core.procedures.predicates.IsExact;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
@@ -294,7 +293,7 @@ public class NumberUtils {
        *
        * Guile returns 2589569785738035/1125899906842624 in both cases.
        */
-      if (IsExact.isExact(number)) {
+      if (isExact(number)) {
         return number;
       } else {
         if (number instanceof Double) {
@@ -340,6 +339,45 @@ public class NumberUtils {
       return result;
     }
     return number;
+  }
+
+  public static boolean isRational(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Double) {
+      return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
+    } else if (o instanceof Float) {
+      return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
+    } else {
+      return true;
+    }
+  }
+
+  public static boolean isExact(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
+      return true;
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).scale() == 0;
+    }
+    return false;
+  }
+
+  public static boolean isInexact(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
+      return false;
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).scale() != 0;
+    }
+    return true;
   }
 
 }

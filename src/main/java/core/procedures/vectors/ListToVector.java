@@ -3,7 +3,7 @@ package core.procedures.vectors;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.predicates.IsList;
+import core.scm.SCMCons;
 import core.scm.SCMVector;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class ListToVector extends AFn {
 
   public static SCMVector listToVector(Object arg) {
     /* Must be a list, not a cons cell */
-    if (IsList.isList(arg).toBoolean()) {
+    if (SCMCons.isList(arg)) {
       List list = (List) arg;
       return new SCMVector(list.toArray());
     }

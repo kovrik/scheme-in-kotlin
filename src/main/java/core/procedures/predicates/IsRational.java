@@ -4,6 +4,8 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
 
+import static core.utils.NumberUtils.isRational;
+
 public class IsRational extends AFn {
 
   @Override
@@ -22,18 +24,5 @@ public class IsRational extends AFn {
       throw new ArityException(args.length, 1, getName());
     }
     return SCMBoolean.toSCMBoolean(isRational(args[0]));
-  }
-
-  public static boolean isRational(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Double) {
-      return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
-    } else if (o instanceof Float) {
-      return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
-    } else {
-      return true;
-    }
   }
 }

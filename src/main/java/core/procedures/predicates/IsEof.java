@@ -22,10 +22,6 @@ public class IsEof extends AFn {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, getName());
     }
-    return isNull(args[0]);
-  }
-
-  public static SCMBoolean isNull(Object object) {
-    return SCMBoolean.toSCMBoolean(SCMEof.EOF.equals(object));
+    return SCMBoolean.toSCMBoolean(SCMEof.EOF.equals(args[0]));
   }
 }

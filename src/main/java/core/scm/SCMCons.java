@@ -141,6 +141,16 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return (o instanceof List) && !(((List)o).isEmpty());
   }
 
+  public static boolean isNull(Object object) {
+    if (object == null) {
+      return true;
+    }
+    if (object instanceof List) {
+      return ((List)object).isEmpty();
+    }
+    return false;
+  }
+
   /* Use this method to print all lists */
   public static String toString(List list) {
 

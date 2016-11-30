@@ -3,9 +3,8 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.cons.*;
-import core.procedures.predicates.IsList;
-import core.procedures.predicates.IsNull;
+import core.procedures.cons.Car;
+import core.procedures.cons.Cdr;
 import core.procedures.vectors.ListToVector;
 import core.scm.*;
 
@@ -69,14 +68,14 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
         return list;
       }
       /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-      if (IsList.isList(list).toBoolean() && (UNQUOTE.symbol().equals(list.get(0)))) {
+      if (SCMCons.isList(list) && (UNQUOTE.symbol().equals(list.get(0)))) {
         if (list.size() != 2) {
           throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
         }
         return evaluator.eval(list.get(1), env);
       }
       /* `,@(list 1 2) syntax is not valid */
-      if (IsList.isList(list).toBoolean() && list.size() > 0 && (UNQUOTE_SPLICING.symbol().equals(list.get(0)))) {
+      if (SCMCons.isList(list) && list.size() > 0 && (UNQUOTE_SPLICING.symbol().equals(list.get(0)))) {
         throw IllegalSyntaxException.of(list.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* List quasiquotation */
@@ -89,7 +88,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
   // TODO Optimize and simplify
   private Object quasiquoteList(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
     List list = (List)expr;
-    boolean isList = (IsList.isList(list)).toBoolean();
+    boolean isList = (SCMCons.isList(list));
     SCMCons result = SCMCons.list();
     for (int n = 0; n < list.size(); n++) {
       Object o = list.get(n);
@@ -106,7 +105,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
             throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
         }
-        if (IsList.isList(expr).toBoolean() && UNQUOTE_SPLICING.symbol().equals(o)) {
+        if (SCMCons.isList(expr) && UNQUOTE_SPLICING.symbol().equals(o)) {
           throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
@@ -141,7 +140,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
     if (!isList) {
       /* In the case of a pair, if the cdr of the relevant quoted pair is empty,
        * then expr need not produce a list, and its result is used directly in place of the quoted pair */
-      if ((IsNull.isNull(Cdr.cdr(result))).toBoolean()) {
+      if ((SCMCons.isNull(Cdr.cdr(result)))) {
         return result.get(0);
       } else {
         // TODO Is car(cdr(result)) correct?

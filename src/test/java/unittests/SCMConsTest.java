@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import static core.procedures.cons.Car.car;
 import static core.procedures.cons.Cdr.cdr;
 import static core.procedures.cons.ConsProc.cons;
-import static core.procedures.predicates.IsList.isList;
-import static core.procedures.predicates.IsNull.isNull;
-import static core.procedures.predicates.IsPair.isPair;
+import static core.procedures.predicates.Predicate.IS_LIST;
+import static core.procedures.predicates.Predicate.IS_NULL;
+import static core.procedures.predicates.Predicate.IS_PAIR;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
-import static core.scm.SCMCons.NIL;
-import static core.scm.SCMCons.list;
+import static core.scm.SCMCons.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -114,56 +113,56 @@ public class SCMConsTest {
 
   @Test
   public void testIsNil() {
-    assertEquals(TRUE,  isNull(NIL));
-    assertEquals(TRUE,  isNull(cons(null, null)));
-    assertEquals(TRUE,  isNull(list()));
-    assertEquals(FALSE, isNull(cons(1, null)));
-    assertEquals(FALSE, isNull(cons(null, 2)));
-    assertEquals(FALSE, isNull(cons(NIL, 2)));
-    assertEquals(FALSE, isNull(cons(NIL, NIL)));
-    assertEquals(FALSE, isNull(cons(1, NIL)));
-    assertEquals(FALSE, isNull(cons(1, cons(2, 3))));
-    assertEquals(FALSE, isNull(list((Object) null)));
-    assertEquals(FALSE, isNull(list((Object)NIL)));
-    assertEquals(FALSE, isNull(list(1)));
-    assertEquals(FALSE, isNull(list(1, 2)));
-    assertEquals(FALSE, isNull(list(1, 2, 3)));
-    assertEquals(FALSE, isNull(1));
-    assertEquals(FALSE, isNull("test"));
+    assertEquals(TRUE,  IS_NULL.invoke(NIL));
+    assertEquals(TRUE,  IS_NULL.invoke(cons(null, null)));
+    assertEquals(TRUE,  IS_NULL.invoke(list()));
+    assertEquals(FALSE, IS_NULL.invoke(cons(1, null)));
+    assertEquals(FALSE, IS_NULL.invoke(cons(null, 2)));
+    assertEquals(FALSE, IS_NULL.invoke(cons(NIL, 2)));
+    assertEquals(FALSE, IS_NULL.invoke(cons(NIL, NIL)));
+    assertEquals(FALSE, IS_NULL.invoke(cons(1, NIL)));
+    assertEquals(FALSE, IS_NULL.invoke(cons(1, cons(2, 3))));
+    assertEquals(FALSE, IS_NULL.invoke(list((Object) null)));
+    assertEquals(FALSE, IS_NULL.invoke(list((Object)NIL)));
+    assertEquals(FALSE, IS_NULL.invoke(list(1)));
+    assertEquals(FALSE, IS_NULL.invoke(list(1, 2)));
+    assertEquals(FALSE, IS_NULL.invoke(list(1, 2, 3)));
+    assertEquals(FALSE, IS_NULL.invoke(1));
+    assertEquals(FALSE, IS_NULL.invoke("test"));
   }
 
   @Test
   public void testIsPair() {
-    assertEquals(FALSE, isPair(NIL));
-    assertEquals(FALSE, isPair(cons(null, null)));
-    assertEquals(FALSE, isPair(1));
-    assertEquals(FALSE, isPair("test"));
-    assertEquals(TRUE, isPair(cons(1, 2)));
-    assertEquals(TRUE, isPair(cons(1, NIL)));
-    assertEquals(TRUE, isPair(cons(NIL, NIL)));
-    assertEquals(TRUE, isPair(cons(1, cons(2, 3))));
-    assertEquals(TRUE, isPair(cons(1, cons(2, cons(3, 4)))));
-    assertEquals(FALSE, isPair(list()));
-    assertEquals(TRUE, isPair(list(1)));
-    assertEquals(TRUE, isPair(list(1, 2)));
-    assertEquals(TRUE, isPair(list(1, 2, 3)));
+    assertEquals(FALSE, IS_PAIR.invoke(NIL));
+    assertEquals(FALSE, IS_PAIR.invoke(cons(null, null)));
+    assertEquals(FALSE, IS_PAIR.invoke(1));
+    assertEquals(FALSE, IS_PAIR.invoke("test"));
+    assertEquals(TRUE, IS_PAIR.invoke(cons(1, 2)));
+    assertEquals(TRUE, IS_PAIR.invoke(cons(1, NIL)));
+    assertEquals(TRUE, IS_PAIR.invoke(cons(NIL, NIL)));
+    assertEquals(TRUE, IS_PAIR.invoke(cons(1, cons(2, 3))));
+    assertEquals(TRUE, IS_PAIR.invoke(cons(1, cons(2, cons(3, 4)))));
+    assertEquals(FALSE, IS_PAIR.invoke(list()));
+    assertEquals(TRUE, IS_PAIR.invoke(list(1)));
+    assertEquals(TRUE, IS_PAIR.invoke(list(1, 2)));
+    assertEquals(TRUE, IS_PAIR.invoke(list(1, 2, 3)));
   }
 
   @Test
   public void testIsList() {
-    assertEquals(TRUE,  isList(NIL));
-    assertEquals(TRUE,  isList(list()));
-    assertEquals(TRUE,  isList(list(1)));
-    assertEquals(TRUE,  isList(list(1, 2)));
-    assertEquals(TRUE,  isList(list(1, 2, 3)));
-    assertEquals(TRUE,  isList(list(1, 2, 3, 4)));
-    assertEquals(TRUE,  isList(list(1, 2, NIL)));
-    assertEquals(TRUE,  isList(cons(null, null)));
-    assertEquals(TRUE,  isList(cons(1, null)));
-    assertEquals(FALSE, isList(cons(null, 1)));
-    assertEquals(FALSE, isList(cons(1, 2)));
-    assertEquals(FALSE, isList(cons(1, cons(2, cons(3, 4)))));
-    assertEquals(TRUE,  isList(cons(1, cons(2, cons(3, NIL)))));
-    assertEquals(TRUE,  isList(cons(1, cons(2, cons(3, list(1, 2, 3))))));
+    assertEquals(TRUE,  IS_LIST.invoke(NIL));
+    assertEquals(TRUE,  IS_LIST.invoke(list()));
+    assertEquals(TRUE,  IS_LIST.invoke(list(1)));
+    assertEquals(TRUE,  IS_LIST.invoke(list(1, 2)));
+    assertEquals(TRUE,  IS_LIST.invoke(list(1, 2, 3)));
+    assertEquals(TRUE,  IS_LIST.invoke(list(1, 2, 3, 4)));
+    assertEquals(TRUE,  IS_LIST.invoke(list(1, 2, NIL)));
+    assertEquals(TRUE,  IS_LIST.invoke(cons(null, null)));
+    assertEquals(TRUE,  IS_LIST.invoke(cons(1, null)));
+    assertEquals(FALSE, IS_LIST.invoke(cons(null, 1)));
+    assertEquals(FALSE, IS_LIST.invoke(cons(1, 2)));
+    assertEquals(FALSE, IS_LIST.invoke(cons(1, cons(2, cons(3, 4)))));
+    assertEquals(TRUE,  IS_LIST.invoke(cons(1, cons(2, cons(3, NIL)))));
+    assertEquals(TRUE,  IS_LIST.invoke(cons(1, cons(2, cons(3, list(1, 2, 3))))));
   }
 }

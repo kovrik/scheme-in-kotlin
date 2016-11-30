@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.exceptions.WrongTypeException;
+
 public class SCMClass implements ISCMClass {
 
   /* Java Classes */
@@ -26,6 +28,13 @@ public class SCMClass implements ISCMClass {
   public static final SCMClass EOF         = new SCMClass("EOF");
 
   public static final SCMClass UNSPECIFIED = new SCMClass("Unspecified");
+
+  public static boolean assertClass(Object o, Class c) {
+    if (c.isAssignableFrom(o.getClass())) {
+      return true;
+    }
+    throw new WrongTypeException(c.getSimpleName(), o);
+  }
 
   private final String name;
 

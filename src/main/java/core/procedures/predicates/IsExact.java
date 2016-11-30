@@ -3,12 +3,9 @@ package core.procedures.predicates;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.SCMBigRational;
 import core.scm.SCMBoolean;
-import core.utils.NumberUtils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import static core.utils.NumberUtils.isExact;
 
 public class IsExact extends AFn {
 
@@ -31,18 +28,5 @@ public class IsExact extends AFn {
       throw new WrongTypeException("Number", args[0]);
     }
     return SCMBoolean.toSCMBoolean(isExact(args[0]));
-  }
-
-  public static boolean isExact(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
-      return true;
-    }
-    if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).scale() == 0;
-    }
-    return false;
   }
 }

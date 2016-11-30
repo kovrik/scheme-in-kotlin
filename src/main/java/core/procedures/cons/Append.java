@@ -2,7 +2,6 @@ package core.procedures.cons;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.predicates.IsNull;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 
@@ -38,7 +37,7 @@ public class Append extends AFn {
   }
 
   public static Object append(Object first, Object second) {
-    if (SCMBoolean.valueOf(IsNull.isNull(first))) {
+    if (SCMBoolean.valueOf(SCMCons.isNull(first))) {
       return second;
     }
     return SCMCons.cons(Car.car(first), append(Cdr.cdr(first), second));

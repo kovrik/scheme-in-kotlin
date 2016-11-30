@@ -2,10 +2,8 @@ package core.procedures.predicates;
 
 import core.exceptions.ArityException;
 import core.procedures.AFn;
-import core.scm.ICons;
 import core.scm.SCMBoolean;
-
-import java.util.List;
+import core.scm.SCMCons;
 
 public class IsList extends AFn {
 
@@ -24,13 +22,7 @@ public class IsList extends AFn {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, getName());
     }
-    return isList(args[0]);
+    return SCMBoolean.toSCMBoolean(SCMCons.isList(args[0]));
   }
 
-  public static SCMBoolean isList(Object object) {
-    if (object instanceof ICons) {
-      return SCMBoolean.toSCMBoolean(((ICons)object).isList());
-    }
-    return SCMBoolean.toSCMBoolean(object instanceof List);
-  }
 }
