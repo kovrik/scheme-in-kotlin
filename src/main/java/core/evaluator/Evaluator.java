@@ -157,14 +157,13 @@ public class Evaluator implements IEvaluator {
       promise.setState(SCMPromise.State.FULFILLED);
       /* Memoize the result */
       promise.setResult(result);
+      return result;
     } catch (Exception e) {
-      result = e;
       /* Mark Promise as REJECTED */
       promise.setState(SCMPromise.State.REJECTED);
       /* Memoize the result */
-      promise.setResult(result);
+      promise.setResult(e);
       throw e;
     }
-    return result;
   }
 }
