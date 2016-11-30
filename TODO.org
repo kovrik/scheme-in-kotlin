@@ -1,6 +1,7 @@
 * TODO: [29/36]
 
 ** TODO [#A] Inexactness taint
+** TODO [#A] Downcast numbers to the smallest possible type
 ** TODO [#A] SCMSmallRational
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
