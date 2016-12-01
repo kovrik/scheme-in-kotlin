@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.predicates.IsNumber;
+import core.procedures.predicates.Predicate;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ public class ToExact extends AFn {
   }
 
   public static Number toExact(Object o) {
-    if (!IsNumber.isNumber(o)) {
+    if (!Predicate.IS_NUMBER.invoke(o).toBoolean()) {
       throw new WrongTypeException("Number", o);
     }
     if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {

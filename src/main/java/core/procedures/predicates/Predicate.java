@@ -34,7 +34,7 @@ public class Predicate extends AFn {
   private final String name;
   private final Function<Object, Boolean> function;
 
-  public Predicate(String name, Function<Object, Boolean> function) {
+  private Predicate(String name, Function<Object, Boolean> function) {
     this.name = name;
     this.function = function;
   }
