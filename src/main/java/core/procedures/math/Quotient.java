@@ -7,7 +7,6 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 public class Quotient extends AFn {
 
