@@ -85,7 +85,7 @@ public class Evaluator implements IEvaluator {
     } else {
       fn = eval(op, env);
       if (!(fn instanceof IFn)) {
-      /* Can apply IFn only */
+        /* Can apply IFn only */
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
       }
     }
@@ -100,7 +100,7 @@ public class Evaluator implements IEvaluator {
       return apply((SCMProcedure)fn, args);
     }
 
-    /* IFn (built-in Java function) */
+    /* IFn (function in Java) */
     // TODO Introduce 0,1,2..N-arity invoke() to improve performance?
     Object result = ((IFn)fn).invoke(args.toArray());
 
@@ -149,10 +149,9 @@ public class Evaluator implements IEvaluator {
    * Evaluate forced Promise
    */
   private Object evalForcedPromise(SCMPromise promise, IEnvironment env) {
-    /* Evaluate the body */
-    Object result;
     try {
-      result = eval(promise.getBody(), env);
+      /* Evaluate the body */
+      Object result = eval(promise.getBody(), env);
       /* Mark Promise as FULFILLED */
       promise.setState(SCMPromise.State.FULFILLED);
       /* Memoize the result */
