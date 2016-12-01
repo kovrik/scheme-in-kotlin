@@ -21,7 +21,7 @@ public class SCMProcedure extends AFn {
 
   /* Is it a variadic function? False by default.
    * If set to `true`, then list of all optional params is to be bound to the last argument */
-  private boolean isVariadic = false;
+  private boolean isVariadic;
 
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment) {
     this(name, args, body, localEnvironment, false);
@@ -51,6 +51,7 @@ public class SCMProcedure extends AFn {
     return localEnvironment;
   }
 
+  @Override
   public boolean isVariadic() {
     return isVariadic;
   }
