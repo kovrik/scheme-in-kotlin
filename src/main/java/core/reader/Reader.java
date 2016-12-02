@@ -460,7 +460,7 @@ public class Reader implements IReader {
     }
 
     /* Process improper list */
-    if (dotPos != list.size() - 2) {
+    if (dotPos == 0 || dotPos != list.size() - 2) {
       throw new IllegalSyntaxException("read: bad dotted pair form: " + list);
     }
     /* Remove dot */
