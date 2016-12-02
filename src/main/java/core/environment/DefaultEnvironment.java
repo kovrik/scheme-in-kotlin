@@ -227,13 +227,6 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(UNQUOTE.toString(), UNQUOTE);
     SPECIAL_FORMS.put(UNQUOTE_SPLICING.toString(), UNQUOTE_SPLICING);
     SPECIAL_FORMS.put(TIME.toString(), TIME);
-
-    // TODO
-    SPECIAL_FORMS.put(DEFINE_SYNTAX.toString(), DEFINE_SYNTAX);
-    SPECIAL_FORMS.put(LET_SYNTAX.toString(), LET_SYNTAX);
-    SPECIAL_FORMS.put(LETREC_SYNTAX.toString(), LETREC_SYNTAX);
-    SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
-
     /* With TCO */
     SPECIAL_FORMS.put(If.IF.toString(), If.IF);
     SPECIAL_FORMS.put(Begin.BEGIN.toString(), Begin.BEGIN);
@@ -247,6 +240,12 @@ public final class DefaultEnvironment extends Environment {
     SPECIAL_FORMS.put(Do.DO.toString(), Do.DO);
     SPECIAL_FORMS.put(Case.CASE.toString(), Case.CASE);
     SPECIAL_FORMS.put(Cond.COND.toString(), Cond.COND);
+
+    // TODO
+    SPECIAL_FORMS.put(DEFINE_SYNTAX.toString(), DEFINE_SYNTAX);
+    SPECIAL_FORMS.put(LET_SYNTAX.toString(), LET_SYNTAX);
+    SPECIAL_FORMS.put(LETREC_SYNTAX.toString(), LETREC_SYNTAX);
+    SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
@@ -273,7 +272,6 @@ public final class DefaultEnvironment extends Environment {
 //                           "                            (map proc (cdr lis))))" +
 //                           "          (else (error \"Not a proper list!\"))))");
   }
-
 
   @Override
   public List<String> getLibraryProcedures() {

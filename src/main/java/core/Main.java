@@ -94,7 +94,6 @@ public class Main {
             HISTORY.put(id, expr);
           }
         }
-        // TODO Proper Error handling
       } catch (Exception e) {
         error(e);
       }

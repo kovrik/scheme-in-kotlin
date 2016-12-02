@@ -36,7 +36,6 @@ public class Expt extends AFn {
     throw new ArityException(args.length, 2, getName());
   }
 
-  // FIXME Check other special cases: Negative infinity, NaN, zero?
   public static Number invoke(Number first, Number exponent) {
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;

@@ -27,12 +27,8 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(3L, eval("(let    () 1 2 (+ 1 2))", env));
     assertEquals(3L, eval("(let*   () 1 2 (+ 1 2))", env));
     assertEquals(3L, eval("(letrec () 1 2 (+ 1 2))", env));
-
     eval("(define (a) 1 2 (+ 1 2))", env);
     assertEquals(3L, eval("(a)", env));
-    // TODO do
-    // TODO named-lambda
-    // TODO fluid-let
   }
 
   @Test
@@ -181,13 +177,12 @@ public class SpecialFormTest extends AbstractTest {
     eval(d2, env);
     assertEquals(9L, eval("(test-internal-define2)", env));
 
-    // check that define is a top form in a body
-    // TODO
-    String d3 = "(let ((a 1)) a (define a 5) a)";
+    // TODO check that define is a top form in a body
+//    String d3 = "(let ((a 1)) a (define a 5) a)";
 //    try {
 //      eval(d3, env);
 //      fail();
-//    } catch (IllegalArgumentException e) {
+//    } catch (IllegalSyntaxException e) {
 //
 //    }
   }
