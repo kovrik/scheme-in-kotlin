@@ -25,7 +25,6 @@ public class FileReader extends Reader {
       while ((read = reader.read()) != -1) {
         reader.unread(read);
         Object token = nextToken();
-        /* Read */
         if (DOT.equals(token)) {
           throw new IllegalSyntaxException("read: illegal use of '.'");
         }

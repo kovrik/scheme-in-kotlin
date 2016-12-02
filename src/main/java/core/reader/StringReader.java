@@ -35,7 +35,6 @@ public class StringReader extends Reader {
       List<Object> tokens = new ArrayList<>();
       Object token;
       while ((token = nextToken()) != null) {
-        /* Read */
         if (DOT.equals(token)) {
           throw new IllegalSyntaxException("read: illegal use of '.'");
         }

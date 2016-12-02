@@ -106,7 +106,6 @@ public class Reader implements IReader {
       List<Object> tokens = new ArrayList<>();
       Object token;
       while (((token = nextToken()) != null) || tokens.isEmpty()) {
-        /* Read */
         if (DOT.equals(token)) {
           throw new IllegalSyntaxException("read: illegal use of '.'");
         }
@@ -165,13 +164,13 @@ public class Reader implements IReader {
         }
       }
       case '#':
-        char next = (char) reader.read();
+        char next = (char)reader.read();
         if (next == '(') {
-          return readVector();
+          /* Read vector. Syntax: <vector> -> #(<vector_contents>) */
+          return new SCMVector(readList().toArray());
         } else {
           reader.unread(next);
-          reader.unread(c);
-          return readAtom();
+          return readHash();
         }
       case '(':
         return readList();
@@ -236,7 +235,6 @@ public class Reader implements IReader {
     } else if (isRadix(next) || isExactness(next)) {
       reader.unread(next);
       reader.unread('#');
-
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
 
@@ -275,7 +273,10 @@ public class Reader implements IReader {
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
-    StringBuilder token = new StringBuilder().append('#').append(next).append(readUntilDelimiter());
+    StringBuilder token = new StringBuilder().append('#').append(next);
+    if (!Character.isWhitespace(next)) {
+      token.append(readUntilDelimiter());
+    }
     throw new IllegalSyntaxException("read: bad syntax: " + token);
   }
 
@@ -321,7 +322,7 @@ public class Reader implements IReader {
    * Read a String
    *
    * Syntax:
-   * <string> --> " <string element>* "
+   * <string> --> "<string element>*"
    * <string element> --> <any character other than " or \> | \" | \\
    */
   private SCMString readString() throws ParseException, IOException {
@@ -473,15 +474,5 @@ public class Reader implements IReader {
       cons = SCMCons.cons(list.get(n), cons);
     }
     return cons;
-  }
-
-  /**
-   * Read vector
-   *
-   * Syntax:
-   * <vector> -> #(<vector_contents>)
-   */
-  private SCMVector readVector() throws ParseException, IOException {
-    return new SCMVector(readList().toArray());
   }
 }
