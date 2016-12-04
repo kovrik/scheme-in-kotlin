@@ -166,8 +166,7 @@ public class Reader implements IReader {
       case '#':
         char next = (char)reader.read();
         if (next == '(') {
-          /* Read vector. Syntax: <vector> -> #(<vector_contents>) */
-          return new SCMVector(readList().toArray());
+          return readVector();
         } else {
           reader.unread(next);
           return readHash();
@@ -474,5 +473,15 @@ public class Reader implements IReader {
       cons = SCMCons.cons(list.get(n), cons);
     }
     return cons;
+  }
+
+  /**
+   * Read vector
+   *
+   * Syntax:
+   * <vector> -> #(<vector_contents>)
+   */
+  private SCMVector readVector() throws ParseException, IOException {
+    return new SCMVector(readList().toArray());
   }
 }
