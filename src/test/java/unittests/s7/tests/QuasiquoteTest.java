@@ -12,6 +12,8 @@ import static junit.framework.TestCase.fail;
 
 public class QuasiquoteTest extends AbstractTest {
 
+  private static final String LS = System.getProperty("line.separator");
+
   @Test
   public void testQuasiquote() {
 //    assertEquals(list(1L), eval("`(1 ,@())", env));  // r6rs, not r5rs?
@@ -33,7 +35,7 @@ public class QuasiquoteTest extends AbstractTest {
     assertEquals(list(1L, 2L, 3L), eval("`(1 ,@ (list 2 3))", env));
     assertEquals(list(1L), eval("`(1 ,@(list))", env));
     assertEquals(list(1L), eval("`(1 ,@'())", env));
-    assertEquals(list(1L, 2L), eval("`(1 , ;a comment\n2)", env));
+    assertEquals(list(1L, 2L), eval("`(1 , ;a comment" + LS + "2)", env));
     assertEquals(list(1L, 1L), eval("`(,1 ,1)", env));
     assertEquals(list(1L, 1L), eval("`(,1 ,`,1)", env));
     assertEquals(list(1L, 1L), eval("`(,1 ,`,`,1)", env));
