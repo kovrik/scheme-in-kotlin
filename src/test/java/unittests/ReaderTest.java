@@ -107,11 +107,17 @@ public class ReaderTest {
     assertEquals(new SCMString("Lorem \\\"ipsum\\\" "), reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
     assertEquals(new SCMString(""), reader.readFirst("\"\""));
     assertEquals(new SCMString("test \u0123"), reader.readFirst("\"test \\u123\""));
-    assertEquals(new SCMString("test \\u"), reader.readFirst("\"test \\u\""));
-    assertEquals(new SCMString("test \\U"), reader.readFirst("\"test \\U\""));
-    assertEquals(new SCMString("test \\x"), reader.readFirst("\"test \\x\""));
+    assertEquals(new SCMString("test \\\\u"), reader.readFirst("\"test \\\\u\""));
+    assertEquals(new SCMString("test \\\\U"), reader.readFirst("\"test \\\\U\""));
+    assertEquals(new SCMString("test \\\\x"), reader.readFirst("\"test \\\\x\""));
     try {
       reader.readFirst("\"test \\uu\"");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: no hex digit following \\u in string", e.getMessage());
+    }
+    try {
+      reader.readFirst("\"test \\u\"");
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: no hex digit following \\u in string", e.getMessage());

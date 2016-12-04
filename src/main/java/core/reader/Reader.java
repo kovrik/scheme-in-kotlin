@@ -48,16 +48,19 @@ public class Reader implements IReader {
     NAMED_CHARS.put("nul",       Character.MIN_VALUE);
   }
 
-  private static final Map<Character, Character> SPECIAL_CHARS = new HashMap<>();
+  private static final Map<Character, Character> ESCAPE_SEQUENCES = new HashMap<>();
   static {
-    SPECIAL_CHARS.put('t',  '\t');
-    SPECIAL_CHARS.put('b',  '\b');
-    SPECIAL_CHARS.put('n',  '\n');
-    SPECIAL_CHARS.put('r',  '\r');
-    SPECIAL_CHARS.put('f',  '\f');
-    SPECIAL_CHARS.put('\'', '\'');
-    SPECIAL_CHARS.put('\"', '\"');
-    SPECIAL_CHARS.put('\\', '\\');
+    ESCAPE_SEQUENCES.put('a',  '\u0007');
+    ESCAPE_SEQUENCES.put('b',  '\b');
+    ESCAPE_SEQUENCES.put('t',  '\t');
+    ESCAPE_SEQUENCES.put('n',  '\n');
+    ESCAPE_SEQUENCES.put('v',  '\u000B');
+    ESCAPE_SEQUENCES.put('e',  '\u001B');
+    ESCAPE_SEQUENCES.put('f',  '\f');
+    ESCAPE_SEQUENCES.put('r',  '\r');
+    ESCAPE_SEQUENCES.put('\"', '\"');
+    ESCAPE_SEQUENCES.put('\'', '\'');
+    ESCAPE_SEQUENCES.put('\\', '\\');
   }
 
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
@@ -332,29 +335,23 @@ public class Reader implements IReader {
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
       // escaping
       if (c == '\\') {
-        i = reader.read();
-        char next = (char)i;
-        if (next == '>') {
-          throw new IllegalSyntaxException("read: unknown escape sequence \\> in string");
-        } else {
-          Character character = SPECIAL_CHARS.get(next);
-          if (character != null) {
-            string.append(c).append(character);
-            continue;
+        char next = (char)reader.read();
+        // unicode
+        if (next == 'u' || next == 'U') {
+          reader.unread(next);
+          Character chr = readCharacter();
+          if (chr.equals(next)) {
+            throw new IllegalSyntaxException("read: no hex digit following \\u in string");
           }
-          if (next == 'u' || next == 'U') {
-            reader.unread(next);
-            Character chr = readCharacter();
-            if (chr == next) {
-              string.append('\\').append(next);
-            } else {
-              string.append(chr);
-            }
-            continue;
-          }
-          string.append(c).append(next);
+          string.append(chr);
           continue;
         }
+        // escape sequences
+        if (!ESCAPE_SEQUENCES.containsKey(next)) {
+          throw new IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next));
+        }
+        string.append(c).append(next);
+        continue;
       }
       string.append(c);
     }
