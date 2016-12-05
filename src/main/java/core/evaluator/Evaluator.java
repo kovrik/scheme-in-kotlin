@@ -29,6 +29,7 @@ public class Evaluator implements IEvaluator {
       }
       result = evalIter(((TailCall)result).getExpr(), context);
     }
+    // TODO Downcast if possible?
     return result;
   }
 
