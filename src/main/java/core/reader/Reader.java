@@ -457,14 +457,7 @@ public class Reader implements IReader {
     /* Remove dot */
     list.remove(dotPos);
     /* Convert list into cons */
-    Object last = list.get(list.size() - 1);
-    Object beforeLast = list.get(list.size() - 2);
-    SCMCons<Object> cons = SCMCons.cons(beforeLast, last);
-    /* Cons backwards */
-    for (int n = list.size() - 3; n >= 0; n--) {
-      cons = SCMCons.cons(list.get(n), cons);
-    }
-    return cons;
+    return list.toCons();
   }
 
   /**

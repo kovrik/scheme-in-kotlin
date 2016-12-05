@@ -90,6 +90,21 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     }
   }
 
+  /* Convert list to improper list (dotted pair, cons cells) */
+  public SCMCons<E> toCons() {
+    if (!isList()) {
+      return this;
+    }
+    E last = get(size() - 1);
+    E beforeLast = get(size() - 2);
+    SCMCons<E> cons = SCMCons.cons(beforeLast, last);
+    /* Cons backwards */
+    for (int n = size() - 3; n >= 0; n--) {
+      cons = SCMCons.cons(get(n), (E)cons);
+    }
+    return cons;
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.PAIR;
