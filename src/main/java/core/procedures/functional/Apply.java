@@ -36,7 +36,7 @@ public class Apply extends AFn {
       throw new WrongTypeException("List", last);
     }
     for (Object o : (List) last) {
-      sexp.add((Object)SCMCons.list(Quote.QUOTE, o));
+      sexp.add(SCMCons.list(Quote.QUOTE, o));
     }
     return new TailCall(sexp, null);
   }

@@ -61,7 +61,7 @@ public class Define implements ISpecialForm, ISCMClass {
       args.setIsList(SCMCons.isList(expression.get(1)));
 
       SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
-      l.add((Object)args);
+      l.add(args);
       /* Body */
       l.addAll(expression.subList(2, expression.size()));
 

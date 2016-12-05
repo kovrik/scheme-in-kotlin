@@ -63,7 +63,7 @@ public class Max extends AFn {
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Number", args[i]);
         }
-        result = invoke((Number)first, (Number)args[i]);
+        result = invoke(first, (Number)args[i]);
       }
       return result;
     }

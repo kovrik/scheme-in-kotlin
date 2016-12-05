@@ -41,7 +41,7 @@ public class LCM extends AFn {
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Integer", args[i]);
         }
-        result = invoke((Number)first, (Number)args[i]);
+        result = invoke(first, (Number)args[i]);
       }
       return result;
     }

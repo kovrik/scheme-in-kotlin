@@ -31,7 +31,7 @@ public class Division extends AFn {
     }
     Number result;
     if (args.length == 1) {
-      return invoke((Number)1L, (Number)args[0]);
+      return invoke(1L, (Number)args[0]);
     } else {
       result = (Number)args[0];
     }
@@ -39,7 +39,7 @@ public class Division extends AFn {
       if (!(args[d] instanceof Number)) {
         throw new WrongTypeException("Number", args[d]);
       }
-      result = invoke((Number)result, (Number)args[d]);
+      result = invoke(result, (Number)args[d]);
     }
     return result;
   }

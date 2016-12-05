@@ -48,7 +48,7 @@ public class NumericalComparison extends AFn {
     Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
-        result = result && invoke((Object)args[i], (Object)args[i + 1]);
+        result = result && invoke(args[i], args[i + 1]);
       }
     }
     return SCMBoolean.toSCMBoolean(result);
