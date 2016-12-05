@@ -16,6 +16,8 @@ import static org.junit.Assert.*;
 
 public class ReaderTest {
 
+  private static final String LS = System.getProperty("line.separator");
+
   private final StringReader reader = new StringReader();
 
   @Test
@@ -237,6 +239,25 @@ public class ReaderTest {
     assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#I2.3e-51"));
     assertEquals(new BigDecimal("92160.0"), reader.readFirst("#b101101e1011"));
     assertEquals(new BigDecimal("4484907929698304.0"), reader.readFirst("#xfefsa"));
+  }
+
+  @Test
+  public void testEscapeSequences() {
+    String escape   = "\"\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\\"";
+    SCMString expected = new SCMString("\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\");
+    assertEquals(expected, reader.readFirst(escape));
+    try {
+      reader.readFirst("\"\\u\"");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: no hex digit following \\u in string", e.getMessage());
+    }
+    try {
+      reader.readFirst("\"\\x\"");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: unknown escape sequence \\x in string", e.getMessage());
+    }
   }
 
   private static SCMSymbol s(String str) {

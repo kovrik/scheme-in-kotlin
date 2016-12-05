@@ -29,6 +29,8 @@ public class Reader implements IReader {
   private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
   // <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + "()\";" + '\u0000' + '\uffff';
+  /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
+  private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
   private static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
@@ -45,21 +47,6 @@ public class Reader implements IReader {
     NAMED_CHARS.put("delete",    '\u007F');
     NAMED_CHARS.put("null",      Character.MIN_VALUE);
     NAMED_CHARS.put("nul",       Character.MIN_VALUE);
-  }
-
-  private static final Map<Character, Character> ESCAPE_SEQUENCES = new HashMap<>();
-  static {
-    ESCAPE_SEQUENCES.put('a',  '\u0007');
-    ESCAPE_SEQUENCES.put('b',  '\b');
-    ESCAPE_SEQUENCES.put('t',  '\t');
-    ESCAPE_SEQUENCES.put('n',  '\n');
-    ESCAPE_SEQUENCES.put('v',  '\u000B');
-    ESCAPE_SEQUENCES.put('e',  '\u001B');
-    ESCAPE_SEQUENCES.put('f',  '\f');
-    ESCAPE_SEQUENCES.put('r',  '\r');
-    ESCAPE_SEQUENCES.put('\"', '\"');
-    ESCAPE_SEQUENCES.put('\'', '\'');
-    ESCAPE_SEQUENCES.put('\\', '\\');
   }
 
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
@@ -340,7 +327,7 @@ public class Reader implements IReader {
           continue;
         }
         // escape sequences
-        if (!ESCAPE_SEQUENCES.containsKey(next)) {
+        if (ESCAPE_SEQUENCES.indexOf(next) < 0) {
           throw new IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next));
         }
         string.append(c).append(next);
