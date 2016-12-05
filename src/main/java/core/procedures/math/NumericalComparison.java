@@ -45,23 +45,23 @@ public class NumericalComparison extends AFn {
 
   @Override
   public SCMBoolean invoke(Object... args) {
-    Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
-        result = result && invoke(args[i], args[i + 1]);
+        if (!(args[i] instanceof Number)) {
+          throw new WrongTypeException("Number", args[i]);
+        }
+        if (!(args[i + 1] instanceof Number)) {
+          throw new WrongTypeException("Number", args[i + 1]);
+        }
+        if (!invoke(args[i], args[i + 1])) {
+          return SCMBoolean.FALSE;
+        }
       }
     }
-    return SCMBoolean.toSCMBoolean(result);
+    return SCMBoolean.TRUE;
   }
 
-  public Boolean invoke(Object first, Object second) {
-    if (!(first instanceof Number)) {
-      throw new WrongTypeException("Number", first);
-    }
-    if (!(second instanceof Number)) {
-      throw new WrongTypeException("Number", second);
-    }
-
+  public boolean invoke(Object first, Object second) {
     Number f = (Number)first;
     Number s = (Number)second;
     if (f instanceof SCMBigRational) {
@@ -79,8 +79,8 @@ public class NumericalComparison extends AFn {
     }
     switch (type) {
       case EQUAL:         return ((Comparable)f).compareTo(s) == 0;
-      case LESS:          return ((Comparable)f).compareTo(s) < 0;
-      case GREATER:       return ((Comparable)f).compareTo(s) > 0;
+      case LESS:          return ((Comparable)f).compareTo(s) <  0;
+      case GREATER:       return ((Comparable)f).compareTo(s) >  0;
       case LESS_EQUAL:    return ((Comparable)f).compareTo(s) <= 0;
       case GREATER_EQUAL: return ((Comparable)f).compareTo(s) >= 0;
     }
