@@ -65,14 +65,14 @@ public class Expt extends AFn {
         if (exponent instanceof SCMBigRational) {
           // FIXME Check rounding mode and precision
           return BigDecimalMath.pow((BigDecimal) first,
-                                    ((SCMBigRational)exponent).toBigDecimal().setScale(16, NumberUtils.ROUNDING_MODE));
+                                    ((SCMBigRational)exponent).toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE));
         }
         return BigDecimalMath.pow((BigDecimal) first, new BigDecimal(exponent.toString()));
       }
       if (exponent instanceof BigDecimal) {
         if (first instanceof SCMBigRational) {
           // FIXME Check rounding mode and precision
-          return BigDecimalMath.pow(((SCMBigRational)first).toBigDecimal().setScale(16, NumberUtils.ROUNDING_MODE),
+          return BigDecimalMath.pow(((SCMBigRational)first).toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE),
                                     new BigDecimal(exponent.toString()));
         }
         return BigDecimalMath.pow(new BigDecimal(first.toString()), (BigDecimal) exponent);

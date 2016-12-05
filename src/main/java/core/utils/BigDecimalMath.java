@@ -1,5 +1,7 @@
 package core.utils;
 
+import core.scm.SCMBigRational;
+
 import java.math.*;
 
 /**
@@ -236,6 +238,29 @@ public class BigDecimalMath {
   }
 
   /**
+   * The natural logarithm.
+   * @param r The main argument, a strictly positive value.
+   * @param mc The requirements on the precision.
+   * @return ln(r).
+   * @since 2009-08-09
+   */
+  public static BigDecimal log(final SCMBigRational r, final MathContext mc) {
+    /* the value is undefined if x is negative or zero */
+    if (r.isZero()) {
+      throw new ArithmeticException("log: undefined for 0");
+    } else {
+      /* log(r+epsr) = log(r)+epsr/r. Convert the precision to an absolute error in the result.
+       * eps contains the required absolute error of the result, epsr/r. */
+      double eps = prec2err(Math.log(r.doubleValue()), mc.getPrecision());
+      /* Convert this further into a requirement of the relative precision in r, given that
+       * epsr/r is also the relative precision of r. Add one safety digit. */
+      MathContext mcloc = new MathContext(1 + err2prec(eps));
+      final BigDecimal resul = log(r.toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE));
+      return resul.round(mc);
+    }
+  }
+
+  /**
    * Add a BigDecimal and a BigInteger.
    * @param x The left summand
    * @param y The right summand
@@ -301,5 +326,16 @@ public class BigDecimalMath {
    */
   private static int err2prec(double xerr) {
     return 1 + (int) (Math.log10(Math.abs(0.5 / xerr)));
+  }
+
+  /**
+   * Convert a precision (relative error) to an absolute error. The is the inverse functionality of err2prec().
+   * @param x The value of the variable The value returned depends only on the absolute value, not on the sign.
+   * @param prec The number of valid digits of the variable.
+   * @return the absolute error in x. Derived from the an accuracy of one half of the ulp.
+   * @since 2009-08-09
+   */
+  private static double prec2err(final double x, final int prec) {
+    return 5.*Math.abs(x)*Math.pow(10.,-prec) ;
   }
 }

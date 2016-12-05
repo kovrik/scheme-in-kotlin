@@ -24,6 +24,7 @@ public class NumberUtils {
 
   private NumberUtils() {}
 
+  public static final int DEFAULT_SCALE = 16;
   public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64;
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
 
