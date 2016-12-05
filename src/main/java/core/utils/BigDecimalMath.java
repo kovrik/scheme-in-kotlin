@@ -254,7 +254,6 @@ public class BigDecimalMath {
       double eps = prec2err(Math.log(r.doubleValue()), mc.getPrecision());
       /* Convert this further into a requirement of the relative precision in r, given that
        * epsr/r is also the relative precision of r. Add one safety digit. */
-      MathContext mcloc = new MathContext(1 + err2prec(eps));
       final BigDecimal resul = log(r.toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE));
       return resul.round(mc);
     }

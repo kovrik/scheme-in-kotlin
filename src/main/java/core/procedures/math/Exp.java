@@ -4,14 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
-import java.math.BigDecimal;
+import static core.utils.NumberUtils.E;
 
 public class Exp extends AFn {
-
-  private static final BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995")
-                                                    .setScale(16, NumberUtils.ROUNDING_MODE);
 
   @Override
   public boolean isPure() {

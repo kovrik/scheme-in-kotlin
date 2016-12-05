@@ -49,6 +49,9 @@ public class Log extends AFn {
       if (((SCMBigRational) number).isZero()){
         throw new ArithmeticException("log: undefined for 0");
       }
+      if (((SCMBigRational) number).equals(SCMBigRational.ONE)){
+        return 0L;
+      }
       return BigDecimalMath.log((SCMBigRational)number, NumberUtils.DEFAULT_CONTEXT);
     }
     if (number instanceof BigDecimal) {

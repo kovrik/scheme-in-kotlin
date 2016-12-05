@@ -732,5 +732,41 @@ public class NumberTest extends AbstractTest {
     assertEquals(new SCMBigRational("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
 
-  // TODO Exp and Log tests
+  @Test
+  public void testExp() {
+    assertEquals(1L, eval("(exp 0)", env));
+    assertEquals(2.718281828459045, eval("(exp 1)", env));
+    assertEquals(59874.14171519782, eval("(exp 11)", env));
+    assertEquals(0.36787944117144233, eval("(exp -1)", env));
+    assertEquals(new BigDecimal("2.117000016612675"), eval("(exp 3/4)", env));
+    assertEquals(new BigDecimal("2.718281828459045"), eval("(exp 1/1)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(exp 999999999)", env));
+    assertEquals(0d, eval("(exp -999999999)", env));
+  }
+
+  @Test
+  public void testLog() {
+    assertEquals(0d, eval("(log 1)", env));
+    assertEquals(2.3978952727983707, eval("(log 11)", env));
+    assertEquals(Double.NaN, eval("(log -1)", env));
+    assertEquals(new BigDecimal("-0.2876820724517809"), eval("(log 3/4)", env));
+    assertEquals(0L, eval("(log 1/1)", env));
+    assertEquals(20.72326583594641, eval("(log 999999999)", env));
+    assertEquals(Double.NaN, eval("(log -999999999)", env));
+    try {
+      assertEquals(1L, eval("(log 0)", env));
+    } catch (ArithmeticException e) {
+      assertEquals("log: undefined for 0", e.getMessage());
+    }
+    try {
+      assertEquals(1L, eval("(log 0/1)", env));
+    } catch (ArithmeticException e) {
+      assertEquals("log: undefined for 0", e.getMessage());
+    }
+    try {
+      assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env));
+    } catch (ArithmeticException e) {
+      assertEquals("log: undefined for 0", e.getMessage());
+    }
+  }
 }
