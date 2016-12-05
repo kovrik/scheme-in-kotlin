@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ClassOf extends AFn {
 
-  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<Class, SCMClass>();
+  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<>();
   static {
     JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
     JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);

@@ -6,7 +6,6 @@ import core.procedures.AFn;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class Max extends AFn {
 

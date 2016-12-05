@@ -122,11 +122,11 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (cdr == null) {
       return new SCMCons(car, NIL);
     }
-    return new SCMCons<E>(car, cdr);
+    return new SCMCons<>(car, cdr);
   }
 
   public static <E> SCMCons<E> list() {
-    SCMCons<E> list = new SCMCons<E>();
+    SCMCons<E> list = new SCMCons<>();
     list.setIsList(true);
     return list;
   }
@@ -206,8 +206,8 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   /* Non-recursively flatten a list (or a chain of conses) */
   public static <E> List<E> flatten(List<E> list) {
-    List<E> result = new ArrayList<E>();
-    LinkedList<E> queue = new LinkedList<E>(list);
+    List<E> result = new ArrayList<>();
+    LinkedList<E> queue = new LinkedList<>(list);
     while (!queue.isEmpty()) {
       E e = queue.remove();
       if (e instanceof List) {

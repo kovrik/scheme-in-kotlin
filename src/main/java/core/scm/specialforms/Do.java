@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
-
 /* Syntax:
  * (do <bindings> <clause> <body>)
  *
@@ -97,13 +95,11 @@ public class Do implements ISpecialForm, ISCMClass {
     }
     /* Test evaluated to #f */
     List expressions = clause.subList(1, clause.size());
-    Object value = UNSPECIFIED;
     for (int i = 0; i < expressions.size() - 1; i++) {
       /* Evaluate each expression */
-      value = evaluator.eval(expressions.get(i), tempEnv);
+      evaluator.eval(expressions.get(i), tempEnv);
     }
     /* Return Tail Call of last expression or UNSPECIFIED */
-    // TODO Check UNSPECIFIED value?
     return new TailCall(expressions.get(expressions.size() - 1), tempEnv);
   }
 

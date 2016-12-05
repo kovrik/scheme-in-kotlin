@@ -91,7 +91,7 @@ public class Evaluator implements IEvaluator {
       }
     }
     /* Evaluate arguments first (because applicative order) */
-    List<Object> args = new ArrayList<Object>(sexp.size() - 1);
+    List<Object> args = new ArrayList<>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
       args.add(eval(sexp.get(i), env));
     }

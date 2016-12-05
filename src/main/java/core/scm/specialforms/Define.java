@@ -88,7 +88,7 @@ public class Define implements ISpecialForm, ISCMClass {
    * - inline at call sites only?
    */
   private static void replaceSelfCalls(SCMProcedure lambda) {
-    LinkedList<List> queue = new LinkedList<List>();
+    LinkedList<List> queue = new LinkedList<>();
     /* Queue will hold body and all nested lists (if any) */
     queue.add(lambda.getBody());
     /* `first` flag is used to track if current element is the first element of a List,

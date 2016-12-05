@@ -300,7 +300,7 @@ public class BigDecimalMath {
    * @return The same value as the input but with increased (pseudo) precision.
    */
   private static BigDecimal scalePrec(final BigDecimal x, int d) {
-    return x.setScale(d + x.scale());
+    return x.setScale(d + x.scale(), NumberUtils.ROUNDING_MODE);
   }
 
   /**

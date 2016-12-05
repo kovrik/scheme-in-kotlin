@@ -8,7 +8,7 @@ public class SCMBoolean implements ISCMClass {
   public static final SCMBoolean TRUE  = new SCMBoolean("#t");
   public static final SCMBoolean FALSE = new SCMBoolean("#f");
 
-  private static final Map<Object, Boolean> VALUES = new HashMap<Object, Boolean>();
+  private static final Map<Object, Boolean> VALUES = new HashMap<>();
   static {
     VALUES.put(Boolean.TRUE, true);
     VALUES.put(TRUE, true);

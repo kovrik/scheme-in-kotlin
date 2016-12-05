@@ -16,9 +16,7 @@ import core.writer.Writer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
@@ -44,14 +42,6 @@ public class Main {
 
   private static final DateFormat DF = new SimpleDateFormat("[HH:mm:ss.S]");
 
-  /* REPL History */
-  private static final int MAX_ENTRIES = 10;
-  private static final Map HISTORY = new LinkedHashMap(MAX_ENTRIES + 1, 0.75F, true) {
-    public boolean removeEldestEntry(Map.Entry eldest) {
-      return size() > MAX_ENTRIES;
-    }
-  };
-
   public static void main(String[] args) throws IOException {
     /* Eval lib procedures */
     StringReader stringReader = new StringReader();
@@ -69,6 +59,7 @@ public class Main {
 
   private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
     currentOutputPort.writeln(welcomeMessage);
+    //noinspection InfiniteLoopStatement
     while (true) {
       try {
 //        currentOutputPort.write(DF.format(System.currentTimeMillis()));
@@ -89,8 +80,6 @@ public class Main {
             /* Print */
             currentOutputPort.writeln(id + " = " + writer.toString(result));
             currentOutputPort.flush();
-            /* Store sexp in a history */
-            HISTORY.put(id, expr);
           }
         }
       } catch (Exception e) {

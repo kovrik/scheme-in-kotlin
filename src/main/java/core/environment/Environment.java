@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Environment implements IEnvironment, ISCMClass {
 
-  private Map<Object, Object> context = new HashMap<Object, Object>();
+  private Map<Object, Object> context = new HashMap<>();
 
   private IEnvironment outer = null;
 
@@ -70,11 +70,6 @@ public class Environment implements IEnvironment, ISCMClass {
   @Override
   public Object put(Object key, Object value) {
     return context.put(key, value);
-  }
-
-  @Override
-  public Set<Map.Entry<Object, Object>> entrySet() {
-    return context.entrySet();
   }
 
   @Override
