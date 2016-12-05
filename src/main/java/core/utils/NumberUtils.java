@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -132,7 +131,7 @@ public class NumberUtils {
 
   // FIXME Simplify and cleanup!
   /* Check if string represents a valid number and process it */
-  public static Object preProcessNumber(final String number, Character exactness, int radix) throws ParseException {
+  public static Object preProcessNumber(final String number, Character exactness, int radix) {
     if (number.indexOf('.') != number.lastIndexOf('.')) {
       throw new IllegalSyntaxException("read: multiple decimal points: " + number);
     }

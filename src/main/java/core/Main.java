@@ -15,7 +15,6 @@ import core.writer.Writer;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,7 +52,7 @@ public class Main {
     }
   };
 
-  public static void main(String[] args) throws ParseException, IOException {
+  public static void main(String[] args) throws IOException {
     /* Eval lib procedures */
     StringReader stringReader = new StringReader();
     for (String proc : defaultEnvironment.getLibraryProcedures()) {

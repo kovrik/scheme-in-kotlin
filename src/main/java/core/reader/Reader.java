@@ -14,7 +14,6 @@ import core.scm.specialforms.UnquoteSplicing;
 import core.utils.NumberUtils;
 
 import java.io.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +116,7 @@ public class Reader implements IReader {
         }
       }
       return tokens;
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
     return null;
@@ -134,7 +133,7 @@ public class Reader implements IReader {
   }
 
   /* Skip all null tokens and return the first non-null */
-  private Object nextNonNullToken() throws IOException, ParseException {
+  private Object nextNonNullToken() throws IOException {
     Object token;
     while ((token = nextToken()) == null) {/* Read */}
     return token;
@@ -143,7 +142,7 @@ public class Reader implements IReader {
   /**
    * Read next token
    */
-  Object nextToken() throws IOException, ParseException {
+  Object nextToken() throws IOException {
     int i;
     if (!isValid(i = reader.read())) {
       return null;
@@ -191,7 +190,7 @@ public class Reader implements IReader {
   /**
    * Read atom
    */
-  private Object readAtom() throws IOException, ParseException {
+  private Object readAtom() throws IOException {
     char c = (char)reader.read();
     char next = (char)reader.read();
     reader.unread(next);
@@ -219,7 +218,7 @@ public class Reader implements IReader {
     }
   }
 
-  private Object readHash() throws ParseException, IOException {
+  private Object readHash() throws IOException {
     char next = (char) reader.read();
     if (next == '(') {
       return readVector();
@@ -286,7 +285,7 @@ public class Reader implements IReader {
    * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
-  private Object readQuote(SCMSymbol symbol) throws ParseException, IOException {
+  private Object readQuote(SCMSymbol symbol) throws IOException {
     return SCMCons.list(symbol, nextNonNullToken());
   }
 
@@ -322,7 +321,7 @@ public class Reader implements IReader {
    * <string> --> "<string element>*"
    * <string element> --> <any character other than " or \> | \" | \\
    */
-  private SCMString readString() throws ParseException, IOException {
+  private SCMString readString() throws IOException {
     SCMString string = new SCMString();
     int i;
     char c;
@@ -360,7 +359,7 @@ public class Reader implements IReader {
    * <character name> --> space | newline
    */
   // TODO Implement SRFI-75 instead?
-  private Character readCharacter() throws ParseException, IOException {
+  private Character readCharacter() throws IOException {
     int i;
     /* Check if it is a codepoint */
     if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
@@ -411,7 +410,7 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private SCMCons<Object> readList() throws ParseException, IOException {
+  private SCMCons<Object> readList() throws IOException {
     SCMCons<Object> list = SCMCons.NIL;
     /* Position of a dot (if we have it) */
     int dotPos = -1;
@@ -466,7 +465,7 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private SCMVector readVector() throws ParseException, IOException {
+  private SCMVector readVector() throws IOException {
     return new SCMVector(readList().toArray());
   }
 }

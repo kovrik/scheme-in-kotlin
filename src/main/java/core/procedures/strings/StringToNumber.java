@@ -8,7 +8,6 @@ import core.scm.SCMBoolean;
 import core.scm.SCMString;
 import core.utils.NumberUtils;
 
-import java.text.ParseException;
 import java.util.List;
 
 import static core.utils.NumberUtils.EXACTNESS_RADIX;
@@ -78,13 +77,9 @@ public class StringToNumber extends AFn {
     }
 
     /* Read number */
-    try {
-      Object result = NumberUtils.preProcessNumber(number, exactness, radix);
-      if (result instanceof Number) {
-        return result;
-      }
-    } catch (ParseException e) {
-      // ignore
+    Object result = NumberUtils.preProcessNumber(number, exactness, radix);
+    if (result instanceof Number) {
+      return result;
     }
     return SCMBoolean.FALSE;
   }

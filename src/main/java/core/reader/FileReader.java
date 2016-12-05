@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PushbackReader;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class FileReader extends Reader {
           tokens.add(token);
         }
       }
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     } finally {
       try {

@@ -4,7 +4,6 @@ import core.exceptions.IllegalSyntaxException;
 
 import java.io.IOException;
 import java.io.PushbackReader;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class StringReader extends Reader {
         throw new IllegalSyntaxException("read: illegal use of '.'");
       }
       return token;
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     } finally {
       try {
@@ -41,7 +40,7 @@ public class StringReader extends Reader {
         tokens.add(token);
       }
       return tokens;
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     } finally {
       try {
