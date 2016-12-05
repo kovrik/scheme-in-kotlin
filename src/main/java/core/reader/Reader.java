@@ -167,13 +167,7 @@ public class Reader implements IReader {
         }
       }
       case '#':
-        char next = (char)reader.read();
-        if (next == '(') {
-          return readVector();
-        } else {
-          reader.unread(next);
-          return readHash();
-        }
+        return readHash();
       case '(':
         return readList();
       case ')':
@@ -219,8 +213,6 @@ public class Reader implements IReader {
       return readComment();
     } else if (c == '"') {
       return readString();
-    } else if (c == '#') {
-      return readHash();
     } else {
       reader.unread(c);
       return readIdentifier();
@@ -228,8 +220,10 @@ public class Reader implements IReader {
   }
 
   private Object readHash() throws ParseException, IOException {
-    char next = (char)reader.read();
-    if (next == '\\') {
+    char next = (char) reader.read();
+    if (next == '(') {
+      return readVector();
+    } else if (next == '\\') {
       return readCharacter();
     } else if (next == 't' || next == 'T') {
       return SCMBoolean.TRUE;
