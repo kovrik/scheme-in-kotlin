@@ -23,6 +23,7 @@ import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.ClassOf;
 import core.procedures.system.ErrorProc;
+import core.procedures.system.Eval;
 import core.procedures.system.Exit;
 import core.procedures.vectors.*;
 import core.scm.SCMEof;
@@ -53,6 +54,7 @@ public final class DefaultEnvironment extends Environment {
       new Exit(),
       new ClassOf(),
       new ErrorProc(),
+      new Eval(),
 
       /* Delayed */
       new Force(),
