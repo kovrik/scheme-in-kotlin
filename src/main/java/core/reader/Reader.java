@@ -265,7 +265,7 @@ public class Reader implements IReader {
       /* Check if this is a proper number */
       Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radixChar));
       if (!(result instanceof Number)) {
-        throw new IllegalSyntaxException(String.format("read: bad number: %s!", number));
+        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
       }
       return result;
     }

@@ -50,32 +50,32 @@ public class ReaderTest {
     try {
       reader.readFirst("#o9999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #o9999!", e.getMessage());
+      assertEquals("read: bad number: #o9999", e.getMessage());
     }
     try {
       reader.readFirst("#df999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #df999!", e.getMessage());
+      assertEquals("read: bad number: #df999", e.getMessage());
     }
     try {
       reader.readFirst("#xz999");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #xz999!", e.getMessage());
+      assertEquals("read: bad number: #xz999", e.getMessage());
     }
     try {
       reader.readFirst("#b2222");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #b2222!", e.getMessage());
+      assertEquals("read: bad number: #b2222", e.getMessage());
     }
     try {
       reader.readFirst("#d+5+5");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #d+5+5!", e.getMessage());
+      assertEquals("read: bad number: #d+5+5", e.getMessage());
     }
     try {
       reader.readFirst("+5+5");
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: +5+5!", e.getMessage());
+      assertEquals("read: bad number: +5+5", e.getMessage());
     }
     assertEquals(255.99609375, reader.readFirst("#d255.99609375"));
     assertEquals(255.99609375, reader.readFirst("#xff.ff"));
