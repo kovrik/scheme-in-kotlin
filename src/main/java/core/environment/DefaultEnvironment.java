@@ -21,10 +21,7 @@ import core.procedures.predicates.Predicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
-import core.procedures.system.ClassOf;
-import core.procedures.system.ErrorProc;
-import core.procedures.system.Eval;
-import core.procedures.system.Exit;
+import core.procedures.system.*;
 import core.procedures.vectors.*;
 import core.scm.SCMEof;
 import core.scm.SCMSymbol;
@@ -55,6 +52,7 @@ public final class DefaultEnvironment extends Environment {
       new ClassOf(),
       new ErrorProc(),
       new Eval(),
+      new Random(),
 
       /* Delayed */
       new Force(),
