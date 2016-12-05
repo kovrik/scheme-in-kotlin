@@ -26,9 +26,9 @@ public class Reader implements IReader {
   static final SCMSymbol DOT = new SCMSymbol(".");
 
   private static final String LINE_BREAKS = "\n\f\r";
-  private static final String WHITESPACES = (char)0x0B + " \t" + LINE_BREAKS;
+  private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + "()\";" + '\u0000' + '\uffff';
+  private static final String DELIMITERS = WHITESPACES + ";()\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
