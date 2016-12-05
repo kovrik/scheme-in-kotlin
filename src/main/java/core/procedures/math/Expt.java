@@ -57,14 +57,39 @@ public class Expt extends AFn {
       return result;
     }
     /* BigDecimals */
-    if ((first instanceof BigDecimal) && (exponent instanceof BigDecimal)) {
-      return BigDecimalMath.pow((BigDecimal)first, (BigDecimal)exponent);
-    }
-    if (first instanceof BigDecimal) {
-      return BigDecimalMath.pow((BigDecimal)first, new BigDecimal(exponent.toString()));
-    }
-    if (exponent instanceof BigDecimal) {
-      return BigDecimalMath.pow(new BigDecimal(first.toString()), (BigDecimal)exponent);
+    try {
+      if ((first instanceof BigDecimal) && (exponent instanceof BigDecimal)) {
+        return BigDecimalMath.pow((BigDecimal) first, (BigDecimal) exponent);
+      }
+      if (first instanceof BigDecimal) {
+        if (exponent instanceof SCMBigRational) {
+          // FIXME Check rounding mode and precision
+          return BigDecimalMath.pow((BigDecimal) first,
+                                    ((SCMBigRational)exponent).toBigDecimal().setScale(16, NumberUtils.ROUNDING_MODE));
+        }
+        return BigDecimalMath.pow((BigDecimal) first, new BigDecimal(exponent.toString()));
+      }
+      if (exponent instanceof BigDecimal) {
+        if (first instanceof SCMBigRational) {
+          // FIXME Check rounding mode and precision
+          return BigDecimalMath.pow(((SCMBigRational)first).toBigDecimal().setScale(16, NumberUtils.ROUNDING_MODE),
+                                    new BigDecimal(exponent.toString()));
+        }
+        return BigDecimalMath.pow(new BigDecimal(first.toString()), (BigDecimal) exponent);
+      }
+    } catch (ArithmeticException e) {
+      BigDecimal exp;
+      if (exponent instanceof BigDecimal) {
+        exp = (BigDecimal)exponent;
+      } else {
+        exp = new BigDecimal(exponent.toString());
+      }
+      if (exp.compareTo(BigDecimal.ZERO) < 0) {
+        // TODO Check if that is correct
+        return 0d;
+      } else {
+        return Double.POSITIVE_INFINITY;
+      }
     }
 
     double result = Math.pow(first.doubleValue(), exponent.doubleValue());

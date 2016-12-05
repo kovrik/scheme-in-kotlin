@@ -312,8 +312,9 @@ CLOSED: [2016-06-17 Fri 18:39]
 ***** TODO asin
 ***** TODO acos
 ***** TODO atan
-**** TODO Exponentials [0/2]
-***** TODO exp
+**** TODO Exponentials [1/2]
+***** DONE exp
+CLOSED: [2016-12-05 Mon 20:02]
 ***** TODO log
 **** TODO Complex numbers [0/7]
 ***** TODO make-rectangular

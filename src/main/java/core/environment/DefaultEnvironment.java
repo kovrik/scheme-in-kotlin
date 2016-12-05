@@ -66,6 +66,7 @@ public final class DefaultEnvironment extends Environment {
       new Abs(),
       new Sqrt(),
       new Expt(),
+      new Exp(),
       new Modulo(),
       new Remainder(),
       new Quotient(),
