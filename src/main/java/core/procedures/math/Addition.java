@@ -20,12 +20,6 @@ public class Addition extends AFn {
   }
 
   public Number invoke(Object first, Object second) {
-    if (!(first instanceof Number)) {
-      throw new WrongTypeException("Number", first);
-    }
-    if (!(second instanceof Number)) {
-      throw new WrongTypeException("Number", second);
-    }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).plus((SCMBigRational)second);
