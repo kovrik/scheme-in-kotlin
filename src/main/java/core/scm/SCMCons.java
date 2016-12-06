@@ -6,6 +6,7 @@ import java.util.*;
 
 import static core.writer.Writer.write;
 
+// TODO Separate class or marker for Lists, Proper Lists and Improper Lists (Pairs)
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   /* Nil constant: empty list, but not a pair */
