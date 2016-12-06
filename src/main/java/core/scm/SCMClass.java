@@ -36,6 +36,23 @@ public class SCMClass implements ISCMClass {
     throw new WrongTypeException(c.getSimpleName(), o);
   }
 
+  public static boolean checkClass(Class<?> expected, Class<?> actual) {
+    if (expected == actual) {
+      return true;
+    }
+    if (expected.isAssignableFrom(actual)) {
+      return true;
+    }
+    if (ISCMClass.class.isAssignableFrom(actual)) {
+      if (String.class.equals(expected) && SCMString.class.equals(actual)) {
+        return true;
+      } else if (Boolean.class.equals(expected) && SCMBoolean.class.equals(actual)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private final String name;
 
   public SCMClass(String name) {

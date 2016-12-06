@@ -3,8 +3,9 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.SCMString;
+import core.scm.FnArgs;
 
+@FnArgs(isVariadic = true, args = {String.class, Long.class})
 public class Substring extends AFn {
 
   @Override
@@ -14,21 +15,8 @@ public class Substring extends AFn {
 
   @Override
   public String invoke(Object... args) {
-    if (args.length < 2) {
-      throw new ArityException(args.length, getName());
-    }
-
-    Object o = args[0];
-    if (!(o instanceof String || o instanceof SCMString)) {
-      throw new WrongTypeException("String", o);
-    }
-    String s = o.toString();
-
-    Object p = args[1];
-    if (!(p instanceof Long)) {
-      throw new WrongTypeException("Integer", p);
-    }
-    long start = (long)p;
+    String s = args[0].toString();
+    long start = (long)args[1];
     if ((start < 0) || (start >= s.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", start));
     }

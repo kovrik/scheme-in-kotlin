@@ -1,7 +1,7 @@
 package core.procedures.system;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 
@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@FnArgs(args = {Object.class})
 public class ClassOf extends AFn {
 
   private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<>();
@@ -35,9 +36,6 @@ public class ClassOf extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
     Object object = args[0];
     if (object == null) {
       return SCMClass.NIL;

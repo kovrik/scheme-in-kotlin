@@ -2,9 +2,11 @@ package core.procedures.system;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
+@FnArgs(isVariadic = true)
 public class Exit extends AFn {
 
   @Override

@@ -303,7 +303,7 @@ public class ListTest extends AbstractTest {
       eval("(member 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `member`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
   }
 
@@ -331,7 +331,7 @@ public class ListTest extends AbstractTest {
       eval("(memq 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `memq`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
   }
 
@@ -361,7 +361,7 @@ public class ListTest extends AbstractTest {
       eval("(memv 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `memv`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
   }
 
@@ -379,7 +379,7 @@ public class ListTest extends AbstractTest {
       eval("(assoc 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `assoc`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
     try {
       eval("(assoc 1 '((a 2) 3))", env);
@@ -405,7 +405,7 @@ public class ListTest extends AbstractTest {
       eval("(assq 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `assq`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
     try {
       eval("(assq 1 '((a 2) 3))", env);
@@ -428,7 +428,7 @@ public class ListTest extends AbstractTest {
       eval("(assv 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `assv`! Expected: List, Actual: #()", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: #()", e.getMessage());
     }
     try {
       eval("(assv 1 '((a 2) 3))", env);

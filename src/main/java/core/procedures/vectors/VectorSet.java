@@ -1,12 +1,12 @@
 package core.procedures.vectors;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMVector;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
+@FnArgs(args = {SCMVector.class, Long.class, Object.class})
 public class VectorSet extends AFn {
 
   @Override
@@ -16,19 +16,8 @@ public class VectorSet extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length != 3) {
-      throw new ArityException(args.length, 3, getName());
-    }
-    Object o = args[0];
-    if (!(o instanceof SCMVector)) {
-      throw new WrongTypeException("Vector", o);
-    }
-    SCMVector vec = (SCMVector)o;
-
+    SCMVector vec = (SCMVector)args[0];
     Object p = args[1];
-    if (!(p instanceof Long)) {
-      throw new WrongTypeException("Integer", p);
-    }
     Long pos = (Long)p;
     if ((pos < 0) || (pos >= vec.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));

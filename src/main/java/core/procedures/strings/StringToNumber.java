@@ -4,8 +4,8 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.reader.parsers.Result;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
-import core.scm.SCMString;
 import core.utils.NumberUtils;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 import static core.utils.NumberUtils.EXACTNESS_RADIX;
 import static core.utils.NumberUtils.RADIX_EXACTNESS;
 
+@FnArgs(isVariadic = true, args = {String.class})
 public class StringToNumber extends AFn {
 
   @Override
@@ -22,15 +23,10 @@ public class StringToNumber extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length < 1 || args.length > 2) {
+    if (args.length > 2) {
       throw new ArityException(args.length, getName());
     }
-    Object o = args[0];
-    if (!(o instanceof String || o instanceof SCMString)) {
-      throw new WrongTypeException("String", o);
-    }
-
-    String number = o.toString();
+    String number = args[0].toString();
 
     /* Check if we should override optional radix */
     /* Read radix and/or exactness and a number */
@@ -63,11 +59,10 @@ public class StringToNumber extends AFn {
 
     /* Get default (optional) radix if present */
     if (args.length == 2) {
-      Object o1 = args[1];
-      if (!(o1 instanceof Long)) {
-        throw new WrongTypeException("Integer", o);
+      if (!(args[1] instanceof Long)) {
+        throw new WrongTypeException("Integer", args[1]);
       }
-      int optRadix = ((Long)o1).intValue();
+      int optRadix = ((Long)args[1]).intValue();
       if (optRadix < 2 || optRadix > 16) {
         throw new IllegalArgumentException("string->number: expected radix from 2 to 16!");
       }

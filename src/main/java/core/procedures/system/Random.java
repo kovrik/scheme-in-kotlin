@@ -3,9 +3,11 @@ package core.procedures.system;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@FnArgs(isVariadic = true)
 public class Random extends AFn {
 
   @Override

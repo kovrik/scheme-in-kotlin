@@ -1,12 +1,12 @@
 package core.procedures.math;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
+@FnArgs(args = {Number.class})
 public class Abs extends AFn {
 
   @Override
@@ -21,18 +21,14 @@ public class Abs extends AFn {
 
   @Override
   public Number invoke(Object... args) {
-    if (args != null && args.length == 1) {
-      if (args[0] instanceof Long) {
-        return Math.abs((Long)args[0]);
-      } else if (args[0] instanceof Double) {
-        return Math.abs((Double) args[0]);
-      } else if (args[0] instanceof BigDecimal) {
-        return ((BigDecimal)args[0]).abs();
-      } else if (args[0] instanceof SCMBigRational) {
-        return ((SCMBigRational)args[0]).abs();
-      }
-      throw new WrongTypeException("Number", args[0]);
+    if (args[0] instanceof Long) {
+      return Math.abs((Long) args[0]);
+    } else if (args[0] instanceof Double) {
+      return Math.abs((Double) args[0]);
+    } else if (args[0] instanceof BigDecimal) {
+      return ((BigDecimal) args[0]).abs();
+    } else {
+      return ((SCMBigRational) args[0]).abs();
     }
-    throw new ArityException(args.length, 1, getName());
   }
 }

@@ -2,8 +2,10 @@ package core.procedures.characters;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 
+@FnArgs(isVariadic = true)
 public class CharComparison extends AFn {
 
   @Override

@@ -1,6 +1,7 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.SCMFileNotFoundException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +17,7 @@ public class FileReader extends Reader {
     try {
       reader = new PushbackReader(new BufferedReader(new java.io.FileReader(file)), 2);
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      throw new SCMFileNotFoundException(file.getPath());
     }
     List<Object> tokens = new ArrayList<>();
     try {

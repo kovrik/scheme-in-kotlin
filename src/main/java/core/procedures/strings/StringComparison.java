@@ -2,9 +2,11 @@ package core.procedures.strings;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.scm.SCMString;
 
+@FnArgs(isVariadic = true)
 public class StringComparison extends AFn {
 
   @Override

@@ -60,7 +60,7 @@ public class MemvTest extends AbstractTest {
       eval("(memv 'a 'b)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument to `memv`! Expected: List, Actual: b", e.getMessage());
+      assertEquals("Wrong argument type. Expected: List, actual: b", e.getMessage());
     }
   }
 

@@ -1,8 +1,7 @@
 package core.procedures.math;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
 import core.utils.NumberUtils;
@@ -10,6 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+@FnArgs(args = {Number.class, Number.class})
 public class Expt extends AFn {
 
   @Override
@@ -24,16 +24,7 @@ public class Expt extends AFn {
 
   @Override
   public Number invoke(Object... args) {
-    if (args != null && args.length == 2) {
-      if (!(args[0] instanceof Number)) {
-        throw new WrongTypeException("Number", args[0]);
-      }
-      if (!(args[1] instanceof Number)) {
-        throw new WrongTypeException("Number", args[1]);
-      }
-      return invoke((Number)args[0], (Number)args[1]);
-    }
-    throw new ArityException(args.length, 2, getName());
+    return invoke((Number)args[0], (Number)args[1]);
   }
 
   public static Number invoke(Number first, Number exponent) {

@@ -1,13 +1,13 @@
 package core.procedures.io;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.ISCMPort;
 import core.scm.SCMUnspecified;
 
 import java.io.IOException;
 
+@FnArgs(args = {ISCMPort.class})
 public class ClosePort extends AFn {
 
   @Override
@@ -17,12 +17,6 @@ public class ClosePort extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-    if (!(args[0] instanceof ISCMPort)) {
-      throw new WrongTypeException("Port", args[0]);
-    }
     try {
       ((ISCMPort)args[0]).close();
     } catch (IOException e) {

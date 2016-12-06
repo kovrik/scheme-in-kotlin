@@ -1,6 +1,5 @@
 package core.procedures.predicates;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.scm.*;
@@ -9,6 +8,7 @@ import core.utils.NumberUtils;
 import java.util.List;
 import java.util.function.Function;
 
+@FnArgs(args = {Object.class})
 public class Predicate extends AFn {
 
   public static final Predicate IS_NULL = new Predicate("null?",       o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
@@ -51,9 +51,6 @@ public class Predicate extends AFn {
 
   @Override
   public SCMBoolean invoke(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
     return SCMBoolean.toSCMBoolean(function.apply(args[0]));
   }
 }

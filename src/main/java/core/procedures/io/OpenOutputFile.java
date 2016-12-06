@@ -1,7 +1,7 @@
 package core.procedures.io;
 
 import core.exceptions.ArityException;
-import core.exceptions.SCMIOException;
+import core.exceptions.SCMFileNotFoundException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMOutputPort;
@@ -29,7 +29,7 @@ public class OpenOutputFile extends AFn {
     try {
       return new SCMOutputPort(new FileOutputStream(filename));
     } catch (FileNotFoundException e) {
-      throw new SCMIOException(e);
+      throw new SCMFileNotFoundException(filename);
     }
   }
 }

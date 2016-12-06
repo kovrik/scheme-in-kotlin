@@ -2,9 +2,11 @@ package core.procedures.cons;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 
+@FnArgs(isVariadic = true)
 public class Append extends AFn {
 
   @Override

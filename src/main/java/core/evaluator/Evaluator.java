@@ -4,7 +4,11 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.procedures.IFn;
+import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMPromise;
@@ -81,19 +85,47 @@ public class Evaluator implements IEvaluator {
     /* Must be a procedure */
     Object fn;
     /* If procedure was inlined, then just apply it */
-    if ((op instanceof IFn) && !(op instanceof SCMProcedure) ) {
+    if ((op instanceof AFn) && !(op instanceof SCMProcedure) ) {
       fn = op;
     } else {
       fn = eval(op, env);
-      if (!(fn instanceof IFn)) {
+      if (!(fn instanceof AFn)) {
         /* Can apply IFn only */
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
       }
     }
-    /* Evaluate arguments first (because applicative order) */
+
+    /* Check args size */
+    Class<?>[] fnArgs = null;
+    FnArgs annotation = null;
+    if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
+      annotation = fn.getClass().getAnnotation(FnArgs.class);
+      fnArgs = annotation.args();
+      if (annotation.isVariadic()) {
+        /* Mandatory args */
+        if (fnArgs.length > sexp.size() - 1) {
+          throw new ArityException(sexp.size() - 1, ((AFn) fn).getName());
+        }
+      } else {
+        if (fnArgs.length != sexp.size() - 1) {
+          throw new ArityException(sexp.size() - 1, fnArgs.length, ((AFn) fn).getName());
+        }
+      }
+    }
+
+    /* Evaluate arguments first (because applicative order) and check their types */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
-      args.add(eval(sexp.get(i), env));
+      Object arg = eval(sexp.get(i), env);
+      args.add(arg);
+      if (annotation != null) {
+        if (annotation.isVariadic() && (fnArgs.length < i)) {
+          continue;
+        }
+        if (!(SCMClass.checkClass(fnArgs[i - 1], arg.getClass()))) {
+          throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
+        }
+      }
     }
 
     /* Scheme procedure (lambda) */

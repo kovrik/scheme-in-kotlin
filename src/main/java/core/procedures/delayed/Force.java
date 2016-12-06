@@ -1,10 +1,11 @@
 package core.procedures.delayed;
 
-import core.exceptions.ArityException;
 import core.exceptions.ReentrantPromiseException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMPromise;
 
+@FnArgs(args = {SCMPromise.class})
 public class Force extends AFn {
 
   @Override
@@ -14,14 +15,7 @@ public class Force extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-    Object o = args[0];
-    if (!(o instanceof SCMPromise)) {
-      return o;
-    }
-    SCMPromise promise = (SCMPromise) o;
+    SCMPromise promise = (SCMPromise) args[0];
     if (promise.getState() == SCMPromise.State.FULFILLED) {
       return promise.getResult();
     }

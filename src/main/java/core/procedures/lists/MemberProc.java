@@ -4,11 +4,13 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.writer.Writer;
 
 import java.util.List;
 
+@FnArgs(args = {Object.class, List.class})
 public class MemberProc extends AFn {
 
   private final String name;

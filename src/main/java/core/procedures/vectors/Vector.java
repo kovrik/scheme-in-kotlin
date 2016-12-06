@@ -1,8 +1,10 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMVector;
 
+@FnArgs(isVariadic = true)
 public class Vector extends AFn {
 
   @Override

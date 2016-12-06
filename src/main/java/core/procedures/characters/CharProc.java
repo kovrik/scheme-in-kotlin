@@ -1,10 +1,11 @@
 package core.procedures.characters;
 
-import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 
+@FnArgs(args = {Character.class})
 public class CharProc extends AFn {
 
   private static class CharFn extends AFn {
@@ -93,18 +94,12 @@ public class CharProc extends AFn {
   }
 
   public Object invoke(Object ch) {
-    if (ch instanceof Character) {
-      return predicate.invoke(ch);
-    }
-    throw new WrongTypeException("Character", ch);
+    return predicate.invoke(ch);
   }
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length == 1) {
-      return invoke(args[0]);
-    }
-    throw new ArityException(args.length, 1, getName());
+    return invoke(args[0]);
   }
 
   @Override

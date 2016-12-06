@@ -11,7 +11,6 @@ import core.scm.SCMSymbol;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;

@@ -1,9 +1,10 @@
 package core.procedures.system;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMError;
 
+@FnArgs(args = {Object.class})
 public class ErrorProc extends AFn {
 
   @Override
@@ -13,9 +14,6 @@ public class ErrorProc extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, "error");
-    }
     throw new SCMError(args[0].toString());
   }
 }

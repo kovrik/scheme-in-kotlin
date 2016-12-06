@@ -1,9 +1,10 @@
 package core.procedures.cons;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMCons;
 
+@FnArgs(args = {Object.class, Object.class})
 public class ConsProc extends AFn {
 
   @Override
@@ -13,9 +14,6 @@ public class ConsProc extends AFn {
 
   @Override
   public SCMCons invoke(Object... args) {
-    if (args.length != 2) {
-      throw new ArityException(args.length, 2, getName());
-    }
     return cons(args[0], args[1]);
   }
 

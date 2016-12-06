@@ -3,9 +3,11 @@ package core.procedures.strings;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 
 import java.math.BigDecimal;
 
+@FnArgs(isVariadic = true, args = {Number.class})
 public class NumberToString extends AFn {
 
   @Override
@@ -15,13 +17,7 @@ public class NumberToString extends AFn {
 
   @Override
   public String invoke(Object... args) {
-    if (args.length < 1) {
-      throw new ArityException(args.length, getName());
-    }
-    Object o = args[0];
-    if (!(o instanceof Number)) {
-      throw new WrongTypeException("Number", o);
-    }
+    Number o = (Number)args[0];
     if (args.length > 2) {
       throw new ArityException(args.length, getName());
     }

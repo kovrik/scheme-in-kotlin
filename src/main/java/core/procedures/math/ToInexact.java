@@ -1,14 +1,13 @@
 package core.procedures.math;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.predicates.Predicate;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
+@FnArgs(args = {Number.class})
 public class ToInexact extends AFn {
 
   @Override
@@ -23,16 +22,10 @@ public class ToInexact extends AFn {
 
   @Override
   public Number invoke(Object... args) {
-    if (args != null && args.length == 1) {
-      return toInexact(args[0]);
-    }
-    throw new ArityException(args.length, 1, getName());
+    return toInexact(args[0]);
   }
 
   public static Number toInexact(Object o) {
-    if (!Predicate.IS_NUMBER.invoke(o).toBoolean()) {
-      throw new WrongTypeException("Number", o);
-    }
     if (o instanceof SCMBigRational) {
       return ((SCMBigRational)o).toBigDecimalInexact();
     }

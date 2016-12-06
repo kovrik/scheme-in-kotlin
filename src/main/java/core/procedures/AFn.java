@@ -1,10 +1,9 @@
 package core.procedures;
 
 import core.exceptions.ArityException;
-import core.scm.ISCMClass;
 import core.scm.SCMClass;
 
-public abstract class AFn implements IFn, ISCMClass {
+public abstract class AFn implements IFn {
 
   /* Return true if function is pure (referentially transparent),
    * false otherwise. */
