@@ -27,7 +27,7 @@ public class Predicate extends AFn {
   public static final Predicate IS_NUMBER = new Predicate("number?",     o -> (o instanceof Number));
   public static final Predicate IS_RATIONAL = new Predicate("rational?", NumberUtils::isRational);
   public static final Predicate IS_REAL = new Predicate("real?",       o -> (o instanceof Number));
-  public static final Predicate IS_EOF = new Predicate("eof-object?",  o -> (SCMEof.EOF.equals(o)));
+  public static final Predicate IS_EOF = new Predicate("eof-object?",  o -> (o instanceof SCMEof));
   public static final Predicate IS_EXACT = new Predicate("exact?",     o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
   public static final Predicate IS_INEXACT = new Predicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
 
