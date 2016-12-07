@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.scm.SCMBigRational;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -769,4 +770,23 @@ public class NumberTest extends AbstractTest {
       assertEquals("log: undefined for 0", e.getMessage());
     }
   }
+
+  // FIXME
+  @Ignore
+  @Test
+  public void testFindBetween() {
+
+    String findBetween = "(define (find-between lo hi)" +
+                         "  (if (integer? lo)" +
+                         "      lo" +
+                         "    (let ((lo-int (floor lo))" +
+                         "          (hi-int (floor hi)))" +
+                         "      (if (< lo-int hi-int)" +
+                         "          (+ 1 lo-int)" +
+                         "        (+ lo-int" +
+                         "           (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int)))))))))";
+    eval(findBetween, env);
+    assertEquals(new SCMBigRational("1", "3"), eval("(find-between 3332/9999 3334/9999)", env));
+  }
+
 }
