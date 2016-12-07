@@ -50,22 +50,22 @@ public class Division extends AFn {
       return ((SCMBigRational)numerator).divide((SCMBigRational)denominator);
     }
     if (numerator instanceof SCMBigRational) {
-      if (denominator instanceof Long) {
+      if (NumberUtils.isExact(denominator)) {
         return ((SCMBigRational) numerator).divide(new SCMBigRational(new BigInteger(denominator.toString()), BigInteger.ONE));
       } else {
         numerator = ((SCMBigRational) numerator).doubleOrBigDecimalValue();
       }
     }
     if (denominator instanceof SCMBigRational) {
-      if (numerator instanceof Long) {
+      if (NumberUtils.isExact(numerator)) {
         return (new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE).divide((SCMBigRational) denominator));
       } else {
         denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
       }
     }
 
-    if ((numerator instanceof Long) &&
-        (denominator instanceof Long)) {
+    if (NumberUtils.isExact(numerator) &&
+        NumberUtils.isExact(denominator)) {
 
       return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
     }

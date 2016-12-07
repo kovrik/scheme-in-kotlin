@@ -502,7 +502,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(TRUE, eval(String.format("(number? %s)", big0), env));
     assertEquals(TRUE, eval(String.format("(complex? %s)", big0), env));
 
-    assertEquals(new BigDecimal(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
+    assertEquals(new SCMBigRational(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")), eval(String.format("(+ %s %s)", big0, big0), env));
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")).subtract(new BigDecimal(big0)),
         eval(String.format("(- (* 2 %s) %s)", big0, big0), env));

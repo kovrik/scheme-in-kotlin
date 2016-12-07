@@ -29,6 +29,11 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     init(num, den);
   }
 
+  public SCMBigRational(String numerator) {
+    BigInteger num = parseBigInteger(numerator);
+    init(num, BigInteger.ONE);
+  }
+
   public SCMBigRational(BigInteger numerator, String denominator) {
     BigInteger den = parseBigInteger(denominator);
     init(numerator, den);
