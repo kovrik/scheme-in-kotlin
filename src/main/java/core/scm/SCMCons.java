@@ -6,7 +6,7 @@ import java.util.*;
 
 import static core.writer.Writer.write;
 
-// TODO Separate class or marker for Lists, Proper Lists and Improper Lists (Pairs)
+// TODO Separate class for Proper and Improper Lists
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   /* Marker interfaces for Proper and Improper lists */

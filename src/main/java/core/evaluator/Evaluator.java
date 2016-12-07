@@ -122,16 +122,14 @@ public class Evaluator implements IEvaluator {
         if (annotation.isVariadic() && (fnArgs.length < i)) {
           continue;
         }
-        /* FIXME Workaround for Lists and Pairs */
-        if (fnArgs[i - 1].equals(SCMCons.SCMProperList.class)) {
-          if (!SCMCons.isList(arg)) {
-            throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
-          }
-        } else if (fnArgs[i - 1].equals(SCMCons.SCMPair.class)) {
-          if (!SCMCons.isPair(arg)) {
-            throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
-          }
-        } else if (!(SCMClass.checkClass(fnArgs[i - 1], arg.getClass()))) {
+        /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
+        Class<?> actualClass = arg.getClass();
+        if ((fnArgs[i - 1].equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(arg))) {
+          actualClass = SCMCons.SCMProperList.class;
+        } else if ((fnArgs[i - 1].equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(arg))) {
+          actualClass = SCMCons.SCMPair.class;
+        }
+        if (!(SCMClass.checkClass(fnArgs[i - 1], actualClass))) {
           throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
         }
       }
