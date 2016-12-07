@@ -20,10 +20,6 @@ public abstract class AFn implements IFn {
     return getClass().getSimpleName();
   }
 
-  public boolean isVariadic() {
-    return false;
-  }
-
   @Override
   public String toString() {
     String name = getName();

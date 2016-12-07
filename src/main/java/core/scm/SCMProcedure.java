@@ -51,7 +51,6 @@ public class SCMProcedure extends AFn {
     return localEnvironment;
   }
 
-  @Override
   public boolean isVariadic() {
     return isVariadic;
   }
