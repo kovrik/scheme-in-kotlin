@@ -79,6 +79,8 @@ public class NumberTest extends AbstractTest {
     assertEquals(5L, eval("(abs -5)", env));
 
     assertEquals(new SCMBigRational("9999", "3332"), eval("(/ 3332/9999)", env));
+    assertEquals(new SCMBigRational("9999", "3332"), eval("(/ 1 3332/9999)", env));
+    assertEquals(3.0009003601440574, eval("(/ 1.0 3332/9999)", env));
 
     // abs
     try {

@@ -31,9 +31,6 @@ public class Division extends AFn {
     }
     Number result;
     if (args.length == 1) {
-      if (args[0] instanceof SCMBigRational) {
-        return ((SCMBigRational)args[0]).reciprocal();
-      }
       return invoke(1L, (Number)args[0]);
     } else {
       result = (Number)args[0];
@@ -61,7 +58,7 @@ public class Division extends AFn {
     }
     if (denominator instanceof SCMBigRational) {
       if (numerator instanceof Long) {
-        return ((SCMBigRational) denominator).divide(new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE));
+        return (new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE).divide((SCMBigRational) denominator));
       } else {
         denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
       }
