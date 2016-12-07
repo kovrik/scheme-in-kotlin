@@ -4,10 +4,7 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
+import core.scm.*;
 
 import java.util.List;
 
@@ -16,14 +13,10 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-public class Let implements ISpecialForm, ISCMClass {
+public enum Let implements ISpecialForm, ISCMClass {
+  LET;
 
-  public static final Let LET = new Let();
-
-  private final String syntax = "let";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Let() {}
+  private static final String syntax = "let";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -50,7 +43,7 @@ public class Let implements ISpecialForm, ISCMClass {
         evaluator.eval(expression.get(i), localEnv);
       }
       /* Return Tail Call of the last expression */
-      return new TailCall(expression.get(expression.size() - 1), localEnv);
+      return new SCMTailCall(expression.get(expression.size() - 1), localEnv);
 
     } else if (expression.get(1) instanceof SCMSymbol) {
       // TODO Optimize and cleanup
@@ -89,10 +82,6 @@ public class Let implements ISpecialForm, ISCMClass {
       return LetRec.LETREC.eval(letrec, new Environment(env), evaluator);
     }
     throw IllegalSyntaxException.of(syntax, expression);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

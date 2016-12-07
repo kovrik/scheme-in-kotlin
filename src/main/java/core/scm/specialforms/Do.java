@@ -16,14 +16,10 @@ import java.util.Map;
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
-public class Do implements ISpecialForm, ISCMClass {
+public enum Do implements ISpecialForm, ISCMClass {
+  DO;
 
-  public static final Do DO = new Do();
-
-  private final String syntax = "do";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Do() {}
+  private static final String syntax = "do";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -100,11 +96,7 @@ public class Do implements ISpecialForm, ISCMClass {
       evaluator.eval(expressions.get(i), tempEnv);
     }
     /* Return Tail Call of last expression or UNSPECIFIED */
-    return new TailCall(expressions.get(expressions.size() - 1), tempEnv);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
+    return new SCMTailCall(expressions.get(expressions.size() - 1), tempEnv);
   }
 
   @Override

@@ -16,14 +16,10 @@ import java.util.*;
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
-public class Lambda implements ISpecialForm, ISCMClass {
+public enum Lambda implements ISpecialForm, ISCMClass {
+  LAMBDA;
 
-  public static final Lambda LAMBDA = new Lambda();
-
-  private final String syntax = "lambda";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Lambda() {}
+  private static final String syntax = "lambda";
 
   @Override
   public SCMProcedure eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -67,10 +63,6 @@ public class Lambda implements ISpecialForm, ISCMClass {
       /* (lambda rest-id body ...+) */
       return new SCMProcedure("", SCMCons.list((SCMSymbol)args), body, env, true);
     }
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

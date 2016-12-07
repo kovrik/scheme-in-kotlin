@@ -14,22 +14,16 @@ import java.util.List;
  * '<datum>
  * <constant>
  */
-public class Quote implements ISpecialForm, ISCMClass {
+public enum Quote implements ISpecialForm, ISCMClass {
+  QUOTE;
 
-  public static final Quote QUOTE = new Quote();
+  private static final String syntax = "quote";
 
-  private final String syntax = "quote";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Quote() {}
+  public static final SCMSymbol QUOTE_SYMBOL = new SCMSymbol(syntax);
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     return expression.get(1);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

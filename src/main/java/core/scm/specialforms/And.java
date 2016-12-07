@@ -2,24 +2,15 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.ISCMClass;
-import core.scm.SCMBoolean;
-import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.*;
 
 import java.util.List;
 
 /* Syntax:
  * (and <test1> ...)
  */
-public class And implements ISpecialForm, ISCMClass {
-
-  public static final And AND = new And();
-
-  private final String syntax = "and";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private And() {}
+public enum And implements ISpecialForm, ISCMClass {
+  AND;
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -31,18 +22,14 @@ public class And implements ISpecialForm, ISCMClass {
           return result;
         }
       }
-      result = new TailCall(expression.get(expression.size() - 1), env);
+      result = new SCMTailCall(expression.get(expression.size() - 1), env);
     }
     return result;
   }
 
-  public SCMSymbol symbol() {
-    return symbol;
-  }
-
   @Override
   public String toString() {
-    return syntax;
+    return "and";
   }
 
   @Override

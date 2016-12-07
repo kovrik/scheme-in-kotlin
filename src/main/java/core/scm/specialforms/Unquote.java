@@ -9,23 +9,17 @@ import core.scm.SCMSymbol;
 
 import java.util.List;
 
-public class Unquote implements ISpecialForm, ISCMClass {
+public enum Unquote implements ISpecialForm, ISCMClass {
+  UNQUOTE;
 
-  public static final Unquote UNQUOTE = new Unquote();
+  private static final String syntax = "unquote";
 
-  private final String syntax = "unquote";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Unquote() {}
+  public static final SCMSymbol UNQUOTE_SYMBOL = new SCMSymbol(syntax);
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     // Implemented in quasiquote
     throw IllegalSyntaxException.of(syntax, expression, "not in quasiquote");
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

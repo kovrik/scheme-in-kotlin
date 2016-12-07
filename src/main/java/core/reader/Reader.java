@@ -140,16 +140,16 @@ public class Reader implements IReader {
     }
     switch (c) {
       case '\'':
-        return readQuote(Quote.QUOTE.symbol());
+        return readQuote(Quote.QUOTE_SYMBOL);
       case '`':
-        return readQuote(Quasiquote.QUASIQUOTE.symbol());
+        return readQuote(Quasiquote.QUASIQUOTE_SYMBOL);
       case ',': {
         char next = (char) reader.read();
         if (next == '@') {
-          return readQuote(UnquoteSplicing.UNQUOTE_SPLICING.symbol());
+          return readQuote(UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL);
         } else {
           reader.unread(next);
-          return readQuote(Unquote.UNQUOTE.symbol());
+          return readQuote(Unquote.UNQUOTE_SYMBOL);
         }
       }
       case '#':

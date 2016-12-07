@@ -1,14 +1,14 @@
-package core.scm.specialforms;
+package core.scm;
 
 import core.environment.IEnvironment;
 
 // TODO Replace with Continuations
-public class TailCall {
+public class SCMTailCall {
 
   private final Object expr;
   private final IEnvironment context;
 
-  public TailCall(Object expr, IEnvironment context) {
+  public SCMTailCall(Object expr, IEnvironment context) {
     this.expr = expr;
     this.context = context;
   }

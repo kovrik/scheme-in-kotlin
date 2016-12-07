@@ -2,24 +2,17 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.ISCMClass;
-import core.scm.SCMBoolean;
-import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.*;
 
 import java.util.List;
 
 /* Syntax:
  * (or <test1> ...)
  */
-public class Or implements ISpecialForm, ISCMClass {
+public enum Or implements ISpecialForm, ISCMClass {
+  OR;
 
-  public static final Or OR = new Or();
-
-  private final String syntax = "or";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Or() {}
+  private static final String syntax = "or";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -31,13 +24,9 @@ public class Or implements ISpecialForm, ISCMClass {
           return result;
         }
       }
-      result = new TailCall(expression.get(expression.size() - 1), env);
+      result = new SCMTailCall(expression.get(expression.size() - 1), env);
     }
     return result;
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

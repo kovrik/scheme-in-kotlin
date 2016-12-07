@@ -6,21 +6,16 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMPromise;
-import core.scm.SCMSymbol;
 
 import java.util.List;
 
 /* Syntax:
  * (delay <expression>)
  */
-public class Delay implements ISpecialForm, ISCMClass {
+public enum Delay implements ISpecialForm, ISCMClass {
+  DELAY;
 
-  public static final ISpecialForm DELAY = new Delay();
-
-  private final String syntax = "delay";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Delay() {}
+  private static final String syntax = "delay";
 
   @Override
   public SCMPromise eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -28,10 +23,6 @@ public class Delay implements ISpecialForm, ISCMClass {
       throw IllegalSyntaxException.of(syntax, expression);
     }
     return new SCMPromise(expression.get(1));
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

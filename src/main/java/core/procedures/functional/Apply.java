@@ -6,7 +6,7 @@ import core.procedures.AFn;
 import core.procedures.cons.Append;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +38,6 @@ public class Apply extends AFn {
     for (Object o : (List) last) {
       sexp.add(SCMCons.list(Quote.QUOTE, o));
     }
-    return new TailCall(sexp, null);
+    return new SCMTailCall(sexp, null);
   }
 }

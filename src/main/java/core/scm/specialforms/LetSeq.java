@@ -6,7 +6,7 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -15,14 +15,10 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-public class LetSeq implements ISpecialForm, ISCMClass {
+public enum LetSeq implements ISpecialForm, ISCMClass {
+  LETSEQ;
 
-  public static final LetSeq LETSEQ = new LetSeq();
-
-  private final String syntax = "let*";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private LetSeq() {}
+  private static final String syntax = "let*";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -42,11 +38,7 @@ public class LetSeq implements ISpecialForm, ISCMClass {
       evaluator.eval(expression.get(i), localEnv);
     }
     /* Return Tail Call of the last expression */
-    return new TailCall(expression.get(expression.size() - 1), localEnv);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
+    return new SCMTailCall(expression.get(expression.size() - 1), localEnv);
   }
 
   @Override

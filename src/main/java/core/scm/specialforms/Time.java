@@ -7,7 +7,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMIOException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
-import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
 import core.writer.Writer;
 
@@ -22,16 +21,12 @@ import java.util.List;
  * Syntax:
  * (time <expression1> ... <expression n>)
  */
-public class Time implements ISpecialForm, ISCMClass {
-
-  public static final Time TIME = new Time();
+public enum Time implements ISpecialForm, ISCMClass {
+  TIME;
 
   private static final String LS = System.getProperty("line.separator");
 
   private final String syntax = "time";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Time() {}
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -54,10 +49,6 @@ public class Time implements ISpecialForm, ISCMClass {
       throw new SCMIOException(e);
     }
     return SCMUnspecified.UNSPECIFIED;
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

@@ -4,27 +4,18 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
-import core.scm.SCMSymbol;
 
 import java.util.List;
 
 // TODO
-public class LetRecSyntax implements ISpecialForm, ISCMClass {
+public enum LetRecSyntax implements ISpecialForm, ISCMClass {
+  LETREC_SYNTAX;
 
-  public static final LetRecSyntax LETREC_SYNTAX = new LetRecSyntax();
-
-  private final String syntax = "letrec-syntax";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private LetRecSyntax() {}
+  private static final String syntax = "letrec-syntax";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

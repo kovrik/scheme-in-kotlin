@@ -3,10 +3,7 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
-import core.scm.SCMBoolean;
-import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.*;
 
 import java.util.List;
 
@@ -16,14 +13,10 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
-public class If implements ISpecialForm, ISCMClass {
+public enum If implements ISpecialForm, ISCMClass {
+  IF;
 
-  public static final If IF = new If();
-
-  private final String syntax = "if";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private If() {}
+  private static final String syntax = "if";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -34,7 +27,7 @@ public class If implements ISpecialForm, ISCMClass {
     Object test = expression.get(1);
     Object consequence = expression.get(2);
     if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
-      return new TailCall(consequence, env);
+      return new SCMTailCall(consequence, env);
     } else {
       if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
@@ -42,12 +35,8 @@ public class If implements ISpecialForm, ISCMClass {
         return UNSPECIFIED;
       }
       Object alternative = expression.get(3);
-      return new TailCall(alternative, env);
+      return new SCMTailCall(alternative, env);
     }
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

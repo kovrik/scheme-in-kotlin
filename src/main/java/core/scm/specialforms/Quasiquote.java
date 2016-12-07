@@ -14,20 +14,20 @@ import java.util.List;
 
 import static core.procedures.cons.Append.append;
 import static core.scm.specialforms.Unquote.UNQUOTE;
+import static core.scm.specialforms.Unquote.UNQUOTE_SYMBOL;
 import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING;
+import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
 
 /* Syntax:
  * (quasiquote <datum>)
  * `<datum>
  */
-public class Quasiquote implements ISpecialForm, ISCMClass {
+public enum Quasiquote implements ISpecialForm, ISCMClass {
+  QUASIQUOTE;
 
-  public static final Quasiquote QUASIQUOTE = new Quasiquote();
+  private static final String syntax = "quasiquote";
 
-  private final String syntax = "quasiquote";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Quasiquote() {}
+  public static final SCMSymbol QUASIQUOTE_SYMBOL = new SCMSymbol(syntax);
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -58,7 +58,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       }
       /* `#(unquote 1)  syntax is not valid */
       /* `,@#(list 1 2) syntax is not valid */
-      if (UNQUOTE.symbol().equals(vector.get(0)) || UNQUOTE_SPLICING.symbol().equals(vector.get(0))) {
+      if (UNQUOTE_SYMBOL.equals(vector.get(0)) || UNQUOTE_SPLICING_SYMBOL.equals(vector.get(0))) {
         throw IllegalSyntaxException.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* Vector quasiquotation */
@@ -70,14 +70,14 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
         return list;
       }
       /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-      if (SCMCons.isList(list) && (UNQUOTE.symbol().equals(list.get(0)))) {
+      if (SCMCons.isList(list) && (UNQUOTE_SYMBOL.equals(list.get(0)))) {
         if (list.size() != 2) {
           throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
         }
         return evaluator.eval(list.get(1), env);
       }
       /* `,@(list 1 2) syntax is not valid */
-      if (SCMCons.isList(list) && list.size() > 0 && (UNQUOTE_SPLICING.symbol().equals(list.get(0)))) {
+      if (SCMCons.isList(list) && list.size() > 0 && (UNQUOTE_SPLICING_SYMBOL.equals(list.get(0)))) {
         throw IllegalSyntaxException.of(list.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* List quasiquotation */
@@ -98,7 +98,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       /* Append quoted forms recursively */
       if (!(o instanceof List) || (SCMCons.NIL.equals(o))) {
         /* Check special cases: `(1 unquote 2) => `(1 . 2) */
-        if (n > 0 && UNQUOTE.symbol().equals(o)) {
+        if (n > 0 && UNQUOTE_SYMBOL.equals(o)) {
           /* if UNQUOTE is just before the last element a */
           if (n == list.size() - 2) {
             /* Evaluate and append last element */
@@ -107,7 +107,7 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
             throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
         }
-        if (SCMCons.isList(expr) && UNQUOTE_SPLICING.symbol().equals(o)) {
+        if (SCMCons.isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
           throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
@@ -115,17 +115,17 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       } else {
         List el = (List) o;
         Object op = el.get(0);
-        if (QUASIQUOTE.symbol().equals(op)) {
+        if (QUASIQUOTE_SYMBOL.equals(op)) {
           /* Increase level of quasiquotation */
           result = (SCMCons) append(result, SCMCons.list(quasiquoteList(level + 1, o, env, evaluator)));
-        } else if (UNQUOTE.symbol().equals(op) || (UNQUOTE_SPLICING.symbol().equals(op))) {
+        } else if (UNQUOTE_SYMBOL.equals(op) || (UNQUOTE_SPLICING_SYMBOL.equals(op))) {
           if (el.size() != 2) {
             throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression");
           }
           if (level == 0) {
             /* Level of quasiquotation is 0 - evaluate! */
             Object eval = evaluator.eval(el.get(1), env);
-            if (UNQUOTE.symbol().equals(op)) {
+            if (UNQUOTE_SYMBOL.equals(op)) {
               /* Unquote: wrap result into a list */
               eval = SCMCons.list(eval);
             }
@@ -161,10 +161,6 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
       throw new WrongTypeException("List", result);
     }
     return ListToVector.listToVector(result);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

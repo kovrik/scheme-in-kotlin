@@ -6,7 +6,7 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
-import core.scm.SCMSymbol;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -25,14 +25,10 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * The restriction is necessary because Scheme passes arguments by value rather than by name.
  * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
  */
-public class LetRec implements ISpecialForm, ISCMClass {
+public enum LetRec implements ISpecialForm, ISCMClass {
+  LETREC;
 
-  public static final LetRec LETREC = new LetRec();
-
-  private final String syntax = "letrec";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private LetRec() {}
+  private static final String syntax = "letrec";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -57,11 +53,7 @@ public class LetRec implements ISpecialForm, ISCMClass {
       evaluator.eval(expression.get(i), localEnv);
     }
     /* Return Tail Call of the last expression */
-    return new TailCall(expression.get(expression.size() - 1), localEnv);
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
+    return new SCMTailCall(expression.get(expression.size() - 1), localEnv);
   }
 
   @Override

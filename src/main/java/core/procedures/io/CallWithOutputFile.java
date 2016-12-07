@@ -6,7 +6,7 @@ import core.procedures.IFn;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.SCMOutputPort;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +30,6 @@ public class CallWithOutputFile extends AFn {
     }
     IFn proc = ((IFn)args[1]);
     SCMCons sexp = SCMCons.list(proc, outputPort);
-    return new TailCall(sexp, null);
+    return new SCMTailCall(sexp, null);
   }
 }

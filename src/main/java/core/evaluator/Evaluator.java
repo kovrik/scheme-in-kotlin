@@ -14,7 +14,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.ISpecialForm;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 import core.writer.Writer;
 
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ public class Evaluator implements IEvaluator {
   public Object eval(Object sexp, IEnvironment env) {
     /* TCO: This is our Trampoline */
     Object result = evalIter(sexp, env);
-    while (result instanceof TailCall) {
-      IEnvironment context = ((TailCall) result).getContext();
+    while (result instanceof SCMTailCall) {
+      IEnvironment context = ((SCMTailCall) result).getContext();
       if (context == null) {
         context = env;
       }
-      result = evalIter(((TailCall)result).getExpr(), context);
+      result = evalIter(((SCMTailCall)result).getExpr(), context);
     }
     // TODO Downcast if possible?
     return result;

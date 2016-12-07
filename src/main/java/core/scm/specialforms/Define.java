@@ -16,14 +16,10 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
-public class Define implements ISpecialForm, ISCMClass {
+public enum Define implements ISpecialForm, ISCMClass {
+  DEFINE;
 
-  public static final Define DEFINE = new Define();
-
-  private final String syntax = "define";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Define() {}
+  private static final String syntax = "define";
 
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -117,10 +113,6 @@ public class Define implements ISpecialForm, ISCMClass {
         }
       }
     }
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

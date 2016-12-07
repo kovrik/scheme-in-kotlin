@@ -15,14 +15,10 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 /* Syntax:
  * (set! <variable> <expression>)
  */
-public class Set implements ISpecialForm, ISCMClass {
+public enum Set implements ISpecialForm, ISCMClass {
+  SET;
 
-  public static final Set SET = new Set();
-
-  private final String syntax = "set!";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Set() {}
+  private static final String syntax = "set!";
 
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -35,10 +31,6 @@ public class Set implements ISpecialForm, ISCMClass {
     }
     env.findAndPut(identifier, evaluator.eval(expression.get(2), env));
     return UNSPECIFIED;
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

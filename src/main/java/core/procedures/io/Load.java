@@ -5,7 +5,7 @@ import core.reader.FileReader;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.specialforms.Begin;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 import java.io.File;
 import java.util.List;
@@ -26,6 +26,6 @@ public class Load extends AFn {
     // TODO Is BEGIN Ok here?
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
     sexps.addAll(reader.read(file));
-    return new TailCall(sexps, null);
+    return new SCMTailCall(sexps, null);
   }
 }

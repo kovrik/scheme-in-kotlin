@@ -15,15 +15,12 @@ import java.util.List;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-public class Cond implements ISpecialForm, ISCMClass {
+public enum Cond implements ISpecialForm, ISCMClass {
+  COND;
 
-  public static final Cond COND = new Cond();
   private static final SCMSymbol ELSE = new SCMSymbol("else");
 
-  private final String syntax = "cond";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private Cond() {}
+  private static final String syntax = "cond";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
@@ -39,7 +36,7 @@ public class Cond implements ISpecialForm, ISCMClass {
           for (int s = 1; i < subform.size() - 1; i++) {
             evaluator.eval(subform.get(s), env);
           }
-          return new TailCall(subform.get(subform.size() - 1), env);
+          return new SCMTailCall(subform.get(subform.size() - 1), env);
         }
         throw IllegalSyntaxException.of(syntax, expression, "else must be the last clause in subform");
       }
@@ -47,14 +44,10 @@ public class Cond implements ISpecialForm, ISCMClass {
         for (int s = 1; s < subform.size() - 1; s++) {
           evaluator.eval(subform.get(s), env);
         }
-        return new TailCall(subform.get(subform.size() - 1), env);
+        return new SCMTailCall(subform.get(subform.size() - 1), env);
       }
     }
     return SCMUnspecified.UNSPECIFIED;
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

@@ -2,7 +2,7 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 @FnArgs(args = {Object.class})
 public class Eval extends AFn {
@@ -19,6 +19,6 @@ public class Eval extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    return new TailCall(args[0], null);
+    return new SCMTailCall(args[0], null);
   }
 }

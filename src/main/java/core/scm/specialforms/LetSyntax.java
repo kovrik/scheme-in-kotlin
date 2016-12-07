@@ -4,27 +4,18 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
-import core.scm.SCMSymbol;
 
 import java.util.List;
 
 // TODO
-public class LetSyntax implements ISpecialForm, ISCMClass {
+public enum LetSyntax implements ISpecialForm, ISCMClass {
+  LET_SYNTAX;
 
-  public static final LetSyntax LET_SYNTAX = new LetSyntax();
-
-  private final String syntax = "let-syntax";
-  private final SCMSymbol symbol = new SCMSymbol(this.syntax);
-
-  private LetSyntax() {}
+  private static final String syntax = "let-syntax";
 
   @Override
   public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
-  }
-
-  public SCMSymbol symbol() {
-    return symbol;
   }
 
   @Override

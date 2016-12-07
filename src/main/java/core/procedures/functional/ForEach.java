@@ -7,7 +7,7 @@ import core.procedures.IFn;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.Quote;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,6 @@ public class ForEach extends AFn {
 
     /* Void results */
     result = SCMCons.list(Void.INSTANCE, result);
-    return new TailCall(result, null);
+    return new SCMTailCall(result, null);
   }
 }

@@ -8,7 +8,7 @@ import core.reader.Reader;
 import core.scm.SCMCons;
 import core.scm.SCMInputPort;
 import core.scm.specialforms.Begin;
-import core.scm.specialforms.TailCall;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -36,6 +36,6 @@ public class Read extends AFn {
     }
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
     sexps.addAll(new Reader(inputPort.getInputStream()).read());
-    return new TailCall(sexps, null);
+    return new SCMTailCall(sexps, null);
   }
 }
