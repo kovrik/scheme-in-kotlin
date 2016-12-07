@@ -2,7 +2,6 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.ISCMClass;
 import core.scm.SCMSymbol;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  * '<datum>
  * <constant>
  */
-public enum Quote implements ISpecialForm, ISCMClass {
+public enum Quote implements ISpecialForm {
   QUOTE;
 
   private static final String syntax = "quote";

@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
 import core.scm.SCMTailCall;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * The restriction is necessary because Scheme passes arguments by value rather than by name.
  * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
  */
-public enum LetRec implements ISpecialForm, ISCMClass {
+public enum LetRec implements ISpecialForm {
   LETREC;
 
   private static final String syntax = "letrec";

@@ -9,7 +9,7 @@ import java.util.List;
 /* Syntax:
  * (or <test1> ...)
  */
-public enum Or implements ISpecialForm, ISCMClass {
+public enum Or implements ISpecialForm {
   OR;
 
   private static final String syntax = "or";

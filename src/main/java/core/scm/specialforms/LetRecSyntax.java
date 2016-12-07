@@ -2,12 +2,11 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.ISCMClass;
 
 import java.util.List;
 
 // TODO
-public enum LetRecSyntax implements ISpecialForm, ISCMClass {
+public enum LetRecSyntax implements ISpecialForm {
   LETREC_SYNTAX;
 
   private static final String syntax = "letrec-syntax";

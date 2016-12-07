@@ -13,7 +13,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
-public enum If implements ISpecialForm, ISCMClass {
+public enum If implements ISpecialForm {
   IF;
 
   private static final String syntax = "if";

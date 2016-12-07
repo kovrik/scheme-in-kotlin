@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
 import core.scm.SCMTailCall;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-public enum LetSeq implements ISpecialForm, ISCMClass {
+public enum LetSeq implements ISpecialForm {
   LETSEQ;
 
   private static final String syntax = "let*";

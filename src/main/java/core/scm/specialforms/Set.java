@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
 
@@ -14,7 +13,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 /* Syntax:
  * (set! <variable> <expression>)
  */
-public enum Set implements ISpecialForm, ISCMClass {
+public enum Set implements ISpecialForm {
   SET;
 
   private static final String syntax = "set!";

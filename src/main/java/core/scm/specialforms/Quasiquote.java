@@ -22,7 +22,7 @@ import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
  * (quasiquote <datum>)
  * `<datum>
  */
-public enum Quasiquote implements ISpecialForm, ISCMClass {
+public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
   private static final String syntax = "quasiquote";

@@ -3,12 +3,11 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
 import core.scm.SCMSymbol;
 
 import java.util.List;
 
-public enum Unquote implements ISpecialForm, ISCMClass {
+public enum Unquote implements ISpecialForm {
   UNQUOTE;
 
   private static final String syntax = "unquote";

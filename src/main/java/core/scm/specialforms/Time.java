@@ -20,7 +20,7 @@ import java.util.List;
  * Syntax:
  * (time <expression1> ... <expression n>)
  */
-public enum Time implements ISpecialForm, ISCMClass {
+public enum Time implements ISpecialForm {
   TIME;
 
   private static final String LS = System.getProperty("line.separator");

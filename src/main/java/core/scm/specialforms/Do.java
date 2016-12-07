@@ -16,7 +16,7 @@ import java.util.Map;
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
-public enum Do implements ISpecialForm, ISCMClass {
+public enum Do implements ISpecialForm {
   DO;
 
   private static final String syntax = "do";

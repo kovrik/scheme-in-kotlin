@@ -9,7 +9,7 @@ import java.util.List;
 /* Syntax:
  * (and <test1> ...)
  */
-public enum And implements ISpecialForm, ISCMClass {
+public enum And implements ISpecialForm {
   AND;
 
   @Override

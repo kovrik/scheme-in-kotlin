@@ -13,7 +13,7 @@ import java.util.List;
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-public enum Let implements ISpecialForm, ISCMClass {
+public enum Let implements ISpecialForm {
   LET;
 
   private static final String syntax = "let";

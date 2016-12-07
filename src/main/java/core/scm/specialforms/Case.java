@@ -4,7 +4,6 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
-import core.scm.ISCMClass;
 import core.scm.SCMSymbol;
 import core.scm.SCMTailCall;
 
@@ -20,7 +19,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-public enum Case implements ISpecialForm, ISCMClass {
+public enum Case implements ISpecialForm {
   CASE;
 
   private static final SCMSymbol ELSE = new SCMSymbol("else");

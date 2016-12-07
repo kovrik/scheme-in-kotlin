@@ -15,7 +15,7 @@ import java.util.List;
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-public enum Cond implements ISpecialForm, ISCMClass {
+public enum Cond implements ISpecialForm {
   COND;
 
   private static final SCMSymbol ELSE = new SCMSymbol("else");

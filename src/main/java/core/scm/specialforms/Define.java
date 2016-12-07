@@ -16,7 +16,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
-public enum Define implements ISpecialForm, ISCMClass {
+public enum Define implements ISpecialForm {
   DEFINE;
 
   private static final String syntax = "define";

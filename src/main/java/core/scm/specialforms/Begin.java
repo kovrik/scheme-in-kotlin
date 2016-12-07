@@ -2,7 +2,6 @@ package core.scm.specialforms;
 
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
-import core.scm.ISCMClass;
 import core.scm.SCMTailCall;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 /* Syntax:
  * (begin <expression1> <expression2> ...)
  */
-public enum Begin implements ISpecialForm, ISCMClass {
+public enum Begin implements ISpecialForm {
   BEGIN;
 
   @Override

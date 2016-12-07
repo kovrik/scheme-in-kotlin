@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.ISCMClass;
 import core.scm.SCMPromise;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /* Syntax:
  * (delay <expression>)
  */
-public enum Delay implements ISpecialForm, ISCMClass {
+public enum Delay implements ISpecialForm {
   DELAY;
 
   private static final String syntax = "delay";

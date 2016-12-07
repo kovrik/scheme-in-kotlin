@@ -16,7 +16,7 @@ import java.util.*;
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
-public enum Lambda implements ISpecialForm, ISCMClass {
+public enum Lambda implements ISpecialForm {
   LAMBDA;
 
   private static final String syntax = "lambda";
