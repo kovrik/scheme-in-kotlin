@@ -1,10 +1,7 @@
 package core.scm;
 
-public final class SCMEof implements ISCMClass {
-
-  public static final SCMEof EOF = new SCMEof();
-
-  private SCMEof() {}
+public enum SCMEof implements ISCMClass {
+  EOF;
 
   @Override
   public SCMClass getSCMClass() {
