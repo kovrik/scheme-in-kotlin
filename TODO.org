@@ -224,7 +224,7 @@ CLOSED: [2016-07-23 Sat 13:01]
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-*** TODO Numbers [9/12]
+*** TODO Numbers [10/12]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -335,14 +335,16 @@ CLOSED: [2016-08-13 Sat 21:03]
 CLOSED: [2016-08-13 Sat 21:03]
 ***** DONE string->number
 CLOSED: [2016-08-13 Sat 21:03]
-**** TODO Type predicates [4/5]
+**** DONE Type predicates [5/5]
+CLOSED: [2016-12-07 Wed 22:04]
 ***** DONE integer?
 CLOSED: [2016-06-17 Fri 18:07]
 ***** DONE rational?
 CLOSED: [2016-11-23 Wed 09:57]
 ***** DONE real?
 CLOSED: [2016-11-11 Fri 22:41]
-***** TODO complex?
+***** DONE complex?
+CLOSED: [2016-12-07 Wed 22:04]
 ***** DONE number?
 CLOSED: [2016-05-15 Sun 22:33]
 *** DONE Strings [22/22]

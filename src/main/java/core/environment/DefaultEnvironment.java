@@ -213,6 +213,7 @@ public final class DefaultEnvironment extends Environment {
       Predicate.IS_INPUT_PORT,
       Predicate.IS_OUTPUT_PORT,
       Predicate.IS_NUMBER,
+      Predicate.IS_COMPLEX,
       Predicate.IS_RATIONAL,
       Predicate.IS_REAL,
       Predicate.IS_EOF,

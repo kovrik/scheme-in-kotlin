@@ -24,7 +24,8 @@ public class Predicate extends AFn {
   public static final Predicate IS_PORT = new Predicate("port?",       o -> (o instanceof ISCMPort));
   public static final Predicate IS_INPUT_PORT = new Predicate("input-port?",   o -> (o instanceof SCMInputPort));
   public static final Predicate IS_OUTPUT_PORT = new Predicate("output-port?", o -> (o instanceof SCMOutputPort));
-  public static final Predicate IS_NUMBER = new Predicate("number?",     o -> (o instanceof Number));
+  public static final Predicate IS_NUMBER = new Predicate("number?",    o -> (o instanceof Number));
+  public static final Predicate IS_COMPLEX = new Predicate("complex?",  o -> (o instanceof Number));
   public static final Predicate IS_RATIONAL = new Predicate("rational?", NumberUtils::isRational);
   public static final Predicate IS_REAL = new Predicate("real?",       o -> (o instanceof Number));
   public static final Predicate IS_EOF = new Predicate("eof-object?",  o -> (o instanceof SCMEof));

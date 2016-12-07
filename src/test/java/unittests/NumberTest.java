@@ -498,6 +498,7 @@ public class NumberTest extends AbstractTest {
 
     assertEquals(big1, eval("(expt 33 333)", env));
     assertEquals(TRUE, eval(String.format("(number? %s)", big0), env));
+    assertEquals(TRUE, eval(String.format("(complex? %s)", big0), env));
 
     assertEquals(new BigDecimal(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")), eval(String.format("(+ %s %s)", big0, big0), env));
@@ -673,6 +674,34 @@ public class NumberTest extends AbstractTest {
     assertEquals(TRUE, eval("(real? +nan.0)", env));
     assertEquals(TRUE, eval("(real? -nan.0)", env));
     assertEquals(FALSE, eval("(real? \"test\")", env));
+  }
+
+  @Test
+  public void testIsNumber() {
+    assertEquals(TRUE, eval("(number? 0)", env));
+    assertEquals(TRUE, eval("(number? 1.0)", env));
+    assertEquals(TRUE, eval("(number? -234234/234234)", env));
+    assertEquals(TRUE, eval("(number? -83457348957348573498573489573489573489583457389457349534.3489534895)", env));
+    assertEquals(TRUE, eval("(number? +inf.0)", env));
+    assertEquals(TRUE, eval("(number? -inf.0)", env));
+    assertEquals(TRUE, eval("(number? +nan.0)", env));
+    assertEquals(TRUE, eval("(number? -nan.0)", env));
+    assertEquals(TRUE, eval("(number? -1/3)", env));
+    assertEquals(FALSE, eval("(number? \"test\")", env));
+  }
+
+  @Test
+  public void testIsComplex() {
+    assertEquals(TRUE, eval("(complex? 0)", env));
+    assertEquals(TRUE, eval("(complex? 1.0)", env));
+    assertEquals(TRUE, eval("(complex? -234234/234234)", env));
+    assertEquals(TRUE, eval("(complex? -83457348957348573498573489573489573489583457389457349534.3489534895)", env));
+    assertEquals(TRUE, eval("(complex? +inf.0)", env));
+    assertEquals(TRUE, eval("(complex? -inf.0)", env));
+    assertEquals(TRUE, eval("(complex? +nan.0)", env));
+    assertEquals(TRUE, eval("(complex? -nan.0)", env));
+    assertEquals(TRUE, eval("(complex? -1/3)", env));
+    assertEquals(FALSE, eval("(complex? \"test\")", env));
   }
 
   @Test
