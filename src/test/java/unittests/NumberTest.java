@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.scm.SCMBigRational;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -78,6 +77,8 @@ public class NumberTest extends AbstractTest {
 
     assertEquals(5L, eval("(abs 5)", env));
     assertEquals(5L, eval("(abs -5)", env));
+
+    assertEquals(new SCMBigRational("9999", "3332"), eval("(/ 3332/9999)", env));
 
     // abs
     try {
@@ -771,11 +772,8 @@ public class NumberTest extends AbstractTest {
     }
   }
 
-  // FIXME
-  @Ignore
   @Test
   public void testFindBetween() {
-
     String findBetween = "(define (find-between lo hi)" +
                          "  (if (integer? lo)" +
                          "      lo" +
@@ -788,5 +786,4 @@ public class NumberTest extends AbstractTest {
     eval(findBetween, env);
     assertEquals(new SCMBigRational("1", "3"), eval("(find-between 3332/9999 3334/9999)", env));
   }
-
 }

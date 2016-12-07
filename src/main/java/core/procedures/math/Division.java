@@ -31,6 +31,9 @@ public class Division extends AFn {
     }
     Number result;
     if (args.length == 1) {
+      if (args[0] instanceof SCMBigRational) {
+        return ((SCMBigRational)args[0]).reciprocal();
+      }
       return invoke(1L, (Number)args[0]);
     } else {
       result = (Number)args[0];
