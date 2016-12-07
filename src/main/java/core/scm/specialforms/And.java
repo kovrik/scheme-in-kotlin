@@ -31,9 +31,4 @@ public enum And implements ISpecialForm, ISCMClass {
   public String toString() {
     return "and";
   }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
-  }
 }

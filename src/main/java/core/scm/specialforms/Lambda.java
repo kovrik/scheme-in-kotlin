@@ -70,11 +70,6 @@ public enum Lambda implements ISpecialForm, ISCMClass {
     return syntax;
   }
 
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
-  }
-
   // TODO Check if it works properly. See Define.replaceSelfCalls()
   private static void inline(List<Object> body, IEnvironment env) {
     LinkedList<List> queue = new LinkedList<>();

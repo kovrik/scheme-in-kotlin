@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 
 import java.util.List;
@@ -29,10 +28,5 @@ public enum Quote implements ISpecialForm, ISCMClass {
   @Override
   public String toString() {
     return syntax;
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
   }
 }

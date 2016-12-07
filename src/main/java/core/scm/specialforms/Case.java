@@ -5,7 +5,6 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 import core.scm.SCMSymbol;
 import core.scm.SCMTailCall;
 
@@ -68,10 +67,5 @@ public enum Case implements ISpecialForm, ISCMClass {
   @Override
   public String toString() {
     return syntax;
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
   }
 }

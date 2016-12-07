@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 import core.scm.SCMTailCall;
 
 import java.util.List;
@@ -25,10 +24,5 @@ public enum Begin implements ISpecialForm, ISCMClass {
   @Override
   public String toString() {
     return "begin";
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
   }
 }

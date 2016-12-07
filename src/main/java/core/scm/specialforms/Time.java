@@ -6,7 +6,6 @@ import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMIOException;
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 import core.scm.SCMUnspecified;
 import core.writer.Writer;
 
@@ -54,10 +53,5 @@ public enum Time implements ISpecialForm, ISCMClass {
   @Override
   public String toString() {
     return syntax;
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
   }
 }

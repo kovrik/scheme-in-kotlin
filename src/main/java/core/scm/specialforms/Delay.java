@@ -4,7 +4,6 @@ import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 import core.scm.SCMPromise;
 
 import java.util.List;
@@ -28,10 +27,5 @@ public enum Delay implements ISpecialForm, ISCMClass {
   @Override
   public String toString() {
     return syntax;
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
   }
 }

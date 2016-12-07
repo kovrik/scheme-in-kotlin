@@ -167,9 +167,4 @@ public enum Quasiquote implements ISpecialForm, ISCMClass {
   public String toString() {
     return syntax;
   }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
-  }
 }
