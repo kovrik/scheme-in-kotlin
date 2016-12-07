@@ -16,6 +16,7 @@ public class SCMClass implements ISCMClass {
   public static final SCMClass ENVIRONMENT = new SCMClass("Environment");
   public static final SCMClass SPECIALFORM = new SCMClass("SpecialForm");
   public static final SCMClass NIL         = new SCMClass("Nil");
+  public static final SCMClass LIST        = new SCMClass("List");
   public static final SCMClass PAIR        = new SCMClass("Pair");
   public static final SCMClass SYMBOL      = new SCMClass("Symbol");
   public static final SCMClass VECTOR      = new SCMClass("Vector");

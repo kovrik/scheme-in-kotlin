@@ -19,7 +19,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalList() {
-    assertEquals(SCMClass.PAIR, eval("(class-of (list 1 2 3 4 5))", env));
+    assertEquals(SCMClass.LIST, eval("(class-of (list 1 2 3 4 5))", env));
     assertEquals(list(1L, 2L, 3L), eval("(list 1 2 3)", env));
   }
 

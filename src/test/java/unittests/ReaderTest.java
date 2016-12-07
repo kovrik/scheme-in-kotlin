@@ -16,8 +16,6 @@ import static org.junit.Assert.*;
 
 public class ReaderTest {
 
-  private static final String LS = System.getProperty("line.separator");
-
   private final StringReader reader = new StringReader();
 
   @Test
@@ -133,6 +131,16 @@ public class ReaderTest {
     assertEquals(new SCMVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
     assertEquals(new SCMVector(1L, new SCMString("test"), 3L), reader.readFirst("#(1 \"test\" 3)"));
     assertEquals(new SCMVector(1L, new SCMVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
+    try {
+      reader.readFirst("#(1 . 2)");
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("#(1 2 3 4 5 . 6)");
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
   }
 
   @Test

@@ -471,7 +471,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMClass.SYMBOL, eval("(class-of 'test)", env));
     assertEquals(SCMClass.CLASS, eval("(class-of (class-of 'test))", env));
     assertEquals(SCMClass.VECTOR, eval("(class-of #(1 2 3))", env));
-    assertEquals(SCMClass.PAIR, eval("(class-of '(1 2 3))", env));
+    assertEquals(SCMClass.LIST, eval("(class-of '(1 2 3))", env));
     assertEquals(SCMClass.NIL, eval("(class-of '())", env));
     assertEquals(SCMClass.BOOLEAN, eval("(class-of #t)", env));
     assertEquals(SCMClass.BOOLEAN, eval("(class-of (= 1 2))", env));

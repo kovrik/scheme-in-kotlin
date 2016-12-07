@@ -15,6 +15,10 @@ public class VectorToList extends AFn {
 
   @Override
   public SCMCons invoke(Object... args) {
-    return SCMCons.list(((SCMVector) args[0]).getArray());
+    return vectorToList((SCMVector)args[0]);
+  }
+
+  public static SCMCons vectorToList(SCMVector v) {
+    return SCMCons.list((v).getArray());
   }
 }

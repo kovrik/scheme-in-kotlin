@@ -71,6 +71,10 @@ public class Writer implements IWriter {
         return "Boolean";
       } else if (clazz.equals(SCMSymbol.class)) {
         return "Symbol";
+      } else if (clazz.equals(SCMCons.SCMPair.class)) {
+        return "Pair";
+      } else if (clazz.equals(SCMCons.SCMProperList.class)) {
+        return "List";
       } else if (IFn.class.isAssignableFrom(clazz)) {
         return "Procedure";
       } else if (clazz.equals(SCMBigRational.class)) {

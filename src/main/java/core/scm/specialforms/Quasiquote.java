@@ -3,9 +3,11 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.WrongTypeException;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.procedures.vectors.ListToVector;
+import core.procedures.vectors.VectorToList;
 import core.scm.*;
 
 import java.util.List;
@@ -152,13 +154,13 @@ public class Quasiquote implements ISpecialForm, ISCMClass {
 
   // TODO Optimize vector->list and list-<vector conversions
   private Object quasiquoteVector(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
-    SCMVector vector = (SCMVector)expr;
-    Object result = quasiquoteList(level, SCMCons.list(vector.getArray()), env, evaluator);
-    if (result instanceof List) {
-      return ListToVector.listToVector(result);
-    } else {
-      return result;
+    SCMCons list = VectorToList.vectorToList((SCMVector) expr);
+    Object result = quasiquoteList(level, list, env, evaluator);
+    // FIXME throw "illegal use of '.'" in Reader instead
+    if (!SCMCons.isList(result)) {
+      throw new WrongTypeException("List", result);
     }
+    return ListToVector.listToVector(result);
   }
 
   public SCMSymbol symbol() {

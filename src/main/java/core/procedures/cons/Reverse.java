@@ -1,6 +1,5 @@
 package core.procedures.cons;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
@@ -17,13 +16,8 @@ public class Reverse extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    Object l = args[0];
-    if (!SCMCons.isList(l)) {
-      throw new WrongTypeException("List", l);
-    }
-    List list = (List)l;
     SCMCons<Object> result = SCMCons.list();
-    for (Object o : list) {
+    for (Object o : (List)args[0]) {
       result.push(o);
     }
     return result;

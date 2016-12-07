@@ -1,13 +1,13 @@
 package core.procedures.vectors;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.SCMVector;
 
 import java.util.List;
 
+@FnArgs(args = {SCMCons.SCMProperList.class})
 public class ListToVector extends AFn {
 
   @Override
@@ -17,18 +17,10 @@ public class ListToVector extends AFn {
 
   @Override
   public SCMVector invoke(Object... args) {
-    if (args != null && args.length == 1) {
-      return listToVector(args[0]);
-    }
-    throw new ArityException(args.length, 1, getName());
+    return listToVector(args[0]);
   }
 
   public static SCMVector listToVector(Object arg) {
-    /* Must be a list, not a cons cell */
-    if (SCMCons.isList(arg)) {
-      List list = (List) arg;
-      return new SCMVector(list.toArray());
-    }
-    throw new WrongTypeException("List", arg);
+    return new SCMVector(((List) arg).toArray());
   }
 }

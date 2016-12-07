@@ -3,10 +3,13 @@ package core.procedures.cons;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.ICons;
+import core.scm.SCMCons;
 
 import java.util.List;
 
+@FnArgs(args = {SCMCons.SCMPair.class})
 public class Car extends AFn {
 
   @Override
@@ -31,13 +34,6 @@ public class Car extends AFn {
     if (o instanceof ICons) {
       return ((ICons)o).car();
     }
-    if (o instanceof List) {
-      List list = (List) o;
-      if (list.isEmpty()) {
-        throw new WrongTypeException("Pair", list);
-      }
-      return list.get(0);
-    }
-    throw new WrongTypeException("Pair", o);
+    return ((List)o).get(0);
   }
 }

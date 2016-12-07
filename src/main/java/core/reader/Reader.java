@@ -453,6 +453,11 @@ public class Reader implements IReader {
    * <vector> -> #(<vector_contents>)
    */
   private SCMVector readVector() throws IOException {
-    return new SCMVector(readList().toArray());
+    SCMCons<Object> list = readList();
+    /* Improper lists are not allowed */
+    if (!list.isList()) {
+      throw new IllegalSyntaxException("read: illegal use of '.'");
+    }
+    return new SCMVector(list.toArray());
   }
 }
