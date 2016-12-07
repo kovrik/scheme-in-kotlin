@@ -1,10 +1,7 @@
 package core.scm;
 
-public final class SCMUnspecified implements ISCMClass {
-
-  public static final SCMUnspecified UNSPECIFIED = new SCMUnspecified();
-
-  private SCMUnspecified() {}
+public enum SCMUnspecified implements ISCMClass {
+  UNSPECIFIED;
 
   @Override
   public SCMClass getSCMClass() {
