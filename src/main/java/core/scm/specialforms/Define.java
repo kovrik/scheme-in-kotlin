@@ -3,7 +3,10 @@ package core.scm.specialforms;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.*;
+import core.scm.SCMCons;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
+import core.scm.SCMUnspecified;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +31,6 @@ public enum Define implements ISpecialForm {
     }
     Object id = expression.get(1);
 
-    // TODO Check if this is an Internal Definition (has non-null outer environment)
     if (env.getOuter() != null) {
       // TODO Check that internal DEFINES are top-only forms!!!
     }
@@ -62,11 +64,8 @@ public enum Define implements ISpecialForm {
       l.addAll(expression.subList(2, expression.size()));
 
       SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
-      /* Set name */
       lambda.setName(name.getValue());
 
-      /* TODO Fix (inline pure proc calls only and at call site only) and optimize
-       * See Knuth's Man Or Boy Test */
       if (lambda.isPure()) {
         replaceSelfCalls(lambda);
       }
@@ -82,6 +81,8 @@ public enum Define implements ISpecialForm {
    * - generify
    * - inline pure functions only?
    * - inline at call sites only?
+   *
+   * See Knuth's Man Or Boy Test
    */
   private static void replaceSelfCalls(SCMProcedure lambda) {
     LinkedList<List> queue = new LinkedList<>();

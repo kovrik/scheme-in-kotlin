@@ -345,7 +345,6 @@ public class Reader implements IReader {
    * <character> --> #\ <any character> | #\ <character name>
    * <character name> --> space | newline
    */
-  // TODO Implement SRFI-75 instead?
   private Character readCharacter() throws IOException {
     int i;
     /* Check if it is a codepoint */
