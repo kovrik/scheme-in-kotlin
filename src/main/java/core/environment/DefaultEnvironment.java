@@ -266,6 +266,42 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
 
+    // TODO Implement in Java
+    LIBRARY_PROCEDURES.add(
+      "(define rationalize" +
+          "  (letrec ((check (lambda (x) (if (not (real? x)) (error \"rationalize: number is not real\"))))" +
+          "           (find-between " +
+          "            (lambda (lo hi)" +
+          "              (if (integer? lo)" +
+          "                  lo" +
+          "                (let ((lo-int (floor lo))" +
+          "                      (hi-int (floor hi)))" +
+          "                  (if (< lo-int hi-int)" +
+          "                      (+ 1 lo-int)" +
+          "                    (+ lo-int" +
+          "                       (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int))))))))))" +
+          "           (do-find-between" +
+          "            (lambda (lo hi)" +
+          "              (cond" +
+          "               ((negative? lo) (- (find-between (- hi) (- lo))))" +
+          "               (else (find-between lo hi))))))" +
+          "    (lambda (x within)" +
+          "      (check x) (check within)" +
+          "      (let* ((delta (abs within))" +
+          "             (lo (- x delta))" +
+          "             (hi (+ x delta)))" +
+          "        (cond" +
+          "         ((equal? x +nan.0) x)" +
+          "         ((or (equal? x +inf.0) " +
+          "              (equal? x -inf.0))" +
+          "          (if (equal? delta +inf.0) +nan.0 x))" +
+          "         ((equal? delta +inf.0) 0.0)" +
+          "         ((not (= x x)) +nan.0)" +
+          "         ((<= lo 0 hi) (if (exact? x) 0 0.0))" +
+          "         ((or (inexact? lo) (inexact? hi))" +
+          "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
+          "         (else (do-find-between lo hi)))))))");
+
     // simple map
     // FIXME Implement variadic map proc
 //    LIBRARY_PROCEDURES.add("(define (map proc lis)" +

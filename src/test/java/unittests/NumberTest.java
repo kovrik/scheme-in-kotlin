@@ -786,4 +786,11 @@ public class NumberTest extends AbstractTest {
     eval(findBetween, env);
     assertEquals(new SCMBigRational("1", "3"), eval("(find-between 3332/9999 3334/9999)", env));
   }
+
+  @Test
+  public void testRationalize() {
+    assertEquals(0L, eval("(rationalize 1/3 1/3)", env));
+    assertEquals(new SCMBigRational("1", "3"), eval("(rationalize 1/3 1/9999)", env));
+    // TODO more tests
+  }
 }
