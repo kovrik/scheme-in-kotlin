@@ -97,11 +97,11 @@ public class Evaluator implements IEvaluator {
 
     /* Check args size */
     Class<?>[] fnArgs = null;
-    FnArgs annotation = null;
+    FnArgs fnArgsAnnotation = null;
     if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
-      annotation = fn.getClass().getAnnotation(FnArgs.class);
-      fnArgs = annotation.args();
-      if (annotation.isVariadic()) {
+      fnArgsAnnotation = fn.getClass().getAnnotation(FnArgs.class);
+      fnArgs = fnArgsAnnotation.args();
+      if (fnArgsAnnotation.isVariadic()) {
         /* Mandatory args */
         if (fnArgs.length > sexp.size() - 1) {
           throw new ArityException(sexp.size() - 1, ((AFn) fn).getName());
@@ -118,18 +118,11 @@ public class Evaluator implements IEvaluator {
     for (int i = 1; i < sexp.size(); i++) {
       Object arg = eval(sexp.get(i), env);
       args.add(arg);
-      if (annotation != null) {
-        if (annotation.isVariadic() && (fnArgs.length < i)) {
+      if (fnArgsAnnotation != null) {
+        if (fnArgsAnnotation.isVariadic() && (fnArgs.length < i)) {
           continue;
         }
-        /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
-        Class<?> actualClass = arg.getClass();
-        if ((fnArgs[i - 1].equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(arg))) {
-          actualClass = SCMCons.SCMProperList.class;
-        } else if ((fnArgs[i - 1].equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(arg))) {
-          actualClass = SCMCons.SCMPair.class;
-        }
-        if (!(SCMClass.checkClass(fnArgs[i - 1], actualClass))) {
+        if (!(SCMClass.checkClass(arg, fnArgs[i - 1]))) {
           throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
         }
       }

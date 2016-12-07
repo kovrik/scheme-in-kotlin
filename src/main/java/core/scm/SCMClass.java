@@ -78,14 +78,21 @@ public enum SCMClass implements ISCMClass {
     throw new IllegalArgumentException("Unknown SCMClass type: " + clazz);
   }
 
-  public static boolean assertClass(Object o, Class c) {
+  public static boolean assertClass(Object o, Class<?> c) {
     if (c.isAssignableFrom(o.getClass())) {
       return true;
     }
     throw new WrongTypeException(c.getSimpleName(), o);
   }
 
-  public static boolean checkClass(Class<?> expected, Class<?> actual) {
+  public static boolean checkClass(Object object, Class<?> expected) {
+    /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
+    Class<?> actual = object.getClass();
+    if ((expected.equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(object))) {
+      actual = SCMCons.SCMProperList.class;
+    } else if ((expected.equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(object))) {
+      actual = SCMCons.SCMPair.class;
+    }
     if (expected == actual) {
       return true;
     }
@@ -101,5 +108,4 @@ public enum SCMClass implements ISCMClass {
     }
     return false;
   }
-
 }
