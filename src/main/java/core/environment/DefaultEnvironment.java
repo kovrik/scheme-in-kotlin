@@ -15,6 +15,7 @@ import core.procedures.functional.Void;
 import core.procedures.io.*;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
+import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
 import core.procedures.predicates.Predicate;
@@ -177,6 +178,7 @@ public final class DefaultEnvironment extends Environment {
       new Reverse(),
       new ListTail(),
       new ListRef(),
+      new ListProc(),
 
       /* Symbols */
       new SymbolToString(),
@@ -261,7 +263,7 @@ public final class DefaultEnvironment extends Environment {
     // TODO Implement as Fns
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
-    LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
+
     //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
 
     // TODO Implement in Java
