@@ -301,14 +301,6 @@ public final class DefaultEnvironment extends Environment {
           "         ((or (inexact? lo) (inexact? hi))" +
           "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
           "         (else (do-find-between lo hi)))))))");
-
-    // simple map
-    // FIXME Implement variadic map proc
-//    LIBRARY_PROCEDURES.add("(define (map proc lis)" +
-//                           "   (cond ((null? lis) '())" +
-//                           "         ((pair? lis) (cons (proc (car lis))" +
-//                           "                            (map proc (cdr lis))))" +
-//                           "          (else (error \"Not a proper list!\"))))");
   }
 
   @Override

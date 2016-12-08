@@ -3,7 +3,9 @@ package core.procedures.functional;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.procedures.IFn;
 import core.procedures.cons.Append;
+import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;
 import core.scm.SCMTailCall;
@@ -11,6 +13,7 @@ import core.scm.SCMTailCall;
 import java.util.Arrays;
 import java.util.List;
 
+@FnArgs(isVariadic = true, args = {IFn.class})
 public class Apply extends AFn {
 
   @Override
@@ -20,9 +23,8 @@ public class Apply extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-
     if (args.length < 2) {
-      throw new ArityException(args.length, "apply");
+      throw new ArityException(args.length, getName());
     }
     SCMCons sexp = SCMCons.list(args[0]);
     if (args.length > 2) {

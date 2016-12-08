@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
+import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.Quote;
@@ -12,6 +13,7 @@ import core.scm.SCMTailCall;
 import java.util.ArrayList;
 import java.util.List;
 
+@FnArgs(isVariadic = true, args = {IFn.class})
 public class ForEach extends AFn {
 
   @Override
@@ -22,13 +24,8 @@ public class ForEach extends AFn {
   @Override
   public Object invoke(Object... args) {
     if (args.length < 2) {
-      throw new ArityException(args.length, "for-each");
+      throw new ArityException(args.length, getName());
     }
-    Object fn = args[0];
-    if (!(fn instanceof IFn)) {
-      throw new WrongTypeException("Procedure", fn);
-    }
-
     SCMCons<Object> result = SCMCons.list(new SCMSymbol("list"));
 
     int size = -1;
@@ -49,7 +46,7 @@ public class ForEach extends AFn {
     // TODO Very naive implementation. Re-implement and optimize
     List<List> lists = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      lists.add(i, SCMCons.list(fn));
+      lists.add(i, SCMCons.list(args[0]));
       for (int n = 1; n < args.length; n++) {
         lists.get(i).add(SCMCons.list(Quote.QUOTE, ((List)args[n]).get(i)));
       }
