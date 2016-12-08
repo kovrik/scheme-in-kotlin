@@ -196,6 +196,13 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("lambda: bad syntax in form: " + f1, e.getMessage());
     }
+    String f2 = "(lambda 1 2 3 4)";
+    try {
+      eval(f2, env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("lambda: bad argument sequence (1) in form: " + f2, e.getMessage());
+    }
   }
 
   @Test

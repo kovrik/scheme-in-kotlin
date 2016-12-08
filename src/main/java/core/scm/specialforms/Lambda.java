@@ -61,6 +61,9 @@ public enum Lambda implements ISpecialForm {
     } else {
       /* Variadic arity */
       /* (lambda rest-id body ...+) */
+      if (!(args instanceof SCMSymbol)) {
+        throw new IllegalSyntaxException(String.format("lambda: bad argument sequence (%s) in form: %s",  args, expression));
+      }
       return new SCMProcedure("", SCMCons.list((SCMSymbol)args), body, env, true);
     }
   }
