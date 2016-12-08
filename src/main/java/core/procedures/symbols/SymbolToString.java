@@ -19,6 +19,6 @@ public class SymbolToString extends AFn {
 
   @Override
   public String invoke(Object... args) {
-    return ((SCMSymbol)args[0]).getValue();
+    return args[0].toString();
   }
 }

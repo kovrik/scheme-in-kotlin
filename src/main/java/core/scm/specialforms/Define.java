@@ -64,7 +64,7 @@ public enum Define implements ISpecialForm {
       l.addAll(expression.subList(2, expression.size()));
 
       SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
-      lambda.setName(name.getValue());
+      lambda.setName(name.toString());
 
       if (lambda.isPure()) {
         replaceSelfCalls(lambda);
@@ -106,7 +106,7 @@ public enum Define implements ISpecialForm {
         } else {
           if (first) {
             first = false;
-            if (next instanceof SCMSymbol && lambda.getName().equals(((SCMSymbol) next).getValue())) {
+            if (next instanceof SCMSymbol && lambda.getName().equals(next.toString())) {
               /* Replace symbol with procedure (self-call) */
               listIterator.set(lambda);
             }

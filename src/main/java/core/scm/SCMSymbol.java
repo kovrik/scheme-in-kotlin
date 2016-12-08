@@ -8,10 +8,6 @@ public class SCMSymbol implements ISCMClass {
     this.value = value;
   }
 
-  public String getValue() {
-    return value;
-  }
-
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.SYMBOL;
