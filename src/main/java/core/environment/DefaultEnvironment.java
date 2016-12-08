@@ -270,7 +270,7 @@ public final class DefaultEnvironment extends Environment {
     // TODO Implement in Java
     LIBRARY_PROCEDURES.add(
       "(define rationalize" +
-          "  (letrec ((check (lambda (x) (if (not (real? x)) (error \"rationalize: number is not real\"))))" +
+          "  (letrec ((check (lambda (x) (if (not (real? x)) (error \"Wrong argument type. Expected: Real\"))))" +
           "           (find-between " +
           "            (lambda (lo hi)" +
           "              (if (integer? lo)" +
