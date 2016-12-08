@@ -260,12 +260,9 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (positive? n) (> n 0))");
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
-
-    // FIXME Should work
-//    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
-
     LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
+    //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
 
     // TODO Implement in Java
     LIBRARY_PROCEDURES.add(
