@@ -54,6 +54,7 @@ public final class DefaultEnvironment extends Environment {
       new ErrorProc(),
       new Eval(),
       new Random(),
+      new Hashcode(),
 
       /* Delayed */
       new Force(),
