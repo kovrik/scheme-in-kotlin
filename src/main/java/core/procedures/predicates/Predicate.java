@@ -2,6 +2,8 @@ package core.procedures.predicates;
 
 import core.procedures.AFn;
 import core.procedures.IFn;
+import core.procedures.math.NumericalComparison;
+import core.procedures.math.Round;
 import core.scm.*;
 import core.utils.NumberUtils;
 
@@ -12,6 +14,7 @@ import java.util.function.Function;
 public class Predicate extends AFn {
 
   public static final Predicate IS_NULL = new Predicate("null?",       o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
+  public static final Predicate IS_EMPTY = new Predicate("empty?",     o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
   public static final Predicate IS_PAIR = new Predicate("pair?",       SCMCons::isPair);
   public static final Predicate IS_LIST = new Predicate("list?",       SCMCons::isList);
   public static final Predicate IS_PROMISE = new Predicate("promise?", o -> (o instanceof SCMPromise));
@@ -31,6 +34,14 @@ public class Predicate extends AFn {
   public static final Predicate IS_EOF = new Predicate("eof-object?",  o -> (o instanceof SCMEof));
   public static final Predicate IS_EXACT = new Predicate("exact?",     o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
   public static final Predicate IS_INEXACT = new Predicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
+  public static final Predicate IS_ZERO = new Predicate("zero?",       o -> (SCMClass.assertClass(o, Number.class) &&
+                                                                             NumericalComparison.invoke(0L, o, NumericalComparison.Type.EQUAL)));
+  public static final Predicate IS_POSITIVE = new Predicate("positive?", o -> (SCMClass.assertClass(o, Number.class) &&
+                                                                               NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER)));
+  public static final Predicate IS_NEGATIVE = new Predicate("negative?", o -> (SCMClass.assertClass(o, Number.class) &&
+                                                                               NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS)));
+  public static final Predicate IS_INTEGER = new Predicate("integer?", o -> (SCMClass.assertClass(o, Number.class) &&
+                                                                             NumericalComparison.invoke(Round.round((Number)o), o, NumericalComparison.Type.EQUAL)));
 
   private final String name;
   private final Function<Object, Boolean> function;

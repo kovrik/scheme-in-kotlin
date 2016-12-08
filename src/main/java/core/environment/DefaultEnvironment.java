@@ -219,6 +219,11 @@ public final class DefaultEnvironment extends Environment {
       Predicate.IS_EOF,
       Predicate.IS_EXACT,
       Predicate.IS_INEXACT,
+      Predicate.IS_ZERO,
+      Predicate.IS_EMPTY,
+      Predicate.IS_INTEGER,
+      Predicate.IS_POSITIVE,
+      Predicate.IS_NEGATIVE,
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
@@ -254,13 +259,8 @@ public final class DefaultEnvironment extends Environment {
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     // TODO Implement as Fns
-    LIBRARY_PROCEDURES.add("(define (zero? n) (= n 0))");
-    LIBRARY_PROCEDURES.add("(define (integer? x) (= x (round x)))");
-    LIBRARY_PROCEDURES.add("(define (negative? n) (< n 0))");
-    LIBRARY_PROCEDURES.add("(define (positive? n) (> n 0))");
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
-    LIBRARY_PROCEDURES.add("(define empty? null?)");
     LIBRARY_PROCEDURES.add("(define (list . elements) elements)");
     //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
 

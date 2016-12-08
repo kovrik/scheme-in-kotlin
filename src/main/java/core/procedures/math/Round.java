@@ -23,19 +23,23 @@ public class Round extends AFn {
 
   @Override
   public Number invoke(Object... args) {
-    if (args[0] instanceof Long) {
-      return (Long) args[0];
-    } else if (args[0] instanceof Double) {
-      return Math.rint((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      BigDecimal number = (BigDecimal) args[0];
-      if (number.scale() == 0) {
-        return number.round(MathContext.UNLIMITED);
+    return round((Number) args[0]);
+  }
+
+  public static Number round(Number number) {
+    if (number instanceof Long) {
+      return number;
+    } else if (number instanceof Double) {
+      return Math.rint((Double) number);
+    } else if (number instanceof BigDecimal) {
+      BigDecimal bd = (BigDecimal) number;
+      if (bd.scale() == 0) {
+        return bd.round(MathContext.UNLIMITED);
       } else {
-        return number.round(NumberUtils.DEFAULT_CONTEXT);
+        return bd.round(NumberUtils.DEFAULT_CONTEXT);
       }
     } else {
-      return ((SCMBigRational) args[0]).round();
+      return ((SCMBigRational) number).round();
     }
   }
 }
