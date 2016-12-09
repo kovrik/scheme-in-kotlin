@@ -42,9 +42,8 @@ public class Predicate extends AFn {
                                                                                NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS)));
   public static final Predicate IS_INTEGER = new Predicate("integer?", o -> (SCMClass.assertClass(o, Number.class) &&
                                                                              NumericalComparison.invoke(Round.round((Number)o), o, NumericalComparison.Type.EQUAL)));
-
   public static final Predicate IS_IMMUTABLE = new Predicate("immutable?",  Predicate::isImmutable);
-  public static final Predicate IS_MUTABLE = new Predicate("mutable?",  Predicate::isMutable);
+  public static final Predicate IS_MUTABLE   = new Predicate("mutable?",    Predicate::isMutable);
 
   private final String name;
   private final Function<Object, Boolean> function;
@@ -69,11 +68,11 @@ public class Predicate extends AFn {
     return SCMBoolean.toSCMBoolean(function.apply(args[0]));
   }
 
-  public static boolean isMutable(Object o) {
+  private static boolean isMutable(Object o) {
     return !isImmutable(o);
   }
 
-  public static boolean isImmutable(Object o) {
+  private static boolean isImmutable(Object o) {
     if ((o instanceof SCMMutableString) || (o instanceof SCMMutableVector)) {
       return false;
     }
