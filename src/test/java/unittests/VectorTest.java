@@ -194,4 +194,10 @@ public class VectorTest extends AbstractTest {
     }
   }
 
+  @Test
+  public void testMutability() {
+    assertEquals(TRUE,  eval("(mutable? (vector 1 2 3))", env));
+    assertEquals(FALSE, eval("(immutable? (vector 1 2 3))", env));
+    assertEquals(TRUE,  eval("(immutable? (vector->immutable-vector (vector 1 2 3)))", env));
+  }
 }
