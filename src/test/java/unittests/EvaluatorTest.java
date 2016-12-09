@@ -77,7 +77,10 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals(TRUE,  eval("(eq? '() '())", env));
     assertEquals(TRUE, eval("(eq? 1 1)", env));
     assertEquals(FALSE, eval("(eq? 1 2)", env));
-    assertEquals(FALSE, eval("(eq? \"1\" \"1\")", env));
+    // interned immutable strings are the same objects
+    assertEquals(TRUE, eval("(eq? \"1\" \"1\")", env));
+    // mutable strings are not interned
+    assertEquals(FALSE, eval("(eq? (string #\\a) (string #\\a))", env));
   }
 
   @Test
@@ -85,7 +88,11 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals(TRUE,  eval("(eqv? '() '())", env));
     assertEquals(TRUE,  eval("(eqv? 1 1)", env));
     assertEquals(FALSE, eval("(eqv? 1 2)", env));
-    assertEquals(FALSE, eval("(eqv? \"1\" \"1\")", env));
+    // interned immutable strings are the same objects
+    assertEquals(TRUE, eval("(eqv? \"1\" \"1\")", env));
+    assertEquals(TRUE, eval("(eqv? \"a\" \"a\")", env));
+    // mutable strings are not interned
+    assertEquals(FALSE, eval("(eqv? (string #\\a) (string #\\a))", env));
   }
 
   @Test

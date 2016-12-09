@@ -15,7 +15,7 @@ public class EqTest extends AbstractTest {
     assertEquals(FALSE, eval("(eq? #t 't)", env));
     assertEquals(FALSE, eval("(eq? \"abs\" 'abc)", env));
     assertEquals(FALSE, eval("(eq? \"hi\" '(hi))", env));
-    assertEquals(FALSE, eval("(eq? \"hi\" \"hi\")", env));
+    assertEquals(TRUE, eval("(eq? \"hi\" \"hi\")", env));
     assertEquals(FALSE, eval("(eq? \"()\" '())", env));
     assertEquals(FALSE, eval("(eq? '(1) '(1))", env));
     assertEquals(FALSE, eval("(eq? '(#f) '(#f))", env));

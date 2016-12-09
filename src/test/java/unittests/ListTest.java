@@ -5,7 +5,7 @@ import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -50,8 +50,8 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalListToVector() {
-    assertEquals(new SCMVector(1L, 2L, new SCMMutableString("test")), eval("(list->vector '(1 2 \"test\"))", env));
-    assertEquals(new SCMVector(), eval("(list->vector '())", env));
+    assertEquals(new SCMMutableVector(1L, 2L, new SCMMutableString("test")), eval("(list->vector '(1 2 \"test\"))", env));
+    assertEquals(new SCMMutableVector(), eval("(list->vector '())", env));
     try {
       eval("(list->vector #(1 2 3))", env);
       fail();

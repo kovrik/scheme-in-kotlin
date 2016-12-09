@@ -2,8 +2,9 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMMutableString;
 
-@FnArgs(args = {String.class, Character.class})
+@FnArgs(args = {SCMMutableString.class, Character.class})
 public class StringFill extends AFn {
 
   @Override
@@ -12,13 +13,19 @@ public class StringFill extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
-    String s = args[0].toString();
+  public boolean isPure() {
+    return false;
+  }
+
+  @Override
+  public SCMMutableString invoke(Object... args) {
+    SCMMutableString s = (SCMMutableString)args[0];
+    int oldLength = s.length();
     Object c = args[1];
-    StringBuilder sb = new StringBuilder(s.length());
-    for (int i = 0; i < s.length(); i++) {
-      sb.append(c);
+    s.clear();
+    for (int i = 0; i < oldLength; i++) {
+      s.append(c);
     }
-    return sb.toString();
+    return s;
   }
 }

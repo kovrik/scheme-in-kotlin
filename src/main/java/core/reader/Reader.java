@@ -6,7 +6,7 @@ import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import core.scm.specialforms.Unquote;
@@ -303,13 +303,14 @@ public class Reader implements IReader {
 
   /**
    * Read a String
+   * Always returns immutable String
    *
    * Syntax:
    * <string> --> "<string element>*"
    * <string element> --> <any character other than " or \> | \" | \\
    */
-  private SCMMutableString readString() throws IOException {
-    SCMMutableString string = new SCMMutableString();
+  private String readString() throws IOException {
+    StringBuilder string = new StringBuilder();
     int i;
     char c;
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
@@ -335,7 +336,7 @@ public class Reader implements IReader {
       }
       string.append(c);
     }
-    return string;
+    return string.toString().intern();
   }
 
   /**
@@ -451,12 +452,12 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private SCMVector readVector() throws IOException {
+  private SCMMutableVector readVector() throws IOException {
     SCMCons<Object> list = readList();
     /* Improper lists are not allowed */
     if (!list.isList()) {
       throw new IllegalSyntaxException("read: illegal use of '.'");
     }
-    return new SCMVector(list.toArray());
+    return new SCMMutableVector(list.toArray());
   }
 }

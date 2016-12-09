@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMMutableString;
 
 @FnArgs(isVariadic = true, args = {Long.class})
 public class MakeString extends AFn {
@@ -14,7 +15,7 @@ public class MakeString extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public SCMMutableString invoke(Object... args) {
     Long s = (Long)args[0];
     if (s < 0) {
       throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
@@ -26,10 +27,10 @@ public class MakeString extends AFn {
     if (!(c instanceof Character)) {
       throw new WrongTypeException("Character", c);
     }
-    StringBuilder sb = new StringBuilder();
+    SCMMutableString string = new SCMMutableString();
     for (long i = 0; i < s; i++) {
-      sb.append(c);
+      string.append(c);
     }
-    return sb.toString();
+    return string;
   }
 }

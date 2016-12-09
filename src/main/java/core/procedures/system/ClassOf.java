@@ -22,6 +22,7 @@ public class ClassOf extends AFn {
     JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.STRING);
     JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
     JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
+    JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.IMMUTABLE_STRING);
   }
 
   @Override

@@ -2,9 +2,9 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 
-@FnArgs(args = {SCMVector.class})
+@FnArgs(args = {SCMMutableVector.class})
 public class VectorLength extends AFn {
 
   @Override
@@ -19,6 +19,6 @@ public class VectorLength extends AFn {
 
   @Override
   public Long invoke(Object... args) {
-    return ((Integer)((SCMVector)args[0]).length()).longValue();
+    return ((Integer)((SCMMutableVector)args[0]).length()).longValue();
   }
 }

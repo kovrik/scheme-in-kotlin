@@ -1,7 +1,7 @@
 package unittests;
 
 import core.scm.SCMMutableString;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -20,19 +20,19 @@ public class VectorTest extends AbstractTest {
 
   @Test
   public void testEvalVector() {
-    assertEquals(new SCMVector(), eval("#()", env));
-    assertEquals(new SCMVector(1L, 2L, 3L), eval("#(1 2 3 )", env));
+    assertEquals(new SCMMutableVector(), eval("#()", env));
+    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("#(1 2 3 )", env));
 
-    assertEquals(new SCMVector(), eval("(vector)", env));
-    assertEquals(new SCMVector(1L, 2L, 3L), eval("(vector 1 2 3)", env));
-    assertEquals(new SCMVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env));
+    assertEquals(new SCMMutableVector(), eval("(vector)", env));
+    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env));
+    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env));
   }
 
   @Test
   public void testEvalMakeVector() {
-    assertEquals(new SCMVector(1L, 1L, 1L), eval("(make-vector 3 1)", env));
-    assertEquals(new SCMVector(), eval("(make-vector 0)", env));
-    assertEquals(new SCMVector(UNSPECIFIED, UNSPECIFIED, UNSPECIFIED), eval("(make-vector 3)", env));
+    assertEquals(new SCMMutableVector(1L, 1L, 1L), eval("(make-vector 3 1)", env));
+    assertEquals(new SCMMutableVector(), eval("(make-vector 0)", env));
+    assertEquals(new SCMMutableVector(UNSPECIFIED, UNSPECIFIED, UNSPECIFIED), eval("(make-vector 3)", env));
     try {
       eval("(make-vector 1 2 3)", env);
       fail();
@@ -58,7 +58,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: 1"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: 1"));
     }
   }
 
@@ -91,7 +91,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: (1 2 3)"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)"));
     }
     try {
       eval("(vector-ref (vector 1 2 3) 0.5)", env);
@@ -144,7 +144,7 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: (1 2 3)"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)"));
     }
 
     sexp = "(begin (define v (vector 1 2))" +
@@ -166,7 +166,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector->list '(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
+      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
     }
   }
 
@@ -176,12 +176,12 @@ public class VectorTest extends AbstractTest {
     String sexp = "(begin (define v (vector 1 2 3))" +
         "       (vector-fill! v 3)" +
         "       v)";
-    assertEquals(new SCMVector(3L, 3L, 3L), eval(sexp, env));
+    assertEquals(new SCMMutableVector(3L, 3L, 3L), eval(sexp, env));
 
     sexp = "(begin (define v (vector))" +
         "       (vector-fill! v 3)" +
         "       v)";
-    assertEquals(new SCMVector(), eval(sexp, env));
+    assertEquals(new SCMMutableVector(), eval(sexp, env));
 
     sexp = "(begin (define v (list 1 2 3))" +
         "       (vector-fill! v 3)" +
@@ -190,7 +190,7 @@ public class VectorTest extends AbstractTest {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
+      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
     }
   }
 

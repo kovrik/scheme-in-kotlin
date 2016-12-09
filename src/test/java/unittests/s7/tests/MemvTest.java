@@ -3,7 +3,7 @@ package unittests.s7.tests;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 import org.junit.Test;
 import unittests.AbstractTest;
 
@@ -31,11 +31,11 @@ public class MemvTest extends AbstractTest {
     assertEquals(list(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (memv x (list x (cons 3 4))))", env));
     assertEquals(list(s("a"), s("a"), s("a")), eval("(memv 'a '(a a a))", env));
     assertEquals(list(s("a"), s("a")), eval("(memv 'a '(b a a))", env));
-    assertEquals(FALSE, eval("(memv \"hi\" '(1 \"hi\" 2))", env));
+    assertEquals(list("hi", 2L), eval("(memv \"hi\" '(1 \"hi\" 2))", env));
     assertEquals(list('a', 2L), eval("(memv #\\a '(1 #f #\\a 2))", env));
     assertEquals(FALSE, eval("(memv #(1) '(1 #(1) 2))", env));
     assertEquals(list(NIL, 2L), eval("(memv '() '(1 () 2))", env));
-    assertEquals(list(new SCMVector(1L, 2L, 3L), new SCMVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env));
+    assertEquals(list(new SCMMutableVector(1L, 2L, 3L), new SCMMutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env));
     assertEquals(FALSE, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env));
 
     try {

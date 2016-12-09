@@ -2,9 +2,9 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 
-@FnArgs(args = {SCMVector.class, Long.class})
+@FnArgs(args = {SCMMutableVector.class, Long.class})
 public class VectorRef extends AFn {
 
   @Override
@@ -19,7 +19,7 @@ public class VectorRef extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    SCMVector vec = (SCMVector)args[0];
+    SCMMutableVector vec = (SCMMutableVector)args[0];
     Object p = args[1];
     Long pos = (Long)p;
     if ((pos < 0) || (pos >= vec.length())) {

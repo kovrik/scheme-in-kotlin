@@ -284,7 +284,7 @@ public class SpecialFormTest extends AbstractTest {
         "     (i 0 (+ i 1)))" +
         "    ((= i 5) vec)" +
         "  (vector-set! vec i i))";
-    assertEquals(new SCMVector(0L, 1L, 2L, 3L, 4L), eval(doTest1, env));
+    assertEquals(new SCMMutableVector(0L, 1L, 2L, 3L, 4L), eval(doTest1, env));
 
     String doTest2 = "(let ((x '(1 3 5 7 9)))" +
         "  (do ((x x (cdr x))" +
@@ -473,11 +473,12 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMClass.INTEGER, eval("(class-of 9999999999999999999999999999999999)", env));
     assertEquals(SCMClass.DOUBLE,  eval("(class-of 9999999999999999999999999999999999.000)", env));
     assertEquals(SCMClass.DOUBLE,  eval("(class-of -1.0)", env));
-    assertEquals(SCMClass.MUTABLE_STRING,  eval("(class-of \"test\")", env));
+    assertEquals(SCMClass.IMMUTABLE_STRING,  eval("(class-of \"test\")", env));
+    assertEquals(SCMClass.MUTABLE_STRING,  eval("(class-of (string #\\a))", env));
     assertEquals(SCMClass.CHARACTER, eval("(class-of #\\A)", env));
     assertEquals(SCMClass.SYMBOL, eval("(class-of 'test)", env));
     assertEquals(SCMClass.CLASS, eval("(class-of (class-of 'test))", env));
-    assertEquals(SCMClass.VECTOR, eval("(class-of #(1 2 3))", env));
+    assertEquals(SCMClass.MUTABLE_VECTOR, eval("(class-of #(1 2 3))", env));
     assertEquals(SCMClass.LIST, eval("(class-of '(1 2 3))", env));
     assertEquals(SCMClass.NIL, eval("(class-of '())", env));
     assertEquals(SCMClass.BOOLEAN, eval("(class-of #t)", env));
@@ -530,7 +531,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, 5L))), 4L),
                  eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env));
 
-    assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, new SCMVector(new SCMSymbol("+"), 2L, 3L)))), 4L),
+    assertEquals(list(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(new SCMSymbol("+"), 1L, new SCMMutableVector(new SCMSymbol("+"), 2L, 3L)))), 4L),
                  eval("`(1 `,(+ 1 ,#(+ 2 3)) 4)", env));
 
     assertEquals(list(new SCMSymbol("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
@@ -550,8 +551,8 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env));
 
-    assertEquals(new SCMVector(1L, 5L), eval("`#(1 ,(+ 2 3))", env));
-    assertEquals(new SCMVector(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(1L, 5L)))),
+    assertEquals(new SCMMutableVector(1L, 5L), eval("`#(1 ,(+ 2 3))", env));
+    assertEquals(new SCMMutableVector(1L, list(new SCMSymbol("quasiquote"), list(new SCMSymbol("unquote"), list(1L, 5L)))),
                  eval("`#(1 `,(1 ,(+ 2 3)))", env));
 
     assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env));
@@ -559,7 +560,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(cons(new SCMSymbol("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
 
     assertEquals(NIL, eval("`()", env));
-    assertEquals(new SCMVector(), eval("`#()", env));
+    assertEquals(new SCMMutableVector(), eval("`#()", env));
     assertEquals(list(1L, 2L, list(NIL)), eval("`(1 2 ())", env));
     assertEquals(list(1L, 2L, list(new SCMSymbol("quote"), NIL)), eval("`(1 2 '())", env));
 

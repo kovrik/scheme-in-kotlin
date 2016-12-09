@@ -3,9 +3,9 @@ package core.procedures.vectors;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 
-@FnArgs(args = {SCMVector.class})
+@FnArgs(args = {SCMMutableVector.class})
 public class VectorToList extends AFn {
 
   @Override
@@ -15,10 +15,10 @@ public class VectorToList extends AFn {
 
   @Override
   public SCMCons invoke(Object... args) {
-    return vectorToList((SCMVector)args[0]);
+    return vectorToList((SCMMutableVector)args[0]);
   }
 
-  public static SCMCons vectorToList(SCMVector v) {
+  public static SCMCons vectorToList(SCMMutableVector v) {
     return SCMCons.list((v).getArray());
   }
 }

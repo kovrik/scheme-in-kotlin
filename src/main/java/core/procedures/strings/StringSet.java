@@ -5,12 +5,17 @@ import core.scm.FnArgs;
 import core.scm.SCMMutableString;
 import core.scm.SCMUnspecified;
 
-@FnArgs(args = {String.class, Long.class, Character.class})
+@FnArgs(args = {SCMMutableString.class, Long.class, Character.class})
 public class StringSet extends AFn {
 
   @Override
   public String getName() {
     return "string-set!";
+  }
+
+  @Override
+  public boolean isPure() {
+    return false;
   }
 
   @Override

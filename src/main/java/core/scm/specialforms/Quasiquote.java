@@ -50,8 +50,8 @@ public enum Quasiquote implements ISpecialForm {
    */
   // TODO Simplify
   private Object quasiquote(Object expr, IEnvironment env, IEvaluator evaluator) {
-    if (expr instanceof SCMVector) {
-      SCMVector vector = (SCMVector) expr;
+    if (expr instanceof SCMMutableVector) {
+      SCMMutableVector vector = (SCMMutableVector) expr;
       if (vector.length() == 0) {
         /* Nothing to process */
         return vector;
@@ -154,7 +154,7 @@ public enum Quasiquote implements ISpecialForm {
 
   // TODO Optimize vector->list and list-<vector conversions
   private Object quasiquoteVector(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
-    SCMCons list = VectorToList.vectorToList((SCMVector) expr);
+    SCMCons list = VectorToList.vectorToList((SCMMutableVector) expr);
     Object result = quasiquoteList(level, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
     if (!SCMCons.isList(result)) {

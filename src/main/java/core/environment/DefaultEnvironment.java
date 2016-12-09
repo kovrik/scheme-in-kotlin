@@ -110,6 +110,7 @@ public final class DefaultEnvironment extends Environment {
       new StringToList(),
       new StringRef(),
       new StringSet(),
+      new StringToImmutableString(),
       StringComparison.STRING_GR,
       StringComparison.STRING_GR_CI,
       StringComparison.STRING_GR_OR_EQ,
@@ -227,6 +228,8 @@ public final class DefaultEnvironment extends Environment {
       Predicate.IS_INTEGER,
       Predicate.IS_POSITIVE,
       Predicate.IS_NEGATIVE,
+      Predicate.IS_IMMUTABLE,
+      Predicate.IS_MUTABLE,
   };
 
   private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();

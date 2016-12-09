@@ -1,5 +1,6 @@
 package unittests;
 
+import core.exceptions.WrongTypeException;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import org.junit.Test;
@@ -94,9 +95,28 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringFill() {
-    assertEquals(new SCMMutableString(""), eval("(string-fill! \"\" #\\a)", env));
-    assertEquals(new SCMMutableString("a"), eval("(string-fill! \"z\" #\\a)", env));
-    assertEquals(new SCMMutableString("aaaaa"), eval("(string-fill! \"test1\" #\\a)", env));
+    try {
+      eval("(string-fill! \"\" #\\a)", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: MutableString, actual: \"\"", e.getMessage());
+    }
+    try {
+      eval("(string-fill! \"z\" #\\a)", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: MutableString, actual: \"z\"", e.getMessage());
+    }
+    try {
+      eval("(string-fill! \"test1\" #\\a)", env);
+      fail();
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: MutableString, actual: \"test1\"", e.getMessage());
+    }
+
+    assertEquals(new SCMMutableString(""), eval("(string-fill! (make-string 0) #\\a)", env));
+    assertEquals(new SCMMutableString("a"), eval("(string-fill! (make-string 1 #\\z) #\\a)", env));
+    assertEquals(new SCMMutableString("aaaaa"), eval("(string-fill! (string #\\t #\\e #\\s #\\t #\\1) #\\a)", env));
   }
 
   @Test
@@ -182,25 +202,31 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringSet() {
-    assertEquals(new SCMMutableString("z"),   eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMMutableString("zbc"), eval("(let ((s \"abc\")) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMMutableString("azc"), eval("(let ((s \"abc\")) (string-set! s 1 #\\z) s)", env));
-    assertEquals(new SCMMutableString("abz"), eval("(let ((s \"abc\")) (string-set! s 2 #\\z) s)", env));
+    assertEquals(new SCMMutableString("z"),   eval("(let ((s (string #\\a) )) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new SCMMutableString("zbc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new SCMMutableString("azc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 1 #\\z) s)", env));
+    assertEquals(new SCMMutableString("abz"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 2 #\\z) s)", env));
 
     try {
-      eval("(string-set! \"abc\" -1 #\\z)", env);
+      eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env);
+    } catch (WrongTypeException e) {
+      assertEquals("Wrong argument type. Expected: MutableString, actual: \"a\"", e.getMessage());
+    }
+
+    try {
+      eval("(string-set! (string #\\a #\\b #\\c) -1 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: -1"));
     }
     try {
-      eval("(string-set! \"abc\" 3 #\\z)", env);
+      eval("(string-set! (string #\\a #\\b #\\c) 3 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: 3"));
     }
     try {
-      eval("(string-set! \"\" 0 #\\z)", env);
+      eval("(string-set! (make-string 0) 0 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Value out of range: 0"));
@@ -209,16 +235,16 @@ public class StringTest extends AbstractTest {
       eval("(string-set! '(1 2 3) 2 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: (1 2 3)"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableString, actual: (1 2 3)"));
     }
     try {
-      eval("(string-set! \"test\" 0.5 #\\A)", env);
+      eval("(string-set! (make-string 4) 0.5 #\\A)", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
     }
     try {
-      eval("(string-set! \"test\" 3 '())", env);
+      eval("(string-set! (make-string 4) 3 '())", env);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: ()"));
@@ -242,5 +268,30 @@ public class StringTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: 1"));
     }
+  }
+
+  @Test
+  public void testStringInterning() {
+    // immutable interned strings must have the same hashcode
+    assertEquals(TRUE, eval("(apply = (map hashcode '(\"test\" \"test\" \"test\" \"test\" \"test\")))", env));
+
+    // immutable interned strings must point to the same object
+    assertEquals(TRUE, eval("(eq? \"test\" \"test\" \"test\" \"test\" \"test\")", env));
+    assertEquals(TRUE, eval("(eqv? \"test\" \"test\" \"test\" \"test\" \"test\")", env));
+    assertEquals(TRUE, eval("(equal? \"test\" \"test\" \"test\" \"test\" \"test\")", env));
+    // mutable interned strings
+    assertEquals(FALSE, eval("(eq? (string #\\a) (string #\\a))", env));
+    assertEquals(FALSE, eval("(eqv? (string #\\a) (string #\\a))", env));
+    assertEquals(TRUE,  eval("(equal? (string #\\a) (string #\\a))", env));
+
+    assertEquals(TRUE,  eval("(equal? \"a\" (string #\\a))", env));
+    assertEquals(TRUE,  eval("(equal? (string #\\a) \"a\" )", env));
+
+    assertEquals(TRUE,  eval("(mutable? (string #\\a))", env));
+    assertEquals(FALSE, eval("(immutable? (string #\\a))", env));
+    assertEquals(TRUE,  eval("(immutable? \"a\")", env));
+    assertEquals(FALSE,  eval("(mutable? \"a\")", env));
+
+    assertEquals(TRUE,  eval("(immutable? (string->immutable-string (string #\\a)))", env));
   }
 }

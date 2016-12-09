@@ -45,6 +45,14 @@ public class SCMMutableString implements ISCMClass {
     return this.string.substring(start, end);
   }
 
+  public void setLength(int n) {
+    string.setLength(n);
+  }
+
+  public void clear() {
+    string.setLength(0);
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.MUTABLE_STRING;
@@ -60,14 +68,14 @@ public class SCMMutableString implements ISCMClass {
     if (this == o) {
       return true;
     }
-    if (o == null || !(o instanceof SCMMutableString || o instanceof String)) {
+    if (o == null || (!(o instanceof String) && getClass() != o.getClass())) {
       return false;
     }
-    return toString().equals(o.toString());
+    return string.toString().equals(o.toString());
   }
 
   @Override
   public int hashCode() {
-    return string.hashCode();
+    return string.toString().hashCode();
   }
 }

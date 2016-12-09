@@ -21,6 +21,8 @@ public enum SCMClass implements ISCMClass {
   PAIR("Pair"),
   SYMBOL("Symbol"),
   VECTOR("Vector"),
+  MUTABLE_VECTOR("MutableVector"),
+  IMMUTABLE_VECTOR("ImmutableVector"),
   PROMISE("Promise"),
   PROCEDURE("Procedure"),
   ERROR("Error"),
@@ -53,7 +55,12 @@ public enum SCMClass implements ISCMClass {
 
   public static SCMClass valueOf(Class clazz) {
     if (clazz.equals(SCMMutableString.class)) {
-      return STRING;
+      return MUTABLE_STRING;
+    } else if (clazz.equals(String.class)) {
+      // Java's Strings are immutable
+      return IMMUTABLE_STRING;
+    } else if (clazz.equals(SCMImmutableString.class)) {
+      return IMMUTABLE_STRING;
     } else if (clazz.equals(SCMBoolean.class)) {
       return BOOLEAN;
     } else if (clazz.equals(SCMSymbol.class)) {
@@ -66,8 +73,8 @@ public enum SCMClass implements ISCMClass {
       return PROCEDURE;
     } else if (clazz.equals(SCMBigRational.class)) {
       return RATIONAL;
-    } else if (clazz.equals(SCMVector.class)) {
-      return VECTOR;
+    } else if (clazz.equals(SCMMutableVector.class)) {
+      return MUTABLE_VECTOR;
     } else if (clazz.equals(SCMPromise.class)) {
       return PROMISE;
     } else if (clazz.equals(ISCMPort.class)) {
@@ -102,7 +109,11 @@ public enum SCMClass implements ISCMClass {
       return true;
     }
     if (ISCMClass.class.isAssignableFrom(actual)) {
-      if (String.class.equals(expected) && SCMMutableString.class.equals(actual)) {
+      if (String.class.equals(expected) && (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual)) ) {
+        return true;
+      } else if (SCMImmutableString.class.equals(expected) && (String.class.equals(actual) || SCMImmutableString.class.equals(actual)) ) {
+        return true;
+      } else if (SCMMutableString.class.equals(expected) && (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual)) ) {
         return true;
       } else if (Boolean.class.equals(expected) && SCMBoolean.class.equals(actual)) {
         return true;

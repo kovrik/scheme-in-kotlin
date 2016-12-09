@@ -41,7 +41,7 @@ public class MemqTest extends AbstractTest {
     assertEquals(TRUE, eval("(pair? (let ((x (lambda () 1))) (memq x (list 1 2 x 3))))", env));
     assertEquals(list(s("a"), s("a"), s("a")), eval("(memq 'a '(a a a))", env));
     assertEquals(list(s("a"), s("a")), eval("(memq 'a '(b a a))", env));
-    assertEquals(FALSE, eval("(memq \"hi\" '(1 \"hi\" 2))", env));
+    assertEquals(list("hi", 2L), eval("(memq \"hi\" '(1 \"hi\" 2))", env));
     assertEquals(list('a', 2L), eval("(memq #\\a '(1 #f #\\a 2))", env));
     try {
       eval("(memq 'c '(a b . c))", env);

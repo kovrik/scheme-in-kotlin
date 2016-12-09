@@ -20,7 +20,7 @@ public class Predicate extends AFn {
   public static final Predicate IS_PROMISE = new Predicate("promise?", o -> (o instanceof SCMPromise));
   public static final Predicate IS_CHAR = new Predicate("char?",       o -> (o instanceof Character));
   public static final Predicate IS_STRING = new Predicate("string?",   o -> (o instanceof SCMMutableString || o instanceof String));
-  public static final Predicate IS_VECTOR = new Predicate("vector?",   o -> (o instanceof SCMVector));
+  public static final Predicate IS_VECTOR = new Predicate("vector?",   o -> (o instanceof SCMMutableVector));
   public static final Predicate IS_SYMBOL = new Predicate("symbol?",   o -> (o instanceof SCMSymbol));
   public static final Predicate IS_BOOLEAN = new Predicate("boolean?", o -> (o instanceof SCMBoolean));
   public static final Predicate IS_PROC = new Predicate("procedure?",  o -> (o instanceof IFn));
@@ -43,6 +43,9 @@ public class Predicate extends AFn {
   public static final Predicate IS_INTEGER = new Predicate("integer?", o -> (SCMClass.assertClass(o, Number.class) &&
                                                                              NumericalComparison.invoke(Round.round((Number)o), o, NumericalComparison.Type.EQUAL)));
 
+  public static final Predicate IS_IMMUTABLE = new Predicate("immutable?",  Predicate::isImmutable);
+  public static final Predicate IS_MUTABLE = new Predicate("mutable?",  Predicate::isMutable);
+
   private final String name;
   private final Function<Object, Boolean> function;
 
@@ -64,5 +67,16 @@ public class Predicate extends AFn {
   @Override
   public SCMBoolean invoke(Object... args) {
     return SCMBoolean.toSCMBoolean(function.apply(args[0]));
+  }
+
+  public static boolean isMutable(Object o) {
+    return !isImmutable(o);
+  }
+
+  public static boolean isImmutable(Object o) {
+    if ((o instanceof SCMMutableString) || (o instanceof SCMMutableVector)) {
+      return false;
+    }
+    return true;
   }
 }

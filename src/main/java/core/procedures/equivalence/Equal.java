@@ -2,6 +2,7 @@ package core.procedures.equivalence;
 
 import core.procedures.AFn;
 import core.scm.SCMBoolean;
+import core.scm.SCMMutableString;
 
 public class Equal extends AFn {
 
@@ -27,6 +28,9 @@ public class Equal extends AFn {
   }
 
   public static boolean equal(Object first, Object second) {
+    if ((first instanceof String) && (second instanceof SCMMutableString)) {
+      return second.equals(first);
+    }
     return first.equals(second);
   }
 }

@@ -126,11 +126,11 @@ public class ReaderTest {
 
   @Test
   public void testReadVector() {
-    assertEquals(new SCMVector(), reader.readFirst("#()"));
-    assertEquals(new SCMVector(0L), reader.readFirst("#(0)"));
-    assertEquals(new SCMVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
-    assertEquals(new SCMVector(1L, new SCMMutableString("test"), 3L), reader.readFirst("#(1 \"test\" 3)"));
-    assertEquals(new SCMVector(1L, new SCMVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
+    assertEquals(new SCMMutableVector(), reader.readFirst("#()"));
+    assertEquals(new SCMMutableVector(0L), reader.readFirst("#(0)"));
+    assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
+    assertEquals(new SCMMutableVector(1L, new SCMMutableString("test"), 3L), reader.readFirst("#(1 \"test\" 3)"));
+    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
     try {
       reader.readFirst("#(1 . 2)");
     } catch (IllegalSyntaxException e) {
@@ -149,7 +149,7 @@ public class ReaderTest {
     assertEquals(list(0L), reader.readFirst("(0)"));
     assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
     assertEquals(list(1L, new SCMMutableString("test"), 3L), reader.readFirst("(1 \"test\" 3)"));
-    assertEquals(list(1L, new SCMVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
+    assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
   }
 

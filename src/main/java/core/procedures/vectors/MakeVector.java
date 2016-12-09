@@ -3,7 +3,7 @@ package core.procedures.vectors;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMVector;
+import core.scm.SCMMutableVector;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
@@ -27,6 +27,6 @@ public class MakeVector extends AFn {
     } else if (args.length > 2) {
       throw new ArityException(args.length, getName());
     }
-    return new SCMVector(s.intValue(), init);
+    return new SCMMutableVector(s.intValue(), init);
   }
 }

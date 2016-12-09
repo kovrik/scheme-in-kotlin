@@ -1,6 +1,5 @@
 package core.procedures.lists;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
