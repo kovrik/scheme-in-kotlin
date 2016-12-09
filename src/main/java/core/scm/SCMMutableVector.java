@@ -85,12 +85,12 @@ public class SCMMutableVector extends SCMVector {
 
   @Override
   public int hashCode() {
-    return super.hashCode();
+    return Arrays.hashCode(vector);
   }
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof SCMMutableVector && Arrays.equals(vector, ((SCMMutableVector) obj).vector);
+    return obj instanceof SCMVector && Arrays.equals(vector, ((SCMVector) obj).getArray());
   }
 }
 
