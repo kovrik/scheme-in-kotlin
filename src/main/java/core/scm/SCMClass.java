@@ -4,7 +4,6 @@ import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
 
 public enum SCMClass implements ISCMClass {
-  /* Java Classes */
   INTEGER("Integer"),
   REAL("Real"),
   RATIONAL("Rational"),
@@ -13,7 +12,6 @@ public enum SCMClass implements ISCMClass {
   IMMUTABLE_STRING("ImmutableString"),
   CHARACTER("Character"),
   BOOLEAN("Boolean"),
-  /* Custom SCM Classes */
   ENVIRONMENT("Environment"),
   SPECIALFORM("SpecialForm"),
   NIL("Nil"),
