@@ -99,8 +99,8 @@ public class EqualTest extends AbstractTest {
     assertEquals(TRUE, eval("(equal? 'define 'define)", env));
     assertEquals(TRUE, eval("(equal? + ((lambda (a) a) +))", env));
     assertEquals(TRUE, eval("(let ((x \"hi\")) (define (hi) x) (equal? (hi) (hi)))", env));
+    assertEquals(TRUE, eval("(equal? 'a (string->symbol \"a\"))", env));
 
-//    (test (equal? 'a (string->symbol "a")) TRUE
 //    (test (equal? 3-4i 3-4i) TRUE
   }
 }
