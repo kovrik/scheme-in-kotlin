@@ -273,10 +273,12 @@ public final class DefaultEnvironment extends Environment {
 
     //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
 
-    // TODO Implement in Java
+    // TODO Implement in Java?
     LIBRARY_PROCEDURES.add(
       "(define rationalize" +
-          "  (letrec ((check (lambda (x) (if (not (real? x)) (error \"Wrong argument type. Expected: Real\"))))" +
+          "  (letrec ((check (lambda (x) (if (not (real? x))" +
+          "                                (error (string-append \"Wrong argument type. Expected: Real, actual: \"" +
+          "                                                      (->string x))))))" +
           "           (find-between " +
           "            (lambda (lo hi)" +
           "              (if (integer? lo)" +
