@@ -471,8 +471,8 @@ public class SpecialFormTest extends AbstractTest {
     // class-of
     assertEquals(SCMClass.INTEGER, eval("(class-of 1)", env));
     assertEquals(SCMClass.INTEGER, eval("(class-of 9999999999999999999999999999999999)", env));
-    assertEquals(SCMClass.DOUBLE,  eval("(class-of 9999999999999999999999999999999999.000)", env));
-    assertEquals(SCMClass.DOUBLE,  eval("(class-of -1.0)", env));
+    assertEquals(SCMClass.REAL,  eval("(class-of 9999999999999999999999999999999999.000)", env));
+    assertEquals(SCMClass.REAL,  eval("(class-of -1.0)", env));
     assertEquals(SCMClass.IMMUTABLE_STRING,  eval("(class-of \"test\")", env));
     assertEquals(SCMClass.MUTABLE_STRING,  eval("(class-of (string #\\a))", env));
     assertEquals(SCMClass.CHARACTER, eval("(class-of #\\A)", env));

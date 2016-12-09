@@ -6,7 +6,7 @@ import core.procedures.IFn;
 public enum SCMClass implements ISCMClass {
   /* Java Classes */
   INTEGER("Integer"),
-  DOUBLE("Double"),
+  REAL("Real"),
   RATIONAL("Rational"),
   STRING("String"),
   MUTABLE_STRING("MutableString"),

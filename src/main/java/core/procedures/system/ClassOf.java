@@ -17,8 +17,8 @@ public class ClassOf extends AFn {
   static {
     JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
     JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);
-    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.DOUBLE);
-    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.DOUBLE);
+    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.REAL);
+    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.REAL);
     JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.STRING);
     JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
     JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
@@ -53,7 +53,7 @@ public class ClassOf extends AFn {
       if (((BigDecimal)object).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
         return SCMClass.INTEGER;
       }
-      return SCMClass.DOUBLE;
+      return SCMClass.REAL;
     }
     /* Check Pair and Nil */
     if (object instanceof List) {
