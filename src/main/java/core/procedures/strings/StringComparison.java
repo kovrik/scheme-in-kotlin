@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 
 @FnArgs(isVariadic = true)
 public class StringComparison extends AFn {
@@ -104,10 +104,10 @@ public class StringComparison extends AFn {
       return SCMBoolean.TRUE;
     }
     for (int i = 0; i < args.length - 1; i++) {
-      if (!(args[i] instanceof String || args[i] instanceof SCMString)) {
+      if (!(args[i] instanceof String || args[i] instanceof SCMMutableString)) {
         throw new WrongTypeException("String", args[i]);
       }
-      if (!(args[i + 1] instanceof String || args[i + 1] instanceof SCMString)) {
+      if (!(args[i + 1] instanceof String || args[i + 1] instanceof SCMMutableString)) {
         throw new WrongTypeException("String", args[i + 1]);
       }
       if ((!predicate.invoke(args[i], args[i + 1]))) {

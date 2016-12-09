@@ -2,7 +2,7 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 
 @FnArgs(args = {String.class})
 public class StringCopy extends AFn {
@@ -13,7 +13,7 @@ public class StringCopy extends AFn {
   }
 
   @Override
-  public SCMString invoke(Object... args) {
-    return new SCMString(args[0].toString());
+  public SCMMutableString invoke(Object... args) {
+    return new SCMMutableString(args[0].toString());
   }
 }

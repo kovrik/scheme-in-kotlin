@@ -1,6 +1,6 @@
 package unittests.s7.tests;
 
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class MemberTest extends AbstractTest {
   @Test
   public void testMember() {
     assertEquals(list(list(s("a")), s("c")), eval("(member (list 'a) '(b (a) c))", env));
-    assertEquals(list(new SCMString("b")), eval("(member \"b\" '(\"a\" \"c\" \"b\"))", env));
+    assertEquals(list(new SCMMutableString("b")), eval("(member \"b\" '(\"a\" \"c\" \"b\"))", env));
     assertEquals(list(1L, 4L), eval("(member 1 '(3 2 1 4))", env));
     assertEquals(list(1L, 4L), eval("(member 1 (list 3 2 1 4))", env));
     assertEquals(list(s("a"), s("b"), s("c"), s("d")), eval("(member 'a '(a b c d))", env));
@@ -39,7 +39,7 @@ public class MemberTest extends AbstractTest {
     assertEquals(list(s("a"), s("a"), s("a")), eval("(member 'a '(a a a)))", env));
     assertEquals(list(s("a"), s("a")), eval("(member 'a '(b a a))", env));
     assertEquals(list((Object)list(3L, 4L), (Object)list(4L, 5L)), eval("(member (member 3 '(1 2 3 4)) '((1 2) (2 3) (3 4) (4 5)))", env));
-    assertEquals(list(new SCMString("hi"), 2L), eval("(member \"hi\" '(1 \"hi\" 2))", env));
+    assertEquals(list(new SCMMutableString("hi"), 2L), eval("(member \"hi\" '(1 \"hi\" 2))", env));
     assertEquals(list('a', 2L), eval("(member #\\a '(1 #f #\\a 2))", env));
     assertEquals(list(new SCMVector(1L, 2L, 3L), new SCMVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (member x lst))", env));
     assertEquals(list(new SCMVector(1L, 2L, 3L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (member x lst))", env));

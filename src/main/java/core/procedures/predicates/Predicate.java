@@ -19,7 +19,7 @@ public class Predicate extends AFn {
   public static final Predicate IS_LIST = new Predicate("list?",       SCMCons::isList);
   public static final Predicate IS_PROMISE = new Predicate("promise?", o -> (o instanceof SCMPromise));
   public static final Predicate IS_CHAR = new Predicate("char?",       o -> (o instanceof Character));
-  public static final Predicate IS_STRING = new Predicate("string?",   o -> (o instanceof SCMString || o instanceof String));
+  public static final Predicate IS_STRING = new Predicate("string?",   o -> (o instanceof SCMMutableString || o instanceof String));
   public static final Predicate IS_VECTOR = new Predicate("vector?",   o -> (o instanceof SCMVector));
   public static final Predicate IS_SYMBOL = new Predicate("symbol?",   o -> (o instanceof SCMSymbol));
   public static final Predicate IS_BOOLEAN = new Predicate("boolean?", o -> (o instanceof SCMBoolean));

@@ -57,7 +57,7 @@ public class SpecialFormTest extends AbstractTest {
   @Test
   public void testEvalDelayed() {
     assertEquals(1d, eval("(force (delay 1.0))", env));
-    assertEquals(new SCMString("test"), eval("(force (delay \"test\"))", env));
+    assertEquals(new SCMMutableString("test"), eval("(force (delay \"test\"))", env));
     assertEquals(10L, eval("(force (delay (+ 5 2 (* 1 3))))", env));
     assertEquals(SCMPromise.class, eval("(delay 1.0)", env).getClass());
     assertEquals(TRUE, eval("(promise? (delay 1.0))", env));
@@ -239,8 +239,8 @@ public class SpecialFormTest extends AbstractTest {
   @Test
   public void testEvalQuote() {
     assertEquals(0L, eval("'0", env));
-    assertEquals(new SCMString("test"), eval("'\"test\"", env));
-    assertEquals(SCMCons.<Object>list(new SCMSymbol(Quote.QUOTE.toString()), new SCMString("test")), eval("''\"test\"", env));
+    assertEquals(new SCMMutableString("test"), eval("'\"test\"", env));
+    assertEquals(SCMCons.<Object>list(new SCMSymbol(Quote.QUOTE.toString()), new SCMMutableString("test")), eval("''\"test\"", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("'(+ 1 2)", env));
     assertEquals(new SCMSymbol("0eab"), eval("'0eab", env));
     assertEquals(new SCMSymbol("000eab"), eval("'000eab", env));
@@ -293,7 +293,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(25L, eval(doTest2, env));
 
     String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
-    assertEquals(new SCMString("DONE"), eval(doTest3, env));
+    assertEquals(new SCMMutableString("DONE"), eval(doTest3, env));
 
     try {
       eval("(do ((a 1) (b 2) (a 3)) (= 1 1) 5)", env);
@@ -473,7 +473,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMClass.INTEGER, eval("(class-of 9999999999999999999999999999999999)", env));
     assertEquals(SCMClass.DOUBLE,  eval("(class-of 9999999999999999999999999999999999.000)", env));
     assertEquals(SCMClass.DOUBLE,  eval("(class-of -1.0)", env));
-    assertEquals(SCMClass.STRING,  eval("(class-of \"test\")", env));
+    assertEquals(SCMClass.MUTABLE_STRING,  eval("(class-of \"test\")", env));
     assertEquals(SCMClass.CHARACTER, eval("(class-of #\\A)", env));
     assertEquals(SCMClass.SYMBOL, eval("(class-of 'test)", env));
     assertEquals(SCMClass.CLASS, eval("(class-of (class-of 'test))", env));
@@ -518,8 +518,8 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(1L, eval("`1", env));
     assertEquals(15.5, eval("(quasiquote 15.5)", env));
     assertEquals(15.5, eval("`15.5", env));
-    assertEquals(new SCMString("test"), eval("(quasiquote \"test\")", env));
-    assertEquals(new SCMString("test"), eval("`\"test\"", env));
+    assertEquals(new SCMMutableString("test"), eval("(quasiquote \"test\")", env));
+    assertEquals(new SCMMutableString("test"), eval("`\"test\"", env));
     assertEquals(new SCMSymbol("quote"), eval("(quasiquote quote)", env));
     assertEquals(list(new SCMSymbol("+"), 1L, 2L), eval("`(+ 1 2)", env));
     assertEquals(3L, eval("`,(+ 1 2)", env));

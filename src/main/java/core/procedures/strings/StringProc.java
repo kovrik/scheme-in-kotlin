@@ -3,7 +3,7 @@ package core.procedures.strings;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 
 @FnArgs(isVariadic = true)
 public class StringProc extends AFn {
@@ -14,11 +14,11 @@ public class StringProc extends AFn {
   }
 
   @Override
-  public SCMString invoke(Object... args) {
+  public SCMMutableString invoke(Object... args) {
     if (args.length == 0) {
-      return new SCMString();
+      return new SCMMutableString();
     }
-    SCMString string = new SCMString(args.length);
+    SCMMutableString string = new SCMMutableString(args.length);
     for (Object c : args) {
       if (!(c instanceof Character)) {
         throw new WrongTypeException("Character", c);

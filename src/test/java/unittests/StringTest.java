@@ -1,6 +1,6 @@
 package unittests;
 
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import org.junit.Test;
 
@@ -19,10 +19,10 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStrings() {
-    assertEquals(new SCMString("1"), eval("\"1\"", env));
-    assertEquals(new SCMString("Lorem ipsum"), eval("\"Lorem ipsum\"", env));
-    assertEquals(new SCMString("Lorem \\\"ipsum\\\" "), eval("\"Lorem \\\"ipsum\\\" \"", env));
-    assertEquals(new SCMString(""), eval("\"\"", env));
+    assertEquals(new SCMMutableString("1"), eval("\"1\"", env));
+    assertEquals(new SCMMutableString("Lorem ipsum"), eval("\"Lorem ipsum\"", env));
+    assertEquals(new SCMMutableString("Lorem \\\"ipsum\\\" "), eval("\"Lorem \\\"ipsum\\\" \"", env));
+    assertEquals(new SCMMutableString(""), eval("\"\"", env));
   }
 
   @Test
@@ -44,9 +44,9 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringProc() {
-    assertEquals(new SCMString(""), eval("(string)", env));
-    assertEquals(new SCMString("a"), eval("(string #\\a)", env));
-    assertEquals(new SCMString("abc"), eval("(string #\\a #\\b #\\c)", env));
+    assertEquals(new SCMMutableString(""), eval("(string)", env));
+    assertEquals(new SCMMutableString("a"), eval("(string #\\a)", env));
+    assertEquals(new SCMMutableString("abc"), eval("(string #\\a #\\b #\\c)", env));
 
     try {
       eval("(string 1)", env);
@@ -58,13 +58,13 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalMakeString() {
-    assertEquals(new SCMString(""), eval("(make-string 0)", env));
-    assertEquals(new SCMString(""), eval("(make-string 0 #\\a)", env));
-    assertEquals(new SCMString("a"), eval("(make-string 1 #\\a)", env));
-    assertEquals(new SCMString("aa"), eval("(make-string 2 #\\a)", env));
-    assertEquals(new SCMString("ZZZZZZZZ"), eval("(make-string 8 #\\Z)", env));
-    assertEquals(new SCMString("\u0000\u0000\u0000"), eval("(make-string 3)", env));
-    assertEquals(new SCMString("\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"), eval("(make-string 8)", env));
+    assertEquals(new SCMMutableString(""), eval("(make-string 0)", env));
+    assertEquals(new SCMMutableString(""), eval("(make-string 0 #\\a)", env));
+    assertEquals(new SCMMutableString("a"), eval("(make-string 1 #\\a)", env));
+    assertEquals(new SCMMutableString("aa"), eval("(make-string 2 #\\a)", env));
+    assertEquals(new SCMMutableString("ZZZZZZZZ"), eval("(make-string 8 #\\Z)", env));
+    assertEquals(new SCMMutableString("\u0000\u0000\u0000"), eval("(make-string 3)", env));
+    assertEquals(new SCMMutableString("\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"), eval("(make-string 8)", env));
 
     try {
       eval("(make-string \"test\")", env);
@@ -94,25 +94,25 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringFill() {
-    assertEquals(new SCMString(""), eval("(string-fill! \"\" #\\a)", env));
-    assertEquals(new SCMString("a"), eval("(string-fill! \"z\" #\\a)", env));
-    assertEquals(new SCMString("aaaaa"), eval("(string-fill! \"test1\" #\\a)", env));
+    assertEquals(new SCMMutableString(""), eval("(string-fill! \"\" #\\a)", env));
+    assertEquals(new SCMMutableString("a"), eval("(string-fill! \"z\" #\\a)", env));
+    assertEquals(new SCMMutableString("aaaaa"), eval("(string-fill! \"test1\" #\\a)", env));
   }
 
   @Test
   public void testEvalStringCopy() {
-    assertEquals(new SCMString(""), eval("(string-copy \"\")", env));
-    assertEquals(new SCMString("test"), eval("(string-copy \"test\")", env));
-    assertEquals(new SCMString("t"), eval("(string-copy \"t\")", env));
+    assertEquals(new SCMMutableString(""), eval("(string-copy \"\")", env));
+    assertEquals(new SCMMutableString("test"), eval("(string-copy \"test\")", env));
+    assertEquals(new SCMMutableString("t"), eval("(string-copy \"t\")", env));
   }
 
   @Test
   public void testEvalStringAppend() {
-    assertEquals(new SCMString(""), eval("(string-append)", env));
-    assertEquals(new SCMString(""), eval("(string-append \"\")", env));
-    assertEquals(new SCMString("Apple"), eval("(string-append \"Apple\")", env));
-    assertEquals(new SCMString("AppleBanana"), eval("(string-append \"Apple\" \"Banana\")", env));
-    assertEquals(new SCMString("AppleBananaCoconut"), eval("(string-append \"Apple\" \"Banana\" \"Coconut\")", env));
+    assertEquals(new SCMMutableString(""), eval("(string-append)", env));
+    assertEquals(new SCMMutableString(""), eval("(string-append \"\")", env));
+    assertEquals(new SCMMutableString("Apple"), eval("(string-append \"Apple\")", env));
+    assertEquals(new SCMMutableString("AppleBanana"), eval("(string-append \"Apple\" \"Banana\")", env));
+    assertEquals(new SCMMutableString("AppleBananaCoconut"), eval("(string-append \"Apple\" \"Banana\" \"Coconut\")", env));
   }
 
   @Test
@@ -182,10 +182,10 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringSet() {
-    assertEquals(new SCMString("z"),   eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMString("zbc"), eval("(let ((s \"abc\")) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMString("azc"), eval("(let ((s \"abc\")) (string-set! s 1 #\\z) s)", env));
-    assertEquals(new SCMString("abz"), eval("(let ((s \"abc\")) (string-set! s 2 #\\z) s)", env));
+    assertEquals(new SCMMutableString("z"),   eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new SCMMutableString("zbc"), eval("(let ((s \"abc\")) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new SCMMutableString("azc"), eval("(let ((s \"abc\")) (string-set! s 1 #\\z) s)", env));
+    assertEquals(new SCMMutableString("abz"), eval("(let ((s \"abc\")) (string-set! s 2 #\\z) s)", env));
 
     try {
       eval("(string-set! \"abc\" -1 #\\z)", env);

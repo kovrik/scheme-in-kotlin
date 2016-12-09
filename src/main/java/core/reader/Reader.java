@@ -4,7 +4,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.reader.parsers.Result;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import core.scm.SCMVector;
 import core.scm.specialforms.Quasiquote;
@@ -308,8 +308,8 @@ public class Reader implements IReader {
    * <string> --> "<string element>*"
    * <string element> --> <any character other than " or \> | \" | \\
    */
-  private SCMString readString() throws IOException {
-    SCMString string = new SCMString();
+  private SCMMutableString readString() throws IOException {
+    SCMMutableString string = new SCMMutableString();
     int i;
     char c;
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {

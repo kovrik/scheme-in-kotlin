@@ -4,7 +4,7 @@ import core.reader.Reader;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 import core.utils.NumberUtils;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class Writer implements IWriter {
         }
       }
     }
-    if ((o instanceof String) || (o instanceof SCMString)) {
+    if ((o instanceof String) || (o instanceof SCMMutableString)) {
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {

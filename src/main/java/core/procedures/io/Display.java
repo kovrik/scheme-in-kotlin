@@ -6,7 +6,7 @@ import core.exceptions.SCMIOException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMOutputPort;
-import core.scm.SCMString;
+import core.scm.SCMMutableString;
 import core.writer.Writer;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class Display extends AFn {
 
     Object arg = args[0];
     try {
-      if ((arg instanceof String) || (arg instanceof SCMString)) {
+      if ((arg instanceof String) || (arg instanceof SCMMutableString)) {
         outputPort.write(arg.toString());
       } else {
         outputPort.write(Writer.write(arg));

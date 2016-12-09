@@ -9,6 +9,8 @@ public enum SCMClass implements ISCMClass {
   DOUBLE("Double"),
   RATIONAL("Rational"),
   STRING("String"),
+  MUTABLE_STRING("MutableString"),
+  IMMUTABLE_STRING("ImmutableString"),
   CHARACTER("Character"),
   BOOLEAN("Boolean"),
   /* Custom SCM Classes */
@@ -50,7 +52,7 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static SCMClass valueOf(Class clazz) {
-    if (clazz.equals(SCMString.class)) {
+    if (clazz.equals(SCMMutableString.class)) {
       return STRING;
     } else if (clazz.equals(SCMBoolean.class)) {
       return BOOLEAN;
@@ -100,7 +102,7 @@ public enum SCMClass implements ISCMClass {
       return true;
     }
     if (ISCMClass.class.isAssignableFrom(actual)) {
-      if (String.class.equals(expected) && SCMString.class.equals(actual)) {
+      if (String.class.equals(expected) && SCMMutableString.class.equals(actual)) {
         return true;
       } else if (Boolean.class.equals(expected) && SCMBoolean.class.equals(actual)) {
         return true;
