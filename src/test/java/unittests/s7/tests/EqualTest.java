@@ -38,10 +38,12 @@ public class EqualTest extends AbstractTest {
     assertEquals(TRUE, eval("(equal?(cons 'a 'b)(cons 'a 'b))", env));
     assertEquals(FALSE, eval("(equal? \"abc\" \"cba\")", env));
     assertEquals(TRUE, eval("(equal? \"abc\" \"abc\")", env));
+    assertEquals(TRUE, eval("(equal? \"abc\" (string->immutable-string \"abc\"))", env));
     assertEquals(TRUE, eval("(let ((x \"hi\")) (equal? x x))", env));
     assertEquals(TRUE, eval("(equal? (string #\\h #\\i) (string #\\h #\\i))", env));
     assertEquals(FALSE, eval("(equal? #(a) #(b))", env));
     assertEquals(TRUE, eval("(equal? #(a) #(a))", env));
+    assertEquals(TRUE, eval("(equal? #(a) (vector->immutable-vector #(a)))", env));
     assertEquals(TRUE, eval("(let ((x (vector 'a))) (equal? x x))", env));
     assertEquals(TRUE, eval("(equal? (vector 'a) (vector 'a))", env));
     assertEquals(TRUE, eval("(equal? #(1 2) (vector 1 2))", env));
