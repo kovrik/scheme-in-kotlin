@@ -7,25 +7,8 @@ public class SCMImmutableVector extends SCMVector {
 
   private final Object[] vector;
 
-  public SCMImmutableVector() {
-    this.vector = new Object[0];
-  }
-
-  public SCMImmutableVector(int size) {
-    this.vector = new Object[size];
-  }
-
-  public SCMImmutableVector(int size, Object init) {
-    this.vector = new Object[size];
-    Arrays.fill(vector, init);
-  }
-
   public SCMImmutableVector(Object... elements) {
     this.vector = elements;
-  }
-
-  public SCMImmutableVector(Object e) {
-    this.vector = new Object[] {e};
   }
 
   @Override
