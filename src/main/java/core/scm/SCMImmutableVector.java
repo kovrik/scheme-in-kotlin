@@ -3,7 +3,6 @@ package core.scm;
 import java.util.Arrays;
 
 /* Immutable vector */
-// TODO Verify that it is really immutable
 public class SCMImmutableVector extends SCMVector {
 
   private final Object[] vector;
