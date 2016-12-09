@@ -58,7 +58,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: 1"));
+      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: 1"));
     }
   }
 
@@ -166,7 +166,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector->list '(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
     }
   }
 

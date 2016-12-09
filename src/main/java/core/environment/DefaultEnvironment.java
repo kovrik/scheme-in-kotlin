@@ -189,12 +189,14 @@ public final class DefaultEnvironment extends Environment {
       /* Vectors */
       new MakeVector(),
       new Vector(),
+      new VectorImmutable(),
       new VectorLength(),
       new VectorRef(),
       new VectorSet(),
       new ListToVector(),
       new VectorToList(),
       new VectorFill(),
+      new VectorToImmutableVector(),
 
       /* Functional */
       new Apply(),

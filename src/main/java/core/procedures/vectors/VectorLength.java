@@ -3,8 +3,9 @@ package core.procedures.vectors;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMMutableVector;
+import core.scm.SCMVector;
 
-@FnArgs(args = {SCMMutableVector.class})
+@FnArgs(args = {SCMVector.class})
 public class VectorLength extends AFn {
 
   @Override

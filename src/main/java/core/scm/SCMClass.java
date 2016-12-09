@@ -69,6 +69,12 @@ public enum SCMClass implements ISCMClass {
       return PAIR;
     } else if (clazz.equals(SCMCons.SCMProperList.class)) {
       return LIST;
+    } else if (clazz.equals(SCMVector.class)) {
+      return VECTOR;
+    } else if (clazz.equals(SCMMutableVector.class)) {
+      return MUTABLE_VECTOR;
+    } else if (clazz.equals(SCMImmutableVector.class)) {
+      return IMMUTABLE_VECTOR;
     } else if (IFn.class.isAssignableFrom(clazz)) {
       return PROCEDURE;
     } else if (clazz.equals(SCMBigRational.class)) {

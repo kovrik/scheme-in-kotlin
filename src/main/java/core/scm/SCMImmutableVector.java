@@ -2,39 +2,36 @@ package core.scm;
 
 import java.util.Arrays;
 
-/* Mutable vector */
-public class SCMMutableVector extends SCMVector {
+/* Immutable vector */
+// TODO Verify that it is really immutable
+public class SCMImmutableVector extends SCMVector {
 
   private final Object[] vector;
 
-  public SCMMutableVector() {
+  public SCMImmutableVector() {
     this.vector = new Object[0];
   }
 
-  public SCMMutableVector(int size) {
+  public SCMImmutableVector(int size) {
     this.vector = new Object[size];
   }
 
-  public SCMMutableVector(int size, Object init) {
+  public SCMImmutableVector(int size, Object init) {
     this.vector = new Object[size];
     Arrays.fill(vector, init);
   }
 
-  public SCMMutableVector(Object... elements) {
+  public SCMImmutableVector(Object... elements) {
     this.vector = elements;
   }
 
-  public SCMMutableVector(Object e) {
+  public SCMImmutableVector(Object e) {
     this.vector = new Object[] {e};
   }
 
   @Override
   public Object get(int index) {
     return vector[index];
-  }
-
-  public void set(int index, Object value) {
-    vector[index] = value;
   }
 
   @Override
@@ -49,7 +46,7 @@ public class SCMMutableVector extends SCMVector {
 
   @Override
   public SCMClass getSCMClass() {
-    return SCMClass.MUTABLE_VECTOR;
+    return SCMClass.IMMUTABLE_VECTOR;
   }
 
   @Override
@@ -90,7 +87,6 @@ public class SCMMutableVector extends SCMVector {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof SCMMutableVector && Arrays.equals(vector, ((SCMMutableVector) obj).vector);
+    return obj instanceof SCMImmutableVector && Arrays.equals(vector, ((SCMImmutableVector) obj).vector);
   }
 }
-
