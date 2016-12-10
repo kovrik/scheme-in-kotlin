@@ -6,24 +6,10 @@ import core.scm.ISCMClass;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @FnArgs(args = {Object.class})
 public class ClassOf extends AFn {
-
-  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<>();
-  static {
-    JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
-    JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);
-    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.REAL);
-    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.REAL);
-    JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.STRING);
-    JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
-    JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
-    JAVA_TO_SCM_CLASSES.put(String.class,     SCMClass.IMMUTABLE_STRING);
-  }
 
   @Override
   public boolean isPure() {
@@ -62,10 +48,6 @@ public class ClassOf extends AFn {
       }
       return SCMClass.PAIR;
     }
-    SCMClass scmClass = JAVA_TO_SCM_CLASSES.get(object.getClass());
-    if (scmClass == null) {
-      throw new IllegalArgumentException("Unknown class: " + object.getClass());
-    }
-    return scmClass;
+    return SCMClass.valueOf(object.getClass());
   }
 }

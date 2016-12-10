@@ -3,6 +3,9 @@ package core.scm;
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum SCMClass implements ISCMClass {
   INTEGER("Integer"),
   REAL("Real"),
@@ -31,6 +34,33 @@ public enum SCMClass implements ISCMClass {
   EOF("EOF"),
   UNSPECIFIED("Unspecified");
 
+  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<>();
+  static {
+    JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
+    JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);
+    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.REAL);
+    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.REAL);
+    JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
+    JAVA_TO_SCM_CLASSES.put(String.class, IMMUTABLE_STRING);
+    JAVA_TO_SCM_CLASSES.put(SCMMutableString.class, MUTABLE_STRING);
+    JAVA_TO_SCM_CLASSES.put(SCMImmutableString.class, IMMUTABLE_STRING);
+    JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
+    JAVA_TO_SCM_CLASSES.put(IFn.class, PROCEDURE);
+    JAVA_TO_SCM_CLASSES.put(SCMBoolean.class, BOOLEAN);
+    JAVA_TO_SCM_CLASSES.put(SCMSymbol.class, SYMBOL);
+    JAVA_TO_SCM_CLASSES.put(SCMCons.SCMPair.class, PAIR);
+    JAVA_TO_SCM_CLASSES.put(SCMCons.SCMProperList.class, LIST);
+    JAVA_TO_SCM_CLASSES.put(SCMVector.class, VECTOR);
+    JAVA_TO_SCM_CLASSES.put(SCMMutableVector.class, MUTABLE_VECTOR);
+    JAVA_TO_SCM_CLASSES.put(SCMImmutableVector.class, IMMUTABLE_VECTOR);
+    JAVA_TO_SCM_CLASSES.put(SCMBigRational.class, RATIONAL);
+    JAVA_TO_SCM_CLASSES.put(SCMMutableVector.class, MUTABLE_VECTOR);
+    JAVA_TO_SCM_CLASSES.put(SCMPromise.class, PROMISE);
+    JAVA_TO_SCM_CLASSES.put(ISCMPort.class, PORT);
+    JAVA_TO_SCM_CLASSES.put(SCMOutputPort.class, OUTPUT_PORT);
+    JAVA_TO_SCM_CLASSES.put(SCMInputPort.class, INPUT_PORT);
+  }
+
   private final String name;
 
   SCMClass(String name) {
@@ -52,43 +82,11 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static SCMClass valueOf(Class clazz) {
-    if (clazz.equals(SCMMutableString.class)) {
-      return MUTABLE_STRING;
-    } else if (clazz.equals(String.class)) {
-      // Java's Strings are immutable
-      return IMMUTABLE_STRING;
-    } else if (clazz.equals(SCMImmutableString.class)) {
-      return IMMUTABLE_STRING;
-    } else if (clazz.equals(SCMBoolean.class)) {
-      return BOOLEAN;
-    } else if (clazz.equals(SCMSymbol.class)) {
-      return SYMBOL;
-    } else if (clazz.equals(SCMCons.SCMPair.class)) {
-      return PAIR;
-    } else if (clazz.equals(SCMCons.SCMProperList.class)) {
-      return LIST;
-    } else if (clazz.equals(SCMVector.class)) {
-      return VECTOR;
-    } else if (clazz.equals(SCMMutableVector.class)) {
-      return MUTABLE_VECTOR;
-    } else if (clazz.equals(SCMImmutableVector.class)) {
-      return IMMUTABLE_VECTOR;
-    } else if (IFn.class.isAssignableFrom(clazz)) {
-      return PROCEDURE;
-    } else if (clazz.equals(SCMBigRational.class)) {
-      return RATIONAL;
-    } else if (clazz.equals(SCMMutableVector.class)) {
-      return MUTABLE_VECTOR;
-    } else if (clazz.equals(SCMPromise.class)) {
-      return PROMISE;
-    } else if (clazz.equals(ISCMPort.class)) {
-      return PORT;
-    } else if (clazz.equals(SCMOutputPort.class)) {
-      return OUTPUT_PORT;
-    } else if (clazz.equals(SCMInputPort.class)) {
-      return INPUT_PORT;
+    SCMClass scmClass = JAVA_TO_SCM_CLASSES.get(clazz);
+    if (scmClass == null) {
+      throw new IllegalArgumentException("Unknown SCMClass type: " + clazz);
     }
-    throw new IllegalArgumentException("Unknown SCMClass type: " + clazz);
+    return scmClass;
   }
 
   public static boolean assertClass(Object o, Class<?> c) {
