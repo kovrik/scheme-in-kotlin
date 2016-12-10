@@ -3,7 +3,10 @@ package core.scm;
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum SCMClass implements ISCMClass {
@@ -16,7 +19,7 @@ public enum SCMClass implements ISCMClass {
   CHARACTER("Character"),
   BOOLEAN("Boolean"),
   ENVIRONMENT("Environment"),
-  SPECIALFORM("SpecialForm"),
+  SPECIAL_FORM("SpecialForm"),
   NIL("Nil"),
   LIST("List"),
   PAIR("Pair"),
@@ -34,31 +37,32 @@ public enum SCMClass implements ISCMClass {
   EOF("EOF"),
   UNSPECIFIED("Unspecified");
 
-  private static final Map<Class, SCMClass> JAVA_TO_SCM_CLASSES = new HashMap<>();
+  private static final Map<Class, SCMClass> SCM_CLASSES = new HashMap<>();
   static {
-    JAVA_TO_SCM_CLASSES.put(Integer.class,    SCMClass.INTEGER);
-    JAVA_TO_SCM_CLASSES.put(Long.class,       SCMClass.INTEGER);
-    JAVA_TO_SCM_CLASSES.put(Double.class,     SCMClass.REAL);
-    JAVA_TO_SCM_CLASSES.put(Float.class,      SCMClass.REAL);
-    JAVA_TO_SCM_CLASSES.put(Character.class,  SCMClass.CHARACTER);
-    JAVA_TO_SCM_CLASSES.put(String.class, IMMUTABLE_STRING);
-    JAVA_TO_SCM_CLASSES.put(SCMMutableString.class, MUTABLE_STRING);
-    JAVA_TO_SCM_CLASSES.put(SCMImmutableString.class, IMMUTABLE_STRING);
-    JAVA_TO_SCM_CLASSES.put(Boolean.class,    SCMClass.BOOLEAN);
-    JAVA_TO_SCM_CLASSES.put(IFn.class, PROCEDURE);
-    JAVA_TO_SCM_CLASSES.put(SCMBoolean.class, BOOLEAN);
-    JAVA_TO_SCM_CLASSES.put(SCMSymbol.class, SYMBOL);
-    JAVA_TO_SCM_CLASSES.put(SCMCons.SCMPair.class, PAIR);
-    JAVA_TO_SCM_CLASSES.put(SCMCons.SCMProperList.class, LIST);
-    JAVA_TO_SCM_CLASSES.put(SCMVector.class, VECTOR);
-    JAVA_TO_SCM_CLASSES.put(SCMMutableVector.class, MUTABLE_VECTOR);
-    JAVA_TO_SCM_CLASSES.put(SCMImmutableVector.class, IMMUTABLE_VECTOR);
-    JAVA_TO_SCM_CLASSES.put(SCMBigRational.class, RATIONAL);
-    JAVA_TO_SCM_CLASSES.put(SCMMutableVector.class, MUTABLE_VECTOR);
-    JAVA_TO_SCM_CLASSES.put(SCMPromise.class, PROMISE);
-    JAVA_TO_SCM_CLASSES.put(ISCMPort.class, PORT);
-    JAVA_TO_SCM_CLASSES.put(SCMOutputPort.class, OUTPUT_PORT);
-    JAVA_TO_SCM_CLASSES.put(SCMInputPort.class, INPUT_PORT);
+    SCM_CLASSES.put(Integer.class,               INTEGER);
+    SCM_CLASSES.put(Long.class,                  INTEGER);
+    SCM_CLASSES.put(BigInteger.class,            INTEGER);
+    SCM_CLASSES.put(Double.class,                REAL);
+    SCM_CLASSES.put(Float.class,                 REAL);
+    SCM_CLASSES.put(Character.class,             CHARACTER);
+    SCM_CLASSES.put(String.class,                IMMUTABLE_STRING);
+    SCM_CLASSES.put(SCMImmutableString.class,    IMMUTABLE_STRING);
+    SCM_CLASSES.put(StringBuilder.class,         MUTABLE_STRING);
+    SCM_CLASSES.put(SCMMutableString.class,      MUTABLE_STRING);
+    SCM_CLASSES.put(Boolean.class,               BOOLEAN);
+    SCM_CLASSES.put(SCMBoolean.class,            BOOLEAN);
+    SCM_CLASSES.put(IFn.class,                   PROCEDURE);
+    SCM_CLASSES.put(SCMSymbol.class,             SYMBOL);
+    SCM_CLASSES.put(SCMCons.SCMPair.class,       PAIR);
+    SCM_CLASSES.put(SCMCons.SCMProperList.class, LIST);
+    SCM_CLASSES.put(SCMVector.class,             VECTOR);
+    SCM_CLASSES.put(SCMImmutableVector.class,    IMMUTABLE_VECTOR);
+    SCM_CLASSES.put(SCMMutableVector.class,      MUTABLE_VECTOR);
+    SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
+    SCM_CLASSES.put(SCMPromise.class,            PROMISE);
+    SCM_CLASSES.put(ISCMPort.class,              PORT);
+    SCM_CLASSES.put(SCMOutputPort.class,         OUTPUT_PORT);
+    SCM_CLASSES.put(SCMInputPort.class,          INPUT_PORT);
   }
 
   private final String name;
@@ -82,11 +86,35 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static SCMClass valueOf(Class clazz) {
-    SCMClass scmClass = JAVA_TO_SCM_CLASSES.get(clazz);
-    if (scmClass == null) {
-      throw new IllegalArgumentException("Unknown SCMClass type: " + clazz);
+    return SCM_CLASSES.get(clazz);
+  }
+
+  public static SCMClass scmClassOf(Object object) {
+    /* Special Checks go first */
+    if (object == null) {
+      return SCMClass.NIL;
     }
-    return scmClass;
+    /* All custom SCM Classes should implement ISCMClass interface */
+    if (object instanceof ISCMClass) {
+      return ((ISCMClass)object).getSCMClass();
+    }
+    /* Must be a Java object */
+    if (object instanceof BigDecimal) {
+      /* Check if it is integral */
+      if (((BigDecimal)object).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+        return SCMClass.INTEGER;
+      }
+      return SCMClass.REAL;
+    }
+    /* Check Pair and Nil */
+    if (object instanceof List) {
+      if (((List) object).isEmpty()) {
+        return SCMClass.NIL;
+      }
+      return SCMClass.PAIR;
+    }
+    /* Not a special case, just map Java class to SCMClass */
+    return valueOf(object.getClass());
   }
 
   public static boolean assertClass(Object o, Class<?> c) {

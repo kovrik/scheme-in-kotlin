@@ -13,6 +13,6 @@ public interface ISpecialForm extends ISCMClass {
 
   @Override
   default SCMClass getSCMClass() {
-    return SCMClass.SPECIALFORM;
+    return SCMClass.SPECIAL_FORM;
   }
 }
