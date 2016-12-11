@@ -89,7 +89,7 @@ public enum SCMClass implements ISCMClass {
     return SCM_CLASSES.get(clazz);
   }
 
-  public static SCMClass scmClassOf(Object object) {
+  public static SCMClass classOf(Object object) {
     /* Special Checks go first */
     if (object == null) {
       return SCMClass.NIL;
