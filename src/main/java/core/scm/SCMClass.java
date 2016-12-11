@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public enum SCMClass implements ISCMClass {
+  // TODO Exact/Inexact, Positive/Negative/Non-negative
   INTEGER("Integer"),
   REAL("Real"),
   RATIONAL("Rational"),
