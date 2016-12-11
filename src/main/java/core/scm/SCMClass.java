@@ -63,6 +63,9 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(ISCMPort.class,              PORT);
     SCM_CLASSES.put(SCMOutputPort.class,         OUTPUT_PORT);
     SCM_CLASSES.put(SCMInputPort.class,          INPUT_PORT);
+    SCM_CLASSES.put(SCMEof.class,                EOF);
+    SCM_CLASSES.put(SCMError.class,              ERROR);
+    SCM_CLASSES.put(SCMUnspecified.class,        UNSPECIFIED);
   }
 
   private final String name;
