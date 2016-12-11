@@ -45,6 +45,9 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(BigInteger.class,            INTEGER);
     SCM_CLASSES.put(Double.class,                REAL);
     SCM_CLASSES.put(Float.class,                 REAL);
+    SCM_CLASSES.put(BigDecimal.class,            REAL);
+    SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
+
     SCM_CLASSES.put(Character.class,             CHARACTER);
     SCM_CLASSES.put(String.class,                IMMUTABLE_STRING);
     SCM_CLASSES.put(SCMImmutableString.class,    IMMUTABLE_STRING);
@@ -59,7 +62,6 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMVector.class,             VECTOR);
     SCM_CLASSES.put(SCMImmutableVector.class,    IMMUTABLE_VECTOR);
     SCM_CLASSES.put(SCMMutableVector.class,      MUTABLE_VECTOR);
-    SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
     SCM_CLASSES.put(SCMPromise.class,            PROMISE);
     SCM_CLASSES.put(ISCMPort.class,              PORT);
     SCM_CLASSES.put(SCMOutputPort.class,         OUTPUT_PORT);
