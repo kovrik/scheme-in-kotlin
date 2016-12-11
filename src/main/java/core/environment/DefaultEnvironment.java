@@ -31,18 +31,6 @@ import core.scm.specialforms.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
-import static core.scm.specialforms.Delay.DELAY;
-import static core.scm.specialforms.LetRecSyntax.LETREC_SYNTAX;
-import static core.scm.specialforms.LetSyntax.LET_SYNTAX;
-import static core.scm.specialforms.Quasiquote.QUASIQUOTE;
-import static core.scm.specialforms.Quote.QUOTE;
-import static core.scm.specialforms.Set.SET;
-import static core.scm.specialforms.SyntaxRules.SYNTAX_RULES;
-import static core.scm.specialforms.Time.TIME;
-import static core.scm.specialforms.Unquote.UNQUOTE;
-import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING;
-
 public final class DefaultEnvironment extends Environment {
 
   private static final AFn[] STANDARD_PROCEDURES = {
@@ -233,35 +221,33 @@ public final class DefaultEnvironment extends Environment {
       Predicate.IS_MUTABLE,
   };
 
-  private static final List<ISpecialForm> SPECIAL_FORMS = new ArrayList<>();
-  static {
-    SPECIAL_FORMS.add(DELAY);
-    SPECIAL_FORMS.add(QUOTE);
-    SPECIAL_FORMS.add(SET);
-    SPECIAL_FORMS.add(QUASIQUOTE);
-    SPECIAL_FORMS.add(UNQUOTE);
-    SPECIAL_FORMS.add(UNQUOTE_SPLICING);
-    SPECIAL_FORMS.add(TIME);
+  private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {
+    Delay.DELAY,
+    Quote.QUOTE,
+    Set.SET,
+    Quasiquote.QUASIQUOTE,
+    Unquote.UNQUOTE,
+    UnquoteSplicing.UNQUOTE_SPLICING,
+    Time.TIME,
     /* With TCO */
-    SPECIAL_FORMS.add(If.IF);
-    SPECIAL_FORMS.add(Begin.BEGIN);
-    SPECIAL_FORMS.add(And.AND);
-    SPECIAL_FORMS.add(Or.OR);
-    SPECIAL_FORMS.add(Lambda.LAMBDA);
-    SPECIAL_FORMS.add(Define.DEFINE);
-    SPECIAL_FORMS.add(Let.LET);
-    SPECIAL_FORMS.add(LetRec.LETREC);
-    SPECIAL_FORMS.add(LetSeq.LETSEQ);
-    SPECIAL_FORMS.add(Do.DO);
-    SPECIAL_FORMS.add(Case.CASE);
-    SPECIAL_FORMS.add(Cond.COND);
-
+    If.IF,
+    Begin.BEGIN,
+    And.AND,
+    Or.OR,
+    Lambda.LAMBDA,
+    Define.DEFINE,
+    Let.LET,
+    LetRec.LETREC,
+    LetSeq.LETSEQ,
+    Do.DO,
+    Case.CASE,
+    Cond.COND,
     // TODO
-    SPECIAL_FORMS.add(DEFINE_SYNTAX);
-    SPECIAL_FORMS.add(LET_SYNTAX);
-    SPECIAL_FORMS.add(LETREC_SYNTAX);
-    SPECIAL_FORMS.add(SYNTAX_RULES);
-  }
+    DefineSyntax.DEFINE_SYNTAX,
+    LetSyntax.LET_SYNTAX,
+    LetRecSyntax.LETREC_SYNTAX,
+    SyntaxRules.SYNTAX_RULES
+  };
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
