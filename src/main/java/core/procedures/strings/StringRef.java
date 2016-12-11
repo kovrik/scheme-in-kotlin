@@ -19,7 +19,7 @@ public class StringRef extends AFn {
   @Override
   public Object invoke(Object... args) {
     String s = args[0].toString();
-    Long pos = (Long)args[1];
+    Long pos = ((Number)args[1]).longValue();
     if ((pos < 0) || (pos >= s.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }

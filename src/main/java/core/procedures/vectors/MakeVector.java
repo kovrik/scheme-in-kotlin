@@ -17,7 +17,7 @@ public class MakeVector extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    Long s = (Long)args[0];
+    Long s = ((Number)args[0]).longValue();
     if (s < 0) {
       throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
     }

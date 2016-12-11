@@ -17,7 +17,7 @@ public class VectorSet extends AFn {
   @Override
   public Object invoke(Object... args) {
     SCMMutableVector vec = (SCMMutableVector)args[0];
-    Long pos = (Long)args[1];
+    Long pos = ((Number)args[1]).longValue();
     if ((pos < 0) || (pos >= vec.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }

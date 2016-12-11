@@ -21,7 +21,7 @@ public class ListRef extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-    Long p = (Long) args[1];
+    Long p = ((Number)args[1]).longValue();
     List list = (List)args[0];
     if (p >= list.size()) {
       throw new IllegalArgumentException("Value out of range: " + p);

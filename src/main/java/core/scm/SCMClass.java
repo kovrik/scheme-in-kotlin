@@ -2,6 +2,7 @@ package core.scm;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -104,13 +105,8 @@ public enum SCMClass implements ISCMClass {
     if (object instanceof ISCMClass) {
       return ((ISCMClass)object).getSCMClass();
     }
-    /* Must be a Java object */
-    if (object instanceof BigDecimal) {
-      /* Check if it is integral */
-      if (((BigDecimal)object).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
-        return SCMClass.INTEGER;
-      }
-      return SCMClass.REAL;
+    if (object instanceof Number) {
+      return classOfNumber((Number)object);
     }
     /* Check Pair and Nil */
     if (object instanceof List) {
@@ -121,6 +117,19 @@ public enum SCMClass implements ISCMClass {
     }
     /* Not a special case, just map Java class to SCMClass */
     return valueOf(object.getClass());
+  }
+
+  public static SCMClass classOfNumber(Number number) {
+    /* Must be a Java object */
+    if (number instanceof BigDecimal) {
+      /* Check if it is integral */
+      if (((BigDecimal)number).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+        return SCMClass.INTEGER;
+      }
+      return SCMClass.REAL;
+    }
+    /* Not a special case, just map Java class to SCMClass */
+    return valueOf(number.getClass());
   }
 
   public static boolean assertClass(Object o, Class<?> c) {
@@ -152,6 +161,8 @@ public enum SCMClass implements ISCMClass {
       } else if (SCMMutableString.class.equals(expected) && (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual)) ) {
         return true;
       } else if (Boolean.class.equals(expected) && SCMBoolean.class.equals(actual)) {
+        return true;
+      } else if (Long.class.equals(expected) && NumberUtils.isExact(object)) {
         return true;
       }
     }

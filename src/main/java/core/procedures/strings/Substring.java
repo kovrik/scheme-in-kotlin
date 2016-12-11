@@ -16,7 +16,7 @@ public class Substring extends AFn {
   @Override
   public String invoke(Object... args) {
     String s = args[0].toString();
-    long start = (long)args[1];
+    long start = ((Number)args[1]).longValue();
     if ((start < 0) || (start >= s.length())) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", start));
     }
