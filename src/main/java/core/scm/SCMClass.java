@@ -154,16 +154,16 @@ public enum SCMClass implements ISCMClass {
       return true;
     }
     if (ISCMClass.class.isAssignableFrom(actual)) {
-      if (String.class.equals(expected) && (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual)) ) {
-        return true;
-      } else if (SCMImmutableString.class.equals(expected) && (String.class.equals(actual) || SCMImmutableString.class.equals(actual)) ) {
-        return true;
-      } else if (SCMMutableString.class.equals(expected) && (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual)) ) {
-        return true;
-      } else if (Boolean.class.equals(expected) && SCMBoolean.class.equals(actual)) {
-        return true;
-      } else if (Long.class.equals(expected) && NumberUtils.isExact(object)) {
-        return true;
+      if (String.class.equals(expected)) {
+        return (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual));
+      } else if (SCMImmutableString.class.equals(expected)) {
+        return (String.class.equals(actual) || SCMImmutableString.class.equals(actual));
+      } else if (SCMMutableString.class.equals(expected)) {
+        return (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual));
+      } else if (Boolean.class.equals(expected)) {
+        return SCMBoolean.class.equals(actual);
+      } else if (Long.class.equals(expected)) {
+        return NumberUtils.isExact(object);
       }
     }
     return false;
