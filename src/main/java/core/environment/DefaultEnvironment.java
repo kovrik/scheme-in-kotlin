@@ -29,9 +29,7 @@ import core.scm.SCMSymbol;
 import core.scm.specialforms.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static core.scm.specialforms.DefineSyntax.DEFINE_SYNTAX;
 import static core.scm.specialforms.Delay.DELAY;
@@ -235,34 +233,34 @@ public final class DefaultEnvironment extends Environment {
       Predicate.IS_MUTABLE,
   };
 
-  private static final Map<String, ISpecialForm> SPECIAL_FORMS = new HashMap<>();
+  private static final List<ISpecialForm> SPECIAL_FORMS = new ArrayList<>();
   static {
-    SPECIAL_FORMS.put(DELAY.toString(), DELAY);
-    SPECIAL_FORMS.put(QUOTE.toString(), QUOTE);
-    SPECIAL_FORMS.put(SET.toString(), SET);
-    SPECIAL_FORMS.put(QUASIQUOTE.toString(), QUASIQUOTE);
-    SPECIAL_FORMS.put(UNQUOTE.toString(), UNQUOTE);
-    SPECIAL_FORMS.put(UNQUOTE_SPLICING.toString(), UNQUOTE_SPLICING);
-    SPECIAL_FORMS.put(TIME.toString(), TIME);
+    SPECIAL_FORMS.add(DELAY);
+    SPECIAL_FORMS.add(QUOTE);
+    SPECIAL_FORMS.add(SET);
+    SPECIAL_FORMS.add(QUASIQUOTE);
+    SPECIAL_FORMS.add(UNQUOTE);
+    SPECIAL_FORMS.add(UNQUOTE_SPLICING);
+    SPECIAL_FORMS.add(TIME);
     /* With TCO */
-    SPECIAL_FORMS.put(If.IF.toString(), If.IF);
-    SPECIAL_FORMS.put(Begin.BEGIN.toString(), Begin.BEGIN);
-    SPECIAL_FORMS.put(And.AND.toString(), And.AND);
-    SPECIAL_FORMS.put(Or.OR.toString(), Or.OR);
-    SPECIAL_FORMS.put(Lambda.LAMBDA.toString(), Lambda.LAMBDA);
-    SPECIAL_FORMS.put(Define.DEFINE.toString(), Define.DEFINE);
-    SPECIAL_FORMS.put(Let.LET.toString(), Let.LET);
-    SPECIAL_FORMS.put(LetRec.LETREC.toString(), LetRec.LETREC);
-    SPECIAL_FORMS.put(LetSeq.LETSEQ.toString(), LetSeq.LETSEQ);
-    SPECIAL_FORMS.put(Do.DO.toString(), Do.DO);
-    SPECIAL_FORMS.put(Case.CASE.toString(), Case.CASE);
-    SPECIAL_FORMS.put(Cond.COND.toString(), Cond.COND);
+    SPECIAL_FORMS.add(If.IF);
+    SPECIAL_FORMS.add(Begin.BEGIN);
+    SPECIAL_FORMS.add(And.AND);
+    SPECIAL_FORMS.add(Or.OR);
+    SPECIAL_FORMS.add(Lambda.LAMBDA);
+    SPECIAL_FORMS.add(Define.DEFINE);
+    SPECIAL_FORMS.add(Let.LET);
+    SPECIAL_FORMS.add(LetRec.LETREC);
+    SPECIAL_FORMS.add(LetSeq.LETSEQ);
+    SPECIAL_FORMS.add(Do.DO);
+    SPECIAL_FORMS.add(Case.CASE);
+    SPECIAL_FORMS.add(Cond.COND);
 
     // TODO
-    SPECIAL_FORMS.put(DEFINE_SYNTAX.toString(), DEFINE_SYNTAX);
-    SPECIAL_FORMS.put(LET_SYNTAX.toString(), LET_SYNTAX);
-    SPECIAL_FORMS.put(LETREC_SYNTAX.toString(), LETREC_SYNTAX);
-    SPECIAL_FORMS.put(SYNTAX_RULES.toString(), SYNTAX_RULES);
+    SPECIAL_FORMS.add(DEFINE_SYNTAX);
+    SPECIAL_FORMS.add(LET_SYNTAX);
+    SPECIAL_FORMS.add(LETREC_SYNTAX);
+    SPECIAL_FORMS.add(SYNTAX_RULES);
   }
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
@@ -323,7 +321,7 @@ public final class DefaultEnvironment extends Environment {
     put(new SCMSymbol("eof"), SCMEof.EOF);
 
     /* Special Forms */
-    for (ISpecialForm specialForm : SPECIAL_FORMS.values()) {
+    for (ISpecialForm specialForm : SPECIAL_FORMS) {
       put(new SCMSymbol(specialForm.toString()), specialForm);
     }
 
