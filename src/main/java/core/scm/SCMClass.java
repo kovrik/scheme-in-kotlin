@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public enum SCMClass implements ISCMClass {
   INTEGER("Integer"),
@@ -206,23 +207,21 @@ public enum SCMClass implements ISCMClass {
     } else if (SCMBigRational.class.equals(expected)) {
       return NumberUtils.isRational(o);
     } else if (Long.class.equals(expected) || Integer.class.equals(expected)) {
-      return (o instanceof Number) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+      return NumberUtils.isInteger(o);
     } else if (ExactNonNegativeInteger.class.equals(expected)) {
-      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
-             NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+      return NumberUtils.isExactNonNegativeInteger(o);
     } else if (ExactInteger.class.equals(expected)) {
-      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+      return NumberUtils.isExactInteger(o);
     } else if (ExactPositiveInteger.class.equals(expected)) {
-      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
-             NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+      return NumberUtils.isExactPositiveInteger(o);
     } else if (InexactReal.class.equals(expected)) {
       return NumberUtils.isInexact(o);
     } else if (Positive.class.equals(expected)) {
-      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+      return NumberUtils.isPositive(o);
     } else if (Negative.class.equals(expected)) {
-      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS);
+      return NumberUtils.isNegative(o);
     } else if (NonNegative.class.equals(expected)) {
-      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+      return NumberUtils.isNonNegative(o);
     } else if (Inexact.class.equals(expected)) {
       return NumberUtils.isInexact(o);
     } else if (Exact.class.equals(expected)) {

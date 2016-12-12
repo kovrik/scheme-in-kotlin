@@ -3,8 +3,10 @@ package core.utils;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.math.Expt;
 import core.procedures.math.Multiplication;
+import core.procedures.math.NumericalComparison;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
+import core.procedures.predicates.Predicate;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
@@ -383,4 +385,33 @@ public class NumberUtils {
     return true;
   }
 
+  public static boolean isInteger(Object o) {
+    return (o instanceof Number) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+  }
+
+  public static boolean isExactInteger(Object o) {
+    return isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+  }
+
+  public static boolean isPositive(Object o) {
+    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+  }
+
+  public static boolean isNegative(Object o) {
+    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+  }
+
+  public static boolean isNonNegative(Object o) {
+    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS);
+  }
+
+  public static boolean isExactPositiveInteger(Object o) {
+    return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+           NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+  }
+
+  public static boolean isExactNonNegativeInteger(Object o) {
+    return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+      NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+  }
 }
