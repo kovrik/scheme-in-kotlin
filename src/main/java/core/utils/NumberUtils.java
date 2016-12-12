@@ -278,7 +278,7 @@ public class NumberUtils {
       }
     }
     if (exp != null) {
-      result = Multiplication.invoke(result, Expt.invoke(r, exp));
+      result = Multiplication.invoke(result, Expt.invoke(r.longValue(), exp));
     }
     return processExactness(result, exactness);
   }
@@ -428,6 +428,34 @@ public class NumberUtils {
     }
     if (o instanceof BigInteger) {
       return ((BigInteger)o).compareTo(BigInteger.ZERO) == 0;
+    }
+    return false;
+  }
+
+  public static boolean isOne(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long) {
+      return ((Long)o) == 1;
+    }
+    if (o instanceof Double) {
+      return Double.doubleToRawLongBits((Double)o) == 1;
+    }
+    if (o instanceof SCMBigRational) {
+      return ((SCMBigRational)o).isOne();
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).compareTo(BigDecimal.ONE) == 0;
+    }
+    if (o instanceof Integer) {
+      return ((Integer)o) == 1;
+    }
+    if (o instanceof Float) {
+      return Float.floatToRawIntBits((Float)o) == 1;
+    }
+    if (o instanceof BigInteger) {
+      return ((BigInteger)o).compareTo(BigInteger.ONE) == 0;
     }
     return false;
   }

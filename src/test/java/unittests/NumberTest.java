@@ -473,9 +473,9 @@ public class NumberTest extends AbstractTest {
 
   @Test
   public void testEvalExpt() {
-    assertEquals(BigDecimal.ONE, eval("(expt 9 0)", env));
-    assertEquals(BigDecimal.ZERO, eval("(expt 0 10)", env));
-    assertEquals(BigDecimal.ONE, eval("(expt 1 1)", env));
+    assertEquals(1L, eval("(expt 9 0)", env));
+    assertEquals(0L, eval("(expt 0 10)", env));
+    assertEquals(1L, eval("(expt 1 1)", env));
     assertEquals(new BigDecimal(8), eval("(expt 2 3)", env));
     assertEquals(new BigDecimal(16777216), eval("(expt 4 12)", env));
     assertEquals(new BigDecimal(25), eval("(expt -5 2)", env));
@@ -778,7 +778,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(59874.14171519782, eval("(exp 11)", env));
     assertEquals(0.36787944117144233, eval("(exp -1)", env));
     assertEquals(new BigDecimal("2.117000016612675"), eval("(exp 3/4)", env));
-    assertEquals(new BigDecimal("2.718281828459045"), eval("(exp 1/1)", env));
+    assertEquals(2.718281828459045, eval("(exp 1/1)", env));
     assertEquals(Double.POSITIVE_INFINITY, eval("(exp 999999999)", env));
     assertEquals(0d, eval("(exp -999999999)", env));
   }

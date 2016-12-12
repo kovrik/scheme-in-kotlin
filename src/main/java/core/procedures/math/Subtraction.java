@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,7 +23,6 @@ public class Subtraction extends AFn {
 
   @Override
   public Object invoke(Object... args) {
-
     if (args == null || args.length == 0) {
       throw new ArityException(0, "-");
     }
@@ -46,6 +46,10 @@ public class Subtraction extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
+    /* Special cases */
+    if (NumberUtils.isZero(second)) {
+      return first;
+    }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).minus((SCMBigRational)second);

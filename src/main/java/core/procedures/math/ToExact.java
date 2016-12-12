@@ -3,9 +3,11 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.DoubleSummaryStatistics;
 
 @FnArgs(args = {Number.class})
 public class ToExact extends AFn {
@@ -26,6 +28,16 @@ public class ToExact extends AFn {
   }
 
   public static Number toExact(Object o) {
+    /* Special cases */
+    if (NumberUtils.isZero(o)) {
+      if (o instanceof Double) {
+        return 0d;
+      } else if (o instanceof Float) {
+        return 0f;
+      } else if (o instanceof BigDecimal) {
+        return BigDecimal.ZERO;
+      }
+    }
     if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
       throw new ArithmeticException("No exact representation");
     }

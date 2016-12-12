@@ -4,7 +4,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.reader.parsers.Result;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
-import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import core.scm.SCMMutableVector;
 import core.scm.specialforms.Quasiquote;

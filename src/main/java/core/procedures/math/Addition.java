@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -20,6 +21,13 @@ public class Addition extends AFn {
   }
 
   public Number invoke(Object first, Object second) {
+    /* Special cases */
+    if (NumberUtils.isZero(first)) {
+      return (Number)second;
+    }
+    if (NumberUtils.isZero(second)) {
+      return (Number)first;
+    }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).plus((SCMBigRational)second);

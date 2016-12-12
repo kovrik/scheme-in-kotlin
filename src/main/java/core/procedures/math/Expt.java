@@ -28,6 +28,19 @@ public class Expt extends AFn {
   }
 
   public static Number invoke(Number first, Number exponent) {
+    /* Special cases */
+    if (NumberUtils.isZero(first)) {
+      return 0L;
+    }
+    if (NumberUtils.isOne(first)) {
+      return 1L;
+    }
+    if (NumberUtils.isZero(exponent)) {
+      return 1L;
+    }
+    if (NumberUtils.isOne(exponent)) {
+      return first;
+    }
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
       if (exponent instanceof Double) {

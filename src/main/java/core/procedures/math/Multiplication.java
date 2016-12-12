@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,6 +35,16 @@ public class Multiplication extends AFn {
   }
 
   public static Number invoke(Number first, Number second) {
+    /* Special cases */
+    if (NumberUtils.isZero(first) || NumberUtils.isZero(second)) {
+      return 0L;
+    }
+    if (NumberUtils.isOne(first)) {
+      return second;
+    }
+    if (NumberUtils.isOne(second)) {
+      return first;
+    }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).multiply((SCMBigRational)second);

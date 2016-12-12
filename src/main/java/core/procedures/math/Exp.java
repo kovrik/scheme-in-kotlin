@@ -3,6 +3,9 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
+
+import java.math.BigDecimal;
 
 import static core.utils.NumberUtils.E;
 
@@ -40,8 +43,14 @@ public class Exp extends AFn {
       }
       return Math.exp(number.doubleValue());
     }
-    if (number instanceof SCMBigRational && ((SCMBigRational) number).isZero()) {
-      return 1L;
+    if (number instanceof SCMBigRational) {
+      /* Special cases */
+      if (((SCMBigRational) number).isZero()) {
+        return 1L;
+      }
+      if (((SCMBigRational) number).isOne()) {
+        return Math.exp(1d);
+      }
     }
     return Expt.invoke(E, number);
   }

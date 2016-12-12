@@ -104,6 +104,10 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     return compareTo(ZERO) == 0;
   }
 
+  public boolean isOne() {
+    return compareTo(ONE) == 0;
+  }
+
   public boolean isPositive() {
     return compareTo(ZERO) > 0;
   }

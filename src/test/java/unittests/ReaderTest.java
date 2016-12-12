@@ -240,7 +240,7 @@ public class ReaderTest {
   @Test
   public void testScientificNotation() {
     assertEquals(new SCMBigRational("23", "1"), reader.readFirst("#e2.3e1"));
-    assertEquals(new BigDecimal("230"), reader.readFirst("#e23e1"));
+    assertEquals(230L, reader.readFirst("#e23e1"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
     assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#i2.3e-51"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#I2.3e-5"));
