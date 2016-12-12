@@ -3,7 +3,6 @@ package core.procedures.predicates;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.math.NumericalComparison;
-import core.procedures.math.Round;
 import core.scm.*;
 import core.utils.NumberUtils;
 
@@ -40,8 +39,7 @@ public class SCMPredicate extends AFn {
                                                                                NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER)));
   public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, Number.class) &&
                                                                                NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS)));
-  public static final SCMPredicate IS_INTEGER = new SCMPredicate("integer?", o -> (SCMClass.assertClass(o, Number.class) &&
-                                                                             NumericalComparison.invoke(Round.round((Number)o), o, NumericalComparison.Type.EQUAL)));
+  public static final SCMPredicate IS_INTEGER = new SCMPredicate("integer?", NumberUtils::isInteger);
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
   public static final SCMPredicate IS_MUTABLE   = new SCMPredicate("mutable?", SCMPredicate::isMutable);
 

@@ -557,12 +557,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(FALSE, eval("(integer? -5.4)", env));
     assertEquals(FALSE, eval("(integer? 3.14)", env));
     assertEquals(FALSE, eval("(integer? .123)", env));
-    try {
-      eval("(integer? \"test\")", env);
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
-    }
+    assertEquals(FALSE, eval("(integer? \"test\")", env));
   }
 
   @Test

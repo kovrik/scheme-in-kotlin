@@ -197,7 +197,8 @@ public enum SCMClass implements ISCMClass {
     /* Must be a Java object */
     if (number instanceof BigDecimal) {
       /* Check if it is integral */
-      if (((BigDecimal)number).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+      BigDecimal bd = (BigDecimal)number;
+      if (bd.signum() == 0 || bd.scale() <= 0) {
         return SCMClass.INTEGER;
       }
       return SCMClass.REAL;
@@ -220,6 +221,9 @@ public enum SCMClass implements ISCMClass {
     } else if (expected.isAssignableFrom(actual)) {
       return true;
     } else {
+      if (Long.class.equals(expected)) {
+        return NumberUtils.isInteger(o);
+      }
       Predicate<Object> check = TYPE_PREDICATES.get(expected);
       return check != null && check.test(o);
     }

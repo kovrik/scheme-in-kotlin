@@ -1,12 +1,7 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.math.Expt;
-import core.procedures.math.Multiplication;
-import core.procedures.math.NumericalComparison;
-import core.procedures.math.ToExact;
-import core.procedures.math.ToInexact;
-import core.procedures.predicates.SCMPredicate;
+import core.procedures.math.*;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
@@ -386,11 +381,27 @@ public class NumberUtils {
   }
 
   public static boolean isInteger(Object o) {
-    return (o instanceof Number) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean();
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long || o instanceof Integer || o instanceof BigInteger) {
+      return true;
+    }
+    if (o instanceof BigDecimal) {
+      BigDecimal bd = (BigDecimal)o;
+      return bd.signum() == 0 || bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0;
+    }
+    if (o instanceof SCMBigRational) {
+      return ((SCMBigRational)o).isDenominatorEqualToOne();
+    }
+    if (o instanceof Double) {
+      return (Double)o == Math.floor((Double)o) && !Double.isInfinite((Double)o);
+    }
+    return false;
   }
 
   public static boolean isExactInteger(Object o) {
-    return isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean();
+    return isExact(o) && isInteger(o);
   }
 
   public static boolean isPositive(Object o) {
@@ -406,12 +417,12 @@ public class NumberUtils {
   }
 
   public static boolean isExactPositiveInteger(Object o) {
-    return NumberUtils.isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean() &&
+    return NumberUtils.isExact(o) && isInteger(o) &&
            NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
   }
 
   public static boolean isExactNonNegativeInteger(Object o) {
-    return NumberUtils.isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean() &&
+    return NumberUtils.isExact(o) && isInteger(o) &&
       NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
   }
 }

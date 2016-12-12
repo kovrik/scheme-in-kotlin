@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -47,7 +48,7 @@ public class NumberToString extends AFn {
         return bigDecimal.toString();
       }
       /* Check if it is integral */
-      if (bigDecimal.remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+      if (NumberUtils.isInteger(bigDecimal)) {
         return bigDecimal.toBigInteger().toString(radix);
       }
       throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
