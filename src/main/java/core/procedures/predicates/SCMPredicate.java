@@ -8,8 +8,8 @@ import core.scm.*;
 import core.utils.NumberUtils;
 
 import java.util.List;
+import java.util.function.Predicate;
 
-// TODO Implement java.util.function.SCMPredicate instead of wrapping it
 @FnArgs(args = {Object.class})
 public class SCMPredicate extends AFn {
 
@@ -46,11 +46,11 @@ public class SCMPredicate extends AFn {
   public static final SCMPredicate IS_MUTABLE   = new SCMPredicate("mutable?", SCMPredicate::isMutable);
 
   private final String name;
-  private final java.util.function.Predicate<Object> function;
+  private final Predicate<Object> predicate;
 
-  private SCMPredicate(String name, java.util.function.Predicate<Object> function) {
+  private SCMPredicate(String name, Predicate<Object> predicate) {
     this.name = name;
-    this.function = function;
+    this.predicate = predicate;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class SCMPredicate extends AFn {
 
   @Override
   public SCMBoolean invoke(Object... args) {
-    return SCMBoolean.toSCMBoolean(function.test(args[0]));
+    return SCMBoolean.toSCMBoolean(predicate.test(args[0]));
   }
 
   private static boolean isMutable(Object o) {
@@ -73,9 +73,6 @@ public class SCMPredicate extends AFn {
   }
 
   private static boolean isImmutable(Object o) {
-    if ((o instanceof SCMMutableString) || (o instanceof SCMMutableVector)) {
-      return false;
-    }
-    return true;
+    return !((o instanceof SCMMutableString) || (o instanceof SCMMutableVector));
   }
 }
