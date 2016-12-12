@@ -8,9 +8,8 @@ import core.scm.*;
 import core.utils.NumberUtils;
 
 import java.util.List;
-import java.util.function.Function;
 
-// TODO Rename to SCMPredicate + implement java.util.function.Predicate
+// TODO Rename to SCMPredicate + implement java.util.function.Predicate instead of wrapping it
 @FnArgs(args = {Object.class})
 public class Predicate extends AFn {
 
@@ -47,9 +46,9 @@ public class Predicate extends AFn {
   public static final Predicate IS_MUTABLE   = new Predicate("mutable?",    Predicate::isMutable);
 
   private final String name;
-  private final Function<Object, Boolean> function;
+  private final java.util.function.Predicate<Object> function;
 
-  private Predicate(String name, Function<Object, Boolean> function) {
+  private Predicate(String name, java.util.function.Predicate<Object> function) {
     this.name = name;
     this.function = function;
   }
@@ -66,7 +65,7 @@ public class Predicate extends AFn {
 
   @Override
   public SCMBoolean invoke(Object... args) {
-    return SCMBoolean.toSCMBoolean(function.apply(args[0]));
+    return SCMBoolean.toSCMBoolean(function.test(args[0]));
   }
 
   private static boolean isMutable(Object o) {
