@@ -527,4 +527,17 @@ public class NumberUtils {
   public static boolean isExactNonNegativeInteger(Object o) {
     return NumberUtils.isExact(o) && isInteger(o) && isNonNegative(o);
   }
+
+  /*
+   * Inexactness 'taint'
+   * Computations that involve an inexact number produce inexact results,
+   * so that inexactness acts as a kind of taint on numbers.
+   * See https://docs.racket-lang.org/guide/numbers.html
+   */
+  public static Number inexactnessTaint(Number result, Number other) {
+    if (isInexact(other) && (isExact(result))) {
+      return ToInexact.toInexact(result);
+    }
+    return result;
+  }
 }
