@@ -9,21 +9,6 @@ import static core.writer.Writer.write;
 // TODO Separate class for Proper and Improper Lists
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
-  /* Marker interfaces for Proper and Improper lists */
-  public abstract class SCMProperList implements ISCMClass {
-    @Override
-    public SCMClass getSCMClass() {
-      return SCMClass.LIST;
-    }
-  }
-
-  public abstract class SCMPair implements ISCMClass {
-    @Override
-    public SCMClass getSCMClass() {
-      return SCMClass.PAIR;
-    }
-  }
-
   /* Nil constant: empty list, but not a pair */
   public static final SCMCons NIL = new SCMCons() {
     @Override

@@ -1,15 +1,14 @@
 package core.procedures.cons;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.ICons;
-import core.scm.SCMCons;
+import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(args = {SCMCons.SCMPair.class})
+@FnArgs(args = {SCMClass.SCMPair.class})
 public class Car extends AFn {
 
   @Override

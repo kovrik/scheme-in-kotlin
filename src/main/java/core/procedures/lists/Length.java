@@ -2,11 +2,11 @@ package core.procedures.lists;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMCons;
+import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(args = {SCMCons.SCMProperList.class})
+@FnArgs(args = {SCMClass.SCMProperList.class})
 public class Length extends AFn {
 
   @Override

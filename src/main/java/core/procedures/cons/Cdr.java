@@ -3,11 +3,11 @@ package core.procedures.cons;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.ICons;
-import core.scm.SCMCons;
+import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(args = {SCMCons.SCMPair.class})
+@FnArgs(args = {SCMClass.SCMPair.class})
 public class Cdr extends AFn {
 
   @Override

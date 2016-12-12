@@ -60,8 +60,8 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMBoolean.class,            BOOLEAN);
     SCM_CLASSES.put(IFn.class,                   PROCEDURE);
     SCM_CLASSES.put(SCMSymbol.class,             SYMBOL);
-    SCM_CLASSES.put(SCMCons.SCMPair.class,       PAIR);
-    SCM_CLASSES.put(SCMCons.SCMProperList.class, LIST);
+    SCM_CLASSES.put(SCMPair.class,               PAIR);
+    SCM_CLASSES.put(SCMProperList.class,         LIST);
     SCM_CLASSES.put(SCMVector.class,             VECTOR);
     SCM_CLASSES.put(SCMImmutableVector.class,    IMMUTABLE_VECTOR);
     SCM_CLASSES.put(SCMMutableVector.class,      MUTABLE_VECTOR);
@@ -106,15 +106,23 @@ public enum SCMClass implements ISCMClass {
    *   exact?                     -> Exact.class *
    *   inexact?                   -> Inexact.class *
    */
-  public interface ExactNonNegativeInteger {} // the only one that is actually used?
-  public interface ExactInteger {}
-  public interface ExactPositiveInteger {}
-  public interface InexactReal {}
-  public interface Positive {}
-  public interface Negative {}
-  public interface NonNegative {}
-  public interface Exact {}
-  public interface Inexact {}
+  /* Marker classes for Proper and Improper lists */
+  public abstract class SCMProperList implements ISCMClass {
+    @Override public SCMClass getSCMClass() { return SCMClass.LIST; }
+  }
+  public abstract class SCMPair implements ISCMClass {
+    @Override public SCMClass getSCMClass() { return SCMClass.PAIR; }
+  }
+  /* Marker classes for numbers */
+  public abstract class ExactNonNegativeInteger {} // the only one that is actually used?
+  public abstract class ExactInteger {}
+  public abstract class ExactPositiveInteger {}
+  public abstract class InexactReal {}
+  public abstract class Positive {}
+  public abstract class Negative {}
+  public abstract class NonNegative {}
+  public abstract class Exact {}
+  public abstract class Inexact {}
 
   private final String name;
 
@@ -186,12 +194,6 @@ public enum SCMClass implements ISCMClass {
   public static boolean checkClass(Object o, Class<?> expected) {
     /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
     Class<?> actual = o.getClass();
-    if ((expected.equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(o))) {
-      actual = SCMCons.SCMProperList.class;
-    } else if ((expected.equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(o))) {
-      actual = SCMCons.SCMPair.class;
-    }
-
     if (expected == actual) {
       return true;
     } else if (expected.isAssignableFrom(actual)) {
@@ -202,6 +204,10 @@ public enum SCMClass implements ISCMClass {
       return (String.class.equals(actual) || SCMImmutableString.class.equals(actual));
     } else if (SCMMutableString.class.equals(expected)) {
       return (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual));
+    } else if (expected.equals(SCMProperList.class)) {
+      return SCMCons.isList(o);
+    } else if (expected.equals(SCMPair.class)) {
+      return SCMCons.isPair(o);
     } else if (Boolean.class.equals(expected)) {
       return SCMBoolean.class.equals(actual);
     } else if (SCMBigRational.class.equals(expected)) {

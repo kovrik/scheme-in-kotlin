@@ -2,12 +2,12 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMCons;
+import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
 import java.util.List;
 
-@FnArgs(args = {SCMCons.SCMProperList.class})
+@FnArgs(args = {SCMClass.SCMProperList.class})
 public class ListToVector extends AFn {
 
   @Override
