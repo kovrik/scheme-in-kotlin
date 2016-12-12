@@ -190,7 +190,7 @@ public enum SCMClass implements ISCMClass {
     throw new WrongTypeException(c.getSimpleName(), o);
   }
 
-  public static boolean checkClass(Object o, Class<?> expected) {
+  public static boolean checkType(Object o, Class<?> expected) {
     /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
     Class<?> actual = o.getClass();
     if (expected == actual) {

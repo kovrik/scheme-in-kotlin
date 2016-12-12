@@ -122,7 +122,7 @@ public class Evaluator implements IEvaluator {
         if (fnArgsAnnotation.isVariadic() && (fnArgs.length < i)) {
           continue;
         }
-        if (!(SCMClass.checkClass(arg, fnArgs[i - 1]))) {
+        if (!(SCMClass.checkType(arg, fnArgs[i - 1]))) {
           throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
         }
       }
