@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 @FnArgs(args = {Object.class})
 public class SCMPredicate extends AFn {
 
-  public static final SCMPredicate IS_NULL = new SCMPredicate("null?", o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
+  public static final SCMPredicate IS_NULL = new SCMPredicate("null?", SCMCons::isNull);
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
