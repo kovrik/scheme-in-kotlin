@@ -2,8 +2,6 @@ package core.scm;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
-import core.procedures.math.NumericalComparison;
-import core.procedures.predicates.Predicate;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -11,7 +9,6 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public enum SCMClass implements ISCMClass {
   INTEGER("Integer"),
