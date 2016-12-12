@@ -18,7 +18,7 @@ import core.procedures.lists.Length;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
-import core.scm.SCMPredicate;
+import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
