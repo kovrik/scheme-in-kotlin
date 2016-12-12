@@ -6,7 +6,7 @@ import core.procedures.math.Multiplication;
 import core.procedures.math.NumericalComparison;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
-import core.procedures.predicates.Predicate;
+import core.procedures.predicates.SCMPredicate;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
@@ -386,11 +386,11 @@ public class NumberUtils {
   }
 
   public static boolean isInteger(Object o) {
-    return (o instanceof Number) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+    return (o instanceof Number) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean();
   }
 
   public static boolean isExactInteger(Object o) {
-    return isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+    return isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean();
   }
 
   public static boolean isPositive(Object o) {
@@ -406,12 +406,12 @@ public class NumberUtils {
   }
 
   public static boolean isExactPositiveInteger(Object o) {
-    return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+    return NumberUtils.isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean() &&
            NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
   }
 
   public static boolean isExactNonNegativeInteger(Object o) {
-    return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+    return NumberUtils.isExact(o) && SCMPredicate.IS_INTEGER.invoke(o).toBoolean() &&
       NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
   }
 }

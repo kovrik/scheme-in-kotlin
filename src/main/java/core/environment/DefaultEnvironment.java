@@ -18,7 +18,7 @@ import core.procedures.lists.Length;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
-import core.procedures.predicates.Predicate;
+import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -192,34 +192,34 @@ public final class DefaultEnvironment extends Environment {
       new Void(),
 
       /* Predicates */
-      Predicate.IS_NULL,
-      Predicate.IS_PAIR,
-      Predicate.IS_LIST,
-      Predicate.IS_PROMISE,
-      Predicate.IS_CHAR,
-      Predicate.IS_STRING,
-      Predicate.IS_VECTOR,
-      Predicate.IS_SYMBOL,
-      Predicate.IS_BOOLEAN,
-      Predicate.IS_PROC,
-      Predicate.IS_PORT,
-      Predicate.IS_INPUT_PORT,
-      Predicate.IS_OUTPUT_PORT,
-      Predicate.IS_NUMBER,
-      Predicate.IS_COMPLEX,
-      Predicate.IS_RATIONAL,
-      Predicate.IS_REAL,
-      Predicate.IS_EOF,
-      Predicate.IS_EXACT,
-      Predicate.IS_INEXACT,
-      Predicate.IS_ZERO,
-      Predicate.IS_EMPTY,
-      Predicate.IS_INTEGER,
-      Predicate.IS_POSITIVE,
-      Predicate.IS_NEGATIVE,
-      Predicate.IS_IMMUTABLE,
-      Predicate.IS_MUTABLE,
-  };
+      SCMPredicate.IS_NULL,
+      SCMPredicate.IS_PAIR,
+      SCMPredicate.IS_LIST,
+      SCMPredicate.IS_PROMISE,
+      SCMPredicate.IS_CHAR,
+      SCMPredicate.IS_STRING,
+      SCMPredicate.IS_VECTOR,
+      SCMPredicate.IS_SYMBOL,
+      SCMPredicate.IS_BOOLEAN,
+      SCMPredicate.IS_PROC,
+      SCMPredicate.IS_PORT,
+      SCMPredicate.IS_INPUT_PORT,
+      SCMPredicate.IS_OUTPUT_PORT,
+      SCMPredicate.IS_NUMBER,
+      SCMPredicate.IS_COMPLEX,
+      SCMPredicate.IS_RATIONAL,
+      SCMPredicate.IS_REAL,
+      SCMPredicate.IS_EOF,
+      SCMPredicate.IS_EXACT,
+      SCMPredicate.IS_INEXACT,
+      SCMPredicate.IS_ZERO,
+      SCMPredicate.IS_EMPTY,
+      SCMPredicate.IS_INTEGER,
+      SCMPredicate.IS_POSITIVE,
+      SCMPredicate.IS_NEGATIVE,
+      SCMPredicate.IS_IMMUTABLE,
+      SCMPredicate.IS_MUTABLE,
+      };
 
   private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {
     Delay.DELAY,
