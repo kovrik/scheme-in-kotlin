@@ -88,10 +88,12 @@ public enum SCMClass implements ISCMClass {
    *
    * Below is the mapping from predicates to the actual/marker classes:
    *
+   *   pair?                      -> SCMPair + SCMCons.isPair()
+   *   list?                      -> SCMProperList + SCMCons.isList()
    *   number?                    -> Number.class
    *   complex?                   -> SCMComplex.class (not implemented yet)
    *   real?                      -> Number.class
-   *   rational?                  -> NumberUtils.IsRational()
+   *   rational?                  -> SCMBigRational + NumberUtils.IsRational()
    *   integer?                   -> Integer.class/Long.class
    *   exact-integer?             -> ExactInteger.class *
    *   exact-nonnegative-integer? -> ExactNonNegativeInteger.class *
