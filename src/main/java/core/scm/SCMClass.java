@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public enum SCMClass implements ISCMClass {
   INTEGER("Integer"),
@@ -123,6 +124,28 @@ public enum SCMClass implements ISCMClass {
   public abstract class Exact {}
   public abstract class Inexact {}
 
+  private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
+  static {
+    TYPE_PREDICATES.put(Boolean.class, o -> SCMBoolean.class.equals(o.getClass()));
+    TYPE_PREDICATES.put(String.class, o -> SCMImmutableString.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));
+    TYPE_PREDICATES.put(SCMImmutableString.class, o -> String.class.equals(o.getClass()) || SCMImmutableString.class.equals(o.getClass()));
+    TYPE_PREDICATES.put(SCMMutableString.class, o -> StringBuilder.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));
+    TYPE_PREDICATES.put(SCMProperList.class, SCMCons::isList);
+    TYPE_PREDICATES.put(SCMPair.class, SCMCons::isPair);
+    TYPE_PREDICATES.put(SCMBigRational.class, NumberUtils::isRational);
+    TYPE_PREDICATES.put(Long.class, NumberUtils::isInteger);
+    TYPE_PREDICATES.put(Integer.class, NumberUtils::isInteger);
+    TYPE_PREDICATES.put(Exact.class, NumberUtils::isExact);
+    TYPE_PREDICATES.put(ExactInteger.class, NumberUtils::isExactInteger);
+    TYPE_PREDICATES.put(ExactPositiveInteger.class, NumberUtils::isExactPositiveInteger);
+    TYPE_PREDICATES.put(ExactNonNegativeInteger.class, NumberUtils::isExactNonNegativeInteger);
+    TYPE_PREDICATES.put(Inexact.class, NumberUtils::isInexact);
+    TYPE_PREDICATES.put(InexactReal.class, NumberUtils::isInexact);
+    TYPE_PREDICATES.put(Positive.class, NumberUtils::isPositive);
+    TYPE_PREDICATES.put(Negative.class, NumberUtils::isNegative);
+    TYPE_PREDICATES.put(NonNegative.class, NumberUtils::isNonNegative);
+  }
+
   private final String name;
 
   SCMClass(String name) {
@@ -196,41 +219,9 @@ public enum SCMClass implements ISCMClass {
       return true;
     } else if (expected.isAssignableFrom(actual)) {
       return true;
-    } else if (String.class.equals(expected)) {
-      return (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual));
-    } else if (SCMImmutableString.class.equals(expected)) {
-      return (String.class.equals(actual) || SCMImmutableString.class.equals(actual));
-    } else if (SCMMutableString.class.equals(expected)) {
-      return (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual));
-    } else if (expected.equals(SCMProperList.class)) {
-      return SCMCons.isList(o);
-    } else if (expected.equals(SCMPair.class)) {
-      return SCMCons.isPair(o);
-    } else if (Boolean.class.equals(expected)) {
-      return SCMBoolean.class.equals(actual);
-    } else if (SCMBigRational.class.equals(expected)) {
-      return NumberUtils.isRational(o);
-    } else if (Long.class.equals(expected) || Integer.class.equals(expected)) {
-      return NumberUtils.isInteger(o);
-    } else if (ExactNonNegativeInteger.class.equals(expected)) {
-      return NumberUtils.isExactNonNegativeInteger(o);
-    } else if (ExactInteger.class.equals(expected)) {
-      return NumberUtils.isExactInteger(o);
-    } else if (ExactPositiveInteger.class.equals(expected)) {
-      return NumberUtils.isExactPositiveInteger(o);
-    } else if (InexactReal.class.equals(expected)) {
-      return NumberUtils.isInexact(o);
-    } else if (Positive.class.equals(expected)) {
-      return NumberUtils.isPositive(o);
-    } else if (Negative.class.equals(expected)) {
-      return NumberUtils.isNegative(o);
-    } else if (NonNegative.class.equals(expected)) {
-      return NumberUtils.isNonNegative(o);
-    } else if (Inexact.class.equals(expected)) {
-      return NumberUtils.isInexact(o);
-    } else if (Exact.class.equals(expected)) {
-      return NumberUtils.isExact(o);
+    } else {
+      Predicate<Object> check = TYPE_PREDICATES.get(expected);
+      return check != null && check.test(o);
     }
-    return false;
   }
 }
