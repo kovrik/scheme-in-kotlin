@@ -1,7 +1,6 @@
 package unittests;
 
 import core.scm.SCMCons;
-import core.scm.SCMMutableString;
 import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
@@ -18,9 +17,9 @@ public class WriterTest {
 
   @Test
   public void testWriteString() {
-    assertEquals("\"test string\"", writer.toString(new SCMMutableString("test string")));
-    assertEquals("\"\"", writer.toString(new SCMMutableString("")));
-    assertEquals("\"(1 2 3)\"", writer.toString(new SCMMutableString("(1 2 3)")));
+    assertEquals("\"test string\"", writer.toString("test string"));
+    assertEquals("\"\"", writer.toString(""));
+    assertEquals("\"(1 2 3)\"", writer.toString("(1 2 3)"));
   }
 
   @Test
@@ -44,7 +43,7 @@ public class WriterTest {
     assertEquals("(1 2 3)", writer.toString(Arrays.asList(1, 2, 3).subList(0, 3)));
     assertEquals("(1 2 3 4)", writer.toString(Arrays.asList(1, 2, 3, 4)));
     assertEquals("(#\\a #\\b #\\c)", writer.toString(Arrays.asList('a', 'b', 'c')));
-    assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList(new SCMMutableString("test"), new SCMMutableString("string"))));
+    assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList("test", "string")));
     assertEquals("(() () ())", writer.toString(Arrays.asList(null, null, null)));
   }
 }

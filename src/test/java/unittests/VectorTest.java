@@ -1,7 +1,6 @@
 package unittests;
 
 import core.scm.SCMClass;
-import core.scm.SCMMutableString;
 import core.scm.SCMMutableVector;
 import org.junit.Test;
 
@@ -9,7 +8,8 @@ import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.list;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class VectorTest extends AbstractTest {
 
@@ -69,7 +69,7 @@ public class VectorTest extends AbstractTest {
     assertEquals(1L, eval("(vector-ref (vector 1 2 3) 0)", env));
     assertEquals(2L, eval("(vector-ref (vector 1 2 3) 1)", env));
     assertEquals(3L, eval("(vector-ref (vector 1 2 3) 2)", env));
-    assertEquals(new SCMMutableString("test"), eval("(vector-ref (vector \"test\" 2 3) 0)", env));
+    assertEquals("test", eval("(vector-ref (vector \"test\" 2 3) 0)", env));
 
     try {
       eval("(vector-ref (vector 1 2 3) -1)", env);
@@ -116,7 +116,7 @@ public class VectorTest extends AbstractTest {
     sexp = "(begin (define v (vector 1 2 3))" +
         "       (vector-set! v 2 \"test\")" +
         "       (vector-ref  v 2))";
-    assertEquals(new SCMMutableString("test"), eval(sexp, env));
+    assertEquals("test", eval(sexp, env));
 
     sexp = "(begin (define v (vector 1 2 3)) (vector-set! v -1 \"test\"))";
     try {
@@ -162,7 +162,7 @@ public class VectorTest extends AbstractTest {
   @Test
   public void testEvalVectorToList() {
 
-    assertEquals(list(1L, 2L, new SCMMutableString("test")), eval("(vector->list #(1 2 \"test\"))", env));
+    assertEquals(list(1L, 2L, "test"), eval("(vector->list #(1 2 \"test\"))", env));
     assertEquals(list(), eval("(vector->list #())", env));
 
     try {

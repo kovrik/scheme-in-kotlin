@@ -9,7 +9,8 @@ import org.junit.Test;
 import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.list;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class StringTest extends AbstractTest {
 
@@ -21,10 +22,10 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStrings() {
-    assertEquals(new SCMMutableString("1"), eval("\"1\"", env));
-    assertEquals(new SCMMutableString("Lorem ipsum"), eval("\"Lorem ipsum\"", env));
-    assertEquals(new SCMMutableString("Lorem \\\"ipsum\\\" "), eval("\"Lorem \\\"ipsum\\\" \"", env));
-    assertEquals(new SCMMutableString(""), eval("\"\"", env));
+    assertEquals("1", eval("\"1\"", env));
+    assertEquals("Lorem ipsum", eval("\"Lorem ipsum\"", env));
+    assertEquals("Lorem \\\"ipsum\\\" ", eval("\"Lorem \\\"ipsum\\\" \"", env));
+    assertEquals("", eval("\"\"", env));
   }
 
   @Test
@@ -130,11 +131,11 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringAppend() {
-    assertEquals(new SCMMutableString(""), eval("(string-append)", env));
-    assertEquals(new SCMMutableString(""), eval("(string-append \"\")", env));
-    assertEquals(new SCMMutableString("Apple"), eval("(string-append \"Apple\")", env));
-    assertEquals(new SCMMutableString("AppleBanana"), eval("(string-append \"Apple\" \"Banana\")", env));
-    assertEquals(new SCMMutableString("AppleBananaCoconut"), eval("(string-append \"Apple\" \"Banana\" \"Coconut\")", env));
+    assertEquals("", eval("(string-append)", env));
+    assertEquals("", eval("(string-append \"\")", env));
+    assertEquals("Apple", eval("(string-append \"Apple\")", env));
+    assertEquals("AppleBanana", eval("(string-append \"Apple\" \"Banana\")", env));
+    assertEquals("AppleBananaCoconut", eval("(string-append \"Apple\" \"Banana\" \"Coconut\")", env));
   }
 
   @Test

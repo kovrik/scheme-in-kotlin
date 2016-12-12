@@ -102,14 +102,14 @@ public class ReaderTest {
 
   @Test
   public void testReadStrings() {
-    assertEquals(new SCMMutableString("1"), reader.readFirst("\"1\""));
-    assertEquals(new SCMMutableString("Lorem ipsum"), reader.readFirst("\"Lorem ipsum\""));
-    assertEquals(new SCMMutableString("Lorem \\\"ipsum\\\" "), reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
-    assertEquals(new SCMMutableString(""), reader.readFirst("\"\""));
-    assertEquals(new SCMMutableString("test \u0123"), reader.readFirst("\"test \\u123\""));
-    assertEquals(new SCMMutableString("test \\\\u"), reader.readFirst("\"test \\\\u\""));
-    assertEquals(new SCMMutableString("test \\\\U"), reader.readFirst("\"test \\\\U\""));
-    assertEquals(new SCMMutableString("test \\\\x"), reader.readFirst("\"test \\\\x\""));
+    assertEquals("1", reader.readFirst("\"1\""));
+    assertEquals("Lorem ipsum", reader.readFirst("\"Lorem ipsum\""));
+    assertEquals("Lorem \\\"ipsum\\\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
+    assertEquals("", reader.readFirst("\"\""));
+    assertEquals("test \u0123", reader.readFirst("\"test \\u123\""));
+    assertEquals("test \\\\u", reader.readFirst("\"test \\\\u\""));
+    assertEquals("test \\\\U", reader.readFirst("\"test \\\\U\""));
+    assertEquals("test \\\\x", reader.readFirst("\"test \\\\x\""));
     try {
       reader.readFirst("\"test \\uu\"");
       fail();
@@ -129,7 +129,7 @@ public class ReaderTest {
     assertEquals(new SCMMutableVector(), reader.readFirst("#()"));
     assertEquals(new SCMMutableVector(0L), reader.readFirst("#(0)"));
     assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
-    assertEquals(new SCMMutableVector(1L, new SCMMutableString("test"), 3L), reader.readFirst("#(1 \"test\" 3)"));
+    assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("#(1 \"test\" 3)"));
     assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
     try {
       reader.readFirst("#(1 . 2)");
@@ -148,7 +148,7 @@ public class ReaderTest {
     assertEquals(list(), reader.readFirst("()"));
     assertEquals(list(0L), reader.readFirst("(0)"));
     assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
-    assertEquals(list(1L, new SCMMutableString("test"), 3L), reader.readFirst("(1 \"test\" 3)"));
+    assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
     assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
   }
@@ -164,14 +164,14 @@ public class ReaderTest {
   @Test
   public void testReadQuote() {
     assertEquals(list(s(Quote.QUOTE.toString()), 1L), reader.readFirst("'1"));
-    assertEquals(list(s(Quote.QUOTE.toString()), list(1L, new SCMMutableString("test"))), reader.readFirst("'(1 \"test\")"));
+    assertEquals(list(s(Quote.QUOTE.toString()), list(1L, "test")), reader.readFirst("'(1 \"test\")"));
     assertEquals(list(s(Quote.QUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"));
   }
 
   @Test
   public void testReadQuasiquote() {
     assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.readFirst("`1"));
-    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(1L, new SCMMutableString("test"))), reader.readFirst("`(1 \"test\")"));
+    assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(1L, "test")), reader.readFirst("`(1 \"test\")"));
     assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"));
   }
 
@@ -252,7 +252,7 @@ public class ReaderTest {
   @Test
   public void testEscapeSequences() {
     String escape   = "\"\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\\"";
-    SCMMutableString expected = new SCMMutableString("\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\");
+    String expected = "\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\";
     assertEquals(expected, reader.readFirst(escape));
     try {
       reader.readFirst("\"\\u\"");

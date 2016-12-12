@@ -3,9 +3,8 @@ package unittests;
 import core.exceptions.ArityException;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
-import core.scm.SCMMutableString;
-import core.scm.SCMSymbol;
 import core.scm.SCMMutableVector;
+import core.scm.SCMSymbol;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -50,7 +49,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalListToVector() {
-    assertEquals(new SCMMutableVector(1L, 2L, new SCMMutableString("test")), eval("(list->vector '(1 2 \"test\"))", env));
+    assertEquals(new SCMMutableVector(1L, 2L, "test"), eval("(list->vector '(1 2 \"test\"))", env));
     assertEquals(new SCMMutableVector(), eval("(list->vector '())", env));
     try {
       eval("(list->vector #(1 2 3))", env);
@@ -92,7 +91,7 @@ public class ListTest extends AbstractTest {
   @Test
   public void testCar() {
     assertEquals(1L, eval("(car (cons 1 2))", env));
-    assertEquals(new SCMMutableString("test"), eval("(car (cons \"test\" 2))", env));
+    assertEquals("test", eval("(car (cons \"test\" 2))", env));
     assertEquals(1L, eval("(car (cons 1 (cons 2 3)))", env));
     assertEquals(1L, eval("(car '(1 2 3))", env));
     assertEquals(1L, eval("(car '(1))", env));
@@ -112,7 +111,7 @@ public class ListTest extends AbstractTest {
   @Test
   public void testCdr() {
     assertEquals(2L, eval("(cdr (cons 1 2))", env));
-    assertEquals(new SCMMutableString("test"), eval("(cdr (cons 2 \"test\"))", env));
+    assertEquals("test", eval("(cdr (cons 2 \"test\"))", env));
     assertEquals(cons(2L, 3L), eval("(cdr (cons 1 (cons 2 3)))", env));
     assertEquals(list(2L, 3L), eval("(cdr '(1 2 3))", env));
     assertEquals(SCMCons.NIL, eval("(cdr '(1))", env));
@@ -133,8 +132,8 @@ public class ListTest extends AbstractTest {
   public void testSetCar() {
     assertEquals(UNSPECIFIED, eval("(set-car! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-car! a 3) (car a)))", env));
-    assertEquals(new SCMMutableString("test"), eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env));
-    assertEquals(new SCMMutableString("test"), eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env));
+    assertEquals("test", eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env));
+    assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env));
     try {
       eval("(set-car! '() 1)", env);
     } catch (IllegalArgumentException e) {
@@ -151,7 +150,7 @@ public class ListTest extends AbstractTest {
   public void testSetCdr() {
     assertEquals(UNSPECIFIED, eval("(set-cdr! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env));
-    assertEquals(new SCMMutableString("test"), eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env));
+    assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env));
     assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env));
     assertEquals(3L, eval("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))", env));
     assertEquals(2L, eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr (cons 1 2)))", env));
@@ -169,7 +168,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testAppend() {
-    assertEquals(new SCMMutableString("test"), eval("(append '() \"test\")", env));
+    assertEquals("test", eval("(append '() \"test\")", env));
     assertEquals(5L, eval("(append '() 5)", env));
     assertEquals(cons(1L, 5L), eval("(append '(1) 5)", env));
     assertEquals(list(1L, 2L, 3L), eval("(append '(1) '(2 3))", env));

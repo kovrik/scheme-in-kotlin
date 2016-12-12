@@ -1,6 +1,5 @@
 package unittests;
 
-import core.scm.SCMMutableString;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.TRUE;
@@ -18,8 +17,8 @@ public class TCOTest extends AbstractTest {
                        "      (recursive (- n 1))))";
     eval(recursive, env);
 
-    assertEquals(new SCMMutableString("DONE"), eval("(recursive 5)", env));
-    assertEquals(new SCMMutableString("DONE"), eval("(recursive " + iterations + ")", env));
+    assertEquals("DONE", eval("(recursive 5)", env));
+    assertEquals("DONE", eval("(recursive " + iterations + ")", env));
   }
 
   @Test
