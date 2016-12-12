@@ -404,6 +404,7 @@ public class NumberUtils {
     return isExact(o) && isInteger(o);
   }
 
+  // TODO Optimize BEGIN -----------------------------------------------------------------------------------------------
   public static boolean isPositive(Object o) {
     return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
   }
@@ -425,4 +426,5 @@ public class NumberUtils {
     return NumberUtils.isExact(o) && isInteger(o) &&
       NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
   }
+  // TODO Optimize END -------------------------------------------------------------------------------------------------
 }
