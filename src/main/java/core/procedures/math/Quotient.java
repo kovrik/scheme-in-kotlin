@@ -52,13 +52,6 @@ public class Quotient extends AFn {
     if ((first instanceof Double) || (second instanceof Double) ||
         (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
 
-      // check if they are integral
-      if (first.doubleValue() != Math.floor(first.doubleValue())) {
-        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
-      }
-      if (second.doubleValue() != Math.floor(second.doubleValue())) {
-        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
-      }
       if (second.intValue() == 0) {
         throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
       }

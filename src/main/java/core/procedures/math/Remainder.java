@@ -33,17 +33,9 @@ public class Remainder extends AFn {
 
   public Number invoke(Number first, Number second) {
     if (first instanceof SCMBigRational) {
-      if (!(((SCMBigRational)first).isDenominatorEqualToOne())) {
-        throw new IllegalArgumentException(
-          String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
-      }
       first = ((SCMBigRational) first).toBigDecimal();
     }
     if (second instanceof SCMBigRational) {
-      if (!(((SCMBigRational) second).isDenominatorEqualToOne())) {
-        throw new IllegalArgumentException(
-          String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
-      }
       second = ((SCMBigRational) second).toBigDecimal();
     }
 
@@ -58,13 +50,6 @@ public class Remainder extends AFn {
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {
-      // check if they are integral
-      if (first.doubleValue() != Math.floor(first.doubleValue())) {
-        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), first));
-      }
-      if (second.doubleValue() != Math.floor(second.doubleValue())) {
-        throw new IllegalArgumentException(String.format("Error: (%s) bad argument type - not an integer: %s", getName(), second));
-      }
       if (second.intValue() == 0) {
         throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
       }
