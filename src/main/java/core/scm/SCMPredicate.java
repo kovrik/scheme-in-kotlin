@@ -1,10 +1,9 @@
-package core.procedures.predicates;
+package core.scm;
 
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.math.NumericalComparison;
 import core.procedures.math.Round;
-import core.scm.*;
 import core.utils.NumberUtils;
 
 import java.util.List;

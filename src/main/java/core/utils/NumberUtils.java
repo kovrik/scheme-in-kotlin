@@ -6,7 +6,7 @@ import core.procedures.math.Multiplication;
 import core.procedures.math.NumericalComparison;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
-import core.procedures.predicates.SCMPredicate;
+import core.scm.SCMPredicate;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
 import core.scm.SCMBigRational;
