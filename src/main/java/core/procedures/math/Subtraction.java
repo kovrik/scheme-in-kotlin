@@ -48,7 +48,7 @@ public class Subtraction extends AFn {
   public Number invoke(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(second)) {
-      return first;
+      return NumberUtils.inexactnessTaint(first, second);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {

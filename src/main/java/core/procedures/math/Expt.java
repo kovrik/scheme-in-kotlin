@@ -30,10 +30,10 @@ public class Expt extends AFn {
   public static Number invoke(Number first, Number exponent) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
-      return 0L;
+      return NumberUtils.inexactnessTaint(first, exponent);
     }
     if (NumberUtils.isOne(first)) {
-      return 1L;
+      return NumberUtils.inexactnessTaint(first, exponent);
     }
     if (NumberUtils.isZero(exponent)) {
       return 1L;

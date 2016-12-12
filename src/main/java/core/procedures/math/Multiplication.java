@@ -40,10 +40,10 @@ public class Multiplication extends AFn {
       return 0L;
     }
     if (NumberUtils.isOne(first)) {
-      return second;
+      return NumberUtils.inexactnessTaint(second, first);
     }
     if (NumberUtils.isOne(second)) {
-      return first;
+      return NumberUtils.inexactnessTaint(first, second);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {

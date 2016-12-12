@@ -23,10 +23,10 @@ public class Addition extends AFn {
   public Number invoke(Object first, Object second) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
-      return (Number)second;
+      return NumberUtils.inexactnessTaint((Number)second, (Number) first);
     }
     if (NumberUtils.isZero(second)) {
-      return (Number)first;
+      return NumberUtils.inexactnessTaint((Number)first, (Number)second);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {

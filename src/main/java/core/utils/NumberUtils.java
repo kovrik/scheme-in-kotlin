@@ -440,7 +440,7 @@ public class NumberUtils {
       return ((Long)o) == 1;
     }
     if (o instanceof Double) {
-      return Double.doubleToRawLongBits((Double)o) == 1;
+      return Double.compare((Double)o, 1d) == 0;
     }
     if (o instanceof SCMBigRational) {
       return ((SCMBigRational)o).isOne();

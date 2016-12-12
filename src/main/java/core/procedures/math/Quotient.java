@@ -24,7 +24,7 @@ public class Quotient extends AFn {
   public Number invoke(Object... args) {
     /* Special cases */
     if (NumberUtils.isOne(args[1])) {
-      return (Number)args[0];
+      return NumberUtils.inexactnessTaint((Number)args[0], (Number) args[1]);
     }
     if (NumberUtils.isZero(args[1])) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
