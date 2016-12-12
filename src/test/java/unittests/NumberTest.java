@@ -200,6 +200,9 @@ public class NumberTest extends AbstractTest {
   public void testEvalIsZero() {
     assertEquals(TRUE,  eval("(zero? 0)", env));
     assertEquals(TRUE,  eval("(zero? 0.0)", env));
+    assertEquals(TRUE,  eval("(zero? 0000000000000000000000000000.00000000000000000000000)", env));
+    assertEquals(TRUE,  eval("(zero? 0/999999)", env));
+    assertEquals(TRUE,  eval("(zero? -0/999999)", env));
     assertEquals(FALSE, eval("(zero? 1)", env));
     assertEquals(FALSE, eval("(zero? -5)", env));
 
@@ -215,6 +218,10 @@ public class NumberTest extends AbstractTest {
   public void testEvalNegative() {
     assertEquals(FALSE, eval("(negative? 0)", env));
     assertEquals(FALSE, eval("(negative? 0.0)", env));
+    assertEquals(FALSE, eval("(negative? 3/4)", env));
+    assertEquals(TRUE,  eval("(negative? -3/4)", env));
+    assertEquals(FALSE, eval("(negative? 9999999999999999999999999999999999.0)", env));
+    assertEquals(TRUE,  eval("(negative? -9999999999999999999999999999999999.0)", env));
     assertEquals(FALSE, eval("(negative? 1)", env));
     assertEquals(FALSE, eval("(negative? (* -5 -6))", env));
     assertEquals(TRUE,  eval("(negative? -5)", env));
@@ -230,6 +237,10 @@ public class NumberTest extends AbstractTest {
   public void testEvalPositive() {
     assertEquals(FALSE, eval("(positive? 0)", env));
     assertEquals(FALSE, eval("(positive? 0.0)", env));
+    assertEquals(TRUE,  eval("(positive? 3/4)", env));
+    assertEquals(FALSE, eval("(positive? -3/4)", env));
+    assertEquals(TRUE,  eval("(positive? 9999999999999999999999999999999999.0)", env));
+    assertEquals(FALSE, eval("(positive? -9999999999999999999999999999999999.0)", env));
     assertEquals(TRUE,  eval("(positive? 1)", env));
     assertEquals(TRUE,  eval("(positive? (* -5 -6))", env));
     assertEquals(FALSE, eval("(positive? -5)", env));

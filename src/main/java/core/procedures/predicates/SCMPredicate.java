@@ -2,7 +2,6 @@ package core.procedures.predicates;
 
 import core.procedures.AFn;
 import core.procedures.IFn;
-import core.procedures.math.NumericalComparison;
 import core.scm.*;
 import core.utils.NumberUtils;
 
@@ -33,12 +32,9 @@ public class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EOF = new SCMPredicate("eof-object?", o -> (o instanceof SCMEof));
   public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
   public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
-  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass(o, Number.class) &&
-                                                                             NumericalComparison.invoke(0L, o, NumericalComparison.Type.EQUAL)));
-  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, Number.class) &&
-                                                                               NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER)));
-  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, Number.class) &&
-                                                                               NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS)));
+  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isZero(o)));
+  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isPositive(o)));
+  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isNegative(o)));
   public static final SCMPredicate IS_INTEGER = new SCMPredicate("integer?", NumberUtils::isInteger);
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
   public static final SCMPredicate IS_MUTABLE   = new SCMPredicate("mutable?", SCMPredicate::isMutable);

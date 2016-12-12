@@ -404,27 +404,99 @@ public class NumberUtils {
     return isExact(o) && isInteger(o);
   }
 
-  // TODO Optimize BEGIN -----------------------------------------------------------------------------------------------
+  public static boolean isZero(Object o) {
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long) {
+      return ((Long)o) == 0;
+    }
+    if (o instanceof Double) {
+      return Double.doubleToRawLongBits((Double)o) == 0;
+    }
+    if (o instanceof SCMBigRational) {
+      return ((SCMBigRational)o).isZero();
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) == 0;
+    }
+    if (o instanceof Integer) {
+      return ((Integer)o) == 0;
+    }
+    if (o instanceof Float) {
+      return Float.floatToRawIntBits((Float)o) == 0;
+    }
+    if (o instanceof BigInteger) {
+      return ((BigInteger)o).compareTo(BigInteger.ZERO) == 0;
+    }
+    return false;
+  }
+
   public static boolean isPositive(Object o) {
-    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long) {
+      return ((Long)o) > 0;
+    }
+    if (o instanceof Double) {
+      return Double.doubleToRawLongBits((Double)o) > 0;
+    }
+    if (o instanceof SCMBigRational) {
+      return ((SCMBigRational)o).isPositive();
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) > 0;
+    }
+    if (o instanceof Integer) {
+      return ((Integer)o) > 0;
+    }
+    if (o instanceof Float) {
+      return Float.floatToRawIntBits((Float)o) > 0;
+    }
+    if (o instanceof BigInteger) {
+      return ((BigInteger)o).compareTo(BigInteger.ZERO) > 0;
+    }
+    return false;
   }
 
   public static boolean isNegative(Object o) {
-    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+    if (!(o instanceof Number)) {
+      return false;
+    }
+    if (o instanceof Long) {
+      return ((Long)o) < 0;
+    }
+    if (o instanceof Double) {
+      return Double.doubleToRawLongBits((Double)o) < 0;
+    }
+    if (o instanceof SCMBigRational) {
+      return ((SCMBigRational)o).isNegative();
+    }
+    if (o instanceof BigDecimal) {
+      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) < 0;
+    }
+    if (o instanceof Integer) {
+      return ((Integer)o) < 0;
+    }
+    if (o instanceof Float) {
+      return Float.floatToRawIntBits((Float)o) < 0;
+    }
+    if (o instanceof BigInteger) {
+      return ((BigInteger)o).compareTo(BigInteger.ZERO) < 0;
+    }
+    return false;
   }
 
   public static boolean isNonNegative(Object o) {
-    return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS);
+    return !isNegative(o);
   }
 
   public static boolean isExactPositiveInteger(Object o) {
-    return NumberUtils.isExact(o) && isInteger(o) &&
-           NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+    return NumberUtils.isExact(o) && isInteger(o) && isPositive(o);
   }
 
   public static boolean isExactNonNegativeInteger(Object o) {
-    return NumberUtils.isExact(o) && isInteger(o) &&
-      NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+    return NumberUtils.isExact(o) && isInteger(o) && isNonNegative(o);
   }
-  // TODO Optimize END -------------------------------------------------------------------------------------------------
 }
