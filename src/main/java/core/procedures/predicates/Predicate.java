@@ -10,6 +10,7 @@ import core.utils.NumberUtils;
 import java.util.List;
 import java.util.function.Function;
 
+// TODO Rename to SCMPredicate + implement java.util.function.Predicate
 @FnArgs(args = {Object.class})
 public class Predicate extends AFn {
 
