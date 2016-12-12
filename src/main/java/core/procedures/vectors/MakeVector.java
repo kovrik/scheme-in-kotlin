@@ -3,11 +3,12 @@ package core.procedures.vectors;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-@FnArgs(isVariadic = true, args = {Long.class})
+@FnArgs(isVariadic = true, args = {SCMClass.ExactNonNegativeInteger.class})
 public class MakeVector extends AFn {
 
   @Override
@@ -18,9 +19,6 @@ public class MakeVector extends AFn {
   @Override
   public Object invoke(Object... args) {
     Long s = ((Number)args[0]).longValue();
-    if (s < 0) {
-      throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
-    }
     Object init = UNSPECIFIED;
     if (args.length == 2) {
       init = args[1];

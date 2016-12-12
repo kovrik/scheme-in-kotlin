@@ -2,10 +2,11 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMUnspecified;
 
-@FnArgs(args = {SCMMutableString.class, Long.class, Character.class})
+@FnArgs(args = {SCMMutableString.class, SCMClass.ExactNonNegativeInteger.class, Character.class})
 public class StringSet extends AFn {
 
   @Override
@@ -22,7 +23,7 @@ public class StringSet extends AFn {
   public Object invoke(Object... args) {
     SCMMutableString str = (SCMMutableString)args[0];
     Long pos = ((Number)args[1]).longValue();
-    if ((pos < 0) || (pos >= str.length())) {
+    if (pos >= str.length()) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }
     Object ch = args[2];

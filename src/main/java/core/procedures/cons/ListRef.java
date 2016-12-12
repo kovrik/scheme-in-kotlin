@@ -2,11 +2,12 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(args = {SCMCons.SCMPair.class, Long.class})
+@FnArgs(args = {SCMCons.SCMPair.class, SCMClass.ExactNonNegativeInteger.class})
 public class ListRef extends AFn {
 
   @Override

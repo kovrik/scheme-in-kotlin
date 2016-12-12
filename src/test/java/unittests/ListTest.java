@@ -243,7 +243,8 @@ public class ListTest extends AbstractTest {
     try {
       eval("(list-ref '(1 2) 2.5)", env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 2.5", e.getMessage());
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 2.5",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
   }
 

@@ -4,9 +4,10 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 
-@FnArgs(isVariadic = true, args = {Long.class})
+@FnArgs(isVariadic = true, args = {SCMClass.ExactNonNegativeInteger.class})
 public class MakeString extends AFn {
 
   @Override

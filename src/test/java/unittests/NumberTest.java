@@ -144,7 +144,7 @@ public class NumberTest extends AbstractTest {
       eval("(quotient -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Error: (quotient) bad argument type - not an integer: 1.0E-4", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
     }
     try {
       eval("(quotient -10 0.0)", env);
@@ -166,7 +166,7 @@ public class NumberTest extends AbstractTest {
       eval("(remainder -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Error: (remainder) bad argument type - not an integer: 1.0E-4", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
     }
     try {
       eval("(remainder -10 0.0)", env);
@@ -184,7 +184,7 @@ public class NumberTest extends AbstractTest {
       eval("(modulo -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Error: (modulo) bad argument type - not an integer: 1.0E-4", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
     }
     try {
       eval("(modulo -10 0.0)", env);

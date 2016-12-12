@@ -2,6 +2,8 @@ package core.scm;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
+import core.procedures.math.NumericalComparison;
+import core.procedures.predicates.Predicate;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public enum SCMClass implements ISCMClass {
-  // TODO Exact/Inexact, Positive/Negative/Non-negative
   INTEGER("Integer"),
   REAL("Real"),
   RATIONAL("Rational"),
@@ -71,6 +72,48 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMError.class,              ERROR);
     SCM_CLASSES.put(SCMUnspecified.class,        UNSPECIFIED);
   }
+
+  /* Marker classes for FnArgs annotation
+   *
+   * FnArgs can't cover all numerical types because of the following limitation:
+   *
+   * The return type of a method declared in an annotation type must be one of the following,
+   * or a compile-time error occurs:
+   * - Primitive type
+   * - String
+   * - Class or an invocation of Class (§4.5)
+   * - Enum type
+   * - Annotation type
+   * - Array type whose component type is one of the preceding types
+   *
+   * (see https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1)
+   *
+   * Below is the mapping from predicates to the actual/marker classes:
+   *
+   *   number?                    -> Number.class
+   *   complex?                   -> SCMComplex.class (not implemented yet)
+   *   real?                      -> Number.class
+   *   rational?                  -> NumberUtils.IsRational()
+   *   integer?                   -> Integer.class/Long.class
+   *   exact-integer?             -> ExactInteger.class *
+   *   exact-nonnegative-integer? -> ExactNonNegativeInteger.class *
+   *   exact-positive-integer?    -> ExactPositiveInteger.class *
+   *   inexact-real?              -> InexactReal.class *
+   *   positive?                  -> Positive.class *
+   *   negative?                  -> Negative.class *
+   *   nonnegative?               -> NonNegative.class *
+   *   exact?                     -> Exact.class *
+   *   inexact?                   -> Inexact.class *
+   */
+  public interface ExactNonNegativeInteger {} // the only one that is actually used?
+  public interface ExactInteger {}
+  public interface ExactPositiveInteger {}
+  public interface InexactReal {}
+  public interface Positive {}
+  public interface Negative {}
+  public interface NonNegative {}
+  public interface Exact {}
+  public interface Inexact {}
 
   private final String name;
 
@@ -139,32 +182,51 @@ public enum SCMClass implements ISCMClass {
     throw new WrongTypeException(c.getSimpleName(), o);
   }
 
-  public static boolean checkClass(Object object, Class<?> expected) {
+  public static boolean checkClass(Object o, Class<?> expected) {
     /* FIXME Workaround for SCM Lists and Pairs: check and replace with marker class at Runtime */
-    Class<?> actual = object.getClass();
-    if ((expected.equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(object))) {
+    Class<?> actual = o.getClass();
+    if ((expected.equals(SCMCons.SCMProperList.class)) && (SCMCons.isList(o))) {
       actual = SCMCons.SCMProperList.class;
-    } else if ((expected.equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(object))) {
+    } else if ((expected.equals(SCMCons.SCMPair.class)) && (SCMCons.isPair(o))) {
       actual = SCMCons.SCMPair.class;
     }
+
     if (expected == actual) {
       return true;
-    }
-    if (expected.isAssignableFrom(actual)) {
+    } else if (expected.isAssignableFrom(actual)) {
       return true;
-    }
-    if (ISCMClass.class.isAssignableFrom(actual)) {
-      if (String.class.equals(expected)) {
-        return (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual));
-      } else if (SCMImmutableString.class.equals(expected)) {
-        return (String.class.equals(actual) || SCMImmutableString.class.equals(actual));
-      } else if (SCMMutableString.class.equals(expected)) {
-        return (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual));
-      } else if (Boolean.class.equals(expected)) {
-        return SCMBoolean.class.equals(actual);
-      } else if (Long.class.equals(expected)) {
-        return NumberUtils.isExact(object);
-      }
+    } else if (String.class.equals(expected)) {
+      return (SCMImmutableString.class.equals(actual) || SCMMutableString.class.equals(actual));
+    } else if (SCMImmutableString.class.equals(expected)) {
+      return (String.class.equals(actual) || SCMImmutableString.class.equals(actual));
+    } else if (SCMMutableString.class.equals(expected)) {
+      return (StringBuilder.class.equals(actual) || SCMMutableString.class.equals(actual));
+    } else if (Boolean.class.equals(expected)) {
+      return SCMBoolean.class.equals(actual);
+    } else if (SCMBigRational.class.equals(expected)) {
+      return NumberUtils.isRational(o);
+    } else if (Long.class.equals(expected) || Integer.class.equals(expected)) {
+      return (o instanceof Number) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+    } else if (ExactNonNegativeInteger.class.equals(expected)) {
+      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+             NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+    } else if (ExactInteger.class.equals(expected)) {
+      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean();
+    } else if (ExactPositiveInteger.class.equals(expected)) {
+      return NumberUtils.isExact(o) && Predicate.IS_INTEGER.invoke(o).toBoolean() &&
+             NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+    } else if (InexactReal.class.equals(expected)) {
+      return NumberUtils.isInexact(o);
+    } else if (Positive.class.equals(expected)) {
+      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER);
+    } else if (Negative.class.equals(expected)) {
+      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.LESS);
+    } else if (NonNegative.class.equals(expected)) {
+      return (o instanceof Number) && NumericalComparison.invoke(o, 0L, NumericalComparison.Type.GREATER_EQUAL);
+    } else if (Inexact.class.equals(expected)) {
+      return NumberUtils.isInexact(o);
+    } else if (Exact.class.equals(expected)) {
+      return NumberUtils.isExact(o);
     }
     return false;
   }

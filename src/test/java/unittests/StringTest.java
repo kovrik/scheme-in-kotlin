@@ -1,6 +1,7 @@
 package unittests;
 
 import core.exceptions.WrongTypeException;
+import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import org.junit.Test;
@@ -71,25 +72,26 @@ public class StringTest extends AbstractTest {
       eval("(make-string \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: \"test\""));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: \"test\"",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
     try {
       eval("(make-string 2 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: 1"));
+      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
     }
     try {
       eval("(make-string)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong number of arguments (0) passed to: make-string"));
+      assertEquals("Wrong number of arguments (0) passed to: make-string", e.getMessage());
     }
     try {
       eval("(make-string 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong number of arguments (3) passed to: make-string"));
+      assertEquals("Wrong number of arguments (3) passed to: make-string", e.getMessage());
     }
   }
 
@@ -146,7 +148,7 @@ public class StringTest extends AbstractTest {
       eval("(string-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: 1"));
+      assertEquals("Wrong argument type. Expected: String, actual: 1", e.getMessage());
     }
   }
 
@@ -172,31 +174,33 @@ public class StringTest extends AbstractTest {
       eval("(string-ref \"test\" -1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: -1"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
     try {
       eval("(string-ref \"tes\" 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 3"));
+      assertEquals("Value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-ref \"\" 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 0"));
+      assertEquals("Value out of range: 0", e.getMessage());
     }
     try {
       eval("(string-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: String, actual: (1 2 3)"));
+      assertEquals("Wrong argument type. Expected: String, actual: (1 2 3)", e.getMessage());
     }
     try {
       eval("(string-ref \"test\" 0.5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
   }
 
@@ -217,37 +221,39 @@ public class StringTest extends AbstractTest {
       eval("(string-set! (string #\\a #\\b #\\c) -1 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: -1"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
     try {
       eval("(string-set! (string #\\a #\\b #\\c) 3 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 3"));
+      assertEquals("Value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 0) 0 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 0"));
+      assertEquals("Value out of range: 0", e.getMessage());
     }
     try {
       eval("(string-set! '(1 2 3) 2 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableString, actual: (1 2 3)"));
+      assertEquals("Wrong argument type. Expected: MutableString, actual: (1 2 3)", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 4) 0.5 #\\A)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
     try {
       eval("(string-set! (make-string 4) 3 '())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Character, actual: ()"));
+      assertEquals("Wrong argument type. Expected: Character, actual: ()", e.getMessage());
     }
   }
 
@@ -260,13 +266,13 @@ public class StringTest extends AbstractTest {
       eval("(symbol->string 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Symbol, actual: 1"));
+      assertEquals("Wrong argument type. Expected: Symbol, actual: 1", e.getMessage());
     }
     try {
       eval("(string->symbol 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: String, actual: 1"));
+      assertEquals("Wrong argument type. Expected: String, actual: 1", e.getMessage());
     }
   }
 

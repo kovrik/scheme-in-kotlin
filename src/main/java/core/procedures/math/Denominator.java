@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(args = {Number.class}) // Rational?
+@FnArgs(args = {SCMBigRational.class})
 public class Denominator extends AFn {
 
   @Override
@@ -28,11 +28,8 @@ public class Denominator extends AFn {
   }
 
   public static Number denominator(Object o) {
-    if (!NumberUtils.isRational(o)) {
-      throw new WrongTypeException("Rational", o);
-    }
-    Number exact;
     boolean isExact = NumberUtils.isExact(o);
+    Number exact;
     if (isExact) {
       exact = (Number)o;
     } else {

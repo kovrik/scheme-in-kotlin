@@ -4,8 +4,9 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 
-@FnArgs(isVariadic = true, args = {String.class, Long.class})
+@FnArgs(isVariadic = true, args = {String.class, SCMClass.ExactNonNegativeInteger.class})
 public class Substring extends AFn {
 
   @Override
@@ -17,7 +18,7 @@ public class Substring extends AFn {
   public String invoke(Object... args) {
     String s = args[0].toString();
     long start = ((Number)args[1]).longValue();
-    if ((start < 0) || (start >= s.length())) {
+    if (start >= s.length()) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", start));
     }
 
@@ -27,7 +28,7 @@ public class Substring extends AFn {
     }
     Object oe = args[2];
     if (!(oe instanceof Long)) {
-      throw new WrongTypeException("Integer", oe);
+      throw new WrongTypeException(SCMClass.ExactNonNegativeInteger.class.getSimpleName(), oe);
     }
     end = (long) oe;
     if ((end < 0) || (end >= s.length())) {

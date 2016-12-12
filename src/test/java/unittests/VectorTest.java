@@ -1,5 +1,6 @@
 package unittests;
 
+import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMMutableVector;
 import org.junit.Test;
@@ -37,14 +38,15 @@ public class VectorTest extends AbstractTest {
       eval("(make-vector 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong number of arguments (3) passed to: make-vector"));
+      assertEquals("Wrong number of arguments (3) passed to: make-vector", e.getMessage());
     }
 
     try {
       eval("(make-vector \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: \"test\""));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: \"test\"",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
   }
 
@@ -58,7 +60,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Vector, actual: 1"));
+      assertEquals("Wrong argument type. Expected: Vector, actual: 1", e.getMessage());
     }
   }
 
@@ -73,31 +75,33 @@ public class VectorTest extends AbstractTest {
       eval("(vector-ref (vector 1 2 3) -1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: -1"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
     try {
       eval("(vector-ref (vector 1 2 3) 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 3"));
+      assertEquals("Value out of range: 3", e.getMessage());
     }
     try {
       eval("(vector-ref (vector) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 0"));
+      assertEquals("Value out of range: 0", e.getMessage());
     }
     try {
       eval("(vector-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)"));
+      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
     }
     try {
       eval("(vector-ref (vector 1 2 3) 0.5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
   }
 
@@ -114,21 +118,20 @@ public class VectorTest extends AbstractTest {
         "       (vector-ref  v 2))";
     assertEquals(new SCMMutableString("test"), eval(sexp, env));
 
-    sexp = "(begin (define v (vector 1 2 3))" +
-        "       (vector-set! v -1 \"test\"))";
+    sexp = "(begin (define v (vector 1 2 3)) (vector-set! v -1 \"test\"))";
     try {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: -1"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
 
-    sexp = "(begin (define v (vector 1 2 3))" +
-        "       (vector-set! v 3 \"test\"))";
+    sexp = "(begin (define v (vector 1 2 3)) (vector-set! v 3 \"test\"))";
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 3"));
+      assertEquals("Value out of range: 3", e.getMessage());
     }
 
     sexp = "(begin (define v (vector))" +
@@ -136,7 +139,7 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Value out of range: 0"));
+      assertEquals("Value out of range: 0", e.getMessage());
     }
 
     sexp = "(begin (define v '(1 2 3))" +
@@ -144,15 +147,15 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)"));
+      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
     }
 
-    sexp = "(begin (define v (vector 1 2))" +
-        "       (vector-set! v 0.5 \"test\"))";
+    sexp = "(begin (define v (vector 1 2)) (vector-set! v 0.5 \"test\"))";
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().equals("Wrong argument type. Expected: Integer, actual: 0.5"));
+      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
+                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
     }
   }
 

@@ -7,7 +7,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Number.class, Number.class})
+@FnArgs(args = {Long.class, Long.class})
 public class Quotient extends AFn {
 
   @Override
@@ -39,7 +39,6 @@ public class Quotient extends AFn {
   }
 
   public Number invoke(Number first, Number second) {
-
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return invoke((BigDecimal)first, (BigDecimal)second);
     }
