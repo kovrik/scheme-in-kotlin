@@ -83,7 +83,7 @@ public class NumericalComparison extends AFn {
       case GREATER:       return ((Comparable)f).compareTo(s) >  0;
       case LESS_EQUAL:    return ((Comparable)f).compareTo(s) <= 0;
       case GREATER_EQUAL: return ((Comparable)f).compareTo(s) >= 0;
+      default: throw new IllegalArgumentException("Unknown comparison type!");
     }
-    throw new IllegalArgumentException("Unknown comparison type!");
   }
 }
