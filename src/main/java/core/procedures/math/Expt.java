@@ -12,6 +12,9 @@ import java.math.BigInteger;
 @FnArgs(args = {Number.class, Number.class})
 public class Expt extends AFn {
 
+  /* Return 0d if exponent is less than -745 */
+  private static final BigDecimal NEG_LIMIT = new BigDecimal("-745");
+
   @Override
   public boolean isPure() {
     return true;
@@ -88,8 +91,7 @@ public class Expt extends AFn {
       } else {
         exp = new BigDecimal(exponent.toString());
       }
-      if (exp.compareTo(BigDecimal.ZERO) < 0) {
-        // TODO Check if that is correct
+      if (exp.compareTo(NEG_LIMIT) < 0) {
         return 0d;
       } else {
         return Double.POSITIVE_INFINITY;
