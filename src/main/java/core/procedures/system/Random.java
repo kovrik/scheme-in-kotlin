@@ -29,7 +29,7 @@ public class Random extends AFn {
       if (!(args[0] instanceof Long) || (((Long) args[0]) < 1) || ((Long) args[0] > Integer.MAX_VALUE)) {
         throw new WrongTypeException(String.format("Integer (1 to %s)", Integer.MAX_VALUE), args[0]);
       }
-      return new java.util.Random().nextInt(((Long) args[0]).intValue());
+      return (long)(new java.util.Random().nextInt(((Long) args[0]).intValue()));
     }
     if (args.length == 2) {
       if (!(args[0] instanceof Long) || (((Long) args[0]) < 1) || ((Long) args[0] > Integer.MAX_VALUE)) {
@@ -38,7 +38,7 @@ public class Random extends AFn {
       if (!(args[1] instanceof Long) || (((Long) args[1]) < 1) || ((Long) args[1] > Integer.MAX_VALUE)) {
         throw new WrongTypeException(String.format("Integer (1 to %s)", Integer.MAX_VALUE), args[1]);
       }
-      return ThreadLocalRandom.current().nextInt(((Long) args[0]).intValue(), ((Long) args[1]).intValue());
+      return (long)(ThreadLocalRandom.current().nextInt(((Long) args[0]).intValue(), ((Long) args[1]).intValue()));
     }
     throw new ArityException(args.length, getName());
   }
