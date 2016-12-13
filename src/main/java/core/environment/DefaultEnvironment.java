@@ -98,6 +98,7 @@ public final class DefaultEnvironment extends Environment {
       new StringRef(),
       new StringSet(),
       new StringToImmutableString(),
+      new StringToMutableString(),
       StringComparison.STRING_GR,
       StringComparison.STRING_GR_CI,
       StringComparison.STRING_GR_OR_EQ,
