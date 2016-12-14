@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -52,13 +53,13 @@ public class Min extends AFn {
         return args[0];
       }
       Object result = args[0];
-      if (!(result instanceof Number)) {
-        throw new WrongTypeException("Number", result);
+      if (!(NumberUtils.isReal(result))) {
+        throw new WrongTypeException("Real", result);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
-        if (!(args[i] instanceof Number)) {
-          throw new WrongTypeException("Number", args[i]);
+        if (!(NumberUtils.isReal(args[i]))) {
+          throw new WrongTypeException("Real", args[i]);
         }
         result = apply(first, (Number)args[i]);
       }

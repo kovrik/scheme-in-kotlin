@@ -20,6 +20,8 @@ import core.procedures.lists.Length;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
+import core.procedures.math.complex.ImagPart;
+import core.procedures.math.complex.RealPart;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
@@ -74,6 +76,8 @@ public final class DefaultEnvironment extends Environment {
       new Denominator(),
       new ToInexact(),
       new ToExact(),
+      new RealPart(),
+      new ImagPart(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),

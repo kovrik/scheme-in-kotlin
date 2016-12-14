@@ -1,10 +1,7 @@
 package core.writer;
 
 import core.reader.Reader;
-import core.scm.ISCMClass;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMMutableString;
+import core.scm.*;
 import core.utils.NumberUtils;
 
 import java.util.List;
@@ -27,6 +24,9 @@ public class Writer implements IWriter {
     }
     if (o instanceof List) {
       return SCMCons.toString((List) o);
+    }
+    if (o instanceof SCMBigComplex) {
+      return o.toString();
     }
     if (o instanceof Number) {
       if (Double.isNaN(((Number) o).doubleValue())) {

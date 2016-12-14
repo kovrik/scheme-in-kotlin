@@ -3,10 +3,11 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
+import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Number.class})
+@FnArgs(args = {SCMClass.Real.class})
 public class Ceiling extends AFn {
 
   @Override

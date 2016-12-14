@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,16 +29,16 @@ public class GCD extends AFn {
         return 0L;
       }
       Object result = args[0];
-      if (!(result instanceof Number)) {
-        throw new WrongTypeException("Integer", result);
+      if (!(NumberUtils.isRational(result))) {
+        throw new WrongTypeException("Rational", result);
       }
       if (args.length == 1) {
         return ABS.apply(args[0]);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
-        if (!(args[i] instanceof Number)) {
-          throw new WrongTypeException("Integer", args[i]);
+        if (!(NumberUtils.isRational(args[i]))) {
+          throw new WrongTypeException("Rational", args[i]);
         }
         result = apply(first, (Number)args[i]);
       }

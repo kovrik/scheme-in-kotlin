@@ -1,9 +1,13 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.math.*;
+import core.procedures.math.Expt;
+import core.procedures.math.Multiplication;
+import core.procedures.math.ToExact;
+import core.procedures.math.ToInexact;
 import core.reader.Reader;
 import core.reader.parsers.StringParser;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
 
@@ -133,6 +137,34 @@ public class NumberUtils {
   // FIXME Simplify and cleanup!
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(final String number, Character exactness, int radix) {
+    /* Check if that is a complex number */
+    if (number.charAt(number.length() - 1) ==  'i' || number.charAt(number.length() - 1) ==  'I') {
+      /* Assume that we have a complex number and try to parse it */
+      int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
+      String r = number.substring(0, p);
+      if (r.isEmpty()) {
+        r = "0";
+      }
+      String i = number.substring(p, number.length() - 1);
+      if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
+        r += "0";
+      }
+      Object re = preProcessNumber(r, exactness, radix);
+      Object im = preProcessNumber(i, exactness, radix);
+      if (!(re instanceof Number) || !(im instanceof Number)) {
+        /* Not a number! */
+        return new SCMSymbol(number);
+      }
+      /* FIXME Support rational re and im parts! */
+      if (re instanceof SCMBigRational) {
+        re = ((SCMBigRational) re).toBigDecimal();
+      }
+      if (im instanceof SCMBigRational) {
+        im = ((SCMBigRational) im).toBigDecimal();
+      }
+      return new SCMBigComplex(re.toString(), im.toString());
+    }
+
     if (number.indexOf('.') != number.lastIndexOf('.')) {
       throw new IllegalSyntaxException("read: multiple decimal points: " + number);
     }
@@ -345,6 +377,9 @@ public class NumberUtils {
     if (!(o instanceof Number)) {
       return false;
     }
+    if (o instanceof SCMBigComplex) {
+      return false;
+    }
     if (o instanceof Double) {
       return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
     } else if (o instanceof Float) {
@@ -526,6 +561,10 @@ public class NumberUtils {
 
   public static boolean isExactNonNegativeInteger(Object o) {
     return NumberUtils.isExact(o) && isInteger(o) && isNonNegative(o);
+  }
+
+  public static boolean isReal(Object o) {
+    return !(o instanceof SCMBigComplex) && (o instanceof Number);
   }
 
   /*

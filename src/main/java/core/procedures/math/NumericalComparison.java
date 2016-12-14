@@ -4,6 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.SCMBigRational;
 import core.scm.SCMBoolean;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -46,14 +47,13 @@ public class NumericalComparison extends AFn {
   @Override
   public SCMBoolean apply(Object... args) {
     if (args != null && args.length > 1) {
+      for (Object arg : args) {
+        if (!(NumberUtils.isReal(arg))) {
+          throw new WrongTypeException("Real", arg);
+        }
+      }
       for (int i = 0; i < args.length - 1; i++) {
-        if (!(args[i] instanceof Number)) {
-          throw new WrongTypeException("Number", args[i]);
-        }
-        if (!(args[i + 1] instanceof Number)) {
-          throw new WrongTypeException("Number", args[i + 1]);
-        }
-        if (!apply(args[i], args[i + 1], type)) {
+        if (!apply(args[i], args[i+1], type)) {
           return SCMBoolean.FALSE;
         }
       }

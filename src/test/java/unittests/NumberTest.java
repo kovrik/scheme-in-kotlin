@@ -99,7 +99,7 @@ public class NumberTest extends AbstractTest {
       eval("(abs \"not-a-number\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Number, actual: \"not-a-number\""));
+      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Real, actual: \"not-a-number\""));
     }
 
     // sqrt
@@ -306,7 +306,7 @@ public class NumberTest extends AbstractTest {
       eval("(round \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -322,7 +322,7 @@ public class NumberTest extends AbstractTest {
       eval("(floor \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -338,7 +338,7 @@ public class NumberTest extends AbstractTest {
       eval("(ceiling \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -355,7 +355,7 @@ public class NumberTest extends AbstractTest {
       eval("(truncate \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -371,14 +371,14 @@ public class NumberTest extends AbstractTest {
       eval("(max \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
 
     try {
       eval("(max 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -393,14 +393,14 @@ public class NumberTest extends AbstractTest {
       eval("(min \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
 
     try {
       eval("(min 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 

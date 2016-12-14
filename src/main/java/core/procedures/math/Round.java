@@ -3,12 +3,13 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
+import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-@FnArgs(args = {Number.class})
+@FnArgs(args = {SCMClass.Real.class})
 public class Round extends AFn {
 
   @Override

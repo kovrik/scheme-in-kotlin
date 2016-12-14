@@ -29,7 +29,7 @@ public class SCMPredicate extends AFn {
   public static final SCMPredicate IS_NUMBER = new SCMPredicate("number?", o -> (o instanceof Number));
   public static final SCMPredicate IS_INTEGER = new SCMPredicate("integer?", NumberUtils::isInteger);
   public static final SCMPredicate IS_RATIONAL = new SCMPredicate("rational?", NumberUtils::isRational);
-  public static final SCMPredicate IS_REAL = new SCMPredicate("real?", o -> (o instanceof Number));
+  public static final SCMPredicate IS_REAL = new SCMPredicate("real?", NumberUtils::isReal);
   public static final SCMPredicate IS_COMPLEX = new SCMPredicate("complex?", o -> (o instanceof Number));
   public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isZero(o)));
   public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isPositive(o)));

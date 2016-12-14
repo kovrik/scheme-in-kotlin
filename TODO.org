@@ -321,14 +321,17 @@ CLOSED: [2016-12-05 Mon 20:23]
 CLOSED: [2016-12-05 Mon 20:02]
 ***** DONE log
 CLOSED: [2016-12-05 Mon 20:23]
-**** TODO Complex numbers [0/7]
+**** TODO Complex numbers [3/7]
 ***** TODO make-rectangular
 ***** TODO make-polar
-***** TODO real-part
-***** TODO imag-part
+***** DONE real-part
+CLOSED: [2016-12-14 Wed 20:52]
+***** DONE imag-part
+CLOSED: [2016-12-14 Wed 20:54]
 ***** TODO magnitude
 ***** TODO angle
-***** TODO complex?
+***** DONE complex?
+CLOSED: [2016-12-14 Wed 19:28]
 **** DONE Input-output [2/2]
 CLOSED: [2016-08-13 Sat 21:03]
 ***** DONE number->string

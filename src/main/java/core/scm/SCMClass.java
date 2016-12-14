@@ -15,6 +15,7 @@ public enum SCMClass implements ISCMClass {
   INTEGER("Integer"),
   REAL("Real"),
   RATIONAL("Rational"),
+  COMPLEX("Complex"),
   STRING("String"),
   MUTABLE_STRING("MutableString"),
   IMMUTABLE_STRING("ImmutableString"),
@@ -48,6 +49,7 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(Float.class,                 REAL);
     SCM_CLASSES.put(BigDecimal.class,            REAL);
     SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
+    SCM_CLASSES.put(SCMBigComplex.class,         COMPLEX);
 
     SCM_CLASSES.put(Character.class,             CHARACTER);
     SCM_CLASSES.put(String.class,                IMMUTABLE_STRING);
@@ -92,8 +94,8 @@ public enum SCMClass implements ISCMClass {
    *   pair?                      -> SCMPair + SCMCons.isPair()
    *   list?                      -> SCMProperList + SCMCons.isList()
    *   number?                    -> Number.class
-   *   complex?                   -> SCMComplex.class (not implemented yet)
-   *   real?                      -> Number.class
+   *   complex?                   -> SCMBigComplex.class
+   *   real?                      -> Real.class
    *   rational?                  -> SCMBigRational + NumberUtils.IsRational()
    *   integer?                   -> Integer.class/Long.class
    *   exact-integer?             -> ExactInteger.class *
@@ -123,6 +125,7 @@ public enum SCMClass implements ISCMClass {
   public abstract class NonNegative {}
   public abstract class Exact {}
   public abstract class Inexact {}
+  public abstract class Real {}
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
@@ -144,6 +147,7 @@ public enum SCMClass implements ISCMClass {
     TYPE_PREDICATES.put(Positive.class, NumberUtils::isPositive);
     TYPE_PREDICATES.put(Negative.class, NumberUtils::isNegative);
     TYPE_PREDICATES.put(NonNegative.class, NumberUtils::isNonNegative);
+    TYPE_PREDICATES.put(Real.class, NumberUtils::isReal);
   }
 
   private final String name;
