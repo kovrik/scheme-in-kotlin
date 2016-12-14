@@ -19,12 +19,12 @@ public class StringComparison extends AFn {
   public static final StringComparison STRING_EQ          = new StringComparison("string=?",     String::equals);
   public static final StringComparison STRING_EQ_CI       = new StringComparison("string-ci=?",  String::equalsIgnoreCase);
   public static final StringComparison STRING_LE          = new StringComparison("string<?",     (arg1, arg2) -> arg1.compareTo(arg2) < 0);
-  public static final StringComparison STRING_LE_CI       = new StringComparison("string-ci<?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) < 0);
-  public static final StringComparison STRING_LE_OR_EQ    = new StringComparison("string<=?",    (arg1, arg2) -> arg1.compareTo(arg2) <= 0);
-  public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) <= 0);
   public static final StringComparison STRING_GR          = new StringComparison("string>?",     (arg1, arg2) -> arg1.compareTo(arg2) > 0);
-  public static final StringComparison STRING_GR_CI       = new StringComparison("string-ci>?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) > 0);
+  public static final StringComparison STRING_LE_OR_EQ    = new StringComparison("string<=?",    (arg1, arg2) -> arg1.compareTo(arg2) <= 0);
   public static final StringComparison STRING_GR_OR_EQ    = new StringComparison("string>=?",    (arg1, arg2) -> arg1.compareTo(arg2) >= 0);
+  public static final StringComparison STRING_LE_CI       = new StringComparison("string-ci<?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) < 0);
+  public static final StringComparison STRING_GR_CI       = new StringComparison("string-ci>?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) > 0);
+  public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) <= 0);
   public static final StringComparison STRING_GR_OR_EQ_CI = new StringComparison("string-ci>=?", (arg1, arg2) -> arg1.toLowerCase().compareTo((arg2).toLowerCase()) >= 0);
 
   private final String name;
