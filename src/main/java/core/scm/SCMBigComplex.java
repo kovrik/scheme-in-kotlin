@@ -15,9 +15,18 @@ public class SCMBigComplex extends Number implements ISCMClass {
     this.im = im;
   }
 
-  public SCMBigComplex(String re, String im) {
-    this.re = new BigDecimal(re);
-    this.im = new BigDecimal(im);
+  public SCMBigComplex(Number re, Number im) {
+    /* FIXME Support rational re and im parts! */
+    if (re instanceof SCMBigRational) {
+      this.re = ((SCMBigRational)re).toBigDecimal();
+    } else {
+      this.re = new BigDecimal(re.toString());
+    }
+    if (im instanceof SCMBigRational) {
+      this.im = ((SCMBigRational)im).toBigDecimal();
+    } else {
+      this.im = new BigDecimal(im.toString());
+    }
   }
 
   public BigDecimal getRe() {

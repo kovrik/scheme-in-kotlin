@@ -155,14 +155,7 @@ public class NumberUtils {
         /* Not a number! */
         return new SCMSymbol(number);
       }
-      /* FIXME Support rational re and im parts! */
-      if (re instanceof SCMBigRational) {
-        re = ((SCMBigRational) re).toBigDecimal();
-      }
-      if (im instanceof SCMBigRational) {
-        im = ((SCMBigRational) im).toBigDecimal();
-      }
-      return new SCMBigComplex(re.toString(), im.toString());
+      return new SCMBigComplex((Number)re, (Number)im);
     }
 
     if (number.indexOf('.') != number.lastIndexOf('.')) {
