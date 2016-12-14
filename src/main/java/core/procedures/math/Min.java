@@ -19,7 +19,7 @@ public class Min extends AFn {
     return "min";
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).compareTo((SCMBigRational)second) < 0 ? first : second;
     }
@@ -46,7 +46,7 @@ public class Min extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args != null && args.length > 0) {
       if (args.length == 1) {
         return args[0];
@@ -60,7 +60,7 @@ public class Min extends AFn {
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Number", args[i]);
         }
-        result = invoke(first, (Number)args[i]);
+        result = apply(first, (Number)args[i]);
       }
       return result;
     }

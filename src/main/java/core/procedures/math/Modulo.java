@@ -22,11 +22,11 @@ public class Modulo extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
-    return invoke((Number)args[0], (Number)args[1]);
+  public Number apply(Object... args) {
+    return apply((Number)args[0], (Number)args[1]);
   }
 
-  public BigDecimal invoke(BigDecimal first, BigDecimal second) {
+  public BigDecimal apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
@@ -40,23 +40,23 @@ public class Modulo extends AFn {
     return second.add(remainder);
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return invoke((BigDecimal) first, (BigDecimal)second);
+      return apply((BigDecimal) first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return invoke((BigDecimal) first, new BigDecimal(second.toString()));
+      return apply((BigDecimal) first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return invoke((BigDecimal) second, new BigDecimal(first.toString()));
+      return apply((BigDecimal) second, new BigDecimal(first.toString()));
     }
 
     if (second.intValue() == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
 
-    Number m = rem.invoke(first, second);
+    Number m = rem.apply(first, second);
     if (m.intValue() == 0) {
       return m;
     }

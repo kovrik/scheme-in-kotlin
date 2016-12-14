@@ -1,9 +1,8 @@
 package core.procedures;
 
 import core.exceptions.ArityException;
-import core.scm.SCMClass;
 
-public abstract class AFn implements IFn {
+public abstract class AFn implements IFn<Object[], Object> {
 
   /* Return true if function is pure (referentially transparent),
    * false otherwise. */
@@ -12,7 +11,7 @@ public abstract class AFn implements IFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     throw new ArityException(args.length, getName());
   }
 
@@ -27,10 +26,5 @@ public abstract class AFn implements IFn {
       return "#<procedure>";
     }
     return "#<procedure:" + name + ">";
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.PROCEDURE;
   }
 }

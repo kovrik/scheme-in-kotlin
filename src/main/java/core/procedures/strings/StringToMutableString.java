@@ -13,7 +13,7 @@ public class StringToMutableString extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args[0] instanceof SCMMutableString || args[0] instanceof StringBuilder) {
       return args[0];
     } else {

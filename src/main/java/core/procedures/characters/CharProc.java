@@ -10,7 +10,7 @@ public class CharProc extends AFn {
 
   private static class CharFn extends AFn {
     public Object invoke(Object ch) {
-      return super.invoke(ch);
+      return super.apply(ch);
     }
   }
 
@@ -98,7 +98,7 @@ public class CharProc extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     return invoke(args[0]);
   }
 

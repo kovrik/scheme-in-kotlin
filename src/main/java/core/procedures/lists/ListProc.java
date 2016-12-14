@@ -20,7 +20,7 @@ public class ListProc extends AFn {
   }
 
   @Override
-  public List<Object> invoke(Object... args) {
+  public List<Object> apply(Object... args) {
     return SCMCons.list(args);
   }
 }

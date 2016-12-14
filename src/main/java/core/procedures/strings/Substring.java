@@ -15,7 +15,7 @@ public class Substring extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public String apply(Object... args) {
     String s = args[0].toString();
     long start = ((Number)args[1]).longValue();
     if (start >= s.length()) {

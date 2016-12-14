@@ -18,7 +18,7 @@ public class SetCdr extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     List list = (List)args[0];
     /* Remove tail */
     list.subList(1, list.size()).clear();

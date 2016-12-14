@@ -21,7 +21,7 @@ public class Load extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     File file = new File(args[0].toString());
     // TODO Is BEGIN Ok here?
     List<Object> sexps = SCMCons.list(Begin.BEGIN);

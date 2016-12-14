@@ -17,7 +17,7 @@ public class StringLength extends AFn {
   }
 
   @Override
-  public Long invoke(Object... args) {
+  public Long apply(Object... args) {
     return ((Integer)(args[0].toString()).length()).longValue();
   }
 }

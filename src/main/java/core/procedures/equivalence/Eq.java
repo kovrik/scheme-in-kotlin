@@ -19,7 +19,7 @@ public class Eq extends AFn {
   }
 
   @Override
-  public SCMBoolean invoke(Object... args) {
+  public SCMBoolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {

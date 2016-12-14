@@ -17,7 +17,7 @@ public class MakeVector extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Long s = ((Number)args[0]).longValue();
     Object init = UNSPECIFIED;
     if (args.length == 2) {

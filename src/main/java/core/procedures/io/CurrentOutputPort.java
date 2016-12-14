@@ -13,7 +13,7 @@ public class CurrentOutputPort extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     return Main.getCurrentOutputPort();
   }
 }

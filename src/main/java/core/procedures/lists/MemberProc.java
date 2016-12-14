@@ -26,7 +26,7 @@ public class MemberProc extends AFn {
     return true;
   }
 
-  public Object invoke(Object arg1, Object arg2) {
+  public Object apply(Object arg1, Object arg2) {
     List list = (List) arg2;
     if (list.isEmpty()) {
       return SCMBoolean.FALSE;
@@ -36,7 +36,7 @@ public class MemberProc extends AFn {
     while ((cons instanceof List) && (!((List) cons).isEmpty())) {
       p += 1;
       Object car = Car.car(cons);
-      if ((SCMBoolean.valueOf(predicate.invoke(arg1, car)))) {
+      if ((SCMBoolean.valueOf(predicate.apply(arg1, car)))) {
         return cons;
       }
       cons = Cdr.cdr(cons);
@@ -50,8 +50,8 @@ public class MemberProc extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
-    return invoke(args[0], args[1]);
+  public Object apply(Object... args) {
+    return apply(args[0], args[1]);
   }
 
   @Override

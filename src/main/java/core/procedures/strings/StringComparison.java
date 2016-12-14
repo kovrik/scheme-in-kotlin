@@ -15,77 +15,77 @@ public class StringComparison extends AFn {
   }
 
   private static class StringComparisonFn extends AFn {
-    public boolean invoke(Object arg1, Object arg2) {
-      return (Boolean)super.invoke(arg1, arg2);
+    public boolean apply(Object arg1, Object arg2) {
+      return (Boolean)super.apply(arg1, arg2);
     }
   }
 
   public static final StringComparison STRING_EQ = new StringComparison("string=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return arg1.toString().equals(arg2.toString());
     }
   });
 
   public static final StringComparison STRING_EQ_CI = new StringComparison("string-ci=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).equalsIgnoreCase(arg2.toString());
     }
   });
 
   public static final StringComparison STRING_LE = new StringComparison("string<?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).compareTo((arg2.toString())) < 0;
     }
   });
 
   public static final StringComparison STRING_LE_CI = new StringComparison("string-ci<?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) < 0;
     }
   });
 
   public static final StringComparison STRING_LE_OR_EQ = new StringComparison("string<=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).compareTo((arg2.toString())) <= 0;
     }
   });
 
   public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) <= 0;
     }
   });
 
   public static final StringComparison STRING_GR = new StringComparison("string>?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).compareTo((arg2.toString())) > 0;
     }
   });
 
   public static final StringComparison STRING_GR_CI = new StringComparison("string-ci>?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) > 0;
     }
   });
 
   public static final StringComparison STRING_GR_OR_EQ = new StringComparison("string>=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).compareTo((arg2.toString())) >= 0;
     }
   });
 
   public static final StringComparison STRING_GR_OR_EQ_CI = new StringComparison("string-ci>=?", new StringComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) >= 0;
     }
   });
@@ -99,7 +99,7 @@ public class StringComparison extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args.length < 2) {
       return SCMBoolean.TRUE;
     }
@@ -110,7 +110,7 @@ public class StringComparison extends AFn {
       if (!(args[i + 1] instanceof String || args[i + 1] instanceof SCMMutableString)) {
         throw new WrongTypeException("String", args[i + 1]);
       }
-      if ((!predicate.invoke(args[i], args[i + 1]))) {
+      if ((!predicate.apply(args[i], args[i + 1]))) {
         return SCMBoolean.FALSE;
       }
     }

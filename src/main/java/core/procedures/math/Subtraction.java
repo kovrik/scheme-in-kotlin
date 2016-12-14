@@ -22,7 +22,7 @@ public class Subtraction extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args == null || args.length == 0) {
       throw new ArityException(0, "-");
     }
@@ -33,19 +33,19 @@ public class Subtraction extends AFn {
       if (args[0] instanceof SCMBigRational) {
         return ((SCMBigRational)args[0]).negate();
       }
-      return invoke(0L, args[0]);
+      return apply(0L, args[0]);
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
       if (!(args[0] instanceof Number)) {
         throw new WrongTypeException("Number", args[0]);
       }
-      result = invoke((Number)result, (Number)args[i]);
+      result = apply((Number)result, (Number)args[i]);
     }
     return result;
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(second)) {
       return NumberUtils.inexactnessTaint(first, second);

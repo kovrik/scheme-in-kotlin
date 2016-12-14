@@ -22,11 +22,11 @@ public class Log extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
-    return invoke((Number)args[0]);
+  public Number apply(Object... args) {
+    return apply((Number)args[0]);
   }
 
-  public Number invoke(Number number) {
+  public Number apply(Number number) {
     if (number instanceof Double) {
       if ((Double.isNaN((Double) number)) || (Double.isInfinite((Double) number))) {
         return number;

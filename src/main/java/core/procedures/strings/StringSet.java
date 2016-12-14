@@ -20,7 +20,7 @@ public class StringSet extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     SCMMutableString str = (SCMMutableString)args[0];
     Long pos = ((Number)args[1]).longValue();
     if (pos >= str.length()) {

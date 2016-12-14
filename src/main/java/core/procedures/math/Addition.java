@@ -20,7 +20,7 @@ public class Addition extends AFn {
     return "+";
   }
 
-  public Number invoke(Object first, Object second) {
+  public Number apply(Object first, Object second) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
       return NumberUtils.inexactnessTaint((Number)second, (Number) first);
@@ -68,14 +68,14 @@ public class Addition extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Object result = 0L;
     if (args != null) {
       for (Object obj : args) {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = invoke(result, obj);
+        result = apply(result, obj);
       }
     }
     return result;

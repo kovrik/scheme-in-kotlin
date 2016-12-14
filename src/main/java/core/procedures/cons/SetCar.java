@@ -17,7 +17,7 @@ public class SetCar extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     ((List)args[0]).set(0, args[1]);
     return UNSPECIFIED;
   }

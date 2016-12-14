@@ -134,8 +134,8 @@ public class Evaluator implements IEvaluator {
     }
 
     /* IFn (function in Java) */
-    // TODO Introduce 0,1,2..N-arity invoke() to improve performance?
-    Object result = ((IFn)fn).invoke(args.toArray());
+    // TODO Introduce 0,1,2..N-arity apply() to improve performance?
+    Object result = ((AFn)fn).apply(args.toArray());
 
     /* Handle Promise forced to evaluation by Force procedure */
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {

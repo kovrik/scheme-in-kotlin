@@ -18,7 +18,7 @@ public class StringRef extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     String s = args[0].toString();
     Long pos = ((Number)args[1]).longValue();
     if (pos >= s.length()) {

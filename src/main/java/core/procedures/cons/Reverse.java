@@ -15,7 +15,7 @@ public class Reverse extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     SCMCons<Object> result = SCMCons.list();
     for (Object o : (List)args[0]) {
       result.push(o);

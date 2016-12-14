@@ -13,7 +13,7 @@ public class Vector extends AFn {
   }
 
   @Override
-  public SCMMutableVector invoke(Object... args) {
+  public SCMMutableVector apply(Object... args) {
     return new SCMMutableVector(args);
   }
 }

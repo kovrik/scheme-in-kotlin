@@ -16,7 +16,7 @@ public class CloseInputPort extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     try {
       ((SCMInputPort)args[0]).close();
     } catch (IOException e) {

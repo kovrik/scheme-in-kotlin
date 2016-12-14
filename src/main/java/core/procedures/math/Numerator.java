@@ -1,6 +1,5 @@
 package core.procedures.math;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
@@ -22,7 +21,7 @@ public class Numerator extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     return numerator(args[0]);
   }
 

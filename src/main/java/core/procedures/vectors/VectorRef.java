@@ -19,7 +19,7 @@ public class VectorRef extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     SCMMutableVector vec = (SCMMutableVector)args[0];
     Long pos = ((Number)args[1]).longValue();
     if (pos >= vec.length()) {

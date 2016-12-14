@@ -44,7 +44,7 @@ public class NumericalComparison extends AFn {
   }
 
   @Override
-  public SCMBoolean invoke(Object... args) {
+  public SCMBoolean apply(Object... args) {
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         if (!(args[i] instanceof Number)) {
@@ -53,7 +53,7 @@ public class NumericalComparison extends AFn {
         if (!(args[i + 1] instanceof Number)) {
           throw new WrongTypeException("Number", args[i + 1]);
         }
-        if (!invoke(args[i], args[i + 1], type)) {
+        if (!apply(args[i], args[i + 1], type)) {
           return SCMBoolean.FALSE;
         }
       }
@@ -61,7 +61,7 @@ public class NumericalComparison extends AFn {
     return SCMBoolean.TRUE;
   }
 
-  public static boolean invoke(Object first, Object second, Type type) {
+  public static boolean apply(Object first, Object second, Type type) {
     Number f = (Number)first;
     Number s = (Number)second;
     if (f instanceof SCMBigRational) {

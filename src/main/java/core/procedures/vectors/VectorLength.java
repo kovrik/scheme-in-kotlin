@@ -19,7 +19,7 @@ public class VectorLength extends AFn {
   }
 
   @Override
-  public Long invoke(Object... args) {
+  public Long apply(Object... args) {
     return ((Integer)((SCMMutableVector)args[0]).length()).longValue();
   }
 }

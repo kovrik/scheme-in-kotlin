@@ -20,7 +20,7 @@ public class Length extends AFn {
   }
 
   @Override
-  public Long invoke(Object... args) {
+  public Long apply(Object... args) {
     return (long)((List)args[0]).size();
   }
 }

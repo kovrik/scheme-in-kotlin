@@ -14,7 +14,7 @@ public class StringProc extends AFn {
   }
 
   @Override
-  public SCMMutableString invoke(Object... args) {
+  public SCMMutableString apply(Object... args) {
     if (args.length == 0) {
       return new SCMMutableString();
     }

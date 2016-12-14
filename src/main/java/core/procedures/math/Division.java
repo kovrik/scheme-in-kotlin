@@ -22,7 +22,7 @@ public class Division extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     if (args == null || args.length == 0) {
       throw new ArityException(0, getName());
     }
@@ -31,7 +31,7 @@ public class Division extends AFn {
     }
     Number result;
     if (args.length == 1) {
-      return invoke(1L, (Number)args[0]);
+      return apply(1L, (Number)args[0]);
     } else {
       result = (Number)args[0];
     }
@@ -39,12 +39,12 @@ public class Division extends AFn {
       if (!(args[d] instanceof Number)) {
         throw new WrongTypeException("Number", args[d]);
       }
-      result = invoke(result, (Number)args[d]);
+      result = apply(result, (Number)args[d]);
     }
     return result;
   }
 
-  public Number invoke(Number numerator, Number denominator) {
+  public Number apply(Number numerator, Number denominator) {
     /* Big Rational numbers */
     if ((numerator instanceof SCMBigRational) && (denominator instanceof SCMBigRational)) {
       return ((SCMBigRational)numerator).divide((SCMBigRational)denominator);

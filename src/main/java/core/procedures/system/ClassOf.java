@@ -18,7 +18,7 @@ public class ClassOf extends AFn {
   }
 
   @Override
-  public SCMClass invoke(Object... args) {
+  public SCMClass apply(Object... args) {
     return SCMClass.classOf(args[0]);
   }
 }

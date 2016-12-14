@@ -278,7 +278,7 @@ public class NumberUtils {
       }
     }
     if (exp != null) {
-      result = Multiplication.invoke(result, Expt.invoke(r.longValue(), exp));
+      result = Multiplication.apply(result, Expt.apply(r.longValue(), exp));
     }
     return processExactness(result, exactness);
   }
@@ -334,7 +334,7 @@ public class NumberUtils {
     if (exactness == 'i') {
       Number result = ToInexact.toInexact(number);
       if (exp != null) {
-        result = Multiplication.invoke(result, Expt.invoke(r, exp));
+        result = Multiplication.apply(result, Expt.apply(r, exp));
       }
       return result;
     }

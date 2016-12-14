@@ -18,7 +18,7 @@ public class ToString extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     return Writer.write(args[0]);
   }
 }

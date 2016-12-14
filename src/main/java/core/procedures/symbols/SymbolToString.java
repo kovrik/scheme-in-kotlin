@@ -18,7 +18,7 @@ public class SymbolToString extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public String apply(Object... args) {
     return args[0].toString();
   }
 }

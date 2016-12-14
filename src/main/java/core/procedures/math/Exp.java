@@ -3,9 +3,6 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
-
-import java.math.BigDecimal;
 
 import static core.utils.NumberUtils.E;
 
@@ -23,11 +20,11 @@ public class Exp extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
-    return invoke((Number)args[0]);
+  public Number apply(Object... args) {
+    return apply((Number)args[0]);
   }
 
-  public Number invoke(Number number) {
+  public Number apply(Number number) {
     if (number instanceof Double) {
       if ((Double)number == Double.NEGATIVE_INFINITY) {
         return 0L;
@@ -52,6 +49,6 @@ public class Exp extends AFn {
         return Math.exp(1d);
       }
     }
-    return Expt.invoke(E, number);
+    return Expt.apply(E, number);
   }
 }

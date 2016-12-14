@@ -20,7 +20,7 @@ public class Abs extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     if (args[0] instanceof Long) {
       return Math.abs((Long) args[0]);
     } else if (args[0] instanceof Double) {

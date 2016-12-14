@@ -14,7 +14,7 @@ public class StringAppend extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public String apply(Object... args) {
     if (args.length == 0) {
       return "";
     }

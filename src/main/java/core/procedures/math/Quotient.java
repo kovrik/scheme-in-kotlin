@@ -21,7 +21,7 @@ public class Quotient extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     /* Special cases */
     if (NumberUtils.isOne(args[1])) {
       return NumberUtils.inexactnessTaint((Number)args[0], (Number) args[1]);
@@ -29,10 +29,10 @@ public class Quotient extends AFn {
     if (NumberUtils.isZero(args[1])) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
-    return invoke((Number) args[0], (Number) args[1]);
+    return apply((Number) args[0], (Number) args[1]);
   }
 
-  public Number invoke(BigDecimal first, BigDecimal second) {
+  public Number apply(BigDecimal first, BigDecimal second) {
     int scale = Math.max(first.scale(), second.scale());
     if (scale > 0) {
       return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, NumberUtils.ROUNDING_MODE)
@@ -42,21 +42,21 @@ public class Quotient extends AFn {
     }
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return invoke((BigDecimal)first, (BigDecimal)second);
+      return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return invoke((BigDecimal)first, new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double) ||
         (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
 
-      return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
     return first.longValue() / second.longValue();
   }

@@ -21,20 +21,20 @@ public class Multiplication extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Object result = 1L;
     if (args != null) {
       for (Object obj : args) {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = invoke((Number)result, (Number)obj);
+        result = apply((Number)result, (Number)obj);
       }
     }
     return result;
   }
 
-  public static Number invoke(Number first, Number second) {
+  public static Number apply(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(first) || NumberUtils.isZero(second)) {
       return 0L;

@@ -14,77 +14,77 @@ public class CharComparison extends AFn {
   }
 
   private static class CharComparisonFn extends AFn {
-    public boolean invoke(Object arg1, Object arg2) {
-      return (Boolean)super.invoke(arg1, arg2);
+    public boolean apply(Object arg1, Object arg2) {
+      return (Boolean)super.apply(arg1, arg2);
     }
   }
 
   public static final CharComparison CHAR_EQ = new CharComparison("char=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character)arg1).compareTo((Character)arg2) == 0;
     }
   });
 
   public static final CharComparison CHAR_EQ_CI = new CharComparison("char-ci=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character.toLowerCase((Character)arg1))) == ((Character.toLowerCase((Character)arg2)));
     }
   });
 
   public static final CharComparison CHAR_LE = new CharComparison("char<?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character)arg1).compareTo((Character)arg2) < 0;
     }
   });
 
   public static final CharComparison CHAR_LE_CI = new CharComparison("char-ci<?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character.toLowerCase((Character)arg1))) < ((Character.toLowerCase((Character)arg2)));
     }
   });
 
   public static final CharComparison CHAR_LE_OR_EQ = new CharComparison("char<=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character)arg1).compareTo((Character)arg2) <= 0;
     }
   });
 
   public static final CharComparison CHAR_LE_OR_EQ_CI = new CharComparison("char-ci<=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character.toLowerCase((Character)arg1))) <= ((Character.toLowerCase((Character)arg2)));
     }
   });
 
   public static final CharComparison CHAR_GR = new CharComparison("char>?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character)arg1).compareTo((Character)arg2) > 0;
     }
   });
 
   public static final CharComparison CHAR_GR_CI = new CharComparison("char-ci>?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character.toLowerCase((Character)arg1))) > ((Character.toLowerCase((Character)arg2)));
     }
   });
 
   public static final CharComparison CHAR_GR_OR_EQ = new CharComparison("char>=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character)arg1).compareTo((Character)arg2) >= 0;
     }
   });
 
   public static final CharComparison CHAR_GR_OR_EQ_CI = new CharComparison("char-ci>=?", new CharComparisonFn() {
     @Override
-    public boolean invoke(Object arg1, Object arg2) {
+    public boolean apply(Object arg1, Object arg2) {
       return ((Character.toLowerCase((Character)arg1))) >= ((Character.toLowerCase((Character)arg2)));
     }
   });
@@ -98,7 +98,7 @@ public class CharComparison extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args.length < 2) {
       return SCMBoolean.TRUE;
     }
@@ -109,7 +109,7 @@ public class CharComparison extends AFn {
       if (!(args[i + 1] instanceof Character)) {
         throw new WrongTypeException("Character", args[i + 1]);
       }
-      if ((!predicate.invoke(args[i], args[i + 1]))) {
+      if ((!predicate.apply(args[i], args[i + 1]))) {
         return SCMBoolean.FALSE;
       }
     }

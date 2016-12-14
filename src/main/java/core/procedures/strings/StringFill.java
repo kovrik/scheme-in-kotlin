@@ -18,7 +18,7 @@ public class StringFill extends AFn {
   }
 
   @Override
-  public SCMMutableString invoke(Object... args) {
+  public SCMMutableString apply(Object... args) {
     SCMMutableString s = (SCMMutableString)args[0];
     int oldLength = s.length();
     Object c = args[1];

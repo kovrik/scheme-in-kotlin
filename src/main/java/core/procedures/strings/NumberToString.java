@@ -17,7 +17,7 @@ public class NumberToString extends AFn {
   }
 
   @Override
-  public String invoke(Object... args) {
+  public String apply(Object... args) {
     Number o = (Number)args[0];
     if (args.length > 2) {
       throw new ArityException(args.length, getName());

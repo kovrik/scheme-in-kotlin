@@ -16,7 +16,7 @@ public class ListTail extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Object o = args[0];
     Long p = ((Number)args[1]).longValue();
     if (p == 0) {

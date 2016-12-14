@@ -26,11 +26,11 @@ public class Expt extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
-    return invoke((Number)args[0], (Number)args[1]);
+  public Number apply(Object... args) {
+    return apply((Number)args[0], (Number)args[1]);
   }
 
-  public static Number invoke(Number first, Number exponent) {
+  public static Number apply(Number first, Number exponent) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
       return NumberUtils.inexactnessTaint(first, exponent);

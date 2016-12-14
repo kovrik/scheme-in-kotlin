@@ -21,7 +21,7 @@ public class ListRef extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Long p = ((Number)args[1]).longValue();
     List list = (List)args[0];
     if (p >= list.size()) {

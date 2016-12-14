@@ -21,18 +21,18 @@ public class Remainder extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
-    return invoke((Number)args[0], (Number)args[1]);
+  public Number apply(Object... args) {
+    return apply((Number)args[0], (Number)args[1]);
   }
 
-  public Number invoke(BigDecimal first, BigDecimal second) {
+  public Number apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
     return first.remainder(second);
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
     if (first instanceof SCMBigRational) {
       first = ((SCMBigRational) first).toBigDecimal();
     }
@@ -41,13 +41,13 @@ public class Remainder extends AFn {
     }
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return invoke((BigDecimal)first, (BigDecimal)second);
+      return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return invoke((BigDecimal)first, new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return invoke(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {

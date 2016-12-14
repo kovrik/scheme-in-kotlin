@@ -22,7 +22,7 @@ public class Round extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     return round((Number) args[0]);
   }
 

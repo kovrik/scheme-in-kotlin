@@ -24,7 +24,7 @@ public class LCM extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args != null) {
       if (args.length == 0) {
         return 1L;
@@ -34,14 +34,14 @@ public class LCM extends AFn {
         throw new WrongTypeException("Integer", result);
       }
       if (args.length == 1) {
-        return ABS.invoke(args[0]);
+        return ABS.apply(args[0]);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;
         if (!(args[i] instanceof Number)) {
           throw new WrongTypeException("Integer", args[i]);
         }
-        result = invoke(first, (Number)args[i]);
+        result = apply(first, (Number)args[i]);
       }
       return result;
     }
@@ -84,7 +84,7 @@ public class LCM extends AFn {
     }
   }
 
-  public Number invoke(Number first, Number second) {
+  public Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }

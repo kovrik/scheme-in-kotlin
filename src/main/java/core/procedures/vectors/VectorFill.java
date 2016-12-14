@@ -17,7 +17,7 @@ public class VectorFill extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     SCMMutableVector vector = (SCMMutableVector) args[0];
     Arrays.fill(vector.getArray(), args[1]);
     return UNSPECIFIED;

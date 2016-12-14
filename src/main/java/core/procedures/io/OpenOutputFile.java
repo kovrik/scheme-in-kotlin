@@ -18,7 +18,7 @@ public class OpenOutputFile extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args.length != 1) {
       throw new ArityException(args.length, 1, getName());
     }

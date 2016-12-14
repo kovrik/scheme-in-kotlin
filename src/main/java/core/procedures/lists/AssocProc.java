@@ -21,13 +21,13 @@ public class AssocProc extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     Object obj = args[0];
     List list = (List) args[1];
     for (int n = 0; n < list.size(); n++) {
       Object pair = list.get(n);
       if (SCMCons.isPair(pair)) {
-        if ((SCMBoolean.valueOf(predicate.invoke(obj, ((SCMCons) pair).car())))) {
+        if ((SCMBoolean.valueOf(predicate.apply(obj, ((SCMCons) pair).car())))) {
           return pair;
         }
       } else {

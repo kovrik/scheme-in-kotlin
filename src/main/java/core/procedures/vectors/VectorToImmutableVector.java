@@ -14,7 +14,7 @@ public class VectorToImmutableVector extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args[0] instanceof SCMImmutableVector) {
       return args[0];
     } else {

@@ -15,7 +15,7 @@ public class Exit extends AFn {
   }
 
   @Override
-  public Object invoke(Object... args) {
+  public Object apply(Object... args) {
     if (args.length == 0) {
       System.exit(0);
     } else {

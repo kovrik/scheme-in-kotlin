@@ -21,7 +21,7 @@ public class Sqrt extends AFn {
   }
 
   @Override
-  public Number invoke(Object... args) {
+  public Number apply(Object... args) {
     if (args[0] instanceof Long) {
       return Math.sqrt((Long) args[0]);
     } else if (args[0] instanceof Double) {
