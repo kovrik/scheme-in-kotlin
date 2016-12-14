@@ -6,7 +6,6 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.procedures.IFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
