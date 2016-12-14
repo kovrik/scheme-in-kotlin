@@ -18,13 +18,13 @@ public class CharComparison extends AFn {
   public static final CharComparison CHAR_EQ = new CharComparison("char=?", (arg1, arg2) -> arg1.compareTo(arg2) == 0);
   public static final CharComparison CHAR_LE = new CharComparison("char<?", (arg1, arg2) -> arg1.compareTo(arg2) < 0);
   public static final CharComparison CHAR_GR = new CharComparison("char>?", (arg1, arg2) -> arg1.compareTo(arg2) > 0);
-  public static final CharComparison CHAR_GR_OR_EQ = new CharComparison("char>=?", (arg1, arg2) -> arg1.compareTo(arg2) >= 0);
   public static final CharComparison CHAR_LE_OR_EQ = new CharComparison("char<=?", (arg1, arg2) -> arg1.compareTo(arg2) <= 0);
-  public static final CharComparison CHAR_GR_CI = new CharComparison("char-ci>?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) > ((Character.toLowerCase(arg2))));
-  public static final CharComparison CHAR_EQ_CI = new CharComparison("char-ci=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) == ((Character.toLowerCase(arg2))));
-  public static final CharComparison CHAR_LE_CI = new CharComparison("char-ci<?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) < ((Character.toLowerCase(arg2))));
-  public static final CharComparison CHAR_LE_OR_EQ_CI = new CharComparison("char-ci<=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) <= ((Character.toLowerCase(arg2))));
-  public static final CharComparison CHAR_GR_OR_EQ_CI = new CharComparison("char-ci>=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) >= ((Character.toLowerCase(arg2))));
+  public static final CharComparison CHAR_GR_OR_EQ = new CharComparison("char>=?", (arg1, arg2) -> arg1.compareTo(arg2) >= 0);
+  public static final CharComparison CHAR_EQ_CI = new CharComparison("char-ci=?", (arg1, arg2) -> Character.toLowerCase(arg1) == Character.toLowerCase(arg2));
+  public static final CharComparison CHAR_LE_CI = new CharComparison("char-ci<?", (arg1, arg2) -> Character.toLowerCase(arg1) <  Character.toLowerCase(arg2));
+  public static final CharComparison CHAR_GR_CI = new CharComparison("char-ci>?", (arg1, arg2) -> Character.toLowerCase(arg1) >  Character.toLowerCase(arg2));
+  public static final CharComparison CHAR_LE_OR_EQ_CI = new CharComparison("char-ci<=?", (arg1, arg2) -> Character.toLowerCase(arg1) <= Character.toLowerCase(arg2));
+  public static final CharComparison CHAR_GR_OR_EQ_CI = new CharComparison("char-ci>=?", (arg1, arg2) -> Character.toLowerCase(arg1) >= Character.toLowerCase(arg2));
 
   private final String name;
   private final BiPredicate<Character, Character> predicate;
