@@ -2,7 +2,9 @@ package core.environment;
 
 import core.procedures.AFn;
 import core.procedures.characters.CharComparison;
+import core.procedures.characters.CharPredicate;
 import core.procedures.characters.CharProc;
+import core.procedures.characters.IntegerToChar;
 import core.procedures.cons.*;
 import core.procedures.delayed.Force;
 import core.procedures.equivalence.Eq;
@@ -111,13 +113,13 @@ public final class DefaultEnvironment extends Environment {
       StringComparison.STRING_EQ_CI,
 
       /* Characters */
-      CharProc.CHAR_WHITESPACE,
-      CharProc.CHAR_ALPHABETIC,
-      CharProc.CHAR_UPPER_CASE,
-      CharProc.CHAR_LOWER_CASE,
-      CharProc.CHAR_NUMERIC,
+      new IntegerToChar(),
+      CharPredicate.IS_CHAR_WHITESPACE,
+      CharPredicate.IS_CHAR_ALPHABETIC,
+      CharPredicate.IS_CHAR_UPPER_CASE,
+      CharPredicate.IS_CHAR_LOWER_CASE,
+      CharPredicate.IS_CHAR_NUMERIC,
       CharProc.CHAR_TO_INTEGER,
-      CharProc.INTEGER_TO_CHAR,
       CharProc.CHAR_UPCASE,
       CharProc.CHAR_DOWNCASE,
       CharComparison.CHAR_GR,
