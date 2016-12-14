@@ -229,7 +229,7 @@ public class NumberTest extends AbstractTest {
       eval("(negative? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 
@@ -248,7 +248,7 @@ public class NumberTest extends AbstractTest {
       eval("(positive? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
     }
   }
 

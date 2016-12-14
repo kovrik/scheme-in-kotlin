@@ -53,6 +53,10 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return SCMClass.COMPLEX;
   }
 
+  public boolean isZero() {
+    return re.compareTo(BigDecimal.ZERO) == 0 && im.compareTo(BigDecimal.ZERO) == 0;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -32,8 +32,8 @@ public class SCMPredicate extends AFn {
   public static final SCMPredicate IS_REAL = new SCMPredicate("real?", NumberUtils::isReal);
   public static final SCMPredicate IS_COMPLEX = new SCMPredicate("complex?", o -> (o instanceof Number));
   public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isZero(o)));
-  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isPositive(o)));
-  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isNegative(o)));
+  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
+  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
   public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
   public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);

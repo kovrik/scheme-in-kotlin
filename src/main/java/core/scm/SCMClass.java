@@ -212,7 +212,7 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static boolean assertClass(Object o, Class<?> c) {
-    if (c.isAssignableFrom(o.getClass())) {
+    if (checkType(o, c)) {
       return true;
     }
     throw new WrongTypeException(c.getSimpleName(), o);

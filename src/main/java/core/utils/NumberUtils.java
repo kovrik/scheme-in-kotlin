@@ -452,6 +452,9 @@ public class NumberUtils {
     if (o instanceof SCMBigRational) {
       return ((SCMBigRational)o).isZero();
     }
+    if (o instanceof SCMBigComplex) {
+      return ((SCMBigComplex)o).isZero();
+    }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).compareTo(BigDecimal.ZERO) == 0;
     }
