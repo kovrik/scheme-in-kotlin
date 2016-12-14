@@ -5,6 +5,8 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 
+import java.util.function.BiPredicate;
+
 @FnArgs(isVariadic = true)
 public class CharComparison extends AFn {
 
@@ -13,86 +15,21 @@ public class CharComparison extends AFn {
     return true;
   }
 
-  private static class CharComparisonFn extends AFn {
-    public boolean apply(Object arg1, Object arg2) {
-      return (Boolean)super.apply(arg1, arg2);
-    }
-  }
-
-  public static final CharComparison CHAR_EQ = new CharComparison("char=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character)arg1).compareTo((Character)arg2) == 0;
-    }
-  });
-
-  public static final CharComparison CHAR_EQ_CI = new CharComparison("char-ci=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character.toLowerCase((Character)arg1))) == ((Character.toLowerCase((Character)arg2)));
-    }
-  });
-
-  public static final CharComparison CHAR_LE = new CharComparison("char<?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character)arg1).compareTo((Character)arg2) < 0;
-    }
-  });
-
-  public static final CharComparison CHAR_LE_CI = new CharComparison("char-ci<?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character.toLowerCase((Character)arg1))) < ((Character.toLowerCase((Character)arg2)));
-    }
-  });
-
-  public static final CharComparison CHAR_LE_OR_EQ = new CharComparison("char<=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character)arg1).compareTo((Character)arg2) <= 0;
-    }
-  });
-
-  public static final CharComparison CHAR_LE_OR_EQ_CI = new CharComparison("char-ci<=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character.toLowerCase((Character)arg1))) <= ((Character.toLowerCase((Character)arg2)));
-    }
-  });
-
-  public static final CharComparison CHAR_GR = new CharComparison("char>?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character)arg1).compareTo((Character)arg2) > 0;
-    }
-  });
-
-  public static final CharComparison CHAR_GR_CI = new CharComparison("char-ci>?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character.toLowerCase((Character)arg1))) > ((Character.toLowerCase((Character)arg2)));
-    }
-  });
-
-  public static final CharComparison CHAR_GR_OR_EQ = new CharComparison("char>=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character)arg1).compareTo((Character)arg2) >= 0;
-    }
-  });
-
-  public static final CharComparison CHAR_GR_OR_EQ_CI = new CharComparison("char-ci>=?", new CharComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return ((Character.toLowerCase((Character)arg1))) >= ((Character.toLowerCase((Character)arg2)));
-    }
-  });
+  public static final CharComparison CHAR_EQ = new CharComparison("char=?", (arg1, arg2) -> arg1.compareTo(arg2) == 0);
+  public static final CharComparison CHAR_EQ_CI = new CharComparison("char-ci=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) == ((Character.toLowerCase(arg2))));
+  public static final CharComparison CHAR_LE = new CharComparison("char<?", (arg1, arg2) -> arg1.compareTo(arg2) < 0);
+  public static final CharComparison CHAR_LE_CI = new CharComparison("char-ci<?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) < ((Character.toLowerCase(arg2))));
+  public static final CharComparison CHAR_LE_OR_EQ = new CharComparison("char<=?", (arg1, arg2) -> arg1.compareTo(arg2) <= 0);
+  public static final CharComparison CHAR_LE_OR_EQ_CI = new CharComparison("char-ci<=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) <= ((Character.toLowerCase(arg2))));
+  public static final CharComparison CHAR_GR = new CharComparison("char>?", (arg1, arg2) -> arg1.compareTo(arg2) > 0);
+  public static final CharComparison CHAR_GR_CI = new CharComparison("char-ci>?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) > ((Character.toLowerCase(arg2))));
+  public static final CharComparison CHAR_GR_OR_EQ = new CharComparison("char>=?", (arg1, arg2) -> arg1.compareTo(arg2) >= 0);
+  public static final CharComparison CHAR_GR_OR_EQ_CI = new CharComparison("char-ci>=?", (arg1, arg2) -> ((Character.toLowerCase(arg1))) >= ((Character.toLowerCase(arg2))));
 
   private final String name;
-  private final CharComparisonFn predicate;
+  private final BiPredicate<Character, Character> predicate;
 
-  private CharComparison(String name, CharComparisonFn predicate) {
+  private CharComparison(String name, BiPredicate<Character, Character> predicate) {
     this.name = name;
     this.predicate = predicate;
   }
@@ -109,7 +46,7 @@ public class CharComparison extends AFn {
       if (!(args[i + 1] instanceof Character)) {
         throw new WrongTypeException("Character", args[i + 1]);
       }
-      if ((!predicate.apply(args[i], args[i + 1]))) {
+      if ((!predicate.test((Character) args[i], (Character) args[i + 1]))) {
         return SCMBoolean.FALSE;
       }
     }

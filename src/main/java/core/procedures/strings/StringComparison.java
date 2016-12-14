@@ -6,6 +6,8 @@ import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.scm.SCMMutableString;
 
+import java.util.function.BiPredicate;
+
 @FnArgs(isVariadic = true)
 public class StringComparison extends AFn {
 
@@ -14,86 +16,21 @@ public class StringComparison extends AFn {
     return true;
   }
 
-  private static class StringComparisonFn extends AFn {
-    public boolean apply(Object arg1, Object arg2) {
-      return (Boolean)super.apply(arg1, arg2);
-    }
-  }
-
-  public static final StringComparison STRING_EQ = new StringComparison("string=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return arg1.toString().equals(arg2.toString());
-    }
-  });
-
-  public static final StringComparison STRING_EQ_CI = new StringComparison("string-ci=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).equalsIgnoreCase(arg2.toString());
-    }
-  });
-
-  public static final StringComparison STRING_LE = new StringComparison("string<?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).compareTo((arg2.toString())) < 0;
-    }
-  });
-
-  public static final StringComparison STRING_LE_CI = new StringComparison("string-ci<?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) < 0;
-    }
-  });
-
-  public static final StringComparison STRING_LE_OR_EQ = new StringComparison("string<=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).compareTo((arg2.toString())) <= 0;
-    }
-  });
-
-  public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) <= 0;
-    }
-  });
-
-  public static final StringComparison STRING_GR = new StringComparison("string>?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).compareTo((arg2.toString())) > 0;
-    }
-  });
-
-  public static final StringComparison STRING_GR_CI = new StringComparison("string-ci>?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) > 0;
-    }
-  });
-
-  public static final StringComparison STRING_GR_OR_EQ = new StringComparison("string>=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).compareTo((arg2.toString())) >= 0;
-    }
-  });
-
-  public static final StringComparison STRING_GR_OR_EQ_CI = new StringComparison("string-ci>=?", new StringComparisonFn() {
-    @Override
-    public boolean apply(Object arg1, Object arg2) {
-      return (arg1.toString()).toLowerCase().compareTo((arg2.toString()).toLowerCase()) >= 0;
-    }
-  });
+  public static final StringComparison STRING_EQ          = new StringComparison("string=?",     String::equals);
+  public static final StringComparison STRING_EQ_CI       = new StringComparison("string-ci=?",  String::equalsIgnoreCase);
+  public static final StringComparison STRING_LE          = new StringComparison("string<?",     (arg1, arg2) -> arg1.compareTo(arg2) < 0);
+  public static final StringComparison STRING_LE_CI       = new StringComparison("string-ci<?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) < 0);
+  public static final StringComparison STRING_LE_OR_EQ    = new StringComparison("string<=?",    (arg1, arg2) -> arg1.compareTo(arg2) <= 0);
+  public static final StringComparison STRING_LE_OR_EQ_CI = new StringComparison("string-ci<=?", (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) <= 0);
+  public static final StringComparison STRING_GR          = new StringComparison("string>?",     (arg1, arg2) -> arg1.compareTo(arg2) > 0);
+  public static final StringComparison STRING_GR_CI       = new StringComparison("string-ci>?",  (arg1, arg2) -> arg1.toLowerCase().compareTo(arg2.toLowerCase()) > 0);
+  public static final StringComparison STRING_GR_OR_EQ    = new StringComparison("string>=?",    (arg1, arg2) -> arg1.compareTo(arg2) >= 0);
+  public static final StringComparison STRING_GR_OR_EQ_CI = new StringComparison("string-ci>=?", (arg1, arg2) -> arg1.toLowerCase().compareTo((arg2).toLowerCase()) >= 0);
 
   private final String name;
-  private final StringComparisonFn predicate;
+  private final BiPredicate<String, String> predicate;
 
-  private StringComparison(String name, StringComparisonFn predicate) {
+  private StringComparison(String name, BiPredicate<String, String> predicate) {
     this.name = name;
     this.predicate = predicate;
   }
@@ -110,7 +47,7 @@ public class StringComparison extends AFn {
       if (!(args[i + 1] instanceof String || args[i + 1] instanceof SCMMutableString)) {
         throw new WrongTypeException("String", args[i + 1]);
       }
-      if ((!predicate.apply(args[i], args[i + 1]))) {
+      if ((!predicate.test(args[i].toString(), args[i + 1].toString()))) {
         return SCMBoolean.FALSE;
       }
     }
