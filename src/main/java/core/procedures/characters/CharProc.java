@@ -13,16 +13,16 @@ public class CharProc extends AFn {
   public static final CharProc CHAR_DOWNCASE   = new CharProc("char-downcase", Character::toLowerCase);
 
   private final String name;
-  private final Function<Character, Object> predicate;
+  private final Function<Character, Object> function;
 
-  private CharProc(String name, Function<Character, Object> predicate) {
+  private CharProc(String name, Function<Character, Object> function) {
     this.name = name;
-    this.predicate = predicate;
+    this.function = function;
   }
 
   @Override
   public Object apply(Object... args) {
-    return predicate.apply((Character) args[0]);
+    return function.apply((Character) args[0]);
   }
 
   @Override
