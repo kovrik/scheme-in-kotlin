@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
@@ -26,6 +27,10 @@ public class ToInexact extends AFn {
   }
 
   public static Number toInexact(Object o) {
+    if (o instanceof SCMBigComplex) {
+      SCMBigComplex c = ((SCMBigComplex)o);
+      return new SCMBigComplex(toInexact(c.getRe()), toInexact(c.getIm()));
+    }
     if (o instanceof SCMBigRational) {
       return ((SCMBigRational)o).toBigDecimalInexact();
     }

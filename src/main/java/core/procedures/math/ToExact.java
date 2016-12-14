@@ -2,12 +2,12 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.DoubleSummaryStatistics;
 
 @FnArgs(args = {Number.class})
 public class ToExact extends AFn {
@@ -37,6 +37,10 @@ public class ToExact extends AFn {
       } else if (o instanceof BigDecimal) {
         return BigDecimal.ZERO;
       }
+    }
+    if (o instanceof SCMBigComplex) {
+      SCMBigComplex c = ((SCMBigComplex)o);
+      return new SCMBigComplex(toExact(c.getRe()), toExact(c.getIm()));
     }
     if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
       throw new ArithmeticException("No exact representation");
