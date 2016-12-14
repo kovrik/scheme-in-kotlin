@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
@@ -20,13 +21,20 @@ public class Addition extends AFn {
     return "+";
   }
 
-  public Number apply(Object first, Object second) {
+  public Number apply(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
-      return NumberUtils.inexactnessTaint((Number)second, (Number) first);
+      return NumberUtils.inexactnessTaint(second, first);
     }
     if (NumberUtils.isZero(second)) {
-      return NumberUtils.inexactnessTaint((Number)first, (Number)second);
+      return NumberUtils.inexactnessTaint(first, second);
+    }
+    /* Complex numbers*/
+    if (first instanceof SCMBigComplex) {
+      return ((SCMBigComplex) first).plus(second);
+    }
+    if (second instanceof SCMBigComplex) {
+      return new SCMBigComplex(first).plus(second);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
@@ -41,7 +49,7 @@ public class Addition extends AFn {
     }
     if (second instanceof SCMBigRational) {
       if (first instanceof Long || first instanceof BigDecimal) {
-        return ((SCMBigRational) second).plus(new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE));
+        return new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE).plus((SCMBigRational) second);
       } else {
         second = ((SCMBigRational)second).doubleOrBigDecimalValue();
       }
@@ -58,9 +66,9 @@ public class Addition extends AFn {
       return ((BigDecimal)first).add(new BigDecimal(second.toString()));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).add(new BigDecimal(first.toString()));
+      return new BigDecimal(first.toString()).add((BigDecimal) second);
     }
-    double result = ((Number)first).doubleValue() + ((Number)second).doubleValue();
+    double result = first.doubleValue() + second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {
       return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
     }
@@ -75,7 +83,7 @@ public class Addition extends AFn {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = apply(result, obj);
+        result = apply((Number)result, (Number)obj);
       }
     }
     return result;

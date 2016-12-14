@@ -366,6 +366,19 @@ public class NumberUtils {
     return number;
   }
 
+  public static BigDecimal toBigDecimal(Number number) {
+    if (number instanceof BigDecimal) {
+      return (BigDecimal)number;
+    }
+    if (number instanceof SCMBigRational) {
+      return ((SCMBigRational) number).toBigDecimal();
+    }
+    if (number instanceof SCMBigComplex) {
+      throw new UnsupportedOperationException("Undefined for Complex!");
+    }
+    return new BigDecimal(number.toString());
+  }
+
   public static boolean isRational(Object o) {
     if (!(o instanceof Number)) {
       return false;

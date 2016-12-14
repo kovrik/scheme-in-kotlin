@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.utils.NumberUtils;
+
 import java.math.BigDecimal;
 
 /**
@@ -26,6 +28,28 @@ public class SCMBigComplex extends Number implements ISCMClass {
       this.im = ((SCMBigRational)im).toBigDecimal();
     } else {
       this.im = new BigDecimal(im.toString());
+    }
+  }
+
+  public SCMBigComplex(Number re) {
+    this(re, BigDecimal.ZERO);
+  }
+
+  public SCMBigComplex plus(Number other) {
+    if (other instanceof SCMBigComplex) {
+      return new SCMBigComplex(re.add(((SCMBigComplex) other).getRe()), im.add(((SCMBigComplex) other).getIm()));
+    } else {
+      BigDecimal bd = NumberUtils.toBigDecimal(other);
+      return new SCMBigComplex(re.add(bd), im);
+    }
+  }
+
+  public SCMBigComplex minus(Number other) {
+    if (other instanceof SCMBigComplex) {
+      return new SCMBigComplex(re.subtract(((SCMBigComplex) other).getRe()), im.subtract(((SCMBigComplex) other).getIm()));
+    } else {
+      BigDecimal bd = NumberUtils.toBigDecimal(other);
+      return new SCMBigComplex(re.subtract(bd), im);
     }
   }
 

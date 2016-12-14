@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
@@ -50,6 +51,13 @@ public class Subtraction extends AFn {
     if (NumberUtils.isZero(second)) {
       return NumberUtils.inexactnessTaint(first, second);
     }
+    /* Complex numbers*/
+    if (first instanceof SCMBigComplex) {
+      return ((SCMBigComplex) first).minus(second);
+    }
+    if (second instanceof SCMBigComplex) {
+      return new SCMBigComplex(first).minus(second);
+    }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).minus((SCMBigRational)second);
@@ -63,7 +71,7 @@ public class Subtraction extends AFn {
     }
     if (second instanceof SCMBigRational) {
       if (first instanceof Long) {
-        return ((SCMBigRational) second).minus(new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE));
+        return new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE).minus((SCMBigRational) second);
       } else {
         second = second.doubleValue();
       }
