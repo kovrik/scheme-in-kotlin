@@ -163,7 +163,7 @@ public enum SCMClass implements ISCMClass {
 
   @Override
   public String toString() {
-    return "<class " + getName() + ">";
+    return "#<class:" + getName() + ">";
   }
 
   public static SCMClass valueOf(Class clazz) {
