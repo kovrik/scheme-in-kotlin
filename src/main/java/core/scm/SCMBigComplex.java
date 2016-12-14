@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  */
 public class SCMBigComplex extends Number implements ISCMClass {
 
+  // TODO use generic Number instead
   private final BigDecimal re;
   private final BigDecimal im;
 
@@ -35,6 +36,8 @@ public class SCMBigComplex extends Number implements ISCMClass {
     this(re, BigDecimal.ZERO);
   }
 
+  // TODO Optimize all arithmetic operations
+
   public SCMBigComplex plus(Number other) {
     if (other instanceof SCMBigComplex) {
       return new SCMBigComplex(re.add(((SCMBigComplex) other).getRe()), im.add(((SCMBigComplex) other).getIm()));
@@ -51,6 +54,43 @@ public class SCMBigComplex extends Number implements ISCMClass {
       BigDecimal bd = NumberUtils.toBigDecimal(other);
       return new SCMBigComplex(re.subtract(bd), im);
     }
+  }
+
+  /* (a + bi)(c + di) = (ac - bd) + (bc + ad)i  */
+  public SCMBigComplex multiply(Number other) {
+    SCMBigComplex o;
+    if (other instanceof SCMBigComplex) {
+      o = (SCMBigComplex) other;
+    } else {
+      o = new SCMBigComplex(other);
+    }
+    BigDecimal a = this.re;
+    BigDecimal b = this.im;
+    BigDecimal c = o.re;
+    BigDecimal d = o.im;
+    return new SCMBigComplex((a.multiply(c).subtract(b.multiply(d))), (b.multiply(c).add(a.multiply(d))));
+  }
+
+  /* a + bi     ac + bd       bc - ad
+   * ------ =  ----------  + --------- i
+   * c + di    c*c + d*d     c*c + d*d
+   */
+  public SCMBigComplex divide(Number other) {
+    SCMBigComplex o;
+    if (other instanceof SCMBigComplex) {
+      o = (SCMBigComplex) other;
+    } else {
+      o = new SCMBigComplex(other);
+    }
+    BigDecimal a = this.re;
+    BigDecimal b = this.im;
+    BigDecimal c = o.re;
+    BigDecimal d = o.im;
+    BigDecimal real = a.multiply(c).add(b.multiply(d));
+    BigDecimal imag = b.multiply(c).subtract(a.multiply(d));
+    BigDecimal denom = c.multiply(c).add(d.multiply(d));
+    return new SCMBigComplex(real.divide(denom, NumberUtils.DEFAULT_CONTEXT),
+                             imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
   }
 
   public BigDecimal getRe() {

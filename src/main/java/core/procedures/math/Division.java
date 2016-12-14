@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
@@ -45,6 +46,13 @@ public class Division extends AFn {
   }
 
   public Number apply(Number numerator, Number denominator) {
+    /* Complex numbers*/
+    if (numerator instanceof SCMBigComplex) {
+      return ((SCMBigComplex) numerator).divide(denominator);
+    }
+    if (denominator instanceof SCMBigComplex) {
+      return new SCMBigComplex(numerator).multiply(denominator);
+    }
     /* Big Rational numbers */
     if ((numerator instanceof SCMBigRational) && (denominator instanceof SCMBigRational)) {
       return ((SCMBigRational)numerator).divide((SCMBigRational)denominator);

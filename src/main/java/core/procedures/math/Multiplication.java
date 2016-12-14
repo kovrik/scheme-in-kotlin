@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
@@ -44,6 +45,13 @@ public class Multiplication extends AFn {
     }
     if (NumberUtils.isOne(second)) {
       return NumberUtils.inexactnessTaint(first, second);
+    }
+    /* Complex numbers*/
+    if (first instanceof SCMBigComplex) {
+      return ((SCMBigComplex) first).multiply(second);
+    }
+    if (second instanceof SCMBigComplex) {
+      return new SCMBigComplex(first).multiply(second);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
