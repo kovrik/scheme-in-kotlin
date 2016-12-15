@@ -4,11 +4,10 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {SCMClass.Real.class})
+@FnArgs(args = {Number.class})
 public class Cosh extends AFn {
 
   @Override
@@ -30,8 +29,7 @@ public class Cosh extends AFn {
     } else if (args[0] instanceof BigDecimal) {
       return cosh((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
-      throw new UnsupportedOperationException("Not implemented yet!");
-      // TODO cosh
+      return cosh((SCMBigComplex)args[0]);
     } else {
       return cosh(((SCMBigRational)args[0]).toBigDecimal());
     }
@@ -44,5 +42,14 @@ public class Cosh extends AFn {
     } else {
       return Math.cosh(v);
     }
+  }
+
+  /* cosh(x + yi) = cosh(x)*cos(y) + sinh(x)*sin(y)*i */
+  public static SCMBigComplex cosh(SCMBigComplex c) {
+    BigDecimal x = c.getRe();
+    BigDecimal y = c.getIm();
+    double re = Cosh.cosh(x) * Cos.cos(y);
+    double im = Sinh.sinh(x) * Sin.sin(y);
+    return new SCMBigComplex(re, im);
   }
 }

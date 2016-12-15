@@ -4,11 +4,10 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {SCMClass.Real.class})
+@FnArgs(args = {Number.class})
 public class Cos extends AFn {
 
   @Override
@@ -30,7 +29,7 @@ public class Cos extends AFn {
     } else if (args[0] instanceof BigDecimal) {
       return cos((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
-      throw new UnsupportedOperationException("Not implemented yet!");
+      return Cosh.cosh((SCMBigComplex)args[0]);
     } else {
       return cos(((SCMBigRational)args[0]).toBigDecimal());
     }

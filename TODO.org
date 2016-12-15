@@ -308,9 +308,15 @@ CLOSED: [2016-06-17 Fri 18:39]
 CLOSED: [2016-06-17 Fri 18:39]
 ***** DONE min
 CLOSED: [2016-06-17 Fri 18:39]
-**** TODO Trigonometry [0/6]
-***** TODO sin
-***** TODO cos
+**** TODO Trigonometry [4/8]
+***** DONE sin
+CLOSED: [2016-12-15 Thu 17:42]
+***** DONE sinh
+CLOSED: [2016-12-15 Thu 17:42]
+***** DONE cos
+CLOSED: [2016-12-15 Thu 17:42]
+***** DONE cosh
+CLOSED: [2016-12-15 Thu 17:42]
 ***** TODO tan
 ***** TODO asin
 ***** TODO acos

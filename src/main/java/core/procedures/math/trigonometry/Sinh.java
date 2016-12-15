@@ -4,11 +4,10 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {SCMClass.Real.class})
+@FnArgs(args = {Number.class})
 public class Sinh extends AFn {
 
   @Override
@@ -30,8 +29,7 @@ public class Sinh extends AFn {
     } else if (args[0] instanceof BigDecimal) {
       return sinh((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
-      throw new UnsupportedOperationException("Not implemented yet!");
-      // TODO sinh
+      return sinh((SCMBigComplex)args[0]);
     } else {
       return sinh(((SCMBigRational)args[0]).toBigDecimal());
     }
@@ -44,5 +42,14 @@ public class Sinh extends AFn {
     } else {
       return Math.sinh(v);
     }
+  }
+
+  /* sinh(x + yi) = sinh(x)*cos(y) + cosh(x)*sin(y)*i */
+  public static SCMBigComplex sinh(SCMBigComplex c) {
+    BigDecimal x = c.getRe();
+    BigDecimal y = c.getIm();
+    double re = sinh(x) * Cos.cos(y);
+    double im = Cosh.cosh(x) * Sin.sin(y);
+    return new SCMBigComplex(re, im);
   }
 }
