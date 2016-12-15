@@ -36,6 +36,14 @@ public class SCMBigComplex extends Number implements ISCMClass {
     this(re, BigDecimal.ZERO);
   }
 
+  public static SCMBigComplex of(Number number) {
+    if (number instanceof SCMBigComplex) {
+      return (SCMBigComplex) number;
+    } else {
+      return new SCMBigComplex(number);
+    }
+  }
+
   // TODO Optimize all arithmetic operations
 
   public SCMBigComplex plus(Number other) {

@@ -20,6 +20,7 @@ import core.procedures.lists.Length;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
+import core.procedures.math.complex.Angle;
 import core.procedures.math.complex.ImagPart;
 import core.procedures.math.complex.Magnitude;
 import core.procedures.math.complex.RealPart;
@@ -81,6 +82,7 @@ public final class DefaultEnvironment extends Environment {
       new RealPart(),
       new ImagPart(),
       new Magnitude(),
+      new Angle(),
 
       /* Trigonometry */
       new Sin(),
