@@ -50,6 +50,7 @@ public class BigDecimalMath {
     }
 
     /* start the computation from a double precision estimate */
+    // FIXME Not working for huge numbers
     BigDecimal s = new BigDecimal(Math.pow(x.doubleValue(), 1.0 / n));
 
     /* this creates nth with nominal precision of 1 digit */

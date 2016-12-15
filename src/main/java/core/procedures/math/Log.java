@@ -56,6 +56,7 @@ public class Log extends AFn {
       if (((BigDecimal)number).compareTo(BigDecimal.ZERO) == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
+      // FIXME Not working for huge numbers
       return BigDecimalMath.log((SCMBigRational) ToExact.toExact(number), NumberUtils.DEFAULT_CONTEXT);
     }
     return Math.log(number.doubleValue());
