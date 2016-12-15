@@ -121,6 +121,12 @@ public class SCMBigComplex extends Number implements ISCMClass {
                              imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
   }
 
+  /* (a + bi)^(c + di) = (a*a + b*b)^(((c+di)/2)) * (E^(i*(c+id)*(arg(a+ib)))) */
+  public SCMBigComplex expt(Number e) {
+    // TODO
+    throw new UnsupportedOperationException("Not implemented yet!");
+  }
+
   public BigDecimal getRe() {
     return re;
   }

@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
 import core.utils.NumberUtils;
@@ -43,6 +44,10 @@ public class Expt extends AFn {
     }
     if (NumberUtils.isOne(exponent)) {
       return first;
+    }
+    /* Complex numbers */
+    if ((first instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
+      return SCMBigComplex.of(first).expt(SCMBigComplex.of(exponent));
     }
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
