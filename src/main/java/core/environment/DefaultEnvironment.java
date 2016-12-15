@@ -22,6 +22,8 @@ import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
 import core.procedures.math.complex.ImagPart;
 import core.procedures.math.complex.RealPart;
+import core.procedures.math.trigonometry.Cos;
+import core.procedures.math.trigonometry.Sin;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
@@ -78,6 +80,8 @@ public final class DefaultEnvironment extends Environment {
       new ToExact(),
       new RealPart(),
       new ImagPart(),
+      new Sin(),
+      new Cos(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),

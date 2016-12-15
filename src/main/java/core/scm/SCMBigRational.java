@@ -216,6 +216,10 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     return this.multiply(other.reciprocal());
   }
 
+  public SCMBigRational divide(BigInteger other) {
+    return divide(new SCMBigRational(other, BigInteger.ONE));
+  }
+
   public SCMBigRational divide(int other) {
     return divide(new SCMBigRational(other, 1));
   }
