@@ -1,5 +1,6 @@
 package core.scm;
 
+import core.utils.BigDecimalMath;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -8,6 +9,8 @@ import java.math.BigDecimal;
  * TODO Create SCMComplex class for small complex numbers
  */
 public class SCMBigComplex extends Number implements ISCMClass {
+
+  private static final BigDecimal TWO = new BigDecimal("2");
 
   // TODO use generic Number instead
   private final BigDecimal re;
@@ -69,6 +72,28 @@ public class SCMBigComplex extends Number implements ISCMClass {
     BigDecimal c = o.re;
     BigDecimal d = o.im;
     return new SCMBigComplex((a.multiply(c).subtract(b.multiply(d))), (b.multiply(c).add(a.multiply(d))));
+  }
+
+  /*
+   * sqrt(a + bi) =
+   *
+   * +-(gamma + delta*i)
+   *
+   * gamma = sqrt((a + sqrt(a*a + b*b))/2)
+   *
+   * delta = sign(b)*sqrt((-a + (a*a + b*b)/2)
+   *
+   */
+  // FIXME Use sqrt for BigDecimal, not Double
+  public SCMBigComplex sqrt() {
+    double a   = this.re.doubleValue();
+    double b   = this.im.doubleValue();
+    int signum = this.im.signum();
+
+    double s = Math.sqrt(a * a + b * b);
+    double gamma = Math.sqrt((s+a)/2);
+    double delta = signum * Math.sqrt((s-a)/2);
+    return new SCMBigComplex(gamma, delta);
   }
 
   /* a + bi     ac + bd       bc - ad

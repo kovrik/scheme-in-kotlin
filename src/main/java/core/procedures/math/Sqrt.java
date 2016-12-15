@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
 
@@ -31,6 +32,11 @@ public class Sqrt extends AFn {
         return Double.POSITIVE_INFINITY;
       }
       return BigDecimalMath.sqrt((BigDecimal) args[0]);
+    } else if (args[0] instanceof SCMBigComplex) {
+      if (((SCMBigComplex)args[0]).getIm().compareTo(BigDecimal.ZERO) == 0) {
+        return apply(((SCMBigComplex)args[0]).getRe());
+      }
+      return ((SCMBigComplex)args[0]).sqrt();
     } else {
       return Math.sqrt(((SCMBigRational) args[0]).doubleValue());
     }
