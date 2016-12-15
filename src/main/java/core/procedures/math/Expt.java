@@ -31,10 +31,61 @@ public class Expt extends AFn {
     return expt((Number)args[0], (Number)args[1]);
   }
 
+  /**
+   * Special cases when w is a real number:
+   * These special cases correspond to pow in C99 [C99], except when z is negative and w is a not an integer.
+   * See: https://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._expt))
+   *
+   * (expt 0.0 w):
+   *
+   *  w is negative — +inf.0
+   *  w is positive — 0.0
+   *
+   * (expt -0.0 w):
+   *
+   *  w is negative:
+   *  w is an odd integer — -inf.0
+   *
+   *  w otherwise rational — +inf.0
+   *
+   *  w is positive:
+   *  w is an odd integer — -0.0
+   *
+   *  w otherwise rational — 0.0
+   *
+   * (expt z -inf.0) for positive z:
+   *
+   *   z is less than 1.0 — +inf.0
+   *   z is greater than 1.0 — 0.0
+   *
+   * (expt z +inf.0) for positive z:
+   *
+   *  z is less than 1.0 — 0.0
+   *  z is greater than 1.0 — +inf.0
+   *
+   * (expt -inf.0 w) for integer w:
+   *  w is negative:
+   *  w is odd  — -0.0
+   *  w is even —  0.0
+   *
+   *  w is positive:
+   *   w is odd  — -inf.0
+   *   w is even — +inf.0
+   *
+   * (expt +inf.0 w):
+   *  w is negative — 0.0
+   *  w is positive — +inf.0
+   */
   public static Number expt(Number first, Number exponent) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
-      return NumberUtils.inexactnessTaint(first, exponent);
+      if (NumberUtils.isNegative(exponent)) {
+        return Double.POSITIVE_INFINITY;
+      } else if (NumberUtils.isPositive(exponent)) {
+        return NumberUtils.inexactnessTaint(first, exponent);
+      } else if (NumberUtils.isZero(exponent)) {
+        return 1L;
+      }
     }
     if (NumberUtils.isOne(first)) {
       return NumberUtils.inexactnessTaint(first, exponent);
@@ -49,6 +100,26 @@ public class Expt extends AFn {
     if ((first instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
       return SCMBigComplex.of(first).expt(SCMBigComplex.of(exponent));
     }
+    /* Special cases for Real numbers */
+    if ((first instanceof Double) && Double.NEGATIVE_INFINITY == (Double)first) {
+      if (NumberUtils.isInteger(exponent)) {
+        if (NumberUtils.isNegative(exponent)) {
+          // TODO check if exponent is odd or even
+          return 0d;
+        } else {
+          // TODO check if exponent is odd or even
+          return Double.NEGATIVE_INFINITY;
+        }
+      }
+    }
+    if ((first instanceof Double) && Double.POSITIVE_INFINITY == (Double)first) {
+      if (NumberUtils.isPositive(exponent)) {
+        return Double.POSITIVE_INFINITY;
+      } else {
+        return 0d;
+      }
+    }
+
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
       if (exponent instanceof Double) {
