@@ -9,6 +9,8 @@ import java.math.BigDecimal;
  */
 public class SCMBigComplex extends Number implements ISCMClass {
 
+  public static final SCMBigComplex IM = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
+
   // TODO use generic Number instead
   private final BigDecimal re;
   private final BigDecimal im;

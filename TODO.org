@@ -181,7 +181,7 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [15/17]
+** TODO Standard procedures [16/17]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -224,7 +224,8 @@ CLOSED: [2016-07-23 Sat 13:01]
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-*** TODO Numbers [11/12]
+*** DONE Numbers [12/12]
+CLOSED: [2016-12-16 Fri 07:43]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -334,9 +335,12 @@ CLOSED: [2016-12-05 Mon 20:23]
 CLOSED: [2016-12-05 Mon 20:02]
 ***** DONE log
 CLOSED: [2016-12-05 Mon 20:23]
-**** TODO Complex numbers [5/7]
-***** TODO make-rectangular
-***** TODO make-polar
+**** DONE Complex numbers [7/7]
+CLOSED: [2016-12-16 Fri 07:43]
+***** DONE make-rectangular
+CLOSED: [2016-12-16 Fri 07:43]
+***** DONE make-polar
+CLOSED: [2016-12-16 Fri 07:43]
 ***** DONE real-part
 CLOSED: [2016-12-14 Wed 20:52]
 ***** DONE imag-part

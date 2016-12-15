@@ -23,20 +23,24 @@ public class Cos extends AFn {
 
   @Override
   public Number apply(Object... args) {
+    return cos((Number)args[0]);
+  }
+
+  public static Number cos(Number number) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(number)) {
       return 1L;
     }
-    if (args[0] instanceof Long) {
-      return Math.cos((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.cos((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return cos((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return Cosh.cosh((SCMBigComplex)args[0]);
+    if (number instanceof Long) {
+      return Math.cos((Long) number);
+    } else if (number instanceof Double) {
+      return Math.cos((Double) number);
+    } else if (number instanceof BigDecimal) {
+      return cos((BigDecimal)number);
+    } else if (number instanceof SCMBigComplex) {
+      return Cosh.cosh((SCMBigComplex)number);
     } else {
-      return cos(((SCMBigRational)args[0]).toBigDecimal());
+      return cos(((SCMBigRational)number).toBigDecimal());
     }
   }
 

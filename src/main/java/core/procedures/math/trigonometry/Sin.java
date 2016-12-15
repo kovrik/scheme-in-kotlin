@@ -23,20 +23,24 @@ public class Sin extends AFn {
 
   @Override
   public Number apply(Object... args) {
+    return sin((Number)args[0]);
+  }
+
+  public static Number sin(Number number) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(number)) {
       return 0L;
     }
-    if (args[0] instanceof Long) {
-      return Math.sin((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.sin((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return sin((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return Sinh.sinh((SCMBigComplex)args[0]);
+    if (number instanceof Long) {
+      return Math.sin((Long) number);
+    } else if (number instanceof Double) {
+      return Math.sin((Double) number);
+    } else if (number instanceof BigDecimal) {
+      return sin((BigDecimal)number);
+    } else if (number instanceof SCMBigComplex) {
+      return Sinh.sinh((SCMBigComplex)number);
     } else {
-      return sin(((SCMBigRational)args[0]).toBigDecimal());
+      return sin(((SCMBigRational)number).toBigDecimal());
     }
   }
 
