@@ -121,9 +121,14 @@ public class SCMBigComplex extends Number implements ISCMClass {
                              imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
   }
 
+  // TODO
   /* (a + bi)^(c + di) = (a*a + b*b)^(((c+di)/2)) * (E^(i*(c+id)*(arg(a+ib)))) */
   public SCMBigComplex expt(Number e) {
-    // TODO
+    throw new UnsupportedOperationException("Not implemented yet!");
+  }
+
+  // TODO
+  public SCMBigComplex log() {
     throw new UnsupportedOperationException("Not implemented yet!");
   }
 

@@ -2,6 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
 import core.utils.NumberUtils;
@@ -27,6 +28,9 @@ public class Log extends AFn {
   }
 
   public Number apply(Number number) {
+    if (number instanceof SCMBigComplex) {
+      return ((SCMBigComplex)number).log();
+    }
     if (number instanceof Double) {
       if ((Double.isNaN((Double) number)) || (Double.isInfinite((Double) number))) {
         return number;
