@@ -21,10 +21,10 @@ public class Exp extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    return apply((Number)args[0]);
+    return exp((Number)args[0]);
   }
 
-  public Number apply(Number number) {
+  public static Number exp(Number number) {
     if (number instanceof Double) {
       if ((Double)number == Double.NEGATIVE_INFINITY) {
         return 0L;

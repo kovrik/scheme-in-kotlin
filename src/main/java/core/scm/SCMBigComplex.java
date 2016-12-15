@@ -1,9 +1,15 @@
 package core.scm;
 
 import core.procedures.math.Addition;
+import core.procedures.math.Exp;
+import core.procedures.math.Expt;
 import core.procedures.math.Log;
+import core.procedures.math.Multiplication;
 import core.procedures.math.Sqrt;
+import core.procedures.math.complex.Angle;
 import core.procedures.math.trigonometry.Atan;
+import core.procedures.math.trigonometry.Cos;
+import core.procedures.math.trigonometry.Sin;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -125,10 +131,39 @@ public class SCMBigComplex extends Number implements ISCMClass {
                              imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
   }
 
-  // TODO
-  /* (a + bi)^(c + di) = (a*a + b*b)^(((c+di)/2)) * (E^(i*(c+id)*(arg(a+ib)))) */
+  /*
+   * r : magnitude(x)
+   * t : angle(x)
+   * c : y.re
+   * d : y.im
+   *
+   * pow.re := (r^c)*exp(-d*t)*cos(c*t + d*ln(r))
+   * pow.im := (r^c)*exp(-d*t)*sin(c*t + d*ln(r))
+   *           |_____________|    |_____________|
+   *                 A                  B
+   */
   public SCMBigComplex expt(Number e) {
-    throw new UnsupportedOperationException("Not implemented yet!");
+    BigDecimal c;
+    BigDecimal d;
+    if (e instanceof SCMBigComplex) {
+      c = ((SCMBigComplex) e).getRe();
+      d = ((SCMBigComplex) e).getIm();
+    } else {
+      if (e instanceof SCMBigRational) {
+        c = ((SCMBigRational) e).toBigDecimal();
+      } else {
+        c = new BigDecimal(e.toString());
+      }
+      d = BigDecimal.ZERO;
+    }
+    // FIXME precision loss
+    Number r = magnitude();
+    Number t = angle();
+    Number A = Multiplication.apply(Expt.expt(r, c), Exp.exp(Multiplication.apply(t, d.negate())));
+    Number B = Addition.add(Multiplication.apply(c, t), Multiplication.apply(d, Log.log(r)));
+    Number re = Multiplication.apply(A, Cos.cos(B));
+    Number im = Multiplication.apply(A, Sin.sin(B));
+    return new SCMBigComplex(re, im);
   }
 
   /* log(a + ib) = log(sqrt(a*a + b*b)) + atan(b/a)i */
@@ -144,6 +179,26 @@ public class SCMBigComplex extends Number implements ISCMClass {
     BigDecimal re = getRe();
     BigDecimal im = getIm();
     return Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)));
+  }
+
+  public Number angle() {
+    BigDecimal re = getRe();
+    BigDecimal im = getIm();
+    if (re.compareTo(BigDecimal.ZERO) == 0) {
+      if (im.signum() > 0) {
+        return Math.PI/2;
+      } else {
+        return -Math.PI/2;
+      }
+    } else if (re.compareTo(BigDecimal.ZERO) < 0) {
+      if (im.signum() >= 0) {
+        return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT)) + Math.PI;
+      } else {
+        return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT)) - Math.PI;
+      }
+    } else {
+      return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
+    }
   }
 
   public BigDecimal getRe() {
