@@ -87,6 +87,9 @@ public final class DefaultEnvironment extends Environment {
       new Cosh(),
       new Tan(),
       new Tanh(),
+      new Asin(),
+      new Acos(),
+      new Atan(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),

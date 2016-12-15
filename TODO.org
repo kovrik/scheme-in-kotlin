@@ -224,7 +224,7 @@ CLOSED: [2016-07-23 Sat 13:01]
 CLOSED: [2016-07-10 Sun 18:33]
 **** DONE list->string
 CLOSED: [2016-07-10 Sun 18:33]
-*** TODO Numbers [10/12]
+*** TODO Numbers [11/12]
 **** DONE Basic arithmetic operators [12/12]
 ***** DONE +
 CLOSED: [2016-04-21 Thu 22:04]
@@ -308,7 +308,8 @@ CLOSED: [2016-06-17 Fri 18:39]
 CLOSED: [2016-06-17 Fri 18:39]
 ***** DONE min
 CLOSED: [2016-06-17 Fri 18:39]
-**** TODO Trigonometry [6/9]
+**** DONE Trigonometry [9/9]
+CLOSED: [2016-12-15 Thu 19:09]
 ***** DONE sin
 CLOSED: [2016-12-15 Thu 17:42]
 ***** DONE sinh
@@ -321,9 +322,12 @@ CLOSED: [2016-12-15 Thu 17:42]
 CLOSED: [2016-12-15 Thu 17:57]
 ***** DONE tanh
 CLOSED: [2016-12-15 Thu 17:57]
-***** TODO asin
-***** TODO acos
-***** TODO atan
+***** DONE asin
+CLOSED: [2016-12-15 Thu 19:09]
+***** DONE acos
+CLOSED: [2016-12-15 Thu 19:09]
+***** DONE atan
+CLOSED: [2016-12-15 Thu 19:09]
 **** DONE Exponentials [2/2]
 CLOSED: [2016-12-05 Mon 20:23]
 ***** DONE exp
