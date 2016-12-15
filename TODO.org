@@ -308,7 +308,7 @@ CLOSED: [2016-06-17 Fri 18:39]
 CLOSED: [2016-06-17 Fri 18:39]
 ***** DONE min
 CLOSED: [2016-06-17 Fri 18:39]
-**** DONE Trigonometry [9/9]
+**** DONE Trigonometry [8/9]
 CLOSED: [2016-12-15 Thu 19:09]
 ***** DONE sin
 CLOSED: [2016-12-15 Thu 17:42]
@@ -326,8 +326,7 @@ CLOSED: [2016-12-15 Thu 17:57]
 CLOSED: [2016-12-15 Thu 19:09]
 ***** DONE acos
 CLOSED: [2016-12-15 Thu 19:09]
-***** DONE atan
-CLOSED: [2016-12-15 Thu 19:09]
+***** TODO atan
 **** DONE Exponentials [2/2]
 CLOSED: [2016-12-05 Mon 20:23]
 ***** DONE exp
