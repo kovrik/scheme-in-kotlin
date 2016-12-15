@@ -22,10 +22,7 @@ import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
 import core.procedures.math.complex.ImagPart;
 import core.procedures.math.complex.RealPart;
-import core.procedures.math.trigonometry.Cos;
-import core.procedures.math.trigonometry.Cosh;
-import core.procedures.math.trigonometry.Sin;
-import core.procedures.math.trigonometry.Sinh;
+import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
@@ -82,10 +79,14 @@ public final class DefaultEnvironment extends Environment {
       new ToExact(),
       new RealPart(),
       new ImagPart(),
+
+      /* Trigonometry */
       new Sin(),
-      new Cos(),
       new Sinh(),
+      new Cos(),
       new Cosh(),
+      new Tan(),
+      new Tanh(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),
@@ -319,6 +320,8 @@ public final class DefaultEnvironment extends Environment {
   public DefaultEnvironment() {
     super(null);
 
+    /* Constants */
+    put(new SCMSymbol("pi"),  Math.PI);
     put(new SCMSymbol("eof"), SCMEof.EOF);
 
     /* Special Forms */
