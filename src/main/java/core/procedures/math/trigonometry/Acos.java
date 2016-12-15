@@ -28,9 +28,17 @@ public class Acos extends AFn {
       return 0L;
     }
     if (args[0] instanceof Long) {
-      return Math.acos((Long) args[0]);
+      double acos = Math.acos((Long) args[0]);
+      if (Double.isNaN(acos)) {
+        return acos(new SCMBigComplex((Number)args[0]));
+      }
+      return acos;
     } else if (args[0] instanceof Double) {
-      return Math.acos((Double) args[0]);
+      double acos = Math.acos((Double) args[0]);
+      if (Double.isNaN(acos)) {
+        return acos(new SCMBigComplex((Number)args[0]));
+      }
+      return acos;
     } else if (args[0] instanceof BigDecimal) {
       return acos((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
@@ -40,12 +48,16 @@ public class Acos extends AFn {
     }
   }
 
-  public static double acos(BigDecimal bd) {
+  public static Number acos(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {
-      return Math.acos(v);
+      double acos = Math.acos(v);
+      if (Double.isNaN(acos)) {
+        return acos(new SCMBigComplex(bd));
+      }
+      return acos;
     }
   }
 
@@ -58,6 +70,12 @@ public class Acos extends AFn {
   public static Number acos(SCMBigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
+    int signum;
+    if (i.signum() == 0) {
+      signum = r.signum();
+    } else {
+      signum = -i.signum();
+    }
     double a = r.doubleValue();
     if (Double.isInfinite(a) || Double.isNaN(a)) {
       return Double.NaN;
@@ -82,6 +100,6 @@ public class Acos extends AFn {
     if (Double.isInfinite(im) || Double.isNaN(im)) {
       return Double.NaN;
     }
-    return new SCMBigComplex(re, -im);
+    return new SCMBigComplex(re, signum*im);
   }
 }
