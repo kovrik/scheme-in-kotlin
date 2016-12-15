@@ -50,11 +50,17 @@ public class Sinh extends AFn {
   }
 
   /* sinh(x + yi) = sinh(x)*cos(y) + cosh(x)*sin(y)*i */
-  public static SCMBigComplex sinh(SCMBigComplex c) {
+  public static Number sinh(SCMBigComplex c) {
     BigDecimal x = c.getRe();
     BigDecimal y = c.getIm();
     double re = sinh(x) * Cos.cos(y);
     double im = Cosh.cosh(x) * Sin.sin(y);
+    if (Double.isInfinite(re) || Double.isNaN(re)) {
+      return Double.NaN;
+    }
+    if (Double.isInfinite(im) || Double.isNaN(im)) {
+      return Double.NaN;
+    }
     return new SCMBigComplex(re, im);
   }
 }

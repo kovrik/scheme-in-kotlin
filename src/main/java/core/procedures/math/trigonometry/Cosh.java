@@ -50,11 +50,17 @@ public class Cosh extends AFn {
   }
 
   /* cosh(x + yi) = cosh(x)*cos(y) + sinh(x)*sin(y)*i */
-  public static SCMBigComplex cosh(SCMBigComplex c) {
+  public static Number cosh(SCMBigComplex c) {
     BigDecimal x = c.getRe();
     BigDecimal y = c.getIm();
     double re = Cosh.cosh(x) * Cos.cos(y);
     double im = Sinh.sinh(x) * Sin.sin(y);
+    if (Double.isInfinite(re) || Double.isNaN(re)) {
+      return Double.NaN;
+    }
+    if (Double.isInfinite(im) || Double.isNaN(im)) {
+      return Double.NaN;
+    }
     return new SCMBigComplex(re, im);
   }
 }

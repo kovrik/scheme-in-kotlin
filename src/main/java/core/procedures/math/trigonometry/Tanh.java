@@ -49,7 +49,15 @@ public class Tanh extends AFn {
     }
   }
 
-  public static SCMBigComplex tanh(SCMBigComplex c) {
-    return Sinh.sinh(c).divide(Cosh.cosh(c));
+  public static Number tanh(SCMBigComplex c) {
+    Number sinh = Sinh.sinh(c);
+    if ((sinh instanceof Double) && (Double.isInfinite((Double)sinh) || Double.isNaN((Double)sinh))) {
+      return Double.NaN;
+    }
+    Number cosh = Cosh.cosh(c);
+    if ((cosh instanceof Double) && (Double.isInfinite((Double)cosh) || Double.isNaN((Double)cosh))) {
+      return Double.NaN;
+    }
+    return ((SCMBigComplex)sinh).divide((SCMBigComplex)cosh);
   }
 }
