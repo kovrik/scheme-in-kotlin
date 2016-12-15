@@ -38,6 +38,7 @@ public class Cos extends AFn {
     } else if (number instanceof BigDecimal) {
       return cos((BigDecimal)number);
     } else if (number instanceof SCMBigComplex) {
+      // FIXME
       return Cosh.cosh((SCMBigComplex)number);
     } else {
       return cos(((SCMBigRational)number).toBigDecimal());

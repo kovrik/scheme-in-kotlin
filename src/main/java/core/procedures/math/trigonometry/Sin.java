@@ -38,6 +38,7 @@ public class Sin extends AFn {
     } else if (number instanceof BigDecimal) {
       return sin((BigDecimal)number);
     } else if (number instanceof SCMBigComplex) {
+      // FIXME
       return Sinh.sinh((SCMBigComplex)number);
     } else {
       return sin(((SCMBigRational)number).toBigDecimal());
