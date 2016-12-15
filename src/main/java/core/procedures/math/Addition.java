@@ -21,7 +21,7 @@ public class Addition extends AFn {
     return "+";
   }
 
-  public Number apply(Number first, Number second) {
+  public static Number add(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
       return NumberUtils.inexactnessTaint(second, first);
@@ -83,7 +83,7 @@ public class Addition extends AFn {
         if (!(obj instanceof Number)) {
           throw new WrongTypeException("Number", obj);
         }
-        result = apply((Number)result, (Number)obj);
+        result = add((Number)result, (Number)obj);
       }
     }
     return result;

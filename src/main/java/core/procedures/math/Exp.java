@@ -49,6 +49,6 @@ public class Exp extends AFn {
         return Math.exp(1d);
       }
     }
-    return Expt.apply(E, number);
+    return Expt.expt(E, number);
   }
 }

@@ -23,22 +23,26 @@ public class Sqrt extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    if (args[0] instanceof Long) {
-      return Math.sqrt((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.sqrt((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      if (Double.isInfinite(((BigDecimal) args[0]).doubleValue())) {
+    return sqrt((Number) args[0]);
+  }
+
+  public static Number sqrt(Number number) {
+    if (number instanceof Long) {
+      return Math.sqrt((Long) number);
+    } else if (number instanceof Double) {
+      return Math.sqrt((Double) number);
+    } else if (number instanceof BigDecimal) {
+      if (Double.isInfinite(((BigDecimal) number).doubleValue())) {
         return Double.POSITIVE_INFINITY;
       }
-      return BigDecimalMath.sqrt((BigDecimal) args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      if (((SCMBigComplex)args[0]).getIm().compareTo(BigDecimal.ZERO) == 0) {
-        return apply(((SCMBigComplex)args[0]).getRe());
+      return BigDecimalMath.sqrt((BigDecimal) number);
+    } else if (number instanceof SCMBigComplex) {
+      if (((SCMBigComplex)number).getIm().compareTo(BigDecimal.ZERO) == 0) {
+        return sqrt(((SCMBigComplex)number).getRe());
       }
-      return ((SCMBigComplex)args[0]).sqrt();
+      return ((SCMBigComplex)number).sqrt();
     } else {
-      return Math.sqrt(((SCMBigRational) args[0]).doubleValue());
+      return Math.sqrt(((SCMBigRational) number).doubleValue());
     }
   }
 }

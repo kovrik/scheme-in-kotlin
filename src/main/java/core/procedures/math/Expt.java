@@ -27,10 +27,10 @@ public class Expt extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    return apply((Number)args[0], (Number)args[1]);
+    return expt((Number)args[0], (Number)args[1]);
   }
 
-  public static Number apply(Number first, Number exponent) {
+  public static Number expt(Number first, Number exponent) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
       return NumberUtils.inexactnessTaint(first, exponent);

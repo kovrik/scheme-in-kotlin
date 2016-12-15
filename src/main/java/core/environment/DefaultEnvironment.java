@@ -21,6 +21,7 @@ import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
 import core.procedures.math.complex.ImagPart;
+import core.procedures.math.complex.Magnitude;
 import core.procedures.math.complex.RealPart;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
@@ -79,6 +80,7 @@ public final class DefaultEnvironment extends Environment {
       new ToExact(),
       new RealPart(),
       new ImagPart(),
+      new Magnitude(),
 
       /* Trigonometry */
       new Sin(),

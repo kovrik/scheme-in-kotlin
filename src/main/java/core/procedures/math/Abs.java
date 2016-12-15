@@ -22,14 +22,18 @@ public class Abs extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    if (args[0] instanceof Long) {
-      return Math.abs((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.abs((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return ((BigDecimal) args[0]).abs();
+    return abs((Number)args[0]);
+  }
+
+  public static Number abs(Number number) {
+    if (number instanceof Long) {
+      return Math.abs((Long) number);
+    } else if (number instanceof Double) {
+      return Math.abs((Double) number);
+    } else if (number instanceof BigDecimal) {
+      return ((BigDecimal) number).abs();
     } else {
-      return ((SCMBigRational) args[0]).abs();
+      return ((SCMBigRational) number).abs();
     }
   }
 }
