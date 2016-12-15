@@ -72,7 +72,7 @@ public class BigDecimalMath {
         break;
       }
     }
-    return s.round(new MathContext(err2prec(eps)));
+    return s.round(NumberUtils.DEFAULT_CONTEXT);
   }
 
   /**

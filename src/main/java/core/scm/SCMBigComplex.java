@@ -1,5 +1,9 @@
 package core.scm;
 
+import core.procedures.math.Addition;
+import core.procedures.math.Log;
+import core.procedures.math.Sqrt;
+import core.procedures.math.trigonometry.Atan;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -127,9 +131,19 @@ public class SCMBigComplex extends Number implements ISCMClass {
     throw new UnsupportedOperationException("Not implemented yet!");
   }
 
-  // TODO
+  /* log(a + ib) = log(sqrt(a*a + b*b)) + atan(b/a)i */
   public SCMBigComplex log() {
-    throw new UnsupportedOperationException("Not implemented yet!");
+    BigDecimal a = getRe();
+    BigDecimal b = getIm();
+    Number log = Log.log(magnitude());
+    double atan = Atan.atan(b.divide(a, NumberUtils.DEFAULT_CONTEXT));
+    return new SCMBigComplex(log, atan);
+  }
+
+  public Number magnitude() {
+    BigDecimal re = getRe();
+    BigDecimal im = getIm();
+    return Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)));
   }
 
   public BigDecimal getRe() {

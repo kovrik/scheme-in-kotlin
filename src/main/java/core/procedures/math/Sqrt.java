@@ -32,7 +32,7 @@ public class Sqrt extends AFn {
     } else if (number instanceof Double) {
       return Math.sqrt((Double) number);
     } else if (number instanceof BigDecimal) {
-      if (Double.isInfinite(((BigDecimal) number).doubleValue())) {
+      if (Double.isInfinite(number.doubleValue())) {
         return Double.POSITIVE_INFINITY;
       }
       return BigDecimalMath.sqrt((BigDecimal) number);
@@ -42,7 +42,7 @@ public class Sqrt extends AFn {
       }
       return ((SCMBigComplex)number).sqrt();
     } else {
-      return Math.sqrt(((SCMBigRational) number).doubleValue());
+      return Math.sqrt(number.doubleValue());
     }
   }
 }

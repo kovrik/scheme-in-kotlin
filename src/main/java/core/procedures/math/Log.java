@@ -24,10 +24,10 @@ public class Log extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    return apply((Number)args[0]);
+    return log((Number)args[0]);
   }
 
-  public Number apply(Number number) {
+  public static Number log(Number number) {
     if (number instanceof SCMBigComplex) {
       return ((SCMBigComplex)number).log();
     }
