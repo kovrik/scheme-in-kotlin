@@ -28,24 +28,21 @@ public class Sin extends AFn {
     } else if (args[0] instanceof Double) {
       return Math.sin((Double) args[0]);
     } else if (args[0] instanceof BigDecimal) {
-      BigDecimal bd = (BigDecimal)args[0];
-      double v = bd.doubleValue();
-      if (Double.isInfinite(v) || Double.isNaN(v)) {
-        return Double.NaN;
-      } else {
-        return Math.sin(v);
-      }
+      return sin((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
       throw new UnsupportedOperationException("Not implemented yet!");
       // TODO sinh
     } else {
-      BigDecimal bd = ((SCMBigRational)args[0]).toBigDecimal();
-      double v = bd.doubleValue();
-      if (Double.isInfinite(v) || Double.isNaN(v)) {
-        return Double.NaN;
-      } else {
-        return Math.sin(v);
-      }
+      return sin(((SCMBigRational)args[0]).toBigDecimal());
+    }
+  }
+
+  public static double sin(BigDecimal bd) {
+    double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.sin(v);
     }
   }
 }

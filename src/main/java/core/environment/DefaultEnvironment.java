@@ -23,7 +23,9 @@ import core.procedures.math.*;
 import core.procedures.math.complex.ImagPart;
 import core.procedures.math.complex.RealPart;
 import core.procedures.math.trigonometry.Cos;
+import core.procedures.math.trigonometry.Cosh;
 import core.procedures.math.trigonometry.Sin;
+import core.procedures.math.trigonometry.Sinh;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
@@ -82,6 +84,8 @@ public final class DefaultEnvironment extends Environment {
       new ImagPart(),
       new Sin(),
       new Cos(),
+      new Sinh(),
+      new Cosh(),
 
       /* Comparison & Equality */
       new NumericalComparison(NumericalComparison.Type.EQUAL),

@@ -9,7 +9,7 @@ import core.scm.SCMClass;
 import java.math.BigDecimal;
 
 @FnArgs(args = {SCMClass.Real.class})
-public class Cos extends AFn {
+public class Cosh extends AFn {
 
   @Override
   public boolean isPure() {
@@ -18,30 +18,31 @@ public class Cos extends AFn {
 
   @Override
   public String getName() {
-    return "cos";
+    return "cosh";
   }
 
   @Override
   public Number apply(Object... args) {
     if (args[0] instanceof Long) {
-      return Math.cos((Long) args[0]);
+      return Math.cosh((Long) args[0]);
     } else if (args[0] instanceof Double) {
-      return Math.cos((Double) args[0]);
+      return Math.cosh((Double) args[0]);
     } else if (args[0] instanceof BigDecimal) {
-      return cos((BigDecimal)args[0]);
+      return cosh((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
       throw new UnsupportedOperationException("Not implemented yet!");
+      // TODO cosh
     } else {
-      return cos(((SCMBigRational)args[0]).toBigDecimal());
+      return cosh(((SCMBigRational)args[0]).toBigDecimal());
     }
   }
 
-  public static double cos(BigDecimal bd) {
+  public static double cosh(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {
-      return Math.cos(v);
+      return Math.cosh(v);
     }
   }
 }
