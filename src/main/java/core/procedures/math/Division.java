@@ -51,7 +51,7 @@ public class Division extends AFn {
       return ((SCMBigComplex) numerator).divide(denominator);
     }
     if (denominator instanceof SCMBigComplex) {
-      return new SCMBigComplex(numerator).multiply(denominator);
+      return new SCMBigComplex(numerator).divide(denominator);
     }
     /* Big Rational numbers */
     if ((numerator instanceof SCMBigRational) && (denominator instanceof SCMBigRational)) {

@@ -34,8 +34,7 @@ public class Tan extends AFn {
     } else if (args[0] instanceof BigDecimal) {
       return tan((BigDecimal)args[0]);
     } else if (args[0] instanceof SCMBigComplex) {
-      // FIXME
-      return Tanh.tanh((SCMBigComplex)args[0]);
+      return Tan.tan((SCMBigComplex)args[0]);
     } else {
       return tan(((SCMBigRational)args[0]).toBigDecimal());
     }
@@ -48,5 +47,11 @@ public class Tan extends AFn {
     } else {
       return Math.tan(v);
     }
+  }
+
+  public static SCMBigComplex tan(SCMBigComplex c) {
+    SCMBigComplex sin = Sin.sin(c);
+    SCMBigComplex cos = Cos.cos(c);
+    return sin.divide(cos);
   }
 }

@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
+import core.procedures.math.Multiplication;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
@@ -38,8 +39,7 @@ public class Cos extends AFn {
     } else if (number instanceof BigDecimal) {
       return cos((BigDecimal)number);
     } else if (number instanceof SCMBigComplex) {
-      // FIXME
-      return Cosh.cosh((SCMBigComplex)number);
+      return Cos.cos((SCMBigComplex)number);
     } else {
       return cos(((SCMBigRational)number).toBigDecimal());
     }
@@ -52,5 +52,12 @@ public class Cos extends AFn {
     } else {
       return Math.cos(v);
     }
+  }
+
+  public static SCMBigComplex cos(SCMBigComplex c) {
+    BigDecimal re = c.getRe();
+    BigDecimal im = c.getIm();
+    return new SCMBigComplex(Multiplication.apply(Cos.cos(re), Cosh.cosh(im)),
+                             Multiplication.apply(-1d, Multiplication.apply(Sin.sin(re), Sinh.sinh(im))));
   }
 }

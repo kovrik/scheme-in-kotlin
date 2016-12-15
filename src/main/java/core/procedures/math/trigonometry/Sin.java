@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
+import core.procedures.math.Multiplication;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
@@ -38,8 +39,7 @@ public class Sin extends AFn {
     } else if (number instanceof BigDecimal) {
       return sin((BigDecimal)number);
     } else if (number instanceof SCMBigComplex) {
-      // FIXME
-      return Sinh.sinh((SCMBigComplex)number);
+      return sin((SCMBigComplex)number);
     } else {
       return sin(((SCMBigRational)number).toBigDecimal());
     }
@@ -52,5 +52,12 @@ public class Sin extends AFn {
     } else {
       return Math.sin(v);
     }
+  }
+
+  public static SCMBigComplex sin(SCMBigComplex c) {
+    BigDecimal re = c.getRe();
+    BigDecimal im = c.getIm();
+    return new SCMBigComplex(Multiplication.apply(Sin.sin(re), Cosh.cosh(im)),
+                             Multiplication.apply(Cos.cos(re), Sinh.sinh(im)));
   }
 }
