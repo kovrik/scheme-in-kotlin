@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -22,6 +23,10 @@ public class Cosh extends AFn {
 
   @Override
   public Number apply(Object... args) {
+    /* Special cases */
+    if (NumberUtils.isZero(args[0])) {
+      return 1L;
+    }
     if (args[0] instanceof Long) {
       return Math.cosh((Long) args[0]);
     } else if (args[0] instanceof Double) {
