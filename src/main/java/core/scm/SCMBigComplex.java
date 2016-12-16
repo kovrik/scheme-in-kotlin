@@ -177,14 +177,13 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return new SCMBigComplex(re, im);
   }
 
-  /* log(a + ib) = log(sqrt(a*a + b*b)) + atan(b/a)i */
+  /* log(a + ib) = log(|a + ib|) + i*atan(b/a) */
   public SCMBigComplex log() {
     BigDecimal a = getRe();
     BigDecimal b = getIm();
-    Number log = Log.log(magnitude());
-    // FIXME (log -4-3i)
-    double atan = Atan.atan(b.divide(a, NumberUtils.DEFAULT_CONTEXT));
-    return new SCMBigComplex(log, atan);
+    Number re = Log.log(magnitude());
+    Number im = angle();
+    return new SCMBigComplex(re, im);
   }
 
   public Number magnitude() {

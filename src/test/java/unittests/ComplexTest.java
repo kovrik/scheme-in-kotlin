@@ -64,9 +64,11 @@ public class ComplexTest extends AbstractTest {
 
   @Test
   public void testLog() {
-    assertEquals(new SCMBigComplex(new BigDecimal("0.3465735902799727"), new BigDecimal("0.7853981633974483")), eval("(log 1+1i)", env));
-    // FIXME
-//    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-2.498091544796509")), eval("(log -4-3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("0.3465735902799727"), new BigDecimal("0.7853981633974483")),  eval("(log  1+1i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-2.498091544796509")),  eval("(log -4-3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-0.6435011087932844")), eval("(log  4-3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("0.6435011087932844")),  eval("(log  4+3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-2.498091544796509")),  eval("(log -4+3i)", env));
   }
 
   @Test
