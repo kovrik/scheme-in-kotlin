@@ -16,10 +16,10 @@ See TODO list for things already implementeted (and not yet).
 
 *Known issues/Not implemented yet*
 
-1. Numerical Tower is not implemented
-2. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
-3. Cons lists are not proper cons lists
-   etc.
+1. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
+2. Cons lists are not proper cons lists
+3. No continuations
+4. No macros
 
 *Useful links*
 
