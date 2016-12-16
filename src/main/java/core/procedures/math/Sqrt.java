@@ -3,7 +3,6 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
 import core.utils.BigDecimalMath;
 
 import java.math.BigDecimal;
