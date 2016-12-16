@@ -68,13 +68,12 @@ public class ComplexTest extends AbstractTest {
     assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-2.498091544796509")),  eval("(log -4-3i)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-0.6435011087932844")), eval("(log  4-3i)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("0.6435011087932844")),  eval("(log  4+3i)", env));
-    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("-2.498091544796509")),  eval("(log -4+3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.6094379124341003"), new BigDecimal("2.498091544796509")),   eval("(log -4+3i)", env));
   }
 
   @Test
   public void testExpt() {
     assertEquals(new SCMBigComplex(new BigDecimal("0.2739572538301211"), new BigDecimal("0.5837007587586146")), eval("(expt 1+1i 1+1i)", env));
-
     /* FIXME precision loss?
      * Must be 0.0004911725350693014-0.0007294124825311573i
      * Not     0.0004343051831012   -0.0006449620024811i

@@ -13,6 +13,7 @@ import unittests.s7.S7Tests;
     SpecialFormTest.class,
     DelayedTest.class,
     NumberTest.class,
+    ComplexTest.class,
     SCMRationalTest.class,
     CharacterTest.class,
     StringTest.class,
