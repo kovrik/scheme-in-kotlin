@@ -23,6 +23,6 @@ public class MakeRectangular extends AFn {
     /* (+ x (* y 0+1i)) */
     Number x = (Number) args[0];
     Number y = (Number) args[1];
-    return SCMBigComplex.IM.multiply(y).plus(x);
+    return SCMBigComplex.I.multiply(y).plus(x);
   }
 }

@@ -13,7 +13,8 @@ import java.math.BigDecimal;
  */
 public class SCMBigComplex extends Number implements ISCMClass {
 
-  public static final SCMBigComplex IM = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
+  /* Imaginary unit (i) */
+  public static final SCMBigComplex I = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
 
   private static final BigDecimal HALF = new BigDecimal("0.5");
 
@@ -48,6 +49,9 @@ public class SCMBigComplex extends Number implements ISCMClass {
     this(re, BigDecimal.ZERO);
   }
 
+  /**
+   * Convert Number to SCMBigComplex
+   */
   public static SCMBigComplex of(Number number) {
     if (number instanceof SCMBigComplex) {
       return (SCMBigComplex) number;
@@ -56,8 +60,9 @@ public class SCMBigComplex extends Number implements ISCMClass {
     }
   }
 
-  // TODO Optimize all arithmetic operations
-
+  /**
+   * Addition
+   */
   public SCMBigComplex plus(Number other) {
     if (other instanceof SCMBigComplex) {
       return new SCMBigComplex(re.add(((SCMBigComplex) other).getRe()), im.add(((SCMBigComplex) other).getIm()));
@@ -67,6 +72,9 @@ public class SCMBigComplex extends Number implements ISCMClass {
     }
   }
 
+  /**
+   * Subtraction
+   */
   public SCMBigComplex minus(Number other) {
     if (other instanceof SCMBigComplex) {
       return new SCMBigComplex(re.subtract(((SCMBigComplex) other).getRe()), im.subtract(((SCMBigComplex) other).getIm()));
@@ -76,7 +84,11 @@ public class SCMBigComplex extends Number implements ISCMClass {
     }
   }
 
-  /* (a + bi)(c + di) = (ac - bd) + (bc + ad)i  */
+  /**
+   * Multiplication
+   *
+   * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
+   **/
   public SCMBigComplex multiply(Number other) {
     SCMBigComplex o;
     if (other instanceof SCMBigComplex) {
@@ -91,11 +103,13 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return new SCMBigComplex((a.multiply(c).subtract(b.multiply(d))), (b.multiply(c).add(a.multiply(d))));
   }
 
-  /*
+  /**
+   * Square root of Complex number
+   *
    * sqrt(a + bi) = +-(gamma + delta*i)
    *
    * gamma = sqrt((a + sqrt(a*a + b*b))/2)
-   * delta = sign(b)*sqrt((-a + (a*a + b*b)/2)
+   * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
    */
   // FIXME Use sqrt for BigDecimal, not Double
   public SCMBigComplex sqrt() {
@@ -120,7 +134,10 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return new SCMBigComplex(gamma, delta);
   }
 
-  /* a + bi     ac + bd       bc - ad
+  /**
+   * Division
+   *
+   * a + bi     ac + bd       bc - ad
    * ------ =  ----------  + --------- i
    * c + di    c*c + d*d     c*c + d*d
    */
@@ -142,16 +159,22 @@ public class SCMBigComplex extends Number implements ISCMClass {
                              imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
   }
 
-  /*
-   * r : magnitude(x)
-   * t : angle(x)
-   * c : y.re
-   * d : y.im
+  /**
+   * Exponentiation
+   *
+   * z1^z2 = (a+bi)^(c+di) =:
    *
    * pow.re := (r^c)*exp(-d*t)*cos(c*t + d*ln(r))
    * pow.im := (r^c)*exp(-d*t)*sin(c*t + d*ln(r))
    *           |_____________|    |_____________|
    *                 A                  B
+   *
+   * where:
+   *
+   * r: magnitude(z1)
+   * t: angle(z1)
+   * c: z2.re
+   * d: z2.im
    */
   public SCMBigComplex expt(Number e) {
     BigDecimal c;
@@ -177,29 +200,50 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return new SCMBigComplex(re, im);
   }
 
-  /* log(a + ib) = log(|a + ib|) + i*atan(b/a) */
+  /**
+   * Natural logarithm of Complex number
+   *
+   * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
+   **/
   public SCMBigComplex log() {
-    BigDecimal a = getRe();
-    BigDecimal b = getIm();
     Number re = Log.log(magnitude());
     Number im = angle();
     return new SCMBigComplex(re, im);
   }
 
+  /**
+   * Magnitude (Absolute value, Modulus) of Complex number
+   *
+   * r = |z| = |a+bi| = sqrt(a^2 + b^2)
+   **/
   public Number magnitude() {
     BigDecimal re = getRe();
     BigDecimal im = getIm();
     return Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)));
   }
 
+  /**
+   * Angle (Argument, Phase) of Complex number
+   *
+   * arg(z) = arg(a+bi) =:
+   *
+   * atan(b/y),      if x > 0
+   * atan(b/y) + pi, if x < 0 and y >= 0
+   * atan(b/y) - pi, if x < 0 and y <  0
+   *  pi/2,          if x = 0 and y >  0
+   * -pi/2,          if x = 0 and y <  0
+   * undefined,      if x = 0 and y =  0
+   **/
   public Number angle() {
     BigDecimal re = getRe();
     BigDecimal im = getIm();
     if (re.compareTo(BigDecimal.ZERO) == 0) {
       if (im.signum() > 0) {
         return Math.PI/2;
-      } else {
+      } else if (im.signum() < 0) {
         return -Math.PI/2;
+      } else {
+        throw new ArithmeticException("Undefined for 0+0i");
       }
     } else if (re.compareTo(BigDecimal.ZERO) < 0) {
       if (im.signum() >= 0) {
@@ -212,10 +256,16 @@ public class SCMBigComplex extends Number implements ISCMClass {
     }
   }
 
+  /**
+   * Return real part
+   */
   public BigDecimal getRe() {
     return re;
   }
 
+  /**
+   * Return imaginary part
+   */
   public BigDecimal getIm() {
     return im;
   }
@@ -245,6 +295,9 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return SCMClass.COMPLEX;
   }
 
+  /*
+   * Complex number is a zero if both real and imaginary parts are zeroes
+   */
   public boolean isZero() {
     return re.compareTo(BigDecimal.ZERO) == 0 && im.compareTo(BigDecimal.ZERO) == 0;
   }
