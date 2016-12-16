@@ -3,6 +3,7 @@ package unittests;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import org.junit.Test;
 
@@ -49,6 +50,16 @@ public class NumberTest extends AbstractTest {
     assertEquals(100L, eval("#e#d10#", env));
     assertEquals(150L, eval("#e15#", env));
     assertEquals(new SCMBigRational("101", "10"), eval("#e#d10.1", env));
+
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  eval("1+2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(-2)), eval("1-2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  eval("-1+2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(-2)), eval("-1-2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  eval("#e1+2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")), eval("#i1+2i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  eval("#e#b101+11101i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  eval("#e#b101+11101i", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("255.0"),  new BigDecimal("2987.9375")), eval("#x#iFf+BaB.fI", env));
 
     try {
       eval("+#", env);

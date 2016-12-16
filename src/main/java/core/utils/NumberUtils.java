@@ -405,6 +405,9 @@ public class NumberUtils {
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).scale() == 0;
     }
+    if (o instanceof SCMBigComplex) {
+      return isExact(((SCMBigComplex) o).getRe()) && isExact(((SCMBigComplex) o).getIm());
+    }
     return false;
   }
 
@@ -417,6 +420,9 @@ public class NumberUtils {
     }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).scale() != 0;
+    }
+    if (o instanceof SCMBigComplex) {
+      return isInexact(((SCMBigComplex) o).getRe()) || isInexact(((SCMBigComplex) o).getIm());
     }
     return true;
   }

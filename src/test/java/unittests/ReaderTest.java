@@ -101,6 +101,20 @@ public class ReaderTest {
   }
 
   @Test
+  public void testReadComplex() {
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  reader.readFirst("1+2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(-2)), reader.readFirst("1-2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  reader.readFirst("-1+2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(-2)), reader.readFirst("-1-2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  reader.readFirst("#e1+2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")),  reader.readFirst("#i1+2i"));
+    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
+    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
+    assertEquals(new SCMBigComplex(new BigDecimal("255.0"),  new BigDecimal("2987.9375")), reader.readFirst("#x#iFf+BaB.fI"));
+    // TODO #e3/4+2.5i
+  }
+
+  @Test
   public void testReadStrings() {
     assertEquals("1", reader.readFirst("\"1\""));
     assertEquals("Lorem ipsum", reader.readFirst("\"Lorem ipsum\""));

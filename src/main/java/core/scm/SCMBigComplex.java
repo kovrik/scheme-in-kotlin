@@ -1,11 +1,6 @@
 package core.scm;
 
-import core.procedures.math.Addition;
-import core.procedures.math.Exp;
-import core.procedures.math.Expt;
-import core.procedures.math.Log;
-import core.procedures.math.Multiplication;
-import core.procedures.math.Sqrt;
+import core.procedures.math.*;
 import core.procedures.math.trigonometry.Atan;
 import core.procedures.math.trigonometry.Cos;
 import core.procedures.math.trigonometry.Sin;
@@ -26,15 +21,27 @@ public class SCMBigComplex extends Number implements ISCMClass {
   private final BigDecimal re;
   private final BigDecimal im;
 
-  public SCMBigComplex(BigDecimal re, BigDecimal im) {
-    this.re = re;
-    this.im = im;
+  public SCMBigComplex(BigDecimal tre, BigDecimal tim) {
+    int minScale = (tre.scale() > 0 || tim.scale() > 0) ? 1 : 0;
+    int reScaleStripped = tre.stripTrailingZeros().scale();
+    int imScaleStripped = tim.stripTrailingZeros().scale();
+    int reScale = Math.min(NumberUtils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped));
+    int imScale = Math.min(NumberUtils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped));
+    if (reScaleStripped > 0) {
+      this.re = tre.setScale(reScale, NumberUtils.ROUNDING_MODE).stripTrailingZeros();
+    } else {
+      this.re = tre.setScale(reScale, NumberUtils.ROUNDING_MODE);
+    }
+    if (imScaleStripped > 0) {
+      this.im = tim.setScale(imScale, NumberUtils.ROUNDING_MODE).stripTrailingZeros();
+    } else {
+      this.im = tim.setScale(imScale, NumberUtils.ROUNDING_MODE);
+    }
   }
 
   /* FIXME Support rational re and im parts! */
   public SCMBigComplex(Number re, Number im) {
-    this.re = NumberUtils.toBigDecimal(re).setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE);
-    this.im = NumberUtils.toBigDecimal(im).setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE);
+    this(NumberUtils.toBigDecimal(re), NumberUtils.toBigDecimal(im));
   }
 
   public SCMBigComplex(Number re) {
