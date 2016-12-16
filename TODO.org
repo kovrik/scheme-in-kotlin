@@ -1,5 +1,6 @@
 * TODO: [29/36]
 
+** TODO [#A] Expt special cases
 ** TODO [#A] Math Unit Tests: reading Complex numbers, Trigonometry, Complex math, Exp etc.
 ** TODO [#A] Inexactness taint
 ** TODO [#A] Downcast numbers to the smallest possible type

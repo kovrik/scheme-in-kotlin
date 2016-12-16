@@ -182,6 +182,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
     BigDecimal a = getRe();
     BigDecimal b = getIm();
     Number log = Log.log(magnitude());
+    // FIXME (log -4-3i)
     double atan = Atan.atan(b.divide(a, NumberUtils.DEFAULT_CONTEXT));
     return new SCMBigComplex(log, atan);
   }
