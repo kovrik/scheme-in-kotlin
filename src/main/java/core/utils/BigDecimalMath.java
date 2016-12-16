@@ -1,5 +1,6 @@
 package core.utils;
 
+import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 
 import java.math.*;
@@ -36,30 +37,26 @@ public class BigDecimalMath {
    * @param x the non-negative argument.
    * @return The n-th root of the BigDecimal rounded to the precision implied by x, x^(1/n).
    */
-  // FIXME Loss of precision
   private static BigDecimal root(final int n, final BigDecimal x) {
-
     if (x.compareTo(BigDecimal.ZERO) < 0) {
       throw new ArithmeticException("negative argument " + x.toString() + " of root");
     }
     if (n <= 0) {
       throw new ArithmeticException("negative power " + n + " of root");
     }
-
     if (n == 1) {
       return x;
     }
-
     /* start the computation from a double precision estimate */
     // FIXME Not working for huge numbers
     BigDecimal s = new BigDecimal(Math.pow(x.doubleValue(), 1.0 / n));
-
     /* this creates nth with nominal precision of 1 digit */
     final BigDecimal nth = new BigDecimal(n);
-
     /* Specify an internal accuracy within the loop which is slightly larger than what is demanded by 'eps' below. */
     final BigDecimal xhighpr = scalePrec(x, 2);
-    MathContext mc = new MathContext(2 + x.precision());
+
+    // FIXME Loss of precision
+    MathContext mc = new MathContext(16 + x.precision());
     /* Relative accuracy of the result is eps. */
     final double eps = x.ulp().doubleValue() / (2 * n * x.doubleValue());
     for (; ; ) {
@@ -67,8 +64,7 @@ public class BigDecimalMath {
        * smaller than the precision requested. The relative correction is (1-x/s^n)/n, */
       BigDecimal c = xhighpr.divide(s.pow(n - 1), mc);
       c = s.subtract(c);
-      MathContext locmc = new MathContext(c.precision());
-      c = c.divide(nth, locmc);
+      c = c.divide(nth, NumberUtils.DEFAULT_CONTEXT);
       s = s.subtract(c);
       if (Math.abs(c.doubleValue() / s.doubleValue()) < eps) {
         break;

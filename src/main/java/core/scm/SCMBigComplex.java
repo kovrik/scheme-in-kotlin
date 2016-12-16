@@ -31,18 +31,10 @@ public class SCMBigComplex extends Number implements ISCMClass {
     this.im = im;
   }
 
+  /* FIXME Support rational re and im parts! */
   public SCMBigComplex(Number re, Number im) {
-    /* FIXME Support rational re and im parts! */
-    if (re instanceof SCMBigRational) {
-      this.re = ((SCMBigRational)re).toBigDecimal();
-    } else {
-      this.re = new BigDecimal(re.toString());
-    }
-    if (im instanceof SCMBigRational) {
-      this.im = ((SCMBigRational)im).toBigDecimal();
-    } else {
-      this.im = new BigDecimal(im.toString());
-    }
+    this.re = NumberUtils.toBigDecimal(re).setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE);
+    this.im = NumberUtils.toBigDecimal(im).setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE);
   }
 
   public SCMBigComplex(Number re) {
