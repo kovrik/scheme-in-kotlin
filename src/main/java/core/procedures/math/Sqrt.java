@@ -35,6 +35,10 @@ public class Sqrt extends AFn {
       if (Double.isInfinite(number.doubleValue())) {
         return Double.POSITIVE_INFINITY;
       }
+      if (Double.isFinite(number.doubleValue())) {
+        return Math.sqrt(number.doubleValue());
+      }
+      // FIXME Loss of precision
       return BigDecimalMath.sqrt((BigDecimal) number);
     } else if (number instanceof SCMBigComplex) {
       if (((SCMBigComplex)number).getIm().compareTo(BigDecimal.ZERO) == 0) {
