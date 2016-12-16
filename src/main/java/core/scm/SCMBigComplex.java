@@ -6,7 +6,6 @@ import core.procedures.math.Expt;
 import core.procedures.math.Log;
 import core.procedures.math.Multiplication;
 import core.procedures.math.Sqrt;
-import core.procedures.math.complex.Angle;
 import core.procedures.math.trigonometry.Atan;
 import core.procedures.math.trigonometry.Cos;
 import core.procedures.math.trigonometry.Sin;
@@ -20,6 +19,8 @@ import java.math.BigDecimal;
 public class SCMBigComplex extends Number implements ISCMClass {
 
   public static final SCMBigComplex IM = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
+
+  private static final BigDecimal HALF = new BigDecimal("0.5");
 
   // TODO use generic Number instead
   private final BigDecimal re;
@@ -106,6 +107,17 @@ public class SCMBigComplex extends Number implements ISCMClass {
     double s = Math.sqrt(a * a + b * b);
     double gamma = Math.sqrt((s+a)/2);
     double delta = signum * Math.sqrt((s-a)/2);
+    return new SCMBigComplex(gamma, delta);
+  }
+
+  public SCMBigComplex sqrtBig() {
+    BigDecimal a   = this.re;
+    BigDecimal b   = this.im;
+    int signum = this.im.signum();
+
+    Number s = Sqrt.sqrt(a.multiply(a).add(b.multiply(b)));
+    Number gamma = Sqrt.sqrt(Multiplication.apply(Addition.add(s, a), HALF));
+    Number delta = Multiplication.apply(signum, Sqrt.sqrt(Multiplication.apply(Addition.add(s, Multiplication.apply(-1, a)), HALF)));
     return new SCMBigComplex(gamma, delta);
   }
 

@@ -36,6 +36,7 @@ public class BigDecimalMath {
    * @param x the non-negative argument.
    * @return The n-th root of the BigDecimal rounded to the precision implied by x, x^(1/n).
    */
+  // FIXME Loss of precision
   private static BigDecimal root(final int n, final BigDecimal x) {
 
     if (x.compareTo(BigDecimal.ZERO) < 0) {
