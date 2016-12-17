@@ -17,13 +17,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public class Repl {
 
-  private static final AtomicLong SYM_COUNTER = new AtomicLong(0);
+  private static final AtomicInteger SYM_COUNTER = new AtomicInteger(0);
+  private static final int SYM_LIMIT = 50;
 
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "> ";
@@ -54,7 +55,11 @@ public class Repl {
   }
 
   private static SCMSymbol getNextID() {
-    return new SCMSymbol("$" + SYM_COUNTER.incrementAndGet());
+    int i = SYM_COUNTER.incrementAndGet();
+    if (i == SYM_LIMIT) {
+      SYM_COUNTER.set(0);
+    }
+    return new SCMSymbol("$" + i);
   }
 
   private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
