@@ -190,7 +190,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
       }
       d = BigDecimal.ZERO;
     }
-    // FIXME precision loss
     Number r = magnitude();
     Number t = angle();
     Number A = Multiplication.apply(Expt.expt(r, c), Exp.exp(Multiplication.apply(t, d.negate())));
@@ -295,7 +294,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
     return SCMClass.COMPLEX;
   }
 
-  /*
+  /**
    * Complex number is a zero if both real and imaginary parts are zeroes
    */
   public boolean isZero() {

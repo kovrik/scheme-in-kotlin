@@ -120,6 +120,7 @@ public class Expt extends AFn {
       }
     }
 
+    /* FIXME probably wrong BEGIN ------------------------------- */
     if ((first instanceof Long) || (exponent instanceof Long)) {
       int scale = 0;
       if (exponent instanceof Double) {
@@ -139,6 +140,7 @@ public class Expt extends AFn {
       }
       return result;
     }
+    /* FIXME probably wrong END --------------------------------- */
     /* BigDecimals */
     try {
       if ((first instanceof BigDecimal) && (exponent instanceof BigDecimal)) {

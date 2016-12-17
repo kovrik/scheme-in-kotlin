@@ -1,9 +1,10 @@
 package core.utils;
 
-import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 
-import java.math.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 
 /**
  * BigDecimal special functions.
@@ -227,11 +228,8 @@ public class BigDecimalMath {
       /* return x^y = exp(y*log(x)); */
       BigDecimal logx = log(x);
       BigDecimal ylogx = y.multiply(logx);
-      BigDecimal resul = exp(ylogx);
-      double errR = Math.abs(logx.doubleValue() * y.ulp().doubleValue() / 2.) + Math
-        .abs(y.doubleValue() * x.ulp().doubleValue() / 2. / x.doubleValue());
-      MathContext mcR = new MathContext(err2prec(1.0, errR));
-      return resul.round(mcR);
+      BigDecimal result = exp(ylogx);
+      return result.round(NumberUtils.DEFAULT_CONTEXT);
     }
   }
 
