@@ -101,4 +101,18 @@ public class ComplexTest extends AbstractTest {
     assertEquals(0L, eval("(imag-part -2.5)", env));
     assertEquals(0L, eval("(imag-part 3/4)", env));
   }
+
+  @Test
+  public void testMakePolar() {
+    assertEquals(new SCMBigComplex(new BigDecimal("-1.960930862590836"), new BigDecimal("-2.2704074859237846")), eval("(make-polar 3 4)", env));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-polar 0 0)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("-0.8775825618903728"), new BigDecimal("-0.479425538604203")), eval("(make-polar -1 0.5)", env));
+  }
+
+  @Test
+  public void testMakeRectangular() {
+    assertEquals(new SCMBigComplex(new BigDecimal("3"), new BigDecimal("4")), eval("(make-rectangular 3 4)", env));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-rectangular 0 0)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("-1"), new BigDecimal("0.5")), eval("(make-rectangular -1 0.5)", env));
+  }
 }
