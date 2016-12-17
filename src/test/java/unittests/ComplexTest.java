@@ -115,4 +115,32 @@ public class ComplexTest extends AbstractTest {
     assertEquals(new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-rectangular 0 0)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("-1"), new BigDecimal("0.5")), eval("(make-rectangular -1 0.5)", env));
   }
+
+  @Test
+  public void testAngle() {
+    assertEquals(0.7853981633974483, eval("(angle 1+1i)", env));
+    assertEquals(-1.845764097871735, eval("(angle -3.47-12.3i)", env));
+    assertEquals(1.5707963267948966, eval("(angle 0+5i)", env));
+    assertEquals(0.0, eval("(angle 4)", env));
+    assertEquals(3.141592653589793, eval("(angle -1)", env));
+    try {
+      eval("(angle 0+0i)", env);
+    } catch (ArithmeticException e) {
+      assertEquals("Undefined for 0", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testMagnitude() {
+    assertEquals(1.4142135623730951, eval("(magnitude 1+1i)", env));
+    assertEquals(12.780097808702404, eval("(magnitude -3.47-12.3i)", env));
+    assertEquals(5.0, eval("(magnitude 0+5i)", env));
+    assertEquals(4L, eval("(magnitude 4)", env));
+    assertEquals(1L, eval("(magnitude -1)", env));
+    try {
+      eval("(magnitude 0+0i)", env);
+    } catch (ArithmeticException e) {
+      assertEquals("Undefined for 0", e.getMessage());
+    }
+  }
 }

@@ -1,12 +1,9 @@
 package core.procedures.math.complex;
 
 import core.procedures.AFn;
-import core.procedures.math.trigonometry.Atan;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.utils.NumberUtils;
-
-import java.math.BigDecimal;
 
 @FnArgs(args = {Number.class})
 public class Angle extends AFn {
