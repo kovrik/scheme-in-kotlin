@@ -1,6 +1,6 @@
 package core.procedures.io;
 
-import core.Main;
+import core.Repl;
 import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
 import core.exceptions.WrongTypeException;
@@ -32,7 +32,7 @@ public class WriteChar extends AFn {
 
     SCMOutputPort outputPort;
     if (args.length == 1) {
-      outputPort = Main.getCurrentOutputPort();
+      outputPort = Repl.getCurrentOutputPort();
     } else {
       if (!(args[1] instanceof SCMOutputPort)) {
         throw new WrongTypeException("Output Port", args[1]);

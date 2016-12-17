@@ -1,6 +1,6 @@
 package unittests;
 
-import core.Main;
+import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.procedures.io.Display;
@@ -187,9 +187,9 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalHanoi() {
 
-    SCMOutputPort old = Main.getCurrentOutputPort();
+    SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Main.setCurrentOutputPort(new SCMOutputPort(baos));
+    Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
@@ -230,7 +230,7 @@ public class RosettaCodeTest extends AbstractTest {
                       "Move disk from pole 3 to pole 2";
 
     assertEquals(solution, baos.toString().trim());
-    Main.setCurrentOutputPort(old);
+    Repl.setCurrentOutputPort(old);
   }
 
   @Test
@@ -297,9 +297,9 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalQuine() {
 
-    SCMOutputPort old = Main.getCurrentOutputPort();
+    SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Main.setCurrentOutputPort(new SCMOutputPort(baos));
+    Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
@@ -313,7 +313,7 @@ public class RosettaCodeTest extends AbstractTest {
     eval(quine, tempEnv);
     assertEquals(quine, baos.toString().trim());
 
-    Main.setCurrentOutputPort(old);
+    Repl.setCurrentOutputPort(old);
   }
 
   @Test

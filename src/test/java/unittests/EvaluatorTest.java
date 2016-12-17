@@ -1,6 +1,6 @@
 package unittests;
 
-import core.Main;
+import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
@@ -108,8 +108,8 @@ public class EvaluatorTest extends AbstractTest {
   public void testEvalDisplay() {
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    SCMOutputPort old = Main.getCurrentOutputPort();
-    Main.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    SCMOutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
 
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
@@ -150,7 +150,7 @@ public class EvaluatorTest extends AbstractTest {
     assertEquals("(3 4 5 6)", baos.toString().trim());
     baos.reset();
 
-    Main.setCurrentOutputPort(old);
+    Repl.setCurrentOutputPort(old);
   }
 
   @Test

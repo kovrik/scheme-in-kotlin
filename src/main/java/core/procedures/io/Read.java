@@ -1,6 +1,6 @@
 package core.procedures.io;
 
-import core.Main;
+import core.Repl;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
@@ -27,7 +27,7 @@ public class Read extends AFn {
 
     SCMInputPort inputPort;
     if (args.length == 0) {
-      inputPort = Main.getCurrentInputPort();
+      inputPort = Repl.getCurrentInputPort();
     } else {
       if (!(args[0] instanceof SCMInputPort)) {
         throw new WrongTypeException("Input Port", args[0]);

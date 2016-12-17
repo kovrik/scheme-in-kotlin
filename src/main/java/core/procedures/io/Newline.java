@@ -1,6 +1,6 @@
 package core.procedures.io;
 
-import core.Main;
+import core.Repl;
 import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
 import core.exceptions.WrongTypeException;
@@ -28,7 +28,7 @@ public class Newline extends AFn {
 
     SCMOutputPort outputPort;
     if (args.length == 0) {
-      outputPort = Main.getCurrentOutputPort();
+      outputPort = Repl.getCurrentOutputPort();
     } else {
       if (!(args[0] instanceof SCMOutputPort)) {
         throw new WrongTypeException("Output Port", args[0]);

@@ -1,6 +1,6 @@
 package core.procedures.io;
 
-import core.Main;
+import core.Repl;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 
@@ -14,6 +14,6 @@ public class CurrentOutputPort extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return Main.getCurrentOutputPort();
+    return Repl.getCurrentOutputPort();
   }
 }

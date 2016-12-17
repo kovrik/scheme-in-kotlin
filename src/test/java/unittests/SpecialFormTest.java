@@ -1,6 +1,6 @@
 package unittests;
 
-import core.Main;
+import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
@@ -453,9 +453,9 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Unbound variable: x", e.getMessage());
     }
-    SCMOutputPort old = Main.getCurrentOutputPort();
+    SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Main.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
     IEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
@@ -463,7 +463,7 @@ public class SpecialFormTest extends AbstractTest {
     }
     tempEnv.put(new SCMSymbol("display"), new Display());
     assertEquals(UNSPECIFIED, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
-    Main.setCurrentOutputPort(old);
+    Repl.setCurrentOutputPort(old);
   }
 
   @Test

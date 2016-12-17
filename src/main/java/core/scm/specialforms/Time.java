@@ -1,11 +1,10 @@
 package core.scm.specialforms;
 
-import core.Main;
+import core.Repl;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMIOException;
-import core.scm.ISCMClass;
 import core.scm.SCMUnspecified;
 import core.writer.Writer;
 
@@ -37,13 +36,13 @@ public enum Time implements ISpecialForm {
       evaluator.eval(expression.get(i), env);
     }
     try {
-      Main.getCurrentOutputPort().write(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)) + LS);
+      Repl.getCurrentOutputPort().write(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)) + LS);
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
     long diff = (System.nanoTime() - start) / 1000000;
     try {
-      Main.getCurrentOutputPort().write(String.format("time: %s ms", diff) + LS);
+      Repl.getCurrentOutputPort().write(String.format("time: %s ms", diff) + LS);
     } catch (IOException e) {
       throw new SCMIOException(e);
     }

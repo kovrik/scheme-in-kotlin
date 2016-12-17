@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-public class Main {
+public class Repl {
 
   private static final AtomicLong SYM_COUNTER = new AtomicLong(0);
 

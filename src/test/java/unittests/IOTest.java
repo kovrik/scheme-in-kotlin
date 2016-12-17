@@ -1,6 +1,6 @@
 package unittests;
 
-import core.Main;
+import core.Repl;
 import core.scm.SCMEof;
 import core.scm.SCMInputPort;
 import core.scm.SCMOutputPort;
@@ -20,16 +20,16 @@ public class IOTest extends AbstractTest {
     assertEquals(new SCMOutputPort(System.out), eval("(current-output-port)", env));
 
     OutputStream outputStream = new ByteArrayOutputStream(0);
-    SCMOutputPort currentOutputPort = Main.getCurrentOutputPort();
-    Main.setCurrentOutputPort(new SCMOutputPort(outputStream));
+    SCMOutputPort currentOutputPort = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new SCMOutputPort(outputStream));
     assertEquals(new SCMOutputPort(outputStream), eval("(current-output-port)", env));
-    Main.setCurrentOutputPort(currentOutputPort);
+    Repl.setCurrentOutputPort(currentOutputPort);
 
     InputStream inputStream = new ByteArrayInputStream("test".getBytes());
-    SCMInputPort currentInputPort = Main.getCurrentInputPort();
-    Main.setCurrentInputPort(new SCMInputPort(inputStream));
+    SCMInputPort currentInputPort = Repl.getCurrentInputPort();
+    Repl.setCurrentInputPort(new SCMInputPort(inputStream));
     assertEquals(new SCMInputPort(inputStream), eval("(current-input-port)", env));
-    Main.setCurrentInputPort(currentInputPort);
+    Repl.setCurrentInputPort(currentInputPort);
   }
 
   @Test

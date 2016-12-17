@@ -34,7 +34,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>core.Main</mainClass>
+                            <mainClass>core.Repl</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
