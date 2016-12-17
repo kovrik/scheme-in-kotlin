@@ -14,6 +14,7 @@ import unittests.s7.S7Tests;
     DelayedTest.class,
     NumberTest.class,
     ComplexTest.class,
+    TrigonometryTest.class,
     SCMRationalTest.class,
     CharacterTest.class,
     StringTest.class,
