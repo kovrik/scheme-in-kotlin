@@ -788,7 +788,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(2.718281828459045, eval("(exp 1)", env));
     assertEquals(59874.14171519782, eval("(exp 11)", env));
     assertEquals(0.36787944117144233, eval("(exp -1)", env));
-    assertEquals(new BigDecimal("2.117000016612675"), eval("(exp 3/4)", env));
+    assertEquals(2.117000016612675, eval("(exp 3/4)", env));
     assertEquals(2.718281828459045, eval("(exp 1/1)", env));
     assertEquals(Double.POSITIVE_INFINITY, eval("(exp 999999999)", env));
     assertEquals(0d, eval("(exp -999999999)", env));

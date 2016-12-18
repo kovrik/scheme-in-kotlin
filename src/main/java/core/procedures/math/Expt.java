@@ -120,66 +120,61 @@ public class Expt extends AFn {
       }
     }
 
-    /* FIXME probably wrong BEGIN ------------------------------- */
-    if ((first instanceof Long) || (exponent instanceof Long)) {
-      int scale = 0;
-      if (exponent instanceof Double) {
-        scale = 1;
-      } else if (exponent instanceof BigDecimal) {
-        scale = ((BigDecimal)exponent).scale();
-      }
+    // FIXME This code is wrong and probably doesn't work in many cases BEGIN ---------------------------------------------------
+    if ((first instanceof Long) && (exponent instanceof Long)) {
       boolean isNegative = false;
-      int e = exponent.intValue();
-      if (exponent.intValue() < 0) {
-        isNegative = true;
-        e = Math.abs(exponent.intValue());
+      if (exponent.longValue() < Integer.MAX_VALUE) {
+        int e = exponent.intValue();
+        if (e < 0) {
+          isNegative = true;
+          e = Math.abs(e);
+        }
+        BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        if (isNegative) {
+          return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
+        }
+        return result;
+      } else {
+        try {
+          return BigDecimalMath.pow(new BigDecimal(first.toString()), new BigDecimal(exponent.toString()));
+        } catch (ArithmeticException e) {
+          return Double.POSITIVE_INFINITY;
+        }
       }
-      BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(scale, NumberUtils.ROUNDING_MODE);
-      if (isNegative) {
-        return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
-      }
-      return result;
     }
-    /* FIXME probably wrong END --------------------------------- */
     /* BigDecimals */
-    try {
-      if ((first instanceof BigDecimal) && (exponent instanceof BigDecimal)) {
-        return BigDecimalMath.pow((BigDecimal) first, (BigDecimal) exponent);
-      }
-      if (first instanceof BigDecimal) {
-        if (exponent instanceof SCMBigRational) {
-          // FIXME Check rounding mode and precision
-          return BigDecimalMath.pow((BigDecimal) first,
-                                    ((SCMBigRational)exponent).toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE));
+    if (first instanceof BigDecimal && NumberUtils.isInteger(exponent)) {
+      if (NumberUtils.isInteger(first)) {
+        int exp;
+        try {
+          if (exponent instanceof BigDecimal) {
+            exp = ((BigDecimal) exponent).intValueExact();
+          } else {
+            exp = exponent.intValue();
+          }
+          return ((BigDecimal) first).pow(exp);
+        } catch (ArithmeticException e) {
+          return exptBig((BigDecimal)first, new BigDecimal(exponent.toString()));
         }
-        return BigDecimalMath.pow((BigDecimal) first, new BigDecimal(exponent.toString()));
-      }
-      if (exponent instanceof BigDecimal) {
-        if (first instanceof SCMBigRational) {
-          // FIXME Check rounding mode and precision
-          return BigDecimalMath.pow(((SCMBigRational)first).toBigDecimal().setScale(NumberUtils.DEFAULT_SCALE, NumberUtils.ROUNDING_MODE),
-                                    new BigDecimal(exponent.toString()));
-        }
-        return BigDecimalMath.pow(new BigDecimal(first.toString()), (BigDecimal) exponent);
-      }
-    } catch (ArithmeticException e) {
-      BigDecimal exp;
-      if (exponent instanceof BigDecimal) {
-        exp = (BigDecimal)exponent;
       } else {
-        exp = new BigDecimal(exponent.toString());
-      }
-      if (exp.compareTo(NEG_LIMIT) < 0) {
-        return 0d;
-      } else {
-        return Double.POSITIVE_INFINITY;
+        return exptBig((BigDecimal) first, new BigDecimal(exponent.toString()));
       }
     }
-
     double result = Math.pow(first.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
       return new BigDecimal(first.toString()).pow(exponent.intValue());
     }
     return result;
+    // FIXME This code is wrong and probably doesn't work in many cases END -----------------------------------------------------
+  }
+
+  private static Number exptBig(BigDecimal n, BigDecimal e) {
+    try {
+      int i = e.intValueExact();
+      return n.pow(i);
+    } catch (ArithmeticException ex) {
+      // FIXME NEGATIVE_INFINITY and zero in some cases
+      return Double.POSITIVE_INFINITY;
+    }
   }
 }
