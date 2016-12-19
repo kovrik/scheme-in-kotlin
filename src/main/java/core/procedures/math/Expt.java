@@ -13,9 +13,6 @@ import java.math.BigInteger;
 @FnArgs(args = {Number.class, Number.class})
 public class Expt extends AFn {
 
-  /* Return 0d if exponent is less than -745 */
-  private static final BigDecimal NEG_LIMIT = new BigDecimal("-745");
-
   @Override
   public boolean isPure() {
     return true;
