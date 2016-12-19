@@ -6,17 +6,15 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMPromise;
-import core.scm.SCMSymbol;
+import core.procedures.IFn;
+import core.procedures.continuations.CalledContinuation;
+import core.procedures.continuations.Continuation;
+import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
-import core.scm.SCMTailCall;
 import core.writer.Writer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Evaluator implements IEvaluator {
@@ -140,7 +138,27 @@ public class Evaluator implements IEvaluator {
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
       result = evalForcedPromise((SCMPromise)result, env);
     }
+    /* Handle continuations */
+    if ((result instanceof Continuation) && (((Continuation) result).isValid())) {
+      result = evalContinuation((Continuation) result);
+    }
     return result;
+  }
+
+  // FIXME Move out of Evaluator into call/cc
+  /* Actual call-with-current-continuation */
+  private Object evalContinuation(Continuation cont) {
+    IFn proc = cont.getProc();
+    try {
+      return apply((SCMProcedure)proc, Collections.singletonList(cont));
+    } catch (CalledContinuation ex) {
+      if (ex.getContinuation() != cont) {
+        throw ex;
+      }
+      return ex.getValue();
+    } finally {
+      cont.markInvalid();
+    }
   }
 
   /**

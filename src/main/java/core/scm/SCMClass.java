@@ -32,6 +32,7 @@ public enum SCMClass implements ISCMClass {
   IMMUTABLE_VECTOR("ImmutableVector"),
   PROMISE("Promise"),
   PROCEDURE("Procedure"),
+  CONTINUATION("Continuation"),
   ERROR("Error"),
   CLASS("Class"),
   PORT("Port"),

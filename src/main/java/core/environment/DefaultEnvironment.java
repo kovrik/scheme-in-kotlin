@@ -6,6 +6,7 @@ import core.procedures.characters.CharPredicate;
 import core.procedures.characters.CharProc;
 import core.procedures.characters.IntegerToChar;
 import core.procedures.cons.*;
+import core.procedures.continuations.CallCC;
 import core.procedures.delayed.Force;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
@@ -213,6 +214,9 @@ public final class DefaultEnvironment extends Environment {
       new ForEach(),
       new Void(),
 
+      /* Continuations */
+      new CallCC(),
+
       /* Predicates */
       SCMPredicate.IS_NULL,
       SCMPredicate.IS_PAIR,
@@ -326,9 +330,10 @@ public final class DefaultEnvironment extends Environment {
   public DefaultEnvironment() {
     super(null);
 
-    /* Constants */
+    /* Constants and special cases */
     put(new SCMSymbol("pi"),  Math.PI);
     put(new SCMSymbol("eof"), SCMEof.EOF);
+    put(new SCMSymbol("call-with-current-continuation"), new CallCC());
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
