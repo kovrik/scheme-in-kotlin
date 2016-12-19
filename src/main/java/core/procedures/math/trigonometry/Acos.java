@@ -23,10 +23,6 @@ public class Acos extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
-      return 0L;
-    }
     if (args[0] instanceof Long) {
       double acos = Math.acos((Long) args[0]);
       if (Double.isNaN(acos)) {
