@@ -2,8 +2,10 @@ package core.procedures.continuations;
 
 import core.procedures.AFn;
 import core.procedures.IFn;
+import core.scm.FnArgs;
 import core.scm.SCMClass;
 
+@FnArgs(args = {IFn.class})
 public class Continuation extends AFn {
 
   private final IFn proc;
