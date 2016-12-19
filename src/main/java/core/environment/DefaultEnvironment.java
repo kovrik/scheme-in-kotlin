@@ -277,6 +277,7 @@ public final class DefaultEnvironment extends Environment {
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
+    LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     // TODO Implement as Fns
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");

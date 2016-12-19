@@ -5,7 +5,7 @@ import core.procedures.IFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
 
-@FnArgs(args = {IFn.class})
+@FnArgs(args = {Object.class})
 public class Continuation extends AFn {
 
   private final IFn proc;
