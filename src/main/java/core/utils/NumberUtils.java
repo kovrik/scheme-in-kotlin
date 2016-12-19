@@ -26,11 +26,10 @@ public class NumberUtils {
   private NumberUtils() {}
 
   public static final int DEFAULT_SCALE = 16;
-  public static final MathContext DEFAULT_CONTEXT = MathContext.DECIMAL64;
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
+  public static final MathContext DEFAULT_CONTEXT = new MathContext(DEFAULT_SCALE, ROUNDING_MODE);
 
-  public static final BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995")
-      .setScale(16, NumberUtils.ROUNDING_MODE);
+  public static final BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995");
 
   private static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
   private static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
