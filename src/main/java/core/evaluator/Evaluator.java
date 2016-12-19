@@ -30,6 +30,10 @@ public class Evaluator implements IEvaluator {
       }
       result = evalIter(((SCMTailCall)result).getExpr(), context);
     }
+    /* Handle continuations */
+    while ((result instanceof Continuation) && (((Continuation) result).isValid())) {
+      result = evalContinuation((Continuation) result);
+    }
     // TODO Downcast if possible?
     return result;
   }
@@ -137,10 +141,6 @@ public class Evaluator implements IEvaluator {
     /* Handle Promise forced to evaluation by Force procedure */
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
       result = evalForcedPromise((SCMPromise)result, env);
-    }
-    /* Handle continuations */
-    if ((result instanceof Continuation) && (((Continuation) result).isValid())) {
-      result = evalContinuation((Continuation) result);
     }
     return result;
   }
