@@ -7,9 +7,11 @@ import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
+import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.Continuation;
 import core.scm.*;
+import core.scm.specialforms.Begin;
 import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
 
@@ -125,6 +127,11 @@ public class Evaluator implements IEvaluator {
       }
     }
 
+    /* call-with-current-continuation */
+    if (fn instanceof CallCC) {
+      return callcc((IFn) args.get(0), env);
+    }
+
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
       return apply((SCMProcedure)fn, args);
@@ -138,19 +145,17 @@ public class Evaluator implements IEvaluator {
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
       result = evalForcedPromise((SCMPromise)result, env);
     }
-    /* Handle continuations */
-    if ((result instanceof Continuation) && (((Continuation) result).isValid())) {
-      result = evalContinuation((Continuation) result);
-    }
     return result;
   }
 
   // FIXME Move out of Evaluator into call/cc
   /* Actual call-with-current-continuation */
-  private Object evalContinuation(Continuation cont) {
-    IFn proc = cont.getProc();
+  private Object callcc(IFn proc, IEnvironment env) {
+    Continuation cont = new Continuation();
     try {
-      return apply((SCMProcedure)proc, Collections.singletonList(cont));
+      // FIXME ???
+//      return apply((SCMProcedure)proc, Collections.singletonList(cont));
+      return eval(SCMCons.list(proc, cont), env);
     } catch (CalledContinuation ex) {
       if (ex.getContinuation() != cont) {
         throw ex;

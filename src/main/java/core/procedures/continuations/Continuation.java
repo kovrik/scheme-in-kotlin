@@ -1,20 +1,13 @@
 package core.procedures.continuations;
 
 import core.procedures.AFn;
-import core.procedures.IFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
 
 @FnArgs(args = {Object.class})
 public class Continuation extends AFn {
 
-  private final IFn proc;
-
   private boolean valid = true;
-
-  Continuation(IFn proc) {
-    this.proc = proc;
-  }
 
   @Override
   public boolean isPure() {
@@ -47,9 +40,5 @@ public class Continuation extends AFn {
 
   public void markInvalid() {
     this.valid = false;
-  }
-
-  public IFn getProc() {
-    return proc;
   }
 }

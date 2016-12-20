@@ -19,6 +19,7 @@ public class CallCC extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return new Continuation((IFn) args[0]);
+    // FIXME
+    throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
   }
 }
