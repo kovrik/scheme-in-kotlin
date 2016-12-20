@@ -11,12 +11,10 @@ import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.Continuation;
 import core.scm.*;
-import core.scm.specialforms.Begin;
 import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Evaluator implements IEvaluator {
@@ -24,13 +22,24 @@ public class Evaluator implements IEvaluator {
   @Override
   public Object eval(Object sexp, IEnvironment env) {
     /* TCO: This is our Trampoline */
-    Object result = evalIter(sexp, env);
-    while (result instanceof SCMTailCall) {
-      IEnvironment context = ((SCMTailCall) result).getContext();
-      if (context == null) {
-        context = env;
+    Object result;
+    try {
+      result = evalIter(sexp, env);
+      while (result instanceof SCMTailCall) {
+        IEnvironment context = ((SCMTailCall) result).getContext();
+        if (context == null) {
+          context = env;
+        }
+        result = evalIter(((SCMTailCall) result).getExpr(), context);
       }
-      result = evalIter(((SCMTailCall)result).getExpr(), context);
+    } catch (CalledContinuation cc) {
+      if (cc.getValue() instanceof Continuation && !((Continuation)cc.getValue()).isValid()) {
+        throw new RuntimeException("implementation restriction: continuation can only be used once");
+      }
+      if (!cc.getContinuation().isValid()) {
+        return cc.getValue();
+      }
+      throw cc;
     }
     // TODO Downcast if possible?
     return result;
@@ -153,8 +162,6 @@ public class Evaluator implements IEvaluator {
   private Object callcc(IFn proc, IEnvironment env) {
     Continuation cont = new Continuation();
     try {
-      // FIXME ???
-//      return apply((SCMProcedure)proc, Collections.singletonList(cont));
       return eval(SCMCons.list(proc, cont), env);
     } catch (CalledContinuation ex) {
       if (ex.getContinuation() != cont) {
