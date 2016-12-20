@@ -78,4 +78,24 @@ public class ContinuationsTest extends AbstractTest {
 
     Repl.setCurrentOutputPort(old);
   }
+
+  @Test
+  public void testContinuationExample() {
+    String example = "(let ((cont #f))" +
+                     "  (letrec ((x (call-with-current-continuation (lambda (c) (set! cont c) 0)))" +
+                     "           (y (call-with-current-continuation (lambda (c) (set! cont c) 0))))" +
+                     "    (if cont" +
+                     "        (let ((c cont))" +
+                     "          (set! cont #f)" +
+                     "          (set! x 1)" +
+                     "          (set! y 1)" +
+                     "          (c 0))" +
+                     "        (+ x y))))";
+    try {
+      eval(example, env);
+      fail();
+    } catch (ReentrantContinuationException ex) {
+      // success
+    }
+  }
 }
