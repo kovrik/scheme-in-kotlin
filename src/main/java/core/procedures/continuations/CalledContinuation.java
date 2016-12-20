@@ -6,6 +6,7 @@ public class CalledContinuation extends RuntimeException {
   private final Continuation continuation;
 
   CalledContinuation(Object value, Continuation cont) {
+    super("CalledContinuationException");
     this.value = value;
     this.continuation = cont;
   }
@@ -16,5 +17,10 @@ public class CalledContinuation extends RuntimeException {
 
   public Continuation getContinuation() {
     return continuation;
+  }
+
+  @Override
+  public String toString() {
+    return "CalledContinuation{" + "value=" + value + ", continuation=" + continuation + '}';
   }
 }
