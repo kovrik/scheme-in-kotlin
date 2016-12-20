@@ -43,6 +43,8 @@ public class Display extends AFn {
     try {
       if ((arg instanceof String) || (arg instanceof SCMMutableString)) {
         outputPort.write(arg.toString());
+      } else if (arg instanceof Character) {
+        outputPort.write(arg.toString());
       } else {
         outputPort.write(Writer.write(arg));
       }
