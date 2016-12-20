@@ -11,6 +11,7 @@ import unittests.s7.S7Tests;
     EvaluatorTest.class,
     TCOTest.class,
     SpecialFormTest.class,
+    ContinuationsTest.class,
     DelayedTest.class,
     NumberTest.class,
     ComplexTest.class,

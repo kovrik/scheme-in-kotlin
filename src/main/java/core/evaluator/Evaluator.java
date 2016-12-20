@@ -4,6 +4,7 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.ReentrantContinuationException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
@@ -34,7 +35,7 @@ public class Evaluator implements IEvaluator {
       }
     } catch (CalledContinuation cc) {
       if (!cc.getContinuation().isValid()) {
-        throw new RuntimeException("implementation restriction: continuation can only be used once");
+        throw new ReentrantContinuationException();
       }
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;

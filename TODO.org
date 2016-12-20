@@ -549,8 +549,9 @@ CLOSED: [2016-05-15 Sun 22:21]
 **** DONE port?
 **** DONE procedure?
 CLOSED: [2016-05-15 Sun 22:28]
-*** TODO Continuations [0/4]
-**** TODO call-with-current-continuation (call/cc)
+*** TODO Continuations [1/4]
+**** DONE call-with-current-continuation (call/cc)
+CLOSED: [2016-12-21 Wed 09:48]
 **** TODO values
 **** TODO call-with-values
 **** TODO dynamic-wind

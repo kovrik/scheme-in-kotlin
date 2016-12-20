@@ -46,7 +46,7 @@ public class DelayedTest extends AbstractTest {
     try {
       eval("(force p)", env);
     } catch (ReentrantPromiseException e) {
-      assertTrue(e.getMessage().startsWith("Reentrant promise:"));
+      assertTrue(e.getMessage().startsWith("Re-entrant promise:"));
     }
   }
 }
