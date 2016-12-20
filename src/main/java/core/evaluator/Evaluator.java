@@ -36,6 +36,7 @@ public class Evaluator implements IEvaluator {
       if (!cc.getContinuation().isValid()) {
         throw new RuntimeException("implementation restriction: continuation can only be used once");
       }
+      /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
     // TODO Downcast if possible?
