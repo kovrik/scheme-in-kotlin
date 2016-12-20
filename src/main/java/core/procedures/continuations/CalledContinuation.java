@@ -21,6 +21,6 @@ public class CalledContinuation extends RuntimeException {
 
   @Override
   public String toString() {
-    return "CalledContinuation{" + "value=" + value + ", continuation=" + continuation + '}';
+    return "CalledContinuation{value=" + value + ", continuation=" + continuation + '}';
   }
 }
