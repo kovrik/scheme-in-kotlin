@@ -33,11 +33,8 @@ public class Evaluator implements IEvaluator {
         result = evalIter(((SCMTailCall) result).getExpr(), context);
       }
     } catch (CalledContinuation cc) {
-      if (cc.getValue() instanceof Continuation && !((Continuation)cc.getValue()).isValid()) {
-        throw new RuntimeException("implementation restriction: continuation can only be used once");
-      }
       if (!cc.getContinuation().isValid()) {
-        return cc.getValue();
+        throw new RuntimeException("implementation restriction: continuation can only be used once");
       }
       throw cc;
     }
