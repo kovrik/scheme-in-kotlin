@@ -182,7 +182,6 @@ public class Evaluator implements IEvaluator {
    * Apply SCMProcedure
    */
   private Object apply(SCMProcedure fn, List<Object> args) {
-
     List<SCMSymbol> params = fn.getArgs();
     /* Variadic procedures keep last param to store list of rest (optional) params */
     int mandatoryParamsSize = fn.isVariadic() ? params.size() - 1 : params.size();

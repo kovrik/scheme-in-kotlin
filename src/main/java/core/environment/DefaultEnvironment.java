@@ -277,6 +277,10 @@ public final class DefaultEnvironment extends Environment {
 
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
+    /* Naive implementations*/
+    LIBRARY_PROCEDURES.add("(define values list)");
+    LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer))))");
+
     LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     // TODO Implement as Fns
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");

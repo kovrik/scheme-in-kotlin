@@ -549,11 +549,13 @@ CLOSED: [2016-05-15 Sun 22:21]
 **** DONE port?
 **** DONE procedure?
 CLOSED: [2016-05-15 Sun 22:28]
-*** TODO Continuations [1/4]
+*** TODO Continuations [3/4]
 **** DONE call-with-current-continuation (call/cc)
 CLOSED: [2016-12-21 Wed 09:48]
-**** TODO values
-**** TODO call-with-values
+**** DONE values
+CLOSED: [2016-12-21 Wed 19:46]
+**** DONE call-with-values
+CLOSED: [2016-12-21 Wed 19:46]
 **** TODO dynamic-wind
 *** DONE Environments [1/3]
 CLOSED: [2016-12-05 Mon 20:45]
