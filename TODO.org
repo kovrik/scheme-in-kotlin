@@ -1,4 +1,4 @@
-* TODO: [29/36]
+* TODO: [30/40]
 
 ** TODO [#A] Math procedures: fix precision loss
 ** TODO [#A] Expt special cases
@@ -190,7 +190,8 @@ CLOSED: [2016-04-21 Thu 21:37]
 CLOSED: [2016-06-04 Sat 22:33]
 **** DONE delay
 CLOSED: [2016-05-11 Wed 17:43]
-** TODO Standard procedures [16/17]
+** DONE Standard procedures [17/17]
+CLOSED: [2016-12-22 Thu 09:23]
 *** DONE Construction [4/4]
 CLOSED: [2016-07-07 Thu 19:41]
 **** DONE vector
@@ -549,14 +550,16 @@ CLOSED: [2016-05-15 Sun 22:21]
 **** DONE port?
 **** DONE procedure?
 CLOSED: [2016-05-15 Sun 22:28]
-*** TODO Continuations [3/4]
+*** DONE Continuations [4/4]
+CLOSED: [2016-12-22 Thu 09:23]
 **** DONE call-with-current-continuation (call/cc)
 CLOSED: [2016-12-21 Wed 09:48]
 **** DONE values
 CLOSED: [2016-12-21 Wed 19:46]
 **** DONE call-with-values
 CLOSED: [2016-12-21 Wed 19:46]
-**** TODO dynamic-wind
+**** DONE dynamic-wind
+CLOSED: [2016-12-22 Thu 09:23]
 *** DONE Environments [1/3]
 CLOSED: [2016-12-05 Mon 20:45]
 **** DONE eval

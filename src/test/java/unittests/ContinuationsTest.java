@@ -5,6 +5,7 @@ import core.exceptions.ReentrantContinuationException;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMOutputPort;
+import core.scm.SCMSymbol;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -97,5 +98,37 @@ public class ContinuationsTest extends AbstractTest {
     } catch (ReentrantContinuationException ex) {
       // success
     }
+  }
+
+  @Test
+  public void testDynamicWind() {
+    eval("(define x 'normal-binding)", env);
+    String dw = "(define a-cont" +
+                "  (call-with-current-continuation" +
+                "   (lambda (escape)" +
+                "     (let ((old-x x))" +
+                "       (dynamic-wind" +
+                "           (lambda () (set! x 'special-binding))" +
+                "           (lambda () (display x) (newline)" +
+                "                      (call-with-current-continuation escape)" +
+                "                      (display x) (newline)" +
+                "                      x)" +
+                "           (lambda () (set! x old-x)))))))";
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    SCMOutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+
+    eval(dw, env);
+    assertEquals("special-binding", baos.toString().trim());
+    assertEquals(SCMClass.CONTINUATION, eval("(class-of a-cont)", env));
+    assertEquals(new SCMSymbol("normal-binding"), eval("x", env));
+    try {
+      eval("(a-cont #f)", env);
+    } catch (ReentrantContinuationException e) {
+      // success
+    }
+
+    Repl.setCurrentOutputPort(old);
   }
 }

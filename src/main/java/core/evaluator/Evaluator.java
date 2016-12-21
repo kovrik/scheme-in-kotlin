@@ -11,6 +11,7 @@ import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.Continuation;
+import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
@@ -141,6 +142,10 @@ public class Evaluator implements IEvaluator {
     if (fn instanceof CallCC) {
       return callcc((IFn) args.get(0), env);
     }
+    /* dynamic-wind */
+    if (fn instanceof DynamicWind) {
+      return dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env);
+    }
 
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
@@ -175,6 +180,20 @@ public class Evaluator implements IEvaluator {
     } finally {
       /* One-shot continuations cannot be used more than once */
       cont.invalidate();
+    }
+  }
+
+  // FIXME Move out of Evaluator into dynamic-wind
+  /* Actual dynamic-wind */
+  private Object dynamicWind(IFn pre, IFn value, IFn post, IEnvironment env) {
+    /* Evaluate before-thunk first */
+    eval(SCMCons.list(pre), env);
+    try {
+    /* Evaluate and return value-thunk */
+      return eval(SCMCons.list(value), env);
+    } finally {
+      /* Finally, evaluate post-thunk */
+      eval(SCMCons.list(post), env);
     }
   }
 

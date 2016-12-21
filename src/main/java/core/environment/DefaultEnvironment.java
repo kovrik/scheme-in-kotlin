@@ -7,6 +7,7 @@ import core.procedures.characters.CharProc;
 import core.procedures.characters.IntegerToChar;
 import core.procedures.cons.*;
 import core.procedures.continuations.CallCC;
+import core.procedures.continuations.DynamicWind;
 import core.procedures.delayed.Force;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
@@ -216,6 +217,7 @@ public final class DefaultEnvironment extends Environment {
 
       /* Continuations */
       new CallCC(),
+      new DynamicWind(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
