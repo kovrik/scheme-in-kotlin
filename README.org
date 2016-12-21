@@ -18,7 +18,7 @@ See TODO list for things already implementeted (and not yet).
 
 1. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
 2. Cons lists are not proper cons lists
-3. No continuations
+3. One-shot continuations only
 4. No macros
 
 *Useful links*
