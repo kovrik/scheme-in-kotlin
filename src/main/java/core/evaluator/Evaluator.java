@@ -35,6 +35,8 @@ public class Evaluator implements IEvaluator {
       }
     } catch (CalledContinuation cc) {
       if (!cc.getContinuation().isValid()) {
+        /* We have one-shot continuations only, not full continuations.
+         * It means that we can't use the same continuation multiple times. */
         throw new ReentrantContinuationException();
       }
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
@@ -161,14 +163,18 @@ public class Evaluator implements IEvaluator {
   private Object callcc(IFn proc, IEnvironment env) {
     Continuation cont = new Continuation();
     try {
+      /* Pass Continuation to the Procedure: (proc cont) */
       return eval(SCMCons.list(proc, cont), env);
     } catch (CalledContinuation ex) {
       if (ex.getContinuation() != cont) {
+        /* Not our continuation, throw it further */
         throw ex;
       }
+      /* Our continuation, grab and return the resulting value */
       return ex.getValue();
     } finally {
-      cont.markInvalid();
+      /* One-shot continuations cannot be used more than once */
+      cont.invalidate();
     }
   }
 

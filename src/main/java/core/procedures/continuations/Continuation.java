@@ -9,6 +9,14 @@ public class Continuation extends AFn {
 
   private boolean valid = true;
 
+  public boolean isValid() {
+    return valid;
+  }
+
+  public void invalidate() {
+    this.valid = false;
+  }
+
   @Override
   public boolean isPure() {
     return false;
@@ -32,13 +40,5 @@ public class Continuation extends AFn {
   @Override
   public String toString() {
     return "#<continuation>";
-  }
-
-  public boolean isValid() {
-    return valid;
-  }
-
-  public void markInvalid() {
-    this.valid = false;
   }
 }
