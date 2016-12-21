@@ -280,7 +280,7 @@ public final class DefaultEnvironment extends Environment {
     /* Naive implementations*/
     // TODO Implement propery via Continuations
     LIBRARY_PROCEDURES.add("(define values list)");
-    LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer))))");
+    LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))");
 
     LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     // TODO Implement as Fns
