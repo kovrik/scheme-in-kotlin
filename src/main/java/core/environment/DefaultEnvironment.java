@@ -278,6 +278,7 @@ public final class DefaultEnvironment extends Environment {
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     /* Naive implementations*/
+    // TODO Implement propery via Continuations
     LIBRARY_PROCEDURES.add("(define values list)");
     LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer))))");
 
