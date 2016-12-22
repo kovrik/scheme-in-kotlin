@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public class Sin extends AFn {
 
   @Override

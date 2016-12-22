@@ -5,7 +5,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMPromise;
 
-@FnArgs(args = {SCMPromise.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMPromise.class})
 public class Force extends AFn {
 
   @Override

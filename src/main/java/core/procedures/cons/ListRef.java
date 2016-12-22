@@ -7,7 +7,7 @@ import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(args = {SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class})
 public class ListRef extends AFn {
 
   @Override

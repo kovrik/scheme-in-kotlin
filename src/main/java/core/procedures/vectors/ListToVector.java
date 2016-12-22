@@ -7,7 +7,7 @@ import core.scm.SCMMutableVector;
 
 import java.util.List;
 
-@FnArgs(args = {SCMClass.SCMProperList.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
 public class ListToVector extends AFn {
 
   @Override

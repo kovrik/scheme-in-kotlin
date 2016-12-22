@@ -1,12 +1,12 @@
 package core.procedures.cons;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 
-@FnArgs(isVariadic = true)
+@FnArgs(restArgsType = SCMClass.SCMProperList.class, lastArgType = Object.class)
 public class Append extends AFn {
 
   @Override
@@ -23,16 +23,8 @@ public class Append extends AFn {
       return args[0];
     }
     Object result = args[0];
-    if (!SCMCons.isList(result)) {
-      throw new WrongTypeException("List", result);
-    }
-
     for (int i = 1; i < args.length; i++) {
       Object current = args[i];
-      /* Do not check last element */
-      if ((i != args.length - 1) && !SCMCons.isList(current)) {
-        throw new WrongTypeException("List", current);
-      }
       result = append(result, current);
     }
     return result;

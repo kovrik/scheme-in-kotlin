@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMMutableString;
 
-@FnArgs(args = {SCMMutableString.class, Character.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableString.class, Character.class})
 public class StringFill extends AFn {
 
   @Override

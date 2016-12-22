@@ -1,14 +1,12 @@
 package core.procedures.strings;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
-import core.scm.SCMMutableString;
 
 import java.util.function.BiPredicate;
 
-@FnArgs(isVariadic = true)
+@FnArgs(restArgsType = {String.class})
 public class StringComparison extends AFn {
 
   @Override
@@ -41,12 +39,6 @@ public class StringComparison extends AFn {
       return SCMBoolean.TRUE;
     }
     for (int i = 0; i < args.length - 1; i++) {
-      if (!(args[i] instanceof String || args[i] instanceof SCMMutableString)) {
-        throw new WrongTypeException("String", args[i]);
-      }
-      if (!(args[i + 1] instanceof String || args[i + 1] instanceof SCMMutableString)) {
-        throw new WrongTypeException("String", args[i + 1]);
-      }
       if ((!predicate.test(args[i].toString(), args[i + 1].toString()))) {
         return SCMBoolean.FALSE;
       }

@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.IFn;
 import core.scm.FnArgs;
 
-@FnArgs(args = {IFn.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {IFn.class})
 public class CallCC extends AFn {
 
   @Override

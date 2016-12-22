@@ -5,15 +5,30 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// TODO Replace with Contracts
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface FnArgs {
 
-  // TODO Args range for variadic
-  // TODO Arg type for variadic
-  // TODO Class for Pair and List (SCMCons)?
-  boolean isVariadic() default false;
+  // TODO Performance hit? Replace with abstract methods in AFn?
+  // TODO Range checks for minArgs..maxArgs?
 
-  Class<?>[] args() default {};
+  /* Minimum number of arguments */
+  short minArgs() default 0;
+
+  /* Types of mandatory arguments */
+  Class<?>[] mandatoryArgsTypes() default {};
+
+  /* Maximum number of arguments.
+   * If not equal to minArgs, then procedure is variadic.
+   *
+   * By default it is 255, which means ANY number of arguments:
+   * method can't have more than 255 args anyway.
+   *
+   * See: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.11 */
+  short maxArgs() default 255;
+
+  Class<?>[] restArgsType() default {};
+
+  /* Special case for the last argument (for example, see Append procedure) */
+  Class<?>[] lastArgType() default {};
 }

@@ -4,11 +4,10 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public class Acos extends AFn {
 
   @Override

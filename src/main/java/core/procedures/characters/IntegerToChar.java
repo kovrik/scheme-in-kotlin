@@ -3,7 +3,7 @@ package core.procedures.characters;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 
-@FnArgs(args = {Long.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Long.class})
 public class IntegerToChar extends AFn {
 
   @Override

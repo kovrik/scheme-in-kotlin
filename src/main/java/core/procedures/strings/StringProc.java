@@ -1,11 +1,10 @@
 package core.procedures.strings;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMMutableString;
 
-@FnArgs(isVariadic = true)
+@FnArgs(restArgsType = {Character.class})
 public class StringProc extends AFn {
 
   @Override
@@ -20,9 +19,6 @@ public class StringProc extends AFn {
     }
     SCMMutableString string = new SCMMutableString(args.length);
     for (Object c : args) {
-      if (!(c instanceof Character)) {
-        throw new WrongTypeException("Character", c);
-      }
       string.append(c);
     }
     return string;

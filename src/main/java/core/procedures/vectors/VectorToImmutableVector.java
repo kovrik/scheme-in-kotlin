@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMImmutableVector;
 import core.scm.SCMVector;
 
-@FnArgs(args = {SCMVector.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMVector.class})
 public class VectorToImmutableVector extends AFn {
 
   @Override

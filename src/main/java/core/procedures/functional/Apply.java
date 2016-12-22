@@ -1,11 +1,11 @@
 package core.procedures.functional;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.cons.Append;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;
 import core.scm.SCMTailCall;
@@ -13,7 +13,7 @@ import core.scm.SCMTailCall;
 import java.util.Arrays;
 import java.util.List;
 
-@FnArgs(isVariadic = true, args = {IFn.class})
+@FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class, Object.class}, lastArgType = {SCMClass.SCMProperList.class})
 public class Apply extends AFn {
 
   @Override
@@ -34,9 +34,6 @@ public class Apply extends AFn {
     }
 
     Object last = args[args.length - 1];
-    if (!(last instanceof List)) {
-      throw new WrongTypeException("List", last);
-    }
     for (Object o : (List) last) {
       sexp.add(SCMCons.list(Quote.QUOTE, o));
     }

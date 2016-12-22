@@ -86,7 +86,7 @@ public class StringTest extends AbstractTest {
       eval("(make-string)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong number of arguments (0) passed to: make-string", e.getMessage());
+      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: make-string", e.getMessage());
     }
     try {
       eval("(make-string 1 2 3)", env);

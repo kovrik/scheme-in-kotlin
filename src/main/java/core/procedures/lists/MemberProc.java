@@ -9,7 +9,7 @@ import core.writer.Writer;
 
 import java.util.List;
 
-@FnArgs(args = {Object.class, List.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, List.class})
 public class MemberProc extends AFn {
 
   private final String name;

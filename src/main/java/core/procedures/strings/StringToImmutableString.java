@@ -3,7 +3,7 @@ package core.procedures.strings;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 
-@FnArgs(args = {String.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public class StringToImmutableString extends AFn {
 
   @Override

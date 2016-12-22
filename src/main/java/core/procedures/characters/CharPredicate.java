@@ -6,7 +6,7 @@ import core.scm.SCMBoolean;
 
 import java.util.function.Predicate;
 
-@FnArgs(args = {Character.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Character.class})
 public class CharPredicate extends AFn {
 
   public static final CharPredicate IS_CHAR_WHITESPACE = new CharPredicate("char-whitespace?", Character::isWhitespace);

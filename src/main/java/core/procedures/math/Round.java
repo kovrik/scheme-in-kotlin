@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-@FnArgs(args = {SCMClass.Real.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
 public class Round extends AFn {
 
   @Override

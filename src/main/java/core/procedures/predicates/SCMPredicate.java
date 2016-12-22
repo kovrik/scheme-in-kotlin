@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 import java.util.List;
 import java.util.function.Predicate;
 
-@FnArgs(args = {Object.class})
+@FnArgs(minArgs = 1, maxArgs = 1)
 public class SCMPredicate extends AFn {
 
   public static final SCMPredicate IS_NULL = new SCMPredicate("null?", SCMCons::isNull);

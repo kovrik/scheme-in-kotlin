@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(args = {SCMBigRational.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMBigRational.class})
 public class Denominator extends AFn {
 
   @Override

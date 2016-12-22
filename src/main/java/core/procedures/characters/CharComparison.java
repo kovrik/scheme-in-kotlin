@@ -1,13 +1,12 @@
 package core.procedures.characters;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 
 import java.util.function.BiPredicate;
 
-@FnArgs(isVariadic = true)
+@FnArgs(restArgsType = {Character.class})
 public class CharComparison extends AFn {
 
   @Override
@@ -40,12 +39,6 @@ public class CharComparison extends AFn {
       return SCMBoolean.TRUE;
     }
     for (int i = 0; i < args.length - 1; i++) {
-      if (!(args[i] instanceof Character)) {
-        throw new WrongTypeException("Character", args[i]);
-      }
-      if (!(args[i + 1] instanceof Character)) {
-        throw new WrongTypeException("Character", args[i + 1]);
-      }
       if ((!predicate.test((Character) args[i], (Character) args[i + 1]))) {
         return SCMBoolean.FALSE;
       }

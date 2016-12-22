@@ -1,14 +1,14 @@
 package core.procedures.strings;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(isVariadic = true, args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Number.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
 public class NumberToString extends AFn {
 
   @Override
@@ -25,9 +25,6 @@ public class NumberToString extends AFn {
     Object o1 = null;
     if (args.length == 2) {
       o1 = args[1];
-      if (!(o1 instanceof Long)) {
-        throw new WrongTypeException("Integer", o);
-      }
       if (!(o1.equals(2L) || o1.equals(8L) || o1.equals(10L) || o1.equals(16L))) {
         throw new IllegalArgumentException("Wrong radix: " + o1);
       }

@@ -7,7 +7,7 @@ import core.scm.SCMUnspecified;
 
 import java.io.IOException;
 
-@FnArgs(args = {ISCMPort.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = ISCMPort.class)
 public class ClosePort extends AFn {
 
   @Override

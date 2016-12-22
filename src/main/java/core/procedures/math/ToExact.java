@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public class ToExact extends AFn {
 
   @Override

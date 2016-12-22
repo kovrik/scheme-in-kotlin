@@ -7,7 +7,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Long.class, Long.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public class Quotient extends AFn {
 
   @Override

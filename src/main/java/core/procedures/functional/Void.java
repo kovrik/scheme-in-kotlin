@@ -1,11 +1,9 @@
 package core.procedures.functional;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-@FnArgs(isVariadic = true)
 public class Void extends AFn {
 
   static final Void INSTANCE = new Void();

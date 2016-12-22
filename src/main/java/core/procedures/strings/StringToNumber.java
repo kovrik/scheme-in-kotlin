@@ -1,11 +1,11 @@
 package core.procedures.strings;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.reader.parsers.Result;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
+import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 import static core.utils.NumberUtils.EXACTNESS_RADIX;
 import static core.utils.NumberUtils.RADIX_EXACTNESS;
 
-@FnArgs(isVariadic = true, args = {String.class})
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {String.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
 public class StringToNumber extends AFn {
 
   @Override
@@ -59,9 +59,6 @@ public class StringToNumber extends AFn {
 
     /* Get default (optional) radix if present */
     if (args.length == 2) {
-      if (!(args[1] instanceof Long)) {
-        throw new WrongTypeException("Integer", args[1]);
-      }
       int optRadix = ((Long)args[1]).intValue();
       if (optRadix < 2 || optRadix > 16) {
         throw new IllegalArgumentException("string->number: expected radix from 2 to 16!");

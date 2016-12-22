@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Long.class, Long.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public class Modulo extends AFn {
 
   // TODO move out

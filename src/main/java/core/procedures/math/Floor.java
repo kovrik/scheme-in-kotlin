@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {SCMClass.Real.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
 public class Floor extends AFn {
 
   @Override

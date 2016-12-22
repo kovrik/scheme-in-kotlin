@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
 
-@FnArgs(args = {Object.class, Object.class})
+@FnArgs(minArgs = 2, maxArgs = 2)
 public class ConsProc extends AFn {
 
   @Override

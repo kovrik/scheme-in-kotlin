@@ -106,20 +106,18 @@ public class Evaluator implements IEvaluator {
     }
 
     /* Check args size */
-    Class<?>[] fnArgs = null;
-    FnArgs fnArgsAnnotation = null;
+    FnArgs fnArgs = null;
     if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
-      fnArgsAnnotation = fn.getClass().getAnnotation(FnArgs.class);
-      fnArgs = fnArgsAnnotation.args();
-      if (fnArgsAnnotation.isVariadic()) {
-        /* Mandatory args */
-        if (fnArgs.length > sexp.size() - 1) {
-          throw new ArityException(sexp.size() - 1, ((AFn) fn).getName());
-        }
-      } else {
-        if (fnArgs.length != sexp.size() - 1) {
-          throw new ArityException(sexp.size() - 1, fnArgs.length, ((AFn) fn).getName());
-        }
+      fnArgs = fn.getClass().getAnnotation(FnArgs.class);
+      int actualArgs = sexp.size() - 1;
+      if (actualArgs < fnArgs.minArgs()) {
+        throw new ArityException(actualArgs, fnArgs.minArgs(), ((AFn) fn).getName());
+      }
+      if (actualArgs > fnArgs.minArgs() && (fnArgs.minArgs() == fnArgs.maxArgs())) {
+        throw new ArityException(actualArgs, fnArgs.minArgs(), ((AFn) fn).getName());
+      }
+      if (actualArgs > fnArgs.maxArgs()) {
+        throw new ArityException(actualArgs, ((AFn) fn).getName());
       }
     }
 
@@ -128,12 +126,32 @@ public class Evaluator implements IEvaluator {
     for (int i = 1; i < sexp.size(); i++) {
       Object arg = eval(sexp.get(i), env);
       args.add(arg);
-      if (fnArgsAnnotation != null) {
-        if (fnArgsAnnotation.isVariadic() && (fnArgs.length < i)) {
+
+      if (fnArgs != null) {
+        /* Mandatory args */
+        Class<?>[] mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
+        if (mandatoryArgsTypes.length > 0 && i <= mandatoryArgsTypes.length) {
+          if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i - 1]))) {
+            throw new WrongTypeException(Writer.write(mandatoryArgsTypes[i - 1]), arg);
+          }
           continue;
         }
-        if (!(SCMClass.checkType(arg, fnArgs[i - 1]))) {
-          throw new WrongTypeException(Writer.write(fnArgs[i - 1]), arg);
+
+        /* Last */
+        if (i == sexp.size() - 1 && (fnArgs.lastArgType().length > 0)) {
+          Class<?> lastArgType = fnArgs.lastArgType()[0];
+          if (!(SCMClass.checkType(arg, lastArgType))) {
+            throw new WrongTypeException(Writer.write(lastArgType), arg);
+          }
+          continue;
+        }
+
+        /* Rest args */
+        if (fnArgs.restArgsType().length > 0) {
+          Class<?> restArgsType = fnArgs.restArgsType()[0];
+          if (!(SCMClass.checkType(arg, restArgsType))) {
+            throw new WrongTypeException(Writer.write(restArgsType), arg);
+          }
         }
       }
     }

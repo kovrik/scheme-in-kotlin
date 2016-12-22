@@ -7,7 +7,7 @@ import core.scm.FnArgs;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@FnArgs(isVariadic = true)
+@FnArgs(maxArgs = 2, restArgsType = {Long.class, Long.class})
 public class Random extends AFn {
 
   @Override

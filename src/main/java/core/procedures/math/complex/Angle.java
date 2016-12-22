@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.utils.NumberUtils;
 
-@FnArgs(args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public class Angle extends AFn {
 
   @Override

@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMClass;
 
-@FnArgs(args = {SCMClass.Real.class, SCMClass.Real.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class})
 public class MakeRectangular extends AFn {
 
   @Override

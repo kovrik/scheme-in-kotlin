@@ -10,7 +10,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(args = {Number.class, Number.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Number.class, Number.class})
 public class Expt extends AFn {
 
   @Override

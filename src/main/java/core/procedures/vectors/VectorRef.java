@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
-@FnArgs(args = {SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class})
 public class VectorRef extends AFn {
 
   @Override

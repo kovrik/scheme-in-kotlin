@@ -3,12 +3,13 @@ package core.procedures.lists;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.writer.Writer;
 
 import java.util.List;
 
-@FnArgs(args = {Object.class, List.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.SCMProperList.class})
 public class AssocProc extends AFn {
 
   private final String name;

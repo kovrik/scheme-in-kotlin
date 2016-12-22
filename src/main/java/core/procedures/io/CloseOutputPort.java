@@ -7,7 +7,7 @@ import core.scm.SCMUnspecified;
 
 import java.io.IOException;
 
-@FnArgs(args = {SCMOutputPort.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = SCMOutputPort.class)
 public class CloseOutputPort extends AFn {
 
   @Override

@@ -4,7 +4,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.procedures.AFn;
 
-@FnArgs(args = {Object.class})
+@FnArgs(minArgs = 1, maxArgs = 1)
 public class Negation extends AFn {
 
   @Override

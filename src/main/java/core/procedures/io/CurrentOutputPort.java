@@ -4,7 +4,7 @@ import core.Repl;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 
-@FnArgs(args = {})
+@FnArgs(maxArgs = 0)
 public class CurrentOutputPort extends AFn {
 
   @Override

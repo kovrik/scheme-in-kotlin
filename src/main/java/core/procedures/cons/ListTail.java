@@ -3,11 +3,12 @@ package core.procedures.cons;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(args = {Object.class, Long.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.ExactNonNegativeInteger.class})
 public class ListTail extends AFn {
 
   @Override

@@ -2,11 +2,12 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(args = {List.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
 public class Reverse extends AFn {
 
   @Override

@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMMutableString;
 
-@FnArgs(args = {String.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public class StringCopy extends AFn {
 
   @Override

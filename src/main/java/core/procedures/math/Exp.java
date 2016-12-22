@@ -6,7 +6,7 @@ import core.scm.SCMBigRational;
 
 import static core.utils.NumberUtils.E;
 
-@FnArgs(args = {Number.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public class Exp extends AFn {
 
   @Override

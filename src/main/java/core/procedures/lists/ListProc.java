@@ -1,12 +1,10 @@
 package core.procedures.lists;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(isVariadic = true)
 public class ListProc extends AFn {
 
   @Override

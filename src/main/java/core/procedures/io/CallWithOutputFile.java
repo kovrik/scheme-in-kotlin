@@ -11,7 +11,7 @@ import core.scm.SCMTailCall;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
-@FnArgs(args = {String.class, IFn.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {String.class, IFn.class})
 public class CallWithOutputFile extends AFn {
 
   @Override

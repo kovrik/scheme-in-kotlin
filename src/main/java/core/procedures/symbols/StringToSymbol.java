@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMSymbol;
 
-@FnArgs(args = {String.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public class StringToSymbol extends AFn {
 
   @Override

@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(args = {SCMClass.SCMPair.class})
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMPair.class})
 public class Cdr extends AFn {
 
   @Override

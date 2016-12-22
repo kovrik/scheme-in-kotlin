@@ -3,11 +3,10 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(args = {Long.class, Long.class})
+@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public class Remainder extends AFn {
 
   @Override

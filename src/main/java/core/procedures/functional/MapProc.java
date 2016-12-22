@@ -1,10 +1,10 @@
 package core.procedures.functional;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.scm.FnArgs;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.Quote;
@@ -13,7 +13,7 @@ import core.scm.SCMTailCall;
 import java.util.ArrayList;
 import java.util.List;
 
-@FnArgs(isVariadic = true, args = {IFn.class})
+@FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
 public class MapProc extends AFn {
 
   @Override
@@ -31,9 +31,6 @@ public class MapProc extends AFn {
     int size = -1;
     /* Check lists and their sizes */
     for (int i = 1; i < args.length; i++) {
-      if (!(args[i] instanceof List)) {
-        throw new WrongTypeException("List", args[i]);
-      }
       List l = (List)args[i];
       if (size == -1) {
         size = l.size();

@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMTailCall;
 
-@FnArgs(args = {Object.class})
+@FnArgs(minArgs = 1, maxArgs = 1)
 public class Eval extends AFn {
 
   @Override
