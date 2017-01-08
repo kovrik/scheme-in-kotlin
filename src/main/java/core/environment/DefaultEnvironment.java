@@ -270,7 +270,7 @@ public final class DefaultEnvironment extends Environment {
     Do.DO,
     Case.CASE,
     Cond.COND,
-    // TODO
+    // TODO Macros
     DefineSyntax.DEFINE_SYNTAX,
     LetSyntax.LET_SYNTAX,
     LetRecSyntax.LETREC_SYNTAX,
@@ -283,14 +283,11 @@ public final class DefaultEnvironment extends Environment {
     // TODO Implement propery via Continuations
     LIBRARY_PROCEDURES.add("(define values list)");
     LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))");
-
-    LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     // TODO Implement as Fns
     LIBRARY_PROCEDURES.add("(define (even? n) (= 0 (remainder n 2)))");
     LIBRARY_PROCEDURES.add("(define (odd? n) (not (even? n)))");
 
-    //    LIBRARY_PROCEDURES.add("(define (quotient n m) (truncate (/ n m)))");
-
+    LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     // TODO Implement in Java?
     LIBRARY_PROCEDURES.add(
       "(define rationalize" +
