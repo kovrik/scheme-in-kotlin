@@ -123,9 +123,7 @@ public class NumberUtils {
     return s.indexOf(c) > -1;
   }
 
-  /**
-   * Coerce to DECIMAL64 context if one of the numbers has non-zero scale
-   */
+  /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
   public static MathContext getMathContext(BigDecimal first, BigDecimal second) {
     if (first.scale() > 0 || second.scale() > 0) {
       return MathContext.DECIMAL64;
@@ -150,13 +148,16 @@ public class NumberUtils {
         i += "1";
       }
       Object re = preProcessNumber(r, exactness, radix);
+      if (!(re instanceof Number)) {
+        return new SCMSymbol(number);
+      }
+
       Object im = preProcessNumber(i, exactness, radix);
+      if (!(im instanceof Number)) {
+        return new SCMSymbol(number);
+      }
       if (isZero(re) && isZero(im)) {
         return 0L;
-      }
-      if (!(re instanceof Number) || !(im instanceof Number)) {
-        /* Not a number! */
-        return new SCMSymbol(number);
       }
       return new SCMBigComplex((Number)re, (Number)im);
     }
@@ -235,11 +236,7 @@ public class NumberUtils {
     boolean isRational = (n.indexOf('/') > -1);
     boolean isIntegral = (n.indexOf('.') < 0);
     if (exactness == null) {
-      if (isRational || isIntegral) {
-        exactness = 'e';
-      } else {
-        exactness = 'i';
-      }
+      exactness = isRational || isIntegral ? 'e' : 'i';
     }
 
     /* Check if it is a rational number and it is valid */
@@ -573,7 +570,7 @@ public class NumberUtils {
     return !(o instanceof SCMBigComplex) && (o instanceof Number);
   }
 
-  /*
+  /**
    * Inexactness 'taint'
    * Computations that involve an inexact number produce inexact results,
    * so that inexactness acts as a kind of taint on numbers.
