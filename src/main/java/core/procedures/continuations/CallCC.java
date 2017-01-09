@@ -19,7 +19,6 @@ public class CallCC extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    // FIXME
     throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
   }
 }

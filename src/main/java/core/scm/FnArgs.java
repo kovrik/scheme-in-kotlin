@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
 public @interface FnArgs {
 
   // TODO Performance hit? Replace with abstract methods in AFn?
-  // TODO Range checks for minArgs..maxArgs?
 
   /* Minimum number of arguments */
   short minArgs() default 0;

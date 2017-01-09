@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 
 /**
  * TODO Create SCMComplex class for small complex numbers
+ * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
 public class SCMBigComplex extends Number implements ISCMClass {
 
@@ -18,7 +19,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
 
   private static final BigDecimal HALF = new BigDecimal("0.5");
 
-  // TODO use generic Number instead
   private final BigDecimal re;
   private final BigDecimal im;
 
@@ -40,7 +40,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
     }
   }
 
-  /* FIXME Support rational re and im parts! */
   public SCMBigComplex(Number re, Number im) {
     this(NumberUtils.toBigDecimal(re), NumberUtils.toBigDecimal(im));
   }
