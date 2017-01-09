@@ -19,6 +19,12 @@ public class CalledContinuation extends RuntimeException {
     return continuation;
   }
 
+  /* Do not fill in the execution stack trace (we don't need it anyway) to make CalledContinuations much faster */
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
+
   @Override
   public String toString() {
     return "CalledContinuation{value=" + value + ", continuation=" + continuation + '}';
