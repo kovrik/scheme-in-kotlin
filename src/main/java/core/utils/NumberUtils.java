@@ -142,14 +142,18 @@ public class NumberUtils {
       int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
       String r = number.substring(0, p);
       if (r.isEmpty()) {
+        /* If real part is empty: +1i => 0+1i */
         r = "0";
       }
       String i = number.substring(p, number.length() - 1);
       if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
-        r += "0";
+        i += "1";
       }
       Object re = preProcessNumber(r, exactness, radix);
       Object im = preProcessNumber(i, exactness, radix);
+      if (isZero(re) && isZero(im)) {
+        return 0L;
+      }
       if (!(re instanceof Number) || !(im instanceof Number)) {
         /* Not a number! */
         return new SCMSymbol(number);
@@ -157,11 +161,12 @@ public class NumberUtils {
       return new SCMBigComplex((Number)re, (Number)im);
     }
 
-    if (number.indexOf('.') != number.lastIndexOf('.')) {
-      throw new IllegalSyntaxException("read: multiple decimal points: " + number);
-    }
-    /* Exponent mark */
     String n = number;
+    if (number.indexOf('.') != number.lastIndexOf('.')) {
+      return new SCMSymbol(n);
+    }
+
+    /* Exponent mark */
     String exponent = null;
     if (radix == 16) {
       if (EXPONENT16_PATTERN.matcher(number).matches()) {
@@ -194,31 +199,35 @@ public class NumberUtils {
       }
     }
 
+    /* Validate sign */
+    if ((n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0)) {
+      return new SCMSymbol(number);
+    }
+
     /* Validate all digits */
-    boolean hasBadSignPos = (n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0);
-    boolean allDigitsAreValid = true;
     boolean hasAtLeastOneDigit = false;
     for (char c : n.toCharArray()) {
       /* Check if char is valid for this radix AND that we don't have # before digits */
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
-        allDigitsAreValid = false;
-        break;
+        return new SCMSymbol(number);
       }
       /* Check if we have a digit char */
       if ("#+-.".indexOf(c) == -1) {
         hasAtLeastOneDigit = true;
       }
     }
+    if (!hasAtLeastOneDigit) {
+      return new SCMSymbol(number);
+    }
 
-    boolean validHashChars = true;
-    if (hasAtLeastOneDigit && n.indexOf('#') > -1) {
+    if (n.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(n).matches()) {
         n = n.replaceAll("#", "0");
         if (exactness == null) {
           exactness = 'i';
         }
       } else {
-        validHashChars = false;
+        return new SCMSymbol(number);
       }
     }
 
@@ -233,39 +242,22 @@ public class NumberUtils {
       }
     }
 
-    /* Check if it is a rational number */
-    boolean validRational = false;
+    /* Check if it is a rational number and it is valid */
     if (n.indexOf('/') > -1) {
       isRational = true;
-      if (n.indexOf('/') == n.lastIndexOf('/')) {
-        validRational = true;
+      if (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1) {
+        return new SCMSymbol(number);
       }
-      if (n.indexOf('.') > -1) {
-        validRational = false;
-      }
-    }
-
-    if (hasBadSignPos || !allDigitsAreValid || !validHashChars || !hasAtLeastOneDigit || (isRational && !validRational)) {
-      /* Not a number! */
-      return new SCMSymbol(number);
-    }
-    /* Drop + sign if exists */
-    if (n.charAt(0) == '+') {
-      n = n.substring(1);
-    }
-
-    int hasSign = (n.charAt(0) == '-') ? 1 : 0;
-    if (isRational) {
-      String numerator = n.substring(0, n.indexOf('/'));
-      String denominator = n.substring(n.indexOf('/') + 1);
-
-      Integer threshold = RADIX_THRESHOLDS.get(radix);
-      boolean useBigNum = (numerator.length() > (threshold + hasSign)) ||
-                          (denominator.length() > (threshold + hasSign));
-      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
     }
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
+    int hasSign = (n.charAt(0) == '-' || n.charAt(0) == '+') ? 1 : 0;
+    if (isRational) {
+      String numerator = n.substring(0, n.indexOf('/'));
+      String denominator = n.substring(n.indexOf('/') + 1);
+      boolean useBigNum = (numerator.length() > (threshold + hasSign)) || (denominator.length() > (threshold + hasSign));
+      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
+    }
     boolean useBigNum = (n.length() > (threshold + hasSign));
     return processNumber(n, radix, exactness, useBigNum, exp);
   }

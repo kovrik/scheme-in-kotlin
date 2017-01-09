@@ -15,7 +15,7 @@ public class ComplexTest extends AbstractTest {
   @Test
   public void testAddition() {
     assertEquals(new SCMBigComplex(new BigDecimal("4.75"), new BigDecimal("2.0")), eval("(+ 1 3/4 2.5 -2.5+6i 3-4i)", env));
-    assertEquals(new SCMBigComplex(new BigDecimal("0.0"), new BigDecimal("0.0")),  eval("(+ 0 0/4 0.0 -000+0i 0-0i)", env));
+    assertEquals(0d,  eval("(+ 0 0/4 0.0 -000+0i 0-0i)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("0"), new BigDecimal("0")),  eval("(+ 1+1i -1-1i)", env));
   }
 

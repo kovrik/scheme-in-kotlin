@@ -102,6 +102,11 @@ public class ReaderTest {
 
   @Test
   public void testReadComplex() {
+    assertEquals(0L, reader.readFirst("0+0i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("0+i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("-0+i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("+i"));
+    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(-1)), reader.readFirst("-i"));
     assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  reader.readFirst("1+2i"));
     assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(-2)), reader.readFirst("1-2i"));
     assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  reader.readFirst("-1+2i"));
