@@ -175,7 +175,7 @@ public class Evaluator implements IEvaluator {
       return apply((SCMProcedure)fn, args);
     }
 
-    /* Call AFn via helper method (function in Java) */
+    /* Call AFn via helper method */
     Object result = AFn.apply((AFn)fn, args, fnArgs);
 
     /* Handle Promise forced to evaluation by Force procedure */
