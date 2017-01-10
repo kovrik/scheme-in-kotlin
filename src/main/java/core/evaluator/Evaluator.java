@@ -145,7 +145,7 @@ public class Evaluator implements IEvaluator {
     return result;
   }
 
-  // FIXME Move out of Evaluator into call/cc
+  // TODO Move out of Evaluator into call/cc
   /* Actual call-with-current-continuation */
   private Object callcc(IFn proc, IEnvironment env) {
     Continuation cont = new Continuation();
@@ -165,7 +165,7 @@ public class Evaluator implements IEvaluator {
     }
   }
 
-  // FIXME Move out of Evaluator into dynamic-wind
+  // TODO Move out of Evaluator into dynamic-wind
   /* Actual dynamic-wind */
   private Object dynamicWind(IFn pre, IFn value, IFn post, IEnvironment env) {
     /* Evaluate before-thunk first */
