@@ -103,7 +103,6 @@ public class Evaluator implements IEvaluator {
     } else {
       fn = eval(op, env);
       if (!(fn instanceof AFn)) {
-        /* Can apply IFn only */
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
       }
     }
