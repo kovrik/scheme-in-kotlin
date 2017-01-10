@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = {SCMOutputPort.class})
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
 public class Display extends AFn {
 
   @Override

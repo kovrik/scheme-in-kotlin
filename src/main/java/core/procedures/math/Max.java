@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = {SCMClass.Real.class})
+@FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
 public class Max extends AFn {
 
   @Override

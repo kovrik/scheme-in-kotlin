@@ -10,7 +10,7 @@ import core.writer.Writer;
 
 import java.io.IOException;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = {SCMOutputPort.class})
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
 public class Write extends AFn {
 
   @Override

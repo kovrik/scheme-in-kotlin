@@ -1,8 +1,6 @@
 package core.procedures.io;
 
 import core.Repl;
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.reader.Reader;
 import core.scm.FnArgs;
@@ -13,7 +11,7 @@ import core.scm.SCMTailCall;
 
 import java.util.List;
 
-@FnArgs(maxArgs = 1, restArgsType = {SCMInputPort.class})
+@FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
 public class Read extends AFn {
 
   @Override

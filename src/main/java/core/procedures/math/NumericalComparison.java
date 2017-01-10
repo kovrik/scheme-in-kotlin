@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class}, restArgsType = {SCMClass.Real.class})
+@FnArgs(minArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
 public class NumericalComparison extends AFn {
 
   public enum Type {

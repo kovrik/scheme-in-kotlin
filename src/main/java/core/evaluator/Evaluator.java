@@ -5,7 +5,6 @@ import core.environment.IEnvironment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
@@ -113,64 +112,14 @@ public class Evaluator implements IEvaluator {
       sexp.set(0, fn);
     }
 
-    /* Check args size (if FnArgs annotation is present) */
-    FnArgs fnArgs = null;
-    Class<?>[] mandatoryArgsTypes = null;
-    Class<?> restArgsType = null;
-    Class<?> lastArgType = null;
-    if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
-      fnArgs = fn.getClass().getAnnotation(FnArgs.class);
-      /* Check arg count */
-      int actualArgCount = sexp.size() - 1;
-      if (actualArgCount < fnArgs.minArgs()) {
-        throw new ArityException(actualArgCount, fnArgs.minArgs(), ((AFn) fn).getName());
-      }
-      if (actualArgCount > fnArgs.minArgs() && (fnArgs.minArgs() == fnArgs.maxArgs())) {
-        throw new ArityException(actualArgCount, fnArgs.minArgs(), ((AFn) fn).getName());
-      }
-      if (actualArgCount > fnArgs.maxArgs()) {
-        throw new ArityException(actualArgCount, ((AFn) fn).getName());
-      }
-
-      /* Get arg types */
-      mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
-      if (fnArgs.restArgsType().length > 0) {
-        restArgsType = fnArgs.restArgsType()[0];
-      }
-      if (fnArgs.lastArgType().length > 0) {
-        lastArgType = fnArgs.lastArgType()[0];
-      }
-    }
-
-    /* Evaluate arguments first (because applicative order) and check their types */
+    /* Evaluate arguments first (because applicative order) */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
-      Object arg = eval(sexp.get(i), env);
-      args.add(arg);
-
-      if (fnArgs != null) {
-        /* Mandatory args */
-        if (mandatoryArgsTypes.length > 0 && i <= mandatoryArgsTypes.length) {
-          if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i - 1]))) {
-            throw new WrongTypeException(Writer.write(mandatoryArgsTypes[i - 1]), arg);
-          }
-          continue;
-        }
-        /* Last argument (optional special case) */
-        if (i == sexp.size() - 1 && (lastArgType != null)) {
-          if (!(SCMClass.checkType(arg, lastArgType))) {
-            throw new WrongTypeException(Writer.write(lastArgType), arg);
-          }
-          continue;
-        }
-        /* Rest args */
-        if (restArgsType != null) {
-          if (!(SCMClass.checkType(arg, restArgsType))) {
-            throw new WrongTypeException(Writer.write(restArgsType), arg);
-          }
-        }
-      }
+      args.add(eval(sexp.get(i), env));
     }
+
+    /* Check args */
+    ((AFn)fn).checkArgs(args);
 
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
@@ -187,7 +136,7 @@ public class Evaluator implements IEvaluator {
     }
 
     /* Call AFn via helper method (function in Java) */
-    Object result = AFn.apply((AFn)fn, args, fnArgs);
+    Object result = AFn.apply((AFn)fn, args);
 
     /* Handle Promise forced to evaluation by Force procedure */
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {

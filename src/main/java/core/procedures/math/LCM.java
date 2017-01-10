@@ -9,7 +9,7 @@ import java.math.BigInteger;
 
 import static core.procedures.math.GCD.gcd;
 
-@FnArgs(restArgsType = {SCMBigRational.class})
+@FnArgs(restArgsType = SCMBigRational.class)
 public class LCM extends AFn {
 
   private static final Abs ABS = new Abs();

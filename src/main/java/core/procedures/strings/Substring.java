@@ -6,7 +6,7 @@ import core.scm.SCMClass;
 
 @FnArgs(minArgs = 2, maxArgs = 3,
   mandatoryArgsTypes = {String.class, SCMClass.ExactNonNegativeInteger.class},
-  restArgsType = {SCMClass.ExactNonNegativeInteger.class})
+  restArgsType = SCMClass.ExactNonNegativeInteger.class)
 public class Substring extends AFn {
 
   @Override

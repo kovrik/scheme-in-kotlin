@@ -10,7 +10,7 @@ import core.scm.SCMInputPort;
 import java.io.IOException;
 
 // FIXME Doesn't work properly
-@FnArgs(maxArgs = 1, restArgsType = {SCMInputPort.class})
+@FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
 public class IsCharReady extends AFn {
 
   @Override

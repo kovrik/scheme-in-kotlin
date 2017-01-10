@@ -8,7 +8,7 @@ import core.scm.SCMBigRational;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(restArgsType = {SCMBigRational.class})
+@FnArgs(restArgsType = SCMBigRational.class)
 public class GCD extends AFn {
 
   private static final Abs ABS = new Abs();

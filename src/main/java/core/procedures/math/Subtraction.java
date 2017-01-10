@@ -10,7 +10,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(restArgsType = {Number.class})
+@FnArgs(restArgsType = Number.class)
 public class Subtraction extends AFn {
 
   @Override

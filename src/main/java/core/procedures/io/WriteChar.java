@@ -1,18 +1,16 @@
 package core.procedures.io;
 
 import core.Repl;
-import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.ISCMPort;
 import core.scm.SCMOutputPort;
 import core.scm.SCMUnspecified;
 
 import java.io.IOException;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Character.class}, restArgsType = {SCMOutputPort.class})
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Character.class}, restArgsType = SCMOutputPort.class)
 public class WriteChar extends AFn {
 
   @Override

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-@FnArgs(maxArgs = 1, restArgsType = {SCMOutputPort.class})
+@FnArgs(maxArgs = 1, restArgsType = SCMOutputPort.class)
 public class Newline extends AFn {
 
   private static final String LS = System.getProperty("line.separator");
