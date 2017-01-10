@@ -120,13 +120,7 @@ public class Evaluator implements IEvaluator {
     Class<?> lastArgType = null;
     if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
       fnArgs = fn.getClass().getAnnotation(FnArgs.class);
-      mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
-      if (fnArgs.restArgsType().length > 0) {
-        restArgsType = fnArgs.restArgsType()[0];
-      }
-      if (fnArgs.lastArgType().length > 0) {
-        lastArgType = fnArgs.lastArgType()[0];
-      }
+      /* Check arg count */
       int actualArgCount = sexp.size() - 1;
       if (actualArgCount < fnArgs.minArgs()) {
         throw new ArityException(actualArgCount, fnArgs.minArgs(), ((AFn) fn).getName());
@@ -136,6 +130,15 @@ public class Evaluator implements IEvaluator {
       }
       if (actualArgCount > fnArgs.maxArgs()) {
         throw new ArityException(actualArgCount, ((AFn) fn).getName());
+      }
+
+      /* Get arg types */
+      mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
+      if (fnArgs.restArgsType().length > 0) {
+        restArgsType = fnArgs.restArgsType()[0];
+      }
+      if (fnArgs.lastArgType().length > 0) {
+        lastArgType = fnArgs.lastArgType()[0];
       }
     }
 
