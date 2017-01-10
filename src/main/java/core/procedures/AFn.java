@@ -43,11 +43,7 @@ public abstract class AFn implements IFn<Object[], Object> {
 
   @Override
   public String toString() {
-    String name = getName();
-    if (name == null || name.isEmpty()) {
-      return "#<procedure>";
-    }
-    return "#<procedure:" + name + ">";
+    return getName();
   }
 
   public static Object apply(AFn fn, List<Object> args, FnArgs fnArgs) {

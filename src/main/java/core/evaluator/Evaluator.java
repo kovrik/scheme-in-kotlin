@@ -88,6 +88,9 @@ public class Evaluator implements IEvaluator {
       /* Get it from the environment: let user redefine special forms */
       Object specialForm = env.find(op);
       if (specialForm instanceof ISpecialForm) {
+        // TODO Check if we can actually do this!
+        /* Inline Special Form */
+        sexp.set(0, specialForm);
         return ((ISpecialForm)specialForm).eval(sexp, env, this);
       }
     }
@@ -103,6 +106,12 @@ public class Evaluator implements IEvaluator {
         /* Can apply IFn only */
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
       }
+    }
+
+    // TODO Check if we can actually do this!
+    /* Inline pure fns tp avoid further lookups */
+    if (((AFn)fn).isPure())  {
+      sexp.set(0, fn);
     }
 
     /* Check args size (if FnArgs annotation is present) */
