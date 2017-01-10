@@ -1,13 +1,14 @@
 package core.procedures.math;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
 import core.scm.SCMBoolean;
-import core.utils.NumberUtils;
+import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
+@FnArgs(minArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class}, restArgsType = {SCMClass.Real.class})
 public class NumericalComparison extends AFn {
 
   public enum Type {
@@ -46,16 +47,9 @@ public class NumericalComparison extends AFn {
 
   @Override
   public SCMBoolean apply(Object... args) {
-    if (args != null && args.length > 1) {
-      for (Object arg : args) {
-        if (!(NumberUtils.isReal(arg))) {
-          throw new WrongTypeException("Real", arg);
-        }
-      }
-      for (int i = 0; i < args.length - 1; i++) {
-        if (!apply(args[i], args[i+1], type)) {
-          return SCMBoolean.FALSE;
-        }
+    for (int i = 0; i < args.length - 1; i++) {
+      if (!apply(args[i], args[i + 1], type)) {
+        return SCMBoolean.FALSE;
       }
     }
     return SCMBoolean.TRUE;

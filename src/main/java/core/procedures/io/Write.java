@@ -1,16 +1,16 @@
 package core.procedures.io;
 
 import core.Repl;
-import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMOutputPort;
 import core.scm.SCMUnspecified;
 import core.writer.Writer;
 
 import java.io.IOException;
 
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = {SCMOutputPort.class})
 public class Write extends AFn {
 
   @Override
@@ -20,20 +20,10 @@ public class Write extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length < 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-    if (args.length > 2) {
-      throw new ArityException(args.length, 2, getName());
-    }
-
     SCMOutputPort outputPort;
     if (args.length == 1) {
       outputPort = Repl.getCurrentOutputPort();
     } else {
-      if (!(args[1] instanceof SCMOutputPort)) {
-        throw new WrongTypeException("Output Port", args[1]);
-      }
       outputPort = ((SCMOutputPort)args[1]);
     }
     try {

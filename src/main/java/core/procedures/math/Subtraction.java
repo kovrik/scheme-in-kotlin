@@ -1,8 +1,8 @@
 package core.procedures.math;
 
 import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
@@ -10,6 +10,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+@FnArgs(restArgsType = {Number.class})
 public class Subtraction extends AFn {
 
   @Override
@@ -38,9 +39,6 @@ public class Subtraction extends AFn {
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
-      if (!(args[0] instanceof Number)) {
-        throw new WrongTypeException("Number", args[0]);
-      }
       result = apply((Number)result, (Number)args[i]);
     }
     return result;

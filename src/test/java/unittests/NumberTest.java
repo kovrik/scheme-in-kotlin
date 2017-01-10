@@ -125,7 +125,7 @@ public class NumberTest extends AbstractTest {
   public void testEvalNumericalComparison() {
     assertEquals(TRUE,  eval("(= 1 1 1)", env));
     assertEquals(FALSE, eval("(= 1 0 1)", env));
-    assertEquals(TRUE,  eval("(= 0)", env));
+    assertEquals(TRUE,  eval("(= 0 0.0)", env));
     assertEquals(TRUE,  eval("(= 0.57 0.5700)", env));
     assertEquals(TRUE,  eval("(= 7 7.00)", env));
     assertEquals(TRUE,  eval("(= -234234/234 -234234/234 )", env));

@@ -5,11 +5,14 @@ import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
+import core.scm.ISCMPort;
 import core.scm.SCMOutputPort;
 import core.scm.SCMUnspecified;
 
 import java.io.IOException;
 
+@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Character.class}, restArgsType = {SCMOutputPort.class})
 public class WriteChar extends AFn {
 
   @Override
@@ -19,17 +22,7 @@ public class WriteChar extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length < 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-    if (args.length > 2) {
-      throw new ArityException(args.length, 2, getName());
-    }
-    if (!(args[0] instanceof Character)) {
-      throw new WrongTypeException("Character", args[0]);
-    }
     Character ch = (Character)args[0];
-
     SCMOutputPort outputPort;
     if (args.length == 1) {
       outputPort = Repl.getCurrentOutputPort();

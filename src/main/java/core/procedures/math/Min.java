@@ -1,13 +1,13 @@
 package core.procedures.math;
 
-import core.exceptions.ArityException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
+@FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = {SCMClass.Real.class})
 public class Min extends AFn {
 
   @Override
@@ -42,29 +42,18 @@ public class Min extends AFn {
     if (second instanceof BigDecimal) {
       return ((BigDecimal)second).min(new BigDecimal(first.toString()));
     }
-
     return Math.min(first.doubleValue(), second.doubleValue());
   }
 
   @Override
-  public Object apply(Object... args) {
-    if (args != null && args.length > 0) {
-      if (args.length == 1) {
-        return args[0];
-      }
-      Object result = args[0];
-      if (!(NumberUtils.isReal(result))) {
-        throw new WrongTypeException("Real", result);
-      }
-      for (int i = 1; i < args.length; i++) {
-        Number first = (Number)result;
-        if (!(NumberUtils.isReal(args[i]))) {
-          throw new WrongTypeException("Real", args[i]);
-        }
-        result = apply(first, (Number)args[i]);
-      }
-      return result;
+  public Number apply(Object... args) {
+    if (args.length == 1) {
+      return (Number) args[0];
     }
-    throw new ArityException(args.length, 1, getName());
+    Number result = (Number) args[0];
+    for (int i = 1; i < args.length; i++) {
+      result = apply(result, (Number)args[i]);
+    }
+    return result;
   }
 }

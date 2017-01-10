@@ -1,14 +1,14 @@
 package core.procedures.io;
 
 import core.Repl;
-import core.exceptions.ArityException;
 import core.exceptions.SCMIOException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMInputPort;
 
 import java.io.IOException;
 
+@FnArgs(maxArgs = 1, restArgsType = {SCMInputPort.class})
 public class ReadChar extends AFn {
 
   @Override
@@ -18,16 +18,10 @@ public class ReadChar extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length > 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
     SCMInputPort inputPort;
     if (args.length == 0) {
       inputPort = Repl.getCurrentInputPort();
     } else {
-      if (!(args[0] instanceof SCMInputPort)) {
-        throw new WrongTypeException("Input Port", args[0]);
-      }
       inputPort = ((SCMInputPort)args[0]);
     }
     try {

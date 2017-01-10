@@ -1,7 +1,7 @@
 package core.procedures.math;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
@@ -9,6 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+@FnArgs(restArgsType = {Number.class})
 public class Addition extends AFn {
 
   @Override
@@ -80,9 +81,6 @@ public class Addition extends AFn {
     Object result = 0L;
     if (args != null) {
       for (Object obj : args) {
-        if (!(obj instanceof Number)) {
-          throw new WrongTypeException("Number", obj);
-        }
         result = add((Number)result, (Number)obj);
       }
     }

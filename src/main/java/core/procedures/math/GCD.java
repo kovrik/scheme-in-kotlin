@@ -2,12 +2,13 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
+import core.scm.FnArgs;
 import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+@FnArgs(restArgsType = {SCMBigRational.class})
 public class GCD extends AFn {
 
   private static final Abs ABS = new Abs();
@@ -23,28 +24,18 @@ public class GCD extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    if (args != null) {
-      if (args.length == 0) {
-        return 0L;
-      }
-      Object result = args[0];
-      if (!(NumberUtils.isRational(result))) {
-        throw new WrongTypeException("Rational", result);
-      }
-      if (args.length == 1) {
-        return ABS.apply1(args[0]);
-      }
-      for (int i = 1; i < args.length; i++) {
-        Number first = (Number)result;
-        if (!(NumberUtils.isRational(args[i]))) {
-          throw new WrongTypeException("Rational", args[i]);
-        }
-        result = apply(first, (Number)args[i]);
-      }
-      return result;
+  public Number apply(Object... args) {
+    if (args.length == 0) {
+      return 0L;
     }
-    return 0L;
+    Number result = (Number) args[0];
+    if (args.length == 1) {
+      return ABS.apply1(args[0]);
+    }
+    for (int i = 1; i < args.length; i++) {
+      result = apply(result, (Number) args[i]);
+    }
+    return result;
   }
 
   public static long gcd(Long a, Long b) {
