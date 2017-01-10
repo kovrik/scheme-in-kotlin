@@ -19,10 +19,10 @@ public class MakeRectangular extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply2(Object arg1, Object arg2) {
     /* (+ x (* y 0+1i)) */
-    Number x = (Number) args[0];
-    Number y = (Number) args[1];
+    Number x = (Number) arg1;
+    Number y = (Number) arg2;
     return SCMBigComplex.I.multiply(y).plus(x);
   }
 }

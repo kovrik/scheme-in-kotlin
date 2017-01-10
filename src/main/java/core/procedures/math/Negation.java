@@ -18,7 +18,7 @@ public class Negation extends AFn {
   }
 
   @Override
-  public SCMBoolean apply(Object... args) {
-    return SCMBoolean.toSCMBoolean(!SCMBoolean.valueOf(args[0]));
+  public SCMBoolean apply1(Object arg) {
+    return SCMBoolean.toSCMBoolean(!SCMBoolean.valueOf(arg));
   }
 }

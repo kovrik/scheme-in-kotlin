@@ -18,16 +18,15 @@ public class SetCdr extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    List list = (List)args[0];
+  public Object apply2(Object arg1, Object arg2) {
+    List list = (List)arg1;
     /* Remove tail */
     list.subList(1, list.size()).clear();
     /* Set new tail */
-    Object o = args[1];
-    if (o instanceof List) {
-      list.addAll((List)o);
+    if (arg2 instanceof List) {
+      list.addAll((List) arg2);
     } else {
-      list.add(o);
+      list.add(arg2);
       if (list instanceof SCMCons) {
         ((SCMCons)list).setIsList(false);
       }

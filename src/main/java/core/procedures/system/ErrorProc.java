@@ -13,7 +13,7 @@ public class ErrorProc extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    throw new SCMError(args[0].toString());
+  public Object apply1(Object arg) {
+    throw new SCMError(arg.toString());
   }
 }

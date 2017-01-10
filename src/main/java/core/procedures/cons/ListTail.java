@@ -17,16 +17,15 @@ public class ListTail extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    Object o = args[0];
-    Long p = ((Number)args[1]).longValue();
+  public Object apply2(Object arg1, Object arg2) {
+    Long p = ((Number)arg2).longValue();
     if (p == 0) {
-      return o;
+      return arg1;
     }
-    if (!(o instanceof List)) {
-      throw new WrongTypeException("List", o);
+    if (!(arg1 instanceof List)) {
+      throw new WrongTypeException("List", arg1);
     }
-    List list = (List)o;
+    List list = (List) arg1;
     if (p >= list.size() + 1) {
       throw new IllegalArgumentException("Value out of range: " + p);
     }

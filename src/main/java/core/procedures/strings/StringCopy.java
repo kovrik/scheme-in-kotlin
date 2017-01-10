@@ -13,7 +13,7 @@ public class StringCopy extends AFn {
   }
 
   @Override
-  public SCMMutableString apply(Object... args) {
-    return new SCMMutableString(args[0].toString());
+  public SCMMutableString apply1(Object arg) {
+    return new SCMMutableString(arg.toString());
   }
 }

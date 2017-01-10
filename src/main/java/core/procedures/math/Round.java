@@ -23,11 +23,11 @@ public class Round extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return round((Number) args[0]);
+  public Number apply1(Object arg) {
+    return round((Number) arg);
   }
 
-  public static Number round(Number number) {
+  private static Number round(Number number) {
     if (number instanceof Long) {
       return number;
     } else if (number instanceof Double) {

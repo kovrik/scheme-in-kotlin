@@ -22,13 +22,12 @@ public class AssocProc extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    Object obj = args[0];
-    List list = (List) args[1];
+  public Object apply2(Object arg1, Object arg2) {
+    List list = (List) arg2;
     for (int n = 0; n < list.size(); n++) {
       Object pair = list.get(n);
       if (SCMCons.isPair(pair)) {
-        if ((SCMBoolean.valueOf(predicate.apply(obj, ((SCMCons) pair).car())))) {
+        if ((SCMBoolean.valueOf(predicate.apply(arg1, ((SCMCons) pair).car())))) {
           return pair;
         }
       } else {
@@ -37,6 +36,11 @@ public class AssocProc extends AFn {
       }
     }
     return SCMBoolean.FALSE;
+  }
+
+  @Override
+  public Object apply(Object... args) {
+    return apply2(args[0], args[1]);
   }
 
   @Override

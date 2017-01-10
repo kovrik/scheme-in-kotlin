@@ -23,8 +23,8 @@ public class Log extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return log((Number)args[0]);
+  public Number apply1(Object arg) {
+    return log((Number)arg);
   }
 
   public static Number log(Number number) {

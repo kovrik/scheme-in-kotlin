@@ -21,25 +21,25 @@ public class Acos extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    if (args[0] instanceof Long) {
-      double acos = Math.acos((Long) args[0]);
+  public Number apply1(Object arg) {
+    if (arg instanceof Long) {
+      double acos = Math.acos((Long) arg);
       if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex((Number)args[0]));
+        return acos(new SCMBigComplex((Number)arg));
       }
       return acos;
-    } else if (args[0] instanceof Double) {
-      double acos = Math.acos((Double) args[0]);
+    } else if (arg instanceof Double) {
+      double acos = Math.acos((Double) arg);
       if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex((Number)args[0]));
+        return acos(new SCMBigComplex((Number)arg));
       }
       return acos;
-    } else if (args[0] instanceof BigDecimal) {
-      return acos((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return acos((SCMBigComplex)args[0]);
+    } else if (arg instanceof BigDecimal) {
+      return acos((BigDecimal)arg);
+    } else if (arg instanceof SCMBigComplex) {
+      return acos((SCMBigComplex)arg);
     } else {
-      return acos(((SCMBigRational)args[0]).toBigDecimal());
+      return acos(((SCMBigRational)arg).toBigDecimal());
     }
   }
 

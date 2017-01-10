@@ -22,8 +22,8 @@ public class ToInexact extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return toInexact(args[0]);
+  public Number apply1(Object arg) {
+    return toInexact(arg);
   }
 
   public static Number toInexact(Object o) {

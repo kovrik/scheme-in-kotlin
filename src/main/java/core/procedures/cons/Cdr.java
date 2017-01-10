@@ -21,8 +21,8 @@ public class Cdr extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    return cdr(args[0]);
+  public Object apply1(Object arg) {
+    return cdr(arg);
   }
 
   public static Object cdr(Object o) {

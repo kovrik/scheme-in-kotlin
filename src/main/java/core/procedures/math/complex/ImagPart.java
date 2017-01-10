@@ -18,9 +18,9 @@ public class ImagPart extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    if (args[0] instanceof SCMBigComplex) {
-      return ((SCMBigComplex)args[0]).getIm();
+  public Number apply1(Object arg) {
+    if (arg instanceof SCMBigComplex) {
+      return ((SCMBigComplex)arg).getIm();
     }
     return 0L;
   }

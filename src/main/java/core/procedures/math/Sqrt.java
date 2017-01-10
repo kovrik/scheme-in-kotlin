@@ -21,8 +21,8 @@ public class Sqrt extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return sqrt((Number) args[0]);
+  public Number apply1(Object arg) {
+    return sqrt((Number) arg);
   }
 
   public static Number sqrt(Number number) {

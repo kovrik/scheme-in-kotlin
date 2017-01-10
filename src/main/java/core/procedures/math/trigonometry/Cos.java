@@ -23,8 +23,8 @@ public class Cos extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return cos((Number)args[0]);
+  public Number apply1(Object arg) {
+    return cos((Number)arg);
   }
 
   public static Number cos(Number number) {

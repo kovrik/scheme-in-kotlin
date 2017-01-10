@@ -24,8 +24,8 @@ public class Expt extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return expt((Number)args[0], (Number)args[1]);
+  public Number apply2(Object arg1, Object arg2) {
+    return expt((Number)arg1, (Number)arg2);
   }
 
   /**

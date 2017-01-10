@@ -18,10 +18,10 @@ public class RealPart extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    if (args[0] instanceof SCMBigComplex) {
-      return ((SCMBigComplex)args[0]).getRe();
+  public Number apply1(Object arg) {
+    if (arg instanceof SCMBigComplex) {
+      return ((SCMBigComplex)arg).getRe();
     }
-    return (Number)args[0];
+    return (Number)arg;
   }
 }

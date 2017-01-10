@@ -15,8 +15,8 @@ public class VectorToList extends AFn {
   }
 
   @Override
-  public SCMCons apply(Object... args) {
-    return vectorToList((SCMMutableVector)args[0]);
+  public SCMCons apply1(Object arg) {
+    return vectorToList((SCMMutableVector)arg);
   }
 
   public static SCMCons vectorToList(SCMMutableVector v) {

@@ -13,10 +13,9 @@ public class StringToList extends AFn {
   }
 
   @Override
-  public SCMCons<Character> apply(Object... args) {
-    Object o = args[0];
+  public SCMCons<Character> apply1(Object arg) {
     SCMCons<Character> list = SCMCons.list();
-    for (char c : (o.toString()).toCharArray()) {
+    for (char c : (arg.toString()).toCharArray()) {
       list.add(c);
     }
     return list;

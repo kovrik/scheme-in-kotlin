@@ -26,7 +26,8 @@ public class MemberProc extends AFn {
     return true;
   }
 
-  public Object apply(Object arg1, Object arg2) {
+  @Override
+  public Object apply2(Object arg1, Object arg2) {
     List list = (List) arg2;
     if (list.isEmpty()) {
       return SCMBoolean.FALSE;
@@ -51,7 +52,7 @@ public class MemberProc extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return apply(args[0], args[1]);
+    return apply2(args[0], args[1]);
   }
 
   @Override

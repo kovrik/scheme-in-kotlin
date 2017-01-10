@@ -22,21 +22,21 @@ public class Atan extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (args[0] instanceof Long) {
-      return Math.atan((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.atan((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return atan((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return atan((SCMBigComplex)args[0]);
+    if (arg instanceof Long) {
+      return Math.atan((Long) arg);
+    } else if (arg instanceof Double) {
+      return Math.atan((Double) arg);
+    } else if (arg instanceof BigDecimal) {
+      return atan((BigDecimal)arg);
+    } else if (arg instanceof SCMBigComplex) {
+      return atan((SCMBigComplex)arg);
     } else {
-      return atan(((SCMBigRational)args[0]).toBigDecimal());
+      return atan(((SCMBigRational)arg).toBigDecimal());
     }
   }
 

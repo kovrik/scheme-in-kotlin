@@ -23,8 +23,8 @@ public class Sin extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return sin((Number)args[0]);
+  public Number apply1(Object arg) {
+    return sin((Number)arg);
   }
 
   public static Number sin(Number number) {

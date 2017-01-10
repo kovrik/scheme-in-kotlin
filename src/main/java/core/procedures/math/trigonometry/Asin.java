@@ -22,29 +22,29 @@ public class Asin extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (args[0] instanceof Long) {
-      double asin = Math.asin((Long) args[0]);
+    if (arg instanceof Long) {
+      double asin = Math.asin((Long) arg);
       if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex((Number)args[0]));
+        return asin(new SCMBigComplex((Number)arg));
       }
       return asin;
-    } else if (args[0] instanceof Double) {
-      double asin = Math.asin((Double) args[0]);
+    } else if (arg instanceof Double) {
+      double asin = Math.asin((Double) arg);
       if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex((Number)args[0]));
+        return asin(new SCMBigComplex((Number)arg));
       }
       return asin;
-    } else if (args[0] instanceof BigDecimal) {
-      return asin((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return asin((SCMBigComplex)args[0]);
+    } else if (arg instanceof BigDecimal) {
+      return asin((BigDecimal)arg);
+    } else if (arg instanceof SCMBigComplex) {
+      return asin((SCMBigComplex)arg);
     } else {
-      return asin(((SCMBigRational)args[0]).toBigDecimal());
+      return asin(((SCMBigRational)arg).toBigDecimal());
     }
   }
 

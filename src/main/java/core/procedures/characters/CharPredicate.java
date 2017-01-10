@@ -24,8 +24,8 @@ public class CharPredicate extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    return SCMBoolean.toSCMBoolean(predicate.test((Character)args[0]));
+  public Object apply1(Object arg) {
+    return SCMBoolean.toSCMBoolean(predicate.test((Character)arg));
   }
 
   @Override

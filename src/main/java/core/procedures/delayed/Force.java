@@ -14,8 +14,8 @@ public class Force extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    SCMPromise promise = (SCMPromise) args[0];
+  public Object apply1(Object arg) {
+    SCMPromise promise = (SCMPromise) arg;
     if (promise.getState() == SCMPromise.State.FULFILLED) {
       return promise.getResult();
     }

@@ -21,8 +21,8 @@ public class Abs extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return abs((Number)args[0]);
+  public Number apply1(Object arg) {
+    return abs((Number)arg);
   }
 
   public static Number abs(Number number) {

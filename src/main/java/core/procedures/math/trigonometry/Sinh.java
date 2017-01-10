@@ -22,21 +22,21 @@ public class Sinh extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (args[0] instanceof Long) {
-      return Math.sinh((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.sinh((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return sinh((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return sinh((SCMBigComplex)args[0]);
+    if (arg instanceof Long) {
+      return Math.sinh((Long) arg);
+    } else if (arg instanceof Double) {
+      return Math.sinh((Double) arg);
+    } else if (arg instanceof BigDecimal) {
+      return sinh((BigDecimal)arg);
+    } else if (arg instanceof SCMBigComplex) {
+      return sinh((SCMBigComplex)arg);
     } else {
-      return sinh(((SCMBigRational)args[0]).toBigDecimal());
+      return sinh(((SCMBigRational)arg).toBigDecimal());
     }
   }
 

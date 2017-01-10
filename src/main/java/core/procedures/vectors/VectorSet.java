@@ -16,13 +16,13 @@ public class VectorSet extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    SCMMutableVector vec = (SCMMutableVector)args[0];
-    Long pos = ((Number)args[1]).longValue();
+  public Object apply3(Object arg1, Object arg2, Object arg3) {
+    SCMMutableVector vec = (SCMMutableVector)arg1;
+    Long pos = ((Number)arg2).longValue();
     if (pos >= vec.length()) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }
-    vec.set(pos.intValue(), args[2]);
+    vec.set(pos.intValue(), arg3);
     return UNSPECIFIED;
   }
 }

@@ -13,8 +13,8 @@ public class ConsProc extends AFn {
   }
 
   @Override
-  public SCMCons apply(Object... args) {
-    return cons(args[0], args[1]);
+  public SCMCons apply2(Object arg1, Object arg2) {
+    return cons(arg1, arg2);
   }
 
   public static SCMCons cons(Object car, Object cdr) {

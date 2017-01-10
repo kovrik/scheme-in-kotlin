@@ -18,13 +18,12 @@ public class StringFill extends AFn {
   }
 
   @Override
-  public SCMMutableString apply(Object... args) {
-    SCMMutableString s = (SCMMutableString)args[0];
+  public SCMMutableString apply2(Object arg1, Object arg2) {
+    SCMMutableString s = (SCMMutableString)arg1;
     int oldLength = s.length();
-    Object c = args[1];
     s.clear();
     for (int i = 0; i < oldLength; i++) {
-      s.append(c);
+      s.append(arg2);
     }
     return s;
   }

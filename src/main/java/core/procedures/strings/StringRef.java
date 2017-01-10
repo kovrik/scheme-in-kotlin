@@ -18,9 +18,9 @@ public class StringRef extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    String s = args[0].toString();
-    Long pos = ((Number)args[1]).longValue();
+  public Object apply2(Object arg1, Object arg2) {
+    String s = arg1.toString();
+    Long pos = ((Number)arg2).longValue();
     if (pos >= s.length()) {
       throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
     }

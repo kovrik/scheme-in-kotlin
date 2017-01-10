@@ -19,10 +19,10 @@ public class Magnitude extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    if (args[0] instanceof SCMBigComplex) {
-      return ((SCMBigComplex)args[0]).magnitude();
+  public Number apply1(Object arg) {
+    if (arg instanceof SCMBigComplex) {
+      return ((SCMBigComplex)arg).magnitude();
     }
-    return Abs.abs((Number) args[0]);
+    return Abs.abs((Number) arg);
   }
 }

@@ -21,15 +21,15 @@ public class Quotient extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply2(Object arg1, Object arg2) {
     /* Special cases */
-    if (NumberUtils.isOne(args[1])) {
-      return NumberUtils.inexactnessTaint((Number)args[0], (Number) args[1]);
+    if (NumberUtils.isOne(arg2)) {
+      return NumberUtils.inexactnessTaint((Number)arg1, (Number) arg2);
     }
-    if (NumberUtils.isZero(args[1])) {
+    if (NumberUtils.isZero(arg2)) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
-    return apply((Number) args[0], (Number) args[1]);
+    return apply((Number) arg1, (Number) arg2);
   }
 
   public Number apply(BigDecimal first, BigDecimal second) {

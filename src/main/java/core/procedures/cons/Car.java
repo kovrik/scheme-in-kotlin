@@ -1,6 +1,5 @@
 package core.procedures.cons;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.ICons;
@@ -22,11 +21,8 @@ public class Car extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-    return car(args[0]);
+  public Object apply1(Object arg) {
+    return car(arg);
   }
 
   public static Object car(Object o) {

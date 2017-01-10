@@ -20,8 +20,8 @@ public class Exp extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return exp((Number)args[0]);
+  public Number apply1(Object arg) {
+    return exp((Number)arg);
   }
 
   public static Number exp(Number number) {

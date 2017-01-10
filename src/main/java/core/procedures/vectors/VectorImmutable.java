@@ -11,7 +11,7 @@ public class VectorImmutable extends AFn {
   }
 
   @Override
-  public SCMImmutableVector apply(Object... args) {
-    return new SCMImmutableVector(args);
+  public SCMImmutableVector apply1(Object arg) {
+    return new SCMImmutableVector(arg);
   }
 }

@@ -22,11 +22,11 @@ public class Denominator extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return denominator(args[0]);
+  public Number apply1(Object arg) {
+    return denominator(arg);
   }
 
-  public static Number denominator(Object o) {
+  private static Number denominator(Object o) {
     boolean isExact = NumberUtils.isExact(o);
     Number exact;
     if (isExact) {

@@ -23,8 +23,8 @@ public class ToExact extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return toExact(args[0]);
+  public Number apply1(Object arg) {
+    return toExact(arg);
   }
 
   public static Number toExact(Object o) {

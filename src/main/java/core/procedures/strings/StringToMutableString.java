@@ -13,11 +13,11 @@ public class StringToMutableString extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    if (args[0] instanceof SCMMutableString || args[0] instanceof StringBuilder) {
-      return args[0];
+  public Object apply1(Object arg) {
+    if (arg instanceof SCMMutableString || arg instanceof StringBuilder) {
+      return arg;
     } else {
-      return new SCMMutableString(args[0].toString());
+      return new SCMMutableString(arg.toString());
     }
   }
 }

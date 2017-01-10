@@ -21,11 +21,11 @@ public class Numerator extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return numerator(args[0]);
+  public Number apply1(Object arg) {
+    return numerator(arg);
   }
 
-  public static Number numerator(Object o) {
+  private static Number numerator(Object o) {
     boolean isExact = NumberUtils.isExact(o);
     Number exact;
     if (isExact) {

@@ -18,7 +18,7 @@ public class StringToSymbol extends AFn {
   }
 
   @Override
-  public SCMSymbol apply(Object... args) {
-    return new SCMSymbol(args[0].toString());
+  public SCMSymbol apply1(Object arg) {
+    return new SCMSymbol(arg.toString());
   }
 }

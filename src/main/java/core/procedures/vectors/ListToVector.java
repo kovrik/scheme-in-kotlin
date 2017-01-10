@@ -16,8 +16,8 @@ public class ListToVector extends AFn {
   }
 
   @Override
-  public SCMMutableVector apply(Object... args) {
-    return listToVector(args[0]);
+  public SCMMutableVector apply1(Object arg) {
+    return listToVector(arg);
   }
 
   public static SCMMutableVector listToVector(Object arg) {

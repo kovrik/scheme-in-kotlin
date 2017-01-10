@@ -21,8 +21,8 @@ public class CharProc extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    return function.apply((Character) args[0]);
+  public Object apply1(Object arg) {
+    return function.apply((Character) arg);
   }
 
   @Override

@@ -28,8 +28,8 @@ public class Continuation extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    throw new CalledContinuation(args[0], this);
+  public Number apply1(Object arg) {
+    throw new CalledContinuation(arg, this);
   }
 
   @Override

@@ -22,8 +22,8 @@ public class Modulo extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return apply((Number)args[0], (Number)args[1]);
+  public Number apply2(Object arg1, Object arg2) {
+    return apply((Number)arg1, (Number)arg2);
   }
 
   public BigDecimal apply(BigDecimal first, BigDecimal second) {

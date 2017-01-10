@@ -12,7 +12,7 @@ public class IntegerToChar extends AFn {
   }
 
   @Override
-  public Character apply(Object... args) {
-    return (char)((Number)args[0]).longValue();
+  public Character apply1(Object arg) {
+    return (char)((Number)arg).longValue();
   }
 }

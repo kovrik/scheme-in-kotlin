@@ -19,11 +19,11 @@ public class Angle extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    return angle((Number) args[0]);
+  public Number apply1(Object arg) {
+    return angle((Number) arg);
   }
 
-  public static Number angle(Number number) {
+  private static Number angle(Number number) {
     if (NumberUtils.isZero(number)) {
       throw new ArithmeticException("Undefined for 0");
     }

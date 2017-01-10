@@ -21,25 +21,24 @@ public class Truncate extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
-    if (args[0] instanceof Long) {
-      return (Long) args[0];
-    } else if (args[0] instanceof Double) {
-      Double arg = (Double) args[0];
-      if (arg < 0) {
-        return Math.ceil(arg);
+  public Number apply1(Object arg) {
+    if (arg instanceof Long) {
+      return (Long) arg;
+    } else if (arg instanceof Double) {
+      if ((Double)arg < 0) {
+        return Math.ceil((Double)arg);
       } else {
-        return Math.floor(arg);
+        return Math.floor((Double)arg);
       }
-    } else if (args[0] instanceof BigDecimal) {
-      BigDecimal arg = (BigDecimal) args[0];
-      if (arg.compareTo(BigDecimal.ZERO) < 0) {
-        return arg.setScale(0, BigDecimal.ROUND_UP);
+    } else if (arg instanceof BigDecimal) {
+      BigDecimal bd = (BigDecimal) arg;
+      if (bd.compareTo(BigDecimal.ZERO) < 0) {
+        return bd.setScale(0, BigDecimal.ROUND_UP);
       } else {
-        return arg.setScale(0, BigDecimal.ROUND_DOWN);
+        return bd.setScale(0, BigDecimal.ROUND_DOWN);
       }
     } else {
-      return ((SCMBigRational) args[0]).truncate();
+      return ((SCMBigRational) arg).truncate();
     }
   }
 }

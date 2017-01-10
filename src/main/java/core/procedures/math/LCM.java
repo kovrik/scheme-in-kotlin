@@ -35,7 +35,7 @@ public class LCM extends AFn {
         throw new WrongTypeException("Rational", result);
       }
       if (args.length == 1) {
-        return ABS.apply(args[0]);
+        return ABS.apply1(args[0]);
       }
       for (int i = 1; i < args.length; i++) {
         Number first = (Number)result;

@@ -58,6 +58,11 @@ public class SCMPredicate extends AFn {
   }
 
   @Override
+  public SCMBoolean apply1(Object arg) {
+    return SCMBoolean.toSCMBoolean(predicate.test(arg));
+  }
+
+  @Override
   public SCMBoolean apply(Object... args) {
     return SCMBoolean.toSCMBoolean(predicate.test(args[0]));
   }

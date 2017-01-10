@@ -22,21 +22,21 @@ public class Tanh extends AFn {
   }
 
   @Override
-  public Number apply(Object... args) {
+  public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(args[0])) {
+    if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (args[0] instanceof Long) {
-      return Math.tanh((Long) args[0]);
-    } else if (args[0] instanceof Double) {
-      return Math.tanh((Double) args[0]);
-    } else if (args[0] instanceof BigDecimal) {
-      return tanh((BigDecimal)args[0]);
-    } else if (args[0] instanceof SCMBigComplex) {
-      return tanh((SCMBigComplex)args[0]);
+    if (arg instanceof Long) {
+      return Math.tanh((Long) arg);
+    } else if (arg instanceof Double) {
+      return Math.tanh((Double) arg);
+    } else if (arg instanceof BigDecimal) {
+      return tanh((BigDecimal)arg);
+    } else if (arg instanceof SCMBigComplex) {
+      return tanh((SCMBigComplex)arg);
     } else {
-      return tanh(((SCMBigRational)args[0]).toBigDecimal());
+      return tanh(((SCMBigRational)arg).toBigDecimal());
     }
   }
 
