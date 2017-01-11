@@ -26,9 +26,11 @@ public enum Define implements ISpecialForm {
 
   @Override
   public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
-    if (expression.size() == 1) {
+    if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
+    checkDefinitionContext(expression, env);
+
     Object id = expression.get(1);
 
     if (env.getOuter() != null) {
@@ -37,9 +39,6 @@ public enum Define implements ISpecialForm {
 
     if (id instanceof SCMSymbol) {
       /* Variable definition */
-      if (expression.size() < 3) {
-        throw IllegalSyntaxException.of(syntax, expression, "missing expression after identifier");
-      }
       if (expression.size() > 3) {
         throw IllegalSyntaxException.of(syntax, expression, "multiple expressions after identifier");
       }
@@ -113,6 +112,33 @@ public enum Define implements ISpecialForm {
           }
         }
       }
+    }
+  }
+
+  /* Check that definitions are top-only forms (in definition context) */
+  public static void checkDefinitionContext(List expression, IEnvironment env) {
+    boolean definitionsAllowed = true;
+    boolean hasAtLeastOneExpression = false;
+    for (int i = 2; i < expression.size(); i++) {
+        /* Check that definitions are in definition context only */
+      Object o = expression.get(i);
+      if (SCMCons.isPair(o)) {
+        Object op = env.findOrNull(((List) o).get(0));
+        if ((op instanceof Define)) {
+          if (!definitionsAllowed) {
+            throw new IllegalSyntaxException("eval: definition in expression context, where definitions are not allowed, in form: " + expression);
+          }
+        } else {
+          definitionsAllowed = false;
+          hasAtLeastOneExpression = true;
+        }
+      } else {
+        definitionsAllowed = false;
+        hasAtLeastOneExpression = true;
+      }
+    }
+    if (!hasAtLeastOneExpression) {
+      throw new IllegalSyntaxException("eval: no expression after a sequence of internal definitions in form: " + expression);
     }
   }
 

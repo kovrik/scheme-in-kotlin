@@ -23,6 +23,8 @@ public enum LetSeq implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
+    Define.checkDefinitionContext(expression, env);
+
     IEnvironment localEnv = new Environment(env);
     List bindings = (List)expression.get(1);
     /* Evaluate inits */

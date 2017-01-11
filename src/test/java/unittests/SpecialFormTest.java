@@ -162,7 +162,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(define a)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("define: bad syntax (missing expression after identifier) in form: (define a)", e.getMessage());
+      assertEquals("define: bad syntax in form: (define a)", e.getMessage());
     }
     try {
       eval("(define a b c)", env);
@@ -200,14 +200,43 @@ public class SpecialFormTest extends AbstractTest {
 
     assertEquals(list(3L, 4L, 5L), eval("((lambda (a b c . d) d) 0 1 2 3 4 5)", env));
 
-    // TODO check that define is a top form in a body
-//    String d3 = "(let ((a 1)) a (define a 5) a)";
-//    try {
-//      eval(d3, env);
-//      fail();
-//    } catch (IllegalSyntaxException e) {
-//
-//    }
+    // check that internal definitions are top-only
+    try {
+      eval("(let ((a 1)) a (define a 5) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
+    try {
+      eval("(let ((a 1)) a (define a 5))", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
+    try {
+      eval("(let* ((a 1)) a (define a 5) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
+    try {
+      eval("(letrec ((a 1)) a (define a 5) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
+    try {
+      eval("(lambda () 1 (define a 5) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
+    try {
+      eval("(define (p) 1 (define a 5) a)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // success
+    }
   }
 
   @Test

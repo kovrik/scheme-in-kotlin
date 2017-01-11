@@ -26,6 +26,8 @@ public enum Lambda implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
+    Define.checkDefinitionContext(expression, env);
+
     /* Add implicit `begin` */
     // TODO Is implicit BEGIN enough to have TCO?
     SCMCons<Object> body = SCMCons.list(Begin.BEGIN);

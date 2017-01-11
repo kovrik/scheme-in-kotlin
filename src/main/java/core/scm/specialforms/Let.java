@@ -4,7 +4,9 @@ import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.evaluator.IEvaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.*;
+import core.scm.SCMCons;
+import core.scm.SCMSymbol;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -23,6 +25,8 @@ public enum Let implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
+    Define.checkDefinitionContext(expression, env);
+
     /* Normal let:
      * (let ((id expr) ...) body ...+) */
     if (expression.get(1) instanceof List) {
