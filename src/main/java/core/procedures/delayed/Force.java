@@ -1,6 +1,5 @@
 package core.procedures.delayed;
 
-import core.exceptions.ReentrantPromiseException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMPromise;
@@ -16,17 +15,10 @@ public class Force extends AFn {
   @Override
   public Object apply1(Object arg) {
     SCMPromise promise = (SCMPromise) arg;
-    if (promise.getState() == SCMPromise.State.FULFILLED) {
-      return promise.getResult();
+    switch (promise.getState()) {
+      case FULFILLED: return promise.getResult();
+      case REJECTED:  throw (RuntimeException)promise.getResult();
+      default:        return promise;
     }
-    if (promise.getState() == SCMPromise.State.REJECTED) {
-      throw (RuntimeException)promise.getResult();
-    }
-    if (promise.getState() == SCMPromise.State.FORCED) {
-      throw new ReentrantPromiseException(promise);
-    }
-    /* Force Promise evaluation */
-    promise.setState(SCMPromise.State.FORCED);
-    return promise;
   }
 }

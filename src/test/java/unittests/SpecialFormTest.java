@@ -83,6 +83,23 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("delay: bad syntax in form: (delay)", e.getMessage());
     }
+
+    /* TODO Check if result is correct
+     * Must evaluate to 10 (???), because we allow re-entrant promises
+     * See http://lambda-the-ultimate.org/node/4686A
+     **/
+    eval("(define x 0)", env);
+    String conundrum = "(define p" +
+                       "  (delay" +
+                       "    (if (= x 5)" +
+                       "      x" +
+                       "      (begin" +
+                       "        (set! x (+ x 1))" +
+                       "        (force p)" +
+                       "        (set! x (+ x 1))" +
+                       "        x))))";
+    eval(conundrum, env);
+    assertEquals(10L, eval("(force p)", env));
   }
 
   @Test
