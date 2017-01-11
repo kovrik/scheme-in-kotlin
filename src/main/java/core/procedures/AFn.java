@@ -4,6 +4,8 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
 import core.writer.Writer;
 
 import java.util.List;
@@ -104,6 +106,18 @@ public abstract class AFn implements IFn<Object[], Object> {
             throw new WrongTypeException(Writer.write(restArgsType), arg);
           }
         }
+      }
+    }
+    if (this instanceof SCMProcedure) {
+      SCMProcedure fn = (SCMProcedure) this;
+      List<SCMSymbol> params = fn.getArgs();
+      int minArgs = fn.minArgs();
+      /* Check arity (mandatory params):
+       * - non-variadic function should get expected number of mandatory arguments
+       * - variadic function should get expected number of mandatory arguments or more (but not less) */
+      boolean isVariadic = fn.minArgs() != fn.maxArgs();
+      if ((isVariadic && (args.size() < minArgs)) || (!isVariadic && (args.size() != minArgs))) {
+        throw new ArityException(args.size(), params.size(), fn.getName());
       }
     }
   }

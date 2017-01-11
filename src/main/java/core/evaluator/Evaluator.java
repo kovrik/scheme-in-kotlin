@@ -122,8 +122,12 @@ public class Evaluator implements IEvaluator {
     }
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
-      return apply((SCMProcedure)fn, args);
+      SCMProcedure proc = (SCMProcedure)fn;
+      /* Bind args and put them into new local environment */
+      IEnvironment localEnvironment = proc.bindArgs(args);
+      return evlis(proc.getBody(), localEnvironment);
     }
+
     /* Call AFn via helper method (function in Java) */
     Object result = AFn.apply(fn, args);
 
@@ -166,39 +170,6 @@ public class Evaluator implements IEvaluator {
       /* Finally, evaluate post-thunk */
       eval(SCMCons.list(post), env);
     }
-  }
-
-  /**
-   * Apply SCMProcedure
-   */
-  private Object apply(SCMProcedure fn, List<Object> args) {
-    List<SCMSymbol> params = fn.getArgs();
-    /* Variadic procedures keep last param to store list of rest (optional) params */
-    int mandatoryParamsSize = fn.isVariadic() ? params.size() - 1 : params.size();
-
-    /* Check arity (mandatory params):
-     * - non-variadic function should get expected number of mandatory arguments
-     * - variadic function should get expected number of mandatory arguments or more (but not less) */
-    if ((fn.isVariadic()  && (args.size() <  mandatoryParamsSize)) ||
-        (!fn.isVariadic() && (args.size() != mandatoryParamsSize))) {
-
-      throw new ArityException(args.size(), params.size(), fn.getName());
-    }
-    /* Evaluate mandatory params and put values into new local environment */
-    IEnvironment localEnvironment = new Environment(fn.getLocalEnvironment());
-    for (int i = 0; i < mandatoryParamsSize; i++) {
-      localEnvironment.put(params.get(i), args.get(i));
-    }
-
-    /* If it is a variadic function, then evaluate rest params */
-    if (fn.isVariadic()) {
-      /* Optional params: pass them as a list bound to the last param.
-       * Everything AFTER mandatory params goes to that list. */
-      List<Object> varargs = SCMCons.list(args.subList(mandatoryParamsSize, args.size()));
-      localEnvironment.put(params.get(mandatoryParamsSize), varargs);
-    }
-    /* Closure is ready to be evaluated */
-    return evlis(fn.getBody(), localEnvironment);
   }
 
   /**

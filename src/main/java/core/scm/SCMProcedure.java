@@ -1,5 +1,6 @@
 package core.scm;
 
+import core.environment.Environment;
 import core.environment.IEnvironment;
 import core.procedures.AFn;
 
@@ -19,9 +20,11 @@ public class SCMProcedure extends AFn {
   /* Lexical environment */
   private IEnvironment localEnvironment = null;
 
-  /* Is it a variadic function? False by default.
-   * If set to `true`, then list of all optional params is to be bound to the last argument */
-  private boolean isVariadic;
+  /* Minimum number of arguments */
+  private int minArgs = 0;
+
+  /* Maximum number of arguments */
+  private int maxArgs = 255;
 
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment) {
     this(name, args, body, localEnvironment, false);
@@ -32,7 +35,14 @@ public class SCMProcedure extends AFn {
     this.args = (args == null) ? SCMCons.NIL : args;
     this.body = body;
     this.localEnvironment = localEnvironment;
-    this.isVariadic = isVariadic;
+    if (isVariadic) {
+      /* Do not count rest arg */
+      this.minArgs = this.args.size() - 1;
+      this.maxArgs = this.args.size();
+    } else {
+      this.minArgs = this.args.size();
+      this.maxArgs = this.args.size();
+    }
   }
 
   public List<Object> getBody() {
@@ -47,12 +57,29 @@ public class SCMProcedure extends AFn {
     this.name = name;
   }
 
-  public IEnvironment getLocalEnvironment() {
-    return localEnvironment;
+  public int minArgs() {
+    return minArgs;
   }
 
-  public boolean isVariadic() {
-    return isVariadic;
+  public int maxArgs() {
+    return maxArgs;
+  }
+
+  public IEnvironment bindArgs(List<Object> values) {
+    /* Evaluate mandatory params and put values into new local environment */
+    IEnvironment env = new Environment(this.localEnvironment);
+    List<SCMSymbol> args = getArgs();
+    for (int i = 0; i < minArgs(); i++) {
+      env.put(args.get(i), values.get(i));
+    }
+    /* If it is a variadic function, then evaluate rest param */
+    if (minArgs != maxArgs) {
+      /* Optional params: pass them as a list bound to the last param.
+       * Everything AFTER mandatory params goes to that list. */
+      List<Object> varargs = SCMCons.list(values.subList(minArgs(), values.size()));
+      env.put(args.get(minArgs()), varargs);
+    }
+    return env;
   }
 
   @Override
