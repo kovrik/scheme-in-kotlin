@@ -198,6 +198,8 @@ public class SpecialFormTest extends AbstractTest {
     eval(d2, env);
     assertEquals(9L, eval("(test-internal-define2)", env));
 
+    assertEquals(list(3L, 4L, 5L), eval("((lambda (a b c . d) d) 0 1 2 3 4 5)", env));
+
     // TODO check that define is a top form in a body
 //    String d3 = "(let ((a 1)) a (define a 5) a)";
 //    try {
