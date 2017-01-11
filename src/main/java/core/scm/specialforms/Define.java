@@ -110,6 +110,7 @@ public enum Define implements ISpecialForm {
     }
   }
 
+  // FIXME Nested forms: (define a (begin 1 2 (define b 2) 3))
   /* Check that definitions are top-only forms (in definition context) */
   public static void checkDefinitionContext(List expression, IEnvironment env) {
     boolean definitionsAllowed = true;
