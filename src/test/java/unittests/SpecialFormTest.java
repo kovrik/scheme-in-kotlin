@@ -4,6 +4,7 @@ import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.environment.IEnvironment;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.ReentrantPromiseException;
 import core.exceptions.WrongTypeException;
 import core.procedures.io.Display;
 import core.scm.*;
@@ -82,6 +83,26 @@ public class SpecialFormTest extends AbstractTest {
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("delay: bad syntax in form: (delay)", e.getMessage());
+    }
+    /* Check that re-entrant promises are not allowed
+     * See http://lambda-the-ultimate.org/node/4686A
+     */
+    eval("(define x 0)", env);
+    String conundrum = "(define p" +
+                       "  (delay" +
+                       "    (if (= x 5)" +
+                       "      x" +
+                       "      (begin" +
+                       "        (set! x (+ x 1))" +
+                       "        (force p)" +
+                       "        (set! x (+ x 1))" +
+                       "        x))))";
+    eval(conundrum, env);
+    try {
+      eval("(force p)", env);
+      fail();
+    } catch (ReentrantPromiseException e) {
+      // success
     }
   }
 
