@@ -73,53 +73,44 @@ public class Evaluator implements IEvaluator {
     if (sexp.isEmpty()) {
       throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
     }
-    /* Check if op is a Special Form.
-     * This is used for implicit Special Forms
-     * used in other Special Forms (like BEGIN in LAMBDA).
-     * We should be able to eval such forms even if user
-     * has redefined implicit Special Form */
     Object op = sexp.get(0);
-    if (op instanceof ISpecialForm) {
-      return ((ISpecialForm)op).eval(sexp, env, this);
-    }
-    /* Check if Symbol refers to a Special Form */
+
+    /* Lookup symbol */
     if (op instanceof SCMSymbol) {
-      /* Get it from the environment: let user redefine special forms */
-      Object specialForm = env.find(op);
-      if (specialForm instanceof ISpecialForm) {
-        // TODO Check if we can actually do this!
-        /* Inline Special Form */
-        sexp.set(0, specialForm);
-        return ((ISpecialForm)specialForm).eval(sexp, env, this);
-      }
+      op = env.find(op);
     }
 
-    /* Must be a procedure */
-    Object fn;
-    /* If procedure was inlined, then just apply it */
-    if ((op instanceof AFn) && !(op instanceof SCMProcedure) ) {
-      fn = op;
-    } else {
-      fn = eval(op, env);
-      if (!(fn instanceof AFn)) {
-        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(fn));
+    /* If it is a Special Form, then evaluate it */
+    if (op instanceof ISpecialForm) {
+      // TODO Check if we can actually do this!
+      /* Inline Special Form */
+      sexp.set(0, op);
+      return ((ISpecialForm)op).eval(sexp, env, this);
+    }
+
+    /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
+    if (!(op instanceof AFn)) {
+      op = eval(op, env);
+      /* If result is not a function, then raise an error */
+      if (!(op instanceof AFn)) {
+        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
       }
     }
+    AFn fn = (AFn)op;
 
     // TODO Check if we can actually do this!
     /* Inline pure fns tp avoid further lookups */
-    if (((AFn)fn).isPure())  {
+    if (fn.isPure())  {
       sexp.set(0, fn);
     }
 
-    /* Evaluate arguments first (because applicative order) */
+    /* Scheme has applicative order, so evaluate all arguments first */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
       args.add(eval(sexp.get(i), env));
     }
-
     /* Check args */
-    ((AFn)fn).checkArgs(args);
+    fn.checkArgs(args);
 
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
@@ -129,14 +120,12 @@ public class Evaluator implements IEvaluator {
     if (fn instanceof DynamicWind) {
       return dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env);
     }
-
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
       return apply((SCMProcedure)fn, args);
     }
-
     /* Call AFn via helper method (function in Java) */
-    Object result = AFn.apply((AFn)fn, args);
+    Object result = AFn.apply(fn, args);
 
     /* Handle Promise forced to evaluation by Force procedure */
     if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
