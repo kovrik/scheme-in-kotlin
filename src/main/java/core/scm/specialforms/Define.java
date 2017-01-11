@@ -135,7 +135,7 @@ public enum Define implements ISpecialForm {
       }
     }
     if (!hasAtLeastOneExpression) {
-      throw new IllegalSyntaxException("eval: no expression after a sequence of internal definitions in form: " + expression);
+      throw new IllegalSyntaxException("define: not allowed in an expression context in form: " + expression);
     }
   }
 
