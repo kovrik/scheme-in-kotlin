@@ -24,7 +24,7 @@ public enum Let implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    Define.checkDefinitionContext(expression, env);
+    evaluator.checkDefinitionContext(expression, env);
 
     /* Normal let:
      * (let ((id expr) ...) body ...+) */

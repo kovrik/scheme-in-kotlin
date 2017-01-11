@@ -32,7 +32,7 @@ public enum LetRec implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    Define.checkDefinitionContext(expression, env);
+    evaluator.checkDefinitionContext(expression, env);
 
     Environment localEnv = new Environment(env);
     List<List> bindings = (List<List>)expression.get(1);

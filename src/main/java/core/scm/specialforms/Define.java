@@ -29,7 +29,7 @@ public enum Define implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    checkDefinitionContext(expression, env);
+    evaluator.checkDefinitionContext(expression, env);
 
     Object id = expression.get(1);
     if (id instanceof SCMSymbol) {
@@ -107,36 +107,6 @@ public enum Define implements ISpecialForm {
           }
         }
       }
-    }
-  }
-
-  // FIXME Nested forms: (define a (begin 1 2 (define b 2) 3))
-  /* Check that definitions are top-only forms (in definition context) */
-  public static void checkDefinitionContext(List expression, Environment env) {
-    boolean definitionsAllowed = true;
-    boolean hasAtLeastOneExpression = false;
-    for (int i = 2; i < expression.size(); i++) {
-        /* Check that definitions are in definition context only */
-      Object o = expression.get(i);
-      if (SCMCons.isPair(o)) {
-        Object op = env.findOrNull(((List) o).get(0));
-        if ((op instanceof Define)) {
-          if (!definitionsAllowed) {
-            throw new IllegalSyntaxException("eval: definition in expression context, where definitions are not allowed, in form: " + expression);
-          }
-          /* Inline Define */
-          ((List)o).set(0, op);
-        } else {
-          definitionsAllowed = false;
-          hasAtLeastOneExpression = true;
-        }
-      } else {
-        definitionsAllowed = false;
-        hasAtLeastOneExpression = true;
-      }
-    }
-    if (!hasAtLeastOneExpression) {
-      throw new IllegalSyntaxException("define: not allowed in an expression context in form: " + expression);
     }
   }
 

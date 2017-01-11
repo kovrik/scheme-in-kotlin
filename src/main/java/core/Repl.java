@@ -73,10 +73,8 @@ public class Repl {
         /* Read and parse a list of S-expressions from Stdin */
         List<Object> sexps = reader.read();
         for (Object expr : sexps) {
-          /* Expand macros */
-          Object expanded = macroexpand(expr);
           /* Evaluate each S-expression */
-          Object result = evaluator.eval(expanded, env);
+          Object result = evaluator.eval(expr, env);
           if (result != null && result != UNSPECIFIED) {
             /* Put result into environment */
             SCMSymbol id = getNextID();
@@ -95,11 +93,6 @@ public class Repl {
   private static void error(Exception e) throws IOException {
     currentOutputPort.writeln("ERROR: " + e.getMessage());
     currentOutputPort.flush();
-  }
-
-  // TODO Not implemented yet
-  private static Object macroexpand(Object sexp) {
-    return sexp;
   }
 
   public static SCMInputPort getCurrentInputPort() {
