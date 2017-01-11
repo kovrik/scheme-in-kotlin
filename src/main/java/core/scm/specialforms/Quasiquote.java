@@ -1,14 +1,16 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.VectorToList;
-import core.scm.*;
+import core.scm.SCMCons;
+import core.scm.SCMMutableVector;
+import core.scm.SCMSymbol;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public enum Quasiquote implements ISpecialForm {
   public static final SCMSymbol QUASIQUOTE_SYMBOL = new SCMSymbol(syntax);
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 2) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
@@ -49,7 +51,7 @@ public enum Quasiquote implements ISpecialForm {
    * http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf
    */
   // TODO Simplify
-  private Object quasiquote(Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquote(Object expr, Environment env, Evaluator evaluator) {
     if (expr instanceof SCMMutableVector) {
       SCMMutableVector vector = (SCMMutableVector) expr;
       if (vector.length() == 0) {
@@ -88,7 +90,7 @@ public enum Quasiquote implements ISpecialForm {
   }
 
   // TODO Optimize and simplify
-  private Object quasiquoteList(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquoteList(int level, Object expr, Environment env, Evaluator evaluator) {
     List list = (List)expr;
     boolean isList = (SCMCons.isList(list));
     SCMCons result = SCMCons.list();
@@ -153,7 +155,7 @@ public enum Quasiquote implements ISpecialForm {
   }
 
   // TODO Optimize vector->list and list-<vector conversions
-  private Object quasiquoteVector(int level, Object expr, IEnvironment env, IEvaluator evaluator) {
+  private Object quasiquoteVector(int level, Object expr, Environment env, Evaluator evaluator) {
     SCMCons list = VectorToList.vectorToList((SCMMutableVector) expr);
     Object result = quasiquoteList(level, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead

@@ -1,9 +1,12 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.*;
+import core.scm.SCMBoolean;
+import core.scm.SCMSymbol;
+import core.scm.SCMTailCall;
+import core.scm.SCMUnspecified;
 
 import java.util.List;
 
@@ -23,7 +26,7 @@ public enum Cond implements ISpecialForm {
   private static final String syntax = "cond";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     for (int i = 1; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {

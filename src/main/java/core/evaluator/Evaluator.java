@@ -1,8 +1,6 @@
 package core.evaluator;
 
 import core.environment.Environment;
-import core.environment.IEnvironment;
-import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
@@ -18,16 +16,15 @@ import core.writer.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Evaluator implements IEvaluator {
+public class Evaluator {
 
-  @Override
-  public Object eval(Object sexp, IEnvironment env) {
+  public Object eval(Object sexp, Environment env) {
     /* TCO: This is our Trampoline */
     Object result;
     try {
       result = evalIter(sexp, env);
       while (result instanceof SCMTailCall) {
-        IEnvironment context = ((SCMTailCall) result).getContext();
+        Environment context = ((SCMTailCall) result).getContext();
         if (context == null) {
           context = env;
         }
@@ -51,7 +48,7 @@ public class Evaluator implements IEvaluator {
    * Returns the end result or TailCall object.
    * If TailCall object is returned, then eval() method (trampoline) continues evaluation.
    */
-  private Object evalIter(Object sexp, IEnvironment env) {
+  private Object evalIter(Object sexp, Environment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
       Object o = env.find(sexp);
@@ -69,7 +66,7 @@ public class Evaluator implements IEvaluator {
   /**
    * Evaluate a list
    */
-  private Object evlis(List<Object> sexp, IEnvironment env) {
+  private Object evlis(List<Object> sexp, Environment env) {
     if (sexp.isEmpty()) {
       throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
     }
@@ -124,7 +121,7 @@ public class Evaluator implements IEvaluator {
     if (fn instanceof SCMProcedure) {
       SCMProcedure proc = (SCMProcedure)fn;
       /* Bind args and put them into new local environment */
-      IEnvironment localEnvironment = proc.bindArgs(args);
+      Environment localEnvironment = proc.bindArgs(args);
       return evlis(proc.getBody(), localEnvironment);
     }
 
@@ -140,7 +137,7 @@ public class Evaluator implements IEvaluator {
 
   // TODO Move out of Evaluator into call/cc
   /* Actual call-with-current-continuation */
-  private Object callcc(IFn proc, IEnvironment env) {
+  private Object callcc(IFn proc, Environment env) {
     Continuation cont = new Continuation();
     try {
       /* Pass Continuation to the Procedure: (proc cont) */
@@ -160,7 +157,7 @@ public class Evaluator implements IEvaluator {
 
   // TODO Move out of Evaluator into dynamic-wind
   /* Actual dynamic-wind */
-  private Object dynamicWind(IFn pre, IFn value, IFn post, IEnvironment env) {
+  private Object dynamicWind(IFn pre, IFn value, IFn post, Environment env) {
     /* Evaluate before-thunk first */
     eval(SCMCons.list(pre), env);
     try {
@@ -175,7 +172,7 @@ public class Evaluator implements IEvaluator {
   /**
    * Evaluate forced Promise
    */
-  private Object evalForcedPromise(SCMPromise promise, IEnvironment env) {
+  private Object evalForcedPromise(SCMPromise promise, Environment env) {
     try {
       /* Evaluate the body */
       Object result = eval(promise.getBody(), env);

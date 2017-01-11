@@ -1,9 +1,10 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.*;
+import core.scm.SCMBoolean;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public enum If implements ISpecialForm {
   private static final String syntax = "if";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     int size = expression.size();
     if (size < 3 || size > 4) {
       throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", size - 1));

@@ -1,12 +1,17 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.AFn;
-import core.scm.*;
+import core.scm.SCMCons;
+import core.scm.SCMProcedure;
+import core.scm.SCMSymbol;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -22,7 +27,7 @@ public enum Lambda implements ISpecialForm {
   private static final String syntax = "lambda";
 
   @Override
-  public SCMProcedure eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public SCMProcedure eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
@@ -80,7 +85,7 @@ public enum Lambda implements ISpecialForm {
   }
 
   // TODO Check if it works properly. See Define.replaceSelfCalls()
-  private static void inline(List<Object> body, IEnvironment env) {
+  private static void inline(List<Object> body, Environment env) {
     LinkedList<List> queue = new LinkedList<>();
     /* Queue will hold body and all nested lists (if any) */
     queue.add(body);

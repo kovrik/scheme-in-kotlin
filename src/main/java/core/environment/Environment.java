@@ -5,33 +5,29 @@ import core.scm.SCMClass;
 
 import java.util.*;
 
-public class Environment implements IEnvironment, ISCMClass {
+public class Environment implements ISCMClass {
 
   private Map<Object, Object> context = new HashMap<>();
 
-  private IEnvironment outer = null;
+  private Environment outer = null;
 
-  public Environment(IEnvironment outer) {
+  public Environment(Environment outer) {
     this.outer = outer;
   }
 
-  @Override
   public Object get(Object key) {
     return context.get(key);
   }
 
-  @Override
   public boolean containsKey(Object key) {
     return context.containsKey(key);
   }
 
-  @Override
   public List<String> getLibraryProcedures() {
     /* No pre-defined procedures. Override if required */
     return Collections.emptyList();
   }
 
-  @Override
   public Object find(Object key) {
     Object value = context.get(key);
     if (value == null) {
@@ -43,7 +39,6 @@ public class Environment implements IEnvironment, ISCMClass {
     return value;
   }
 
-  @Override
   public Object findOrNull(Object key) {
     Object value = context.get(key);
     if (value == null) {
@@ -55,7 +50,6 @@ public class Environment implements IEnvironment, ISCMClass {
     return value;
   }
 
-  @Override
   public Object findAndPut(Object key, Object value) {
     Object v = context.get(key);
     if (v == null) {
@@ -67,7 +61,6 @@ public class Environment implements IEnvironment, ISCMClass {
     return context.put(key, value);
   }
 
-  @Override
   public Object put(Object key, Object value) {
     return context.put(key, value);
   }
@@ -77,8 +70,7 @@ public class Environment implements IEnvironment, ISCMClass {
     return SCMClass.ENVIRONMENT;
   }
 
-  @Override
-  public IEnvironment getOuter() {
+  public Environment getOuter() {
     return outer;
   }
 

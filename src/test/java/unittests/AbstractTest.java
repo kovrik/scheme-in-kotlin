@@ -1,15 +1,14 @@
 package unittests;
 
 import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
+import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.evaluator.IEvaluator;
 import core.reader.StringReader;
 
 public abstract class AbstractTest {
 
   private final StringReader reader = new StringReader();
-  protected final IEvaluator eval = new Evaluator();
+  protected final Evaluator eval = new Evaluator();
   protected final DefaultEnvironment env = new DefaultEnvironment();
   {
     /* Eval lib procedures */
@@ -20,7 +19,7 @@ public abstract class AbstractTest {
     }
   }
   /* Helper method: evaluates first S-expression */
-  protected Object eval(String sexp, IEnvironment env) {
+  protected Object eval(String sexp, Environment env) {
     return eval.eval(reader.readFirst(sexp), env);
   }
 }

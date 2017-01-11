@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 
@@ -15,7 +15,7 @@ public enum UnquoteSplicing implements ISpecialForm {
   public static final SCMSymbol UNQUOTE_SPLICING_SYMBOL = new SCMSymbol(syntax);
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     // Implemented in quasiquote
     throw IllegalSyntaxException.of(syntax, expression, "not in quasiquote");
   }

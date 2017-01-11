@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
@@ -19,7 +19,7 @@ public enum Set implements ISpecialForm {
   private static final String syntax = "set!";
 
   @Override
-  public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 3) {
       throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", expression.size() - 1));
     }

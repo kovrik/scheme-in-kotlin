@@ -1,9 +1,8 @@
 package core;
 
 import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
+import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.evaluator.IEvaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
@@ -29,8 +28,8 @@ public class Repl {
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "> ";
 
-  private static final IEvaluator evaluator = new Evaluator();
-  private static final IEnvironment defaultEnvironment = new DefaultEnvironment();
+  private static final Evaluator evaluator = new Evaluator();
+  private static final Environment defaultEnvironment = new DefaultEnvironment();
 
   private static SCMInputPort currentInputPort = new SCMInputPort(System.in);
   private static final Object INPUT_PORT_LOCK = new Object();
@@ -62,7 +61,7 @@ public class Repl {
     return new SCMSymbol("$" + i);
   }
 
-  private static void repl(String welcomeMessage, String prompt, IEnvironment env) throws IOException {
+  private static void repl(String welcomeMessage, String prompt, Environment env) throws IOException {
     currentOutputPort.writeln(welcomeMessage);
     //noinspection InfiniteLoopStatement
     while (true) {

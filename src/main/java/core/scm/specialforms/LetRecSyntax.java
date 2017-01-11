@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public enum LetRecSyntax implements ISpecialForm {
   private static final String syntax = "letrec-syntax";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
   }
 

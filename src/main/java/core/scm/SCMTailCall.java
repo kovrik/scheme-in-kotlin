@@ -1,6 +1,6 @@
 package core.scm;
 
-import core.environment.IEnvironment;
+import core.environment.Environment;
 
 /**
  * Tail Call object is used for Tail Call Optimization.
@@ -14,9 +14,9 @@ import core.environment.IEnvironment;
 public class SCMTailCall {
 
   private final Object expr;
-  private final IEnvironment context;
+  private final Environment context;
 
-  public SCMTailCall(Object expr, IEnvironment context) {
+  public SCMTailCall(Object expr, Environment context) {
     this.expr = expr;
     this.context = context;
   }
@@ -25,7 +25,7 @@ public class SCMTailCall {
     return expr;
   }
 
-  public IEnvironment getContext() {
+  public Environment getContext() {
     return context;
   }
 }

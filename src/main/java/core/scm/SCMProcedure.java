@@ -1,7 +1,6 @@
 package core.scm;
 
 import core.environment.Environment;
-import core.environment.IEnvironment;
 import core.procedures.AFn;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class SCMProcedure extends AFn {
   private List<Object> body;
 
   /* Lexical environment */
-  private IEnvironment localEnvironment = null;
+  private Environment localEnvironment = null;
 
   /* Minimum number of arguments */
   private int minArgs = 0;
@@ -36,7 +35,7 @@ public class SCMProcedure extends AFn {
     return maxArgs;
   }
 
-  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment, boolean isVariadic) {
+  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, Environment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.NIL : args;
     this.body = body;
@@ -62,9 +61,9 @@ public class SCMProcedure extends AFn {
     this.name = name;
   }
 
-  public IEnvironment bindArgs(List<Object> values) {
+  public Environment bindArgs(List<Object> values) {
     /* Evaluate mandatory params and put values into new local environment */
-    IEnvironment env = new Environment(this.localEnvironment);
+    Environment env = new Environment(this.localEnvironment);
     List<SCMSymbol> args = getArgs();
     for (int i = 0; i < minArgs(); i++) {
       env.put(args.get(i), values.get(i));

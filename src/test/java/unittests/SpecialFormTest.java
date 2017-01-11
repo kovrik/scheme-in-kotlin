@@ -2,7 +2,7 @@ package unittests;
 
 import core.Repl;
 import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
+import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantPromiseException;
 import core.exceptions.WrongTypeException;
@@ -18,7 +18,8 @@ import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.*;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SpecialFormTest extends AbstractTest {
 
@@ -508,7 +509,7 @@ public class SpecialFormTest extends AbstractTest {
     SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -558,7 +559,7 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testRedefineSpecialForms() {
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     eval("(define (and . args) #f)", tempEnv);
     eval("(define begin 5)", tempEnv);
     eval("(define if 4)", tempEnv);

@@ -1,8 +1,7 @@
 package core.scm.specialforms;
 
 import core.environment.Environment;
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMTailCall;
 
@@ -29,13 +28,13 @@ public enum LetRec implements ISpecialForm {
   private static final String syntax = "letrec";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
     Define.checkDefinitionContext(expression, env);
 
-    IEnvironment localEnv = new Environment(env);
+    Environment localEnv = new Environment(env);
     List<List> bindings = (List<List>)expression.get(1);
     /* Bind variables to fresh locations holding undefined values */
     for (List binding : bindings) {

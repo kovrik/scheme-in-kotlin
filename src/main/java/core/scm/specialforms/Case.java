@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
 import core.scm.SCMSymbol;
@@ -27,7 +27,7 @@ public enum Case implements ISpecialForm {
   private static final String syntax = "case";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     /* Save string representation of expression before evaluation */
     String exprString = expression.toString();
     if (expression.size() <= 1) {

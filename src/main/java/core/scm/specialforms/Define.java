@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
@@ -25,7 +25,7 @@ public enum Define implements ISpecialForm {
   private static final String syntax = "define";
 
   @Override
-  public SCMUnspecified eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
@@ -112,7 +112,7 @@ public enum Define implements ISpecialForm {
 
   // FIXME Nested forms: (define a (begin 1 2 (define b 2) 3))
   /* Check that definitions are top-only forms (in definition context) */
-  public static void checkDefinitionContext(List expression, IEnvironment env) {
+  public static void checkDefinitionContext(List expression, Environment env) {
     boolean definitionsAllowed = true;
     boolean hasAtLeastOneExpression = false;
     for (int i = 2; i < expression.size(); i++) {

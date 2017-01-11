@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.scm.SCMTailCall;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public enum Begin implements ISpecialForm {
   BEGIN;
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     for (int i = 1; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), env);
     }

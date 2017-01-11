@@ -1,7 +1,7 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMPromise;
 
@@ -16,7 +16,7 @@ public enum Delay implements ISpecialForm {
   private static final String syntax = "delay";
 
   @Override
-  public SCMPromise eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public SCMPromise eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(syntax, expression);
     }

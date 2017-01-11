@@ -1,8 +1,8 @@
 package core.scm.specialforms;
 
 import core.Repl;
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMIOException;
 import core.scm.SCMUnspecified;
@@ -27,7 +27,7 @@ public enum Time implements ISpecialForm {
   private final String syntax = "time";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(syntax, expression);
     }

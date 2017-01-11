@@ -2,7 +2,7 @@ package unittests;
 
 import core.Repl;
 import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
+import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
 import core.scm.SCMOutputPort;
@@ -31,7 +31,7 @@ public class EvaluatorTest extends AbstractTest {
 
   @Test
   public void testEvalLocalState() {
-    IEnvironment lenv = new DefaultEnvironment();
+    Environment lenv = new DefaultEnvironment();
     eval("(define (make-withdraw balance) (lambda (amount) (if (>= balance amount) (begin (set! balance (- balance amount)) balance) \"Insufficient funds\")))", lenv);
     eval("(define W1 (make-withdraw 100))", lenv);
     eval("(define W2 (make-withdraw 100))", lenv);
@@ -111,7 +111,7 @@ public class EvaluatorTest extends AbstractTest {
     SCMOutputPort old = Repl.getCurrentOutputPort();
     Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
 
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);

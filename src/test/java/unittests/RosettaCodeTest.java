@@ -2,7 +2,7 @@ package unittests;
 
 import core.Repl;
 import core.environment.DefaultEnvironment;
-import core.environment.IEnvironment;
+import core.environment.Environment;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.scm.SCMCons;
@@ -191,7 +191,7 @@ public class RosettaCodeTest extends AbstractTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -245,7 +245,7 @@ public class RosettaCodeTest extends AbstractTest {
                           "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
                           "      (y a a1 b c d e))))";
 
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -301,7 +301,7 @@ public class RosettaCodeTest extends AbstractTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
-    IEnvironment tempEnv = new DefaultEnvironment();
+    Environment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);

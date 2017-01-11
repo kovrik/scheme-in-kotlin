@@ -1,8 +1,7 @@
 package core.scm.specialforms;
 
 import core.environment.Environment;
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
+import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.*;
 
@@ -22,7 +21,7 @@ public enum Do implements ISpecialForm {
   private static final String syntax = "do";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
@@ -31,7 +30,7 @@ public enum Do implements ISpecialForm {
     if (!(bs instanceof List)) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    IEnvironment tempEnv = new Environment(env);
+    Environment tempEnv = new Environment(env);
     List bindings = (List) bs;
     List<SCMCons> steps = SCMCons.list();
     /* Init bindings */

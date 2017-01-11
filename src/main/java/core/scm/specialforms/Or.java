@@ -1,8 +1,9 @@
 package core.scm.specialforms;
 
-import core.environment.IEnvironment;
-import core.evaluator.IEvaluator;
-import core.scm.*;
+import core.environment.Environment;
+import core.evaluator.Evaluator;
+import core.scm.SCMBoolean;
+import core.scm.SCMTailCall;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public enum Or implements ISpecialForm {
   private static final String syntax = "or";
 
   @Override
-  public Object eval(List<Object> expression, IEnvironment env, IEvaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     Object result = SCMBoolean.FALSE;
     if (expression.size() > 1) {
       for (int i = 1; i < expression.size() - 1; i++) {
