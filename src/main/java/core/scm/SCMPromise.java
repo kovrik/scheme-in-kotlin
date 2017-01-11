@@ -10,6 +10,7 @@ public class SCMPromise implements ISCMClass {
 
   public enum State {
     PENDING,
+    FORCED, // TODO Get rid of this status
     FULFILLED,
     REJECTED
   }

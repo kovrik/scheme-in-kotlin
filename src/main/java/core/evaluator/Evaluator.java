@@ -128,7 +128,7 @@ public class Evaluator implements IEvaluator {
     Object result = AFn.apply(fn, args);
 
     /* Handle Promise forced to evaluation by Force procedure */
-    if (result instanceof SCMPromise) {
+    if ((result instanceof SCMPromise) && ((SCMPromise)result).getState() == SCMPromise.State.FORCED) {
       result = evalForcedPromise((SCMPromise)result, env);
     }
     return result;
