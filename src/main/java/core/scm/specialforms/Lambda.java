@@ -42,12 +42,12 @@ public enum Lambda implements ISpecialForm {
     if (args instanceof List) {
       /* Check args for duplicates */
       if (!((List) args).isEmpty()) {
-        Map<Object, Object> temp = new HashMap<>(((List) args).size());
+        HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
-          if (temp.containsKey(o)) {
+          if (temp.contains(o)) {
             throw IllegalSyntaxException.of(syntax, expression, String.format("duplicate argument identifier `%s`", o));
           }
-          temp.put(o, o);
+          temp.add(o);
         }
       }
       /* (lambda (arg-id ...+) body ...+) OR
