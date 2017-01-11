@@ -32,11 +32,6 @@ public enum Define implements ISpecialForm {
     checkDefinitionContext(expression, env);
 
     Object id = expression.get(1);
-
-    if (env.getOuter() != null) {
-      // TODO Check that internal DEFINES are top-only forms!!!
-    }
-
     if (id instanceof SCMSymbol) {
       /* Variable definition */
       if (expression.size() > 3) {
@@ -128,6 +123,8 @@ public enum Define implements ISpecialForm {
           if (!definitionsAllowed) {
             throw new IllegalSyntaxException("eval: definition in expression context, where definitions are not allowed, in form: " + expression);
           }
+          /* Inline Define */
+          ((List)o).set(0, op);
         } else {
           definitionsAllowed = false;
           hasAtLeastOneExpression = true;
