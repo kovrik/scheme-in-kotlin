@@ -26,10 +26,6 @@ public class SCMProcedure extends AFn {
   /* Maximum number of arguments */
   private int maxArgs = 255;
 
-  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment) {
-    this(name, args, body, localEnvironment, false);
-  }
-
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.NIL : args;

@@ -35,6 +35,8 @@ public enum Lambda implements ISpecialForm {
     // FIXME Should inline symbols at call sites only! See Knuth's Man Or Boy Test
 //    inline(body, env);
 
+    List params;
+    boolean variadic = false;
     /* Check if args is a List or not */
     Object args = expression.get(1);
     if (args instanceof List) {
@@ -52,11 +54,11 @@ public enum Lambda implements ISpecialForm {
        * (lambda (arg-id ...+ . rest-id) body ...+) */
       if (SCMCons.isList(args)) {
         /* args is a proper list, hence non-variadic lambda */
-        return new SCMProcedure("", (List<SCMSymbol>)args, body, env);
+        params = (List<SCMSymbol>)args;
       } else {
         /* args is an improper list, hence variadic lambda */
-        List<SCMSymbol> params = SCMCons.flatten((List<SCMSymbol>)args);
-        return new SCMProcedure("", params, body, env, true);
+        params = SCMCons.flatten((List<SCMSymbol>)args);
+        variadic = true;
       }
     } else {
       /* Variadic arity */
@@ -64,8 +66,10 @@ public enum Lambda implements ISpecialForm {
       if (!(args instanceof SCMSymbol)) {
         throw new IllegalSyntaxException(String.format("lambda: bad argument sequence (%s) in form: %s",  args, expression));
       }
-      return new SCMProcedure("", SCMCons.list((SCMSymbol)args), body, env, true);
+      params = SCMCons.list((SCMSymbol)args);
+      variadic = true;
     }
+    return new SCMProcedure("", params, body, env, variadic);
   }
 
   @Override
