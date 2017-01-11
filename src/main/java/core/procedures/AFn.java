@@ -4,14 +4,40 @@ import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
 import core.writer.Writer;
 
 import java.util.List;
 
 /* Abstract superclass of all functions */
+@FnArgs
 public abstract class AFn implements IFn<Object[], Object> {
+
+  /* Default FnArgs annotation instance */
+  private static final FnArgs DEFAULT = AFn.class.getAnnotation(FnArgs.class);
+
+  /* Save FnArgs annotation of current class */
+  private final FnArgs fnArgs = (getClass().isAnnotationPresent(FnArgs.class)) ?
+                                 getClass().getAnnotation(FnArgs.class) : DEFAULT;
+
+  public int minArgs() {
+    return fnArgs.minArgs();
+  }
+
+  public int maxArgs() {
+    return fnArgs.maxArgs();
+  }
+
+  public Class<?>[] mandatoryArgsTypes() {
+    return fnArgs.mandatoryArgsTypes();
+  }
+
+  public Class<?>[] restArgsType() {
+    return fnArgs.restArgsType();
+  }
+
+  public Class<?>[] lastArgType() {
+    return fnArgs.lastArgType();
+  }
 
   /* Return true if function is pure (referentially transparent) */
   public boolean isPure() {
@@ -57,67 +83,51 @@ public abstract class AFn implements IFn<Object[], Object> {
    * (if function is annotated with FnArgs)
    */
   public void checkArgs(List<Object> args) {
-    /* Check if FnArgs annotation is present */
-    if (getClass().isAnnotationPresent(FnArgs.class)) {
-      FnArgs fnArgs = getClass().getAnnotation(FnArgs.class);
-      /* Check arg count */
-      int actualArgCount = args.size();
-      if (actualArgCount < fnArgs.minArgs()) {
-        throw new ArityException(actualArgCount, fnArgs.minArgs(), getName());
-      }
-      if (actualArgCount > fnArgs.minArgs() && (fnArgs.minArgs() == fnArgs.maxArgs())) {
-        throw new ArityException(actualArgCount, fnArgs.minArgs(), getName());
-      }
-      if (actualArgCount > fnArgs.maxArgs()) {
-        throw new ArityException(actualArgCount, getName());
-      }
-
-      /* Get arg types */
-      Class<?>[] mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
-      Class<?> restArgsType = null;
-      Class<?> lastArgType = null;
-      if (fnArgs.restArgsType().length > 0) {
-        restArgsType = fnArgs.restArgsType()[0];
-      }
-      if (fnArgs.lastArgType().length > 0) {
-        lastArgType = fnArgs.lastArgType()[0];
-      }
-
-      /* Now check arg types (if function is annotated with FnArgs */
-      for (int i = 0; i < args.size(); i++) {
-        Object arg = args.get(i);
-        /* Mandatory args */
-        if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
-          if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
-            throw new WrongTypeException(Writer.write(mandatoryArgsTypes[i]), arg);
-          }
-          continue;
-        }
-        /* Last argument (optional special case) */
-        if (i == args.size() - 1 && (lastArgType != null)) {
-          if (!(SCMClass.checkType(arg, lastArgType))) {
-            throw new WrongTypeException(Writer.write(lastArgType), arg);
-          }
-          continue;
-        }
-        /* Rest args */
-        if (restArgsType != null) {
-          if (!(SCMClass.checkType(arg, restArgsType))) {
-            throw new WrongTypeException(Writer.write(restArgsType), arg);
-          }
-        }
-      }
+    /* Check arg count */
+    int actualArgCount = args.size();
+    if (actualArgCount < minArgs()) {
+      throw new ArityException(actualArgCount, minArgs(), getName());
     }
-    if (this instanceof SCMProcedure) {
-      SCMProcedure fn = (SCMProcedure) this;
-      List<SCMSymbol> params = fn.getArgs();
-      int minArgs = fn.minArgs();
-      /* Check arity (mandatory params):
-       * - non-variadic function should get expected number of mandatory arguments
-       * - variadic function should get expected number of mandatory arguments or more (but not less) */
-      boolean isVariadic = fn.minArgs() != fn.maxArgs();
-      if ((isVariadic && (args.size() < minArgs)) || (!isVariadic && (args.size() != minArgs))) {
-        throw new ArityException(args.size(), params.size(), fn.getName());
+    if (actualArgCount > minArgs() && (minArgs() == maxArgs())) {
+      throw new ArityException(actualArgCount, minArgs(), getName());
+    }
+    if (actualArgCount > maxArgs()) {
+      throw new ArityException(actualArgCount, getName());
+    }
+
+    /* Get arg types */
+    Class<?>[] mandatoryArgsTypes = mandatoryArgsTypes();
+    Class<?> restArgsType = null;
+    Class<?> lastArgType = null;
+    if (restArgsType().length > 0) {
+      restArgsType = restArgsType()[0];
+    }
+    if (lastArgType().length > 0) {
+      lastArgType = lastArgType()[0];
+    }
+
+    /* Now check arg types (if function is annotated with FnArgs */
+    for (int i = 0; i < args.size(); i++) {
+      Object arg = args.get(i);
+      /* Mandatory args */
+      if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
+        if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
+          throw new WrongTypeException(Writer.write(mandatoryArgsTypes[i]), arg);
+        }
+        continue;
+      }
+      /* Last argument (optional special case) */
+      if (i == args.size() - 1 && (lastArgType != null)) {
+        if (!(SCMClass.checkType(arg, lastArgType))) {
+          throw new WrongTypeException(Writer.write(lastArgType), arg);
+        }
+        continue;
+      }
+      /* Rest args */
+      if (restArgsType != null) {
+        if (!(SCMClass.checkType(arg, restArgsType))) {
+          throw new WrongTypeException(Writer.write(restArgsType), arg);
+        }
       }
     }
   }
@@ -129,13 +139,8 @@ public abstract class AFn implements IFn<Object[], Object> {
    * Calls variadic apply() otherwise.
    */
   public static Object apply(AFn fn, List<Object> args) {
-    /* Get FnArgs annotation if present */
-    int arity = -1;
-    if (fn.getClass().isAnnotationPresent(FnArgs.class)) {
-      FnArgs fnArgs = fn.getClass().getAnnotation(FnArgs.class);
-      /* if minArgs == maxArgs, then function is not variadic, hence get arity */
-      arity = (fnArgs.minArgs() == fnArgs.maxArgs()) ? fnArgs.minArgs() : arity;
-    }
+    /* if minArgs == maxArgs, then function is not variadic, hence get arity */
+    int arity = (fn.minArgs() == fn.maxArgs()) ? fn.minArgs() : -1;
     switch (arity) {
       case 0:  return fn.apply0();
       case 1:  return fn.apply1(args.get(0));

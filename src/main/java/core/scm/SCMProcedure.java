@@ -26,6 +26,16 @@ public class SCMProcedure extends AFn {
   /* Maximum number of arguments */
   private int maxArgs = 255;
 
+  @Override
+  public int minArgs() {
+    return minArgs;
+  }
+
+  @Override
+  public int maxArgs() {
+    return maxArgs;
+  }
+
   public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, IEnvironment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.NIL : args;
@@ -34,7 +44,6 @@ public class SCMProcedure extends AFn {
     if (isVariadic) {
       /* Do not count rest arg */
       this.minArgs = this.args.size() - 1;
-      this.maxArgs = this.args.size();
     } else {
       this.minArgs = this.args.size();
       this.maxArgs = this.args.size();
@@ -53,14 +62,6 @@ public class SCMProcedure extends AFn {
     this.name = name;
   }
 
-  public int minArgs() {
-    return minArgs;
-  }
-
-  public int maxArgs() {
-    return maxArgs;
-  }
-
   public IEnvironment bindArgs(List<Object> values) {
     /* Evaluate mandatory params and put values into new local environment */
     IEnvironment env = new Environment(this.localEnvironment);
@@ -72,8 +73,8 @@ public class SCMProcedure extends AFn {
     if (minArgs != maxArgs) {
       /* Optional params: pass them as a list bound to the last param.
        * Everything AFTER mandatory params goes to that list. */
-      List<Object> varargs = SCMCons.list(values.subList(minArgs(), values.size()));
-      env.put(args.get(minArgs()), varargs);
+      List<Object> rest = SCMCons.list(values.subList(minArgs(), values.size()));
+      env.put(args.get(minArgs()), rest);
     }
     return env;
   }
