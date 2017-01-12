@@ -4,17 +4,20 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
 
+/*
+ * "Upward" one-shot continuation
+ */
 @FnArgs(minArgs = 1, maxArgs = 1)
 public class Continuation extends AFn {
 
-  private boolean valid = true;
+  private boolean invoked = false;
 
-  public boolean isValid() {
-    return valid;
+  public boolean isInvoked() {
+    return invoked;
   }
 
   public void invalidate() {
-    this.valid = false;
+    this.invoked = true;
   }
 
   @Override

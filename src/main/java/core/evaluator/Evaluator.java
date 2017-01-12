@@ -43,7 +43,7 @@ public class Evaluator {
         result = evalIter(((SCMTailCall) result).getExpr(), context);
       }
     } catch (CalledContinuation cc) {
-      if (!cc.getContinuation().isValid()) {
+      if (cc.getContinuation().isInvoked()) {
         /* We have one-shot continuations only, not full continuations.
          * It means that we can't use the same continuation multiple times. */
         throw new ReentrantContinuationException();
