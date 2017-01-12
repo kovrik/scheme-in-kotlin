@@ -10,7 +10,6 @@ import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.Continuation;
 import core.procedures.continuations.DynamicWind;
 import core.scm.*;
-import core.scm.specialforms.Define;
 import core.scm.specialforms.ISpecialForm;
 import core.writer.Writer;
 
@@ -19,17 +18,7 @@ import java.util.List;
 
 public class Evaluator {
 
-  private enum ExpansionContext {
-    MACROEXPANSION, // TODO Should be a separate thing?
-    TOP_LEVEL,
-    INTERNAL_DEFINITIONS,
-    EXPRESSIONS
-  }
-
-  private ExpansionContext currentExpansionContext;
-
   private Object macroexpand(Object sexp) {
-    currentExpansionContext = ExpansionContext.MACROEXPANSION;
     return sexp;
   }
 
@@ -37,14 +26,6 @@ public class Evaluator {
     /* Macroexpand sexp */
     // TODO Implement and move out of eval()
     sexp = macroexpand(sexp);
-
-    /* Now begin evaluation */
-    /* Set current expansion context level */
-    if (env.getOuter() == null) {
-      currentExpansionContext = ExpansionContext.TOP_LEVEL;
-    } else {
-      currentExpansionContext = ExpansionContext.INTERNAL_DEFINITIONS;
-    }
 
     /* TCO: This is our Trampoline */
     Object result;
@@ -214,36 +195,6 @@ public class Evaluator {
       /* Memoize the result */
       promise.setResult(e);
       throw e;
-    }
-  }
-
-
-  // FIXME Nested forms: (define a (begin 1 2 (define b 2) 3))
-  /* Check that definitions are top-only forms (in definition context) */
-  public void checkDefinitionContext(List expression, Environment env) {
-    boolean hasAtLeastOneExpression = false;
-    for (int i = 2; i < expression.size(); i++) {
-        /* Check that definitions are in definition context only */
-      Object o = expression.get(i);
-      if (SCMCons.isPair(o)) {
-        Object op = env.findOrNull(((List) o).get(0));
-        if ((op instanceof Define)) {
-          if (currentExpansionContext == ExpansionContext.EXPRESSIONS) {
-            throw new IllegalSyntaxException("eval: definition in expression context, where definitions are not allowed, in form: " + expression);
-          }
-          /* Inline Define */
-          ((List)o).set(0, op);
-        } else {
-          currentExpansionContext = ExpansionContext.EXPRESSIONS;
-          hasAtLeastOneExpression = true;
-        }
-      } else {
-        currentExpansionContext = ExpansionContext.EXPRESSIONS;
-        hasAtLeastOneExpression = true;
-      }
-    }
-    if (!hasAtLeastOneExpression) {
-      throw new IllegalSyntaxException("define: not allowed in an expression context in form: " + expression);
     }
   }
 }

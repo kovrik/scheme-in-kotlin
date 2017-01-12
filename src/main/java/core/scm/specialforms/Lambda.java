@@ -31,7 +31,6 @@ public enum Lambda implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    evaluator.checkDefinitionContext(expression, env);
 
     /* Add implicit `begin` */
     // TODO Is implicit BEGIN enough to have TCO?

@@ -29,7 +29,6 @@ public enum Define implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    evaluator.checkDefinitionContext(expression, env);
 
     Object id = expression.get(1);
     if (id instanceof SCMSymbol) {

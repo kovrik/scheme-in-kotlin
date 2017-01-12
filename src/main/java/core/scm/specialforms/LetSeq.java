@@ -22,7 +22,6 @@ public enum LetSeq implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(syntax, expression);
     }
-    evaluator.checkDefinitionContext(expression, env);
 
     Environment localEnv = new Environment(env);
     List bindings = (List)expression.get(1);
