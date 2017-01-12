@@ -1,19 +1,12 @@
-* TODO: [30/40]
+* TODO: [31/40]
 
+** TODO [#A] Macros
 ** TODO [#A] Math procedures: fix precision loss
 ** TODO [#A] Expt special cases
-** TODO [#A] Math Unit Tests: reading Complex numbers, Trigonometry, Complex math, Exp etc.
+** TODO [#A] Expt for big fractional powers
 ** TODO [#A] Inexactness taint
 ** TODO [#A] Downcast numbers to the smallest possible type
 ** TODO [#A] SCMSmallRational and SCMSmallComplex
-** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
-** TODO [#B] Performance [0/6]
-*** TODO Optimize math operations
-*** TODO Smaller numerical types
-*** TODO Cheaper function calls
-*** TODO Caching
-*** TODO Reduce number of new objects
-*** TODO Inline procedures
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 20:45]
@@ -56,6 +49,17 @@ CLOSED: [2016-11-11 Fri 22:32]
 **** DONE eval — tail call to evaluate the form
 CLOSED: [2016-12-05 Mon 20:46]
 **** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
+** TODO [#B] Expansion Context Levels
+** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
+** TODO [#B] Performance [0/6]
+*** TODO Optimize math operations
+*** TODO Smaller numerical types
+*** TODO Cheaper function calls
+*** TODO Caching
+*** TODO Reduce number of new objects
+*** TODO Inline procedures
+** DONE [#A] Math Unit Tests: reading Complex numbers, Trigonometry, Complex math, Exp etc.
+CLOSED: [2017-01-12 Thu 13:37]
 ** DONE [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))
 CLOSED: [2016-11-29 Tue 11:09]
 ** DONE [#A] Expt with fractional power for BigDecimals
