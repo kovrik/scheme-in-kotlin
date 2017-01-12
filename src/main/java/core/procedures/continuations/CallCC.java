@@ -14,7 +14,7 @@ public class CallCC extends AFn {
 
   @Override
   public String getName() {
-    return "call/cc";
+    return "call-with-current-continuation";
   }
 
   @Override

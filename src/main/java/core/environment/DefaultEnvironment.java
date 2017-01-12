@@ -338,7 +338,7 @@ public final class DefaultEnvironment extends Environment {
     /* Constants and special cases */
     put(new SCMSymbol("pi"),  Math.PI);
     put(new SCMSymbol("eof"), SCMEof.EOF);
-    put(new SCMSymbol("call-with-current-continuation"), new CallCC());
+    put(new SCMSymbol("call/cc"), new CallCC());
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
