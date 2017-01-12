@@ -59,8 +59,8 @@ public class Evaluator {
 
   /**
    * One iteration of evaluation.
-   * Returns the end result or TailCall object.
-   * If TailCall object is returned, then eval() method (trampoline) continues evaluation.
+   * Returns the end result or a Thunk object.
+   * If Thunk is returned, then eval() method (trampoline) continues evaluation.
    */
   private Object evalIter(Object sexp, Environment env) {
     if (sexp instanceof SCMSymbol) {

@@ -94,7 +94,6 @@ public enum Do implements ISpecialForm {
       /* Evaluate each expression */
       evaluator.eval(expressions.get(i), tempEnv);
     }
-    /* Return Tail Call of last expression or UNSPECIFIED */
     return new SCMThunk(expressions.get(expressions.size() - 1), tempEnv);
   }
 

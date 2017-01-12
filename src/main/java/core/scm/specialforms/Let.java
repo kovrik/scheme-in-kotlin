@@ -44,7 +44,6 @@ public enum Let implements ISpecialForm {
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), localEnv);
       }
-      /* Return Tail Call of the last expression */
       return new SCMThunk(expression.get(expression.size() - 1), localEnv);
 
     } else if (expression.get(1) instanceof SCMSymbol) {
