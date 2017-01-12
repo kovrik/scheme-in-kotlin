@@ -5,7 +5,7 @@ import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
 import core.scm.SCMSymbol;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public enum Case implements ISpecialForm {
           for (int s = 1; s < subform.size() - 1; s++) {
             evaluator.eval(subform.get(s), env);
           }
-          return new SCMTailCall(subform.get(subform.size() - 1), env);
+          return new SCMThunk(subform.get(subform.size() - 1), env);
         }
         throw IllegalSyntaxException.of(syntax, exprString, "else must be the last clause in subform");
       }
@@ -58,7 +58,7 @@ public enum Case implements ISpecialForm {
           for (int s = 1; i < subform.size() - 1; i++) {
             evaluator.eval(subform.get(s), env);
           }
-          return new SCMTailCall(subform.get(subform.size() - 1), env);
+          return new SCMThunk(subform.get(subform.size() - 1), env);
         }
       }
     }

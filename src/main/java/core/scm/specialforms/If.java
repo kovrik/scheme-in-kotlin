@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMBoolean;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public enum If implements ISpecialForm {
     Object test = expression.get(1);
     Object consequence = expression.get(2);
     if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
-      return new SCMTailCall(consequence, env);
+      return new SCMThunk(consequence, env);
     } else {
       if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
@@ -36,7 +36,7 @@ public enum If implements ISpecialForm {
         return UNSPECIFIED;
       }
       Object alternative = expression.get(3);
-      return new SCMTailCall(alternative, env);
+      return new SCMThunk(alternative, env);
     }
   }
 

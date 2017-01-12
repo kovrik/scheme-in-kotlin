@@ -3,7 +3,7 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public enum LetRec implements ISpecialForm {
       evaluator.eval(expression.get(i), localEnv);
     }
     /* Return Tail Call of the last expression */
-    return new SCMTailCall(expression.get(expression.size() - 1), localEnv);
+    return new SCMThunk(expression.get(expression.size() - 1), localEnv);
   }
 
   @Override

@@ -3,7 +3,7 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.scm.SCMBoolean;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public enum And implements ISpecialForm {
           return result;
         }
       }
-      result = new SCMTailCall(expression.get(expression.size() - 1), env);
+      result = new SCMThunk(expression.get(expression.size() - 1), env);
     }
     return result;
   }

@@ -5,7 +5,7 @@ import core.reader.FileReader;
 import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.specialforms.Begin;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.io.File;
 import java.util.List;
@@ -25,6 +25,6 @@ public class Load extends AFn {
     File file = new File(args[0].toString());
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
     sexps.addAll(reader.read(file));
-    return new SCMTailCall(sexps, null);
+    return new SCMThunk(sexps, null);
   }
 }

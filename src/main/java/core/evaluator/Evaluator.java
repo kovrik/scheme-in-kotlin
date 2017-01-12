@@ -7,7 +7,6 @@ import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
-import core.procedures.continuations.Continuation;
 import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
@@ -35,12 +34,12 @@ public class Evaluator {
     Object result;
     try {
       result = evalIter(sexp, env);
-      while (result instanceof SCMTailCall) {
-        Environment context = ((SCMTailCall) result).getContext();
+      while (result instanceof SCMThunk) {
+        Environment context = ((SCMThunk) result).getContext();
         if (context == null) {
           context = env;
         }
-        result = evalIter(((SCMTailCall) result).getExpr(), context);
+        result = evalIter(((SCMThunk) result).getExpr(), context);
       }
     } catch (CalledContinuation cc) {
       if (cc.getContinuation().isInvoked()) {

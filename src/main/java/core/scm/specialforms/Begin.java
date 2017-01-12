@@ -2,7 +2,7 @@ package core.scm.specialforms;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public enum Begin implements ISpecialForm {
     for (int i = 1; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), env);
     }
-    return new SCMTailCall(expression.get(expression.size() - 1), env);
+    return new SCMThunk(expression.get(expression.size() - 1), env);
   }
 
   @Override

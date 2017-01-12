@@ -8,7 +8,7 @@ import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;
-import core.scm.SCMTailCall;
+import core.scm.SCMThunk;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +37,6 @@ public class Apply extends AFn {
     for (Object o : (List) last) {
       sexp.add(SCMCons.list(Quote.QUOTE, o));
     }
-    return new SCMTailCall(sexp, null);
+    return new SCMThunk(sexp, null);
   }
 }
