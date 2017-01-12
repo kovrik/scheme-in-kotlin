@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.writer.Writer;
 
 import static core.scm.SCMPromise.State.FULFILLED;
@@ -22,6 +24,27 @@ public class SCMPromise implements ISCMClass {
   public SCMPromise(Object body) {
     this.body = body;
     this.state = PENDING;
+  }
+
+  /**
+   * Evaluate forced Promise
+   */
+  public Object force(Environment env, Evaluator evaluator) {
+    try {
+      /* Evaluate the body */
+      Object result = evaluator.eval(getBody(), env);
+      /* Mark Promise as FULFILLED */
+      setState(SCMPromise.State.FULFILLED);
+      /* Memoize the result */
+      setResult(result);
+      return result;
+    } catch (Exception e) {
+      /* Mark Promise as REJECTED */
+      setState(SCMPromise.State.REJECTED);
+      /* Memoize the result */
+      setResult(e);
+      throw e;
+    }
   }
 
   public Object getBody() {

@@ -126,11 +126,11 @@ public class Evaluator {
 
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
-      return callcc((IFn) args.get(0), env);
+      return ((CallCC)fn).callcc((IFn) args.get(0), env, this);
     }
     /* dynamic-wind */
     if (fn instanceof DynamicWind) {
-      return dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env);
+      return ((DynamicWind)fn).dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env, this);
     }
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
@@ -145,63 +145,8 @@ public class Evaluator {
 
     /* Evaluate forced promise */
     if (result instanceof SCMPromise) {
-      result = evalForcedPromise((SCMPromise)result, env);
+      result = ((SCMPromise)result).force(env, this);
     }
     return result;
-  }
-
-  // TODO Move out of Evaluator into call/cc
-  /* Actual call-with-current-continuation */
-  private Object callcc(IFn proc, Environment env) {
-    Continuation cont = new Continuation();
-    try {
-      /* Pass Continuation to the Procedure: (proc cont) */
-      return eval(SCMCons.list(proc, cont), env);
-    } catch (CalledContinuation ex) {
-      if (ex.getContinuation() != cont) {
-        /* Not our continuation, throw it further */
-        throw ex;
-      }
-      /* Our continuation, grab and return the resulting value */
-      return ex.getValue();
-    } finally {
-      /* One-shot continuations cannot be used more than once */
-      cont.invalidate();
-    }
-  }
-
-  // TODO Move out of Evaluator into dynamic-wind
-  /* Actual dynamic-wind */
-  private Object dynamicWind(IFn pre, IFn value, IFn post, Environment env) {
-    /* Evaluate before-thunk first */
-    eval(SCMCons.list(pre), env);
-    try {
-    /* Evaluate and return value-thunk */
-      return eval(SCMCons.list(value), env);
-    } finally {
-      /* Finally, evaluate post-thunk */
-      eval(SCMCons.list(post), env);
-    }
-  }
-
-  /**
-   * Evaluate forced Promise
-   */
-  private Object evalForcedPromise(SCMPromise promise, Environment env) {
-    try {
-      /* Evaluate the body */
-      Object result = eval(promise.getBody(), env);
-      /* Mark Promise as FULFILLED */
-      promise.setState(SCMPromise.State.FULFILLED);
-      /* Memoize the result */
-      promise.setResult(result);
-      return result;
-    } catch (Exception e) {
-      /* Mark Promise as REJECTED */
-      promise.setState(SCMPromise.State.REJECTED);
-      /* Memoize the result */
-      promise.setResult(e);
-      throw e;
-    }
   }
 }
