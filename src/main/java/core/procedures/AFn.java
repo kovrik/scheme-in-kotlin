@@ -86,10 +86,10 @@ public abstract class AFn implements IFn<Object[], Object> {
     /* Check arg count */
     int actualArgCount = args.size();
     if (actualArgCount < minArgs()) {
-      throw new ArityException(actualArgCount, minArgs(), getName());
+      throw new ArityException(actualArgCount, minArgs(), getName(), minArgs() != maxArgs());
     }
     if (actualArgCount > minArgs() && (minArgs() == maxArgs())) {
-      throw new ArityException(actualArgCount, minArgs(), getName());
+      throw new ArityException(actualArgCount, minArgs(), getName(), minArgs() != maxArgs());
     }
     if (actualArgCount > maxArgs()) {
       throw new ArityException(actualArgCount, getName());

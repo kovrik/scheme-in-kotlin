@@ -1,12 +1,13 @@
 package core.procedures.strings;
 
-import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.SCMCons;
+import core.scm.FnArgs;
+import core.scm.SCMClass;
 
 import java.util.List;
 
+@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
 public class ListToString extends AFn {
 
   @Override
@@ -15,17 +16,8 @@ public class ListToString extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    if (args.length != 1) {
-      throw new ArityException(args.length, 1, getName());
-    }
-
-    Object o = args[0];
-    if (!(o instanceof List) || ((o instanceof SCMCons) && !((SCMCons)o).isList())) {
-      throw new WrongTypeException("List", o);
-    }
-
-    List cs = (List)o;
+  public Object apply1(Object arg) {
+    List cs = (List)arg;
     if (cs.isEmpty()) {
       return "";
     }
