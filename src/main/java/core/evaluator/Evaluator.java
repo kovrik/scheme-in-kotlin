@@ -145,6 +145,6 @@ public class Evaluator {
       return evlis(proc.getBody(), localEnvironment);
     }
     /* Call AFn via helper method (function in Java) */
-    return AFn.apply(fn, args);
+    return fn.applyN(args);
   }
 }

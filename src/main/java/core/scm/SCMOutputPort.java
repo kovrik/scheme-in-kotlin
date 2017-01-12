@@ -34,10 +34,6 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
     outputStream.flush();
   }
 
-  public OutputStream getOutputStream() {
-    return outputStream;
-  }
-
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.OUTPUT_PORT;

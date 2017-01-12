@@ -82,7 +82,7 @@ public abstract class AFn implements IFn<Object[], Object> {
    * Checks the number of arguments and their types
    * (if function is annotated with FnArgs)
    */
-  public void checkArgs(List<Object> args) {
+  public final void checkArgs(List<Object> args) {
     /* Check arg count */
     int actualArgCount = args.size();
     if (actualArgCount < minArgs()) {
@@ -138,16 +138,16 @@ public abstract class AFn implements IFn<Object[], Object> {
    * then calls applyN() methods (where N is arity).
    * Calls variadic apply() otherwise.
    */
-  public static Object apply(AFn fn, List<Object> args) {
+  public final Object applyN(List<Object> args) {
     /* if minArgs == maxArgs, then function is not variadic, hence get arity */
-    int arity = (fn.minArgs() == fn.maxArgs()) ? fn.minArgs() : -1;
+    int arity = (minArgs() == maxArgs()) ? minArgs() : -1;
     switch (arity) {
-      case 0:  return fn.apply0();
-      case 1:  return fn.apply1(args.get(0));
-      case 2:  return fn.apply2(args.get(0), args.get(1));
-      case 3:  return fn.apply3(args.get(0), args.get(1), args.get(2));
-      case 4:  return fn.apply4(args.get(0), args.get(1), args.get(2), args.get(3));
-      default: return fn.apply(args.toArray());
+      case 0:  return apply0();
+      case 1:  return apply1(args.get(0));
+      case 2:  return apply2(args.get(0), args.get(1));
+      case 3:  return apply3(args.get(0), args.get(1), args.get(2));
+      case 4:  return apply4(args.get(0), args.get(1), args.get(2), args.get(3));
+      default: return apply(args.toArray());
     }
   }
 }

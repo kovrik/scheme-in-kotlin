@@ -25,10 +25,6 @@ public class SCMBoolean implements ISCMClass {
     }
   }
 
-  public boolean toBoolean() {
-    return valueOf(this);
-  }
-
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.BOOLEAN;
