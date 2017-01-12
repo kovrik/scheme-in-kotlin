@@ -1,11 +1,10 @@
-* TODO: [31/40]
+* TODO: [32/43]
 
 ** TODO [#A] Macros
 ** TODO [#A] Math procedures: fix precision loss
 ** TODO [#A] Expt special cases
 ** TODO [#A] Expt for big fractional powers
 ** TODO [#A] Inexactness taint
-** TODO [#A] Downcast numbers to the smallest possible type
 ** TODO [#A] SCMSmallRational and SCMSmallComplex
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
@@ -58,6 +57,8 @@ CLOSED: [2016-12-05 Mon 20:46]
 *** TODO Caching
 *** TODO Reduce number of new objects
 *** TODO Inline procedures
+** DONE [#A] Downcast numbers to the smallest possible type
+CLOSED: [2017-01-12 Thu 14:59]
 ** DONE [#A] Math Unit Tests: reading Complex numbers, Trigonometry, Complex math, Exp etc.
 CLOSED: [2017-01-12 Thu 13:37]
 ** DONE [#A] Quotient should work if defined as (lambda (n m) (truncate (/ n m)))

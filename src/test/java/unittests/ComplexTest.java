@@ -82,10 +82,10 @@ public class ComplexTest extends AbstractTest {
 
   @Test
   public void testRealPart() {
-    assertEquals(BigDecimal.ONE, eval("(real-part 1+1i)", env));
+    assertEquals(1L, eval("(real-part 1+1i)", env));
     assertEquals(new BigDecimal("-34.1"), eval("(real-part -34.1+1i)", env));
     assertEquals(new BigDecimal("0.1"), eval("(real-part 0.1+1i)", env));
-    assertEquals(BigDecimal.ZERO, eval("(real-part 0+1i)", env));
+    assertEquals(0L, eval("(real-part 0+1i)", env));
     assertEquals(1L, eval("(real-part 1)", env));
     assertEquals(-2.5, eval("(real-part -2.5)", env));
     assertEquals(new SCMBigRational("3", "4"), eval("(real-part 3/4)", env));
@@ -93,8 +93,8 @@ public class ComplexTest extends AbstractTest {
 
   @Test
   public void testImagPart() {
-    assertEquals(BigDecimal.ONE, eval("(imag-part 1+1i)", env));
-    assertEquals(new BigDecimal("1.0"), eval("(imag-part -34.1+1i)", env));
+    assertEquals(1L, eval("(imag-part 1+1i)", env));
+    assertEquals(1.0, eval("(imag-part -34.1+1i)", env));
     assertEquals(new BigDecimal("0.1"), eval("(imag-part 0.1+0.1i)", env));
     assertEquals(new BigDecimal("-1.43"), eval("(imag-part 0-1.43i)", env));
     assertEquals(0L, eval("(imag-part 1)", env));

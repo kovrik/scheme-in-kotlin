@@ -582,4 +582,29 @@ public class NumberUtils {
     }
     return result;
   }
+
+  /**
+   * Tries to downcast big number to a smaller type (if possible)
+   **/
+  public static Number tryToDowncast(BigDecimal number) {
+    /* Same checks are performed in longValueExact() method,
+     * but we don't want exception to be thrown, just return the number */
+    int d = number.precision() - number.scale();
+    if (d > 19 || d <= 0) {
+      return number;
+    }
+    if (NumberUtils.isInteger(number)) {
+      try {
+        long smaller = number.longValueExact();
+        if (NumberUtils.isInexact(number)) {
+          return (double)smaller;
+        }
+        return smaller;
+      } catch (ArithmeticException e) {
+        /* Down-casting has failed, return the original number */
+        return number;
+      }
+    }
+    return number;
+  }
 }

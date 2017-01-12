@@ -11,8 +11,10 @@ import core.procedures.continuations.Continuation;
 import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
+import core.utils.NumberUtils;
 import core.writer.Writer;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,10 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    // TODO Downcast if possible?
+    /* Try to downcast big numbers */
+    if (result instanceof BigDecimal) {
+      result = NumberUtils.tryToDowncast((BigDecimal) result);
+    }
     return result;
   }
 

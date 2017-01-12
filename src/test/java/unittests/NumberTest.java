@@ -145,12 +145,12 @@ public class NumberTest extends AbstractTest {
   public void testNumberTheoreticDivision() {
     // quotient
     assertEquals(3L,  eval("(quotient 13 4)", env));
-    assertEquals(new BigDecimal("3.0"),  eval("(quotient 13.0 4)", env));
+    assertEquals(3.0,  eval("(quotient 13.0 4)", env));
     assertEquals(1L,  eval("(quotient 5 5)", env));
-    assertEquals(new BigDecimal("1.0"),  eval("(quotient 5.0 5)", env));
-    assertEquals(new BigDecimal("1.0"),  eval("(quotient -5 -5.0)", env));
+    assertEquals(1.0,  eval("(quotient 5.0 5)", env));
+    assertEquals(1.0,  eval("(quotient -5 -5.0)", env));
     assertEquals(-1L, eval("(quotient -5 5)", env));
-    assertEquals(new BigDecimal("-1.0"), eval("(quotient -5 5.)", env));
+    assertEquals(-1.0, eval("(quotient -5 5.)", env));
     try {
       eval("(quotient -10 0.0001)", env);
       fail();
@@ -439,17 +439,16 @@ public class NumberTest extends AbstractTest {
     assertEquals(3d, eval("(gcd 3.0 6)", env));
     assertEquals(40000d, eval("(gcd 200000.0 40000.0)", env));
     assertEquals(new BigDecimal("8.8817841970012523233890533447265625E-16"), eval("(gcd 3.3 6)", env));
-    assertEquals(new BigDecimal("9"), eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
+    assertEquals(9L, eval("(gcd 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 9)", env));
 
     /* Check switch from Double to BigDecimal for big numbers */
-    assertEquals(3L,                    eval("(gcd 99999999999999999 123)", env));
-    assertEquals(3L,                    eval("(gcd 999999999999999999 123)", env));
-    assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999 123)", env));
-    assertEquals(new BigDecimal("123"), eval("(gcd 99999999999999999999 123)", env));
-    assertEquals(new BigDecimal("3"),   eval("(gcd 999999999999999999999 123)", env));
-    assertEquals(new BigDecimal("3"),   eval("(gcd 9999999999999999999999 123)", env));
-
-    assertEquals(BigDecimal.ONE, eval("(gcd (expt 17 34) (expt 21 19))", env));
+    assertEquals(3L,   eval("(gcd 99999999999999999 123)", env));
+    assertEquals(3L,   eval("(gcd 999999999999999999 123)", env));
+    assertEquals(3L,   eval("(gcd 9999999999999999999 123)", env));
+    assertEquals(123L, eval("(gcd 99999999999999999999 123)", env));
+    assertEquals(3L,   eval("(gcd 999999999999999999999 123)", env));
+    assertEquals(3L,   eval("(gcd 9999999999999999999999 123)", env));
+    assertEquals(1L,   eval("(gcd (expt 17 34) (expt 21 19))", env));
   }
 
   @Test
@@ -487,10 +486,10 @@ public class NumberTest extends AbstractTest {
     assertEquals(1L, eval("(expt 9 0)", env));
     assertEquals(0L, eval("(expt 0 10)", env));
     assertEquals(1L, eval("(expt 1 1)", env));
-    assertEquals(new BigDecimal(8), eval("(expt 2 3)", env));
-    assertEquals(new BigDecimal(16777216), eval("(expt 4 12)", env));
-    assertEquals(new BigDecimal(25), eval("(expt -5 2)", env));
-    assertEquals(new BigDecimal(-125), eval("(expt -5 3)", env));
+    assertEquals(8L, eval("(expt 2 3)", env));
+    assertEquals(16777216L, eval("(expt 4 12)", env));
+    assertEquals(25L, eval("(expt -5 2)", env));
+    assertEquals(-125L, eval("(expt -5 3)", env));
     assertEquals(13.489468760533386, eval("(expt 2.2 3.3)", env));
     try {
       eval("(expt \"test\" 1)", env);
@@ -546,15 +545,15 @@ public class NumberTest extends AbstractTest {
         eval(String.format("(min (+ 1 %s) %s)", big0, big0),  env));
 
     String big2 = "941737268473075634481294063531333847658485002458168527101639838005582185517473483816983389228732066437165294377295109210176795859047876399460771530181828861843994801526320659067260600443063376955200810073997787724454002350759571876705644517946943898492214066331998886559185229835330687165577365519449395424366904222913306696961330084086377946063169138303897697242206192836209273444873251023411764271944704088313845446589768727760791185170266144604537045173629663045739300767985189493967771010336173962367396474652866334212802605674879313278209206179544726008444885447395757991883875945457869103573901612777316112247438629624081718143710269108788904389008167209091151002216893051746019091645742839251513268837094248809018521046734530253606053753445604156050903737280600427015788467630468023527367174845920094011539693975275654700093627716413";
-    assertEquals(BigDecimal.ONE, eval(String.format("(modulo %s 4)", big2), env));
-    assertEquals(new BigDecimal("-2"), eval(String.format("(modulo %s -5)", big2), env));
+    assertEquals(1L, eval(String.format("(modulo %s 4)", big2), env));
+    assertEquals(-2L, eval(String.format("(modulo %s -5)", big2), env));
 
-    assertEquals(BigDecimal.ONE, eval(String.format("(remainder %s 4)", big2), env));
-    assertEquals(new BigDecimal("3"), eval(String.format("(remainder %s -5)", big2), env));
+    assertEquals(1L, eval(String.format("(remainder %s 4)", big2), env));
+    assertEquals(3L, eval(String.format("(remainder %s -5)", big2), env));
 
     String quotientResult1 = "470868634236537817240647031765666923829242501229084263550819919002791092758736741908491694614366033218582647188647554605088397929523938199730385765090914430921997400763160329533630300221531688477600405036998893862227001175379785938352822258973471949246107033165999443279592614917665343582788682759724697712183452111456653348480665042043188973031584569151948848621103096418104636722436625511705882135972352044156922723294884363880395592585133072302268522586814831522869650383992594746983885505168086981183698237326433167106401302837439656639104603089772363004222442723697878995941937972728934551786950806388658056123719314812040859071855134554394452194504083604545575501108446525873009545822871419625756634418547124404509260523367265126803026876722802078025451868640300213507894233815234011763683587422960047005769846987637827350046813858206";
     assertEquals(new BigDecimal(quotientResult1), eval(String.format("(quotient %s 2)", big2), env));
-    assertEquals(new BigDecimal(2), eval(String.format("(quotient %s (quotient %s 2))", big2, big2), env));
+    assertEquals(2L, eval(String.format("(quotient %s (quotient %s 2))", big2, big2), env));
 
     assertEquals(TRUE, eval(String.format("(eqv? %s %s)", big2, big2), env));
     assertEquals(TRUE, eval(String.format("(<= %s %s)", big2, big2), env));
@@ -627,7 +626,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(new BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env));
     assertEquals(1500.0, eval("(string->number \"15##\")", env));
     assertEquals(FALSE, eval("(string->number \"1234#d\")", env));
-    assertEquals(new BigDecimal("100.0"), eval("(string->number \"1e2\")", env));
+    assertEquals(100.0, eval("(string->number \"1e2\")", env));
     assertEquals(new BigDecimal("0.5"), eval("(string->number \"#b1e-1\")", env));
     assertEquals(new BigDecimal("6161212520618990239744.0"), eval("(string->number \"#o1234e+25\")", env));
     try {
@@ -767,18 +766,18 @@ public class NumberTest extends AbstractTest {
   public void testNumerator() {
     assertEquals(1L, eval("(numerator 1)", env));
     assertEquals(-1234L, eval("(numerator -1234)", env));
-    assertEquals(new BigDecimal("-1234.0"), eval("(numerator -1234.0)", env));
-    assertEquals(new BigDecimal(17L), eval("(numerator 17/4)", env));
-    assertEquals(new BigDecimal("2589569785738035.0"), eval("(numerator 2.3)", env));
+    assertEquals(-1234.0, eval("(numerator -1234.0)", env));
+    assertEquals(17L, eval("(numerator 17/4)", env));
+    assertEquals(2589569785738035.0, eval("(numerator 2.3)", env));
   }
 
   @Test
   public void testDenominator() {
     assertEquals(1L, eval("(denominator 1)", env));
     assertEquals(1L, eval("(denominator -1234)", env));
-    assertEquals(new BigDecimal("1.0"), eval("(denominator -1234.0)", env));
-    assertEquals(new BigDecimal(4L), eval("(denominator 17/4)", env));
-    assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
+    assertEquals(1.0, eval("(denominator -1234.0)", env));
+    assertEquals(4L, eval("(denominator 17/4)", env));
+    assertEquals(1125899906842624.0, eval("(denominator 2.3)", env));
     assertEquals(new SCMBigRational("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", new BigInteger("10000000000")), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
 
