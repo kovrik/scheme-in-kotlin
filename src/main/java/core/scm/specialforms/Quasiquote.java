@@ -90,7 +90,7 @@ public enum Quasiquote implements ISpecialForm {
   }
 
   // TODO Optimize and simplify
-  private Object quasiquoteList(int level, Object expr, Environment env, Evaluator evaluator) {
+  private Object quasiquoteList(int depth, Object expr, Environment env, Evaluator evaluator) {
     List list = (List)expr;
     boolean isList = (SCMCons.isList(list));
     SCMCons result = SCMCons.list();
@@ -118,13 +118,13 @@ public enum Quasiquote implements ISpecialForm {
         List el = (List) o;
         Object op = el.get(0);
         if (QUASIQUOTE_SYMBOL.equals(op)) {
-          /* Increase level of quasiquotation */
-          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(level + 1, o, env, evaluator)));
+          /* Increase depth of quasiquotation */
+          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth + 1, o, env, evaluator)));
         } else if (UNQUOTE_SYMBOL.equals(op) || (UNQUOTE_SPLICING_SYMBOL.equals(op))) {
           if (el.size() != 2) {
             throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression");
           }
-          if (level == 0) {
+          if (depth == 0) {
             /* Level of quasiquotation is 0 - evaluate! */
             Object eval = evaluator.eval(el.get(1), env);
             if (UNQUOTE_SYMBOL.equals(op)) {
@@ -133,11 +133,11 @@ public enum Quasiquote implements ISpecialForm {
             }
             result = (SCMCons) append(result, eval);
           } else {
-            /* Decrease level of quasiquotation */
-            result = (SCMCons) append(result, SCMCons.list(quasiquoteList(level - 1, o, env, evaluator)));
+            /* Decrease depth of quasiquotation */
+            result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth - 1, o, env, evaluator)));
           }
         } else {
-          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(level, o, env, evaluator)));
+          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth, o, env, evaluator)));
         }
       }
     }
@@ -155,9 +155,9 @@ public enum Quasiquote implements ISpecialForm {
   }
 
   // TODO Optimize vector->list and list-<vector conversions
-  private Object quasiquoteVector(int level, Object expr, Environment env, Evaluator evaluator) {
+  private Object quasiquoteVector(int depth, Object expr, Environment env, Evaluator evaluator) {
     SCMCons list = VectorToList.vectorToList((SCMMutableVector) expr);
-    Object result = quasiquoteList(level, list, env, evaluator);
+    Object result = quasiquoteList(depth, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
     if (!SCMCons.isList(result)) {
       throw new WrongTypeException("List", result);
