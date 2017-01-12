@@ -257,6 +257,7 @@ public final class DefaultEnvironment extends Environment {
     Unquote.UNQUOTE,
     UnquoteSplicing.UNQUOTE_SPLICING,
     Time.TIME,
+    Assert.ASSERT,
     /* With TCO */
     If.IF,
     Begin.BEGIN,
