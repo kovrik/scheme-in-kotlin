@@ -18,15 +18,17 @@ import java.util.List;
 
 public class Evaluator {
 
+  /* Macroexpand S-expression, evaluate it and then return the result */
+  public Object macroexpandAndEvaluate(Object sexp, Environment env) {
+    return eval(macroexpand(sexp), env);
+  }
+
+  // TODO Implement
   private Object macroexpand(Object sexp) {
     return sexp;
   }
 
   public Object eval(Object sexp, Environment env) {
-    /* Macroexpand sexp */
-    // TODO Implement and move out of eval()
-    sexp = macroexpand(sexp);
-
     /* TCO: This is our Trampoline */
     Object result;
     try {

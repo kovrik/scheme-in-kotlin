@@ -47,7 +47,7 @@ public class Repl {
     StringReader stringReader = new StringReader();
     for (String proc : defaultEnvironment.getLibraryProcedures()) {
       for (Object s : stringReader.read(proc)) {
-        evaluator.eval(s, defaultEnvironment);
+        evaluator.macroexpandAndEvaluate(s, defaultEnvironment);
       }
     }
     repl(WELCOME, PROMPT, defaultEnvironment);
@@ -73,8 +73,8 @@ public class Repl {
         /* Read and parse a list of S-expressions from Stdin */
         List<Object> sexps = reader.read();
         for (Object expr : sexps) {
-          /* Evaluate each S-expression */
-          Object result = evaluator.eval(expr, env);
+          /* Macroexpand and then Evaluate each S-expression */
+          Object result = evaluator.macroexpandAndEvaluate(expr, env);
           if (result != null && result != UNSPECIFIED) {
             /* Put result into environment */
             SCMSymbol id = getNextID();

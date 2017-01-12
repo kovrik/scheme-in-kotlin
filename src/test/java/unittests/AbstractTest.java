@@ -14,12 +14,12 @@ public abstract class AbstractTest {
     /* Eval lib procedures */
     for (String proc : env.getLibraryProcedures()) {
       for (Object p : reader.read(proc)) {
-        eval.eval(p, env);
+        eval.macroexpandAndEvaluate(p, env);
       }
     }
   }
   /* Helper method: evaluates first S-expression */
   protected Object eval(String sexp, Environment env) {
-    return eval.eval(reader.readFirst(sexp), env);
+    return eval.macroexpandAndEvaluate(reader.readFirst(sexp), env);
   }
 }
