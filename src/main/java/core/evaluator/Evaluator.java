@@ -8,6 +8,7 @@ import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
+import core.procedures.delayed.Force;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
 import core.utils.NumberUtils;
@@ -123,6 +124,11 @@ public class Evaluator {
     /* Check args */
     fn.checkArgs(args);
 
+    // TODO Turn them into Special Forms?
+    /* force */
+    if (fn instanceof Force) {
+      return ((Force)fn).force((SCMPromise)args.get(0), env, this);
+    }
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
       return ((CallCC)fn).callcc((IFn) args.get(0), env, this);
@@ -138,14 +144,7 @@ public class Evaluator {
       Environment localEnvironment = proc.bindArgs(args);
       return evlis(proc.getBody(), localEnvironment);
     }
-
     /* Call AFn via helper method (function in Java) */
-    Object result = AFn.apply(fn, args);
-
-    /* Evaluate forced promise */
-    if (result instanceof SCMPromise) {
-      result = ((SCMPromise)result).force(env, this);
-    }
-    return result;
+    return AFn.apply(fn, args);
   }
 }

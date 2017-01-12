@@ -1,5 +1,7 @@
 package core.procedures.delayed;
 
+import core.environment.Environment;
+import core.evaluator.Evaluator;
 import core.exceptions.ReentrantPromiseException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
@@ -15,18 +17,33 @@ public class Force extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    SCMPromise promise = (SCMPromise) arg;
-    if (promise.getState() == SCMPromise.State.FULFILLED) {
-      return promise.getResult();
+    throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
+  }
+
+  /* Actual force implementation */
+  public Object force(SCMPromise p, Environment env, Evaluator evaluator) {
+    switch (p.getState()) {
+      case FULFILLED: return p.getResult();
+      case REJECTED : throw (RuntimeException) p.getResult();
+      case FORCED:    throw new ReentrantPromiseException(p);
+      default: {
+        p.setState(SCMPromise.State.FORCED);
+        try {
+          /* Evaluate the body */
+          Object result = evaluator.eval(p.getBody(), env);
+          /* Mark Promise as FULFILLED */
+          p.setState(SCMPromise.State.FULFILLED);
+          /* Memoize the result */
+          p.setResult(result);
+          return result;
+        } catch (Exception e) {
+          /* Mark Promise as REJECTED */
+          p.setState(SCMPromise.State.REJECTED);
+          /* Memoize the result */
+          p.setResult(e);
+          throw e;
+        }
+      }
     }
-    if (promise.getState() == SCMPromise.State.REJECTED) {
-      throw (RuntimeException)promise.getResult();
-    }
-    if (promise.getState() == SCMPromise.State.FORCED) {
-      throw new ReentrantPromiseException(promise);
-    }
-    /* Force Promise evaluation */
-    promise.setState(SCMPromise.State.FORCED);
-    return promise;
   }
 }
