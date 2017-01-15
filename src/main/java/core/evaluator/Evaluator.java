@@ -90,13 +90,21 @@ public class Evaluator {
     /* Lookup symbol */
     if (op instanceof SCMSymbol) {
       op = env.find(op);
+      /* Inline */
+      // TODO Check if we can always do that
+      if (op instanceof ISpecialForm) {
+        /* Inline Special Forms */
+        sexp.set(0, op);
+      } else if (op instanceof AFn) {
+        /* Inline pure functions */
+        if (((AFn)op).isPure())  {
+          sexp.set(0, op);
+        }
+      }
     }
 
     /* If it is a Special Form, then evaluate it */
     if (op instanceof ISpecialForm) {
-      // TODO Check if we can actually do this!
-      /* Inline Special Form */
-      sexp.set(0, op);
       return ((ISpecialForm)op).eval(sexp, env, this);
     }
 
@@ -109,12 +117,6 @@ public class Evaluator {
       }
     }
     AFn fn = (AFn)op;
-
-    // TODO Check if we can actually do this!
-    /* Inline pure fns tp avoid further lookups */
-    if (fn.isPure())  {
-      sexp.set(0, fn);
-    }
 
     /* Scheme has applicative order, so evaluate all arguments first */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
