@@ -16,9 +16,14 @@ public class Writer implements IWriter {
   }
 
   public static String write(Object o) {
-
     if (o == null) {
       return SCMCons.NIL.toString();
+    }
+    if (o instanceof SCMSymbol) {
+      if (((SCMSymbol) o).isEscape()) {
+        return '|' + o.toString() + '|';
+      }
+      return o.toString();
     }
     if (o instanceof Class) {
       return writeClass((Class) o);

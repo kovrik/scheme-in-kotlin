@@ -4,6 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 import org.junit.Test;
 
 import static core.scm.SCMBoolean.FALSE;
@@ -260,8 +261,30 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalSymbolStringConversion() {
-    assertEquals("test", eval("(symbol->string 'test)", env));
-    assertEquals("test", eval("(symbol->string (string->symbol (symbol->string 'test)))", env));
+    assertEquals("test",  eval("(symbol->string 'test)", env));
+    assertEquals("test",  eval("(symbol->string (string->symbol (symbol->string 'test)))", env));
+    assertEquals("TeSt",  eval("(symbol->string (string->symbol (symbol->string 'TeSt)))", env));
+    assertEquals("",    eval("(symbol->string (string->symbol \"\"))", env));
+    assertEquals("123", eval("(symbol->string (string->symbol \"123\"))", env));
+    assertEquals("6",   eval("(symbol->string (string->symbol \"6\"))", env));
+    assertEquals("6bsdf", eval("(symbol->string (string->symbol \"6bsdf\"))", env));
+    assertEquals("one two three", eval("(symbol->string (string->symbol \"one two three\"))", env));
+    assertEquals("  ", eval("(symbol->string (string->symbol \"  \"))", env));
+    assertEquals("||",    Writer.write(eval("(string->symbol \"\")", env)));
+    assertEquals("|123|", Writer.write(eval("(string->symbol \"123\")", env)));
+    assertEquals("|6|",   Writer.write(eval("(string->symbol \"6\")", env)));
+    assertEquals("|6bsdf|", Writer.write(eval("(string->symbol \"6bsdf\")", env)));
+    assertEquals("|one two three|", Writer.write(eval("(string->symbol \"one two three\")", env)));
+    assertEquals("|  |", Writer.write(eval("(string->symbol \"  \")", env)));
+    assertEquals("|.|", Writer.write(eval("(string->symbol \".\")", env)));
+    assertEquals("test.", Writer.write(eval("(string->symbol \"test.\")", env)));
+    assertEquals("|#|", Writer.write(eval("(string->symbol \"#\")", env)));
+    assertEquals("|#123|", Writer.write(eval("(string->symbol \"#123\")", env)));
+    assertEquals("|#abc|", Writer.write(eval("(string->symbol \"#abc\")", env)));
+    assertEquals("a#bc", Writer.write(eval("(string->symbol \"a#bc\")", env)));
+    assertEquals("abc#", Writer.write(eval("(string->symbol \"abc#\")", env)));
+    assertEquals("#%abc", Writer.write(eval("(string->symbol \"#%abc\")", env)));
+    assertEquals("(|a b c|)", Writer.write(eval("(list (string->symbol \"a b c\"))", env)));
     assertEquals(new SCMSymbol("test"), eval("(string->symbol (symbol->string 'test))", env));
     try {
       eval("(symbol->string 1)", env);
