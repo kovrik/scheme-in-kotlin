@@ -139,13 +139,7 @@ public class Evaluator {
     if (fn instanceof DynamicWind) {
       return ((DynamicWind)fn).dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env, this);
     }
-    /* Scheme procedure (lambda) */
-    if (fn instanceof SCMProcedure) {
-      /* Bind args and put them into new local environment */
-      SCMProcedure proc = (SCMProcedure)fn;
-      return evlis(proc.getBody(), proc.bindArgs(args));
-    }
-    /* Call AFn via helper method (function in Java) */
+    /* Call AFn via helper method */
     return fn.applyN(args);
   }
 }
