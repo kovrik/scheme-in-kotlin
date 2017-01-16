@@ -27,7 +27,7 @@ public class AssocProc extends AFn {
     for (int n = 0; n < list.size(); n++) {
       Object pair = list.get(n);
       if (SCMCons.isPair(pair)) {
-        if ((SCMBoolean.valueOf(predicate.apply(arg1, ((SCMCons) pair).car())))) {
+        if ((SCMBoolean.valueOf(predicate.apply2(arg1, ((SCMCons) pair).car())))) {
           return pair;
         }
       } else {

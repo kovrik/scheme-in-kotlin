@@ -29,6 +29,11 @@ public class Eq extends AFn {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
+  public SCMBoolean apply2(Object arg1, Object arg2) {
+    return SCMBoolean.toSCMBoolean(eq(arg1, arg2));
+  }
+
   public static boolean eq(Object first, Object second) {
     if ((first instanceof SCMSymbol) && (second instanceof SCMSymbol)) {
       return first.equals(second);

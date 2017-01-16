@@ -30,6 +30,11 @@ public class Eqv extends AFn {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
+  public SCMBoolean apply2(Object arg1, Object arg2) {
+    return SCMBoolean.toSCMBoolean(eqv(arg1, arg2));
+  }
+
   public static boolean eqv(Object first, Object second) {
     if (first instanceof Character && second instanceof Character) {
       return first.equals(second);

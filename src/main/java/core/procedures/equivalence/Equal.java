@@ -27,6 +27,11 @@ public class Equal extends AFn {
     return SCMBoolean.toSCMBoolean(result);
   }
 
+  @Override
+  public SCMBoolean apply2(Object arg1, Object arg2) {
+    return SCMBoolean.toSCMBoolean(equal(arg1, arg2));
+  }
+
   public static boolean equal(Object first, Object second) {
     if ((first instanceof String) && (second instanceof SCMMutableString)) {
       return second.equals(first);
