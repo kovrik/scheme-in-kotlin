@@ -23,8 +23,8 @@ public class Force extends AFn {
   /* Actual force implementation */
   public Object force(SCMPromise p, Environment env, Evaluator evaluator) {
     switch (p.getState()) {
-      case FULFILLED: return p.getResult();
-      case REJECTED : throw (RuntimeException) p.getResult();
+      case FULFILLED: return p.getValue();
+      case REJECTED : throw (RuntimeException) p.getValue();
       case FORCED:    throw new ReentrantPromiseException(p);
       default: {
         p.setState(SCMPromise.State.FORCED);
@@ -34,13 +34,13 @@ public class Force extends AFn {
           /* Mark Promise as FULFILLED */
           p.setState(SCMPromise.State.FULFILLED);
           /* Memoize the result */
-          p.setResult(result);
+          p.setValue(result);
           return result;
         } catch (Exception e) {
           /* Mark Promise as REJECTED */
           p.setState(SCMPromise.State.REJECTED);
           /* Memoize the result */
-          p.setResult(e);
+          p.setValue(e);
           throw e;
         }
       }

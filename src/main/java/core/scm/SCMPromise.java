@@ -16,7 +16,7 @@ public class SCMPromise implements ISCMClass {
   }
 
   private final Object expr;
-  private Object result;
+  private Object value;
   private State state;
 
   public SCMPromise(Object expr) {
@@ -28,12 +28,12 @@ public class SCMPromise implements ISCMClass {
     return expr;
   }
 
-  public Object getResult() {
-    return result;
+  public Object getValue() {
+    return value;
   }
 
-  public void setResult(Object result) {
-    this.result = result;
+  public void setValue(Object value) {
+    this.value = value;
   }
 
   public State getState() {
@@ -53,10 +53,10 @@ public class SCMPromise implements ISCMClass {
   public String toString() {
     StringBuilder sb = new StringBuilder("#<promise");
     if (state == REJECTED) {
-      sb.append("!error!").append(Writer.write(result));
+      sb.append("!error!").append(Writer.write(value));
     }
     if (state == FULFILLED) {
-      sb.append("!").append(Writer.write(result));
+      sb.append("!").append(Writer.write(value));
     }
     return sb.append(">").toString();
   }
