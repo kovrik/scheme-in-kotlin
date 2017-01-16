@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Environment extends HashMap<Object, Object> implements ISCMClass {
 
-  private Environment outer = null;
+  private final Environment outer;
 
   public Environment(Environment outer) {
     this.outer = outer;
@@ -58,6 +58,6 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
 
   @Override
   public String toString() {
-    return  (outer == null) ? "GLOBAL" : "" + super.toString();
+    return "#<environment:" + ((outer == null) ? "GLOBAL" : super.toString()) + ">";
   }
 }
