@@ -30,7 +30,7 @@ public class Force extends AFn {
         p.setState(SCMPromise.State.FORCED);
         try {
           /* Evaluate the body */
-          Object result = evaluator.eval(p.getBody(), env);
+          Object result = evaluator.eval(p.getExpr(), env);
           /* Mark Promise as FULFILLED */
           p.setState(SCMPromise.State.FULFILLED);
           /* Memoize the result */

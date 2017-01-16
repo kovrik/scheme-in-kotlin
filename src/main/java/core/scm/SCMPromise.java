@@ -15,17 +15,17 @@ public class SCMPromise implements ISCMClass {
     REJECTED
   }
 
-  private final Object body;
+  private final Object expr;
   private Object result;
   private State state;
 
-  public SCMPromise(Object body) {
-    this.body = body;
+  public SCMPromise(Object expr) {
+    this.expr = expr;
     this.state = PENDING;
   }
 
-  public Object getBody() {
-    return body;
+  public Object getExpr() {
+    return expr;
   }
 
   public Object getResult() {
