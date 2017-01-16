@@ -84,15 +84,15 @@ public abstract class AFn implements IFn<Object[], Object> {
    */
   public final void checkArgs(List<Object> args) {
     /* Check arg count */
-    int actualArgCount = args.size();
-    if (actualArgCount < minArgs()) {
-      throw new ArityException(actualArgCount, minArgs(), getName(), minArgs() != maxArgs());
+    int argsSize = args.size();
+    if (argsSize < minArgs()) {
+      throw new ArityException(argsSize, minArgs(), getName(), minArgs() != maxArgs());
     }
-    if (actualArgCount > minArgs() && (minArgs() == maxArgs())) {
-      throw new ArityException(actualArgCount, minArgs(), getName(), minArgs() != maxArgs());
+    if (argsSize > minArgs() && (minArgs() == maxArgs())) {
+      throw new ArityException(argsSize, minArgs(), getName(), minArgs() != maxArgs());
     }
-    if (actualArgCount > maxArgs()) {
-      throw new ArityException(actualArgCount, getName());
+    if (argsSize > maxArgs()) {
+      throw new ArityException(argsSize, getName());
     }
 
     /* Get arg types */
@@ -107,7 +107,7 @@ public abstract class AFn implements IFn<Object[], Object> {
     }
 
     /* Now check arg types (if function is annotated with FnArgs */
-    for (int i = 0; i < args.size(); i++) {
+    for (int i = 0; i < argsSize; i++) {
       Object arg = args.get(i);
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
@@ -117,7 +117,7 @@ public abstract class AFn implements IFn<Object[], Object> {
         continue;
       }
       /* Last argument (optional special case) */
-      if (i == args.size() - 1 && (lastArgType != null)) {
+      if (i == argsSize - 1 && (lastArgType != null)) {
         if (!(SCMClass.checkType(arg, lastArgType))) {
           throw new WrongTypeException(Writer.write(lastArgType), arg);
         }
