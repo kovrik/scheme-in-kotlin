@@ -17,11 +17,10 @@ public class SCMPromise implements ISCMClass {
 
   private final Object expr;
   private Object value;
-  private State state;
+  private State state = PENDING;
 
   public SCMPromise(Object expr) {
     this.expr = expr;
-    this.state = PENDING;
   }
 
   public Object getExpr() {

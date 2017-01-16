@@ -141,10 +141,9 @@ public class Evaluator {
     }
     /* Scheme procedure (lambda) */
     if (fn instanceof SCMProcedure) {
-      SCMProcedure proc = (SCMProcedure)fn;
       /* Bind args and put them into new local environment */
-      Environment localEnvironment = proc.bindArgs(args);
-      return evlis(proc.getBody(), localEnvironment);
+      SCMProcedure proc = (SCMProcedure)fn;
+      return evlis(proc.getBody(), proc.bindArgs(args));
     }
     /* Call AFn via helper method (function in Java) */
     return fn.applyN(args);
