@@ -43,23 +43,24 @@ public enum Define implements ISpecialForm {
        * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
        *              |   0   | 1 definition           | 3 body      |
        */
-      // TODO (define (((a))) 1) should work
-      // TODO (define ((a n) c) n) should work
+      // TODO (define (((a))) 1)
+      // TODO (define ((a n) c) n)
       /* Get procedure's name */
       SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
+
       /* Evaluate lambda */
+      SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
+
       /* Args */
       SCMCons args = SCMCons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
       args.setIsList(SCMCons.isList(expression.get(1)));
-
-      SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
       l.add(args);
+
       /* Body */
       l.addAll(expression.subList(2, expression.size()));
 
       SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
       lambda.setName(name.toString());
-
       if (lambda.isPure()) {
         replaceSelfCalls(lambda);
       }
