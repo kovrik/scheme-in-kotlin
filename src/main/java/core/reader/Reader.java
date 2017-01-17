@@ -405,6 +405,7 @@ public class Reader implements IReader {
     int pos = -1;
     int i;
     char c;
+    boolean isEmpty = true;
     while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
@@ -419,16 +420,21 @@ public class Reader implements IReader {
         pos += 1;
         /* Check if current token is a dot */
         if (DOT.equals(token)) {
+          if (dotPos > -1) {
+            throw new IllegalSyntaxException("read: illegal use of '.'");
+          }
           /* Remember the position */
           dotPos = pos;
         }
-        /* Have no elements in a result list yet */
-        if (SCMCons.NIL.equals(list)) {
-          /* Create empty list (can't modify NIL) */
-          list = SCMCons.list();
+        /* List is empty so far */
+        if (isEmpty) {
+          /* Initialize list with the first element (can't modify NIL) */
+          list = SCMCons.list(token);
+          isEmpty = false;
+        } else {
+          /* Add list element */
+          list.add(token);
         }
-        /* Add list element */
-        list.add(token);
       }
     }
     /* Was it a proper list? */
@@ -438,7 +444,7 @@ public class Reader implements IReader {
 
     /* Process improper list */
     if (dotPos == 0 || dotPos != list.size() - 2) {
-      throw new IllegalSyntaxException("read: bad dotted pair form: " + list);
+      throw new IllegalSyntaxException("read: illegal use of '.'");
     }
     /* Remove dot */
     list.remove(dotPos);

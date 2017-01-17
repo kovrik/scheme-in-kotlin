@@ -268,18 +268,21 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(2L, eval("(car (cdr '(1 2 3 . (2 3 4))))", env));
     assertEquals(cons(1L, 2L), eval("'(1 . 2)", env));
     assertEquals(cons(1L, cons(2L, cons(3L, 4L))), eval("'(1 2 3 . 4)", env));
-
+    assertEquals(6L, eval("(+ . (1 2 3))", env));
+    assertEquals(6L, eval("(+ . (1 . (2 3)))", env));
+    assertEquals(6L, eval("(+ . (1 . (2 . (3))))", env));
+    assertEquals(6L, eval("(+ . (1 . (2 . (3 . ()))))", env));
     try {
       eval("'(1 2 3 . 4 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad dotted pair form: (1 2 3 . 4 5)", e.getMessage());
+      assertEquals("read: illegal use of '.'", e.getMessage());
     }
     try {
       eval("'( . 1 2 3 4 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad dotted pair form: (. 1 2 3 4 5)", e.getMessage());
+      assertEquals("read: illegal use of '.'", e.getMessage());
     }
   }
 
