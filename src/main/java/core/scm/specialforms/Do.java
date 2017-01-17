@@ -60,7 +60,7 @@ public enum Do implements ISpecialForm {
     if (!(cl instanceof List)) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-    List clause = (List)cl;
+    List<Object> clause = (List<Object>)cl;
     if (clause.isEmpty()) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
@@ -87,12 +87,7 @@ public enum Do implements ISpecialForm {
       }
     }
     /* Test evaluated to #f */
-    List expressions = clause.subList(1, clause.size());
-    for (int i = 0; i < expressions.size() - 1; i++) {
-      /* Evaluate each expression */
-      evaluator.eval(expressions.get(i), tempEnv);
-    }
-    return new SCMThunk(expressions.get(expressions.size() - 1), tempEnv);
+    return Begin.BEGIN.eval(clause.subList(1, clause.size()), tempEnv, evaluator);
   }
 
   @Override
