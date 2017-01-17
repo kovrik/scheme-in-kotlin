@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMBoolean;
-import core.scm.SCMThunk;
 import core.scm.SCMUnspecified;
 
 import java.util.List;
@@ -36,10 +35,7 @@ public enum Cond implements ISpecialForm {
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
       if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
-        for (int s = 1; s < subform.size() - 1; s++) {
-          evaluator.eval(subform.get(s), env);
-        }
-        return new SCMThunk(subform.get(subform.size() - 1), env);
+        return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }
     return SCMUnspecified.UNSPECIFIED;

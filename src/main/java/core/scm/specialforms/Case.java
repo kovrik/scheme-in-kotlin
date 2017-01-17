@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
-import core.scm.SCMThunk;
 
 import java.util.List;
 
@@ -47,10 +46,7 @@ public enum Case implements ISpecialForm {
       }
       for (Object n : ((List)datum)) {
         if (Eqv.eqv(key, n)) {
-          for (int s = 1; i < subform.size() - 1; i++) {
-            evaluator.eval(subform.get(s), env);
-          }
-          return new SCMThunk(subform.get(subform.size() - 1), env);
+          return Begin.BEGIN.eval(subform, env, evaluator);
         }
       }
     }
