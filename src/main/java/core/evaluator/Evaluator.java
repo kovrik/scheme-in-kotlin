@@ -123,9 +123,6 @@ public class Evaluator {
     for (int i = 1; i < sexp.size(); i++) {
       args.add(eval(sexp.get(i), env));
     }
-    /* Check args */
-    fn.checkArgs(args);
-
     // TODO Turn them into Special Forms?
     /* force */
     if (fn instanceof Force) {

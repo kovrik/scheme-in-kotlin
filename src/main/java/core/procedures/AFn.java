@@ -82,7 +82,7 @@ public abstract class AFn implements IFn<Object[], Object> {
    * Checks the number of arguments and their types
    * (if function is annotated with FnArgs)
    */
-  public final void checkArgs(List<Object> args) {
+  private void checkArgs(List<Object> args) {
     /* Check arg count */
     int argsSize = args.size();
     if (argsSize < minArgs()) {
@@ -139,6 +139,8 @@ public abstract class AFn implements IFn<Object[], Object> {
    * Calls variadic apply() otherwise.
    */
   public final Object applyN(List<Object> args) {
+    /* Check args */
+    checkArgs(args);
     /* if minArgs == maxArgs, then function is not variadic, hence get arity */
     int arity = (minArgs() == maxArgs()) ? minArgs() : -1;
     switch (arity) {
