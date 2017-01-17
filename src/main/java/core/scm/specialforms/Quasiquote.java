@@ -27,14 +27,12 @@ import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
 public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
-  private static final String syntax = "quasiquote";
-
-  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.of(syntax);
+  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.of(QUASIQUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 2) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
     return quasiquote(expression.get(1), env, evaluator);
   }
@@ -167,6 +165,6 @@ public enum Quasiquote implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "quasiquote";
   }
 }

@@ -13,8 +13,6 @@ import java.util.List;
 public enum Or implements ISpecialForm {
   OR;
 
-  private static final String syntax = "or";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     Object result = SCMBoolean.FALSE;
@@ -32,6 +30,6 @@ public enum Or implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "or";
   }
 }

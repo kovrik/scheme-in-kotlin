@@ -24,12 +24,10 @@ import java.util.ListIterator;
 public enum Lambda implements ISpecialForm {
   LAMBDA;
 
-  private static final String syntax = "lambda";
-
   @Override
   public SCMProcedure eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     /* Add implicit `begin` */
@@ -51,7 +49,7 @@ public enum Lambda implements ISpecialForm {
         HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
           if (temp.contains(o)) {
-            throw IllegalSyntaxException.of(syntax, expression, String.format("duplicate argument identifier `%s`", o));
+            throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument identifier `%s`", o));
           }
           temp.add(o);
         }
@@ -80,7 +78,7 @@ public enum Lambda implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "lambda";
   }
 
   // TODO Check if it works properly. See Define.replaceSelfCalls()

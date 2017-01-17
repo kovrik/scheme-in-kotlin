@@ -9,8 +9,6 @@ import java.util.List;
 public enum LetSyntax implements ISpecialForm {
   LET_SYNTAX;
 
-  private static final String syntax = "let-syntax";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
@@ -18,6 +16,6 @@ public enum LetSyntax implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "let-syntax";
   }
 }

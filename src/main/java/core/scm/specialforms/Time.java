@@ -24,12 +24,10 @@ public enum Time implements ISpecialForm {
 
   private static final String LS = System.getProperty("line.separator");
 
-  private final String syntax = "time";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
     long start = System.nanoTime();
     for (int i = 1; i < expression.size() - 1; i++) {
@@ -51,6 +49,6 @@ public enum Time implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "time";
   }
 }

@@ -22,19 +22,17 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum Define implements ISpecialForm {
   DEFINE;
 
-  private static final String syntax = "define";
-
   @Override
   public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     Object id = expression.get(1);
     if (id instanceof SCMSymbol) {
       /* Variable definition */
       if (expression.size() > 3) {
-        throw IllegalSyntaxException.of(syntax, expression, "multiple expressions after identifier");
+        throw IllegalSyntaxException.of(toString(), expression, "multiple expressions after identifier");
       }
       Object body = expression.get(2);
       env.put(id, evaluator.eval(body, env));
@@ -66,7 +64,7 @@ public enum Define implements ISpecialForm {
       }
       env.put(name, lambda);
     } else {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
     return UNSPECIFIED;
   }
@@ -113,6 +111,6 @@ public enum Define implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "define";
   }
 }

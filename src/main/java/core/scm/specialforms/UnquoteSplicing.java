@@ -10,18 +10,16 @@ import java.util.List;
 public enum UnquoteSplicing implements ISpecialForm {
   UNQUOTE_SPLICING;
 
-  private static final String syntax = "unquote-splicing";
-
-  public static final SCMSymbol UNQUOTE_SPLICING_SYMBOL = SCMSymbol.of(syntax);
+  public static final SCMSymbol UNQUOTE_SPLICING_SYMBOL = SCMSymbol.of(UNQUOTE_SPLICING.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     // Implemented in quasiquote
-    throw IllegalSyntaxException.of(syntax, expression, "not in quasiquote");
+    throw IllegalSyntaxException.of(toString(), expression, "not in quasiquote");
   }
 
   @Override
   public String toString() {
-    return syntax;
+    return "unquote-splicing";
   }
 }

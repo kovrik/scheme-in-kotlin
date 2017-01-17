@@ -24,20 +24,18 @@ public enum Case implements ISpecialForm {
 
   private static final SCMSymbol ELSE = SCMSymbol.of("else");
 
-  private static final String syntax = "case";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     /* Save string representation of expression before evaluation */
     String exprString = expression.toString();
     if (expression.size() <= 1) {
-      throw IllegalSyntaxException.of(syntax, exprString, "source expression failed to match any pattern");
+      throw IllegalSyntaxException.of(toString(), exprString, "source expression failed to match any pattern");
     }
     Object key = evaluator.eval(expression.get(1), env);
     for (int i = 2; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {
-        throw IllegalSyntaxException.of(syntax, exprString, "invalid clause in subform");
+        throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform");
       }
       List<Object> subform = (List)node;
       Object datum = subform.get(0);
@@ -48,10 +46,10 @@ public enum Case implements ISpecialForm {
           }
           return new SCMThunk(subform.get(subform.size() - 1), env);
         }
-        throw IllegalSyntaxException.of(syntax, exprString, "else must be the last clause in subform");
+        throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform");
       }
       if (!(datum instanceof List)) {
-        throw IllegalSyntaxException.of(syntax, exprString, "invalid clause in subform");
+        throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform");
       }
       for (Object n : ((List)datum)) {
         if (Eqv.eqv(key, n)) {
@@ -67,6 +65,6 @@ public enum Case implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "case";
   }
 }

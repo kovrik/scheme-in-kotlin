@@ -23,14 +23,12 @@ public enum Cond implements ISpecialForm {
 
   private static final SCMSymbol ELSE = SCMSymbol.of("else");
 
-  private static final String syntax = "cond";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     for (int i = 1; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {
-        throw IllegalSyntaxException.of(syntax, expression, "invalid clause in subform");
+        throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform");
       }
       List<Object> subform = (List)node;
       Object clause = subform.get(0);
@@ -41,7 +39,7 @@ public enum Cond implements ISpecialForm {
           }
           return new SCMThunk(subform.get(subform.size() - 1), env);
         }
-        throw IllegalSyntaxException.of(syntax, expression, "else must be the last clause in subform");
+        throw IllegalSyntaxException.of(toString(), expression, "else must be the last clause in subform");
       }
       if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
         for (int s = 1; s < subform.size() - 1; s++) {
@@ -55,6 +53,6 @@ public enum Cond implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "cond";
   }
 }

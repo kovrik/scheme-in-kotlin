@@ -18,17 +18,15 @@ import java.util.Map;
 public enum Do implements ISpecialForm {
   DO;
 
-  private static final String syntax = "do";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     Object bs = expression.get(1);
     if (!(bs instanceof List)) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
     Environment tempEnv = new Environment(env);
     List bindings = (List) bs;
@@ -36,11 +34,11 @@ public enum Do implements ISpecialForm {
     /* Init bindings */
     for (Object binding : bindings) {
       if (!(binding instanceof List)) {
-        throw IllegalSyntaxException.of(syntax, expression);
+        throw IllegalSyntaxException.of(toString(), expression);
       }
       /* Check that init value exists */
       if (((List)binding).size() < 2) {
-        throw IllegalSyntaxException.of(syntax, expression);
+        throw IllegalSyntaxException.of(toString(), expression);
       }
       Object variable = ((List) binding).get(0);
       Object init = ((List) binding).get(1);
@@ -60,11 +58,11 @@ public enum Do implements ISpecialForm {
 
     Object cl = expression.get(2);
     if (!(cl instanceof List)) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
     List clause = (List)cl;
     if (clause.isEmpty()) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     Object test = clause.get(0);
@@ -99,6 +97,6 @@ public enum Do implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "do";
   }
 }

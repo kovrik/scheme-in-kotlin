@@ -16,16 +16,14 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum Set implements ISpecialForm {
   SET;
 
-  private static final String syntax = "set!";
-
   @Override
   public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 3) {
-      throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", expression.size() - 1));
+      throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", expression.size() - 1));
     }
     Object identifier = expression.get(1);
     if (!(identifier instanceof SCMSymbol)) {
-      throw IllegalSyntaxException.of(syntax, expression, String.format("not an identifier: `%s`", identifier));
+      throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: `%s`", identifier));
     }
     env.findAndPut(identifier, evaluator.eval(expression.get(2), env));
     return UNSPECIFIED;
@@ -33,6 +31,6 @@ public enum Set implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "set!";
   }
 }

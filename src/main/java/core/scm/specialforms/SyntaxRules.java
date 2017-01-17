@@ -9,8 +9,6 @@ import java.util.List;
 public enum SyntaxRules implements ISpecialForm {
   SYNTAX_RULES;
 
-  private final String syntax = "syntax-rules";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET!");
@@ -18,6 +16,6 @@ public enum SyntaxRules implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "syntax-rules";
   }
 }

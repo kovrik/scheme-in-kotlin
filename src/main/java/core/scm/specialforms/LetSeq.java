@@ -15,12 +15,10 @@ import java.util.List;
 public enum LetSeq implements ISpecialForm {
   LETSEQ;
 
-  private static final String syntax = "let*";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     Environment localEnv = new Environment(env);
@@ -40,6 +38,6 @@ public enum LetSeq implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "let*";
   }
 }

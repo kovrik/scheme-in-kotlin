@@ -25,12 +25,10 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum LetRec implements ISpecialForm {
   LETREC;
 
-  private static final String syntax = "letrec";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(syntax, expression);
+      throw IllegalSyntaxException.of(toString(), expression);
     }
 
     Environment localEnv = new Environment(env);
@@ -55,6 +53,6 @@ public enum LetRec implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "letrec";
   }
 }

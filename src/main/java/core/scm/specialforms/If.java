@@ -17,17 +17,15 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum If implements ISpecialForm {
   IF;
 
-  private static final String syntax = "if";
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     int size = expression.size();
     if (size < 3 || size > 4) {
-      throw IllegalSyntaxException.of(syntax, expression, String.format("has %s parts after keyword", size - 1));
+      throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
-    Object consequence = expression.get(2);
     if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
+      Object consequence = expression.get(2);
       return new SCMThunk(consequence, env);
     } else {
       if (size < 4) {
@@ -42,6 +40,6 @@ public enum If implements ISpecialForm {
 
   @Override
   public String toString() {
-    return syntax;
+    return "if";
   }
 }
