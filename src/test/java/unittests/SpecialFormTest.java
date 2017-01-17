@@ -257,7 +257,7 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalQuote() {
     assertEquals(0L, eval("'0", env));
     assertEquals("test", eval("'\"test\"", env));
-    assertEquals(SCMCons.<Object>list(SCMSymbol.of(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env));
+    assertEquals(SCMCons.list(SCMSymbol.of(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env));
     assertEquals(list(SCMSymbol.of("+"), 1L, 2L), eval("'(+ 1 2)", env));
     assertEquals(SCMSymbol.of("0eab"), eval("'0eab", env));
     assertEquals(SCMSymbol.of("000eab"), eval("'000eab", env));
@@ -314,6 +314,9 @@ public class SpecialFormTest extends AbstractTest {
 
     String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
     assertEquals("DONE", eval(doTest3, env));
+
+    assertEquals(UNSPECIFIED, eval("(do ((i 1 (add1 i))) ((> i 4)) (void i))", env));
+    assertEquals("DONE", eval("(do ((i 1 (add1 i))) ((> i 4) \"DONE\") (void i))", env));
 
     try {
       eval("(do ((a 1) (b 2) (a 3)) (= 1 1) 5)", env);
@@ -467,6 +470,10 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testEvalBegin() {
+    assertEquals(UNSPECIFIED, eval("(begin)", env));
+    assertEquals(UNSPECIFIED, eval("(begin (begin))", env));
+    assertEquals(1L, eval("(begin 1)", env));
+    assertEquals(3L, eval("(begin 1 2 3)", env));
     try {
       eval("(begin (set! x 5) (+ x 1))", env);
       fail();
