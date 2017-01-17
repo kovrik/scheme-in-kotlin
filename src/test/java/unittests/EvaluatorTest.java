@@ -116,7 +116,7 @@ public class EvaluatorTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display());
+    tempEnv.put(SCMSymbol.of("display"), new Display());
 
     eval("(display 123)", tempEnv);
     assertEquals("123", baos.toString().trim());
@@ -168,7 +168,7 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testEvalApply() {
     assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env));
-    assertEquals(list(list(new SCMSymbol("a"), 1L), list(new SCMSymbol("b"), 2L), list(new SCMSymbol("c"), 3L)),
+    assertEquals(list(list(SCMSymbol.of("a"), 1L), list(SCMSymbol.of("b"), 2L), list(SCMSymbol.of("c"), 3L)),
                  eval("(apply map list '((a b c) (1 2 3)))", env));
 
     eval("(define (sqr x) (* x x))", env);

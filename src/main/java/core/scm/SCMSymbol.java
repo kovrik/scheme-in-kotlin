@@ -1,17 +1,42 @@
 package core.scm;
 
+import java.util.HashMap;
+import java.util.Map;
+
+/* Symbol class
+ *
+ * By default all symbols are interned and stored in INTERNED Map.
+ *
+ * This means that two values:
+ *
+ *   (define s1 'test)
+ *   (define s2 'test)
+ *
+ * will reference to the same symbol object.
+ */
 public class SCMSymbol implements ISCMClass {
+
+  /* Map of all interned symbols */
+  private static final Map<String, SCMSymbol> INTERNED = new HashMap<>();
 
   private static final String SPECIAL_CHARS = "()[]{}\",'`;|\\";
 
   private final String value;
   private boolean escape = false;
 
-  public SCMSymbol(String value) {
+  public static SCMSymbol of(String value) {
+    return INTERNED.computeIfAbsent(value, k -> new SCMSymbol(value));
+  }
+
+  public static SCMSymbol of(String value, boolean escape) {
+    return INTERNED.computeIfAbsent(value, k -> new SCMSymbol(value, escape));
+  }
+
+  private SCMSymbol(String value) {
     this.value = value;
   }
 
-  public SCMSymbol(String value, boolean escape) {
+  private SCMSymbol(String value, boolean escape) {
     this.value = value;
     this.escape = escape;
   }

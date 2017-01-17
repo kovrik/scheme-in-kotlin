@@ -22,7 +22,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum Case implements ISpecialForm {
   CASE;
 
-  private static final SCMSymbol ELSE = new SCMSymbol("else");
+  private static final SCMSymbol ELSE = SCMSymbol.of("else");
 
   private static final String syntax = "case";
 

@@ -242,19 +242,18 @@ public class ReaderTest {
 
   @Test
   public void testReadIdentifier() {
-    assertEquals(new SCMSymbol("test"), reader.readFirst("test"));
-    assertEquals(new SCMSymbol(LAMBDA.toString()), reader.readFirst("lambda"));
-    assertEquals(new SCMSymbol("list->vector"), reader.readFirst("list->vector"));
-    assertEquals(new SCMSymbol("+"), reader.readFirst("+"));
-    assertEquals(new SCMSymbol("<=?"), reader.readFirst("<=?"));
-    assertEquals(new SCMSymbol("the-word-recursion-has-many-meanings"), reader.readFirst("the-word-recursion-has-many-meanings"));
-    assertEquals(new SCMSymbol("a34kTMNs"), reader.readFirst("a34kTMNs"));
-    assertEquals(new SCMSymbol("V17a"), reader.readFirst("V17a"));
-    assertEquals(new SCMSymbol("soup"), reader.readFirst("soup"));
-    assertEquals(new SCMSymbol("a"), reader.readFirst("a"));
-    assertEquals(new SCMSymbol("ab"), reader.readFirst("ab"));
+    assertEquals(SCMSymbol.of("test"), reader.readFirst("test"));
+    assertEquals(SCMSymbol.of(LAMBDA.toString()), reader.readFirst("lambda"));
+    assertEquals(SCMSymbol.of("list->vector"), reader.readFirst("list->vector"));
+    assertEquals(SCMSymbol.of("+"), reader.readFirst("+"));
+    assertEquals(SCMSymbol.of("<=?"), reader.readFirst("<=?"));
+    assertEquals(SCMSymbol.of("the-word-recursion-has-many-meanings"), reader.readFirst("the-word-recursion-has-many-meanings"));
+    assertEquals(SCMSymbol.of("a34kTMNs"), reader.readFirst("a34kTMNs"));
+    assertEquals(SCMSymbol.of("V17a"), reader.readFirst("V17a"));
+    assertEquals(SCMSymbol.of("soup"), reader.readFirst("soup"));
+    assertEquals(SCMSymbol.of("a"), reader.readFirst("a"));
+    assertEquals(SCMSymbol.of("ab"), reader.readFirst("ab"));
   }
-
 
   @Test
   public void testScientificNotation() {
@@ -288,6 +287,6 @@ public class ReaderTest {
   }
 
   private static SCMSymbol s(String str) {
-    return new SCMSymbol(str);
+    return SCMSymbol.of(str);
   }
 }

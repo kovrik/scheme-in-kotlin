@@ -26,7 +26,7 @@ public class ForEach extends AFn {
     if (args.length < 2) {
       throw new ArityException(args.length, getName());
     }
-    SCMCons<Object> result = SCMCons.list(new SCMSymbol("list"));
+    SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));
 
     int size = -1;
     /* Check lists and their sizes */

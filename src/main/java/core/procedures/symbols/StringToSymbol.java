@@ -19,7 +19,7 @@ public class StringToSymbol extends AFn {
 
   @Override
   public SCMSymbol apply1(Object arg) {
-    SCMSymbol symbol = new SCMSymbol(arg.toString());
+    SCMSymbol symbol = SCMSymbol.of(arg.toString());
     symbol.setEscape(symbol.hasSpecialChars());
     return symbol;
   }

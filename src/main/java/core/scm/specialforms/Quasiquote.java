@@ -29,7 +29,7 @@ public enum Quasiquote implements ISpecialForm {
 
   private static final String syntax = "quasiquote";
 
-  public static final SCMSymbol QUASIQUOTE_SYMBOL = new SCMSymbol(syntax);
+  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.of(syntax);
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

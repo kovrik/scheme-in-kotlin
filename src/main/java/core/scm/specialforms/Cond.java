@@ -21,7 +21,7 @@ import java.util.List;
 public enum Cond implements ISpecialForm {
   COND;
 
-  private static final SCMSymbol ELSE = new SCMSymbol("else");
+  private static final SCMSymbol ELSE = SCMSymbol.of("else");
 
   private static final String syntax = "cond";
 

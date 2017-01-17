@@ -149,12 +149,12 @@ public class NumberUtils {
       }
       Object re = preProcessNumber(r, exactness, radix);
       if (!(re instanceof Number)) {
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
 
       Object im = preProcessNumber(i, exactness, radix);
       if (!(im instanceof Number)) {
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
       if (isZero(re) && isZero(im)) {
         return 0L;
@@ -164,7 +164,7 @@ public class NumberUtils {
 
     String n = number;
     if (number.indexOf('.') != number.lastIndexOf('.')) {
-      return new SCMSymbol(n);
+      return SCMSymbol.of(n);
     }
 
     /* Exponent mark */
@@ -192,7 +192,7 @@ public class NumberUtils {
       }
       if (!(e instanceof Long)) {
         /* Invalid exponent */
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
       exp = (Long)e;
       if (exactness == null) {
@@ -202,7 +202,7 @@ public class NumberUtils {
 
     /* Validate sign */
     if ((n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0)) {
-      return new SCMSymbol(number);
+      return SCMSymbol.of(number);
     }
 
     /* Validate all digits */
@@ -210,7 +210,7 @@ public class NumberUtils {
     for (char c : n.toCharArray()) {
       /* Check if char is valid for this radix AND that we don't have # before digits */
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
       /* Check if we have a digit char */
       if ("#+-.".indexOf(c) == -1) {
@@ -218,7 +218,7 @@ public class NumberUtils {
       }
     }
     if (!hasAtLeastOneDigit) {
-      return new SCMSymbol(number);
+      return SCMSymbol.of(number);
     }
 
     if (n.indexOf('#') > -1) {
@@ -228,7 +228,7 @@ public class NumberUtils {
           exactness = 'i';
         }
       } else {
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
     }
 
@@ -243,7 +243,7 @@ public class NumberUtils {
     if (n.indexOf('/') > -1) {
       isRational = true;
       if (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1) {
-        return new SCMSymbol(number);
+        return SCMSymbol.of(number);
       }
     }
 

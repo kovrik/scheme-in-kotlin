@@ -58,6 +58,6 @@ public class MemqTest extends AbstractTest {
   }
 
   private static SCMSymbol s(String str) {
-    return new SCMSymbol(str);
+    return SCMSymbol.of(str);
   }
 }

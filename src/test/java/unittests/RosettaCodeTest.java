@@ -196,8 +196,8 @@ public class RosettaCodeTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display());
-    tempEnv.put(new SCMSymbol("newline"), new Newline());
+    tempEnv.put(SCMSymbol.of("display"), new Display());
+    tempEnv.put(SCMSymbol.of("newline"), new Newline());
 
     String hanoi = "(define (hanoi n a b c) " +
                    "  (if (> n 0)" +
@@ -306,7 +306,7 @@ public class RosettaCodeTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(new SCMSymbol("display"), new Display());
+    tempEnv.put(SCMSymbol.of("display"), new Display());
 
     String quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
         " (quote (lambda (s) (display (list s (list (quote quote) s))))))";

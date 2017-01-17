@@ -58,7 +58,7 @@ public class Repl {
     if (i == SYM_LIMIT) {
       SYM_COUNTER.set(0);
     }
-    return new SCMSymbol("$" + i);
+    return SCMSymbol.of("$" + i);
   }
 
   private static void repl(String welcomeMessage, String prompt, Environment env) throws IOException {

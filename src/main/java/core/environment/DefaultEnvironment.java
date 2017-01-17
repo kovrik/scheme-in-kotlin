@@ -337,18 +337,18 @@ public final class DefaultEnvironment extends Environment {
     super(null);
 
     /* Constants and special cases */
-    put(new SCMSymbol("pi"),  Math.PI);
-    put(new SCMSymbol("eof"), SCMEof.EOF);
-    put(new SCMSymbol("call/cc"), new CallCC());
+    put(SCMSymbol.of("pi"),  Math.PI);
+    put(SCMSymbol.of("eof"), SCMEof.EOF);
+    put(SCMSymbol.of("call/cc"), new CallCC());
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
-      put(new SCMSymbol(specialForm.toString()), specialForm);
+      put(SCMSymbol.of(specialForm.toString()), specialForm);
     }
 
     /* Standard Procedures */
     for (AFn proc : STANDARD_PROCEDURES) {
-      put(new SCMSymbol(proc.getName()), proc);
+      put(SCMSymbol.of(proc.getName()), proc);
     }
   }
 }

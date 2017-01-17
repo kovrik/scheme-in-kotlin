@@ -212,7 +212,7 @@ public class ListTest extends AbstractTest {
   public void testListTail() {
     assertEquals(list(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env));
     assertEquals(2L, eval("(list-tail (cons 1 2) 1)", env));
-    assertEquals(new SCMSymbol("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env));
+    assertEquals(SCMSymbol.of("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env));
 
     eval("(define a '(1 2 3 4))", env);
     eval("(define b (list-tail (cdr a) 2))", env);
@@ -231,7 +231,7 @@ public class ListTest extends AbstractTest {
     assertEquals(1L, eval("(list-ref '(1) 0)", env));
     assertEquals(3L, eval("(list-ref '(1 2 3) 2)", env));
     assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env));
-    assertEquals(new SCMSymbol("c"), eval("(list-ref (list 'a 'b 'c) 2)", env));
+    assertEquals(SCMSymbol.of("c"), eval("(list-ref (list 'a 'b 'c) 2)", env));
     assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env));
     assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env));
     try {
@@ -292,7 +292,7 @@ public class ListTest extends AbstractTest {
     assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env));
     assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env));
     assertEquals(list(3L), eval("(member 3 '(1 2 3))", env));
-    assertEquals(list(list(new SCMSymbol("a")), new SCMSymbol("c")), eval("(member (list 'a) '(b (a) c))", env));
+    assertEquals(list(list(SCMSymbol.of("a")), SCMSymbol.of("c")), eval("(member (list 'a) '(b (a) c))", env));
     try {
       eval("(member)", env);
       fail();
@@ -318,8 +318,8 @@ public class ListTest extends AbstractTest {
     assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env));
     assertEquals(FALSE, eval("(memq (list 'a) '(b (a) c))", env));
 
-    assertEquals(list(new SCMSymbol("a"), new SCMSymbol("b"), new SCMSymbol("c")), eval("(memq 'a '(a b c))", env));
-    assertEquals(list(new SCMSymbol("b"), new SCMSymbol("c")), eval("(memq 'b '(a b c))", env));
+    assertEquals(list(SCMSymbol.of("a"), SCMSymbol.of("b"), SCMSymbol.of("c")), eval("(memq 'a '(a b c))", env));
+    assertEquals(list(SCMSymbol.of("b"), SCMSymbol.of("c")), eval("(memq 'b '(a b c))", env));
     assertEquals(FALSE, eval("(memq 'a '(b c d))", env));
     try {
       eval("(memq)", env);
@@ -346,8 +346,8 @@ public class ListTest extends AbstractTest {
     assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env));
     assertEquals(FALSE, eval("(memv (list 'a) '(b (a) c))", env));
 
-    assertEquals(list(new SCMSymbol("a"), new SCMSymbol("b"), new SCMSymbol("c")), eval("(memv 'a '(a b c))", env));
-    assertEquals(list(new SCMSymbol("b"), new SCMSymbol("c")), eval("(memv 'b '(a b c))", env));
+    assertEquals(list(SCMSymbol.of("a"), SCMSymbol.of("b"), SCMSymbol.of("c")), eval("(memv 'a '(a b c))", env));
+    assertEquals(list(SCMSymbol.of("b"), SCMSymbol.of("c")), eval("(memv 'b '(a b c))", env));
     assertEquals(FALSE, eval("(memv 'a '(b c d))", env));
 
     assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env));
@@ -368,7 +368,7 @@ public class ListTest extends AbstractTest {
   @Test
   public void testEvalAssoc() {
     eval("(define e '((a 1) (b 2) (c 3)))", env);
-    assertEquals(list((Object)list(new SCMSymbol("a"))), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env));
+    assertEquals(list((Object)list(SCMSymbol.of("a"))), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env));
     try {
       eval("(assoc)", env);
       fail();
@@ -392,8 +392,8 @@ public class ListTest extends AbstractTest {
   @Test
   public void testEvalAssq() {
     eval("(define e '((a 1) (b 2) (c 3)))", env);
-    assertEquals(list(new SCMSymbol("a"), 1L), eval("(assq 'a e)", env));
-    assertEquals(list(new SCMSymbol("b"), 2L), eval("(assq 'b e)", env));
+    assertEquals(list(SCMSymbol.of("a"), 1L), eval("(assq 'a e)", env));
+    assertEquals(list(SCMSymbol.of("b"), 2L), eval("(assq 'b e)", env));
     assertEquals(FALSE, eval("(assq 'd e)", env));
     try {
       eval("(assq)", env);

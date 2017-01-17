@@ -22,7 +22,7 @@ import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
-  static final SCMSymbol DOT = new SCMSymbol(".");
+  static final SCMSymbol DOT = SCMSymbol.of(".");
 
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
@@ -271,7 +271,7 @@ public class Reader implements IReader {
    * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
-  private Object readQuote(SCMSymbol symbol) throws IOException {
+  private List readQuote(SCMSymbol symbol) throws IOException {
     return SCMCons.list(symbol, nextNonNullToken());
   }
 
@@ -281,8 +281,9 @@ public class Reader implements IReader {
    * Syntax:
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
    */
-  private Object readIdentifier() throws IOException {
-    return new SCMSymbol(readUntilDelimiter());
+  // TODO Return Identifier, not Symbol
+  private SCMSymbol readIdentifier() throws IOException {
+    return SCMSymbol.of(readUntilDelimiter());
   }
 
   /**

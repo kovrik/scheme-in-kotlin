@@ -12,7 +12,7 @@ public enum UnquoteSplicing implements ISpecialForm {
 
   private static final String syntax = "unquote-splicing";
 
-  public static final SCMSymbol UNQUOTE_SPLICING_SYMBOL = new SCMSymbol(syntax);
+  public static final SCMSymbol UNQUOTE_SPLICING_SYMBOL = SCMSymbol.of(syntax);
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

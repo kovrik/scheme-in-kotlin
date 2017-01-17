@@ -12,7 +12,7 @@ public enum Unquote implements ISpecialForm {
 
   private static final String syntax = "unquote";
 
-  public static final SCMSymbol UNQUOTE_SYMBOL = new SCMSymbol(syntax);
+  public static final SCMSymbol UNQUOTE_SYMBOL = SCMSymbol.of(syntax);
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

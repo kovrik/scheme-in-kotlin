@@ -17,7 +17,7 @@ public enum Quote implements ISpecialForm {
 
   private static final String syntax = "quote";
 
-  public static final SCMSymbol QUOTE_SYMBOL = new SCMSymbol(syntax);
+  public static final SCMSymbol QUOTE_SYMBOL = SCMSymbol.of(syntax);
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
