@@ -44,6 +44,7 @@ public enum Define implements ISpecialForm {
        *              |   0   | 1 definition           | 3 body      |
        */
       // TODO (define (((a))) 1) should work
+      // TODO (define ((a n) c) n) should work
       /* Get procedure's name */
       SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
       /* Evaluate lambda */
