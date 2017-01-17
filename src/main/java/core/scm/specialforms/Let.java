@@ -74,9 +74,7 @@ public enum Let implements ISpecialForm {
       body.addAll(initValues);
 
       /* Named let is implemented via letrec */
-      SCMCons<Object> letrec = SCMCons.list(LetRec.LETREC);
-      letrec.add(l);
-      letrec.add(body);
+      SCMCons<Object> letrec = SCMCons.list(LetRec.LETREC, l, body);
       /* Letrec has TCO */
       return LetRec.LETREC.eval(letrec, new Environment(env), evaluator);
     }

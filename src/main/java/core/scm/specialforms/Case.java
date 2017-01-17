@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
-import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
 
 import java.util.List;
@@ -22,8 +21,6 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 public enum Case implements ISpecialForm {
   CASE;
 
-  private static final SCMSymbol ELSE = SCMSymbol.of("else");
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     /* Save string representation of expression before evaluation */
@@ -39,14 +36,11 @@ public enum Case implements ISpecialForm {
       }
       List<Object> subform = (List)node;
       Object datum = subform.get(0);
-      if (ELSE.equals(datum)) {
-        if (i == expression.size() - 1) {
-          for (int s = 1; s < subform.size() - 1; s++) {
-            evaluator.eval(subform.get(s), env);
-          }
-          return new SCMThunk(subform.get(subform.size() - 1), env);
+      if (Else.ELSE_SYMBOL.equals(datum)) {
+        if (i != expression.size() - 1) {
+          throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform");
         }
-        throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform");
+        return Begin.BEGIN.eval(subform, env, evaluator);
       }
       if (!(datum instanceof List)) {
         throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform");
