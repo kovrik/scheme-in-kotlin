@@ -15,7 +15,7 @@ public class SCMProcedure extends AFn {
   private List<SCMSymbol> args;
 
   /* Body form of the procedure */
-  private List<Object> body;
+  private Object body;
 
   /* Lexical environment */
   private Environment localEnvironment = null;
@@ -36,7 +36,7 @@ public class SCMProcedure extends AFn {
     return maxArgs;
   }
 
-  public SCMProcedure(String name, List<SCMSymbol> args, List<Object> body, Environment localEnvironment, boolean isVariadic) {
+  public SCMProcedure(String name, List<SCMSymbol> args, Object body, Environment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.NIL : args;
     this.body = body;
@@ -48,10 +48,6 @@ public class SCMProcedure extends AFn {
       this.minArgs = this.args.size();
       this.maxArgs = this.args.size();
     }
-  }
-
-  public List<Object> getBody() {
-    return body;
   }
 
   public List<SCMSymbol> getArgs() {

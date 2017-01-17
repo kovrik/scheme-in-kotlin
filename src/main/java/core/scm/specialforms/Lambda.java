@@ -30,16 +30,7 @@ public enum Lambda implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
 
-    /* Add implicit `begin` */
-    // TODO Is implicit BEGIN enough to have TCO?
-    SCMCons<Object> body = SCMCons.list(Begin.BEGIN);
-    body.addAll(expression.subList(2, expression.size()));
-
-    /* Optimization: replace some symbols with their values */
-    // FIXME Should inline symbols at call sites only! See Knuth's Man Or Boy Test
-//    inline(body, env);
-
-    List params;
+    List<SCMSymbol> params;
     boolean variadic = false;
     /* Check if args is a List or not */
     Object args = expression.get(1);
@@ -73,41 +64,19 @@ public enum Lambda implements ISpecialForm {
       params = SCMCons.list((SCMSymbol)args);
       variadic = true;
     }
+    Object body;
+    if (expression.size() == 3) {
+      body = expression.get(2);
+    } else {
+      /* Add implicit `begin` */
+      body = SCMCons.list(Begin.BEGIN);
+      ((List)body).addAll(expression.subList(2, expression.size()));
+    }
     return new SCMProcedure("", params, body, env, variadic);
   }
 
   @Override
   public String toString() {
     return "lambda";
-  }
-
-  // TODO Check if it works properly. See Define.replaceSelfCalls()
-  private static void inline(List<Object> body, Environment env) {
-    LinkedList<List> queue = new LinkedList<>();
-    /* Queue will hold body and all nested lists (if any) */
-    queue.add(body);
-    while (!queue.isEmpty()) {
-      List list = queue.remove();
-      /* Using ListIterator because it allows element modification */
-      ListIterator listIterator = list.listIterator();
-      while (listIterator.hasNext()) {
-        Object next = listIterator.next();
-        if (next instanceof List) {
-          /* Add nested list to the queue */
-          queue.add((List) next);
-        } else {
-          /* Not a list, but an SCMSymbol, candidate for inlining */
-          if (next instanceof SCMSymbol) {
-            Object o = env.findOrNull(next);
-            if ((o instanceof ISpecialForm) ||
-                ((o instanceof AFn) && !(o instanceof SCMProcedure))) {
-
-              /* Inline Special Forms and AFns to avoid further lookups */
-              listIterator.set(o);
-            }
-          }
-        }
-      }
-    }
   }
 }

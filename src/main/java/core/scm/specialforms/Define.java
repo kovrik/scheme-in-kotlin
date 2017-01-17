@@ -8,9 +8,7 @@ import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMUnspecified;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
@@ -41,12 +39,7 @@ public enum Define implements ISpecialForm {
        * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
        *              |   0   | 1 definition           | 3 body      |
        */
-      // TODO (define (((a))) 1)
-      // TODO (define ((a n) c) n)
-      /* Get procedure's name */
-      SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
-
-      /* Evaluate lambda */
+      /* Construct lambda form */
       SCMCons<Object> l = SCMCons.list(Lambda.LAMBDA);
 
       /* Args */
@@ -58,55 +51,17 @@ public enum Define implements ISpecialForm {
       l.addAll(expression.subList(2, expression.size()));
 
       SCMProcedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
+
+      /* Get procedure's name */
+      // TODO (define (((a))) 1)
+      // TODO (define ((a n) c) n)
+      SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
       lambda.setName(name.toString());
-      if (lambda.isPure()) {
-        replaceSelfCalls(lambda);
-      }
       env.put(name, lambda);
     } else {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     return UNSPECIFIED;
-  }
-
-  /* TODO Fixme:
-   * - not sure if works in all cases
-   * - generify
-   * - inline pure functions only?
-   * - inline at call sites only?
-   *
-   * See Knuth's Man Or Boy Test
-   */
-  private static void replaceSelfCalls(SCMProcedure lambda) {
-    LinkedList<List> queue = new LinkedList<>();
-    /* Queue will hold body and all nested lists (if any) */
-    queue.add(lambda.getBody());
-    /* `first` flag is used to track if current element is the first element of a List,
-     * hence assuming it is a proc call site, therefore we can inline it.
-     * Otherwise, it is just a symbol, do not inline it.
-     * See: Knuth's Man or Boy test */
-    while (!queue.isEmpty()) {
-      List list = queue.remove();
-      /* Using ListIterator because it allows element modification */
-      boolean first = true;
-      ListIterator listIterator = list.listIterator();
-      while (listIterator.hasNext()) {
-        Object next = listIterator.next();
-        if (next instanceof List) {
-          /* Add nested list to the queue */
-          queue.add((List) next);
-          first = true;
-        } else {
-          if (first) {
-            first = false;
-            if (next instanceof SCMSymbol && lambda.getName().equals(next.toString())) {
-              /* Replace symbol with procedure (self-call) */
-              listIterator.set(lambda);
-            }
-          }
-        }
-      }
-    }
   }
 
   @Override
