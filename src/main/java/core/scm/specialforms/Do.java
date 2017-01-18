@@ -72,8 +72,14 @@ public enum Do implements ISpecialForm {
     while (!SCMBoolean.toBoolean(evaluator.eval(test, tempEnv))) {
       /* Evaluate command expressions */
       for (Object e : body) {
-        /* Evaluate each expression */
-        evaluator.eval(e, tempEnv);
+        /* Each iteration establishes bindings to fresh locations
+         * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
+        Environment environment = new Environment(env);
+        environment.putAll(tempEnv);
+        /* Evaluate using new fresh environment */
+        evaluator.eval(e, environment);
+        /* THen put results into tempEnv */
+        tempEnv.putAll(environment);
       }
       /* Evaluate steps */
       Map<Object, Object> freshLocations = new HashMap<>(steps.size());

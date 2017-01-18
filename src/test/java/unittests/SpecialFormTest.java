@@ -324,14 +324,13 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("let: bad syntax (duplicate identifier) in form: (do ((a 1) (b 2) (a 3)) (= 1 1) 5)", e.getMessage());
     }
-    /* FIXME
-     * Check that each iteration established bindings to fresh locations
+    /* Check that each iteration establishes bindings to fresh locations
      * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
-//    eval("(define lst '())", env);
-//    eval("(do ((i 1 (+ i 1)))" +
-//         "    ((> i 4))" +
-//         "  (set! lst (cons (lambda () i) lst)))", env);
-//    assertEquals(list(4L, 3L, 2L, 1L), eval("(map (lambda (proc) (proc)) lst)", env));
+    eval("(define lst '())", env);
+    eval("(do ((i 1 (+ i 1)))" +
+         "    ((> i 4))" +
+         "  (set! lst (cons (lambda () i) lst)))", env);
+    assertEquals(list(4L, 3L, 2L, 1L), eval("(map (lambda (proc) (proc)) lst)", env));
   }
 
   @Test

@@ -29,17 +29,6 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
     return value;
   }
 
-  public Object findOrNull(Object key) {
-    Object value = get(key);
-    if (value == null) {
-      if (outer == null) {
-        return null;
-      }
-      return outer.findOrNull(key);
-    }
-    return value;
-  }
-
   public Object findAndPut(Object key, Object value) {
     Object v = get(key);
     if (v == null) {
