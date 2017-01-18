@@ -31,6 +31,7 @@ public enum Do implements ISpecialForm {
     Environment tempEnv = new Environment(env);
     List bindings = (List) bs;
     List<SCMCons> steps = SCMCons.list();
+    // TODO Replace with call to LET
     /* Init bindings */
     for (Object binding : bindings) {
       if (!(binding instanceof List)) {

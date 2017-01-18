@@ -1,5 +1,6 @@
 * TODO: [32/43]
 
+** TODO [#A] Fix `do` Special Form (each iteration must establishe bindings to fresh locations)
 ** TODO [#A] Macros
 ** TODO [#A] Math procedures: fix precision loss
 ** TODO [#A] Expt special cases
