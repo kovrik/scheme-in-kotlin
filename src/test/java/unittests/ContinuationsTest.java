@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static core.scm.SCMBoolean.FALSE;
+import static java.lang.Boolean.FALSE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

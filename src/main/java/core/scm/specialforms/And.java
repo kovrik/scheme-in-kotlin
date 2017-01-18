@@ -15,11 +15,11 @@ public enum And implements ISpecialForm {
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
-    Object result = SCMBoolean.TRUE;
+    Object result = Boolean.TRUE;
     if (expression.size() > 1) {
       for (int i = 1; i < expression.size() - 1; i++) {
         result = evaluator.eval(expression.get(i), env);
-        if (!SCMBoolean.valueOf(result)) {
+        if (!SCMBoolean.toBoolean(result)) {
           return result;
         }
       }

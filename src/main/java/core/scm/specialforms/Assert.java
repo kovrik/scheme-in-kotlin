@@ -21,7 +21,7 @@ public enum Assert implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     Object result = evaluator.eval(expression.get(1), env);
-    if (!SCMBoolean.valueOf(result)) {
+    if (!SCMBoolean.toBoolean(result)) {
       String message = "";
       if (expression.size() == 3) {
         if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof SCMMutableString)) {
@@ -31,7 +31,7 @@ public enum Assert implements ISpecialForm {
       }
       throw new SCMError(message);
     }
-    return SCMBoolean.TRUE;
+    return Boolean.TRUE;
   }
 
   @Override

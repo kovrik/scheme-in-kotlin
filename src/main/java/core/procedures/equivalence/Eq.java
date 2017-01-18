@@ -1,7 +1,6 @@
 package core.procedures.equivalence;
 
 import core.procedures.AFn;
-import core.scm.SCMBoolean;
 import core.scm.SCMSymbol;
 
 import static core.scm.SCMCons.NIL;
@@ -19,19 +18,19 @@ public class Eq extends AFn {
   }
 
   @Override
-  public SCMBoolean apply(Object... args) {
+  public Boolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args != null && args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         result = result && eq(args[i], args[i + 1]);
       }
     }
-    return SCMBoolean.toSCMBoolean(result);
+    return result;
   }
 
   @Override
-  public SCMBoolean apply2(Object arg1, Object arg2) {
-    return SCMBoolean.toSCMBoolean(eq(arg1, arg2));
+  public Boolean apply2(Object arg1, Object arg2) {
+    return eq(arg1, arg2);
   }
 
   public static boolean eq(Object first, Object second) {

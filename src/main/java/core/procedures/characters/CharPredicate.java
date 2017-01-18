@@ -2,7 +2,6 @@ package core.procedures.characters;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMBoolean;
 
 import java.util.function.Predicate;
 
@@ -24,8 +23,8 @@ public class CharPredicate extends AFn {
   }
 
   @Override
-  public Object apply1(Object arg) {
-    return SCMBoolean.toSCMBoolean(predicate.test((Character)arg));
+  public Boolean apply1(Object arg) {
+    return predicate.test((Character)arg);
   }
 
   @Override

@@ -20,7 +20,7 @@ public class SCMPredicate extends AFn {
   public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof SCMMutableString || o instanceof String));
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
-  public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof SCMBoolean));
+  public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
   public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", o -> (o instanceof IFn));
   public static final SCMPredicate IS_PORT = new SCMPredicate("port?", o -> (o instanceof ISCMPort));
   public static final SCMPredicate IS_INPUT_PORT = new SCMPredicate("input-port?", o -> (o instanceof SCMInputPort));
@@ -58,13 +58,13 @@ public class SCMPredicate extends AFn {
   }
 
   @Override
-  public SCMBoolean apply1(Object arg) {
-    return SCMBoolean.toSCMBoolean(predicate.test(arg));
+  public Boolean apply1(Object arg) {
+    return predicate.test(arg);
   }
 
   @Override
-  public SCMBoolean apply(Object... args) {
-    return SCMBoolean.toSCMBoolean(predicate.test(args[0]));
+  public Boolean apply(Object... args) {
+    return predicate.test(args[0]);
   }
 
   private static boolean isMutable(Object o) {

@@ -3,9 +3,9 @@ package unittests.s7.tests;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
+import static java.lang.Boolean.TRUE;
+import static java.lang.Boolean.FALSE;
 
 public class NotTest extends AbstractTest {
 

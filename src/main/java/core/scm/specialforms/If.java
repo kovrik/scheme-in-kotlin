@@ -24,7 +24,7 @@ public enum If implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
-    if (SCMBoolean.valueOf(evaluator.eval(test, env))) {
+    if (SCMBoolean.toBoolean(evaluator.eval(test, env))) {
       Object consequence = expression.get(2);
       return new SCMThunk(consequence, env);
     } else {

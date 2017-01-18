@@ -19,6 +19,13 @@ public class Writer implements IWriter {
     if (o == null) {
       return SCMCons.NIL.toString();
     }
+    if (o instanceof Boolean) {
+      if ((Boolean) o) {
+        return "#t";
+      } else {
+        return "#f";
+      }
+    }
     if (o instanceof SCMSymbol) {
       if (((SCMSymbol) o).isEscape()) {
         return '|' + o.toString() + '|';

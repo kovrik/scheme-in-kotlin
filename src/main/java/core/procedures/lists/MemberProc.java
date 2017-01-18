@@ -30,21 +30,21 @@ public class MemberProc extends AFn {
   public Object apply2(Object arg1, Object arg2) {
     List list = (List) arg2;
     if (list.isEmpty()) {
-      return SCMBoolean.FALSE;
+      return Boolean.FALSE;
     }
     int p = 0;
     Object cons = list;
     while ((cons instanceof List) && (!((List) cons).isEmpty())) {
       p += 1;
       Object car = Car.car(cons);
-      if ((SCMBoolean.valueOf(predicate.apply2(arg1, car)))) {
+      if ((SCMBoolean.toBoolean(predicate.apply2(arg1, car)))) {
         return cons;
       }
       cons = Cdr.cdr(cons);
     }
     /* Not found */
     if (p == list.size()) {
-      return SCMBoolean.FALSE;
+      return Boolean.FALSE;
     }
     throw new IllegalArgumentException(String.format("Wrong type argument in position %s (expecting list): %s",
                                                      p + 1, Writer.write(list)));

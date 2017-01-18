@@ -3,8 +3,8 @@ package unittests;
 import core.exceptions.WrongTypeException;
 import org.junit.Test;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 
 public class CharacterTest extends AbstractTest {

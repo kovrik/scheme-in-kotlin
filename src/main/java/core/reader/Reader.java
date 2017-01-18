@@ -2,7 +2,6 @@ package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
 import core.reader.parsers.Result;
-import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 import core.scm.SCMMutableVector;
@@ -211,9 +210,9 @@ public class Reader implements IReader {
     } else if (next == '\\') {
       return readCharacter();
     } else if (next == 't' || next == 'T') {
-      return SCMBoolean.TRUE;
+      return Boolean.TRUE;
     } else if (next == 'f' || next == 'F') {
-      return SCMBoolean.FALSE;
+      return Boolean.FALSE;
     } else if (isRadix(next) || isExactness(next)) {
       reader.unread(next);
       reader.unread('#');

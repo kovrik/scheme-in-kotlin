@@ -10,13 +10,13 @@ import static core.procedures.cons.ConsProc.cons;
 import static core.procedures.predicates.SCMPredicate.IS_LIST;
 import static core.procedures.predicates.SCMPredicate.IS_NULL;
 import static core.procedures.predicates.SCMPredicate.IS_PAIR;
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static java.lang.Boolean.TRUE;
+import static java.lang.Boolean.FALSE;
 
 public class SCMConsTest {
 

@@ -27,7 +27,7 @@ public class AssocProc extends AFn {
     for (int n = 0; n < list.size(); n++) {
       Object pair = list.get(n);
       if (SCMCons.isPair(pair)) {
-        if ((SCMBoolean.valueOf(predicate.apply2(arg1, ((SCMCons) pair).car())))) {
+        if ((SCMBoolean.toBoolean(predicate.apply2(arg1, ((SCMCons) pair).car())))) {
           return pair;
         }
       } else {
@@ -35,7 +35,7 @@ public class AssocProc extends AFn {
           String.format("Wrong type argument in position %s (expecting association list): %s", n, Writer.write(list)));
       }
     }
-    return SCMBoolean.FALSE;
+    return Boolean.FALSE;
   }
 
   @Override

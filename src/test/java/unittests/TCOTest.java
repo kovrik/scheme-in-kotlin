@@ -2,7 +2,7 @@ package unittests;
 
 import org.junit.Test;
 
-import static core.scm.SCMBoolean.TRUE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 
 public class TCOTest extends AbstractTest {

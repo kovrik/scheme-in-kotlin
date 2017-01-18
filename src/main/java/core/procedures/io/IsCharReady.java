@@ -4,7 +4,6 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMBoolean;
 import core.scm.SCMInputPort;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class IsCharReady extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
+  public Boolean apply(Object... args) {
     SCMInputPort inputPort;
     if (args.length == 0) {
       inputPort = Repl.getCurrentInputPort();
@@ -32,6 +31,6 @@ public class IsCharReady extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return SCMBoolean.toSCMBoolean(bytesAvailable > 0);
+    return bytesAvailable > 0;
   }
 }

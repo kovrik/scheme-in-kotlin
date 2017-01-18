@@ -2,7 +2,6 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
@@ -31,7 +30,7 @@ public class Append extends AFn {
   }
 
   public static Object append(Object first, Object second) {
-    if (SCMBoolean.valueOf(SCMCons.isNull(first))) {
+    if (SCMCons.isNull(first)) {
       return second;
     }
     return SCMCons.cons(Car.car(first), append(Cdr.cdr(first), second));

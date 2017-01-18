@@ -2,13 +2,13 @@ package unittests.s7.tests;
 
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMSymbol;
 import core.scm.SCMMutableVector;
+import core.scm.SCMSymbol;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMBoolean.FALSE;
 import static core.scm.SCMCons.*;
+import static java.lang.Boolean.FALSE;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 

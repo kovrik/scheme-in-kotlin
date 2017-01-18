@@ -3,7 +3,6 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigRational;
-import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
@@ -46,13 +45,13 @@ public class NumericalComparison extends AFn {
   }
 
   @Override
-  public SCMBoolean apply(Object... args) {
+  public Boolean apply(Object... args) {
     for (int i = 0; i < args.length - 1; i++) {
       if (!apply(args[i], args[i + 1], type)) {
-        return SCMBoolean.FALSE;
+        return Boolean.FALSE;
       }
     }
-    return SCMBoolean.TRUE;
+    return Boolean.TRUE;
   }
 
   public static boolean apply(Object first, Object second, Type type) {

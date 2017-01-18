@@ -15,11 +15,11 @@ public enum Or implements ISpecialForm {
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
-    Object result = SCMBoolean.FALSE;
+    Object result = Boolean.FALSE;
     if (expression.size() > 1) {
       for (int i = 1; i < expression.size() - 1; i++) {
         result = evaluator.eval(expression.get(i), env);
-        if (SCMBoolean.valueOf(result)) {
+        if (SCMBoolean.toBoolean(result)) {
           return result;
         }
       }

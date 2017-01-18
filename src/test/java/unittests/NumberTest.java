@@ -10,8 +10,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.*;
 
 public class NumberTest extends AbstractTest {

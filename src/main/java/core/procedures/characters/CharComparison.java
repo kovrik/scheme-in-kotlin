@@ -2,7 +2,6 @@ package core.procedures.characters;
 
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMBoolean;
 
 import java.util.function.BiPredicate;
 
@@ -34,16 +33,16 @@ public class CharComparison extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
+  public Boolean apply(Object... args) {
     if (args.length < 2) {
-      return SCMBoolean.TRUE;
+      return Boolean.TRUE;
     }
     for (int i = 0; i < args.length - 1; i++) {
       if ((!predicate.test((Character) args[i], (Character) args[i + 1]))) {
-        return SCMBoolean.FALSE;
+        return Boolean.FALSE;
       }
     }
-    return SCMBoolean.TRUE;
+    return Boolean.TRUE;
   }
 
   @Override

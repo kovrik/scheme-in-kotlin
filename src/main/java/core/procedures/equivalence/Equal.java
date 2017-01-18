@@ -1,7 +1,6 @@
 package core.procedures.equivalence;
 
 import core.procedures.AFn;
-import core.scm.SCMBoolean;
 import core.scm.SCMMutableString;
 
 public class Equal extends AFn {
@@ -17,19 +16,19 @@ public class Equal extends AFn {
   }
 
   @Override
-  public SCMBoolean apply(Object... args) {
+  public Boolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
     if (args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         result = result && equal(args[i], args[i + 1]);
       }
     }
-    return SCMBoolean.toSCMBoolean(result);
+    return result;
   }
 
   @Override
-  public SCMBoolean apply2(Object arg1, Object arg2) {
-    return SCMBoolean.toSCMBoolean(equal(arg1, arg2));
+  public Boolean apply2(Object arg1, Object arg2) {
+    return equal(arg1, arg2);
   }
 
   public static boolean equal(Object first, Object second) {

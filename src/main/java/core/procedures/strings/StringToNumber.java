@@ -4,7 +4,6 @@ import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.reader.parsers.Result;
 import core.scm.FnArgs;
-import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
@@ -73,6 +72,6 @@ public class StringToNumber extends AFn {
     if (result instanceof Number) {
       return result;
     }
-    return SCMBoolean.FALSE;
+    return Boolean.FALSE;
   }
 }

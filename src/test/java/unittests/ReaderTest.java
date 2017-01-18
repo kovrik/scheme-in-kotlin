@@ -2,7 +2,10 @@ package unittests;
 
 import core.exceptions.IllegalSyntaxException;
 import core.reader.StringReader;
-import core.scm.*;
+import core.scm.SCMBigComplex;
+import core.scm.SCMBigRational;
+import core.scm.SCMMutableVector;
+import core.scm.SCMSymbol;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
@@ -12,7 +15,8 @@ import java.math.BigInteger;
 
 import static core.scm.SCMCons.list;
 import static core.scm.specialforms.Lambda.LAMBDA;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class ReaderTest {
 
@@ -234,10 +238,10 @@ public class ReaderTest {
 
   @Test
   public void testReadBoolean() {
-    assertEquals(SCMBoolean.TRUE,  reader.readFirst("#t"));
-    assertEquals(SCMBoolean.FALSE, reader.readFirst("#f"));
-    assertEquals(SCMBoolean.TRUE,  reader.readFirst("#T"));
-    assertEquals(SCMBoolean.FALSE, reader.readFirst("#F"));
+    assertEquals(Boolean.TRUE,  reader.readFirst("#t"));
+    assertEquals(Boolean.FALSE, reader.readFirst("#f"));
+    assertEquals(Boolean.TRUE,  reader.readFirst("#T"));
+    assertEquals(Boolean.FALSE, reader.readFirst("#F"));
   }
 
   @Test

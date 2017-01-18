@@ -58,7 +58,6 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(StringBuilder.class,         MUTABLE_STRING);
     SCM_CLASSES.put(SCMMutableString.class,      MUTABLE_STRING);
     SCM_CLASSES.put(Boolean.class,               BOOLEAN);
-    SCM_CLASSES.put(SCMBoolean.class,            BOOLEAN);
     SCM_CLASSES.put(IFn.class,                   PROCEDURE);
     SCM_CLASSES.put(SCMSymbol.class,             SYMBOL);
     SCM_CLASSES.put(SCMPair.class,               PAIR);
@@ -130,7 +129,6 @@ public enum SCMClass implements ISCMClass {
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
-    TYPE_PREDICATES.put(Boolean.class, o -> SCMBoolean.class.equals(o.getClass()));
     TYPE_PREDICATES.put(String.class, o -> SCMImmutableString.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(SCMImmutableString.class, o -> String.class.equals(o.getClass()) || SCMImmutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(SCMMutableString.class, o -> StringBuilder.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));

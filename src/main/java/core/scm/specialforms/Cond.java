@@ -34,7 +34,7 @@ public enum Cond implements ISpecialForm {
         }
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
-      if (SCMBoolean.valueOf(evaluator.eval(clause, env))) {
+      if (SCMBoolean.toBoolean(evaluator.eval(clause, env))) {
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }

@@ -13,9 +13,9 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
 import static core.scm.SCMCons.list;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 
 public class EvaluatorTest extends AbstractTest {

@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import java.io.*;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 
 public class IOTest extends AbstractTest {

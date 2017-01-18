@@ -4,8 +4,8 @@ import core.exceptions.ArityException;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMBoolean.FALSE;
-import static core.scm.SCMBoolean.TRUE;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 
