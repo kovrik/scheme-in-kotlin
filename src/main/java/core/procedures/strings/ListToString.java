@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
-public class ListToString extends AFn {
+public final class ListToString extends AFn {
 
   @Override
   public String getName() {

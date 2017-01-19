@@ -8,7 +8,7 @@ import core.scm.FnArgs;
 import core.scm.SCMPromise;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMPromise.class})
-public class Force extends AFn {
+public final class Force extends AFn {
 
   @Override
   public String getName() {

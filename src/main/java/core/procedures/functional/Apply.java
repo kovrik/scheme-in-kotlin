@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class, Object.class}, lastArgType = {SCMClass.SCMProperList.class})
-public class Apply extends AFn {
+public final class Apply extends AFn {
 
   @Override
   public String getName() {

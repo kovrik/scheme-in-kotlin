@@ -8,7 +8,7 @@ import core.scm.FnArgs;
 import core.scm.SCMCons;
 
 @FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {IFn.class, IFn.class, IFn.class})
-public class DynamicWind extends AFn {
+public final class DynamicWind extends AFn {
 
   @Override
   public boolean isPure() {

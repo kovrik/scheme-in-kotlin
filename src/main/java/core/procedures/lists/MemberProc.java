@@ -10,7 +10,7 @@ import core.writer.Writer;
 import java.util.List;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, List.class})
-public class MemberProc extends AFn {
+public final class MemberProc extends AFn {
 
   private final String name;
   /* Procedure used to compare objects for equality */

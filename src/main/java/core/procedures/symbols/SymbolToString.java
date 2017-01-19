@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMSymbol;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMSymbol.class})
-public class SymbolToString extends AFn {
+public final class SymbolToString extends AFn {
 
   @Override
   public boolean isPure() {

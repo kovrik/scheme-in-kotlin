@@ -8,7 +8,7 @@ import core.scm.FnArgs;
 import java.util.concurrent.ThreadLocalRandom;
 
 @FnArgs(maxArgs = 2, restArgsType = {Long.class, Long.class})
-public class Random extends AFn {
+public final class Random extends AFn {
 
   @Override
   public boolean isPure() {

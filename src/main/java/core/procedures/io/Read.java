@@ -12,7 +12,7 @@ import core.scm.SCMThunk;
 import java.util.List;
 
 @FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
-public class Read extends AFn {
+public final class Read extends AFn {
 
   @Override
   public String getName() {

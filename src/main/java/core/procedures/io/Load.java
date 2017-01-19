@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
-public class Load extends AFn {
+public final class Load extends AFn {
 
   private final FileReader reader = new FileReader();
 

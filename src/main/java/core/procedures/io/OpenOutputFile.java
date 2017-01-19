@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
-public class OpenOutputFile extends AFn {
+public final class OpenOutputFile extends AFn {
 
   @Override
   public String getName() {

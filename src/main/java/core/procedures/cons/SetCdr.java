@@ -10,7 +10,7 @@ import java.util.List;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, Object.class})
-public class SetCdr extends AFn {
+public final class SetCdr extends AFn {
 
   @Override
   public String getName() {

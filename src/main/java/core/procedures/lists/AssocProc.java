@@ -10,7 +10,7 @@ import core.writer.Writer;
 import java.util.List;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.SCMProperList.class})
-public class AssocProc extends AFn {
+public final class AssocProc extends AFn {
 
   private final String name;
   /* Procedure used to compare objects for equality */

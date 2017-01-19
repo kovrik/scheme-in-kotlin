@@ -7,7 +7,7 @@ import core.scm.SCMMutableVector;
 import core.scm.SCMVector;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMVector.class})
-public class VectorToList extends AFn {
+public final class VectorToList extends AFn {
 
   @Override
   public String getName() {

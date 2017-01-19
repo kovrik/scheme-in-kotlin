@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
-public class StringToImmutableString extends AFn {
+public final class StringToImmutableString extends AFn {
 
   @Override
   public String getName() {

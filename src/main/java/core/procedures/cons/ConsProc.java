@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMCons;
 
 @FnArgs(minArgs = 2, maxArgs = 2)
-public class ConsProc extends AFn {
+public final class ConsProc extends AFn {
 
   @Override
   public String getName() {

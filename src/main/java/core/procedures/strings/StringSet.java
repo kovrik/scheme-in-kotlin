@@ -7,7 +7,7 @@ import core.scm.SCMMutableString;
 import core.scm.SCMUnspecified;
 
 @FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {SCMMutableString.class, SCMClass.ExactNonNegativeInteger.class, Character.class})
-public class StringSet extends AFn {
+public final class StringSet extends AFn {
 
   @Override
   public String getName() {

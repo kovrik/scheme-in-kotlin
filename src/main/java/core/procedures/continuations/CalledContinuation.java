@@ -1,6 +1,6 @@
 package core.procedures.continuations;
 
-public class CalledContinuation extends RuntimeException {
+public final class CalledContinuation extends RuntimeException {
 
   private final Object value;
   private final Continuation continuation;

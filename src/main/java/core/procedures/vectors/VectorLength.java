@@ -6,7 +6,7 @@ import core.scm.SCMMutableVector;
 import core.scm.SCMVector;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMVector.class})
-public class VectorLength extends AFn {
+public final class VectorLength extends AFn {
 
   @Override
   public boolean isPure() {

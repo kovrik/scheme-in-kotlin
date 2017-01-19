@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMThunk;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class Eval extends AFn {
+public final class Eval extends AFn {
 
   @Override
   public boolean isPure() {

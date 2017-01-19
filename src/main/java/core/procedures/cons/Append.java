@@ -6,7 +6,7 @@ import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 @FnArgs(restArgsType = SCMClass.SCMProperList.class, lastArgType = Object.class)
-public class Append extends AFn {
+public final class Append extends AFn {
 
   @Override
   public String getName() {

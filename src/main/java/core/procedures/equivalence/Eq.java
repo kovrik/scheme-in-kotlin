@@ -5,7 +5,7 @@ import core.scm.SCMSymbol;
 
 import static core.scm.SCMCons.NIL;
 
-public class Eq extends AFn {
+public final class Eq extends AFn {
 
   @Override
   public boolean isPure() {
@@ -33,7 +33,7 @@ public class Eq extends AFn {
     return eq(arg1, arg2);
   }
 
-  public static boolean eq(Object first, Object second) {
+  private boolean eq(Object first, Object second) {
     if ((first instanceof SCMSymbol) && (second instanceof SCMSymbol)) {
       return first.equals(second);
     }

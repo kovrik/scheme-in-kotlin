@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMClass;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class ClassOf extends AFn {
+public final class ClassOf extends AFn {
 
   @Override
   public boolean isPure() {

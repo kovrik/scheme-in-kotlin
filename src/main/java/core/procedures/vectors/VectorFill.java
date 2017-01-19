@@ -9,7 +9,7 @@ import java.util.Arrays;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, Object.class})
-public class VectorFill extends AFn {
+public final class VectorFill extends AFn {
 
   @Override
   public String getName() {

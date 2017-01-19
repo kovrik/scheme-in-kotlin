@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 
 @FnArgs(restArgsType = {String.class})
-public class StringAppend extends AFn {
+public final class StringAppend extends AFn {
 
   @Override
   public String getName() {

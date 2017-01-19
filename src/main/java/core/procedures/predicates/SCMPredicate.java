@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class SCMPredicate extends AFn {
+public final class SCMPredicate extends AFn {
 
   public static final SCMPredicate IS_NULL = new SCMPredicate("null?", SCMCons::isNull);
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));

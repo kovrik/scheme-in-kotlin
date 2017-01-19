@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
-public class Length extends AFn {
+public final class Length extends AFn {
 
   @Override
   public boolean isPure() {

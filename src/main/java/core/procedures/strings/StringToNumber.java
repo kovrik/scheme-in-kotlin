@@ -13,7 +13,7 @@ import static core.utils.NumberUtils.EXACTNESS_RADIX;
 import static core.utils.NumberUtils.RADIX_EXACTNESS;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {String.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
-public class StringToNumber extends AFn {
+public final class StringToNumber extends AFn {
 
   @Override
   public String getName() {

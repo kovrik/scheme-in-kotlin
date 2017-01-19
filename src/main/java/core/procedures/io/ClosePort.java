@@ -8,7 +8,7 @@ import core.scm.SCMUnspecified;
 import java.io.IOException;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = ISCMPort.class)
-public class ClosePort extends AFn {
+public final class ClosePort extends AFn {
 
   @Override
   public String getName() {

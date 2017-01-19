@@ -6,7 +6,7 @@ import core.scm.FnArgs;
 import java.util.function.BiPredicate;
 
 @FnArgs(restArgsType = {Character.class})
-public class CharComparison extends AFn {
+public final class CharComparison extends AFn {
 
   @Override
   public boolean isPure() {

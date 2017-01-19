@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {String.class, IFn.class})
-public class CallWithInputFile extends AFn {
+public final class CallWithInputFile extends AFn {
 
   @Override
   public String getName() {

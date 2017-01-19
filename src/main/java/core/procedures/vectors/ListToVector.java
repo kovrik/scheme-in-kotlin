@@ -8,7 +8,7 @@ import core.scm.SCMMutableVector;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
-public class ListToVector extends AFn {
+public final class ListToVector extends AFn {
 
   @Override
   public String getName() {

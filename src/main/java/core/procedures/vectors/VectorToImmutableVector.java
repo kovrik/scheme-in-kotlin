@@ -6,7 +6,7 @@ import core.scm.SCMImmutableVector;
 import core.scm.SCMVector;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMVector.class})
-public class VectorToImmutableVector extends AFn {
+public final class VectorToImmutableVector extends AFn {
 
   @Override
   public String getName() {

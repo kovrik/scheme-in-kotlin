@@ -9,7 +9,7 @@ import core.scm.SCMInputPort;
 import java.io.IOException;
 
 @FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
-public class ReadChar extends AFn {
+public final class ReadChar extends AFn {
 
   @Override
   public String getName() {

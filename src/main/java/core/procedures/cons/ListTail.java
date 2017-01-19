@@ -9,7 +9,7 @@ import core.scm.SCMCons;
 import java.util.List;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.ExactNonNegativeInteger.class})
-public class ListTail extends AFn {
+public final class ListTail extends AFn {
 
   @Override
   public String getName() {

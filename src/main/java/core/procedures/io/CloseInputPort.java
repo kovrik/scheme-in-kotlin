@@ -8,7 +8,7 @@ import core.scm.SCMUnspecified;
 import java.io.IOException;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = SCMInputPort.class)
-public class CloseInputPort extends AFn {
+public final class CloseInputPort extends AFn {
 
   @Override
   public String getName() {

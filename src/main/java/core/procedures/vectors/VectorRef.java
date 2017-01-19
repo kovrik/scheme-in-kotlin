@@ -6,7 +6,7 @@ import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class})
-public class VectorRef extends AFn {
+public final class VectorRef extends AFn {
 
   @Override
   public boolean isPure() {

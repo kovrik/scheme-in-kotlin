@@ -8,7 +8,7 @@ import core.scm.SCMClass;
  * "Upward" one-shot continuation
  */
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class Continuation extends AFn {
+public final class Continuation extends AFn {
 
   private boolean invoked = false;
 

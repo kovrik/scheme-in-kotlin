@@ -8,7 +8,7 @@ import core.scm.SCMMutableVector;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {SCMClass.ExactNonNegativeInteger.class})
-public class MakeVector extends AFn {
+public final class MakeVector extends AFn {
 
   @Override
   public String getName() {

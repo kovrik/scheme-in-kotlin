@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Number.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
-public class NumberToString extends AFn {
+public final class NumberToString extends AFn {
 
   @Override
   public String getName() {

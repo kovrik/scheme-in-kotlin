@@ -1,20 +1,15 @@
 package core.procedures.functional;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.IFn;
-import core.scm.FnArgs;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
+import core.scm.*;
 import core.scm.specialforms.Quote;
-import core.scm.SCMThunk;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
-public class ForEach extends AFn {
+public final class ForEach extends AFn {
 
   @Override
   public String getName() {

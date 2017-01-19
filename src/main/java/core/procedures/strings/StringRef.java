@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMClass;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {String.class, SCMClass.ExactNonNegativeInteger.class})
-public class StringRef extends AFn {
+public final class StringRef extends AFn {
 
   @Override
   public boolean isPure() {

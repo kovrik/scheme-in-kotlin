@@ -13,7 +13,7 @@ import java.io.IOException;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
-public class Display extends AFn {
+public final class Display extends AFn {
 
   @Override
   public String getName() {

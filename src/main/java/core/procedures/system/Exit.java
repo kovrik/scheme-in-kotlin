@@ -6,7 +6,7 @@ import core.scm.FnArgs;
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 @FnArgs(maxArgs = 1, restArgsType = {Long.class})
-public class Exit extends AFn {
+public final class Exit extends AFn {
 
   @Override
   public String getName() {

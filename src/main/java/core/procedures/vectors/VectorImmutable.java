@@ -3,7 +3,7 @@ package core.procedures.vectors;
 import core.procedures.AFn;
 import core.scm.SCMImmutableVector;
 
-public class VectorImmutable extends AFn {
+public final class VectorImmutable extends AFn {
 
   @Override
   public String getName() {

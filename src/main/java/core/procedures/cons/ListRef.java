@@ -8,7 +8,7 @@ import core.scm.SCMCons;
 import java.util.List;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class})
-public class ListRef extends AFn {
+public final class ListRef extends AFn {
 
   @Override
   public boolean isPure() {

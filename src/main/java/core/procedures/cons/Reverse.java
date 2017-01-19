@@ -8,7 +8,7 @@ import core.scm.SCMCons;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
-public class Reverse extends AFn {
+public final class Reverse extends AFn {
 
   @Override
   public String getName() {

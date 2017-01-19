@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMMutableString;
 
 @FnArgs(restArgsType = {Character.class})
-public class StringProc extends AFn {
+public final class StringProc extends AFn {
 
   @Override
   public String getName() {

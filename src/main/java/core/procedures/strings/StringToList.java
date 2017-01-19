@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMCons;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
-public class StringToList extends AFn {
+public final class StringToList extends AFn {
 
   @Override
   public String getName() {

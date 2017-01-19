@@ -4,7 +4,7 @@ import core.procedures.AFn;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
-public class Void extends AFn {
+public final class Void extends AFn {
 
   static final Void INSTANCE = new Void();
 

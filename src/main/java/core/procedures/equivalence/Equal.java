@@ -3,7 +3,7 @@ package core.procedures.equivalence;
 import core.procedures.AFn;
 import core.scm.SCMMutableString;
 
-public class Equal extends AFn {
+public final class Equal extends AFn {
 
   @Override
   public boolean isPure() {
@@ -31,7 +31,7 @@ public class Equal extends AFn {
     return equal(arg1, arg2);
   }
 
-  public static boolean equal(Object first, Object second) {
+  private boolean equal(Object first, Object second) {
     if ((first instanceof String) && (second instanceof SCMMutableString)) {
       return second.equals(first);
     }

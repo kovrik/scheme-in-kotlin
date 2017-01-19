@@ -3,7 +3,7 @@ package core.procedures.vectors;
 import core.procedures.AFn;
 import core.scm.SCMMutableVector;
 
-public class Vector extends AFn {
+public final class Vector extends AFn {
 
   @Override
   public String getName() {

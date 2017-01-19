@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class HashCode extends AFn {
+public final class HashCode extends AFn {
 
   @Override
   public boolean isPure() {

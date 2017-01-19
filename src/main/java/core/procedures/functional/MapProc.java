@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
-public class MapProc extends AFn {
+public final class MapProc extends AFn {
 
   @Override
   public String getName() {

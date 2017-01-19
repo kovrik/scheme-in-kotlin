@@ -11,7 +11,7 @@ import core.writer.Writer;
 import java.io.IOException;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
-public class Write extends AFn {
+public final class Write extends AFn {
 
   @Override
   public String getName() {

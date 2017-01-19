@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 import java.util.List;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMPair.class})
-public class Cdr extends AFn {
+public final class Cdr extends AFn {
 
   @Override
   public boolean isPure() {

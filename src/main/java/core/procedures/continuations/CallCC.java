@@ -8,7 +8,7 @@ import core.scm.FnArgs;
 import core.scm.SCMCons;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {IFn.class})
-public class CallCC extends AFn {
+public final class CallCC extends AFn {
 
   @Override
   public boolean isPure() {

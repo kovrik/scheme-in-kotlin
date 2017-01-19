@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.writer.Writer;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class ToString extends AFn {
+public final class ToString extends AFn {
 
   @Override
   public boolean isPure() {

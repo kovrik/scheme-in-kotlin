@@ -11,7 +11,7 @@ import core.scm.SCMUnspecified;
 import java.io.IOException;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Character.class}, restArgsType = SCMOutputPort.class)
-public class WriteChar extends AFn {
+public final class WriteChar extends AFn {
 
   @Override
   public String getName() {

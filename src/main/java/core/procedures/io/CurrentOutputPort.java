@@ -5,7 +5,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 
 @FnArgs(maxArgs = 0)
-public class CurrentOutputPort extends AFn {
+public final class CurrentOutputPort extends AFn {
 
   @Override
   public String getName() {
