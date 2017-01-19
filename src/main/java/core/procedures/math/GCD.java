@@ -33,7 +33,7 @@ public final class GCD extends AFn {
       return ABS.apply1(args[0]);
     }
     for (int i = 1; i < args.length; i++) {
-      result = apply(result, (Number) args[i]);
+      result = gcd(result, (Number) args[i]);
     }
     return result;
   }
@@ -55,7 +55,7 @@ public final class GCD extends AFn {
       throw new WrongTypeException("Integer", b);
     }
     if (a.longValue() != a || b.longValue() != b) {
-      return ToInexact.toInexact(gcd((SCMBigRational)ToExact.toExact(a), (SCMBigRational)ToExact.toExact(b)));
+      return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));
     }
     return (double)gcd(a.longValue(), b.longValue());
   }
@@ -66,7 +66,7 @@ public final class GCD extends AFn {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
       // TODO Check correctness
-      return ToInexact.toInexact(gcd((BigDecimal)ToExact.toExact(a), (BigDecimal)ToExact.toExact(b)));
+      return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));
     }
   }
 
@@ -79,7 +79,7 @@ public final class GCD extends AFn {
                               LCM.lcm(first.getDenominator(), second.getDenominator()));
   }
 
-  private Number apply(Number first, Number second) {
+  private static Number gcd(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);
     }
@@ -101,7 +101,6 @@ public final class GCD extends AFn {
     if (second instanceof BigDecimal) {
       return gcd(new BigDecimal(first.toString()), (BigDecimal) second);
     }
-
     return gcd(first.doubleValue(), second.doubleValue());
   }
 }

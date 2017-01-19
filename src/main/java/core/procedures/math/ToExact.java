@@ -5,12 +5,15 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class ToExact extends AFn {
+
+  public static final String NAME = "inexact->exact";
 
   @Override
   public boolean isPure() {
@@ -19,7 +22,7 @@ public final class ToExact extends AFn {
 
   @Override
   public String getName() {
-    return "inexact->exact";
+    return NAME;
   }
 
   @Override
@@ -43,14 +46,18 @@ public final class ToExact extends AFn {
       return new SCMBigComplex(toExact(c.getRe()), toExact(c.getIm()));
     }
     if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
-      throw new ArithmeticException("No exact representation");
+      throw new ArithmeticException(ToExact.NAME + ": no exact representation of: " + Writer.write(o));
     }
     if (o instanceof Double) {
-      if ((Double.isInfinite((Double) o) || Double.isNaN((Double) o))) {
-        throw new ArithmeticException("No exact representation");
+      Double d = (Double)o;
+      if ((Double.isInfinite(d) || Double.isNaN(d))) {
+        throw new ArithmeticException(ToExact.NAME + ": no exact representation of: " + Writer.write(d));
       }
-      // FIXME There is no need to always call this method?
-      return doubleToExact((Double)o);
+      /* Check if Double is integral */
+      if (d == Math.floor(d)) {
+        return d;
+      }
+      return doubleToExact(d);
     }
     if (o instanceof BigDecimal) {
       return bigDecimalToExact((BigDecimal) o);
