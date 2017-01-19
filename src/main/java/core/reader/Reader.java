@@ -158,8 +158,8 @@ public class Reader implements IReader {
         throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
       default: {
         if (Character.isWhitespace(c)) {
-          /* Skip whitespaces */
-          while (Character.isWhitespace(c)) {
+          /* Skip whitespaces until line break */
+          while (isValid(c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
             c = (char)reader.read();
           }
           reader.unread(c);
