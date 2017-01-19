@@ -8,7 +8,7 @@ import core.utils.BigDecimalMath;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Sqrt extends AFn {
+public final class Sqrt extends AFn {
 
   @Override
   public boolean isPure() {

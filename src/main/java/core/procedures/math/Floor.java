@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
-public class Floor extends AFn {
+public final class Floor extends AFn {
 
   @Override
   public boolean isPure() {

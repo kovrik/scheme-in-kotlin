@@ -97,11 +97,11 @@ public final class DefaultEnvironment extends Environment {
       new Atan(),
 
       /* Comparison & Equality */
-      new NumericalComparison(NumericalComparison.Type.EQUAL),
-      new NumericalComparison(NumericalComparison.Type.LESS),
-      new NumericalComparison(NumericalComparison.Type.LESS_EQUAL),
-      new NumericalComparison(NumericalComparison.Type.GREATER),
-      new NumericalComparison(NumericalComparison.Type.GREATER_EQUAL),
+      NumericalComparison.EQUAL,
+      NumericalComparison.LESS,
+      NumericalComparison.LESS_EQUAL,
+      NumericalComparison.GREATER,
+      NumericalComparison.GREATER_EQUAL,
       new Eq(),
       new Eqv(),
       new Equal(),

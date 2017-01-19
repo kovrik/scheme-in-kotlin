@@ -10,7 +10,7 @@ import core.scm.SCMBigComplex;
 import core.scm.SCMClass;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class})
-public class MakePolar extends AFn {
+public final class MakePolar extends AFn {
 
   @Override
   public boolean isPure() {

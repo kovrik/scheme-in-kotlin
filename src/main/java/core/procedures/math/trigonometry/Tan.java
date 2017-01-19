@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Tan extends AFn {
+public final class Tan extends AFn {
 
   @Override
   public boolean isPure() {
@@ -40,7 +40,7 @@ public class Tan extends AFn {
     }
   }
 
-  public static double tan(BigDecimal bd) {
+  private static double tan(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -49,7 +49,7 @@ public class Tan extends AFn {
     }
   }
 
-  public static SCMBigComplex tan(SCMBigComplex c) {
+  private static SCMBigComplex tan(SCMBigComplex c) {
     SCMBigComplex sin = Sin.sin(c);
     SCMBigComplex cos = Cos.cos(c);
     return sin.divide(cos);

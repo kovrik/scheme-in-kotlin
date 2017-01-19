@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class ToInexact extends AFn {
+public final class ToInexact extends AFn {
 
   @Override
   public boolean isPure() {

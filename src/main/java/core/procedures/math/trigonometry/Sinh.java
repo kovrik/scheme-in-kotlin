@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Sinh extends AFn {
+public final class Sinh extends AFn {
 
   @Override
   public boolean isPure() {
@@ -40,7 +40,7 @@ public class Sinh extends AFn {
     }
   }
 
-  public static double sinh(BigDecimal bd) {
+  static double sinh(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -50,7 +50,7 @@ public class Sinh extends AFn {
   }
 
   /* sinh(x + yi) = sinh(x)*cos(y) + cosh(x)*sin(y)*i */
-  public static Number sinh(SCMBigComplex c) {
+  static Number sinh(SCMBigComplex c) {
     BigDecimal x = c.getRe();
     BigDecimal y = c.getIm();
     double re = sinh(x) * Cos.cos(y);

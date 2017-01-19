@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(restArgsType = Number.class)
-public class Division extends AFn {
+public final class Division extends AFn {
 
   @Override
   public boolean isPure() {
@@ -40,7 +40,7 @@ public class Division extends AFn {
     return result;
   }
 
-  public Number apply(Number numerator, Number denominator) {
+  private Number apply(Number numerator, Number denominator) {
     /* Complex numbers*/
     if (numerator instanceof SCMBigComplex) {
       return ((SCMBigComplex) numerator).divide(denominator);

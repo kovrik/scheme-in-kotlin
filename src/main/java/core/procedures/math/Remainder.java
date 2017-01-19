@@ -7,7 +7,7 @@ import core.scm.SCMBigRational;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
-public class Remainder extends AFn {
+public final class Remainder extends AFn {
 
   @Override
   public boolean isPure() {
@@ -24,14 +24,14 @@ public class Remainder extends AFn {
     return apply((Number)arg1, (Number)arg2);
   }
 
-  public Number apply(BigDecimal first, BigDecimal second) {
+  private Number apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
     return first.remainder(second);
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     if (first instanceof SCMBigRational) {
       first = ((SCMBigRational) first).toBigDecimal();
     }

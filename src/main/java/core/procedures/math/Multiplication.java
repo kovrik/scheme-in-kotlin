@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(restArgsType = Number.class)
-public class Multiplication extends AFn {
+public final class Multiplication extends AFn {
 
   @Override
   public boolean isPure() {

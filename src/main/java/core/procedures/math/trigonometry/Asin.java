@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Asin extends AFn {
+public final class Asin extends AFn {
 
   @Override
   public boolean isPure() {
@@ -48,7 +48,7 @@ public class Asin extends AFn {
     }
   }
 
-  public static Number asin(BigDecimal bd) {
+  private static Number asin(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -67,7 +67,7 @@ public class Asin extends AFn {
    * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
    *
    **/
-  public static Number asin(SCMBigComplex c) {
+  private static Number asin(SCMBigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
     int signum;

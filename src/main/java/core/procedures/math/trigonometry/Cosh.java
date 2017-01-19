@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Cosh extends AFn {
+public final class Cosh extends AFn {
 
   @Override
   public boolean isPure() {
@@ -40,7 +40,7 @@ public class Cosh extends AFn {
     }
   }
 
-  public static double cosh(BigDecimal bd) {
+  static double cosh(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -50,7 +50,7 @@ public class Cosh extends AFn {
   }
 
   /* cosh(x + yi) = cosh(x)*cos(y) + sinh(x)*sin(y)*i */
-  public static Number cosh(SCMBigComplex c) {
+  static Number cosh(SCMBigComplex c) {
     BigDecimal x = c.getRe();
     BigDecimal y = c.getIm();
     double re = Cosh.cosh(x) * Cos.cos(y);

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class ToExact extends AFn {
+public final class ToExact extends AFn {
 
   @Override
   public boolean isPure() {

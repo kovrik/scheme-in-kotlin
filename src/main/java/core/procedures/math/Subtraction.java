@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(restArgsType = Number.class)
-public class Subtraction extends AFn {
+public final class Subtraction extends AFn {
 
   @Override
   public boolean isPure() {
@@ -44,7 +44,7 @@ public class Subtraction extends AFn {
     return result;
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(second)) {
       return NumberUtils.inexactnessTaint(first, second);

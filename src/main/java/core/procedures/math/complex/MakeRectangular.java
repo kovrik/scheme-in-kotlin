@@ -6,7 +6,7 @@ import core.scm.SCMBigComplex;
 import core.scm.SCMClass;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class})
-public class MakeRectangular extends AFn {
+public final class MakeRectangular extends AFn {
 
   @Override
   public boolean isPure() {

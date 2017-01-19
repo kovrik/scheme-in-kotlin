@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
-public class Min extends AFn {
+public final class Min extends AFn {
 
   @Override
   public boolean isPure() {
@@ -20,7 +20,7 @@ public class Min extends AFn {
     return "min";
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).compareTo((SCMBigRational)second) < 0 ? first : second;
     }

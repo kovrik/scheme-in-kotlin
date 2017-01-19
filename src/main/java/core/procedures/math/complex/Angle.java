@@ -6,7 +6,7 @@ import core.scm.SCMBigComplex;
 import core.utils.NumberUtils;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Angle extends AFn {
+public final class Angle extends AFn {
 
   @Override
   public boolean isPure() {
@@ -23,7 +23,7 @@ public class Angle extends AFn {
     return angle((Number) arg);
   }
 
-  private static Number angle(Number number) {
+  private Number angle(Number number) {
     if (NumberUtils.isZero(number)) {
       throw new ArithmeticException("Undefined for 0");
     }

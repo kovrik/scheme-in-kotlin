@@ -7,7 +7,7 @@ import core.scm.SCMBigRational;
 import static core.utils.NumberUtils.E;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Exp extends AFn {
+public final class Exp extends AFn {
 
   @Override
   public boolean isPure() {

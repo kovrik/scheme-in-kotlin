@@ -5,7 +5,7 @@ import core.scm.SCMBoolean;
 import core.procedures.AFn;
 
 @FnArgs(minArgs = 1, maxArgs = 1)
-public class Negation extends AFn {
+public final class Negation extends AFn {
 
   @Override
   public boolean isPure() {

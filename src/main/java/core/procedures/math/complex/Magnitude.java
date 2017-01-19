@@ -6,7 +6,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Magnitude extends AFn {
+public final class Magnitude extends AFn {
 
   @Override
   public boolean isPure() {

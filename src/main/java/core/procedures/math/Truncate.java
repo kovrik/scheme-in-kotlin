@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
-public class Truncate extends AFn {
+public final class Truncate extends AFn {
 
   @Override
   public boolean isPure() {

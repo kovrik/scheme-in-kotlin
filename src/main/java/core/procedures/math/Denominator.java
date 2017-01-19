@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMBigRational.class})
-public class Denominator extends AFn {
+public final class Denominator extends AFn {
 
   @Override
   public boolean isPure() {
@@ -26,7 +26,7 @@ public class Denominator extends AFn {
     return denominator(arg);
   }
 
-  private static Number denominator(Object o) {
+  private Number denominator(Object o) {
     boolean isExact = NumberUtils.isExact(o);
     Number exact;
     if (isExact) {

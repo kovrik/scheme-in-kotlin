@@ -9,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Tanh extends AFn {
+public final class Tanh extends AFn {
 
   @Override
   public boolean isPure() {
@@ -40,7 +40,7 @@ public class Tanh extends AFn {
     }
   }
 
-  public static double tanh(BigDecimal bd) {
+  private static double tanh(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -49,7 +49,7 @@ public class Tanh extends AFn {
     }
   }
 
-  public static Number tanh(SCMBigComplex c) {
+  private static Number tanh(SCMBigComplex c) {
     Number sinh = Sinh.sinh(c);
     if ((sinh instanceof Double) && (Double.isInfinite((Double)sinh) || Double.isNaN((Double)sinh))) {
       return Double.NaN;

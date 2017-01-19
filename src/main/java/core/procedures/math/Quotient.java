@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
-public class Quotient extends AFn {
+public final class Quotient extends AFn {
 
   @Override
   public boolean isPure() {
@@ -32,7 +32,7 @@ public class Quotient extends AFn {
     return apply((Number) arg1, (Number) arg2);
   }
 
-  public Number apply(BigDecimal first, BigDecimal second) {
+  private Number apply(BigDecimal first, BigDecimal second) {
     int scale = Math.max(first.scale(), second.scale());
     if (scale > 0) {
       return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, NumberUtils.ROUNDING_MODE)
@@ -42,7 +42,7 @@ public class Quotient extends AFn {
     }
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal)first, (BigDecimal)second);
     }

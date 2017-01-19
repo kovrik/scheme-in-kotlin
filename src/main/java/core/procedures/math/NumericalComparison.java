@@ -6,26 +6,23 @@ import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
+import java.util.function.BiPredicate;
 
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
-public class NumericalComparison extends AFn {
+public final class NumericalComparison extends AFn {
 
-  public enum Type {
-    EQUAL("="),
-    LESS("<"),
-    GREATER(">"),
-    LESS_EQUAL("<="),
-    GREATER_EQUAL(">=");
+  public static final NumericalComparison EQUAL         = new NumericalComparison("=",  (f, s) -> f.compareTo(s) == 0);
+  public static final NumericalComparison LESS          = new NumericalComparison("<",  (f, s) -> f.compareTo(s) <  0);
+  public static final NumericalComparison GREATER       = new NumericalComparison(">",  (f, s) -> f.compareTo(s) >  0);
+  public static final NumericalComparison LESS_EQUAL    = new NumericalComparison("<=", (f, s) -> f.compareTo(s) <= 0);
+  public static final NumericalComparison GREATER_EQUAL = new NumericalComparison(">=", (f, s) -> f.compareTo(s) >= 0);
 
-    private String syntax;
+  private final String name;
+  private final BiPredicate<Comparable<Number>, Number> predicate;
 
-    Type(String syntax) {
-      this.syntax = syntax;
-    }
-
-    public String getSyntax() {
-      return syntax;
-    }
+  private NumericalComparison(String name, BiPredicate<Comparable<Number>, Number> predicate) {
+    this.name = name;
+    this.predicate = predicate;
   }
 
   @Override
@@ -35,48 +32,31 @@ public class NumericalComparison extends AFn {
 
   @Override
   public String getName() {
-    return type.getSyntax();
-  }
-
-  private Type type;
-
-  public NumericalComparison(Type type) {
-    this.type = type;
+    return name;
   }
 
   @Override
   public Boolean apply(Object... args) {
     for (int i = 0; i < args.length - 1; i++) {
-      if (!apply(args[i], args[i + 1], type)) {
+      Number f = (Number)args[i];
+      Number s = (Number)args[i + 1];
+      if (f instanceof SCMBigRational) {
+        f = ((SCMBigRational)f).toBigDecimal();
+      }
+      if (s instanceof SCMBigRational) {
+        s = ((SCMBigRational)s).toBigDecimal();
+      }
+      if ((f instanceof Double) || (s instanceof Double)) {
+        f = f.doubleValue();
+        s = s.doubleValue();
+      } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
+        f = new BigDecimal(f.toString());
+        s = new BigDecimal(s.toString());
+      }
+      if (!predicate.test((Comparable)f, s)) {
         return Boolean.FALSE;
       }
     }
     return Boolean.TRUE;
-  }
-
-  public static boolean apply(Object first, Object second, Type type) {
-    Number f = (Number)first;
-    Number s = (Number)second;
-    if (f instanceof SCMBigRational) {
-      f = ((SCMBigRational)f).toBigDecimal();
-    }
-    if (s instanceof SCMBigRational) {
-      s = ((SCMBigRational)s).toBigDecimal();
-    }
-    if ((f instanceof Double) || (s instanceof Double)) {
-      f = f.doubleValue();
-      s = s.doubleValue();
-    } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
-      f = new BigDecimal(f.toString());
-      s = new BigDecimal(s.toString());
-    }
-    switch (type) {
-      case EQUAL:         return ((Comparable)f).compareTo(s) == 0;
-      case LESS:          return ((Comparable)f).compareTo(s) <  0;
-      case GREATER:       return ((Comparable)f).compareTo(s) >  0;
-      case LESS_EQUAL:    return ((Comparable)f).compareTo(s) <= 0;
-      case GREATER_EQUAL: return ((Comparable)f).compareTo(s) >= 0;
-      default: throw new IllegalArgumentException("Unknown comparison type!");
-    }
   }
 }

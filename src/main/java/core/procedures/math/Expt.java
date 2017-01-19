@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Number.class, Number.class})
-public class Expt extends AFn {
+public final class Expt extends AFn {
 
   @Override
   public boolean isPure() {

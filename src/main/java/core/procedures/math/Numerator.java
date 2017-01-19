@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMBigRational.class})
-public class Numerator extends AFn {
+public final class Numerator extends AFn {
 
   @Override
   public boolean isPure() {
@@ -25,7 +25,7 @@ public class Numerator extends AFn {
     return numerator(arg);
   }
 
-  private static Number numerator(Object o) {
+  private Number numerator(Object o) {
     boolean isExact = NumberUtils.isExact(o);
     Number exact;
     if (isExact) {

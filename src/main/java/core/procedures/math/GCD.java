@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @FnArgs(restArgsType = SCMBigRational.class)
-public class GCD extends AFn {
+public final class GCD extends AFn {
 
   private static final Abs ABS = new Abs();
 
@@ -38,7 +38,7 @@ public class GCD extends AFn {
     return result;
   }
 
-  public static long gcd(Long a, Long b) {
+  static long gcd(Long a, Long b) {
     while (b > 0) {
       long temp = b;
       b = a % b;
@@ -47,7 +47,7 @@ public class GCD extends AFn {
     return a;
   }
 
-  public static Number gcd(Double a, Double b) {
+  static Number gcd(Double a, Double b) {
     if (a.isInfinite() || a.isNaN()) {
       throw new WrongTypeException("Integer", a);
     }
@@ -60,7 +60,7 @@ public class GCD extends AFn {
     return (double)gcd(a.longValue(), b.longValue());
   }
 
-  public static Number gcd(BigDecimal a, BigDecimal b) {
+  static Number gcd(BigDecimal a, BigDecimal b) {
     int scale = Math.max(a.scale(), b.scale());
     if (scale == 0) {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
@@ -70,16 +70,16 @@ public class GCD extends AFn {
     }
   }
 
-  public static BigInteger gcd(BigInteger a, BigInteger b) {
+  static BigInteger gcd(BigInteger a, BigInteger b) {
     return a.gcd(b);
   }
 
-  public static SCMBigRational gcd(SCMBigRational first, SCMBigRational second) {
+  static SCMBigRational gcd(SCMBigRational first, SCMBigRational second) {
     return new SCMBigRational(first.getNumerator().gcd(second.getNumerator()),
                               LCM.lcm(first.getDenominator(), second.getDenominator()));
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return gcd((Long)first, (Long)second);
     }

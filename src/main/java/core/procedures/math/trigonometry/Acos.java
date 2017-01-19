@@ -8,7 +8,7 @@ import core.scm.SCMBigRational;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Acos extends AFn {
+public final class Acos extends AFn {
 
   @Override
   public boolean isPure() {
@@ -43,7 +43,7 @@ public class Acos extends AFn {
     }
   }
 
-  public static Number acos(BigDecimal bd) {
+  private static Number acos(BigDecimal bd) {
     double v = bd.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
@@ -62,7 +62,7 @@ public class Acos extends AFn {
    * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
    *
    **/
-  public static Number acos(SCMBigComplex c) {
+  private static Number acos(SCMBigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
     int signum;

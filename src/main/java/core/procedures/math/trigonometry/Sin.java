@@ -10,7 +10,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class Sin extends AFn {
+public final class Sin extends AFn {
 
   @Override
   public boolean isPure() {

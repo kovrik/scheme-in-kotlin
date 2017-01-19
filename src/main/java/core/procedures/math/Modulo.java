@@ -6,7 +6,7 @@ import core.scm.FnArgs;
 import java.math.BigDecimal;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
-public class Modulo extends AFn {
+public final class Modulo extends AFn {
 
   // TODO move out
   private static final Remainder rem = new Remainder();
@@ -26,7 +26,7 @@ public class Modulo extends AFn {
     return apply((Number)arg1, (Number)arg2);
   }
 
-  public BigDecimal apply(BigDecimal first, BigDecimal second) {
+  private BigDecimal apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
@@ -40,8 +40,7 @@ public class Modulo extends AFn {
     return second.add(remainder);
   }
 
-  public Number apply(Number first, Number second) {
-
+  private Number apply(Number first, Number second) {
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal) first, (BigDecimal)second);
     }
@@ -56,7 +55,7 @@ public class Modulo extends AFn {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
 
-    Number m = rem.apply(first, second);
+    Number m = rem.apply2(first, second);
     if (m.intValue() == 0) {
       return m;
     }

@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
-public class RealPart extends AFn {
+public final class RealPart extends AFn {
 
   @Override
   public boolean isPure() {

@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import static core.procedures.math.GCD.gcd;
 
 @FnArgs(restArgsType = SCMBigRational.class)
-public class LCM extends AFn {
+public final class LCM extends AFn {
 
   private static final Abs ABS = new Abs();
 
@@ -53,16 +53,16 @@ public class LCM extends AFn {
     return (a / gcd(a, b).doubleValue()) * b;
   }
 
-  public static BigInteger lcm(BigInteger first, BigInteger second) {
+  static BigInteger lcm(BigInteger first, BigInteger second) {
     return first.multiply(second.divide(gcd(first, second)));
   }
 
-  public static SCMBigRational lcm(SCMBigRational first, SCMBigRational second) {
+  private SCMBigRational lcm(SCMBigRational first, SCMBigRational second) {
     return new SCMBigRational(lcm(first.getNumerator(), second.getNumerator()),
                               gcd(first.getDenominator(), second.getDenominator()));
   }
 
-  private static Number lcm(BigDecimal a, BigDecimal b) {
+  private Number lcm(BigDecimal a, BigDecimal b) {
     if ((BigDecimal.ZERO.compareTo(a) == 0) && (BigDecimal.ZERO.compareTo(b) == 0)) {
       return BigDecimal.ZERO;
     }
@@ -75,7 +75,7 @@ public class LCM extends AFn {
     }
   }
 
-  public Number apply(Number first, Number second) {
+  private Number apply(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }

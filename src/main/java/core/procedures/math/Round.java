@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
-public class Round extends AFn {
+public final class Round extends AFn {
 
   @Override
   public boolean isPure() {
@@ -27,7 +27,7 @@ public class Round extends AFn {
     return round((Number) arg);
   }
 
-  private static Number round(Number number) {
+  private Number round(Number number) {
     if (number instanceof Long) {
       return number;
     } else if (number instanceof Double) {
