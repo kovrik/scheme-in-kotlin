@@ -13,8 +13,6 @@ import core.writer.IWriter;
 import core.writer.Writer;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,8 +38,6 @@ public class Repl {
   private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader(currentInputPort.getInputStream());
 
-  private static final DateFormat DF = new SimpleDateFormat("[HH:mm:ss.S]");
-
   public static void main(String[] args) throws IOException {
     /* Eval lib procedures */
     StringReader stringReader = new StringReader();
@@ -66,10 +62,7 @@ public class Repl {
     //noinspection InfiniteLoopStatement
     while (true) {
       try {
-//        currentOutputPort.write(DF.format(System.currentTimeMillis()));
         currentOutputPort.write(prompt);
-        currentOutputPort.flush();
-
         /* Read and parse a list of S-expressions from Stdin */
         List<Object> sexps = reader.read();
         for (Object expr : sexps) {
@@ -81,7 +74,6 @@ public class Repl {
             env.put(id, result);
             /* Print */
             currentOutputPort.writeln(id + " = " + writer.toString(result));
-            currentOutputPort.flush();
           }
         }
       } catch (Exception e) {
@@ -92,7 +84,6 @@ public class Repl {
 
   private static void error(Exception e) throws IOException {
     currentOutputPort.writeln("ERROR: " + e.getMessage());
-    currentOutputPort.flush();
   }
 
   public static SCMInputPort getCurrentInputPort() {
