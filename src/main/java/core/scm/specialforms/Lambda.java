@@ -3,15 +3,12 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.procedures.AFn;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 /* Syntax:
  * (lambda <formals> <body>)

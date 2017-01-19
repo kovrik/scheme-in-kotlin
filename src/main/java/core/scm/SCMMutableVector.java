@@ -8,7 +8,7 @@ public class SCMMutableVector extends SCMVector {
   }
 
   public SCMMutableVector(int size, Object init) {
-    super((int)size, (Object)init);
+    super(size, init);
   }
 
   public SCMMutableVector(Object... elements) {

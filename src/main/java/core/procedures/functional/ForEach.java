@@ -23,13 +23,10 @@ public class ForEach extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length < 2) {
-      throw new ArityException(args.length, getName());
-    }
     SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));
 
+    /* Check that all lists are of the same size */
     int size = -1;
-    /* Check lists and their sizes */
     for (int i = 1; i < args.length; i++) {
       List l = (List)args[i];
       if (size == -1) {
@@ -49,7 +46,6 @@ public class ForEach extends AFn {
       }
     }
     result.addAll(lists);
-
     /* Void results */
     result = SCMCons.list(Void.INSTANCE, result);
     return new SCMThunk(result, null);

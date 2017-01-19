@@ -58,6 +58,6 @@ public class Tanh extends AFn {
     if ((cosh instanceof Double) && (Double.isInfinite((Double)cosh) || Double.isNaN((Double)cosh))) {
       return Double.NaN;
     }
-    return ((SCMBigComplex)sinh).divide((SCMBigComplex)cosh);
+    return ((SCMBigComplex)sinh).divide(cosh);
   }
 }
