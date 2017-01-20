@@ -280,7 +280,6 @@ public class Reader implements IReader {
    * Syntax:
    * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
    */
-  // TODO Return Identifier, not Symbol
   private SCMSymbol readIdentifier() throws IOException {
     return SCMSymbol.of(readUntilDelimiter());
   }

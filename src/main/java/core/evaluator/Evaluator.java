@@ -91,7 +91,6 @@ public class Evaluator {
     if (op instanceof SCMSymbol) {
       op = env.find(op);
       /* Inline */
-      // TODO Check if we can always do that
       if (op instanceof ISpecialForm) {
         /* Inline Special Forms */
         sexp.set(0, op);

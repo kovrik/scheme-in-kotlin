@@ -15,8 +15,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
  * <bindings>: ((<variable1> <init1>) ...)
  */
 /*
- * TODO:
- * One restriction on letrec is very important:
+ * TODO One restriction on letrec is very important:
  * it must be possible to evaluate each <init> without assigning or referring to the value of any <variable>.
  * If this restriction is violated, then it is an error.
  * The restriction is necessary because Scheme passes arguments by value rather than by name.

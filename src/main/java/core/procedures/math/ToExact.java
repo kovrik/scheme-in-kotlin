@@ -13,7 +13,7 @@ import java.math.BigInteger;
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class ToExact extends AFn {
 
-  public static final String NAME = "inexact->exact";
+  private static final String NAME = "inexact->exact";
 
   @Override
   public boolean isPure() {
@@ -46,12 +46,12 @@ public final class ToExact extends AFn {
       return new SCMBigComplex(toExact(c.getRe()), toExact(c.getIm()));
     }
     if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
-      throw new ArithmeticException(ToExact.NAME + ": no exact representation of: " + Writer.write(o));
+      throw new ArithmeticException(NAME + ": no exact representation of: " + Writer.write(o));
     }
     if (o instanceof Double) {
       Double d = (Double)o;
       if ((Double.isInfinite(d) || Double.isNaN(d))) {
-        throw new ArithmeticException(ToExact.NAME + ": no exact representation of: " + Writer.write(d));
+        throw new ArithmeticException(NAME + ": no exact representation of: " + Writer.write(d));
       }
       /* Check if Double is integral */
       if (d == Math.floor(d)) {
