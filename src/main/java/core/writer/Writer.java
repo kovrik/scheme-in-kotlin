@@ -1,6 +1,7 @@
 package core.writer;
 
 import core.procedures.AFn;
+import core.procedures.continuations.Continuation;
 import core.reader.Reader;
 import core.scm.*;
 import core.utils.NumberUtils;
@@ -61,6 +62,9 @@ public class Writer implements IWriter {
         return "#\\" + named;
       }
       return "#\\" + o;
+    }
+    if (o instanceof Continuation) {
+      return "#<continutation>";
     }
     if (o instanceof AFn) {
       String name = ((AFn)o).getName();

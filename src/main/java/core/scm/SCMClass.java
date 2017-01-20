@@ -1,6 +1,7 @@
 package core.scm;
 
 import core.exceptions.WrongTypeException;
+import core.procedures.AFn;
 import core.procedures.IFn;
 import core.utils.NumberUtils;
 
@@ -59,6 +60,7 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMMutableString.class,      MUTABLE_STRING);
     SCM_CLASSES.put(Boolean.class,               BOOLEAN);
     SCM_CLASSES.put(IFn.class,                   PROCEDURE);
+    SCM_CLASSES.put(AFn.class,                   PROCEDURE);
     SCM_CLASSES.put(SCMSymbol.class,             SYMBOL);
     SCM_CLASSES.put(SCMPair.class,               PAIR);
     SCM_CLASSES.put(SCMProperList.class,         LIST);
