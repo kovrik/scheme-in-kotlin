@@ -16,7 +16,6 @@ public class IOTest extends AbstractTest {
 
   @Test
   public void testCurrentPorts() throws FileNotFoundException {
-    assertEquals(new SCMInputPort(System.in),   eval("(current-input-port)", env));
     assertEquals(new SCMOutputPort(System.out), eval("(current-output-port)", env));
 
     OutputStream outputStream = new ByteArrayOutputStream(0);

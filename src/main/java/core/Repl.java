@@ -12,6 +12,7 @@ import core.scm.SCMSymbol;
 import core.writer.IWriter;
 import core.writer.Writer;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +30,7 @@ public class Repl {
   private static final Evaluator evaluator = new Evaluator();
   private static final Environment defaultEnvironment = new DefaultEnvironment();
 
-  private static SCMInputPort currentInputPort = new SCMInputPort(System.in);
+  private static SCMInputPort currentInputPort = new SCMInputPort(new BufferedInputStream(System.in));
   private static final Object INPUT_PORT_LOCK = new Object();
 
   private static SCMOutputPort currentOutputPort = new SCMOutputPort(System.out);
