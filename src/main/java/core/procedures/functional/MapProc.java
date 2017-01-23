@@ -15,15 +15,15 @@ import java.util.List;
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
 public final class MapProc extends AFn {
 
+  static final MapProc MAP_PROC = new MapProc();
+
   @Override
   public String getName() {
     return "map";
   }
 
   @Override
-  public Object apply(Object... args) {
-    SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));
-
+  public SCMThunk apply(Object... args) {
     /* Check that all lists are of the same size */
     int size = -1;
     for (int i = 1; i < args.length; i++) {
@@ -44,7 +44,9 @@ public final class MapProc extends AFn {
         lists.get(i).add(SCMCons.list(Quote.QUOTE, ((List)args[n]).get(i)));
       }
     }
+    SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));
     result.addAll(lists);
+    /* Return Thunk that will be evaluated and produce results */
     return new SCMThunk(result, null);
   }
 }
