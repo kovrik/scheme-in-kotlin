@@ -8,8 +8,7 @@ import java.math.BigDecimal;
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public final class Modulo extends AFn {
 
-  // TODO move out
-  private static final Remainder rem = new Remainder();
+  private static final Remainder REM = new Remainder();
 
   @Override
   public boolean isPure() {
@@ -55,7 +54,7 @@ public final class Modulo extends AFn {
       throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
     }
 
-    Number m = rem.apply2(first, second);
+    Number m = REM.apply2(first, second);
     if (m.intValue() == 0) {
       return m;
     }

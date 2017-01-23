@@ -65,7 +65,6 @@ public final class GCD extends AFn {
     if (scale == 0) {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
-      // TODO Check correctness
       return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));
     }
   }

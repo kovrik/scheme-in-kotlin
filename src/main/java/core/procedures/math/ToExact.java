@@ -87,7 +87,6 @@ public final class ToExact extends AFn {
     return new SCMBigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 
-  // FIXME Use the same approach as for Double?
   private static SCMBigRational bigDecimalToExact(BigDecimal number) {
     int scale = number.scale();
     if (scale > 0) {
@@ -96,5 +95,4 @@ public final class ToExact extends AFn {
       return new SCMBigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
     }
   }
-
 }

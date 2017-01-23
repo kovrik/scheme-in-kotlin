@@ -88,7 +88,6 @@ public final class Division extends AFn {
   /**
    * Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision
    */
-  // FIXME Performance
   public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
     try {
       return num.divide(den, NumberUtils.getMathContext(num, den));

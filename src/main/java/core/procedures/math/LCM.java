@@ -70,7 +70,6 @@ public final class LCM extends AFn {
     if (scale == 0) {
       return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
-      // TODO Check correctness
       return ToInexact.toInexact(lcm((BigDecimal)ToExact.toExact(a), (BigDecimal) ToExact.toExact(b)));
     }
   }
@@ -97,7 +96,6 @@ public final class LCM extends AFn {
     if (second instanceof BigDecimal) {
       return lcm(new BigDecimal(first.toString()), (BigDecimal)second);
     }
-
     return lcm(first.doubleValue(), second.doubleValue());
   }
 }
