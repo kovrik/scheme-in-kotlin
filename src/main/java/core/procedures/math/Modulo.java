@@ -27,7 +27,7 @@ public final class Modulo extends AFn {
 
   private BigDecimal apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
-      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
+      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
     BigDecimal remainder = first.remainder(second);
     if (remainder.compareTo(BigDecimal.ZERO) == 0) {
@@ -51,7 +51,7 @@ public final class Modulo extends AFn {
     }
 
     if (second.intValue() == 0) {
-      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
+      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
 
     Number m = REM.apply2(first, second);

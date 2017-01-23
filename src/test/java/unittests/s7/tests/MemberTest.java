@@ -27,8 +27,18 @@ public class MemberTest extends AbstractTest {
     assertEquals(cons(1L, 2L), eval("(member 1 (cons 1 2))", env));
     assertEquals(cons(1L, cons(2L, 3L)), eval("(member 1 '(1 2 . 3))", env));
     assertEquals(cons(2L, 3L), eval("(member 2 '(1 2 . 3))", env));
-    assertEquals(FALSE, eval("(member 3 '(1 2 . 3))", env));
-    assertEquals(FALSE, eval("(member 4 '(1 2 . 3))", env));
+    try {
+      eval("(member 3 '(1 2 . 3))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("member: wrong type argument in position 2 (expecting list): (1 2 . 3)", e.getMessage());
+    }
+    try {
+      eval("(member 4 '(1 2 . 3))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("member: wrong type argument in position 2 (expecting list): (1 2 . 3)", e.getMessage());
+    }
     assertEquals(FALSE, eval("(member '() '(1 2 3))", env));
     assertEquals(list((Object)list()), eval("(member '() '(1 2 ()))", env));
     assertEquals(list(new SCMMutableVector(), 3L), eval("(member #() '(1 () 2 #() 3))", env));
@@ -52,7 +62,7 @@ public class MemberTest extends AbstractTest {
       eval("(member 4 '(1 2 3 . 4))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 4 (expecting list): (1 2 3 . 4)", e.getMessage());
+      assertEquals("member: wrong type argument in position 4 (expecting list): (1 2 3 . 4)", e.getMessage());
     }
 //    assertEquals(, eval("(member '(((1))) '((((1).()).()).())) '((((1)))))
 //    assertEquals(, eval("(member '((1)) '(1 (1) ((1)) (((1))))) '(((1)) (((1)))))

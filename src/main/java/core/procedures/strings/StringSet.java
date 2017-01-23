@@ -24,7 +24,7 @@ public final class StringSet extends AFn {
     SCMMutableString str = (SCMMutableString)arg1;
     Long pos = ((Number)arg2).longValue();
     if (pos >= str.length()) {
-      throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
+      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), pos));
     }
     str.setCharAt(pos.intValue(), (Character) arg3);
     return SCMUnspecified.UNSPECIFIED;

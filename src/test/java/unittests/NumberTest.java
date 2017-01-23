@@ -161,7 +161,7 @@ public class NumberTest extends AbstractTest {
       eval("(quotient -10 0.0)", env);
       fail();
     } catch (ArithmeticException e) {
-      assertEquals("Error: (quotient) undefined for 0", e.getMessage());
+      assertEquals("quotient: undefined for 0", e.getMessage());
     }
 
     // remainder
@@ -183,7 +183,7 @@ public class NumberTest extends AbstractTest {
       eval("(remainder -10 0.0)", env);
       fail();
     } catch (ArithmeticException e) {
-      assertEquals("Error: (remainder) undefined for 0", e.getMessage());
+      assertEquals("remainder: undefined for 0", e.getMessage());
     }
 
     // modulo
@@ -201,7 +201,7 @@ public class NumberTest extends AbstractTest {
       eval("(modulo -10 0.0)", env);
       fail();
     } catch (ArithmeticException e) {
-      assertEquals("Error: (modulo) undefined for 0", e.getMessage());
+      assertEquals("modulo: undefined for 0", e.getMessage());
     }
     assertEquals(3L,  eval("(modulo -13 4)", env));
     assertEquals(-3L, eval("(modulo 13 -4)", env));
@@ -802,18 +802,16 @@ public class NumberTest extends AbstractTest {
     assertEquals(0L, eval("(log 1/1)", env));
     assertEquals(20.72326583594641, eval("(log 999999999)", env));
     assertEquals(Double.NaN, eval("(log -999999999)", env));
+    assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env));
     try {
       assertEquals(1L, eval("(log 0)", env));
+      fail();
     } catch (ArithmeticException e) {
       assertEquals("log: undefined for 0", e.getMessage());
     }
     try {
       assertEquals(1L, eval("(log 0/1)", env));
-    } catch (ArithmeticException e) {
-      assertEquals("log: undefined for 0", e.getMessage());
-    }
-    try {
-      assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env));
+      fail();
     } catch (ArithmeticException e) {
       assertEquals("log: undefined for 0", e.getMessage());
     }

@@ -16,9 +16,6 @@ public final class MakeString extends AFn {
   @Override
   public SCMMutableString apply(Object... args) {
     Long s = ((Number)args[0]).longValue();
-    if (s < 0) {
-      throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
-    }
     Object c = (args.length == 1) ? Character.MIN_VALUE : args[1];
     SCMMutableString string = new SCMMutableString();
     for (long i = 0; i < s; i++) {

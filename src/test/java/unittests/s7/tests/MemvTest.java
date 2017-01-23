@@ -24,8 +24,18 @@ public class MemvTest extends AbstractTest {
     assertEquals(cons(1L, 2L), eval("(memv 1 (cons 1 2))", env));
     assertEquals(cons(s("a"), cons(s("b"), s("c"))), eval("(memv 'a '(a b . c))", env));
     assertEquals(list(s("c")), eval("(memv 'c '(a b c))", env));
-    assertEquals(FALSE, eval("(memv 'asdf '(a b . c))", env));
-    assertEquals(FALSE, eval("(memv 'c '(a b . c))", env));
+    try {
+      eval("(memv 'asdf '(a b . c))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("memv: wrong type argument in position 2 (expecting list): (a b . c)", e.getMessage());
+    }
+    try {
+      eval("(memv 'c '(a b . c))", env);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertEquals("memv: wrong type argument in position 2 (expecting list): (a b . c)", e.getMessage());
+    }
     assertEquals(FALSE, eval("(memv ''a '('a b c))", env));
     assertEquals(FALSE, eval("(let ((x (cons 1 2))) (memv x (list (cons 1 2) (cons 3 4))))", env));
     assertEquals(list(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (memv x (list x (cons 3 4))))", env));

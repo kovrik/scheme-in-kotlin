@@ -10,6 +10,7 @@ import static core.scm.SCMCons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.fail;
 
 public class MemqTest extends AbstractTest {
 
@@ -45,13 +46,15 @@ public class MemqTest extends AbstractTest {
     assertEquals(list('a', 2L), eval("(memq #\\a '(1 #f #\\a 2))", env));
     try {
       eval("(memq 'c '(a b . c))", env);
+      fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 2 (expecting list): (a b . c)", e.getMessage());
+      assertEquals("memq: wrong type argument in position 2 (expecting list): (a b . c)", e.getMessage());
     }
     try {
       eval("(memq 'a '(c d f b . c))", env);
+      fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 5 (expecting list): (c d f b . c)", e.getMessage());
+      assertEquals("memq: wrong type argument in position 5 (expecting list): (c d f b . c)", e.getMessage());
     }
 //    assertEquals(list(new Eq()), eval("(memq eq? (list 2 eqv? 1 eq?))", env));
 //    assertEquals(, eval("(memq memq (list abs + memq car))", env));

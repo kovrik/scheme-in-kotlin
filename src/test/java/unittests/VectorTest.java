@@ -82,13 +82,13 @@ public class VectorTest extends AbstractTest {
       eval("(vector-ref (vector 1 2 3) 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 3", e.getMessage());
+      assertEquals("vector-ref: value out of range: 3", e.getMessage());
     }
     try {
       eval("(vector-ref (vector) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 0", e.getMessage());
+      assertEquals("vector-ref: value out of range: 0", e.getMessage());
     }
     try {
       eval("(vector-ref '(1 2 3) 0)", env);
@@ -130,16 +130,18 @@ public class VectorTest extends AbstractTest {
     sexp = "(begin (define v (vector 1 2 3)) (vector-set! v 3 \"test\"))";
     try {
       eval(sexp, env);
+      fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 3", e.getMessage());
+      assertEquals("vector-set!: value out of range: 3", e.getMessage());
     }
 
     sexp = "(begin (define v (vector))" +
         "       (vector-set! v 0 \"test\"))";
     try {
       eval(sexp, env);
+      fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 0", e.getMessage());
+      assertEquals("vector-set!: value out of range: 0", e.getMessage());
     }
 
     sexp = "(begin (define v '(1 2 3))" +
@@ -153,6 +155,7 @@ public class VectorTest extends AbstractTest {
     sexp = "(begin (define v (vector 1 2)) (vector-set! v 0.5 \"test\"))";
     try {
       eval(sexp, env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
                                  SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());

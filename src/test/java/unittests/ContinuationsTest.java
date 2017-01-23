@@ -125,6 +125,7 @@ public class ContinuationsTest extends AbstractTest {
     assertEquals(SCMSymbol.of("normal-binding"), eval("x", env));
     try {
       eval("(a-cont #f)", env);
+      fail();
     } catch (ReentrantContinuationException e) {
       // success
     }

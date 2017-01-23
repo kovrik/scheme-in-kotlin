@@ -98,11 +98,13 @@ public class ListTest extends AbstractTest {
     assertEquals(1L, eval("(car (list 1))", env));
     try {
       eval("(car '())", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval("(car 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
@@ -118,11 +120,13 @@ public class ListTest extends AbstractTest {
     assertEquals(SCMCons.NIL, eval("(cdr (list 1))", env));
     try {
       eval("(cdr '())", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval("(cdr 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
@@ -136,11 +140,13 @@ public class ListTest extends AbstractTest {
     assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env));
     try {
       eval("(set-car! '() 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval("(set-car! 5 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 5", e.getMessage());
     }
@@ -156,11 +162,13 @@ public class ListTest extends AbstractTest {
     assertEquals(2L, eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr (cons 1 2)))", env));
     try {
       eval("(set-cdr! '() 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
     }
     try {
       eval("(set-cdr! 5 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 5", e.getMessage());
     }
@@ -180,11 +188,13 @@ public class ListTest extends AbstractTest {
     assertEquals(NIL, eval("(append '() '() '() '())", env));
     try {
       eval("(append 1 '())", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
     }
     try {
       eval("(append '() '() 5 '())", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: List, actual: 5", e.getMessage());
     }
@@ -198,11 +208,13 @@ public class ListTest extends AbstractTest {
     assertEquals(list(1L, 2L, 3L), eval("(reverse (reverse '(1 2 3)))", env));
     try {
       eval("(reverse 1)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
     }
     try {
       eval("(reverse '(1 2) '(3 4))", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: reverse", e.getMessage());
     }
@@ -221,6 +233,7 @@ public class ListTest extends AbstractTest {
     assertEquals(list(4L, 33L, 44L), eval("b", env));
     try {
       eval("(list-tail 1 2)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: List, actual: 1", e.getMessage());
     }
@@ -236,11 +249,13 @@ public class ListTest extends AbstractTest {
     assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env));
     try {
       eval("(list-ref 1 2)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Pair, actual: 1", e.getMessage());
     }
     try {
       eval("(list-ref '(1 2) 2.5)", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals(String.format("Wrong argument type. Expected: %s, actual: 2.5",
                                  SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
@@ -254,11 +269,13 @@ public class ListTest extends AbstractTest {
     assertEquals("B", eval("(list->string (cdr '(#\\A #\\B)))", env));
     try {
       eval("(list->string (cons 1 2))", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: List, actual: (1 . 2)", e.getMessage());
     }
     try {
       eval("(list->string (list 1 2))", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
     }
@@ -385,7 +402,7 @@ public class ListTest extends AbstractTest {
       eval("(assoc 1 '((a 2) 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+      assertEquals("assoc: wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
     }
   }
 
@@ -411,7 +428,7 @@ public class ListTest extends AbstractTest {
       eval("(assq 1 '((a 2) 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+      assertEquals("assq: wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
     }
   }
 
@@ -434,7 +451,7 @@ public class ListTest extends AbstractTest {
       eval("(assv 1 '((a 2) 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
+      assertEquals("assv: wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
     }
   }
 }

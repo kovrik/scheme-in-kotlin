@@ -55,7 +55,7 @@ public final class StringToNumber extends AFn {
     if (args.length == 2) {
       int optRadix = ((Long)args[1]).intValue();
       if (optRadix < 2 || optRadix > 16) {
-        throw new IllegalArgumentException("string->number: expected radix from 2 to 16!");
+        throw new IllegalArgumentException(getName() + ": expected radix from 2 to 16!");
       }
       if (!override) {
         radix = optRadix;

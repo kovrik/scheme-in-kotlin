@@ -53,34 +53,35 @@ public class ReaderTest {
     assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
     try {
       reader.readFirst("#o9999");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad number: #o9999", e.getMessage());
     }
     try {
       reader.readFirst("#df999");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad number: #df999", e.getMessage());
     }
     try {
       reader.readFirst("#xz999");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad number: #xz999", e.getMessage());
     }
     try {
       reader.readFirst("#b2222");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad number: #b2222", e.getMessage());
     }
     try {
       reader.readFirst("#d+5+5");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad number: #d+5+5", e.getMessage());
     }
-    try {
-      reader.readFirst("+5+5");
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: +5+5", e.getMessage());
-    }
+    assertEquals(SCMSymbol.of("+5+5"), reader.readFirst("+5+5"));
     assertEquals(255.99609375, reader.readFirst("#d255.99609375"));
     assertEquals(255.99609375, reader.readFirst("#xff.ff"));
     assertEquals(171.67111108726925, reader.readFirst("#xab.abcdefabcdef"));
@@ -156,11 +157,13 @@ public class ReaderTest {
     assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
     try {
       reader.readFirst("#(1 . 2)");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: illegal use of '.'", e.getMessage());
     }
     try {
       reader.readFirst("#(1 2 3 4 5 . 6)");
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: illegal use of '.'", e.getMessage());
     }

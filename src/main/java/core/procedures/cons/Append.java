@@ -23,8 +23,7 @@ public final class Append extends AFn {
     }
     Object result = args[0];
     for (int i = 1; i < args.length; i++) {
-      Object current = args[i];
-      result = append(result, current);
+      result = append(result, args[i]);
     }
     return result;
   }

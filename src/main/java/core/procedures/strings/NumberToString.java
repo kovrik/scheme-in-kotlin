@@ -22,7 +22,7 @@ public final class NumberToString extends AFn {
     if (args.length == 2) {
       o1 = args[1];
       if (!(o1.equals(2L) || o1.equals(8L) || o1.equals(10L) || o1.equals(16L))) {
-        throw new IllegalArgumentException("Wrong radix: " + o1);
+        throw new IllegalArgumentException(getName() + ": bad radix (must be one of: 2, 8, 10 or 16): " + o1);
       }
     }
     int radix = (o1 != null) ? ((Number)o1).intValue() : 10;

@@ -5,6 +5,7 @@ import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.scm.FnArgs;
 import core.scm.SCMBoolean;
+import core.scm.SCMCons;
 import core.writer.Writer;
 
 import java.util.List;
@@ -44,10 +45,14 @@ public final class MemberProc extends AFn {
     }
     /* Not found */
     if (p == list.size()) {
+      if (!SCMCons.isList(list)) {
+        throw new IllegalArgumentException(String.format("%s: wrong type argument in position %s (expecting list): %s",
+                                                         getName(), p, Writer.write(list)));
+      }
       return Boolean.FALSE;
     }
-    throw new IllegalArgumentException(String.format("Wrong type argument in position %s (expecting list): %s",
-                                                     p + 1, Writer.write(list)));
+    throw new IllegalArgumentException(String.format("%s: wrong type argument in position %s (expecting list): %s",
+                                                     getName(), p + 1, Writer.write(list)));
   }
 
   @Override

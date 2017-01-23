@@ -7,6 +7,7 @@ import unittests.AbstractTest;
 import static junit.framework.TestCase.assertEquals;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
+import static org.junit.Assert.fail;
 
 public class IsSymbolTest extends AbstractTest {
 
@@ -43,6 +44,7 @@ public class IsSymbolTest extends AbstractTest {
     assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0000eeesve) #t)", env));
     try {
       eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env);
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: bad exponent: ff0000eeesve", e.getMessage());
     }

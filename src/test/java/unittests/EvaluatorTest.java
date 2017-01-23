@@ -17,6 +17,7 @@ import static core.scm.SCMCons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class EvaluatorTest extends AbstractTest {
 
@@ -24,6 +25,7 @@ public class EvaluatorTest extends AbstractTest {
   public void testEvalEmptyList() {
     try {
       eval("(())", env);
+      fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("eval: bad syntax (illegal empty application) in form: ()", e.getMessage());
     }

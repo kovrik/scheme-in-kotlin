@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class ComplexTest extends AbstractTest {
 
@@ -125,8 +126,9 @@ public class ComplexTest extends AbstractTest {
     assertEquals(3.141592653589793, eval("(angle -1)", env));
     try {
       eval("(angle 0+0i)", env);
+      fail();
     } catch (ArithmeticException e) {
-      assertEquals("Undefined for 0", e.getMessage());
+      assertEquals("angle: undefined for 0", e.getMessage());
     }
   }
 
@@ -137,10 +139,6 @@ public class ComplexTest extends AbstractTest {
     assertEquals(5.0, eval("(magnitude 0+5i)", env));
     assertEquals(4L, eval("(magnitude 4)", env));
     assertEquals(1L, eval("(magnitude -1)", env));
-    try {
-      eval("(magnitude 0+0i)", env);
-    } catch (ArithmeticException e) {
-      assertEquals("Undefined for 0", e.getMessage());
-    }
+    assertEquals(0L, eval("(magnitude 0+0i)", env));
   }
 }

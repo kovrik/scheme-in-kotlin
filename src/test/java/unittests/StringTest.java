@@ -161,6 +161,7 @@ public class StringTest extends AbstractTest {
     assertEquals(list(), eval("(string->list \"\")", env));
     try {
       eval("(string->list (cons 1 2))", env);
+      fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong argument type. Expected: String, actual: (1 . 2)", e.getMessage());
     }
@@ -183,13 +184,13 @@ public class StringTest extends AbstractTest {
       eval("(string-ref \"tes\" 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 3", e.getMessage());
+      assertEquals("string-ref: value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-ref \"\" 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 0", e.getMessage());
+      assertEquals("string-ref: value out of range: 0", e.getMessage());
     }
     try {
       eval("(string-ref '(1 2 3) 0)", env);
@@ -215,6 +216,7 @@ public class StringTest extends AbstractTest {
 
     try {
       eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env);
+      fail();
     } catch (WrongTypeException e) {
       assertEquals("Wrong argument type. Expected: MutableString, actual: \"a\"", e.getMessage());
     }
@@ -230,13 +232,13 @@ public class StringTest extends AbstractTest {
       eval("(string-set! (string #\\a #\\b #\\c) 3 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 3", e.getMessage());
+      assertEquals("string-set!: value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 0) 0 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Value out of range: 0", e.getMessage());
+      assertEquals("string-set!: value out of range: 0", e.getMessage());
     }
     try {
       eval("(string-set! '(1 2 3) 2 #\\z)", env);

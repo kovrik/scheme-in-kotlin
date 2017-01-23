@@ -22,7 +22,7 @@ public final class StringRef extends AFn {
     String s = arg1.toString();
     Long pos = ((Number)arg2).longValue();
     if (pos >= s.length()) {
-      throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
+      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), pos));
     }
     return s.charAt(pos.intValue());
   }

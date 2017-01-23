@@ -27,7 +27,7 @@ public final class Quotient extends AFn {
       return NumberUtils.inexactnessTaint((Number)arg1, (Number) arg2);
     }
     if (NumberUtils.isZero(arg2)) {
-      throw new ArithmeticException(String.format("Error: (%s) undefined for 0", getName()));
+      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
     return apply((Number) arg1, (Number) arg2);
   }

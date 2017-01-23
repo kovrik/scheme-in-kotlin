@@ -23,7 +23,7 @@ public final class VectorRef extends AFn {
     SCMMutableVector vec = (SCMMutableVector)arg1;
     Long pos = ((Number)arg2).longValue();
     if (pos >= vec.length()) {
-      throw new IllegalArgumentException(String.format("Value out of range: %s", pos));
+      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), pos));
     }
     return vec.get(pos.intValue());
   }

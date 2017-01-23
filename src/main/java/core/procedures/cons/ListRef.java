@@ -25,7 +25,7 @@ public final class ListRef extends AFn {
     List list = (List)arg1;
     Long p = ((Number)arg2).longValue();
     if (p >= list.size()) {
-      throw new IllegalArgumentException("Value out of range: " + p);
+      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), p));
     }
     /* Cons cell */
     if ((list instanceof SCMCons) && !((SCMCons)list).isList()) {
