@@ -1,6 +1,5 @@
 package core.procedures.strings;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
@@ -19,9 +18,6 @@ public final class NumberToString extends AFn {
   @Override
   public String apply(Object... args) {
     Number o = (Number)args[0];
-    if (args.length > 2) {
-      throw new ArityException(args.length, getName());
-    }
     Object o1 = null;
     if (args.length == 2) {
       o1 = args[1];

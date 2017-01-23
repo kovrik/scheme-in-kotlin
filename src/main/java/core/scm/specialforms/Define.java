@@ -25,16 +25,15 @@ public enum Define implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-
     Object id = expression.get(1);
+    /* Variable definition: (define <id> <value>) */
     if (id instanceof SCMSymbol) {
-      /* Variable definition */
       if (expression.size() > 3) {
         throw IllegalSyntaxException.of(toString(), expression, "multiple expressions after identifier");
       }
-      Object body = expression.get(2);
-      env.put(id, evaluator.eval(body, env));
+      env.put(id, evaluator.eval(expression.get(2), env));
     } else if (id instanceof SCMCons) {
+      /* Procedure definition: (define <id> <proc>) */
       /* Function shorthand definition
        * expression = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
        *              |   0   | 1 definition           | 3 body      |

@@ -6,7 +6,7 @@ import static core.scm.SCMUnspecified.UNSPECIFIED;
 
 public final class Void extends AFn {
 
-  static final Void INSTANCE = new Void();
+  static final Void VOID = new Void();
 
   @Override
   public boolean isPure() {

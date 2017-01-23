@@ -1,6 +1,5 @@
 package core.procedures.functional;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.cons.Append;
@@ -23,9 +22,6 @@ public final class Apply extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length < 2) {
-      throw new ArityException(args.length, getName());
-    }
     SCMCons sexp = SCMCons.list(args[0]);
     if (args.length > 2) {
       SCMCons<Object> list = SCMCons.list();

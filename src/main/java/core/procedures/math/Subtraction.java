@@ -1,6 +1,5 @@
 package core.procedures.math;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
@@ -10,7 +9,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(restArgsType = Number.class)
+@FnArgs(minArgs = 1, restArgsType = Number.class)
 public final class Subtraction extends AFn {
 
   @Override
@@ -25,9 +24,6 @@ public final class Subtraction extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args == null || args.length == 0) {
-      throw new ArityException(0, "-");
-    }
     if (args.length == 1) {
       if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).negate();

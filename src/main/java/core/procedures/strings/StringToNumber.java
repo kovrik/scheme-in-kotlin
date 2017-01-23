@@ -1,6 +1,5 @@
 package core.procedures.strings;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.reader.parsers.Result;
 import core.scm.FnArgs;
@@ -22,11 +21,7 @@ public final class StringToNumber extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    if (args.length > 2) {
-      throw new ArityException(args.length, getName());
-    }
     String number = args[0].toString();
-
     /* Check if we should override optional radix */
     /* Read radix and/or exactness and a number */
     boolean override = false;

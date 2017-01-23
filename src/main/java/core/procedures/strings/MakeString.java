@@ -1,6 +1,5 @@
 package core.procedures.strings;
 
-import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
@@ -19,9 +18,6 @@ public final class MakeString extends AFn {
     Long s = ((Number)args[0]).longValue();
     if (s < 0) {
       throw new IllegalArgumentException(String.format("Size value is out of range in `%s`", getName()));
-    }
-    if (args.length > 2) {
-      throw new ArityException(args.length, getName());
     }
     Object c = (args.length == 1) ? Character.MIN_VALUE : args[1];
     SCMMutableString string = new SCMMutableString();
