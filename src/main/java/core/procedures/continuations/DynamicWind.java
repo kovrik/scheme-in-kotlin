@@ -20,6 +20,11 @@ public final class DynamicWind extends AFn {
     return "dynamic-wind";
   }
 
+  @Override
+  public Object apply3(Object arg1, Object arg2, Object arg3) {
+    throw new UnsupportedOperationException(getName() + ": must be evaluated in Evaluator!");
+  }
+
   /* Actual dynamic-wind */
   public Object dynamicWind(IFn pre, IFn value, IFn post, Environment env, Evaluator evaluator) {
     /* Evaluate before-thunk first */
@@ -31,10 +36,5 @@ public final class DynamicWind extends AFn {
       /* Finally, evaluate post-thunk */
       evaluator.eval(SCMCons.list(post), env);
     }
-  }
-
-  @Override
-  public Object apply(Object... args) {
-    throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
   }
 }

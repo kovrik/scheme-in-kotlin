@@ -17,7 +17,7 @@ public final class Force extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
+    throw new UnsupportedOperationException(getName() + ": must be evaluated in Evaluator!");
   }
 
   /* Actual force implementation */

@@ -20,6 +20,11 @@ public final class CallCC extends AFn {
     return "call-with-current-continuation";
   }
 
+  @Override
+  public Object apply1(Object arg) {
+    throw new UnsupportedOperationException(getName() + ": must be evaluated in Evaluator!");
+  }
+
   /* Actual call-with-current-continuation */
   public Object callcc(IFn proc, Environment env, Evaluator evaluator) {
     Continuation cont = new Continuation();
@@ -37,10 +42,5 @@ public final class CallCC extends AFn {
       /* One-shot continuations cannot be used more than once */
       cont.invalidate();
     }
-  }
-
-  @Override
-  public Object apply(Object... args) {
-    throw new UnsupportedOperationException("Must be evaluated in Evaluator!");
   }
 }
