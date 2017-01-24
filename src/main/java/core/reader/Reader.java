@@ -89,8 +89,8 @@ public class Reader implements IReader {
 
   @Override
   public List<Object> read() {
+    List<Object> tokens = new ArrayList<>();
     try {
-      List<Object> tokens = new ArrayList<>();
       Object token;
       while (((token = nextToken()) != null) || tokens.isEmpty()) {
         if (DOT.equals(token)) {
@@ -100,11 +100,10 @@ public class Reader implements IReader {
           tokens.add(token);
         }
       }
-      return tokens;
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return null;
+    return tokens;
   }
 
   private String readUntilDelimiter() throws IOException {
@@ -181,10 +180,6 @@ public class Reader implements IReader {
     reader.unread(next);
     /* Decimal number */
     if (c != '#' && isValidForRadix(c, 10)) {
-      // dot?
-      if (c == '.' && DELIMITERS.indexOf(next) > -1) {
-        return DOT;
-      }
       reader.unread(c);
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
@@ -421,7 +416,7 @@ public class Reader implements IReader {
           if (dotPos > -1) {
             throw new IllegalSyntaxException("read: illegal use of '.'");
           }
-          /* Remember the position */
+          /* Remember the dot position */
           dotPos = pos;
         }
         /* List is empty so far */
