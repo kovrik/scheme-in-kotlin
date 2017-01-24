@@ -21,7 +21,7 @@ public final class Eqv extends AFn {
   @Override
   public Boolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
-    if (args != null && args.length > 1) {
+    if (args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {
         result = result && eqv(args[i], args[i + 1]);
       }

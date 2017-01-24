@@ -79,10 +79,8 @@ public final class Addition extends AFn {
   @Override
   public Object apply(Object... args) {
     Object result = 0L;
-    if (args != null) {
-      for (Object obj : args) {
-        result = add((Number)result, (Number)obj);
-      }
+    for (Object obj : args) {
+      result = add((Number)result, (Number)obj);
     }
     return result;
   }

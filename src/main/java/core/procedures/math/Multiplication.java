@@ -25,10 +25,8 @@ public final class Multiplication extends AFn {
   @Override
   public Object apply(Object... args) {
     Object result = 1L;
-    if (args != null) {
-      for (Object obj : args) {
-        result = apply((Number)result, (Number)obj);
-      }
+    for (Object obj : args) {
+      result = apply((Number)result, (Number)obj);
     }
     return result;
   }
