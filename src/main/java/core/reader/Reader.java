@@ -132,7 +132,14 @@ public class Reader implements IReader {
       return null;
     }
     char c = (char)i;
-    if (LINE_BREAKS.indexOf(c) > -1) {
+    /* Skip whitespaces until line break */
+    if (Character.isWhitespace(c)) {
+      while (isValid(c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
+        c = (char) reader.read();
+      }
+    }
+    /* Check if there is anything to read */
+    if (!isValid(c) || LINE_BREAKS.indexOf(c) > -1) {
       return null;
     }
     switch (c) {
@@ -156,17 +163,8 @@ public class Reader implements IReader {
       case ')':
         throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
       default: {
-        if (Character.isWhitespace(c)) {
-          /* Skip whitespaces until line break */
-          while (isValid(c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
-            c = (char)reader.read();
-          }
-          reader.unread(c);
-          return nextToken();
-        } else {
-          reader.unread(c);
-          return readAtom();
-        }
+        reader.unread(c);
+        return readAtom();
       }
     }
   }
