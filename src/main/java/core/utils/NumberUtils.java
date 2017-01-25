@@ -134,6 +134,11 @@ public class NumberUtils {
   // FIXME Simplify and cleanup!
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(final String number, Character exactness, int radix) {
+    /* First check if it is a special number */
+    Number special = NumberUtils.SPECIAL_NUMBERS.get(number);
+    if (special != null) {
+      return special;
+    }
     /* Check if that is a complex number */
     if (number.charAt(number.length() - 1) ==  'i' || number.charAt(number.length() - 1) ==  'I') {
       /* Assume that we have a complex number and try to parse it */

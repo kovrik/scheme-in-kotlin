@@ -177,13 +177,10 @@ public class Reader implements IReader {
     char next = (char)reader.read();
     reader.unread(next);
     /* Decimal number */
-    if (c != '#' && isValidForRadix(c, 10)) {
+    if (isValidForRadix(c, 10)) {
       reader.unread(c);
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
-      if (NumberUtils.SPECIAL_NUMBERS.containsKey(number)) {
-        return NumberUtils.SPECIAL_NUMBERS.get(number);
-      }
       /* Now check if it IS a valid number */
       return preProcessNumber(number, null, 10);
     } else if (c == ';') {
