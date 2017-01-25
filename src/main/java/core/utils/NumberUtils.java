@@ -302,7 +302,7 @@ public class NumberUtils {
   }
 
   private static Number processExactness(Number number, char exactness) {
-    if (Reader.isExact(exactness)) {
+    if (Reader.isExact.test(exactness)) {
       /* For some reason (optimization?), Racket's Reader does not convert into exact numbers 'properly':
        *
        * #e2.3 returns 23/10
@@ -326,7 +326,7 @@ public class NumberUtils {
         }
       }
     }
-    if (Reader.isInexact(exactness)) {
+    if (Reader.isInexact.test(exactness)) {
       if (number instanceof Long) {
         return number.doubleValue();
       }

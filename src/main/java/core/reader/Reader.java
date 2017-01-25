@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static core.utils.NumberUtils.*;
 
@@ -58,25 +59,12 @@ public class Reader implements IReader {
     return CODEPOINTS.get(ch);
   }
 
-  private static boolean isValid(int i) {
-    return i > -1 && i < 65535;
-  }
-
-  private static boolean isExactness(char c) {
-    return isExact(c) || isInexact(c);
-  }
-
-  public static boolean isExact(char c) {
-    return c == 'e' || c == 'E' ;
-  }
-
-  public static boolean isInexact(char c) {
-    return c == 'i' || c == 'I' ;
-  }
-
-  private static boolean isRadix(char c) {
-    return "bodxBODX".indexOf(c) > -1;
-  }
+  // TODO Check performance hit
+  private static final Predicate<Integer>   isValid     = i -> i > -1 && i < 65535;
+  private static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
+  public  static final Predicate<Character> isExact     = c -> c == 'e' || c == 'E';
+  public  static final Predicate<Character> isInexact   = c -> c == 'i' || c == 'I';
+  private static final Predicate<Character> isExactness = c -> isExact.test(c) || isInexact.test(c);
 
   PushbackReader reader;
 
@@ -109,7 +97,7 @@ public class Reader implements IReader {
   private String readUntilDelimiter() throws IOException {
     StringBuilder token = new StringBuilder();
     int i;
-    while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
+    while (isValid.test(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
       token.append((char)i);
     }
     reader.unread((char)i);
@@ -128,18 +116,18 @@ public class Reader implements IReader {
    */
   Object nextToken() throws IOException {
     int i;
-    if (!isValid(i = reader.read())) {
+    if (!isValid.test(i = reader.read())) {
       return null;
     }
     char c = (char)i;
     /* Skip whitespaces until line break */
     if (Character.isWhitespace(c)) {
-      while (isValid(c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
+      while (isValid.test((int)c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
         c = (char) reader.read();
       }
     }
     /* Check if there is anything to read */
-    if (!isValid(c) || LINE_BREAKS.indexOf(c) > -1) {
+    if (!isValid.test((int)c) || LINE_BREAKS.indexOf(c) > -1) {
       return null;
     }
     switch (c) {
@@ -203,7 +191,7 @@ public class Reader implements IReader {
       return Boolean.TRUE;
     } else if (next == 'f' || next == 'F') {
       return Boolean.FALSE;
-    } else if (isRadix(next) || isExactness(next)) {
+    } else if (isRadix.test(next) || isExactness.test(next)) {
       reader.unread(next);
       reader.unread('#');
       /* Read identifier, not a number */
@@ -282,7 +270,7 @@ public class Reader implements IReader {
    */
   private String readComment() throws IOException {
     int i;
-    while (isValid(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
+    while (isValid.test(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
       /* Read everything until line break */
     }
     /* Comments are ignored, so just return null */
@@ -301,7 +289,7 @@ public class Reader implements IReader {
     StringBuilder string = new StringBuilder();
     int i;
     char c;
-    while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
+    while ((isValid.test(i = reader.read())) && ((c = (char)i) != '"')) {
       /* Escaping */
       if (c == '\\') {
         char next = (char)reader.read();
@@ -337,7 +325,7 @@ public class Reader implements IReader {
   private Character readCharacter() throws IOException {
     int i;
     /* Check if it is a codepoint */
-    if (isValid(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
+    if (isValid.test(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
       /* Hex or Octal? */
       char radixChar;
       char firstChar = (char)i;
@@ -394,7 +382,7 @@ public class Reader implements IReader {
     int i;
     char c;
     boolean isEmpty = true;
-    while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
+    while (isValid.test(i = reader.read()) && ((c = (char)i) != ')')) {
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
         c = (char)reader.read();
