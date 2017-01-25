@@ -411,11 +411,12 @@ public class Reader implements IReader {
         pos += 1;
         /* Check if current token is a dot */
         if (DOT.equals(token)) {
-          if (dotPos > -1) {
+          if (pos == 0 || dotPos > -1) {
             throw new IllegalSyntaxException("read: illegal use of '.'");
           }
           /* Remember the dot position */
           dotPos = pos;
+          continue;
         }
         /* List is empty so far */
         if (isEmpty) {
@@ -432,13 +433,10 @@ public class Reader implements IReader {
     if (dotPos < 0) {
       return list;
     }
-
     /* Process improper list */
-    if (dotPos == 0 || dotPos != list.size() - 2) {
+    if (dotPos != list.size() - 1) {
       throw new IllegalSyntaxException("read: illegal use of '.'");
     }
-    /* Remove dot */
-    list.remove(dotPos);
     /* Convert list into cons */
     return list.toCons();
   }

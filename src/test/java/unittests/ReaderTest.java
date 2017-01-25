@@ -170,6 +170,46 @@ public class ReaderTest {
   }
 
   @Test
+  public void testReadDot() {
+    try {
+      reader.readFirst(".");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("#(1 . 2)");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("'(. 1)");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("'(. 1 2)");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("'(0 . 1 2 . 4)");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+    try {
+      reader.readFirst("'(0 1 . 2 4)");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
+    }
+  }
+
+  @Test
   public void testReadList() {
     assertEquals(list(), reader.readFirst("()"));
     assertEquals(list(0L), reader.readFirst("(0)"));
