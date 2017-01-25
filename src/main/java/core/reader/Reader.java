@@ -305,10 +305,10 @@ public class Reader implements IReader {
     int i;
     char c;
     while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
-      // escaping
+      /* Escaping */
       if (c == '\\') {
         char next = (char)reader.read();
-        // unicode
+        /* Unicode followed by a hexadecimal number */
         if (next == 'u' || next == 'U') {
           reader.unread(next);
           Character chr = readCharacter();
@@ -318,7 +318,7 @@ public class Reader implements IReader {
           string.append(chr);
           continue;
         }
-        // escape sequences
+        /* Check that escape sequence is valid */
         if (ESCAPE_SEQUENCES.indexOf(next) < 0) {
           throw new IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next));
         }
