@@ -31,7 +31,7 @@ public class Reader implements IReader {
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
-  private static final Map<String, Character> NAMED_CHARS = new HashMap<>();
+  public static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
     NAMED_CHARS.put("newline",   '\n');
     NAMED_CHARS.put("space",     ' ');
@@ -48,18 +48,6 @@ public class Reader implements IReader {
     NAMED_CHARS.put("nul",       Character.MIN_VALUE);
   }
 
-  private static final Map<Character, String> CODEPOINTS = new HashMap<>();
-  static {
-    for (Map.Entry<String, Character> entry : NAMED_CHARS.entrySet()) {
-      CODEPOINTS.put(entry.getValue(), entry.getKey());
-    }
-  }
-
-  public static String charToNamedChar(Character ch) {
-    return CODEPOINTS.get(ch);
-  }
-
-  // TODO Check performance hit
   private static final Predicate<Integer>   isValid     = i -> i > -1 && i < 65535;
   private static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
   public  static final Predicate<Character> isExact     = c -> c == 'e' || c == 'E';
@@ -157,13 +145,8 @@ public class Reader implements IReader {
     }
   }
 
-  /**
-   * Read atom
-   */
   private Object readAtom() throws IOException {
     char c = (char)reader.read();
-    char next = (char)reader.read();
-    reader.unread(next);
     /* Decimal number */
     if (isValidForRadix(c, 10)) {
       reader.unread(c);
@@ -182,17 +165,17 @@ public class Reader implements IReader {
   }
 
   private Object readHash() throws IOException {
-    char next = (char) reader.read();
-    if (next == '(') {
+    char c = (char) reader.read();
+    if (c == '(') {
       return readVector();
-    } else if (next == '\\') {
+    } else if (c == '\\') {
       return readCharacter();
-    } else if (next == 't' || next == 'T') {
+    } else if (c == 't' || c == 'T') {
       return Boolean.TRUE;
-    } else if (next == 'f' || next == 'F') {
+    } else if (c == 'f' || c == 'F') {
       return Boolean.FALSE;
-    } else if (isRadix.test(next) || isExactness.test(next)) {
-      reader.unread(next);
+    } else if (isRadix.test(c) || isExactness.test(c)) {
+      reader.unread(c);
       reader.unread('#');
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
@@ -232,8 +215,8 @@ public class Reader implements IReader {
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
-    StringBuilder token = new StringBuilder().append('#').append(next);
-    if (!Character.isWhitespace(next)) {
+    StringBuilder token = new StringBuilder().append('#').append(c);
+    if (!Character.isWhitespace(c)) {
       token.append(readUntilDelimiter());
     }
     throw new IllegalSyntaxException("read: bad syntax: " + token);

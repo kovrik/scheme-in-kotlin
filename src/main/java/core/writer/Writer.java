@@ -6,13 +6,21 @@ import core.reader.Reader;
 import core.scm.*;
 import core.utils.NumberUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Writer implements IWriter {
 
-  public String toString(Object o) {
+  private static final Map<Character, String> CODEPOINTS = new HashMap<>();
+  static {
+    for (Map.Entry<String, Character> entry : Reader.NAMED_CHARS.entrySet()) {
+      CODEPOINTS.put(entry.getValue(), entry.getKey());
+    }
+  }
 
+  @Override
+  public String toString(Object o) {
     return write(o);
   }
 
@@ -57,7 +65,7 @@ public class Writer implements IWriter {
     }
     if (o instanceof Character) {
       /* Check named characters */
-      String named = Reader.charToNamedChar((Character) o);
+      String named = CODEPOINTS.get(o);
       if (named != null) {
         return "#\\" + named;
       }
