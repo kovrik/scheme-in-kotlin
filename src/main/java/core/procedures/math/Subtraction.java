@@ -8,6 +8,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @FnArgs(minArgs = 1, restArgsType = Number.class)
 public final class Subtraction extends AFn {
@@ -33,14 +34,10 @@ public final class Subtraction extends AFn {
       }
       return apply(0L, args[0]);
     }
-    Object result = args[0];
-    for (int i = 1; i < args.length; i++) {
-      result = apply((Number)result, (Number)args[i]);
-    }
-    return result;
+    return Arrays.stream(args).reduce((f, s) -> subtract((Number)f, (Number)s)).get();
   }
 
-  private Number apply(Number first, Number second) {
+  private Number subtract(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(second)) {
       return NumberUtils.inexactnessTaint(first, second);

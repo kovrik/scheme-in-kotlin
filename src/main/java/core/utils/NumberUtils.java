@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import static java.lang.Long.parseLong;
 
@@ -66,9 +67,7 @@ public class NumberUtils {
 
   private static final Map<Integer, BigDecimal> BIG_DECIMAL_RADICES = new HashMap<>();
   static {
-    for (int r = 2; r <= 16; r++) {
-      BIG_DECIMAL_RADICES.put(r, new BigDecimal(r));
-    }
+    IntStream.range(2, 17).forEach(r -> BIG_DECIMAL_RADICES.put(r, new BigDecimal(r)));
   }
 
   public static int getRadixByChar(char radixChar) {

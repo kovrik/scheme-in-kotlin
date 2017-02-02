@@ -8,6 +8,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @FnArgs(restArgsType = Number.class)
 public final class Addition extends AFn {
@@ -77,11 +78,7 @@ public final class Addition extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    Object result = 0L;
-    for (Object obj : args) {
-      result = add((Number)result, (Number)obj);
-    }
-    return result;
+  public Number apply(Object... args) {
+    return (Number)Arrays.stream(args).reduce(0L, (f, s) -> add((Number)f, (Number)s));
   }
 }

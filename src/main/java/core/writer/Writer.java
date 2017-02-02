@@ -14,9 +14,7 @@ public class Writer implements IWriter {
 
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
   static {
-    for (Map.Entry<String, Character> entry : Reader.NAMED_CHARS.entrySet()) {
-      CODEPOINTS.put(entry.getValue(), entry.getKey());
-    }
+    Reader.NAMED_CHARS.entrySet().forEach(e -> CODEPOINTS.put(e.getValue(), e.getKey()));
   }
 
   @Override

@@ -6,6 +6,7 @@ import core.scm.SCMThunk;
 import core.scm.SCMUnspecified;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 /* Syntax:
  * (begin <expression1> <expression2> ...)
@@ -21,9 +22,7 @@ public enum Begin implements ISpecialForm {
     if (expression.size() == 1 && BEGIN == (expression.get(0))) {
       return SCMUnspecified.UNSPECIFIED;
     }
-    for (int i = 1; i < expression.size() - 1; i++) {
-      evaluator.eval(expression.get(i), env);
-    }
+    IntStream.range(1, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), env));
     return new SCMThunk(expression.get(expression.size() - 1), env);
   }
 

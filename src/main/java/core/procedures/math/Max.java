@@ -6,6 +6,7 @@ import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
 public final class Max extends AFn {
@@ -20,7 +21,7 @@ public final class Max extends AFn {
     return "max";
   }
 
-  private Number apply(Number first, Number second) {
+  private Number max(Number first, Number second) {
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).compareTo((SCMBigRational)second) > 0 ? first : second;
@@ -49,13 +50,6 @@ public final class Max extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    if (args.length == 1) {
-      return (Number)args[0];
-    }
-    Number result = (Number)args[0];
-    for (int i = 1; i < args.length; i++) {
-      result = apply(result, (Number) args[i]);
-    }
-    return result;
+    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> max((Number)f, (Number)s));
   }
 }

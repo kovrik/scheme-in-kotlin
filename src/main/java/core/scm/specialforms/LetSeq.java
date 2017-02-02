@@ -6,6 +6,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMThunk;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 /* Syntax:
  * (let* <bindings> <body>)
@@ -20,19 +21,12 @@ public enum LetSeq implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-
-    Environment localEnv = new Environment(env);
-    List bindings = (List)expression.get(1);
+    List<List> bindings = (List<List>)expression.get(1);
     /* Evaluate inits */
-    for (Object binding : bindings) {
-      Object var  = ((List)binding).get(0);
-      Object init = ((List)binding).get(1);
-      localEnv.put(var, evaluator.eval(init, localEnv));
-    }
+    Environment localEnv = new Environment(env);
+    bindings.forEach(b -> localEnv.put(b.get(0), evaluator.eval(b.get(1), localEnv)));
     /* Evaluate body */
-    for (int i = 2; i < expression.size() - 1; i++) {
-      evaluator.eval(expression.get(i), localEnv);
-    }
+    IntStream.range(2, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), localEnv));
     return new SCMThunk(expression.get(expression.size() - 1), localEnv);
   }
 

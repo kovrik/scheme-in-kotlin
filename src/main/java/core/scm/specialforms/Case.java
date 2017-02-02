@@ -6,6 +6,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
 
 import java.util.List;
+import java.util.Optional;
 
 import static core.scm.SCMUnspecified.UNSPECIFIED;
 
@@ -44,10 +45,9 @@ public enum Case implements ISpecialForm {
       if (!(datum instanceof List)) {
         throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform");
       }
-      for (Object n : ((List)datum)) {
-        if (Eqv.eqv(key, n)) {
-          return Begin.BEGIN.eval(subform, env, evaluator);
-        }
+      Optional<Object> o = ((List)datum).stream().filter(e -> Eqv.eqv(key, e)).findFirst();
+      if (o.isPresent()) {
+        return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }
     return UNSPECIFIED;

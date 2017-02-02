@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @FnArgs(restArgsType = SCMBigRational.class)
 public final class GCD extends AFn {
@@ -28,14 +29,10 @@ public final class GCD extends AFn {
     if (args.length == 0) {
       return 0L;
     }
-    Number result = (Number) args[0];
     if (args.length == 1) {
       return ABS.apply1(args[0]);
     }
-    for (int i = 1; i < args.length; i++) {
-      result = gcd(result, (Number) args[i]);
-    }
-    return result;
+    return (Number) Arrays.stream(args).reduce((f, s) -> gcd((Number)f, (Number)s)).get();
   }
 
   static long gcd(Long a, Long b) {

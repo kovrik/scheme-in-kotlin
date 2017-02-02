@@ -83,15 +83,9 @@ public enum Do implements ISpecialForm {
       }
       /* Evaluate steps */
       Map<Object, Object> freshLocations = new HashMap<>(steps.size());
-      for (SCMCons step : steps) {
-        Object variable = step.car();
-        Object s = step.cdr();
-        freshLocations.put(variable, evaluator.eval(s, tempEnv));
-      }
+      steps.forEach(s -> freshLocations.put(s.car(), evaluator.eval(s.cdr(), tempEnv)));
       /* Now store results */
-      for (Map.Entry<Object, Object> entry : freshLocations.entrySet()) {
-        tempEnv.put(entry.getKey(), entry.getValue());
-      }
+      freshLocations.entrySet().forEach(e -> tempEnv.put(e.getKey(), e.getValue()));
     }
     /* Test evaluated to #f */
     return Begin.BEGIN.eval(clause.subList(1, clause.size()), tempEnv, evaluator);

@@ -10,6 +10,7 @@ import core.writer.Writer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Time Special Form:
@@ -30,9 +31,7 @@ public enum Time implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     long start = System.nanoTime();
-    for (int i = 1; i < expression.size() - 1; i++) {
-      evaluator.eval(expression.get(i), env);
-    }
+    IntStream.range(1, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), env));
     try {
       Repl.getCurrentOutputPort().write(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)) + LS);
     } catch (IOException e) {

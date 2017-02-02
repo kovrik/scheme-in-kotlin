@@ -8,6 +8,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @FnArgs(minArgs = 1, restArgsType = Number.class)
 public final class Division extends AFn {
@@ -24,16 +25,10 @@ public final class Division extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    Number result;
     if (args.length == 1) {
-      return apply(1L, (Number)args[0]);
-    } else {
-      result = (Number)args[0];
+      return apply(1L, (Number) args[0]);
     }
-    for (int d = 1; d <= args.length - 1; d++) {
-      result = apply(result, (Number)args[d]);
-    }
-    return result;
+    return (Number) Arrays.stream(args).reduce((f, s) -> apply((Number)f, (Number)s)).get();
   }
 
   private Number apply(Number numerator, Number denominator) {

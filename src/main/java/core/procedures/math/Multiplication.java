@@ -8,6 +8,7 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 @FnArgs(restArgsType = Number.class)
 public final class Multiplication extends AFn {
@@ -23,12 +24,8 @@ public final class Multiplication extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    Object result = 1L;
-    for (Object obj : args) {
-      result = apply((Number)result, (Number)obj);
-    }
-    return result;
+  public Number apply(Object... args) {
+    return (Number) Arrays.stream(args).reduce(1L, (f, s) -> apply((Number)f, (Number)s));
   }
 
   public static Number apply(Number first, Number second) {

@@ -6,6 +6,7 @@ import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import static core.procedures.math.GCD.gcd;
 
@@ -29,14 +30,10 @@ public final class LCM extends AFn {
     if (args.length == 0) {
       return 1L;
     }
-    Number result = (Number) args[0];
     if (args.length == 1) {
       return ABS.apply1(args[0]);
     }
-    for (int i = 1; i < args.length; i++) {
-      result = apply(result, (Number) args[i]);
-    }
-    return result;
+    return (Number) Arrays.stream(args).reduce((f, s) -> lcm((Number)f, (Number)s)).get();
   }
 
   private static long lcm(Long a, Long b) {
@@ -74,7 +71,7 @@ public final class LCM extends AFn {
     }
   }
 
-  private Number apply(Number first, Number second) {
+  private Number lcm(Number first, Number second) {
     if ((first instanceof Long) && (second instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
