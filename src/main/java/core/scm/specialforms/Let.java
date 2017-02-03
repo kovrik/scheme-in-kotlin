@@ -8,6 +8,8 @@ import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 /* Syntax:
  * (let <bindings> <body>)
@@ -22,26 +24,22 @@ public enum Let implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-
     /* Normal let:
      * (let ((id expr) ...) body ...+) */
     if (expression.get(1) instanceof List) {
       Environment localEnv = new Environment(env);
       /* Evaluate inits */
-      List bindings = (List) expression.get(1);
-      for (Object binding : bindings) {
-        Object var  = ((List)binding).get(0);
-        Object init = ((List)binding).get(1);
+      List<List<Object>> bindings = (List)expression.get(1);
+      bindings.forEach(b -> {
+        Object var = b.get(0);
         if (localEnv.get(var) != null) {
           throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier `%s`", var));
         }
+        Object init = b.get(1);
         localEnv.put(var, evaluator.eval(init, env));
-      }
-
+      });
       /* Evaluate body */
-      for (int i = 2; i < expression.size() - 1; i++) {
-        evaluator.eval(expression.get(i), localEnv);
-      }
+      IntStream.range(2, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), localEnv));
       return new SCMThunk(expression.get(expression.size() - 1), localEnv);
 
     } else if (expression.get(1) instanceof SCMSymbol) {
@@ -55,15 +53,16 @@ public enum Let implements ISpecialForm {
       /* Construct lambda */
       SCMCons<Object> lambdaArgs = SCMCons.list();
       SCMCons<Object> initValues = SCMCons.list();
-      List bindings = (List)expression.get(2);
-      for (Object binding : bindings) {
-        Object arg = ((List)binding).get(0);
+      List<List<Object>> bindings = (List)expression.get(2);
+      bindings.forEach(b -> {
+        Object arg = b.get(0);
         if (lambdaArgs.contains(arg)) {
           throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier `%s`", arg));
         }
         lambdaArgs.add(arg);
-        initValues.add(((List)binding).get(1));
-      }
+        initValues.add(b.get(1));
+      });
+
       Object lambdaBody = expression.get(3);
       SCMCons lambda = SCMCons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody);
       SCMSymbol name = (SCMSymbol)o;
