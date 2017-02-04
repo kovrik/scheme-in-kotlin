@@ -5,8 +5,6 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMIOException;
-import core.scm.SCMUnspecified;
-import core.writer.Writer;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,18 +30,14 @@ public enum Time implements ISpecialForm {
     }
     long start = System.nanoTime();
     IntStream.range(1, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), env));
-    try {
-      Repl.getCurrentOutputPort().write(Writer.write(evaluator.eval(expression.get(expression.size() - 1), env)) + LS);
-    } catch (IOException e) {
-      throw new SCMIOException(e);
-    }
+    Object result = evaluator.eval(expression.get(expression.size() - 1), env);
     long diff = (System.nanoTime() - start) / 1000000;
     try {
       Repl.getCurrentOutputPort().write(String.format("time: %s ms", diff) + LS);
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return SCMUnspecified.UNSPECIFIED;
+    return result;
   }
 
   @Override
