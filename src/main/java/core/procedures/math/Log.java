@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Log extends AFn {
 
+  private static final int MAX_DIGITS = 307;
+  private static final double VALUE = Math.log(Math.pow(10, MAX_DIGITS));
+
   @Override
   public boolean isPure() {
     return true;
@@ -56,9 +59,24 @@ public final class Log extends AFn {
       if (((BigDecimal)number).compareTo(BigDecimal.ZERO) == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
-      // FIXME Not working for huge numbers
-      return BigDecimalMath.log((SCMBigRational) ToExact.toExact(number), NumberUtils.DEFAULT_CONTEXT);
+      if (Double.isFinite(number.doubleValue())) {
+        return Math.log(number.doubleValue());
+      }
+      return logBig((BigDecimal) number);
     }
     return Math.log(number.doubleValue());
+  }
+
+  /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */
+  private static Number logBig(BigDecimal number) {
+    int digits = integerDigits(number);
+    int n = digits / MAX_DIGITS;
+    number = number.movePointLeft(n * MAX_DIGITS);
+    return (n * VALUE) + Math.log(number.doubleValue());
+  }
+
+  /* Return number of digits of a given BigDecimal number */
+  private static int integerDigits(BigDecimal n) {
+    return n.signum() == 0 ? 1 : n.precision() - n.scale();
   }
 }
