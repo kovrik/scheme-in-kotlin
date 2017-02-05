@@ -143,19 +143,21 @@ public class NumberUtils {
       /* Assume that we have a complex number and try to parse it */
       int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
       String r = number.substring(0, p);
+      Object re;
       if (r.isEmpty()) {
         /* If real part is empty: +1i => 0+1i */
-        r = "0";
+        re = 0L;
+      } else {
+        re = preProcessNumber(r, exactness, radix);
       }
-      String i = number.substring(p, number.length() - 1);
-      if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
-        i += "1";
-      }
-      Object re = preProcessNumber(r, exactness, radix);
       if (!(re instanceof Number)) {
         return SCMSymbol.of(number);
       }
 
+      String i = number.substring(p, number.length() - 1);
+      if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
+        i += "1";
+      }
       Object im = preProcessNumber(i, exactness, radix);
       if (!(im instanceof Number)) {
         return SCMSymbol.of(number);

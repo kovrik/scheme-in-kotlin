@@ -64,7 +64,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     }
   }
 
-  public static BigInteger parseBigInteger(String number) {
+  private static BigInteger parseBigInteger(String number) {
     BigInteger result;
     if ("1".equals(number)) {
       result = BigInteger.ONE;
@@ -208,20 +208,12 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     return this.plus(other.negate());
   }
 
-  public SCMBigRational reciprocal() {
+  private SCMBigRational reciprocal() {
     return new SCMBigRational(denominator, numerator);
   }
 
   public SCMBigRational divide(SCMBigRational other) {
     return this.multiply(other.reciprocal());
-  }
-
-  public SCMBigRational divide(BigInteger other) {
-    return divide(new SCMBigRational(other, BigInteger.ONE));
-  }
-
-  public SCMBigRational divide(int other) {
-    return divide(new SCMBigRational(other, 1));
   }
 
   @Override

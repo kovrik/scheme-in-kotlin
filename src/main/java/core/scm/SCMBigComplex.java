@@ -17,8 +17,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
   /* Imaginary unit (i) */
   public static final SCMBigComplex I = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
 
-  private static final BigDecimal HALF = new BigDecimal("0.5");
-
   private final BigDecimal re;
   private final BigDecimal im;
 
@@ -110,7 +108,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
    * gamma = sqrt((a + sqrt(a*a + b*b))/2)
    * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
    */
-  // FIXME Use sqrt for BigDecimal, not Double
   public SCMBigComplex sqrt() {
     double a   = this.re.doubleValue();
     double b   = this.im.doubleValue();
@@ -119,17 +116,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
     double s = Math.sqrt(a * a + b * b);
     double gamma = Math.sqrt((s+a)/2);
     double delta = signum * Math.sqrt((s-a)/2);
-    return new SCMBigComplex(gamma, delta);
-  }
-
-  public SCMBigComplex sqrtBig() {
-    BigDecimal a   = this.re;
-    BigDecimal b   = this.im;
-    int signum = this.im.signum();
-
-    Number s = Sqrt.sqrt(a.multiply(a).add(b.multiply(b)));
-    Number gamma = Sqrt.sqrt(Multiplication.apply(Addition.add(s, a), HALF));
-    Number delta = Multiplication.apply(signum, Sqrt.sqrt(Multiplication.apply(Addition.add(s, Multiplication.apply(-1, a)), HALF)));
     return new SCMBigComplex(gamma, delta);
   }
 

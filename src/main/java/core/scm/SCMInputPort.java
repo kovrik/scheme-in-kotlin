@@ -32,15 +32,12 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
     }
   }
 
-  // TODO Check if correctly implemented
   public int peek() throws IOException {
     synchronized (lock) {
-      if (next != null) {
-        return next;
-      } else {
+      if (next == null) {
         next = inputStream.read();
-        return next;
       }
+      return next;
     }
   }
 
