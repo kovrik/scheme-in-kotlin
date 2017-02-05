@@ -85,20 +85,14 @@ public class Evaluator {
     if (sexp.isEmpty()) {
       throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
     }
-    Object op = sexp.get(0);
 
-    /* Lookup symbol */
+    Object op = sexp.get(0);
     if (op instanceof SCMSymbol) {
+      /* Lookup symbol */
       op = env.find(op);
-      /* Inline */
-      if (op instanceof ISpecialForm) {
-        /* Inline Special Forms */
+      /* Inline Special Forms and Pure functions */
+      if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
-      } else if (op instanceof AFn) {
-        /* Inline pure functions */
-        if (((AFn)op).isPure())  {
-          sexp.set(0, op);
-        }
       }
     }
 
