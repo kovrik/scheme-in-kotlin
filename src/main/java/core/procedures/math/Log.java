@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Log extends AFn {
 
+  /* If number has 307 digits or less, then can use Math.log(double) */
   private static final int MAX_DIGITS = 307;
   private static final double VALUE = Math.log(Math.pow(10, MAX_DIGITS));
 
@@ -50,7 +51,7 @@ public final class Log extends AFn {
       if (((SCMBigRational) number).isZero()){
         throw new ArithmeticException("log: undefined for 0");
       }
-      if (number.equals(SCMBigRational.ONE)){
+      if (number.equals(SCMBigRational.ONE)) {
         return 0L;
       }
       return BigDecimalMath.log((SCMBigRational)number, NumberUtils.DEFAULT_CONTEXT);
@@ -59,9 +60,6 @@ public final class Log extends AFn {
       if (((BigDecimal)number).compareTo(BigDecimal.ZERO) == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
-      if (Double.isFinite(number.doubleValue())) {
-        return Math.log(number.doubleValue());
-      }
       return logBig((BigDecimal) number);
     }
     return Math.log(number.doubleValue());
@@ -69,6 +67,9 @@ public final class Log extends AFn {
 
   /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */
   private static Number logBig(BigDecimal number) {
+    if (Double.isFinite(number.doubleValue())) {
+      return Math.log(number.doubleValue());
+    }
     int digits = integerDigits(number);
     int n = digits / MAX_DIGITS;
     number = number.movePointLeft(n * MAX_DIGITS);
