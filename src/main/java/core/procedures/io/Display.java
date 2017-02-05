@@ -4,8 +4,8 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.scm.FnArgs;
-import core.scm.SCMOutputPort;
 import core.scm.SCMMutableString;
+import core.scm.SCMOutputPort;
 import core.writer.Writer;
 
 import java.io.IOException;
@@ -30,9 +30,7 @@ public final class Display extends AFn {
     }
     Object arg = args[0];
     try {
-      if ((arg instanceof String) || (arg instanceof SCMMutableString)) {
-        outputPort.write(arg.toString());
-      } else if (arg instanceof Character) {
+      if ((arg instanceof String) || (arg instanceof SCMMutableString) || (arg instanceof Character)) {
         outputPort.write(arg.toString());
       } else {
         outputPort.write(Writer.write(arg));
