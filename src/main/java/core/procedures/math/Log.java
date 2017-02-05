@@ -4,8 +4,6 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.utils.BigDecimalMath;
-import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -54,7 +52,7 @@ public final class Log extends AFn {
       if (number.equals(SCMBigRational.ONE)) {
         return 0L;
       }
-      return BigDecimalMath.log((SCMBigRational)number, NumberUtils.DEFAULT_CONTEXT);
+      return logBig(((SCMBigRational)number).toBigDecimal());
     }
     if (number instanceof BigDecimal) {
       if (((BigDecimal)number).compareTo(BigDecimal.ZERO) == 0) {

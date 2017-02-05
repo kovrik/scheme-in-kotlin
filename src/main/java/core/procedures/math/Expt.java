@@ -4,7 +4,6 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
-import core.utils.BigDecimalMath;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
@@ -29,6 +28,7 @@ public final class Expt extends AFn {
   }
 
   /**
+   * TODO:
    * Special cases when w is a real number:
    * These special cases correspond to pow in C99 [C99], except when z is negative and w is a not an integer.
    * See: https://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._expt))
@@ -73,32 +73,32 @@ public final class Expt extends AFn {
    *  w is negative — 0.0
    *  w is positive — +inf.0
    */
-  public static Number expt(Number first, Number exponent) {
+  public static Number expt(Number base, Number exponent) {
     /* Special cases */
-    if (NumberUtils.isZero(first)) {
+    if (NumberUtils.isZero(base)) {
       if (NumberUtils.isNegative(exponent)) {
         return Double.POSITIVE_INFINITY;
       } else if (NumberUtils.isPositive(exponent)) {
-        return NumberUtils.inexactnessTaint(first, exponent);
+        return NumberUtils.inexactnessTaint(base, exponent);
       } else if (NumberUtils.isZero(exponent)) {
         return 1L;
       }
     }
-    if (NumberUtils.isOne(first)) {
-      return NumberUtils.inexactnessTaint(first, exponent);
+    if (NumberUtils.isOne(base)) {
+      return NumberUtils.inexactnessTaint(base, exponent);
     }
     if (NumberUtils.isZero(exponent)) {
       return 1L;
     }
     if (NumberUtils.isOne(exponent)) {
-      return first;
+      return base;
     }
     /* Complex numbers */
-    if ((first instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
-      return SCMBigComplex.of(first).expt(SCMBigComplex.of(exponent));
+    if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
+      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
     /* Special cases for Real numbers */
-    if ((first instanceof Double) && Double.NEGATIVE_INFINITY == (Double)first) {
+    if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
       if (NumberUtils.isInteger(exponent)) {
         if (NumberUtils.isNegative(exponent)) {
           // TODO check if exponent is odd or even
@@ -109,7 +109,7 @@ public final class Expt extends AFn {
         }
       }
     }
-    if ((first instanceof Double) && Double.POSITIVE_INFINITY == (Double)first) {
+    if ((base instanceof Double) && Double.POSITIVE_INFINITY == (Double)base) {
       if (NumberUtils.isPositive(exponent)) {
         return Double.POSITIVE_INFINITY;
       } else {
@@ -118,7 +118,7 @@ public final class Expt extends AFn {
     }
 
     // FIXME This code is wrong and probably doesn't work in many cases BEGIN ---------------------------------------------------
-    if ((first instanceof Long) && (exponent instanceof Long)) {
+    if ((base instanceof Long) && (exponent instanceof Long)) {
       boolean isNegative = false;
       if (exponent.longValue() < Integer.MAX_VALUE) {
         int e = exponent.intValue();
@@ -126,22 +126,26 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = new BigDecimal(first.toString()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        BigDecimal result = new BigDecimal(base.toString()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
         if (isNegative) {
           return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
         }
         return result;
       } else {
-        try {
-          return BigDecimalMath.pow(new BigDecimal(first.toString()), new BigDecimal(exponent.toString()));
-        } catch (ArithmeticException e) {
+        /* If we came here, then exponent is greater than Integer.MAX_VALUE */
+        if (Math.abs(base.longValue()) < 1) {
+          return 0L;
+        }
+        if (base.longValue() > 0) {
           return Double.POSITIVE_INFINITY;
+        } else {
+          return Double.NEGATIVE_INFINITY;
         }
       }
     }
     /* BigDecimals */
-    if (first instanceof BigDecimal && NumberUtils.isInteger(exponent)) {
-      if (NumberUtils.isInteger(first)) {
+    if (base instanceof BigDecimal && NumberUtils.isInteger(exponent)) {
+      if (NumberUtils.isInteger(base)) {
         int exp;
         try {
           if (exponent instanceof BigDecimal) {
@@ -149,17 +153,17 @@ public final class Expt extends AFn {
           } else {
             exp = exponent.intValue();
           }
-          return ((BigDecimal) first).pow(exp);
+          return ((BigDecimal) base).pow(exp);
         } catch (ArithmeticException e) {
-          return exptBig((BigDecimal)first, new BigDecimal(exponent.toString()));
+          return exptBig((BigDecimal)base, new BigDecimal(exponent.toString()));
         }
       } else {
-        return exptBig((BigDecimal) first, new BigDecimal(exponent.toString()));
+        return exptBig((BigDecimal) base, new BigDecimal(exponent.toString()));
       }
     }
-    double result = Math.pow(first.doubleValue(), exponent.doubleValue());
+    double result = Math.pow(base.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
-      return new BigDecimal(first.toString()).pow(exponent.intValue());
+      return new BigDecimal(base.toString()).pow(exponent.intValue());
     }
     return result;
     // FIXME This code is wrong and probably doesn't work in many cases END -----------------------------------------------------
