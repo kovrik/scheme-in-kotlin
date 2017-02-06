@@ -28,29 +28,17 @@ public class SCMSymbol implements ISCMClass {
     return INTERNED.computeIfAbsent(value, k -> new SCMSymbol(value));
   }
 
-  public static SCMSymbol of(String value, boolean escape) {
-    return INTERNED.computeIfAbsent(value, k -> new SCMSymbol(value, escape));
-  }
-
   private SCMSymbol(String value) {
     this.value = value;
-  }
-
-  private SCMSymbol(String value, boolean escape) {
-    this.value = value;
-    this.escape = escape;
+    this.escape = hasSpecialChars();
   }
 
   public boolean isEscape() {
     return escape;
   }
 
-  public void setEscape(boolean escape) {
-    this.escape = escape;
-  }
-
   /* Check if Symbol has Special Characters and needs to be escaped */
-  public boolean hasSpecialChars() {
+  private boolean hasSpecialChars() {
     /* Check if string representation must be escaped */
     if (value.isEmpty() || Character.isDigit(value.charAt(0))) {
       return true;

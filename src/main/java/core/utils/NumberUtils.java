@@ -45,7 +45,7 @@ public class NumberUtils {
   private static final Pattern EXPONENT_PATTERN = Pattern.compile(".+" + EXPONENT_MARKS_PATTERN + "[+-]?\\d+$");
   private static final Pattern EXPONENT16_PATTERN = Pattern.compile(".+" + EXPONENT16_MARKS_PATTERN + "[+-]?\\w+$");
 
-  public static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
+  private static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
   static {
     SPECIAL_NUMBERS.put("+nan.0", Double.NaN);
     SPECIAL_NUMBERS.put("-nan.0", Double.NaN);

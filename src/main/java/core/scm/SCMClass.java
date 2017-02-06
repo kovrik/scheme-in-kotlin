@@ -52,7 +52,6 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(BigDecimal.class,            REAL);
     SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
     SCM_CLASSES.put(SCMBigComplex.class,         COMPLEX);
-
     SCM_CLASSES.put(Character.class,             CHARACTER);
     SCM_CLASSES.put(String.class,                IMMUTABLE_STRING);
     SCM_CLASSES.put(SCMImmutableString.class,    IMMUTABLE_STRING);

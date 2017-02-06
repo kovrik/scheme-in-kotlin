@@ -1,10 +1,7 @@
 package core.writer;
 
-import core.procedures.AFn;
-import core.procedures.continuations.Continuation;
 import core.reader.Reader;
 import core.scm.*;
-import core.utils.NumberUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,33 +48,19 @@ public class Writer implements IWriter {
     if (o instanceof Number) {
       if (Double.isNaN(((Number) o).doubleValue())) {
         return "+nan.0";
+      } else if (((Number)o).doubleValue() == Double.POSITIVE_INFINITY) {
+        return "+inf.0";
+      } else if (((Number)o).doubleValue() == Double.NEGATIVE_INFINITY) {
+        return "-inf.0";
       }
-      for (Map.Entry<String, Number> entry : NumberUtils.SPECIAL_NUMBERS.entrySet()) {
-        if (entry.getValue().equals(o)) {
-          return entry.getKey();
-        }
-      }
+      return o.toString();
     }
     if ((o instanceof String) || (o instanceof SCMMutableString)) {
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {
       /* Check named characters */
-      String named = CODEPOINTS.get(o);
-      if (named != null) {
-        return "#\\" + named;
-      }
-      return "#\\" + o;
-    }
-    if (o instanceof Continuation) {
-      return "#<continutation>";
-    }
-    if (o instanceof AFn) {
-      String name = ((AFn)o).getName();
-      if (name == null || name.isEmpty()) {
-        return "#<procedure>";
-      }
-      return "#<procedure:" + name + ">";
+      return "#\\" + CODEPOINTS.getOrDefault(o, o.toString());
     }
     if (o instanceof Exception) {
       return ((Exception) o).getMessage();
