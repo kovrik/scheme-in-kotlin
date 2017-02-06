@@ -3,7 +3,7 @@ package core.procedures.system;
 import core.procedures.AFn;
 import core.scm.FnArgs;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(maxArgs = 1, restArgsType = {Long.class})
 public final class Exit extends AFn {

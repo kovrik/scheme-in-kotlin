@@ -10,7 +10,7 @@ import core.writer.Writer;
 
 import java.io.IOException;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
 public final class Display extends AFn {

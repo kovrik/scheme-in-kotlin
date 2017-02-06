@@ -5,7 +5,7 @@ import core.scm.SCMMutableVector;
 import org.junit.Test;
 
 import static core.scm.SCMCons.list;
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;

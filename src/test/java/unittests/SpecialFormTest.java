@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static core.scm.SCMCons.*;
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static java.lang.Boolean.TRUE;

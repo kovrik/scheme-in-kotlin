@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMBoolean;
-import core.scm.SCMUnspecified;
+import core.scm.SCMConstant;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public enum Cond implements ISpecialForm {
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }
-    return SCMUnspecified.UNSPECIFIED;
+    return SCMConstant.UNSPECIFIED;
   }
 
   @Override

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 public class Repl {
 

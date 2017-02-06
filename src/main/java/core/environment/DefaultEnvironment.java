@@ -30,7 +30,7 @@ import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.*;
 import core.procedures.vectors.*;
-import core.scm.SCMEof;
+import core.scm.SCMConstant;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.*;
 
@@ -338,7 +338,7 @@ public final class DefaultEnvironment extends Environment {
 
     /* Constants and special cases */
     put(SCMSymbol.of("pi"),  Math.PI);
-    put(SCMSymbol.of("eof"), SCMEof.EOF);
+    put(SCMSymbol.of("eof"), SCMConstant.EOF);
     put(SCMSymbol.of("call/cc"), new CallCC());
 
     /* Special Forms */

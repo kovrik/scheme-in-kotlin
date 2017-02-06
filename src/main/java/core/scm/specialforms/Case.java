@@ -8,7 +8,7 @@ import core.procedures.equivalence.Eqv;
 import java.util.List;
 import java.util.Optional;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 /* Syntax:
  * (case <key> <clause1> <clause2> ...)

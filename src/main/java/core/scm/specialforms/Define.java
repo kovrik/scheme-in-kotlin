@@ -6,11 +6,11 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.scm.SCMUnspecified;
+import core.scm.SCMConstant;
 
 import java.util.List;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 /* Syntax:
  * (define <variable> <expression>)
@@ -21,7 +21,7 @@ public enum Define implements ISpecialForm {
   DEFINE;
 
   @Override
-  public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMConstant eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }

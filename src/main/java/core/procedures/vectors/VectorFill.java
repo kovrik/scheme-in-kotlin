@@ -6,7 +6,7 @@ import core.scm.SCMMutableVector;
 
 import java.util.Arrays;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, Object.class})
 public final class VectorFill extends AFn {

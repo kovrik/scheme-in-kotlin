@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMMutableString;
-import core.scm.SCMUnspecified;
+import core.scm.SCMConstant;
 
 @FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {SCMMutableString.class, SCMClass.ExactNonNegativeInteger.class, Character.class})
 public final class StringSet extends AFn {
@@ -27,6 +27,6 @@ public final class StringSet extends AFn {
       throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), pos));
     }
     str.setCharAt(pos.intValue(), (Character) arg3);
-    return SCMUnspecified.UNSPECIFIED;
+    return SCMConstant.UNSPECIFIED;
   }
 }

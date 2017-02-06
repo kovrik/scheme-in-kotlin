@@ -4,11 +4,11 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
-import core.scm.SCMUnspecified;
+import core.scm.SCMConstant;
 
 import java.util.List;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 /* Syntax:
  * (set! <variable> <expression>)
@@ -17,7 +17,7 @@ public enum Set implements ISpecialForm {
   SET;
 
   @Override
-  public SCMUnspecified eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMConstant eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 3) {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", expression.size() - 1));
     }

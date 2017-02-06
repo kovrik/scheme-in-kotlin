@@ -5,7 +5,7 @@ import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {SCMClass.ExactNonNegativeInteger.class})
 public final class MakeVector extends AFn {

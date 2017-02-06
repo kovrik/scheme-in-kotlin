@@ -7,7 +7,7 @@ import core.scm.SCMCons;
 
 import java.util.List;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, Object.class})
 public final class SetCdr extends AFn {

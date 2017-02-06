@@ -25,7 +25,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_PORT = new SCMPredicate("port?", o -> (o instanceof ISCMPort));
   public static final SCMPredicate IS_INPUT_PORT = new SCMPredicate("input-port?", o -> (o instanceof SCMInputPort));
   public static final SCMPredicate IS_OUTPUT_PORT = new SCMPredicate("output-port?", o -> (o instanceof SCMOutputPort));
-  public static final SCMPredicate IS_EOF = new SCMPredicate("eof-object?", o -> (o instanceof SCMEof));
+  public static final SCMPredicate IS_EOF = new SCMPredicate("eof-object?", o -> (o instanceof SCMConstant));
   public static final SCMPredicate IS_NUMBER = new SCMPredicate("number?", o -> (o instanceof Number));
   public static final SCMPredicate IS_INTEGER = new SCMPredicate("integer?", NumberUtils::isInteger);
   public static final SCMPredicate IS_RATIONAL = new SCMPredicate("rational?", NumberUtils::isRational);

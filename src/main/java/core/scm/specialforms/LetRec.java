@@ -8,7 +8,7 @@ import core.scm.SCMThunk;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 /* Syntax:
  * (letrec <bindings> <body>)

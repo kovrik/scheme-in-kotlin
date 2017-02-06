@@ -2,7 +2,7 @@ package core.procedures.functional;
 
 import core.procedures.AFn;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 public final class Void extends AFn {
 

@@ -8,7 +8,7 @@ import core.scm.SCMThunk;
 
 import java.util.List;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 /* Syntax:
  * (if <test> <consequent> <alternate>)

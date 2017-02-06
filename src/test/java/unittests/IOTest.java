@@ -1,7 +1,7 @@
 package unittests;
 
 import core.Repl;
-import core.scm.SCMEof;
+import core.scm.SCMConstant;
 import core.scm.SCMInputPort;
 import core.scm.SCMOutputPort;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class IOTest extends AbstractTest {
 
   @Test
   public void testEofObject() {
-    assertEquals(SCMEof.EOF, eval("eof", env));
+    assertEquals(SCMConstant.EOF, eval("eof", env));
     assertEquals(TRUE, eval("(eof-object? eof)", env));
     assertEquals(FALSE, eval("(eof-object? 0)", env));
     assertEquals(FALSE, eval("(eof-object? \"test\")", env));

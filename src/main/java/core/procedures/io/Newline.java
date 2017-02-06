@@ -8,7 +8,7 @@ import core.scm.SCMOutputPort;
 
 import java.io.IOException;
 
-import static core.scm.SCMUnspecified.UNSPECIFIED;
+import static core.scm.SCMConstant.UNSPECIFIED;
 
 @FnArgs(maxArgs = 1, restArgsType = SCMOutputPort.class)
 public final class Newline extends AFn {
