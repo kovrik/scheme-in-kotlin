@@ -143,11 +143,8 @@ public class NumberUtils {
       /* Assume that we have a complex number and try to parse it */
       int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
       String r = number.substring(0, p);
-      Object re;
-      if (r.isEmpty()) {
-        /* If real part is empty: +1i => 0+1i */
-        re = 0L;
-      } else {
+      Object re = 0L;
+      if (!r.isEmpty()) {
         re = preProcessNumber(r, exactness, radix);
       }
       if (!(re instanceof Number)) {
@@ -175,18 +172,16 @@ public class NumberUtils {
 
     /* Exponent mark */
     String exponent = null;
+    Pattern exponentPattern = EXPONENT_PATTERN;
+    String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
     if (radix == 16) {
-      if (EXPONENT16_PATTERN.matcher(number).matches()) {
-        String[] split = number.split(EXPONENT16_MARKS_PATTERN);
-        n = split[0];
-        exponent = split[1];
-      }
-    } else {
-      if (EXPONENT_PATTERN.matcher(number).matches()) {
-        String[] split = number.split(EXPONENT_MARKS_PATTERN);
-        n = split[0];
-        exponent = split[1];
-      }
+      exponentPattern = EXPONENT16_PATTERN;
+      exponentMarksPattern = EXPONENT16_MARKS_PATTERN;
+    }
+    if (exponentPattern.matcher(number).matches()) {
+      String[] split = number.split(exponentMarksPattern);
+      n = split[0];
+      exponent = split[1];
     }
     Long exp = null;
     if (exponent != null) {
@@ -270,19 +265,23 @@ public class NumberUtils {
     Number result;
     int dot = number.indexOf('.');
     if (useBigNum) {
+      /* Remove dot */
+      number = number.replace(".", "");
+      BigDecimal bigDecimal;
+      /* Process radix */
+      if (r == 10) {
+        bigDecimal = new BigDecimal(number);
+      } else {
+        bigDecimal = new BigDecimal(new BigInteger(number, r));
+      }
+      /* Process radix for a number with decimal point */
       if (dot > -1) {
-        /* Remove dot */
-        number = number.replace(".", "");
-        BigInteger bigInteger = new BigInteger(number, r);
-        BigDecimal bigDecimal = new BigDecimal(bigInteger)
-          .divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
+        bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
         if (bigDecimal.stripTrailingZeros().scale() == 0) {
           bigDecimal = bigDecimal.setScale(1, NumberUtils.ROUNDING_MODE);
         }
-        result = bigDecimal;
-      } else {
-        result = new BigDecimal(new BigInteger(number, r));
       }
+      result = bigDecimal;
     } else {
       if (dot > -1) {
         if (r == 10) {
@@ -596,7 +595,7 @@ public class NumberUtils {
     /* Same checks are performed in longValueExact() method,
      * but we don't want exception to be thrown, just return the number */
     int d = number.precision() - number.scale();
-    if (d > 19 || d <= 0) {
+    if (d <= 0 || d > 19) {
       return number;
     }
     if (NumberUtils.isInteger(number)) {
