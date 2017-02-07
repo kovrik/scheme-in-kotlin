@@ -67,7 +67,7 @@ public class NumberUtils {
 
   private static final Map<Integer, BigDecimal> BIG_DECIMAL_RADICES = new HashMap<>();
   static {
-    IntStream.range(2, 17).forEach(r -> BIG_DECIMAL_RADICES.put(r, new BigDecimal(r)));
+    IntStream.rangeClosed(2, 16).forEach(r -> BIG_DECIMAL_RADICES.put(r, new BigDecimal(r)));
   }
 
   public static int getRadixByChar(char radixChar) {
