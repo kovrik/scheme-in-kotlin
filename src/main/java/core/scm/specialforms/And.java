@@ -6,6 +6,8 @@ import core.scm.SCMBoolean;
 import core.scm.SCMThunk;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 /* Syntax:
  * (and <test1> ...)
@@ -15,17 +17,18 @@ public enum And implements ISpecialForm {
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
-    Object result = Boolean.TRUE;
-    if (expression.size() > 1) {
-      for (int i = 1; i < expression.size() - 1; i++) {
-        result = evaluator.eval(expression.get(i), env);
-        if (!SCMBoolean.toBoolean(result)) {
-          return result;
-        }
-      }
-      result = new SCMThunk(expression.get(expression.size() - 1), env);
+    if (expression.size() == 1) {
+      return Boolean.TRUE;
     }
-    return result;
+    Optional<Object> result = IntStream.range(1, expression.size() - 1)
+                                        // evaluate each test (but last)
+                                       .mapToObj(i -> evaluator.eval(expression.get(i), env))
+                                        // find all failed tests
+                                       .filter(r -> !SCMBoolean.toBoolean(r))
+                                        // get first (if present)
+                                       .findFirst();
+    // return failed test (#f) or (if none failed) evaluate the last test
+    return result.orElse(new SCMThunk(expression.get(expression.size() - 1), env));
   }
 
   @Override

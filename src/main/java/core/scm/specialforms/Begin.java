@@ -19,6 +19,7 @@ public enum Begin implements ISpecialForm {
     if (expression.size() == 0) {
       return SCMConstant.UNSPECIFIED;
     }
+    // FIXME
     if (expression.size() == 1 && BEGIN == (expression.get(0))) {
       return SCMConstant.UNSPECIFIED;
     }
