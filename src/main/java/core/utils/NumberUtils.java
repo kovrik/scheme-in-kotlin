@@ -164,14 +164,14 @@ public class NumberUtils {
     }
 
     /* Exponent mark */
-    String n = number;
-    String exponent = null;
     Pattern exponentPattern = EXPONENT_PATTERN;
     String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
     if (radix == 16) {
       exponentPattern = EXPONENT16_PATTERN;
       exponentMarksPattern = EXPONENT16_MARKS_PATTERN;
     }
+    String n = number;
+    String exponent = null;
     if (exponentPattern.matcher(number).matches()) {
       String[] split = number.split(exponentMarksPattern);
       n = split[0];
@@ -223,19 +223,16 @@ public class NumberUtils {
       }
     }
 
-    /* Default exactness for various number types */
+    /* Check if it is a rational number and if it is valid */
     boolean isRational = (n.indexOf('/') > -1);
+    if (isRational && (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
+      return SCMSymbol.of(number);
+    }
+
+    /* Rational and Integral numbers are exact by default */
     boolean isIntegral = (n.indexOf('.') < 0);
     if (exactness == null) {
       exactness = isRational || isIntegral ? 'e' : 'i';
-    }
-
-    /* Check if it is a rational number and it is valid */
-    if (n.indexOf('/') > -1) {
-      isRational = true;
-      if (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1) {
-        return SCMSymbol.of(number);
-      }
     }
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
@@ -341,10 +338,7 @@ public class NumberUtils {
     SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
     if (exactness == 'i') {
       Number result = ToInexact.toInexact(number);
-      if (exp != null) {
-        result = Multiplication.apply(result, Expt.expt(r, exp));
-      }
-      return result;
+      return (exp != null) ? (Multiplication.apply(result, Expt.expt(r, exp))) : result;
     }
     return number;
   }
@@ -569,10 +563,7 @@ public class NumberUtils {
    * See https://docs.racket-lang.org/guide/numbers.html
    */
   public static Number inexactnessTaint(Number result, Number other) {
-    if (isInexact(other) && (isExact(result))) {
-      return ToInexact.toInexact(result);
-    }
-    return result;
+    return isInexact(other) && isExact(result) ? ToInexact.toInexact(result) : result;
   }
 
   /**
@@ -593,8 +584,7 @@ public class NumberUtils {
         }
         return smaller;
       } catch (ArithmeticException e) {
-        /* Down-casting has failed, return the original number */
-        return number;
+        /* Down-casting has failed, ignore and return the original number */
       }
     }
     return number;
