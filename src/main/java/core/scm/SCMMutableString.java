@@ -37,14 +37,6 @@ public class SCMMutableString implements ISCMClass {
     this.string.setCharAt(index, ch);
   }
 
-  public String substring(int start) {
-    return this.string.substring(start);
-  }
-
-  public String substring(int start, int end) {
-    return this.string.substring(start, end);
-  }
-
   public void setLength(int n) {
     string.setLength(n);
   }

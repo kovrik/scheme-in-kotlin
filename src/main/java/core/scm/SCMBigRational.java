@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO Create SCMRational class for small rational numbers
@@ -15,6 +17,12 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
 
   public static final SCMBigRational ZERO = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
   public static final SCMBigRational ONE  = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
+  private static final Map<String, BigInteger> CONSTANTS = new HashMap<>();
+  static {
+    CONSTANTS.put("0",  BigInteger.ZERO);
+    CONSTANTS.put("1",  BigInteger.ONE);
+    CONSTANTS.put("10", BigInteger.TEN);
+  }
 
   private BigInteger numerator;
   private BigInteger denominator;
@@ -65,17 +73,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   private static BigInteger parseBigInteger(String number) {
-    BigInteger result;
-    if ("1".equals(number)) {
-      result = BigInteger.ONE;
-    } else if ("10".equals(number)) {
-      result = BigInteger.TEN;
-    } else if ("0".equals(number)) {
-      result = BigInteger.ZERO;
-    } else {
-      result = new BigInteger(number);
-    }
-    return result;
+    return CONSTANTS.getOrDefault(number, new BigInteger(number));
   }
 
   public BigInteger getNumerator() {
@@ -121,55 +119,28 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public SCMBigRational ceiling() {
-    if (isPositive()) {
-      return new SCMBigRational(
-        new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_UP).toBigInteger(),
-        BigInteger.ONE);
-    } else {
-      return new SCMBigRational(
-        new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_DOWN).toBigInteger(),
-        BigInteger.ONE);
-    }
+    int round = isPositive() ? BigDecimal.ROUND_UP : BigDecimal.ROUND_DOWN;
+    return new SCMBigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
   public SCMBigRational floor() {
-    if (isPositive()) {
-      return new SCMBigRational(
-        new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_DOWN).toBigInteger(),
-        BigInteger.ONE);
-    } else {
-      return new SCMBigRational(
-        new BigDecimal(numerator).divide(new BigDecimal(denominator), BigDecimal.ROUND_UP).toBigInteger(),
-        BigInteger.ONE);
-    }
+    int round = isPositive() ? BigDecimal.ROUND_DOWN : BigDecimal.ROUND_UP;
+    return new SCMBigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
   public SCMBigRational round() {
     BigDecimal number = toBigDecimal();
-    BigDecimal round;
-    if (number.scale() == 0) {
-      round = number.round(MathContext.UNLIMITED);
-    } else {
-      round = number.round(NumberUtils.DEFAULT_CONTEXT);
-    }
+    BigDecimal round = (number.scale() == 0) ? number.round(MathContext.UNLIMITED) : number.round(NumberUtils.DEFAULT_CONTEXT);
     return new SCMBigRational(round.toBigInteger(), BigInteger.ONE);
   }
 
   public SCMBigRational truncate() {
-    if (isNegative()) {
-      return ceiling();
-    } else {
-      return floor();
-    }
+    return isNegative() ? ceiling() : floor();
   }
 
   @Override
   public String toString() {
-    if (denominator.equals(BigInteger.ONE)) {
-      return numerator.toString();
-    } else {
-      return numerator + "/" + denominator;
-    }
+    return (denominator.equals(BigInteger.ONE)) ? numerator.toString() : numerator + "/" + denominator;
   }
 
   @Override
@@ -216,50 +187,38 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     return this.multiply(other.reciprocal());
   }
 
-  @Override
-  public int intValue() {
-    int SCALE = 32;
+  private BigDecimal quotient() {
     BigDecimal numerator   = new BigDecimal(this.numerator);
     BigDecimal denominator = new BigDecimal(this.denominator);
-    BigDecimal quotient    = numerator.divide(denominator, SCALE, RoundingMode.HALF_EVEN);
-    return quotient.intValue();
+    return numerator.divide(denominator, 32, RoundingMode.HALF_EVEN);
+  }
+
+  @Override
+  public int intValue() {
+    return quotient().intValue();
   }
 
   @Override
   public long longValue() {
-    int SCALE = 32;
-    BigDecimal numerator   = new BigDecimal(this.numerator);
-    BigDecimal denominator = new BigDecimal(this.denominator);
-    BigDecimal quotient    = numerator.divide(denominator, SCALE, RoundingMode.HALF_EVEN);
-    return quotient.longValue();
+    return quotient().longValue();
   }
 
   @Override
   public float floatValue() {
-    int SCALE = 32;
-    BigDecimal numerator   = new BigDecimal(this.numerator);
-    BigDecimal denominator = new BigDecimal(this.denominator);
-    BigDecimal quotient    = numerator.divide(denominator, SCALE, RoundingMode.HALF_EVEN);
-    return quotient.floatValue();
+    return quotient().floatValue();
   }
 
   @Override
   public double doubleValue() {
-    int SCALE = 32;
-    BigDecimal numerator   = new BigDecimal(this.numerator);
-    BigDecimal denominator = new BigDecimal(this.denominator);
-    BigDecimal quotient    = numerator.divide(denominator, SCALE, RoundingMode.HALF_EVEN);
-    return quotient.doubleValue();
+    return quotient().doubleValue();
   }
 
   public Number doubleOrBigDecimalValue() {
-    boolean wasZero = isZero();
     double doubleValue = doubleValue();
-    if (!wasZero && Double.compare(doubleValue, 0d) == 0) {
+    if (!isZero() && Double.compare(doubleValue, 0d) == 0) {
       return toBigDecimal();
-    } else {
-      return doubleValue;
     }
+    return doubleValue;
   }
 
   public int signum() {

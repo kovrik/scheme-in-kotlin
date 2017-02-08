@@ -47,14 +47,24 @@ public class SCMBigComplex extends Number implements ISCMClass {
   }
 
   /**
+   * Return real part
+   */
+  public BigDecimal getRe() {
+    return re;
+  }
+
+  /**
+   * Return imaginary part
+   */
+  public BigDecimal getIm() {
+    return im;
+  }
+
+  /**
    * Convert Number to SCMBigComplex
    */
   public static SCMBigComplex of(Number number) {
-    if (number instanceof SCMBigComplex) {
-      return (SCMBigComplex) number;
-    } else {
-      return new SCMBigComplex(number);
-    }
+    return (number instanceof SCMBigComplex) ? (SCMBigComplex)number : new SCMBigComplex(number);
   }
 
   /**
@@ -64,8 +74,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
     if (other instanceof SCMBigComplex) {
       return new SCMBigComplex(re.add(((SCMBigComplex) other).getRe()), im.add(((SCMBigComplex) other).getIm()));
     } else {
-      BigDecimal bd = NumberUtils.toBigDecimal(other);
-      return new SCMBigComplex(re.add(bd), im);
+      return new SCMBigComplex(re.add(NumberUtils.toBigDecimal(other)), im);
     }
   }
 
@@ -86,12 +95,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
    * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
    **/
   public SCMBigComplex multiply(Number other) {
-    SCMBigComplex o;
-    if (other instanceof SCMBigComplex) {
-      o = (SCMBigComplex) other;
-    } else {
-      o = new SCMBigComplex(other);
-    }
+    SCMBigComplex o = of(other);
     BigDecimal a = this.re;
     BigDecimal b = this.im;
     BigDecimal c = o.re;
@@ -126,12 +130,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
    * c + di    c*c + d*d     c*c + d*d
    */
   public SCMBigComplex divide(Number other) {
-    SCMBigComplex o;
-    if (other instanceof SCMBigComplex) {
-      o = (SCMBigComplex) other;
-    } else {
-      o = new SCMBigComplex(other);
-    }
+    SCMBigComplex o = of(other);
     BigDecimal a = this.re;
     BigDecimal b = this.im;
     BigDecimal c = o.re;
@@ -229,28 +228,11 @@ public class SCMBigComplex extends Number implements ISCMClass {
         throw new ArithmeticException("Undefined for 0+0i");
       }
     } else if (re.compareTo(BigDecimal.ZERO) < 0) {
-      if (im.signum() >= 0) {
-        return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT)) + Math.PI;
-      } else {
-        return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT)) - Math.PI;
-      }
+      double atan = Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
+      return (im.signum() >= 0) ? atan + Math.PI : atan - Math.PI;
     } else {
       return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
     }
-  }
-
-  /**
-   * Return real part
-   */
-  public BigDecimal getRe() {
-    return re;
-  }
-
-  /**
-   * Return imaginary part
-   */
-  public BigDecimal getIm() {
-    return im;
   }
 
   @Override
@@ -303,10 +285,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
 
   @Override
   public String toString() {
-    if (im.compareTo(BigDecimal.ZERO) <  0) {
-      return re + "-" + (im.negate()) + "i";
-    } else {
-      return re + "+" + im + "i";
-    }
+    return (im.compareTo(BigDecimal.ZERO) <  0) ? (re + "-" + (im.negate()) + "i") : (re + "+" + im + "i");
   }
 }

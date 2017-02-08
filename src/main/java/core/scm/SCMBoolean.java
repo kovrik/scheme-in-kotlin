@@ -8,9 +8,6 @@ public class SCMBoolean {
    * Returns TRUE otherwise.
    */
   public static Boolean toBoolean(Object value) {
-    if (value instanceof Boolean) {
-      return (Boolean)value;
-    }
-    return value != null;
+    return (value instanceof Boolean) ? (Boolean)value : value != null;
   }
 }

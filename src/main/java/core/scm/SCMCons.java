@@ -67,11 +67,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   @Override
   public Object cdr() {
-    if (isList) {
-      return subList(1, size());
-    } else {
-      return getLast();
-    }
+    return isList ? subList(1, size()) : getLast();
   }
 
   public void setCdr(Object cdr) {
@@ -108,11 +104,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   @Override
   public SCMClass getSCMClass() {
-    if (isList) {
-      return SCMClass.LIST;
-    } else {
-      return SCMClass.PAIR;
-    }
+    return isList ? SCMClass.LIST : SCMClass.PAIR;
   }
 
   @Override
@@ -124,10 +116,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (car == null && cdr == null) {
       return NIL;
     }
-    if (cdr == null) {
-      return new SCMCons(car, NIL);
-    }
-    return new SCMCons<>(car, cdr);
+    return (cdr == null) ? new SCMCons(car, NIL) : new SCMCons<>(car, cdr);
   }
 
   public static <E> SCMCons<E> list() {
@@ -137,10 +126,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   public static <E> SCMCons<E> list(E... elements) {
-    if (elements == null || elements.length == 0) {
-      return NIL;
-    }
-    return list(Arrays.asList(elements));
+    return (elements == null || elements.length == 0) ? NIL : list(Arrays.asList(elements));
   }
 
   public static <E> SCMCons<E> list(List<E> list) {
@@ -173,7 +159,6 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   /* Use this method to print all lists */
   public static String toString(List list) {
-
     if (list.isEmpty()) {
       return "()";
     }
