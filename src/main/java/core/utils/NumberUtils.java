@@ -135,28 +135,10 @@ public class NumberUtils {
     if (special != null) {
       return special;
     }
-    /* Check if that is a complex number */
-    if (number.charAt(number.length() - 1) ==  'i' || number.charAt(number.length() - 1) ==  'I') {
-      /* Assume that we have a complex number and try to parse it */
-      int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
-      String r = number.substring(0, p);
-      Object re = 0L;
-      if (!r.isEmpty()) {
-        re = preProcessNumber(r, exactness, radix);
-      }
-      if (!(re instanceof Number)) {
-        return SCMSymbol.of(number);
-      }
-
-      String i = number.substring(p, number.length() - 1);
-      if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
-        i += "1";
-      }
-      Object im = preProcessNumber(i, exactness, radix);
-      if (!(im instanceof Number)) {
-        return SCMSymbol.of(number);
-      }
-      return (isZero(re) && isZero(im)) ? 0L : new SCMBigComplex((Number)re, (Number)im);
+    /* Check if that is a complex number (ends with `i` or `I`) */
+    char last = number.charAt(number.length() - 1);
+    if (last == 'i' || last == 'I') {
+      return processComplexNumber(number, exactness, radix);
     }
 
     if (number.indexOf('.') != number.lastIndexOf('.')) {
@@ -164,6 +146,7 @@ public class NumberUtils {
     }
 
     /* Exponent mark */
+    Long exp = null;
     Pattern exponentPattern = EXPONENT_PATTERN;
     String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
     if (radix == 16) {
@@ -171,25 +154,20 @@ public class NumberUtils {
       exponentMarksPattern = EXPONENT16_MARKS_PATTERN;
     }
     String n = number;
-    String exponent = null;
     if (exponentPattern.matcher(number).matches()) {
       String[] split = number.split(exponentMarksPattern);
       n = split[0];
-      exponent = split[1];
-    }
-    Long exp = null;
-    if (exponent != null) {
-      Number e;
+      String exponent = split[1];
       try {
-        e = processNumber(exponent, radix, 'e', false, null);
+        Number e = processNumber(exponent, radix, 'e', false, null);
+        if (!(e instanceof Long)) {
+          /* Invalid exponent */
+          return SCMSymbol.of(number);
+        }
+        exp = (Long) e;
       } catch (NumberFormatException ex) {
         throw new IllegalSyntaxException("read: bad exponent: " + number);
       }
-      if (!(e instanceof Long)) {
-        /* Invalid exponent */
-        return SCMSymbol.of(number);
-      }
-      exp = (Long)e;
       exactness = (exactness == null) ? 'i' : exactness;
     }
 
@@ -247,6 +225,29 @@ public class NumberUtils {
     return processNumber(n, radix, exactness, useBigNum, exp);
   }
 
+  private static Object processComplexNumber(String number, Character exactness, int radix) {
+    /* Assume that we have a complex number and try to parse it */
+    int p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'));
+    String r = number.substring(0, p);
+    Object re = 0L;
+    if (!r.isEmpty()) {
+      re = preProcessNumber(r, exactness, radix);
+    }
+    if (!(re instanceof Number)) {
+      return SCMSymbol.of(number);
+    }
+
+    String i = number.substring(p, number.length() - 1);
+    if (i.length() == 1 && (i.charAt(0) == '+' || i.charAt(0) == '-')) {
+      i += "1";
+    }
+    Object im = preProcessNumber(i, exactness, radix);
+    if (!(im instanceof Number)) {
+      return SCMSymbol.of(number);
+    }
+    return (isZero(re) && isZero(im)) ? 0L : new SCMBigComplex((Number)re, (Number)im);
+  }
+
   /* Parse string into a number */
   private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum, Long exp) {
     Number result;
@@ -254,13 +255,8 @@ public class NumberUtils {
     if (useBigNum) {
       /* Remove dot */
       number = number.replace(".", "");
-      BigDecimal bigDecimal;
       /* Process radix */
-      if (r == 10) {
-        bigDecimal = new BigDecimal(number);
-      } else {
-        bigDecimal = new BigDecimal(new BigInteger(number, r));
-      }
+      BigDecimal bigDecimal = (r == 10) ? new BigDecimal(number) : new BigDecimal(new BigInteger(number, r));
       /* Process radix for a number with decimal point */
       if (dot > -1) {
         bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
