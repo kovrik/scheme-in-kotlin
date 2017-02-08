@@ -76,8 +76,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
     if (other instanceof SCMBigComplex) {
       return new SCMBigComplex(re.subtract(((SCMBigComplex) other).getRe()), im.subtract(((SCMBigComplex) other).getIm()));
     } else {
-      BigDecimal bd = NumberUtils.toBigDecimal(other);
-      return new SCMBigComplex(re.subtract(bd), im);
+      return new SCMBigComplex(re.subtract(NumberUtils.toBigDecimal(other)), im);
     }
   }
 

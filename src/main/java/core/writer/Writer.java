@@ -69,12 +69,9 @@ public class Writer implements IWriter {
   }
 
   private static String writeClass(Class clazz) {
-    if (ISCMClass.class.isAssignableFrom(clazz)) {
-      return SCMClass.valueOf(clazz).getName();
-    } else {
-      if (clazz.equals(Long.class)) {
-        return "Integer";
-      }
+    SCMClass scmClass = SCMClass.valueOf(clazz);
+    if (scmClass != null) {
+      return scmClass.getName();
     }
     return clazz.getSimpleName();
   }

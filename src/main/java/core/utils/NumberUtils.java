@@ -124,10 +124,7 @@ public class NumberUtils {
 
   /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
   public static MathContext getMathContext(BigDecimal first, BigDecimal second) {
-    if (first.scale() > 0 || second.scale() > 0) {
-      return MathContext.DECIMAL64;
-    }
-    return MathContext.UNLIMITED;
+    return (first.scale() > 0 || second.scale() > 0) ? MathContext.DECIMAL64 : MathContext.UNLIMITED;
   }
 
   // FIXME Simplify and cleanup!
@@ -159,18 +156,15 @@ public class NumberUtils {
       if (!(im instanceof Number)) {
         return SCMSymbol.of(number);
       }
-      if (isZero(re) && isZero(im)) {
-        return 0L;
-      }
-      return new SCMBigComplex((Number)re, (Number)im);
+      return (isZero(re) && isZero(im)) ? 0L : new SCMBigComplex((Number)re, (Number)im);
     }
 
-    String n = number;
     if (number.indexOf('.') != number.lastIndexOf('.')) {
-      return SCMSymbol.of(n);
+      return SCMSymbol.of(number);
     }
 
     /* Exponent mark */
+    String n = number;
     String exponent = null;
     Pattern exponentPattern = EXPONENT_PATTERN;
     String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
@@ -196,9 +190,7 @@ public class NumberUtils {
         return SCMSymbol.of(number);
       }
       exp = (Long)e;
-      if (exactness == null) {
-        exactness = 'i';
-      }
+      exactness = (exactness == null) ? 'i' : exactness;
     }
 
     /* Validate sign */
@@ -225,9 +217,7 @@ public class NumberUtils {
     if (n.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(n).matches()) {
         n = n.replaceAll("#", "0");
-        if (exactness == null) {
-          exactness = 'i';
-        }
+        exactness = (exactness == null) ? 'i' : exactness;
       } else {
         return SCMSymbol.of(number);
       }
@@ -449,28 +439,25 @@ public class NumberUtils {
       return false;
     }
     if (o instanceof Long) {
-      return ((Long)o) == 0;
+      return Long.signum((Long)o) == 0;
     }
     if (o instanceof Double) {
-      return Double.doubleToRawLongBits((Double)o) == 0;
+      return Math.signum((Double)o) == 0.0;
     }
     if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).isZero();
-    }
-    if (o instanceof SCMBigComplex) {
-      return ((SCMBigComplex)o).isZero();
+      return ((SCMBigRational)o).signum() == 0;
     }
     if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) == 0;
+      return ((BigDecimal)o).signum() == 0;
     }
     if (o instanceof Integer) {
-      return ((Integer)o) == 0;
+      return Integer.signum((Integer)o) == 0;
     }
     if (o instanceof Float) {
-      return Float.floatToRawIntBits((Float)o) == 0;
+      return Math.signum((Float)o) == 0;
     }
     if (o instanceof BigInteger) {
-      return ((BigInteger)o).compareTo(BigInteger.ZERO) == 0;
+      return ((BigInteger)o).signum() == 0;
     }
     return false;
   }
@@ -508,25 +495,25 @@ public class NumberUtils {
       return false;
     }
     if (o instanceof Long) {
-      return ((Long)o) > 0;
+      return Long.signum((Long)o) == 1;
     }
     if (o instanceof Double) {
-      return Double.doubleToRawLongBits((Double)o) > 0;
+      return Math.signum((Double)o) == 1.0;
     }
     if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).isPositive();
+      return ((SCMBigRational)o).signum() == 1;
     }
     if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) > 0;
+      return ((BigDecimal)o).signum() == 1;
     }
     if (o instanceof Integer) {
-      return ((Integer)o) > 0;
+      return Integer.signum((Integer)o) == 1;
     }
     if (o instanceof Float) {
-      return Float.floatToRawIntBits((Float)o) > 0;
+      return Math.signum((Float)o) == 1;
     }
     if (o instanceof BigInteger) {
-      return ((BigInteger)o).compareTo(BigInteger.ZERO) > 0;
+      return ((BigInteger)o).signum() == 1;
     }
     return false;
   }
@@ -536,25 +523,25 @@ public class NumberUtils {
       return false;
     }
     if (o instanceof Long) {
-      return ((Long)o) < 0;
+      return Long.signum((Long)o) == -1;
     }
     if (o instanceof Double) {
-      return Double.doubleToRawLongBits((Double)o) < 0;
+      return Math.signum((Double)o) == -1.0;
     }
     if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).isNegative();
+      return ((SCMBigRational)o).signum() == -1;
     }
     if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).compareTo(BigDecimal.ZERO) < 0;
+      return ((BigDecimal)o).signum() == -1;
     }
     if (o instanceof Integer) {
-      return ((Integer)o) < 0;
+      return Integer.signum((Integer)o) == -1;
     }
     if (o instanceof Float) {
-      return Float.floatToRawIntBits((Float)o) < 0;
+      return Math.signum((Float)o) == -1;
     }
     if (o instanceof BigInteger) {
-      return ((BigInteger)o).compareTo(BigInteger.ZERO) < 0;
+      return ((BigInteger)o).signum() == -1;
     }
     return false;
   }

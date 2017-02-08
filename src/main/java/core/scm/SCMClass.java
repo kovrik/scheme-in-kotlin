@@ -53,7 +53,7 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMBigRational.class,        RATIONAL);
     SCM_CLASSES.put(SCMBigComplex.class,         COMPLEX);
     SCM_CLASSES.put(Character.class,             CHARACTER);
-    SCM_CLASSES.put(String.class,                IMMUTABLE_STRING);
+    SCM_CLASSES.put(String.class,                STRING);
     SCM_CLASSES.put(SCMImmutableString.class,    IMMUTABLE_STRING);
     SCM_CLASSES.put(StringBuilder.class,         MUTABLE_STRING);
     SCM_CLASSES.put(SCMMutableString.class,      MUTABLE_STRING);
@@ -177,6 +177,9 @@ public enum SCMClass implements ISCMClass {
     if (object == null) {
       return SCMClass.NIL;
     }
+    if (object instanceof String) {
+      return SCMClass.IMMUTABLE_STRING;
+    }
     /* All custom SCM Classes should implement ISCMClass interface */
     if (object instanceof ISCMClass) {
       return ((ISCMClass)object).getSCMClass();
@@ -192,7 +195,7 @@ public enum SCMClass implements ISCMClass {
       return SCMClass.PAIR;
     }
     /* Not a special case, just map Java class to SCMClass */
-    return valueOf(object.getClass());
+    return SCM_CLASSES.get(object.getClass());
   }
 
   public static SCMClass classOfNumber(Number number) {

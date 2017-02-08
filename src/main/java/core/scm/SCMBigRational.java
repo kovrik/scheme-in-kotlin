@@ -101,7 +101,7 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public boolean isZero() {
-    return compareTo(ZERO) == 0;
+    return signum() == 0;
   }
 
   public boolean isOne() {
@@ -109,11 +109,11 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
   }
 
   public boolean isPositive() {
-    return compareTo(ZERO) > 0;
+    return signum() == 1;
   }
 
   public boolean isNegative() {
-    return compareTo(ZERO) < 0;
+    return signum() == -1;
   }
 
   public SCMBigRational abs() {
@@ -260,6 +260,10 @@ public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMB
     } else {
       return doubleValue;
     }
+  }
+
+  public int signum() {
+    return numerator.signum() * denominator.signum();
   }
 
   @Override
