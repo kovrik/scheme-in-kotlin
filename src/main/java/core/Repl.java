@@ -31,10 +31,7 @@ public class Repl {
   private static final Environment defaultEnvironment = new DefaultEnvironment();
 
   private static SCMInputPort currentInputPort = new SCMInputPort(new BufferedInputStream(System.in));
-  private static final Object INPUT_PORT_LOCK = new Object();
-
   private static SCMOutputPort currentOutputPort = new SCMOutputPort(System.out);
-  private static final Object OUTPUT_PORT_LOCK = new Object();
 
   private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader(currentInputPort.getInputStream());
@@ -88,26 +85,18 @@ public class Repl {
   }
 
   public static SCMInputPort getCurrentInputPort() {
-    synchronized (INPUT_PORT_LOCK) {
-      return currentInputPort;
-    }
+    return currentInputPort;
   }
 
   public static void setCurrentInputPort(SCMInputPort inputPort) {
-    synchronized (INPUT_PORT_LOCK) {
-      currentInputPort = inputPort;
-    }
+    currentInputPort = inputPort;
   }
 
   public static SCMOutputPort getCurrentOutputPort() {
-    synchronized (OUTPUT_PORT_LOCK) {
-      return currentOutputPort;
-    }
+    return currentOutputPort;
   }
 
   public static void setCurrentOutputPort(SCMOutputPort outputPort) {
-    synchronized (OUTPUT_PORT_LOCK) {
-      currentOutputPort = outputPort;
-    }
+    currentOutputPort = outputPort;
   }
 }
