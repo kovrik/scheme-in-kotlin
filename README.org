@@ -1,4 +1,4 @@
-*Scheme in Java*
+*Scheme R5RS Interpreter in Java*
 
 *Disclaimer*
 
@@ -6,7 +6,7 @@ This is a hobby project and work is still in progress.
 
 *Description*
 
-This is my attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) in Java.
+This is my attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) interpreter in Java.
 The goal is to have +some fun+ Scheme implementation which is as close to R5RS as possible.
 
 On the other hand, this is a sandbox project where I'm trying different techniques and doing some experiments (for learning purposes mostly).
@@ -19,7 +19,7 @@ See TODO list for things already implementeted (and not yet).
 1. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
 2. Cons lists are not proper cons lists
 3. One-shot continuations only
-4. No macros
+4. No macros yet
 
 *Useful links*
 
