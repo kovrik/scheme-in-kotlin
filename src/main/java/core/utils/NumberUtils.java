@@ -585,4 +585,14 @@ public class NumberUtils {
     }
     return number;
   }
+
+  public static boolean isFinite(Number number) {
+    if (number instanceof Double) {
+      return Double.isFinite((Double) number);
+    }
+    if (number instanceof Float) {
+      return Float.isFinite((Float) number);
+    }
+    return true;
+  }
 }

@@ -6,6 +6,7 @@ import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -58,7 +59,7 @@ public final class Expt extends AFn {
     if (NumberUtils.isZero(base) && NumberUtils.isZero(exponent)) {
       return 1L;
     }
-    if (NumberUtils.isZero(base)) {
+    if (NumberUtils.isZero(base) && (NumberUtils.isFinite(exponent))) {
       if (base.equals(-0d)) {
         if (NumberUtils.isNegative(exponent)) {
           if (NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent)) {
@@ -87,10 +88,6 @@ public final class Expt extends AFn {
     }
     if (NumberUtils.isOne(exponent)) {
       return base;
-    }
-    /* Complex numbers */
-    if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
-      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
     /* Special cases for Real numbers */
     /*
@@ -133,9 +130,7 @@ public final class Expt extends AFn {
       }
     }
 
-    /*
-     * TODO:
-     * (expt z -inf.0) for positive z:
+    /* (expt z -inf.0) for positive z:
      *
      *   z is less than 1.0 — +inf.0
      *   z is greater than 1.0 — 0.0
@@ -145,6 +140,36 @@ public final class Expt extends AFn {
      *  z is less than 1.0 — 0.0
      *  z is greater than 1.0 — +inf.0
      */
+    if ((exponent instanceof Double) && Double.isInfinite((Double)exponent)) {
+      if (base instanceof SCMBigComplex) {
+        return Double.NaN;
+      }
+      if (NumberUtils.isZero(base)) {
+        if ((Double) exponent == Double.NEGATIVE_INFINITY) {
+          throw new ArithmeticException(String.format("%s: undefined for %s and %s", "expt", base, Writer.write(exponent)));
+        } else {
+          return 0L;
+        }
+      }
+      if ((Double) exponent == Double.NEGATIVE_INFINITY) {
+        if (NumericalComparison.LESS.apply(base, 1L)) {
+          return Double.POSITIVE_INFINITY;
+        } else if (NumericalComparison.GREATER.apply(base, 1L)) {
+          return 0d;
+        }
+      } else if ((Double) exponent == Double.POSITIVE_INFINITY) {
+        if (NumericalComparison.LESS.apply(base, 1L)) {
+          return 0d;
+        } else if (NumericalComparison.GREATER.apply(base, 1L)) {
+          return Double.POSITIVE_INFINITY;
+        }
+      }
+    }
+
+    /* Complex numbers */
+    if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
+      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
+    }
 
     // FIXME This code is wrong and probably doesn't work in many cases BEGIN ---------------------------------------------------
     if ((base instanceof Long) && (exponent instanceof Long)) {
