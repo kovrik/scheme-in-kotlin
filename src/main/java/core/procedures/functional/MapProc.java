@@ -10,6 +10,7 @@ import core.scm.specialforms.Quote;
 import core.scm.SCMThunk;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
@@ -25,15 +26,10 @@ public final class MapProc extends AFn {
   @Override
   public SCMThunk apply(Object... args) {
     /* Check that all lists are of the same size */
-    int size = -1;
-    for (int i = 1; i < args.length; i++) {
-      List l = (List)args[i];
-      if (size == -1) {
-        size = l.size();
-      }
-      if (l.size() != size) {
-        throw new IllegalArgumentException(String.format("%s: all lists must be of the same size", getName()));
-      }
+    final int size = ((List)args[1]).size();
+    boolean listsHaveSameSize = Arrays.stream(args).skip(1).allMatch(o -> ((List) o).size() == size);
+    if (!listsHaveSameSize) {
+      throw new IllegalArgumentException(String.format("%s: all lists must be of the same size", getName()));
     }
 
     // TODO Very naive implementation. Re-implement and optimize
