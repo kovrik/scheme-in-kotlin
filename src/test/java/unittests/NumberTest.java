@@ -503,6 +503,19 @@ public class NumberTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Wrong number of arguments (actual: 1, expected: 2) passed to: expt", e.getMessage());
     }
+    assertEquals(1L, eval("(expt 0 0.0)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.0 -5)", env));
+    assertEquals(0d, eval("(expt 0.0 5)", env));
+    assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -0.0 -5)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt -0.0 -6)", env));
+    assertEquals(-0d, eval("(expt -0.0 5)", env));
+    assertEquals(0d, eval("(expt -0.0 6)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt +inf.0 2)", env));
+    assertEquals(0d, eval("(expt +inf.0 -2)", env));
+    assertEquals(0d, eval("(expt -inf.0 -2)", env));
+    assertEquals(-0d, eval("(expt -inf.0 -3)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt -inf.0 2)", env));
+    assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -inf.0 3)", env));
   }
 
   @Test

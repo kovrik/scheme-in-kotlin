@@ -1,6 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
+import core.procedures.predicates.SCMPredicate;
 import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
@@ -28,60 +29,54 @@ public final class Expt extends AFn {
   }
 
   /**
-   * TODO:
+   * TODO: Optimize Special Cases!
+   *
    * Special cases when w is a real number:
    * These special cases correspond to pow in C99 [C99], except when z is negative and w is a not an integer.
    * See: https://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._expt))
-   *
-   * (expt 0.0 w):
-   *
-   *  w is negative — +inf.0
-   *  w is positive — 0.0
-   *
-   * (expt -0.0 w):
-   *
-   *  w is negative:
-   *  w is an odd integer — -inf.0
-   *
-   *  w otherwise rational — +inf.0
-   *
-   *  w is positive:
-   *  w is an odd integer — -0.0
-   *
-   *  w otherwise rational — 0.0
-   *
-   * (expt z -inf.0) for positive z:
-   *
-   *   z is less than 1.0 — +inf.0
-   *   z is greater than 1.0 — 0.0
-   *
-   * (expt z +inf.0) for positive z:
-   *
-   *  z is less than 1.0 — 0.0
-   *  z is greater than 1.0 — +inf.0
-   *
-   * (expt -inf.0 w) for integer w:
-   *  w is negative:
-   *  w is odd  — -0.0
-   *  w is even —  0.0
-   *
-   *  w is positive:
-   *   w is odd  — -inf.0
-   *   w is even — +inf.0
-   *
-   * (expt +inf.0 w):
-   *  w is negative — 0.0
-   *  w is positive — +inf.0
    */
   public static Number expt(Number base, Number exponent) {
     /* Special cases */
+    /*
+     * (expt 0.0 w):
+     *
+     *  w is negative — +inf.0
+     *  w is positive — 0.0
+     *
+     * (expt -0.0 w):
+     *
+     *  w is negative:
+     *  w is an odd integer — -inf.0
+     *
+     *  w otherwise rational — +inf.0
+     *
+     *  w is positive:
+     *  w is an odd integer — -0.0
+     *
+     *  w otherwise rational — 0.0
+     */
+    if (NumberUtils.isZero(base) && NumberUtils.isZero(exponent)) {
+      return 1L;
+    }
     if (NumberUtils.isZero(base)) {
+      if (base.equals(-0d)) {
+        if (NumberUtils.isNegative(exponent)) {
+          if (NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent)) {
+            return Double.NEGATIVE_INFINITY;
+          }
+          return Double.POSITIVE_INFINITY;
+        } else {
+          if (NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent)) {
+            return -0d;
+          } else {
+            return 0d;
+          }
+        }
+      }
       if (NumberUtils.isNegative(exponent)) {
         return Double.POSITIVE_INFINITY;
-      } else if (NumberUtils.isPositive(exponent)) {
-        return NumberUtils.inexactnessTaint(base, exponent);
-      } else if (NumberUtils.isZero(exponent)) {
-        return 1L;
+      } else {
+        return NumberUtils.inexactnessTaint(0L, base);
       }
     }
     if (NumberUtils.isOne(base)) {
@@ -98,17 +93,38 @@ public final class Expt extends AFn {
       return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
     /* Special cases for Real numbers */
+    /*
+     * (expt -inf.0 w) for integer w:
+     *  w is negative:
+     *   w is odd  — -0.0
+     *   w is even —  0.0
+     *
+     *  w is positive:
+     *   w is odd  — -inf.0
+     *   w is even — +inf.0
+     */
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
       if (NumberUtils.isInteger(exponent)) {
         if (NumberUtils.isNegative(exponent)) {
-          // TODO check if exponent is odd or even
-          return 0d;
+          if (SCMPredicate.IS_ODD.apply1(exponent)) {
+            return -0d;
+          } else {
+            return 0d;
+          }
         } else {
-          // TODO check if exponent is odd or even
-          return Double.NEGATIVE_INFINITY;
+          if (SCMPredicate.IS_ODD.apply1(exponent)) {
+            return Double.NEGATIVE_INFINITY;
+          } else {
+            return Double.POSITIVE_INFINITY;
+          }
         }
       }
     }
+
+    /* (expt +inf.0 w):
+     *  w is negative — 0.0
+     *  w is positive — +inf.0
+     */
     if ((base instanceof Double) && Double.POSITIVE_INFINITY == (Double)base) {
       if (NumberUtils.isPositive(exponent)) {
         return Double.POSITIVE_INFINITY;
@@ -116,6 +132,19 @@ public final class Expt extends AFn {
         return 0d;
       }
     }
+
+    /*
+     * TODO:
+     * (expt z -inf.0) for positive z:
+     *
+     *   z is less than 1.0 — +inf.0
+     *   z is greater than 1.0 — 0.0
+     *
+     * (expt z +inf.0) for positive z:
+     *
+     *  z is less than 1.0 — 0.0
+     *  z is greater than 1.0 — +inf.0
+     */
 
     // FIXME This code is wrong and probably doesn't work in many cases BEGIN ---------------------------------------------------
     if ((base instanceof Long) && (exponent instanceof Long)) {
