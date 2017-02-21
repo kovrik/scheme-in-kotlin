@@ -2,6 +2,7 @@ package core.procedures.predicates;
 
 import core.procedures.AFn;
 import core.procedures.IFn;
+import core.procedures.math.Remainder;
 import core.scm.*;
 import core.utils.NumberUtils;
 
@@ -37,7 +38,9 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
   public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
-  public static final SCMPredicate IS_MUTABLE   = new SCMPredicate("mutable?", SCMPredicate::isMutable);
+  public static final SCMPredicate IS_MUTABLE = new SCMPredicate("mutable?", SCMPredicate::isMutable);
+  public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (SCMClass.assertClass(o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (SCMClass.assertClass(o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
 
   private final String name;
   private final Predicate<Object> predicate;

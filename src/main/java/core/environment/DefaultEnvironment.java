@@ -241,6 +241,8 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_EXACT,
       SCMPredicate.IS_INEXACT,
       SCMPredicate.IS_ZERO,
+      SCMPredicate.IS_EVEN,
+      SCMPredicate.IS_ODD,
       SCMPredicate.IS_EMPTY,
       SCMPredicate.IS_INTEGER,
       SCMPredicate.IS_POSITIVE,
@@ -285,8 +287,6 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define values list)");
     LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))");
 
-    LIBRARY_PROCEDURES.add("(define (even? n)      (= 0 (remainder n 2)))");
-    LIBRARY_PROCEDURES.add("(define (odd?  n) (not (= 0 (remainder n 2))))");
     LIBRARY_PROCEDURES.add("(define (add1  n) (+ n 1))");
 
     // TODO Implement in Java?

@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 @FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public final class Remainder extends AFn {
 
+  private static final String NAME = "remainder";
+
   @Override
   public boolean isPure() {
     return true;
@@ -16,7 +18,7 @@ public final class Remainder extends AFn {
 
   @Override
   public String getName() {
-    return "remainder";
+    return NAME;
   }
 
   @Override
@@ -24,14 +26,14 @@ public final class Remainder extends AFn {
     return apply((Number)arg1, (Number)arg2);
   }
 
-  private Number apply(BigDecimal first, BigDecimal second) {
+  private static Number apply(BigDecimal first, BigDecimal second) {
     if (second.compareTo(BigDecimal.ZERO) == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
+      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
     }
     return first.remainder(second);
   }
 
-  private Number apply(Number first, Number second) {
+  public static Number apply(Number first, Number second) {
     if (first instanceof SCMBigRational) {
       first = ((SCMBigRational) first).toBigDecimal();
     }
@@ -51,7 +53,7 @@ public final class Remainder extends AFn {
 
     if ((first instanceof Double) || (second instanceof Double)) {
       if (second.intValue() == 0) {
-        throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
+        throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
       }
 
       double result = first.doubleValue() % second.doubleValue();
@@ -62,10 +64,10 @@ public final class Remainder extends AFn {
       return result;
     } else if ((first instanceof Long) && (second instanceof Long)) {
       if (second.intValue() == 0) {
-        throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
+        throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
       }
       return (Long)first % (Long)second;
     }
-    throw new IllegalArgumentException(String.format("Wrong type argument to `%s`", getName()));
+    throw new IllegalArgumentException(String.format("Wrong type argument to `%s`", NAME));
   }
 }
