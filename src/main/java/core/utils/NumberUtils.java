@@ -595,4 +595,8 @@ public class NumberUtils {
     }
     return true;
   }
+
+  public static boolean isNaN(Number number) {
+    return number instanceof Double && Double.isNaN((Double) number);
+  }
 }

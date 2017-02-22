@@ -31,13 +31,14 @@ public final class Expt extends AFn {
 
   /**
    * TODO: Optimize Special Cases!
-   *
-   * Special cases when w is a real number:
-   * These special cases correspond to pow in C99 [C99], except when z is negative and w is a not an integer.
-   * See: https://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._expt))
    */
   public static Number expt(Number base, Number exponent) {
-    /* Special cases */
+    /* Special cases
+     *
+     * Special cases when w is a real number:
+     * These special cases correspond to pow in C99 [C99], except when z is negative and w is a not an integer.
+     * See: https://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._expt))
+     */
     /*
      * (expt 0.0 w):
      *
@@ -56,6 +57,9 @@ public final class Expt extends AFn {
      *
      *  w otherwise rational — 0.0
      */
+    if (NumberUtils.isNaN(base) || NumberUtils.isNaN(exponent)) {
+      return Double.NaN;
+    }
     if (NumberUtils.isZero(base) && NumberUtils.isZero(exponent)) {
       return 1L;
     }
