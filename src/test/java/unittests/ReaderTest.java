@@ -121,7 +121,6 @@ public class ReaderTest {
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
     assertEquals(new SCMBigComplex(new BigDecimal("255.0"),  new BigDecimal("2987.9375")), reader.readFirst("#x#iFf+BaB.fI"));
-    // TODO #e3/4+2.5i
   }
 
   @Test
