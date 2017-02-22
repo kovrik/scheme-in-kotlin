@@ -862,6 +862,8 @@ public class NumberTest extends AbstractTest {
   public void testRationalize() {
     assertEquals(0L, eval("(rationalize 1/3 1/3)", env));
     assertEquals(new SCMBigRational("1", "3"), eval("(rationalize 1/3 1/9999)", env));
-    // TODO more tests
+    assertEquals(0L, eval("(rationalize 2/3 1)", env));
+    assertEquals(2333L, eval("(rationalize 2335 2)", env));
+    assertEquals(-2L, eval("(rationalize -5 3)", env));
   }
 }
