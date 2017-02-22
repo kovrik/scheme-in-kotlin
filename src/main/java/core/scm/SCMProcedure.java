@@ -5,6 +5,7 @@ import core.procedures.AFn;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /* Lambda */
 public class SCMProcedure extends AFn {
@@ -63,9 +64,7 @@ public class SCMProcedure extends AFn {
     /* Evaluate mandatory params and put values into new local environment */
     Environment env = new Environment(this.localEnvironment);
     List<SCMSymbol> args = getArgs();
-    for (int i = 0; i < minArgs(); i++) {
-      env.put(args.get(i), values[i]);
-    }
+    IntStream.range(0, minArgs).forEach(i -> env.put(args.get(i), values[i]));
     /* If it is a variadic function, then evaluate rest param */
     if (minArgs != maxArgs) {
       /* Optional params: pass them as a list bound to the last param.
