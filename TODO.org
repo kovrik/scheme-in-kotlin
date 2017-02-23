@@ -1,8 +1,7 @@
-* TODO: [33/44]
+* TODO: [34/44]
 
 ** TODO [#A] Macros
 ** TODO [#A] Math procedures: fix precision loss
-** TODO [#A] Expt special cases
 ** TODO [#A] Expt for big fractional powers
 ** TODO [#A] Inexactness taint
 ** TODO [#A] SCMSmallRational and SCMSmallComplex
@@ -57,6 +56,9 @@ CLOSED: [2016-12-05 Mon 20:46]
 *** TODO Caching
 *** TODO Reduce number of new objects
 *** TODO Inline procedures
+** TODO [#B] Compilation
+** DONE [#A] Expt special cases
+CLOSED: [2017-02-23 Thu 21:49]
 ** DONE [#A] Fix `do` Special Form (each iteration must establishe bindings to fresh locations)
 CLOSED: [2017-01-19 Thu 12:17]
 ** DONE [#A] Downcast numbers to the smallest possible type
