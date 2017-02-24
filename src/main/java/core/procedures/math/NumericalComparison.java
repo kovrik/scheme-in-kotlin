@@ -1,14 +1,12 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 import java.util.function.BiPredicate;
 
-@FnArgs(minArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
 public final class NumericalComparison extends AFn {
 
   public static final NumericalComparison EQUAL         = new NumericalComparison("=",  (f, s) -> f.compareTo(s) == 0);
@@ -21,6 +19,7 @@ public final class NumericalComparison extends AFn {
   private final BiPredicate<Comparable<Number>, Number> predicate;
 
   private NumericalComparison(String name, BiPredicate<Comparable<Number>, Number> predicate) {
+    super(2, new Class[]{SCMClass.Real.class, SCMClass.Real.class}, new Class[]{SCMClass.Real.class});
     this.name = name;
     this.predicate = predicate;
   }
