@@ -9,34 +9,49 @@ import core.writer.Writer;
 import java.util.List;
 
 /* Abstract superclass of all functions */
-@FnArgs
 public abstract class AFn implements IFn<Object[], Object> {
 
-  /* Default FnArgs annotation instance */
-  private static final FnArgs DEFAULT = AFn.class.getAnnotation(FnArgs.class);
+  private final int minArgs;
+  private final int maxArgs;
+  private final Class<?>[] mandatoryArgsTypes;
+  private final Class<?>[] restArgsType;
+  private final Class<?>[] lastArgType;
 
-  /* Save FnArgs annotation of current class */
-  private final FnArgs fnArgs = (getClass().isAnnotationPresent(FnArgs.class)) ?
-                                 getClass().getAnnotation(FnArgs.class) : DEFAULT;
+  public AFn() {
+    if (getClass().isAnnotationPresent(FnArgs.class)) {
+      FnArgs fnArgs = getClass().getAnnotation(FnArgs.class);
+      minArgs = fnArgs.minArgs();
+      maxArgs = fnArgs.maxArgs();
+      mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
+      restArgsType = fnArgs.restArgsType();
+      lastArgType = fnArgs.lastArgType();
+    } else {
+      minArgs = 0;
+      maxArgs = 255;
+      mandatoryArgsTypes = new Class<?>[]{};
+      restArgsType = new Class<?>[]{};
+      lastArgType = new Class<?>[]{};
+    }
+  }
 
   public int minArgs() {
-    return fnArgs.minArgs();
+    return minArgs;
   }
 
   public int maxArgs() {
-    return fnArgs.maxArgs();
+    return maxArgs;
   }
 
   public Class<?>[] mandatoryArgsTypes() {
-    return fnArgs.mandatoryArgsTypes();
+    return mandatoryArgsTypes;
   }
 
   public Class<?>[] restArgsType() {
-    return fnArgs.restArgsType();
+    return restArgsType;
   }
 
   public Class<?>[] lastArgType() {
-    return fnArgs.lastArgType();
+    return lastArgType;
   }
 
   /* Return true if function is pure (referentially transparent) */
@@ -89,25 +104,24 @@ public abstract class AFn implements IFn<Object[], Object> {
   private void checkArgs(List<Object> args) {
     /* Check arg count */
     int argsSize = args.size();
-    if (argsSize < minArgs()) {
-      throw new ArityException(argsSize, minArgs(), getName(), minArgs() != maxArgs());
+    if (argsSize < minArgs) {
+      throw new ArityException(argsSize, minArgs, getName(), minArgs != maxArgs);
     }
-    if (argsSize > minArgs() && (minArgs() == maxArgs())) {
-      throw new ArityException(argsSize, minArgs(), getName(), minArgs() != maxArgs());
+    if (argsSize > minArgs && (minArgs == maxArgs)) {
+      throw new ArityException(argsSize, minArgs, getName(), minArgs != maxArgs);
     }
-    if (argsSize > maxArgs()) {
+    if (argsSize > maxArgs) {
       throw new ArityException(argsSize, getName());
     }
 
     /* Get arg types */
-    Class<?>[] mandatoryArgsTypes = mandatoryArgsTypes();
-    Class<?> restArgsType = null;
-    Class<?> lastArgType = null;
-    if (restArgsType().length > 0) {
-      restArgsType = restArgsType()[0];
+    Class<?> restType = null;
+    Class<?> lastType = null;
+    if (restArgsType.length > 0) {
+      restType = restArgsType[0];
     }
     if (lastArgType().length > 0) {
-      lastArgType = lastArgType()[0];
+      lastType = lastArgType[0];
     }
 
     /* Now check arg types (if function is annotated with FnArgs */
@@ -121,16 +135,16 @@ public abstract class AFn implements IFn<Object[], Object> {
         continue;
       }
       /* Last argument (optional special case) */
-      if (i == argsSize - 1 && (lastArgType != null)) {
-        if (!(SCMClass.checkType(arg, lastArgType))) {
-          throw new WrongTypeException(Writer.write(lastArgType), arg);
+      if (i == argsSize - 1 && (lastType != null)) {
+        if (!(SCMClass.checkType(arg, lastType))) {
+          throw new WrongTypeException(Writer.write(lastType), arg);
         }
         continue;
       }
       /* Rest args */
-      if (restArgsType != null) {
-        if (!(SCMClass.checkType(arg, restArgsType))) {
-          throw new WrongTypeException(Writer.write(restArgsType), arg);
+      if (restType != null) {
+        if (!(SCMClass.checkType(arg, restType))) {
+          throw new WrongTypeException(Writer.write(restType), arg);
         }
       }
     }
