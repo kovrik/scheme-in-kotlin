@@ -1,6 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 public final class Abs extends AFn {
 
   public Abs() {
-    super(1, 1, new Class[]{SCMClass.Real.class});
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class}));
   }
 
   @Override

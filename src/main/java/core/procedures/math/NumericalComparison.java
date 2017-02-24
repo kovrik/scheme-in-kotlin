@@ -1,6 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
@@ -19,7 +20,9 @@ public final class NumericalComparison extends AFn {
   private final BiPredicate<Comparable<Number>, Number> predicate;
 
   private NumericalComparison(String name, BiPredicate<Comparable<Number>, Number> predicate) {
-    super(2, new Class[]{SCMClass.Real.class, SCMClass.Real.class}, new Class[]{SCMClass.Real.class});
+    super(new FnArgsBuilder().minArgs(2)
+                             .mandatoryArgsTypes(new Class[]{SCMClass.Real.class, SCMClass.Real.class})
+                             .restArgsType(new Class[]{SCMClass.Real.class}));
     this.name = name;
     this.predicate = predicate;
   }

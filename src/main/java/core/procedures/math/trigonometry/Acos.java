@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 public final class Acos extends AFn {
 
   public Acos() {
-    super(1, 1, new Class[]{Number.class});
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
   }
 
   @Override

@@ -34,22 +34,12 @@ public abstract class AFn implements IFn<Object[], Object> {
     }
   }
 
-  /* TODO FnArgs builder! */
-
-  public AFn(int minArgs, int maxArgs, Class[] mandatoryArgsTypes) {
-    this.minArgs = minArgs;
-    this.maxArgs = maxArgs;
-    this.mandatoryArgsTypes = mandatoryArgsTypes;
-    this.restArgsType = new Class<?>[]{};
-    this.lastArgType = new Class<?>[]{};
-  }
-
-  public AFn(int minArgs, Class[] mandatoryArgsTypes, Class[] restArgsType) {
-    this.minArgs = minArgs;
-    this.maxArgs = 255;
-    this.mandatoryArgsTypes = mandatoryArgsTypes;
-    this.restArgsType = restArgsType;
-    this.lastArgType = new Class<?>[]{};
+  public AFn(FnArgsBuilder fnArgsBuilder) {
+    this.minArgs = fnArgsBuilder.getMinArgs();
+    this.maxArgs = fnArgsBuilder.getMaxArgs();
+    this.mandatoryArgsTypes = fnArgsBuilder.getMandatoryArgsTypes();
+    this.restArgsType = fnArgsBuilder.getRestArgsType();
+    this.lastArgType = fnArgsBuilder.getLastArgType();
   }
 
   public int minArgs() {
