@@ -1,11 +1,18 @@
 package core.procedures.functional;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.scm.*;
+import core.scm.SCMClass;
+import core.scm.SCMCons;
+import core.scm.SCMThunk;
 
-@FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
 public final class ForEach extends AFn {
+
+  public ForEach() {
+    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class})
+                             .restArgsType(new Class[]{SCMClass.SCMProperList.class}));
+  }
 
   @Override
   public String getName() {

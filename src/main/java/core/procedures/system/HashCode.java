@@ -1,10 +1,13 @@
 package core.procedures.system;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
-@FnArgs(minArgs = 1, maxArgs = 1)
 public final class HashCode extends AFn {
+
+  public HashCode() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+  }
 
   @Override
   public boolean isPure() {

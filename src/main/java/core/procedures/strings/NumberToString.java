@@ -1,14 +1,19 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Number.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
 public final class NumberToString extends AFn {
+
+  public NumberToString() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{Number.class})
+                             .restArgsType(new Class[]{SCMClass.ExactPositiveInteger.class}));
+  }
 
   @Override
   public String getName() {

@@ -1,16 +1,19 @@
 package core.procedures.math.complex;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.math.Addition;
 import core.procedures.math.Multiplication;
 import core.procedures.math.trigonometry.Cos;
 import core.procedures.math.trigonometry.Sin;
-import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMClass;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.Real.class, SCMClass.Real.class})
 public final class MakePolar extends AFn {
+
+  public MakePolar() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMClass.Real.class, SCMClass.Real.class}));
+  }
 
   @Override
   public boolean isPure() {

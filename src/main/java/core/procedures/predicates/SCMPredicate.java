@@ -1,6 +1,7 @@
 package core.procedures.predicates;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.math.Remainder;
 import core.scm.*;
@@ -9,7 +10,6 @@ import core.utils.NumberUtils;
 import java.util.List;
 import java.util.function.Predicate;
 
-@FnArgs(minArgs = 1, maxArgs = 1)
 public final class SCMPredicate extends AFn {
 
   public static final SCMPredicate IS_NULL = new SCMPredicate("null?", SCMCons::isNull);
@@ -46,6 +46,7 @@ public final class SCMPredicate extends AFn {
   private final Predicate<Object> predicate;
 
   private SCMPredicate(String name, Predicate<Object> predicate) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
     this.name = name;
     this.predicate = predicate;
   }

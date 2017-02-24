@@ -1,14 +1,18 @@
 package core.procedures.cons;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.Arrays;
 
-@FnArgs(restArgsType = SCMClass.SCMProperList.class, lastArgType = Object.class)
 public final class Append extends AFn {
+
+  public Append() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{SCMClass.SCMProperList.class})
+                             .lastArgType(new Class[]{Object.class}));
+  }
 
   @Override
   public String getName() {

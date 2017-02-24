@@ -1,13 +1,18 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMConstant;
 
-@FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {SCMMutableString.class, SCMClass.ExactNonNegativeInteger.class, Character.class})
 public final class StringSet extends AFn {
+
+  public StringSet() {
+    super(new FnArgsBuilder().minArgs(3).maxArgs(3).mandatoryArgsTypes(new Class[]{SCMMutableString.class,
+                                                                                   SCMClass.ExactNonNegativeInteger.class,
+                                                                                   Character.class}));
+  }
 
   @Override
   public String getName() {

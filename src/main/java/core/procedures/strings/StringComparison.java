@@ -1,11 +1,10 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.function.BiPredicate;
 
-@FnArgs(restArgsType = {String.class})
 public final class StringComparison extends AFn {
 
   @Override
@@ -28,6 +27,7 @@ public final class StringComparison extends AFn {
   private final BiPredicate<String, String> predicate;
 
   private StringComparison(String name, BiPredicate<String, String> predicate) {
+    super(new FnArgsBuilder().restArgsType(new Class[]{String.class}));
     this.name = name;
     this.predicate = predicate;
   }

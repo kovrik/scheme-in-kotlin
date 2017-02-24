@@ -2,12 +2,15 @@ package core.procedures.system;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@FnArgs(maxArgs = 2, restArgsType = {Long.class, Long.class})
-public final class Random extends AFn {
+public final class RandomProc extends AFn {
+
+  public RandomProc() {
+    super(new FnArgsBuilder().maxArgs(2).restArgsType(new Class[]{Long.class, Long.class}));
+  }
 
   @Override
   public boolean isPure() {

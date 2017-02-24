@@ -1,11 +1,14 @@
 package core.procedures.cons;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMCons;
 
-@FnArgs(minArgs = 2, maxArgs = 2)
 public final class ConsProc extends AFn {
+
+  public ConsProc() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2));
+  }
 
   @Override
   public String getName() {

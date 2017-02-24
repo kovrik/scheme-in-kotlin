@@ -1,12 +1,15 @@
 package core.procedures.math.complex;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 import core.utils.NumberUtils;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Angle extends AFn {
+
+  public Angle() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

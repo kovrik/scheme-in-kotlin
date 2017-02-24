@@ -1,15 +1,18 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableVector;
 
 import java.util.Arrays;
 
 import static core.scm.SCMConstant.UNSPECIFIED;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, Object.class})
 public final class VectorFill extends AFn {
+
+  public VectorFill() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMMutableVector.class, Object.class}));
+  }
 
   @Override
   public String getName() {

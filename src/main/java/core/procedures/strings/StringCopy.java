@@ -1,11 +1,14 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableString;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public final class StringCopy extends AFn {
+
+  public StringCopy() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+  }
 
   @Override
   public String getName() {

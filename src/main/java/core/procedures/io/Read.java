@@ -2,8 +2,8 @@ package core.procedures.io;
 
 import core.Repl;
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.reader.Reader;
-import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.SCMInputPort;
 import core.scm.specialforms.Begin;
@@ -11,8 +11,11 @@ import core.scm.SCMThunk;
 
 import java.util.List;
 
-@FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
 public final class Read extends AFn {
+
+  public Read() {
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{SCMInputPort.class}));
+  }
 
   @Override
   public String getName() {

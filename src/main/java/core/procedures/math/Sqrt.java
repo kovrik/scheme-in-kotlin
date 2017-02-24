@@ -1,13 +1,16 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Sqrt extends AFn {
+
+  public Sqrt() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

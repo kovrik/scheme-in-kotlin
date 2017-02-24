@@ -1,7 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
@@ -10,8 +10,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-@FnArgs(restArgsType = Number.class)
 public final class Addition extends AFn {
+
+  public Addition() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

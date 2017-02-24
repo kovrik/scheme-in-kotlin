@@ -1,8 +1,8 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.reader.parsers.Result;
-import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
@@ -11,8 +11,13 @@ import java.util.List;
 import static core.utils.NumberUtils.EXACTNESS_RADIX;
 import static core.utils.NumberUtils.RADIX_EXACTNESS;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {String.class}, restArgsType = {SCMClass.ExactPositiveInteger.class})
 public final class StringToNumber extends AFn {
+
+  public StringToNumber() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{String.class})
+                             .restArgsType(new Class[]{SCMClass.ExactPositiveInteger.class}));
+  }
 
   @Override
   public String getName() {

@@ -1,7 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
@@ -10,10 +10,13 @@ import java.util.Arrays;
 
 import static core.procedures.math.GCD.gcd;
 
-@FnArgs(restArgsType = SCMBigRational.class)
 public final class LCM extends AFn {
 
   private static final Abs ABS = new Abs();
+
+  public LCM() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{SCMBigRational.class}));
+  }
 
   @Override
   public boolean isPure() {

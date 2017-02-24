@@ -1,11 +1,15 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableString;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableString.class, Character.class})
 public final class StringFill extends AFn {
+
+  public StringFill() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{SCMMutableString.class, Character.class}));
+  }
 
   @Override
   public String getName() {

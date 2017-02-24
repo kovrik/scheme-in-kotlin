@@ -3,17 +3,20 @@ package core.procedures.io;
 import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
 
 import java.io.IOException;
 
 import static core.scm.SCMConstant.UNSPECIFIED;
 
-@FnArgs(maxArgs = 1, restArgsType = SCMOutputPort.class)
 public final class Newline extends AFn {
 
   private static final String LS = System.getProperty("line.separator");
+
+  public Newline() {
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{SCMOutputPort.class}));
+  }
 
   @Override
   public String getName() {

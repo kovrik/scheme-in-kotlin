@@ -1,13 +1,16 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 
-@FnArgs(minArgs = 2, maxArgs = 3,
-  mandatoryArgsTypes = {String.class, SCMClass.ExactNonNegativeInteger.class},
-  restArgsType = SCMClass.ExactNonNegativeInteger.class)
 public final class Substring extends AFn {
+
+  public Substring() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(3)
+                             .mandatoryArgsTypes(new Class[]{String.class, SCMClass.ExactNonNegativeInteger.class})
+                             .restArgsType(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public String getName() {

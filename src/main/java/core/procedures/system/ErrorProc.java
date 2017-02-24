@@ -1,11 +1,14 @@
 package core.procedures.system;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMError;
 
-@FnArgs(minArgs = 1, maxArgs = 1)
 public final class ErrorProc extends AFn {
+
+  public ErrorProc() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+  }
 
   @Override
   public String getName() {

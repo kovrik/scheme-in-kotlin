@@ -2,14 +2,18 @@ package core.procedures.cons;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.ExactNonNegativeInteger.class})
 public final class ListTail extends AFn {
+
+  public ListTail() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{Object.class, SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public String getName() {

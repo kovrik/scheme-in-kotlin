@@ -1,14 +1,17 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
 public final class Floor extends AFn {
+
+  public Floor() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class}));
+  }
 
   @Override
   public boolean isPure() {

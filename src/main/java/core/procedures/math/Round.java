@@ -1,7 +1,7 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 import core.utils.NumberUtils;
@@ -9,8 +9,11 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class})
 public final class Round extends AFn {
+
+  public Round() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class}));
+  }
 
   @Override
   public boolean isPure() {

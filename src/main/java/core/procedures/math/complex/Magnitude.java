@@ -1,12 +1,15 @@
 package core.procedures.math.complex;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.math.*;
-import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Magnitude extends AFn {
+
+  public Magnitude() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

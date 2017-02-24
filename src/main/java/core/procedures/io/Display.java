@@ -3,7 +3,7 @@ package core.procedures.io;
 import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableString;
 import core.scm.SCMOutputPort;
 import core.writer.Writer;
@@ -12,8 +12,12 @@ import java.io.IOException;
 
 import static core.scm.SCMConstant.UNSPECIFIED;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
 public final class Display extends AFn {
+
+  public Display() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class})
+                                                   .restArgsType(new Class[]{SCMOutputPort.class}));
+  }
 
   @Override
   public String getName() {

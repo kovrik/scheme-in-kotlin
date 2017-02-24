@@ -1,14 +1,17 @@
 package core.procedures.io;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
 import core.scm.SCMConstant;
 
 import java.io.IOException;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = SCMOutputPort.class)
 public final class CloseOutputPort extends AFn {
+
+  public CloseOutputPort() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMOutputPort.class}));
+  }
 
   @Override
   public String getName() {

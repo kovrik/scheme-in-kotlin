@@ -1,11 +1,10 @@
 package core.procedures.characters;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.function.BiPredicate;
 
-@FnArgs(restArgsType = {Character.class})
 public final class CharComparison extends AFn {
 
   @Override
@@ -28,15 +27,15 @@ public final class CharComparison extends AFn {
   private final BiPredicate<Character, Character> predicate;
 
   private CharComparison(String name, BiPredicate<Character, Character> predicate) {
+    super(new FnArgsBuilder().minArgs(2)
+                             .mandatoryArgsTypes(new Class[]{Character.class, Character.class})
+                             .restArgsType(new Class[]{Character.class}));
     this.name = name;
     this.predicate = predicate;
   }
 
   @Override
   public Boolean apply(Object... args) {
-    if (args.length < 2) {
-      return Boolean.TRUE;
-    }
     for (int i = 0; i < args.length - 1; i++) {
       if ((!predicate.test((Character) args[i], (Character) args[i + 1]))) {
         return Boolean.FALSE;

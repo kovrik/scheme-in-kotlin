@@ -1,11 +1,10 @@
 package core.procedures.characters;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.function.Predicate;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Character.class})
 public final class CharPredicate extends AFn {
 
   public static final CharPredicate IS_CHAR_WHITESPACE = new CharPredicate("char-whitespace?", Character::isWhitespace);
@@ -18,6 +17,7 @@ public final class CharPredicate extends AFn {
   private final Predicate<Character> predicate;
 
   private CharPredicate(String name, Predicate<Character> predicate) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Character.class}));
     this.name = name;
     this.predicate = predicate;
   }

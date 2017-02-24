@@ -1,15 +1,19 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-@FnArgs(minArgs = 1, mandatoryArgsTypes = {SCMClass.Real.class}, restArgsType = SCMClass.Real.class)
 public final class Min extends AFn {
+
+  public Min() {
+    super(new FnArgsBuilder().minArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class})
+                                        .restArgsType(new Class[]{SCMClass.Real.class}));
+  }
 
   @Override
   public boolean isPure() {

@@ -1,14 +1,17 @@
 package core.procedures.cons;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.ICons;
 import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMPair.class})
 public final class Cdr extends AFn {
+
+  public Cdr() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class}));
+  }
 
   @Override
   public boolean isPure() {

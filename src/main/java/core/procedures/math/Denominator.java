@@ -1,15 +1,18 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMBigRational.class})
 public final class Denominator extends AFn {
+
+  public Denominator() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMBigRational.class}));
+  }
 
   @Override
   public boolean isPure() {

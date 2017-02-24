@@ -1,14 +1,18 @@
 package core.procedures.cons;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
 import java.util.List;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class})
 public final class ListRef extends AFn {
+
+  public ListRef() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public boolean isPure() {

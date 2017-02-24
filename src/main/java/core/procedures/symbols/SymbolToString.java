@@ -1,11 +1,14 @@
 package core.procedures.symbols;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMSymbol;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMSymbol.class})
 public final class SymbolToString extends AFn {
+
+  public SymbolToString() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMSymbol.class}));
+  }
 
   @Override
   public boolean isPure() {

@@ -2,10 +2,13 @@ package core.procedures.io;
 
 import core.Repl;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
-@FnArgs(maxArgs = 0)
 public final class CurrentOutputPort extends AFn {
+
+  public CurrentOutputPort() {
+    super(new FnArgsBuilder().maxArgs(0));
+  }
 
   @Override
   public String getName() {

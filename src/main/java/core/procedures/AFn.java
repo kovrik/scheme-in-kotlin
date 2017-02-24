@@ -2,7 +2,6 @@ package core.procedures;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.writer.Writer;
 
@@ -18,20 +17,11 @@ public abstract class AFn implements IFn<Object[], Object> {
   private final Class<?>[] lastArgType;
 
   public AFn() {
-    if (getClass().isAnnotationPresent(FnArgs.class)) {
-      FnArgs fnArgs = getClass().getAnnotation(FnArgs.class);
-      minArgs = fnArgs.minArgs();
-      maxArgs = fnArgs.maxArgs();
-      mandatoryArgsTypes = fnArgs.mandatoryArgsTypes();
-      restArgsType = fnArgs.restArgsType();
-      lastArgType = fnArgs.lastArgType();
-    } else {
-      minArgs = 0;
-      maxArgs = 255;
-      mandatoryArgsTypes = new Class<?>[]{};
-      restArgsType = new Class<?>[]{};
-      lastArgType = new Class<?>[]{};
-    }
+    minArgs = 0;
+    maxArgs = 255;
+    mandatoryArgsTypes = new Class<?>[]{};
+    restArgsType = new Class<?>[]{};
+    lastArgType = new Class<?>[]{};
   }
 
   public AFn(FnArgsBuilder fnArgsBuilder) {

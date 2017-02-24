@@ -1,13 +1,16 @@
 package core.procedures.lists;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 
 import java.util.List;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMClass.SCMProperList.class})
 public final class Length extends AFn {
+
+  public Length() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.SCMProperList.class}));
+  }
 
   @Override
   public boolean isPure() {

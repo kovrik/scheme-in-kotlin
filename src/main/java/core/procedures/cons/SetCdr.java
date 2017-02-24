@@ -1,7 +1,7 @@
 package core.procedures.cons;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
@@ -9,8 +9,12 @@ import java.util.List;
 
 import static core.scm.SCMConstant.UNSPECIFIED;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMClass.SCMPair.class, Object.class})
 public final class SetCdr extends AFn {
+
+  public SetCdr() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class, Object.class}));
+  }
 
   @Override
   public String getName() {

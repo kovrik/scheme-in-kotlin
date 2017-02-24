@@ -1,8 +1,8 @@
 package core.procedures.functional;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
@@ -13,10 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class}, restArgsType = {SCMClass.SCMProperList.class})
 public final class MapProc extends AFn {
 
   static final MapProc MAP_PROC = new MapProc();
+
+  public MapProc() {
+    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class})
+                             .restArgsType(new Class[]{SCMClass.SCMProperList.class}));
+  }
 
   @Override
   public String getName() {

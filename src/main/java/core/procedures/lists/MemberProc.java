@@ -1,16 +1,15 @@
 package core.procedures.lists;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
-import core.scm.FnArgs;
 import core.scm.SCMBoolean;
 import core.scm.SCMCons;
 import core.writer.Writer;
 
 import java.util.List;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, List.class})
 public final class MemberProc extends AFn {
 
   private final String name;
@@ -18,6 +17,7 @@ public final class MemberProc extends AFn {
   private final AFn predicate;
 
   public MemberProc(String name, AFn predicate) {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class, List.class}));
     this.name = name;
     this.predicate = predicate;
   }

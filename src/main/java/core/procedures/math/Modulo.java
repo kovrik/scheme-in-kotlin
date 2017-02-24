@@ -1,14 +1,17 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public final class Modulo extends AFn {
 
   private static final Remainder REM = new Remainder();
+
+  public Modulo() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));
+  }
 
   @Override
   public boolean isPure() {

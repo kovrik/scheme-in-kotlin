@@ -1,12 +1,15 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.Arrays;
 
-@FnArgs(restArgsType = {String.class})
 public final class StringAppend extends AFn {
+
+  public StringAppend() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{String.class}));
+  }
 
   @Override
   public String getName() {

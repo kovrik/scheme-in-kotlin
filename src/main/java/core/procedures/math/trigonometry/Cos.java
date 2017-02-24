@@ -1,16 +1,19 @@
 package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.math.Multiplication;
-import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Cos extends AFn {
+
+  public Cos() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

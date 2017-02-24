@@ -3,12 +3,15 @@ package core.procedures.continuations;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.scm.FnArgs;
 import core.scm.SCMCons;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {IFn.class})
 public final class CallCC extends AFn {
+
+  public CallCC() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{IFn.class}));
+  }
 
   @Override
   public boolean isPure() {

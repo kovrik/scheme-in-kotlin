@@ -4,11 +4,14 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.ReentrantPromiseException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMPromise;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMPromise.class})
 public final class Force extends AFn {
+
+  public Force() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMPromise.class}));
+  }
 
   @Override
   public String getName() {

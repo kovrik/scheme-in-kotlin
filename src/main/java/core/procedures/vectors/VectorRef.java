@@ -1,12 +1,16 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class})
 public final class VectorRef extends AFn {
+
+  public VectorRef() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public boolean isPure() {

@@ -1,14 +1,17 @@
 package core.procedures.continuations;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 
 /*
  * "Upward" one-shot continuation
  */
-@FnArgs(minArgs = 1, maxArgs = 1)
 public final class Continuation extends AFn {
+
+  Continuation() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+  }
 
   private boolean invoked = false;
 

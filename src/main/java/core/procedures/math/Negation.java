@@ -1,11 +1,14 @@
 package core.procedures.math;
 
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBoolean;
 import core.procedures.AFn;
 
-@FnArgs(minArgs = 1, maxArgs = 1)
 public final class Negation extends AFn {
+
+  public Negation() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+  }
 
   @Override
   public boolean isPure() {

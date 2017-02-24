@@ -1,18 +1,21 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Number.class})
 public final class Log extends AFn {
 
   /* If number has 307 digits or less, then can use Math.log(double) */
   private static final int MAX_DIGITS = 307;
   private static final double VALUE = Math.log(Math.pow(10, MAX_DIGITS));
+
+  public Log() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+  }
 
   @Override
   public boolean isPure() {

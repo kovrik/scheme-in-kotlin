@@ -1,7 +1,7 @@
 package core.procedures.lists;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
@@ -9,7 +9,6 @@ import core.writer.Writer;
 
 import java.util.List;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Object.class, SCMClass.SCMProperList.class})
 public final class AssocProc extends AFn {
 
   private final String name;
@@ -17,6 +16,7 @@ public final class AssocProc extends AFn {
   private final AFn predicate;
 
   public AssocProc(String name, AFn predicate) {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class, SCMClass.SCMProperList.class}));
     this.name = name;
     this.predicate = predicate;
   }

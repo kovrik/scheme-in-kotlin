@@ -1,11 +1,15 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {String.class, SCMClass.ExactNonNegativeInteger.class})
 public final class StringRef extends AFn {
+
+  public StringRef() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
+                             .mandatoryArgsTypes(new Class[]{String.class, SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public boolean isPure() {

@@ -3,15 +3,19 @@ package core.procedures.io;
 import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
 import core.scm.SCMConstant;
 import core.writer.Writer;
 
 import java.io.IOException;
 
-@FnArgs(minArgs = 1, maxArgs = 2, mandatoryArgsTypes = {Object.class}, restArgsType = SCMOutputPort.class)
 public final class Write extends AFn {
+
+  public Write() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class})
+                             .restArgsType(new Class[]{SCMOutputPort.class}));
+  }
 
   @Override
   public String getName() {

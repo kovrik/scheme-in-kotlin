@@ -1,12 +1,15 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMImmutableVector;
 import core.scm.SCMVector;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {SCMVector.class})
 public final class VectorToImmutableVector extends AFn {
+
+  public VectorToImmutableVector() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMVector.class}));
+  }
 
   @Override
   public String getName() {

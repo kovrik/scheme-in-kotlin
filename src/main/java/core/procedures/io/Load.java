@@ -1,8 +1,8 @@
 package core.procedures.io;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.reader.FileReader;
-import core.scm.FnArgs;
 import core.scm.SCMCons;
 import core.scm.specialforms.Begin;
 import core.scm.SCMThunk;
@@ -10,10 +10,13 @@ import core.scm.SCMThunk;
 import java.io.File;
 import java.util.List;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public final class Load extends AFn {
 
   private final FileReader reader = new FileReader();
+
+  public Load() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+  }
 
   @Override
   public String getName() {

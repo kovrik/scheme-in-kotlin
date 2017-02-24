@@ -45,7 +45,7 @@ public final class DefaultEnvironment extends Environment {
       new ClassOf(),
       new ErrorProc(),
       new Eval(),
-      new Random(),
+      new RandomProc(),
       new HashCode(),
       new ToString(),
 

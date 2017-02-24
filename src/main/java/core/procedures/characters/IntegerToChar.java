@@ -1,10 +1,13 @@
 package core.procedures.characters;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Long.class})
 public final class IntegerToChar extends AFn {
+
+  public IntegerToChar() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Long.class}));
+  }
 
   @Override
   public String getName() {

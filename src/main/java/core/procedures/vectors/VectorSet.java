@@ -1,14 +1,18 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
 import static core.scm.SCMConstant.UNSPECIFIED;
 
-@FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class})
 public final class VectorSet extends AFn {
+
+  public VectorSet() {
+    super(new FnArgsBuilder().minArgs(3).maxArgs(3)
+                             .mandatoryArgsTypes(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}));
+  }
 
   @Override
   public String getName() {

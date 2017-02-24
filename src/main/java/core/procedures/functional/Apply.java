@@ -1,9 +1,9 @@
 package core.procedures.functional;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.cons.Append;
-import core.scm.FnArgs;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.specialforms.Quote;
@@ -12,8 +12,12 @@ import core.scm.SCMThunk;
 import java.util.Arrays;
 import java.util.List;
 
-@FnArgs(minArgs = 2, mandatoryArgsTypes = {IFn.class, Object.class}, lastArgType = {SCMClass.SCMProperList.class})
 public final class Apply extends AFn {
+
+  public Apply() {
+    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class, Object.class})
+                             .lastArgType(new Class[]{SCMClass.SCMProperList.class}));
+  }
 
   @Override
   public String getName() {

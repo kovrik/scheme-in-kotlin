@@ -1,15 +1,18 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Long.class, Long.class})
 public final class Remainder extends AFn {
 
   private static final String NAME = "remainder";
+
+  public Remainder() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));
+  }
 
   @Override
   public boolean isPure() {

@@ -2,17 +2,20 @@ package core.procedures.math;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-@FnArgs(restArgsType = SCMBigRational.class)
 public final class GCD extends AFn {
 
   private static final Abs ABS = new Abs();
+
+  public GCD() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{SCMBigRational.class}));
+  }
 
   @Override
   public boolean isPure() {

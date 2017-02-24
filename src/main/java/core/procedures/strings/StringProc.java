@@ -1,11 +1,14 @@
 package core.procedures.strings;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableString;
 
-@FnArgs(restArgsType = {Character.class})
 public final class StringProc extends AFn {
+
+  public StringProc() {
+    super(new FnArgsBuilder().restArgsType(new Class[]{Character.class}));
+  }
 
   @Override
   public String getName() {

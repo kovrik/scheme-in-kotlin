@@ -2,14 +2,17 @@ package core.procedures.io;
 
 import core.exceptions.SCMFileNotFoundException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {String.class})
 public final class OpenOutputFile extends AFn {
+
+  public OpenOutputFile() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+  }
 
   @Override
   public String getName() {

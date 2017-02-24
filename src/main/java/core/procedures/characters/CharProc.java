@@ -1,11 +1,10 @@
 package core.procedures.characters;
 
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 
 import java.util.function.Function;
 
-@FnArgs(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = {Character.class})
 public final class CharProc extends AFn {
 
   public static final CharProc CHAR_TO_INTEGER = new CharProc("char->integer", ch -> (long)ch);
@@ -16,6 +15,7 @@ public final class CharProc extends AFn {
   private final Function<Character, Object> function;
 
   private CharProc(String name, Function<Character, Object> function) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Character.class}));
     this.name = name;
     this.function = function;
   }

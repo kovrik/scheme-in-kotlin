@@ -1,8 +1,8 @@
 package core.procedures.math;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.predicates.SCMPredicate;
-import core.scm.FnArgs;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
@@ -11,8 +11,11 @@ import core.writer.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@FnArgs(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = {Number.class, Number.class})
 public final class Expt extends AFn {
+
+  public Expt() {
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Number.class, Number.class}));
+  }
 
   @Override
   public boolean isPure() {

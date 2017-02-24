@@ -3,13 +3,16 @@ package core.procedures.io;
 import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
-import core.scm.FnArgs;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMInputPort;
 
 import java.io.IOException;
 
-@FnArgs(maxArgs = 1, restArgsType = SCMInputPort.class)
 public final class PeekChar extends AFn {
+
+  public PeekChar() {
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{SCMInputPort.class}));
+  }
 
   @Override
   public String getName() {

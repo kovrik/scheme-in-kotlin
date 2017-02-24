@@ -3,12 +3,15 @@ package core.procedures.continuations;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.scm.FnArgs;
 import core.scm.SCMCons;
 
-@FnArgs(minArgs = 3, maxArgs = 3, mandatoryArgsTypes = {IFn.class, IFn.class, IFn.class})
 public final class DynamicWind extends AFn {
+
+  public DynamicWind() {
+    super(new FnArgsBuilder().minArgs(3).maxArgs(3).mandatoryArgsTypes(new Class[]{IFn.class, IFn.class, IFn.class}));
+  }
 
   @Override
   public boolean isPure() {
