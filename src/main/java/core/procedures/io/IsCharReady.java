@@ -11,7 +11,7 @@ import java.io.IOException;
 public final class IsCharReady extends AFn {
 
   public IsCharReady() {
-    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{SCMInputPort.class}));
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(SCMInputPort.class));
   }
 
   @Override

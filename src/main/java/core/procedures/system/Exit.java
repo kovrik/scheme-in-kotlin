@@ -8,7 +8,7 @@ import static core.scm.SCMConstant.UNSPECIFIED;
 public final class Exit extends AFn {
 
   public Exit() {
-    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{Long.class}));
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(Long.class));
   }
 
   @Override

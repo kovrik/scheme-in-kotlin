@@ -12,7 +12,7 @@ public final class Min extends AFn {
 
   public Min() {
     super(new FnArgsBuilder().minArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class})
-                                        .restArgsType(new Class[]{SCMClass.Real.class}));
+                                        .restArgsType(SCMClass.Real.class));
   }
 
   @Override

@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class Subtraction extends AFn {
 
   public Subtraction() {
-    super(new FnArgsBuilder().minArgs(1).restArgsType(new Class[]{Number.class}));
+    super(new FnArgsBuilder().minArgs(1).restArgsType(Number.class));
   }
 
   @Override

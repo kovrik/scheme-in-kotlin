@@ -11,7 +11,7 @@ public final class ForEach extends AFn {
 
   public ForEach() {
     super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class})
-                             .restArgsType(new Class[]{SCMClass.SCMProperList.class}));
+                             .restArgsType(SCMClass.SCMProperList.class));
   }
 
   @Override

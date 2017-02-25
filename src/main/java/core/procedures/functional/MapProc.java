@@ -19,7 +19,7 @@ public final class MapProc extends AFn {
 
   public MapProc() {
     super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class})
-                             .restArgsType(new Class[]{SCMClass.SCMProperList.class}));
+                             .restArgsType(SCMClass.SCMProperList.class));
   }
 
   @Override

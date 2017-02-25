@@ -13,15 +13,15 @@ public abstract class AFn implements IFn<Object[], Object> {
   private final int minArgs;
   private final int maxArgs;
   private final Class<?>[] mandatoryArgsTypes;
-  private final Class<?>[] restArgsType;
-  private final Class<?>[] lastArgType;
+  private final Class<?> restArgsType;
+  private final Class<?> lastArgType;
 
   public AFn() {
     minArgs = 0;
     maxArgs = 255;
     mandatoryArgsTypes = new Class<?>[]{};
-    restArgsType = new Class<?>[]{};
-    lastArgType = new Class<?>[]{};
+    restArgsType = null;
+    lastArgType = null;
   }
 
   public AFn(FnArgsBuilder fnArgsBuilder) {
@@ -44,11 +44,11 @@ public abstract class AFn implements IFn<Object[], Object> {
     return mandatoryArgsTypes;
   }
 
-  public Class<?>[] restArgsType() {
+  public Class<?> restArgsType() {
     return restArgsType;
   }
 
-  public Class<?>[] lastArgType() {
+  public Class<?> lastArgType() {
     return lastArgType;
   }
 
@@ -115,11 +115,11 @@ public abstract class AFn implements IFn<Object[], Object> {
     /* Get arg types */
     Class<?> restType = null;
     Class<?> lastType = null;
-    if (restArgsType.length > 0) {
-      restType = restArgsType[0];
+    if (restArgsType != null) {
+      restType = restArgsType;
     }
-    if (lastArgType().length > 0) {
-      lastType = lastArgType[0];
+    if (lastArgType != null) {
+      lastType = lastArgType;
     }
 
     /* Now check arg types (if function is annotated with FnArgs */

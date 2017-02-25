@@ -5,8 +5,8 @@ public class FnArgsBuilder {
   private int minArgs = 0;
   private int maxArgs = 255;
   private Class<?>[] mandatoryArgsTypes = new Class[]{};
-  private Class<?>[] restArgsType = new Class[]{};
-  private Class<?>[] lastArgType = new Class[]{};
+  private Class<?> restArgsType = null;
+  private Class<?> lastArgType = null;
 
   public int getMinArgs() {
     return minArgs;
@@ -35,20 +35,20 @@ public class FnArgsBuilder {
     return this;
   }
 
-  public Class<?>[] getRestArgsType() {
+  public Class<?> getRestArgsType() {
     return restArgsType;
   }
 
-  public FnArgsBuilder restArgsType(Class<?>[] restArgsType) {
+  public FnArgsBuilder restArgsType(Class<?> restArgsType) {
     this.restArgsType = restArgsType;
     return this;
   }
 
-  public Class<?>[] getLastArgType() {
+  public Class<?> getLastArgType() {
     return lastArgType;
   }
 
-  public FnArgsBuilder lastArgType(Class<?>[] lastArgType) {
+  public FnArgsBuilder lastArgType(Class<?> lastArgType) {
     this.lastArgType = lastArgType;
     return this;
   }

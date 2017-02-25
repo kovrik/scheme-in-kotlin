@@ -16,7 +16,7 @@ public final class StringToNumber extends AFn {
   public StringToNumber() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2)
                              .mandatoryArgsTypes(new Class[]{String.class})
-                             .restArgsType(new Class[]{SCMClass.ExactPositiveInteger.class}));
+                             .restArgsType(SCMClass.ExactPositiveInteger.class));
   }
 
   @Override

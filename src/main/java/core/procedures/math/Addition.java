@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class Addition extends AFn {
 
   public Addition() {
-    super(new FnArgsBuilder().restArgsType(new Class[]{Number.class}));
+    super(new FnArgsBuilder().restArgsType(Number.class));
   }
 
   @Override

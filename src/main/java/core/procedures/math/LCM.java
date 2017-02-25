@@ -15,7 +15,7 @@ public final class LCM extends AFn {
   private static final Abs ABS = new Abs();
 
   public LCM() {
-    super(new FnArgsBuilder().restArgsType(new Class[]{SCMBigRational.class}));
+    super(new FnArgsBuilder().restArgsType(SCMBigRational.class));
   }
 
   @Override

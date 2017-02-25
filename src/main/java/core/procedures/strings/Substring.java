@@ -9,7 +9,7 @@ public final class Substring extends AFn {
   public Substring() {
     super(new FnArgsBuilder().minArgs(2).maxArgs(3)
                              .mandatoryArgsTypes(new Class[]{String.class, SCMClass.ExactNonNegativeInteger.class})
-                             .restArgsType(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+                             .restArgsType(SCMClass.ExactNonNegativeInteger.class));
   }
 
   @Override

@@ -12,7 +12,7 @@ public final class NumberToString extends AFn {
   public NumberToString() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2)
                              .mandatoryArgsTypes(new Class[]{Number.class})
-                             .restArgsType(new Class[]{SCMClass.ExactPositiveInteger.class}));
+                             .restArgsType(SCMClass.ExactPositiveInteger.class));
   }
 
   @Override

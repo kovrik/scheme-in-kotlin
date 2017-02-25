@@ -15,7 +15,7 @@ public final class Newline extends AFn {
   private static final String LS = System.getProperty("line.separator");
 
   public Newline() {
-    super(new FnArgsBuilder().maxArgs(1).restArgsType(new Class[]{SCMOutputPort.class}));
+    super(new FnArgsBuilder().maxArgs(1).restArgsType(SCMOutputPort.class));
   }
 
   @Override

@@ -10,7 +10,7 @@ public final class MakeString extends AFn {
   public MakeString() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2)
                              .mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class})
-                             .restArgsType(new Class[]{Character.class}));
+                             .restArgsType(Character.class));
   }
 
   @Override

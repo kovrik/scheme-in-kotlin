@@ -10,8 +10,8 @@ import java.util.Arrays;
 public final class Append extends AFn {
 
   public Append() {
-    super(new FnArgsBuilder().restArgsType(new Class[]{SCMClass.SCMProperList.class})
-                             .lastArgType(new Class[]{Object.class}));
+    super(new FnArgsBuilder().restArgsType(SCMClass.SCMProperList.class)
+                             .lastArgType(Object.class));
   }
 
   @Override

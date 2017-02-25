@@ -13,7 +13,7 @@ public final class WriteChar extends AFn {
 
   public WriteChar() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Character.class})
-                                                   .restArgsType(new Class[]{SCMOutputPort.class}));
+                                                   .restArgsType(SCMOutputPort.class));
   }
 
   @Override

@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class Division extends AFn {
 
   public Division() {
-    super(new FnArgsBuilder().minArgs(1).restArgsType(new Class[]{Number.class}));
+    super(new FnArgsBuilder().minArgs(1).restArgsType(Number.class));
   }
 
   @Override

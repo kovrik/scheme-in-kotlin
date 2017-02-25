@@ -16,7 +16,7 @@ public final class Apply extends AFn {
 
   public Apply() {
     super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class, Object.class})
-                             .lastArgType(new Class[]{SCMClass.SCMProperList.class}));
+                             .lastArgType(SCMClass.SCMProperList.class));
   }
 
   @Override

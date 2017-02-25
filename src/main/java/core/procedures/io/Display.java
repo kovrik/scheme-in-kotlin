@@ -16,7 +16,7 @@ public final class Display extends AFn {
 
   public Display() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class})
-                                                   .restArgsType(new Class[]{SCMOutputPort.class}));
+                                                   .restArgsType(SCMOutputPort.class));
   }
 
   @Override

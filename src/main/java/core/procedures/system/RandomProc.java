@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class RandomProc extends AFn {
 
   public RandomProc() {
-    super(new FnArgsBuilder().maxArgs(2).restArgsType(new Class[]{Long.class, Long.class}));
+    super(new FnArgsBuilder().maxArgs(2).restArgsType(Long.class));
   }
 
   @Override
