@@ -24,7 +24,7 @@ public abstract class AFn implements IFn<Object[], Object> {
     lastArgType = null;
   }
 
-  public AFn(FnArgsBuilder fnArgsBuilder) {
+  protected AFn(FnArgsBuilder fnArgsBuilder) {
     this.minArgs = fnArgsBuilder.getMinArgs();
     this.maxArgs = fnArgsBuilder.getMaxArgs();
     this.mandatoryArgsTypes = fnArgsBuilder.getMandatoryArgsTypes();
