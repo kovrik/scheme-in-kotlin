@@ -9,19 +9,17 @@ import static core.writer.Writer.write;
 // TODO Separate class for Proper and Improper Lists
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
-  /* Nil constant: empty list, but not a pair */
+  /* Nil constant: empty list */
   public static final SCMCons NIL = new SCMCons() {
-    @Override
-    public boolean isList() { return true; }
-    @Override
-    public SCMClass getSCMClass() { return SCMClass.NIL; }
+    @Override public boolean isList() { return true; }
+    @Override public SCMClass getSCMClass() { return SCMClass.NIL; }
   };
 
-  /* By default every cons is a cons, not a list */
-  private boolean isList = false;
+  private boolean isList;
 
   private SCMCons() {
     super();
+    isList = true;
   }
 
   private SCMCons(E car, E cdr) {
@@ -63,12 +61,12 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (!isList()) {
       return this;
     }
+    /* Cons backwards */
     E last = get(size() - 1);
     E beforeLast = get(size() - 2);
-    SCMCons<E> cons = SCMCons.cons(beforeLast, last);
-    /* Cons backwards */
+    SCMCons<E> cons = cons(beforeLast, last);
     for (int n = size() - 3; n >= 0; n--) {
-      cons = SCMCons.cons(get(n), (E)cons);
+      cons = cons(get(n), (E)cons);
     }
     return cons;
   }
@@ -91,9 +89,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   public static <E> SCMCons<E> list() {
-    SCMCons<E> list = new SCMCons<>();
-    list.setIsList(true);
-    return list;
+    return new SCMCons<>();
   }
 
   public static <E> SCMCons<E> list(E... elements) {
@@ -119,13 +115,10 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   public static boolean isNull(Object object) {
-    if (object == null) {
-      return true;
-    }
     if (object instanceof List) {
       return ((List)object).isEmpty();
     }
-    return false;
+    return object == null;
   }
 
   /* Use this method to print all lists */
@@ -134,33 +127,29 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
       return "()";
     }
     /* Cons cell */
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
     if (!isList(list)) {
-      StringBuilder cons = new StringBuilder();
-      cons.append("(").append(write(list.get(0)));
+      sb.append(write(list.get(0)));
       Object cdr = list.get(list.size() - 1);
       while (cdr instanceof SCMCons) {
-        cons.append(" ").append(write(((SCMCons) cdr).getFirst()));
+        sb.append(" ").append(write(((SCMCons) cdr).getFirst()));
         cdr = ((SCMCons)cdr).getLast();
       }
       /* Dotted notation */
-      cons.append(" . ").append(write(cdr));
-      return cons.append(")").toString();
-    }
-    /* List */
-    StringBuilder sb = new StringBuilder();
-    sb.append('(');
-    boolean first = true;
-    for (Object e : list) {
-      if (!first) {
+      sb.append(" . ").append(write(cdr));
+    } else {
+      /* List */
+      for (int i = 0; i < list.size() - 1; i++) {
+        Object e = list.get(i);
+        if (e == list) {
+          sb.append("(this List)");
+        } else {
+          sb.append(write(e));
+        }
         sb.append(' ');
-      } else {
-        first = false;
       }
-      if (e == list) {
-        sb.append("(this List)");
-      } else {
-        sb.append(write(e));
-      }
+      sb.append(write(list.get(list.size() - 1)));
     }
     return sb.append(')').toString();
   }
@@ -203,8 +192,6 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   @Override
   public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + (isList ? 1 : 0);
-    return result;
+    return 31 * super.hashCode() + (isList ? 1 : 0);
   }
 }
