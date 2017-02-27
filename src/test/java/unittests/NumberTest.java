@@ -98,19 +98,19 @@ public class NumberTest extends AbstractTest {
       eval("(abs)", env);
       fail();
     } catch (ArityException e) {
-      assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 0, expected: 1) passed to: abs"));
+      assertEquals("abs: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.getMessage());
     }
     try {
       eval("(abs 1 2 3)", env);
       fail();
     } catch (ArityException e) {
-      assertTrue(e.getMessage().contains("Wrong number of arguments (actual: 3, expected: 1) passed to: abs"));
+      assertEquals("abs: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 3)", e.getMessage());
     }
     try {
       eval("(abs \"not-a-number\")", env);
       fail();
-    } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().contains("Wrong argument type. Expected: Real, actual: \"not-a-number\""));
+    } catch (WrongTypeException e) {
+      assertEquals("abs: type mismatch; (expected: Real, given: \"not-a-number\")", e.getMessage());
     }
 
     // sqrt
@@ -155,7 +155,7 @@ public class NumberTest extends AbstractTest {
       eval("(quotient -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
+      assertEquals("quotient: type mismatch; (expected: Integer, given: 1.0E-4)", e.getMessage());
     }
     try {
       eval("(quotient -10 0.0)", env);
@@ -177,7 +177,7 @@ public class NumberTest extends AbstractTest {
       eval("(remainder -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
+      assertEquals("remainder: type mismatch; (expected: Integer, given: 1.0E-4)", e.getMessage());
     }
     try {
       eval("(remainder -10 0.0)", env);
@@ -195,7 +195,7 @@ public class NumberTest extends AbstractTest {
       eval("(modulo -10 0.0001)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: 1.0E-4", e.getMessage());
+      assertEquals("modulo: type mismatch; (expected: Integer, given: 1.0E-4)", e.getMessage());
     }
     try {
       eval("(modulo -10 0.0)", env);
@@ -221,7 +221,7 @@ public class NumberTest extends AbstractTest {
       eval("(zero? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("zero?: type mismatch; (expected: Number, given: \"test\")", e.getMessage());
     }
   }
 
@@ -240,7 +240,7 @@ public class NumberTest extends AbstractTest {
       eval("(negative? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("negative?: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -259,7 +259,7 @@ public class NumberTest extends AbstractTest {
       eval("(positive? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("positive?: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -276,7 +276,7 @@ public class NumberTest extends AbstractTest {
       eval("(even? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: \"test\"", e.getMessage());
+      assertEquals("even?: type mismatch; (expected: Integer, given: \"test\")", e.getMessage());
     }
   }
 
@@ -294,7 +294,7 @@ public class NumberTest extends AbstractTest {
       eval("(odd? \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: \"test\"", e.getMessage());
+      assertEquals("odd?: type mismatch; (expected: Integer, given: \"test\")", e.getMessage());
     }
   }
 
@@ -317,7 +317,7 @@ public class NumberTest extends AbstractTest {
       eval("(round \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("round: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -333,7 +333,7 @@ public class NumberTest extends AbstractTest {
       eval("(floor \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("floor: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -349,7 +349,7 @@ public class NumberTest extends AbstractTest {
       eval("(ceiling \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("ceiling: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -366,7 +366,7 @@ public class NumberTest extends AbstractTest {
       eval("(truncate \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("truncate: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -382,14 +382,14 @@ public class NumberTest extends AbstractTest {
       eval("(max \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("max: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
 
     try {
       eval("(max 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("max: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -404,14 +404,14 @@ public class NumberTest extends AbstractTest {
       eval("(min \"test\" 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("min: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
 
     try {
       eval("(min 0 \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Real, actual: \"test\"", e.getMessage());
+      assertEquals("min: type mismatch; (expected: Real, given: \"test\")", e.getMessage());
     }
   }
 
@@ -495,13 +495,13 @@ public class NumberTest extends AbstractTest {
       eval("(expt \"test\" 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("expt: type mismatch; (expected: Number, given: \"test\")", e.getMessage());
     }
     try {
       eval("(expt 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong number of arguments (actual: 1, expected: 2) passed to: expt", e.getMessage());
+      assertEquals("expt: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 1)", e.getMessage());
     }
     assertEquals(1L, eval("(expt 0 0.0)", env));
     assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.0 -5)", env));
@@ -764,7 +764,7 @@ public class NumberTest extends AbstractTest {
       eval("(exact? \"test\")", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("exact?: type mismatch; (expected: Number, given: \"test\")", e.getMessage());
     }
   }
 
@@ -784,7 +784,7 @@ public class NumberTest extends AbstractTest {
       eval("(inexact? \"test\")", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Number, actual: \"test\"", e.getMessage());
+      assertEquals("inexact?: type mismatch; (expected: Number, given: \"test\")", e.getMessage());
     }
   }
 

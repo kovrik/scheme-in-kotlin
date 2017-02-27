@@ -80,13 +80,13 @@ public class SCMConsTest {
       car(NIL);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
+      assertEquals("car: type mismatch; (expected: Pair, given: ())", e.getMessage());
     }
     try {
       car(list());
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Pair, actual: ()", e.getMessage());
+      assertEquals("car: type mismatch; (expected: Pair, given: ())", e.getMessage());
     }
   }
 

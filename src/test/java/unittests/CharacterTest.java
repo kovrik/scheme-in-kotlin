@@ -42,7 +42,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-numeric? 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-numeric?: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -66,7 +66,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-whitespace? 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-whitespace?: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -93,7 +93,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-alphabetic? 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-alphabetic?: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -117,7 +117,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-upper-case? 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-upper-case?: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -141,7 +141,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-lower-case? 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-lower-case?: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -156,7 +156,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char->integer 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char->integer: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -171,7 +171,7 @@ public class CharacterTest extends AbstractTest {
       eval("(integer->char #\\a)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Integer, actual: #\\a", e.getMessage());
+      assertEquals("integer->char: type mismatch; (expected: Integer, given: #\\a)", e.getMessage());
     }
   }
 
@@ -187,7 +187,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-upcase 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-upcase: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -203,7 +203,7 @@ public class CharacterTest extends AbstractTest {
       eval("(char-downcase 1)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("char-downcase: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 

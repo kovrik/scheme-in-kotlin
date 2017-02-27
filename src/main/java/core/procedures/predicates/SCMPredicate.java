@@ -32,15 +32,15 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_RATIONAL = new SCMPredicate("rational?", NumberUtils::isRational);
   public static final SCMPredicate IS_REAL = new SCMPredicate("real?", NumberUtils::isReal);
   public static final SCMPredicate IS_COMPLEX = new SCMPredicate("complex?", o -> (o instanceof Number));
-  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isZero(o)));
-  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass(o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
-  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass(o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
-  public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isExact(o)));
-  public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass(o, Number.class) && NumberUtils.isInexact(o)));
+  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass("zero?", o, Number.class) && NumberUtils.isZero(o)));
+  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass("positive?", o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
+  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass("negative?", o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
+  public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass("exact?", o, Number.class) && NumberUtils.isExact(o)));
+  public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass("inexact?", o, Number.class) && NumberUtils.isInexact(o)));
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
   public static final SCMPredicate IS_MUTABLE = new SCMPredicate("mutable?", SCMPredicate::isMutable);
-  public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (SCMClass.assertClass(o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
-  public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (SCMClass.assertClass(o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (SCMClass.assertClass("even?", o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (SCMClass.assertClass("odd?", o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
 
   private final String name;
   private final Predicate<Object> predicate;

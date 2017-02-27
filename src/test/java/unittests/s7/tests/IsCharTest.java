@@ -83,13 +83,13 @@ public class IsCharTest extends AbstractTest {
       eval("(char?) 'error)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: char?", e.getMessage());
+      assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.getMessage());
     }
     try {
       eval("(char? #\\a #\\b)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: char?", e.getMessage());
+      assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 2)", e.getMessage());
     }
 //    assertEquals(TRUE,  eval("(apply char? (list (integer->char 255)))", env));
 //    ;(test (char? #\ÿ) #t) ; this seems to involve unwanted translations in emacs?

@@ -58,19 +58,19 @@ public class MemvTest extends AbstractTest {
       eval("(memv)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 0, expected: 2) passed to: memv", e.getMessage());
+      assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.getMessage());
     }
     try {
       eval("(memv 'a)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 1, expected: 2) passed to: memv", e.getMessage());
+      assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 1)", e.getMessage());
     }
     try {
       eval("(memv 'a 'b)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: List, actual: b", e.getMessage());
+      assertEquals("memv: type mismatch; (expected: List, given: b)", e.getMessage());
     }
   }
 

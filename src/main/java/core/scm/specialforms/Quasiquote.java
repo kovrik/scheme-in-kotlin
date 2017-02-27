@@ -158,7 +158,7 @@ public enum Quasiquote implements ISpecialForm {
     Object result = quasiquoteList(depth, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
     if (!SCMCons.isList(result)) {
-      throw new WrongTypeException("List", result);
+      throw new IllegalSyntaxException("read: illegal use of '.'");
     }
     return ListToVector.listToVector(result);
   }

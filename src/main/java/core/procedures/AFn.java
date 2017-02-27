@@ -40,46 +40,34 @@ public abstract class AFn implements IFn<Object[], Object> {
     return maxArgs;
   }
 
-  public Class<?>[] mandatoryArgsTypes() {
-    return mandatoryArgsTypes;
-  }
-
-  public Class<?> restArgsType() {
-    return restArgsType;
-  }
-
-  public Class<?> lastArgType() {
-    return lastArgType;
-  }
-
   /* Return true if function is pure (referentially transparent) */
   public boolean isPure() {
     return false;
   }
 
   public Object apply0() {
-    throw new ArityException(0, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, 1);
   }
 
   public Object apply1(Object arg) {
-    throw new ArityException(1, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, 1);
   }
 
   public Object apply2(Object arg1, Object arg2) {
-    throw new ArityException(2, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, 2);
   }
 
   public Object apply3(Object arg1, Object arg2, Object arg3) {
-    throw new ArityException(3, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, 3);
   }
 
   public Object apply4(Object arg1, Object arg2, Object arg3, Object arg4) {
-    throw new ArityException(4, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, 4);
   }
 
   @Override
   public Object apply(Object... args) {
-    throw new ArityException(args.length, getName());
+    throw new ArityException(getName(), minArgs, maxArgs, args.length);
   }
 
   public String getName() {
@@ -97,52 +85,33 @@ public abstract class AFn implements IFn<Object[], Object> {
 
   /**
    * Checks the number of arguments and their types
-   * (if function is annotated with FnArgs)
    */
   private void checkArgs(List<Object> args) {
     /* Check arg count */
     int argsSize = args.size();
-    if (argsSize < minArgs) {
-      throw new ArityException(argsSize, minArgs, getName(), minArgs != maxArgs);
+    if (argsSize < minArgs || argsSize > maxArgs) {
+      throw new ArityException(getName(), minArgs, maxArgs, argsSize);
     }
-    if (argsSize > minArgs && (minArgs == maxArgs)) {
-      throw new ArityException(argsSize, minArgs, getName(), minArgs != maxArgs);
-    }
-    if (argsSize > maxArgs) {
-      throw new ArityException(argsSize, getName());
-    }
-
-    /* Get arg types */
-    Class<?> restType = null;
-    Class<?> lastType = null;
-    if (restArgsType != null) {
-      restType = restArgsType;
-    }
-    if (lastArgType != null) {
-      lastType = lastArgType;
-    }
-
-    /* Now check arg types (if function is annotated with FnArgs */
     for (int i = 0; i < argsSize; i++) {
       Object arg = args.get(i);
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
         if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
-          throw new WrongTypeException(Writer.write(mandatoryArgsTypes[i]), arg);
+          throw new WrongTypeException(getName(), Writer.write(mandatoryArgsTypes[i]), arg);
         }
         continue;
       }
       /* Last argument (optional special case) */
-      if (i == argsSize - 1 && (lastType != null)) {
-        if (!(SCMClass.checkType(arg, lastType))) {
-          throw new WrongTypeException(Writer.write(lastType), arg);
+      if (i == argsSize - 1 && (lastArgType != null)) {
+        if (!(SCMClass.checkType(arg, lastArgType))) {
+          throw new WrongTypeException(getName(), Writer.write(lastArgType), arg);
         }
         continue;
       }
       /* Rest args */
-      if (restType != null) {
-        if (!(SCMClass.checkType(arg, restType))) {
-          throw new WrongTypeException(Writer.write(restType), arg);
+      if (restArgsType != null) {
+        if (!(SCMClass.checkType(arg, restArgsType))) {
+          throw new WrongTypeException(getName(), Writer.write(restArgsType), arg);
         }
       }
     }
@@ -158,7 +127,7 @@ public abstract class AFn implements IFn<Object[], Object> {
     /* Check args */
     checkArgs(args);
     /* if minArgs == maxArgs, then function is not variadic, hence get arity */
-    int arity = (minArgs() == maxArgs()) ? minArgs() : -1;
+    int arity = (minArgs == maxArgs) ? minArgs : -1;
     switch (arity) {
       case 0:  return apply0();
       case 1:  return apply1(args.get(0));

@@ -6,12 +6,9 @@ import core.writer.Writer;
 
 public class WrongTypeException extends IllegalArgumentException implements ISCMClass {
 
-  public WrongTypeException(String expected, Object actual) {
-    super(String.format("Wrong argument type. Expected: %s, actual: %s", expected, Writer.write(actual)), null);
-  }
-
-  public WrongTypeException(String expected, Object actual, Throwable cause) {
-    super(String.format("Wrong argument type. Expected: %s, actual: %s", expected, Writer.write(actual)), cause);
+  public WrongTypeException(String name, String expected, Object given) {
+    super((name.isEmpty() ? "#<procedure>" : name) + ": type mismatch; " + "(" +
+           "expected: " + expected + ", given: " + Writer.write(given) + ")", null);
   }
 
   @Override

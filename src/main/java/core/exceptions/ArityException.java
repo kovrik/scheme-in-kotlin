@@ -5,22 +5,11 @@ import core.scm.SCMClass;
 
 public class ArityException extends IllegalArgumentException implements ISCMClass {
 
-  public ArityException(int actual, String name) {
-    this(actual, name, null);
-  }
-
-  public ArityException(int actual, int expected, String name, boolean variadic) {
-    this(actual, expected, name, null, variadic);
-  }
-
-  public ArityException(int actual, String name, Throwable cause) {
-    super("Wrong number of arguments (" + actual + ") passed to: " + (name.isEmpty() ? "#<procedure>" : name), cause);
-  }
-
-  public ArityException(int actual, int expected, String name, Throwable cause, boolean variadic) {
-    super("Wrong number of arguments (actual: " + actual +
-          ", expected: " + (variadic ? "at least " : "") + expected +
-          ") passed to: " + (name.isEmpty() ? "#<procedure>" : name), cause);
+  public ArityException(String name, int min, int max, int given) {
+    super((name.isEmpty() ? "#<procedure>" : name) + ": arity mismatch; " +
+           "the expected number of arguments does not match the given number " + "(" +
+           "expected: " + ((min == max) ? min : ((max > 255) ? "at least " + min : min + " to " + max)) +
+           ", given: " + given + ")", null);
   }
 
   @Override

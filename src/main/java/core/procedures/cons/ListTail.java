@@ -27,7 +27,7 @@ public final class ListTail extends AFn {
       return arg1;
     }
     if (!(arg1 instanceof List)) {
-      throw new WrongTypeException("List", arg1);
+      throw new WrongTypeException(getName(), "List", arg1);
     }
     List list = (List) arg1;
     if (p >= list.size() + 1) {

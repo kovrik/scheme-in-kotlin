@@ -27,7 +27,7 @@ public final class ListToString extends AFn {
     StringBuilder sb = new StringBuilder(cs.size());
     for (Object c : cs) {
       if (!(c instanceof Character)) {
-        throw new WrongTypeException("Character", c);
+        throw new WrongTypeException(getName(), "Character", c);
       }
       sb.append(c);
     }

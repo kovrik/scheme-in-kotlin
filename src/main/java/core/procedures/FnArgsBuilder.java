@@ -3,7 +3,11 @@ package core.procedures;
 public class FnArgsBuilder {
 
   private int minArgs = 0;
-  private int maxArgs = 255;
+  /* JVM restricts max number of arguments to 255
+   * If maxArgs is more than 255, then we assume that function accepts ANY number of arguments.
+   * If maxArgs is less or equal to 255, then we assume that function accepts exactly up to maxArgs arguments.
+   **/
+  private int maxArgs = Integer.MAX_VALUE;
   private Class<?>[] mandatoryArgsTypes = new Class[]{};
   private Class<?> restArgsType = null;
   private Class<?> lastArgType = null;

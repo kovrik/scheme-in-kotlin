@@ -84,13 +84,13 @@ public class IsProcedureTest extends AbstractTest {
       eval("(procedure?)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 0, expected: 1) passed to: procedure?", e.getMessage());
+      assertEquals("procedure?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.getMessage());
     }
     try {
       eval("(procedure? abs car)", env);
       fail();
     } catch (ArityException e) {
-      assertEquals("Wrong number of arguments (actual: 2, expected: 1) passed to: procedure?", e.getMessage());
+      assertEquals("procedure?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 2)", e.getMessage());
     }
   }
 }

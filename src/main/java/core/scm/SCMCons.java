@@ -18,9 +18,9 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     @Override
     public boolean isNull() { return true; }
     @Override
-    public Object car() { throw new WrongTypeException("Pair", NIL); }
+    public Object car() { throw new WrongTypeException("car", "Pair", NIL); }
     @Override
-    public Object cdr() { throw new WrongTypeException("Pair", NIL); }
+    public Object cdr() { throw new WrongTypeException("cdr", "Pair", NIL); }
     @Override
     public SCMClass getSCMClass() { return SCMClass.NIL; }
   };
@@ -60,7 +60,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   @Override
   public E car() {
     if (isEmpty()) {
-      throw new WrongTypeException("Pair", NIL);
+      throw new WrongTypeException("car", "Pair", NIL);
     }
     return getFirst();
   }
@@ -72,7 +72,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   public void setCdr(Object cdr) {
     if (isEmpty()) {
-      throw new WrongTypeException("Pair", NIL);
+      throw new WrongTypeException("set-cdr!", "Pair", NIL);
     }
     subList(1, size()).clear();
 

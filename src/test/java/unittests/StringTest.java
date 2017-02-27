@@ -56,7 +56,7 @@ public class StringTest extends AbstractTest {
       eval("(string 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("string: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
   }
 
@@ -74,26 +74,25 @@ public class StringTest extends AbstractTest {
       eval("(make-string \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: \"test\"",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("make-string: type mismatch; (expected: ExactNonNegativeInteger, given: \"test\")", e.getMessage());
     }
     try {
       eval("(make-string 2 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: 1", e.getMessage());
+      assertEquals("make-string: type mismatch; (expected: Character, given: 1)", e.getMessage());
     }
     try {
       eval("(make-string)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong number of arguments (actual: 0, expected: at least 1) passed to: make-string", e.getMessage());
+      assertEquals("make-string: arity mismatch; the expected number of arguments does not match the given number (expected: 1 to 2, given: 0)", e.getMessage());
     }
     try {
       eval("(make-string 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong number of arguments (3) passed to: make-string", e.getMessage());
+      assertEquals("make-string: arity mismatch; the expected number of arguments does not match the given number (expected: 1 to 2, given: 3)", e.getMessage());
     }
   }
 
@@ -103,19 +102,19 @@ public class StringTest extends AbstractTest {
       eval("(string-fill! \"\" #\\a)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: MutableString, actual: \"\"", e.getMessage());
+      assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"\")", e.getMessage());
     }
     try {
       eval("(string-fill! \"z\" #\\a)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: MutableString, actual: \"z\"", e.getMessage());
+      assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"z\")", e.getMessage());
     }
     try {
       eval("(string-fill! \"test1\" #\\a)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: MutableString, actual: \"test1\"", e.getMessage());
+      assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"test1\")", e.getMessage());
     }
 
     assertEquals(new SCMMutableString(""), eval("(string-fill! (make-string 0) #\\a)", env));
@@ -150,7 +149,7 @@ public class StringTest extends AbstractTest {
       eval("(string-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: String, actual: 1", e.getMessage());
+      assertEquals("string-length: type mismatch; (expected: String, given: 1)", e.getMessage());
     }
   }
 
@@ -163,7 +162,7 @@ public class StringTest extends AbstractTest {
       eval("(string->list (cons 1 2))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: String, actual: (1 . 2)", e.getMessage());
+      assertEquals("string->list: type mismatch; (expected: String, given: (1 . 2))", e.getMessage());
     }
   }
 
@@ -177,8 +176,7 @@ public class StringTest extends AbstractTest {
       eval("(string-ref \"test\" -1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("string-ref: type mismatch; (expected: ExactNonNegativeInteger, given: -1)", e.getMessage());
     }
     try {
       eval("(string-ref \"tes\" 3)", env);
@@ -196,14 +194,13 @@ public class StringTest extends AbstractTest {
       eval("(string-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: String, actual: (1 2 3)", e.getMessage());
+      assertEquals("string-ref: type mismatch; (expected: String, given: (1 2 3))", e.getMessage());
     }
     try {
       eval("(string-ref \"test\" 0.5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("string-ref: type mismatch; (expected: ExactNonNegativeInteger, given: 0.5)", e.getMessage());
     }
   }
 
@@ -218,15 +215,14 @@ public class StringTest extends AbstractTest {
       eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env);
       fail();
     } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: MutableString, actual: \"a\"", e.getMessage());
+      assertEquals("string-set!: type mismatch; (expected: MutableString, given: \"a\")", e.getMessage());
     }
 
     try {
       eval("(string-set! (string #\\a #\\b #\\c) -1 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("string-set!: type mismatch; (expected: ExactNonNegativeInteger, given: -1)", e.getMessage());
     }
     try {
       eval("(string-set! (string #\\a #\\b #\\c) 3 #\\z)", env);
@@ -244,20 +240,19 @@ public class StringTest extends AbstractTest {
       eval("(string-set! '(1 2 3) 2 #\\z)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: MutableString, actual: (1 2 3)", e.getMessage());
+      assertEquals("string-set!: type mismatch; (expected: MutableString, given: (1 2 3))", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 4) 0.5 #\\A)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("string-set!: type mismatch; (expected: ExactNonNegativeInteger, given: 0.5)", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 4) 3 '())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Character, actual: ()", e.getMessage());
+      assertEquals("string-set!: type mismatch; (expected: Character, given: ())", e.getMessage());
     }
   }
 
@@ -292,13 +287,13 @@ public class StringTest extends AbstractTest {
       eval("(symbol->string 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Symbol, actual: 1", e.getMessage());
+      assertEquals("symbol->string: type mismatch; (expected: Symbol, given: 1)", e.getMessage());
     }
     try {
       eval("(string->symbol 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: String, actual: 1", e.getMessage());
+      assertEquals("string->symbol: type mismatch; (expected: String, given: 1)", e.getMessage());
     }
   }
 

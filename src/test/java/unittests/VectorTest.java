@@ -38,15 +38,14 @@ public class VectorTest extends AbstractTest {
       eval("(make-vector 1 2 3)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong number of arguments (3) passed to: make-vector", e.getMessage());
+      assertEquals("make-vector: arity mismatch; the expected number of arguments does not match the given number (expected: 1 to 2, given: 3)", e.getMessage());
     }
 
     try {
       eval("(make-vector \"test\")", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: \"test\"",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("make-vector: type mismatch; (expected: ExactNonNegativeInteger, given: \"test\")", e.getMessage());
     }
   }
 
@@ -60,7 +59,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: 1", e.getMessage());
+      assertEquals("vector-length: type mismatch; (expected: Vector, given: 1)", e.getMessage());
     }
   }
 
@@ -75,8 +74,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector-ref (vector 1 2 3) -1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("vector-ref: type mismatch; (expected: ExactNonNegativeInteger, given: -1)", e.getMessage());
     }
     try {
       eval("(vector-ref (vector 1 2 3) 3)", env);
@@ -94,14 +92,13 @@ public class VectorTest extends AbstractTest {
       eval("(vector-ref '(1 2 3) 0)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
+      assertEquals("vector-ref: type mismatch; (expected: MutableVector, given: (1 2 3))", e.getMessage());
     }
     try {
       eval("(vector-ref (vector 1 2 3) 0.5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("vector-ref: type mismatch; (expected: ExactNonNegativeInteger, given: 0.5)", e.getMessage());
     }
   }
 
@@ -123,8 +120,7 @@ public class VectorTest extends AbstractTest {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: -1",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("vector-set!: type mismatch; (expected: ExactNonNegativeInteger, given: -1)", e.getMessage());
     }
 
     sexp = "(begin (define v (vector 1 2 3)) (vector-set! v 3 \"test\"))";
@@ -149,7 +145,7 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
+      assertEquals("vector-set!: type mismatch; (expected: MutableVector, given: (1 2 3))", e.getMessage());
     }
 
     sexp = "(begin (define v (vector 1 2)) (vector-set! v 0.5 \"test\"))";
@@ -157,8 +153,7 @@ public class VectorTest extends AbstractTest {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals(String.format("Wrong argument type. Expected: %s, actual: 0.5",
-                                 SCMClass.ExactNonNegativeInteger.class.getSimpleName()), e.getMessage());
+      assertEquals("vector-set!: type mismatch; (expected: ExactNonNegativeInteger, given: 0.5)", e.getMessage());
     }
   }
 
@@ -172,7 +167,7 @@ public class VectorTest extends AbstractTest {
       eval("(vector->list '(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: Vector, actual: (1 2 3)", e.getMessage());
+      assertEquals("vector->list: type mismatch; (expected: Vector, given: (1 2 3))", e.getMessage());
     }
   }
 
@@ -196,7 +191,7 @@ public class VectorTest extends AbstractTest {
       eval(sexp, env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Wrong argument type. Expected: MutableVector, actual: (1 2 3)", e.getMessage());
+      assertEquals("vector-fill!: type mismatch; (expected: MutableVector, given: (1 2 3))", e.getMessage());
     }
   }
 

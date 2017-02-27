@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 public final class GCD extends AFn {
 
+  private static final String NAME = "gcd";
   private static final Abs ABS = new Abs();
 
   public GCD() {
@@ -24,7 +25,7 @@ public final class GCD extends AFn {
 
   @Override
   public String getName() {
-    return "gcd";
+    return NAME;
   }
 
   @Override
@@ -49,10 +50,10 @@ public final class GCD extends AFn {
 
   static Number gcd(Double a, Double b) {
     if (a.isInfinite() || a.isNaN()) {
-      throw new WrongTypeException("Integer", a);
+      throw new WrongTypeException(NAME, "Integer", a);
     }
     if (b.isInfinite() || b.isNaN()) {
-      throw new WrongTypeException("Integer", b);
+      throw new WrongTypeException(NAME, "Integer", b);
     }
     if (a.longValue() != a || b.longValue() != b) {
       return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));

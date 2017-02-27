@@ -618,8 +618,8 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("`#(1 unquote 2)", env);
       fail();
-    } catch (WrongTypeException e) {
-      assertEquals("Wrong argument type. Expected: List, actual: (1 . 2)", e.getMessage());
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: illegal use of '.'", e.getMessage());
     }
   }
 
