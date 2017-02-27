@@ -14,14 +14,6 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     @Override
     public boolean isList() { return true; }
     @Override
-    public boolean isPair() { return false; }
-    @Override
-    public boolean isNull() { return true; }
-    @Override
-    public Object car() { throw new WrongTypeException("car", "Pair", NIL); }
-    @Override
-    public Object cdr() { throw new WrongTypeException("cdr", "Pair", NIL); }
-    @Override
     public SCMClass getSCMClass() { return SCMClass.NIL; }
   };
 
@@ -35,22 +27,18 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   private SCMCons(E car, E cdr) {
     super();
     add(car);
-    setCdr(cdr);
+    isList = isList(cdr);
+    if (isList) {
+      /* cons becomes a list */
+      addAll((List)cdr);
+    } else {
+      add(cdr);
+    }
   }
 
   @Override
   public boolean isList() {
     return isList;
-  }
-
-  @Override
-  public boolean isPair() {
-    return !NIL.equals(this);
-  }
-
-  @Override
-  public boolean isNull() {
-    return NIL.equals(this);
   }
 
   public void setIsList(boolean list) {
@@ -60,7 +48,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   @Override
   public E car() {
     if (isEmpty()) {
-      throw new WrongTypeException("car", "Pair", NIL);
+      throw new WrongTypeException("car", SCMClass.PAIR.getName(), NIL);
     }
     return getFirst();
   }
@@ -68,23 +56,6 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   @Override
   public Object cdr() {
     return isList ? subList(1, size()) : getLast();
-  }
-
-  public void setCdr(Object cdr) {
-    if (isEmpty()) {
-      throw new WrongTypeException("set-cdr!", "Pair", NIL);
-    }
-    subList(1, size()).clear();
-
-    /* Add all elements only if it is a list (not cons) */
-    if (isList(cdr)) {
-      /* cons becomes a list */
-      setIsList(true);
-      addAll((List)cdr);
-    } else {
-      setIsList(false);
-      add((E)cdr);
-    }
   }
 
   /* Convert list to improper list (dotted pair, cons cells) */
