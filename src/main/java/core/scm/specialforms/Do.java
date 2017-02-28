@@ -88,7 +88,7 @@ public enum Do implements ISpecialForm {
       freshLocations.entrySet().forEach(e -> tempEnv.put(e.getKey(), e.getValue()));
     }
     /* Test evaluated to #f */
-    return Begin.BEGIN.eval(clause.subList(1, clause.size()), tempEnv, evaluator);
+    return Begin.BEGIN.eval(clause, tempEnv, evaluator);
   }
 
   @Override
