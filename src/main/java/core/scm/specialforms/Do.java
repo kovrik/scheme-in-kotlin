@@ -23,38 +23,35 @@ public enum Do implements ISpecialForm {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-
+    // TODO Replace with call to LET
+    /* Init bindings */
     Object bs = expression.get(1);
     if (!(bs instanceof List)) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     Environment tempEnv = new Environment(env);
-    List bindings = (List) bs;
     List<SCMCons> steps = SCMCons.list();
-    // TODO Replace with call to LET
-    /* Init bindings */
-    for (Object binding : bindings) {
-      if (!(binding instanceof List)) {
+    for (Object b : (List)bs) {
+      if (!(b instanceof List)) {
         throw IllegalSyntaxException.of(toString(), expression);
       }
+      List binding = (List)b;
       /* Check that init value exists */
-      if (((List)binding).size() < 2) {
+      if ((binding).size() < 2) {
         throw IllegalSyntaxException.of(toString(), expression);
       }
-      Object variable = ((List) binding).get(0);
-      Object init = ((List) binding).get(1);
-      Object step;
-      if (((List) binding).size() == 3) {
-        step = ((List) binding).get(2);
+      Object var  = binding.get(0);
+      Object init = binding.get(1);
+      if (binding.size() == 3) {
         /* Put pair of Var and Step */
-        steps.add(SCMCons.cons(variable, step));
+        Object step = binding.get(2);
+        steps.add(SCMCons.cons(var, step));
       }
       /* Check that we have no duplicates among variables */
-      if (!tempEnv.containsKey(variable)) {
-        tempEnv.put(variable, evaluator.eval(init, tempEnv));
-      } else {
+      if (tempEnv.containsKey(var)) {
         throw IllegalSyntaxException.of(Let.LET.toString(), expression, "duplicate identifier");
       }
+      tempEnv.put(var, evaluator.eval(init, tempEnv));
     }
 
     Object cl = expression.get(2);
@@ -65,7 +62,6 @@ public enum Do implements ISpecialForm {
     if (clause.isEmpty()) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-
     Object test = clause.get(0);
     List body = expression.subList(3, expression.size());
     /* While test evaluates to #f */
