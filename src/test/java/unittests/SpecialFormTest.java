@@ -5,7 +5,6 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantPromiseException;
-import core.exceptions.WrongTypeException;
 import core.procedures.io.Display;
 import core.scm.*;
 import core.scm.specialforms.Quote;
@@ -16,10 +15,10 @@ import java.io.PrintStream;
 
 import static core.scm.SCMCons.*;
 import static core.scm.SCMConstant.UNSPECIFIED;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static java.lang.Boolean.TRUE;
-import static java.lang.Boolean.FALSE;
 
 public class SpecialFormTest extends AbstractTest {
 
@@ -322,7 +321,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(do ((a 1) (b 2) (a 3)) (= 1 1) 5)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: bad syntax (duplicate identifier) in form: (do ((a 1) (b 2) (a 3)) (= 1 1) 5)", e.getMessage());
+      assertEquals("let: bad syntax (duplicate identifier: a) in form: (do ((a 1) (b 2) (a 3)) (= 1 1) 5)", e.getMessage());
     }
     /* Check that each iteration establishes bindings to fresh locations
      * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
@@ -341,7 +340,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: bad syntax (duplicate identifier `c`) in form: (let ((c 123) (c (+ 400 30 2))) (+ c b))",
+      assertEquals("let: bad syntax (duplicate identifier: c) in form: (let ((c 123) (c (+ 400 30 2))) (+ c b))",
                    e.getMessage());
     }
     try {
@@ -366,7 +365,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("let: bad syntax (duplicate identifier `n`) in form: (let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", e.getMessage());
+      assertEquals("let: bad syntax (duplicate identifier: n) in form: (let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", e.getMessage());
     }
   }
 
@@ -640,13 +639,13 @@ public class SpecialFormTest extends AbstractTest {
       eval("(lambda (a a) a)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("lambda: bad syntax (duplicate argument identifier `a`) in form: (lambda (a a) a)", e.getMessage());
+      assertEquals("lambda: bad syntax (duplicate argument name: a) in form: (lambda (a a) a)", e.getMessage());
     }
     try {
       eval("(define (a b b) b)", env);
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("lambda: bad syntax (duplicate argument identifier `b`) in form: (lambda (b b) b)", e.getMessage());
+      assertEquals("lambda: bad syntax (duplicate argument name: b) in form: (lambda (b b) b)", e.getMessage());
     }
   }
 }

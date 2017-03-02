@@ -49,7 +49,7 @@ public enum Do implements ISpecialForm {
       }
       /* Check that we have no duplicates among variables */
       if (tempEnv.containsKey(var)) {
-        throw IllegalSyntaxException.of(Let.LET.toString(), expression, "duplicate identifier");
+        throw IllegalSyntaxException.of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", var));
       }
       tempEnv.put(var, evaluator.eval(init, tempEnv));
     }

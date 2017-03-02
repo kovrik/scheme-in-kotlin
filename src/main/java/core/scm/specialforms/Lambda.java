@@ -37,7 +37,7 @@ public enum Lambda implements ISpecialForm {
         HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
           if (temp.contains(o)) {
-            throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument identifier `%s`", o));
+            throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument name: %s", o));
           }
           temp.add(o);
         }

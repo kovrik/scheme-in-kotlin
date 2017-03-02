@@ -8,7 +8,6 @@ import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 /* Syntax:
@@ -33,7 +32,7 @@ public enum Let implements ISpecialForm {
       bindings.forEach(b -> {
         Object var = b.get(0);
         if (localEnv.get(var) != null) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier `%s`", var));
+          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", var));
         }
         Object init = b.get(1);
         localEnv.put(var, evaluator.eval(init, env));
@@ -57,7 +56,7 @@ public enum Let implements ISpecialForm {
       bindings.forEach(b -> {
         Object arg = b.get(0);
         if (lambdaArgs.contains(arg)) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier `%s`", arg));
+          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", arg));
         }
         lambdaArgs.add(arg);
         initValues.add(b.get(1));
