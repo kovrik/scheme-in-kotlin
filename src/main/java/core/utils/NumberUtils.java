@@ -363,9 +363,8 @@ public class NumberUtils {
       return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
     } else if (o instanceof Float) {
       return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
-    } else {
-      return true;
     }
+    return true;
   }
 
   public static boolean isExact(Object o) {

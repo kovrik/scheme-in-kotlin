@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.exceptions.WrongTypeException;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.procedures.vectors.ListToVector;
