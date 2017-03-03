@@ -624,6 +624,9 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testTime() {
+    SCMOutputPort old = Repl.getCurrentOutputPort();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
     String form = "(time" +
                   " (define (perf n)" +
                   "   (if (zero? n)" +
@@ -631,6 +634,7 @@ public class SpecialFormTest extends AbstractTest {
                   "     (perf (- n 1))))" +
                   " (perf 10000))";
     assertEquals("DONE", eval(form, env));
+    Repl.setCurrentOutputPort(old);
   }
 
   @Test
