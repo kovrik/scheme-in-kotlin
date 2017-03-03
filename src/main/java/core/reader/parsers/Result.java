@@ -14,7 +14,7 @@ public class Result {
   private List<String> match = new ArrayList<>();
   private final String rest;
 
-  public Result(String match, Type type, String rest) {
+  Result(String match, Type type, String rest) {
     if (match != null) {
       addMatch(match);
     }
@@ -22,13 +22,13 @@ public class Result {
     this.rest = rest;
   }
 
-  public Result(List<String> match, Type type, String rest) {
+  private Result(List<String> match, Type type, String rest) {
     this.match = match;
     this.type = type;
     this.rest = rest;
   }
 
-  public List<String> addMatch(String match) {
+  private List<String> addMatch(String match) {
     this.match.add(match);
     return this.match;
   }
@@ -45,7 +45,7 @@ public class Result {
     return rest;
   }
 
-  public Result merge(Result other) {
+  Result merge(Result other) {
     if (type == Type.FAILURE || other.getType() == Type.FAILURE) {
       throw new UnsupportedOperationException("Can't merge failed parse results!");
     }
@@ -53,7 +53,7 @@ public class Result {
     return new Result(match, Type.SUCCESS, other.getRest());
   }
 
-  public static Result failure(String input) {
+  static Result failure(String input) {
     return new Result((String)null, Type.FAILURE, input);
   }
 
