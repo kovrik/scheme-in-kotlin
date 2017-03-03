@@ -28,7 +28,6 @@ public class ReaderTest {
     assertEquals(12345L, reader.readFirst("12345"));
     assertEquals(-12345L, reader.readFirst("-12345"));
     assertEquals(0L, reader.readFirst("0"));
-
     assertEquals(0.5d, reader.readFirst("0.5"));
     assertEquals(-0.5d, reader.readFirst("-0.5"));
     assertEquals(0.0d, reader.readFirst("0.0"));
@@ -37,7 +36,6 @@ public class ReaderTest {
     assertEquals(-1235.0d, reader.readFirst("-1235."));
     assertEquals(.5d, reader.readFirst(".5"));
     assertEquals(-.5d, reader.readFirst("-.5"));
-
     assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#e#d-.5"));
     assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#E#d-.5"));
     assertEquals(+4.5d, reader.readFirst("#i#d+4.5"));
@@ -51,36 +49,6 @@ public class ReaderTest {
     assertEquals(455L, reader.readFirst("#o0707"));
     assertEquals(585L, reader.readFirst("#o1111"));
     assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
-    try {
-      reader.readFirst("#o9999");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #o9999", e.getMessage());
-    }
-    try {
-      reader.readFirst("#df999");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #df999", e.getMessage());
-    }
-    try {
-      reader.readFirst("#xz999");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #xz999", e.getMessage());
-    }
-    try {
-      reader.readFirst("#b2222");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #b2222", e.getMessage());
-    }
-    try {
-      reader.readFirst("#d+5+5");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: bad number: #d+5+5", e.getMessage());
-    }
     assertEquals(SCMSymbol.of("+5+5"), reader.readFirst("+5+5"));
     assertEquals(255.99609375, reader.readFirst("#d255.99609375"));
     assertEquals(255.99609375, reader.readFirst("#xff.ff"));
@@ -103,6 +71,16 @@ public class ReaderTest {
     assertEquals(new SCMBigRational("1500", BigInteger.ONE), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
     assertEquals(new SCMBigRational("3", "4"), reader.readFirst("#e3/4"));
+    String[] badNumbers = {"#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1",
+                           "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1"};
+    for (String bad : badNumbers) {
+      try {
+        reader.readFirst(bad);
+        fail();
+      } catch (IllegalSyntaxException e) {
+        assertEquals("read: bad number: " + bad, e.getMessage());
+      }
+    }
   }
 
   @Test
@@ -170,41 +148,14 @@ public class ReaderTest {
 
   @Test
   public void testReadDot() {
-    try {
-      reader.readFirst(".");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
-    try {
-      reader.readFirst("#(1 . 2)");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
-    try {
-      reader.readFirst("'(. 1)");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
-    try {
-      reader.readFirst("'(. 1 2)");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
-    try {
-      reader.readFirst("'(0 . 1 2 . 4)");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
-    try {
-      reader.readFirst("'(0 1 . 2 4)");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
+    String[] illegals = {".", "#(1 . 2)", "'(. 1)", "'(. 1 2)", "'(0 . 1 2 . 4)", "'(0 1 . 2 4)"};
+    for (String illegal : illegals) {
+      try {
+        reader.readFirst(illegal);
+        fail();
+      } catch (IllegalSyntaxException e) {
+        assertEquals("read: illegal use of '.'", e.getMessage());
+      }
     }
   }
 

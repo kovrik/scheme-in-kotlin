@@ -2,14 +2,11 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.reader.parsers.Result;
 import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
-import java.util.List;
-
-import static core.utils.NumberUtils.EXACTNESS_RADIX;
-import static core.utils.NumberUtils.RADIX_EXACTNESS;
+import static core.reader.Reader.isExactness;
+import static core.reader.Reader.isRadix;
 
 public final class StringToNumber extends AFn {
 
@@ -32,27 +29,29 @@ public final class StringToNumber extends AFn {
     boolean override = false;
     Character radixChar = null;
     Character exactness = null;
-    Result parse = EXACTNESS_RADIX.parse(number);
-    if (parse.getType() == Result.Type.SUCCESS) {
-      List<String> match = parse.getMatch();
-      exactness = match.get(0).charAt(1);
-      if (match.size() > 1) {
-        override = true;
-        radixChar = match.get(1).charAt(1);
-      }
-    } else {
-      parse = RADIX_EXACTNESS.parse(number);
-      if (parse.getType() == Result.Type.SUCCESS) {
-        override = true;
-        List<String> match = parse.getMatch();
-        radixChar = match.get(0).charAt(1);
-        if (match.size() > 1) {
-          exactness = match.get(1).charAt(1);
+    String restNumber = number;
+    while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
+      char ch = restNumber.charAt(1);
+      if (isExactness.test(ch)) {
+        if (exactness != null) {
+          return Boolean.FALSE;
         }
+        exactness = ch;
+        restNumber = restNumber.substring(2);
+        continue;
       }
+      if (isRadix.test(ch)) {
+        if (radixChar != null) {
+          return Boolean.FALSE;
+        }
+        radixChar = ch;
+        restNumber = restNumber.substring(2);
+        override = true;
+        continue;
+      }
+      break;
     }
-    number = parse.getRest();
-    if (number.isEmpty()) {
+    if (restNumber.isEmpty()) {
       return Boolean.FALSE;
     }
 
@@ -71,7 +70,7 @@ public final class StringToNumber extends AFn {
     }
 
     /* Read number */
-    Object result = NumberUtils.preProcessNumber(number, exactness, radix);
+    Object result = NumberUtils.preProcessNumber(restNumber, exactness, radix);
     if (result instanceof Number) {
       return result;
     }

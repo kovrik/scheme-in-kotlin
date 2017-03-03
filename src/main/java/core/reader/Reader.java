@@ -1,10 +1,9 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
-import core.reader.parsers.Result;
 import core.scm.SCMCons;
-import core.scm.SCMSymbol;
 import core.scm.SCMMutableVector;
+import core.scm.SCMSymbol;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import core.scm.specialforms.Unquote;
@@ -49,10 +48,10 @@ public class Reader implements IReader {
   }
 
   private static final Predicate<Integer>   isValid     = i -> i > -1 && i < 65535;
-  private static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
+  public  static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
   public  static final Predicate<Character> isExact     = c -> c == 'e' || c == 'E';
   public  static final Predicate<Character> isInexact   = c -> c == 'i' || c == 'I';
-  private static final Predicate<Character> isExactness = c -> isExact.test(c) || isInexact.test(c);
+  public  static final Predicate<Character> isExactness = c -> isExact.test(c) || isInexact.test(c);
 
   PushbackReader reader;
 
@@ -179,32 +178,37 @@ public class Reader implements IReader {
       reader.unread('#');
       /* Read identifier, not a number */
       String number = readIdentifier().toString();
-
+      if (number.length() == 1) {
+        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+      }
       /* Read radix and/or exactness and a number */
       Character radixChar = null;
       Character exactness = null;
-      Result parse = EXACTNESS_RADIX.parse(number);
-      if (parse.getType() == Result.Type.SUCCESS) {
-        List<String> match = parse.getMatch();
-        exactness = match.get(0).charAt(1);
-        if (match.size() > 1) {
-          radixChar = match.get(1).charAt(1);
-        }
-      } else {
-        parse = RADIX_EXACTNESS.parse(number);
-        if (parse.getType() == Result.Type.SUCCESS) {
-          List<String> match = parse.getMatch();
-          radixChar = match.get(0).charAt(1);
-          if (match.size() > 1) {
-            exactness = match.get(1).charAt(1);
+      String restNumber = number;
+      while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
+        char ch = restNumber.charAt(1);
+        if (isExactness.test(ch)) {
+          if (exactness != null) {
+            throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
           }
+          exactness = ch;
+          restNumber = restNumber.substring(2);
+          continue;
         }
+        if (isRadix.test(ch)) {
+          if (radixChar != null) {
+            throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+          }
+          radixChar = ch;
+          restNumber = restNumber.substring(2);
+          continue;
+        }
+        break;
       }
       radixChar = (radixChar == null) ? 'd' : radixChar;
 
-      String restNumber = parse.getRest();
       if (restNumber.isEmpty() || "+".equals(restNumber) || "-".equals(restNumber)) {
-        throw new IllegalSyntaxException("read: bad number (no digits)");
+        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
       }
 
       /* Check if this is a proper number */

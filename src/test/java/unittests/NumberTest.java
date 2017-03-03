@@ -662,6 +662,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(FALSE, eval("(string->number \"##e\")", env));
     assertEquals(FALSE, eval("(string->number \"###\")", env));
     assertEquals(FALSE, eval("(string->number \"###e\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e##\")", env));
     assertEquals(FALSE, eval("(string->number \"#e#e\")", env));
     assertEquals(FALSE, eval("(string->number \"eeef\")", env));
     assertEquals(FALSE, eval("(string->number \"#e#i1\")", env));

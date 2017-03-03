@@ -6,7 +6,6 @@ import core.procedures.math.Multiplication;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
 import core.reader.Reader;
-import core.reader.parsers.StringParser;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
@@ -31,12 +30,6 @@ public class NumberUtils {
   public static final MathContext DEFAULT_CONTEXT = new MathContext(DEFAULT_SCALE, ROUNDING_MODE);
 
   public static final BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995");
-
-  private static final StringParser EXACTNESS = StringParser.choice("#e", "#i", "#E", "#I");
-  private static final StringParser RADIX = StringParser.choice("#b", "#o", "#d", "#x", "#B", "#O", "#D", "#X");
-
-  public static final StringParser EXACTNESS_RADIX = EXACTNESS.andThenMaybe(RADIX);
-  public static final StringParser RADIX_EXACTNESS = RADIX.andThenMaybe(EXACTNESS);
 
   private static final Pattern HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$");
 
