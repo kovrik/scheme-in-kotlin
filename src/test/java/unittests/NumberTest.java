@@ -655,6 +655,18 @@ public class NumberTest extends AbstractTest {
     assertEquals(100.0, eval("(string->number \"1e2\")", env));
     assertEquals(new BigDecimal("0.5"), eval("(string->number \"#b1e-1\")", env));
     assertEquals(new BigDecimal("6161212520618990239744.0"), eval("(string->number \"#o1234e+25\")", env));
+    assertEquals(FALSE, eval("(string->number \"#\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e\")", env));
+    assertEquals(FALSE, eval("(string->number \"##\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e#\")", env));
+    assertEquals(FALSE, eval("(string->number \"##e\")", env));
+    assertEquals(FALSE, eval("(string->number \"###\")", env));
+    assertEquals(FALSE, eval("(string->number \"###e\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e#e\")", env));
+    assertEquals(FALSE, eval("(string->number \"eeef\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e#i1\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e#b#\")", env));
+    assertEquals(FALSE, eval("(string->number \"#e#i#e\")", env));
     try {
       eval("(string->number \"#b1e5\")", env);
       fail();

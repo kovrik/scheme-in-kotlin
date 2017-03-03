@@ -52,6 +52,9 @@ public final class StringToNumber extends AFn {
       }
     }
     number = parse.getRest();
+    if (number.isEmpty()) {
+      return Boolean.FALSE;
+    }
 
     radixChar = (radixChar == null) ? 'd' : radixChar;
     int radix = NumberUtils.getRadixByChar(radixChar);
