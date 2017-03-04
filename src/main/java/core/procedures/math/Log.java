@@ -37,14 +37,14 @@ public final class Log extends AFn {
       return ((SCMBigComplex)number).log();
     }
     if (number instanceof Double) {
-      if ((Double.isNaN((Double) number)) || (Double.isInfinite((Double) number))) {
-        return number;
-      }
       return Math.log(number.doubleValue());
     }
     if (number instanceof Long) {
       if (number.longValue() == 0) {
         throw new ArithmeticException("log: undefined for 0");
+      }
+      if (number.longValue() == 1) {
+        return 0L;
       }
       return Math.log(number.doubleValue());
     }

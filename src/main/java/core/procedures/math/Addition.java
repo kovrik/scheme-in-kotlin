@@ -26,6 +26,15 @@ public final class Addition extends AFn {
     return "+";
   }
 
+  @Override
+  public Number apply(Object... args) {
+    switch (args.length) {
+      case 0:  return 0L;
+      case 1:  return (Number)args[0];
+      default: return (Number) Arrays.stream(args).reduce(0L, (f, s) -> add((Number)f, (Number)s));
+    }
+  }
+
   public static Number add(Number first, Number second) {
     /* Special cases */
     if (NumberUtils.isZero(first)) {
@@ -78,10 +87,5 @@ public final class Addition extends AFn {
       return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
     }
     return result;
-  }
-
-  @Override
-  public Number apply(Object... args) {
-    return (Number)Arrays.stream(args).reduce(0L, (f, s) -> add((Number)f, (Number)s));
   }
 }

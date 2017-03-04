@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TCOTest extends AbstractTest {
 
-  private final Long iterations = 100000L;
+  private static final long ITERS = 100000L;
 
   @Test
   public void testIfTCO() {
@@ -16,25 +16,21 @@ public class TCOTest extends AbstractTest {
                        "      \"DONE\"" +
                        "      (recursive (- n 1))))";
     eval(recursive, env);
-
-    assertEquals("DONE", eval("(recursive 5)", env));
-    assertEquals("DONE", eval("(recursive " + iterations + ")", env));
+    assertEquals("DONE", eval("(recursive " + ITERS + ")", env));
   }
 
   @Test
   public void testOrTCO() {
     String recursive = "(define (recOr n) (or (zero? n) (recOr (- n 1))))";
     eval(recursive, env);
-
-    assertEquals(TRUE, eval("(recOr 5)", env));
-    assertEquals(TRUE, eval("(recOr " + iterations + ")", env));
+    assertEquals(TRUE, eval("(recOr " + ITERS + ")", env));
   }
 
   @Test
   public void testDefineAndBeginTCO() {
-    String recursive = "(define (foo n) (if (= n " + iterations+ ") n (foo (+ n 1)))";
+    String recursive = "(define (foo n) (if (= n " + ITERS+ ") n (foo (+ n 1)))";
     eval(recursive, env);
-    assertEquals(iterations, eval("(foo 5)", env));
+    assertEquals(ITERS, eval("(foo 5)", env));
   }
 
   // TODO Tests for other Special Forms

@@ -51,9 +51,13 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    /* Try to downcast big numbers */
+    /* Try to downcast Big Numbers */
     if (result instanceof BigDecimal) {
       result = NumberUtils.tryToDowncast((BigDecimal) result);
+    }
+    /* Try to downcast Rationals */
+    if ((result instanceof SCMBigRational) && (((SCMBigRational) result).isDenominatorEqualToOne())) {
+      result = NumberUtils.tryToDowncast(((SCMBigRational) result).getNumerator());
     }
     return result;
   }

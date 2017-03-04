@@ -35,7 +35,10 @@ public final class Subtraction extends AFn {
       if (args[0] instanceof SCMBigRational) {
         return ((SCMBigRational)args[0]).negate();
       }
-      return apply(0L, args[0]);
+      if (args[0] instanceof Long) {
+        return Math.negateExact(((Long)args[0]));
+      }
+      return subtract(0L, (Number)args[0]);
     }
     return Arrays.stream(args).reduce((f, s) -> subtract((Number)f, (Number)s)).get();
   }

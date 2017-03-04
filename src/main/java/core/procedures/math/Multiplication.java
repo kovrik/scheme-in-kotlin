@@ -28,7 +28,11 @@ public final class Multiplication extends AFn {
 
   @Override
   public Number apply(Object... args) {
-    return (Number) Arrays.stream(args).reduce(1L, (f, s) -> apply((Number)f, (Number)s));
+    switch (args.length) {
+      case 0:  return 1L;
+      case 1:  return (Number)args[0];
+      default: return (Number) Arrays.stream(args).reduce(1L, (f, s) -> apply((Number)f, (Number)s));
+    }
   }
 
   public static Number apply(Number first, Number second) {

@@ -25,6 +25,14 @@ public final class Max extends AFn {
     return "max";
   }
 
+  @Override
+  public Number apply(Object... args) {
+    if (args.length == 1) {
+      return (Number) args[0];
+    }
+    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> max((Number)f, (Number)s));
+  }
+
   private Number max(Number first, Number second) {
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
@@ -50,10 +58,5 @@ public final class Max extends AFn {
       return ((BigDecimal)second).max(new BigDecimal(first.toString()));
     }
     return Math.max(first.doubleValue(), second.doubleValue());
-  }
-
-  @Override
-  public Number apply(Object... args) {
-    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> max((Number)f, (Number)s));
   }
 }

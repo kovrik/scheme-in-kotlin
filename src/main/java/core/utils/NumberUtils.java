@@ -578,6 +578,14 @@ public class NumberUtils {
     return number;
   }
 
+  public static Number tryToDowncast(BigInteger number) {
+    try {
+      return number.longValueExact();
+    } catch (ArithmeticException e) {
+      return new BigDecimal(number);
+    }
+  }
+
   public static boolean isFinite(Number number) {
     if (number instanceof Double) {
       return Double.isFinite((Double) number);

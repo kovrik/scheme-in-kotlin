@@ -82,7 +82,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(5.0, eval("(/ 10.0 2)", env));
     assertEquals(new SCMBigRational(BigInteger.ONE, BigInteger.TEN), eval("(/ 10)", env));
     assertEquals(new SCMBigRational("13", "4"), eval("(/ 13 4)", env));
-    assertEquals(new SCMBigRational("2", BigInteger.ONE), eval("(/ 10 5)", env));
+    assertEquals(2L, eval("(/ 10 5)", env));
     assertEquals(2d, eval("(/ 10.0 5)", env));
     assertEquals(2d, eval("(/ 10 5.0)", env));
 
@@ -479,6 +479,7 @@ public class NumberTest extends AbstractTest {
 
     assertEquals(new BigDecimal("9066296685449845496062520942090242184133343279738102243137866423949"),
                  eval("(lcm (expt 17 34) (expt 21 19))", env));
+    assertEquals(12L, eval("(lcm 1/2 4/5 3/56)", env));
   }
 
   @Test
@@ -549,7 +550,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(TRUE, eval(String.format("(number? %s)", big0), env));
     assertEquals(TRUE, eval(String.format("(complex? %s)", big0), env));
 
-    assertEquals(new SCMBigRational(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
+    assertEquals(new BigDecimal(big0), eval(String.format("(* (/ %s 10) 10)", big0), env));
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")), eval(String.format("(+ %s %s)", big0, big0), env));
     assertEquals(new BigDecimal(big0).multiply(new BigDecimal("2")).subtract(new BigDecimal(big0)),
         eval(String.format("(- (* 2 %s) %s)", big0, big0), env));
@@ -834,7 +835,7 @@ public class NumberTest extends AbstractTest {
 
   @Test
   public void testLog() {
-    assertEquals(0d, eval("(log 1)", env));
+    assertEquals(0L, eval("(log 1)", env));
     assertEquals(2.3978952727983707, eval("(log 11)", env));
     assertEquals(Double.NaN, eval("(log -1)", env));
     assertEquals(-0.2876820724517809, eval("(log 3/4)", env));
@@ -842,6 +843,8 @@ public class NumberTest extends AbstractTest {
     assertEquals(20.72326583594641, eval("(log 999999999)", env));
     assertEquals(Double.NaN, eval("(log -999999999)", env));
     assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env));
+    assertEquals(110.52408446371419, eval("(log 999999999999999999999999999999999999999999999999)", env));
+    assertEquals(135.8525204866487, eval("(log 99999999999999999999999999999999999999999999999999999999999)", env));
     try {
       assertEquals(1L, eval("(log 0)", env));
       fail();

@@ -25,6 +25,14 @@ public final class Min extends AFn {
     return "min";
   }
 
+  @Override
+  public Number apply(Object... args) {
+    if (args.length == 1) {
+      return (Number) args[0];
+    }
+    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> min((Number)f, (Number)s));
+  }
+
   private Number min(Number first, Number second) {
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return ((SCMBigRational)first).compareTo((SCMBigRational)second) < 0 ? first : second;
@@ -48,10 +56,5 @@ public final class Min extends AFn {
       return ((BigDecimal)second).min(new BigDecimal(first.toString()));
     }
     return Math.min(first.doubleValue(), second.doubleValue());
-  }
-
-  @Override
-  public Number apply(Object... args) {
-    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> min((Number)f, (Number)s));
   }
 }
