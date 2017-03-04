@@ -12,8 +12,8 @@ public class NotTest extends AbstractTest {
   @Test
   public void testNot() {
     assertEquals(TRUE,  eval("(not #f)", env));
-    assertEquals(FALSE, eval("(not #t)", env));
     assertEquals(TRUE,  eval("(not (not #t))", env));
+    assertEquals(FALSE, eval("(not #t)", env));
     assertEquals(FALSE, eval("(not 0)", env));
     assertEquals(FALSE, eval("(not 1)", env));
     assertEquals(FALSE, eval("(not '())", env));

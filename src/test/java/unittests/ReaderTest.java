@@ -18,7 +18,7 @@ import static core.scm.specialforms.Lambda.LAMBDA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class ReaderTest {
+public class ReaderTest extends AbstractTest {
 
   private final StringReader reader = new StringReader();
 
@@ -86,15 +86,15 @@ public class ReaderTest {
   @Test
   public void testReadComplex() {
     assertEquals(0L, reader.readFirst("0+0i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("0+i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("-0+i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(1)),  reader.readFirst("+i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(0),  new BigDecimal(-1)), reader.readFirst("-i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  reader.readFirst("1+2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(-2)), reader.readFirst("1-2i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("0+i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("-0+i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("+i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  new BigDecimal(-1)), reader.readFirst("-i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  reader.readFirst("1+2i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(-2)), reader.readFirst("1-2i"));
     assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  reader.readFirst("-1+2i"));
     assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(-2)), reader.readFirst("-1-2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  reader.readFirst("#e1+2i"));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  reader.readFirst("#e1+2i"));
     assertEquals(new SCMBigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")),  reader.readFirst("#i1+2i"));
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
@@ -281,9 +281,5 @@ public class ReaderTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("read: unknown escape sequence \\x in string", e.getMessage());
     }
-  }
-
-  private static SCMSymbol s(String str) {
-    return SCMSymbol.of(str);
   }
 }

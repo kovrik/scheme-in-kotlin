@@ -100,7 +100,11 @@ public class EqualTest extends AbstractTest {
     assertEquals(TRUE, eval("(equal? + ((lambda (a) a) +))", env));
     assertEquals(TRUE, eval("(let ((x \"hi\")) (define (hi) x) (equal? (hi) (hi)))", env));
     assertEquals(TRUE, eval("(equal? 'a (string->symbol \"a\"))", env));
-
-//    (test (equal? 3-4i 3-4i) TRUE
+    assertEquals(TRUE, eval("(equal? 3-4i 3-4i))", env));
+    assertEquals(TRUE, eval("(equal? 0+0i 0+0i))", env));
+    assertEquals(FALSE, eval("(equal? 1+3i 2+4i))", env));
+    assertEquals(TRUE, eval("(equal? 3/4 3/4))", env));
+    assertEquals(TRUE, eval("(equal? 30/40 3/4))", env));
+    assertEquals(FALSE, eval("(equal? 31/40 3/4))", env));
   }
 }

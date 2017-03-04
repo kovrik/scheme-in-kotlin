@@ -59,9 +59,5 @@ public class EqvTest extends AbstractTest {
     assertEquals(FALSE, eval("(eqv? ''() '())", env));
     assertEquals(TRUE, eval("(eqv? '#f #f)", env));
     assertEquals(TRUE, eval("(eqv? '#f '#f)", env));
-
-//    assertEquals(TRUE, eval("(eqv? 'a (string->symbol "a"))", env));
-//    assertEquals(, "(eqv? (integer->char 255) (string-ref (string #\x (integer->char 255) #\x) 1)) #t)
-//    assertEquals(, "(eqv? (integer->char #xf0) (integer->char #x70)) #f)
   }
 }

@@ -13,12 +13,18 @@ public class SCMRationalTest extends AbstractTest {
     assertEquals(SCMBigRational.ZERO, eval("0/1", env));
     assertEquals(SCMBigRational.ZERO, eval("0000/1111", env));
     assertEquals(SCMBigRational.ZERO, eval("-0000/1111", env));
-
     try {
       eval("1/0", env);
       fail();
     } catch (ArithmeticException e) {
       assertEquals("/ by zero", e.getMessage());
     }
+  }
+
+  @Test
+  public void testOne() {
+    assertEquals(SCMBigRational.ONE, eval("1/1", env));
+    assertEquals(SCMBigRational.ONE, eval("1111/1111", env));
+    assertEquals(SCMBigRational.ONE, eval("12345/12345", env));
   }
 }

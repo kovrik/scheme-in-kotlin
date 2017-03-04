@@ -1,7 +1,6 @@
 package unittests.s7.tests;
 
 import core.procedures.cons.ConsProc;
-import core.scm.SCMSymbol;
 import org.junit.Test;
 import unittests.AbstractTest;
 
@@ -16,9 +15,6 @@ public class QuasiquoteTest extends AbstractTest {
 
   @Test
   public void testQuasiquote() {
-//    assertEquals(list(1L), eval("`(1 ,@())", env));  // r6rs, not r5rs?
-//    assertEquals(list(1L), eval("`(1 . ,())", env)); // ???
-
     assertEquals(list(1L, 2L, 3L), eval("`(1 2 3)", env));
     assertEquals(NIL, eval("`()", env));
     assertEquals(list(s("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
@@ -62,9 +58,5 @@ public class QuasiquoteTest extends AbstractTest {
     } catch (Exception e) {
       assertEquals("Unbound variable: @", e.getMessage());
     }
-  }
-
-  private static SCMSymbol s(String str) {
-    return SCMSymbol.of(str);
   }
 }

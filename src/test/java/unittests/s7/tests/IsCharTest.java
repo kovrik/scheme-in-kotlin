@@ -91,8 +91,5 @@ public class IsCharTest extends AbstractTest {
     } catch (ArityException e) {
       assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 2)", e.getMessage());
     }
-//    assertEquals(TRUE,  eval("(apply char? (list (integer->char 255)))", env));
-//    ;(test (char? #\ÿ) #t) ; this seems to involve unwanted translations in emacs?
-//    assertEquals(FALSE, eval("(char? #<eof>)", env));
   }
 }

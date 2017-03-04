@@ -65,7 +65,6 @@ public class EqTest extends AbstractTest {
     assertEquals(FALSE, eval("(eq? (vector) #())", env));
     assertEquals(TRUE, eval("(eq? (list) (list))", env));
     assertEquals(TRUE, eval("(eq? (list) '())", env));
-
     eval("(define (counter count)" +
          "  (lambda ()" +
          "    (set! count (+ 1 count))" +
@@ -75,10 +74,5 @@ public class EqTest extends AbstractTest {
     assertEquals(FALSE, eval("(eq? c1 c2)", env));
     assertEquals(TRUE,  eval("(eq? c1 c1)", env));
     assertEquals(TRUE,  eval("(eq? c2 c2)", env));
-
-//    assertEquals(TRUE, eval("(let ((f (lambda () (quote (1 . \"H\"))))) (eq? (f) (f)))", env));
-//    assertEquals(FALSE, eval("(eq? '#\\a #\\a)", env));
-//    assertEquals(FALSE, eval("(eq? (string) (string))", env));
-//    assertEquals(TRUE, eval("(eq? (symbol \"a\") (string->symbol \"a\"))", env));
   }
 }

@@ -51,11 +51,11 @@ public class NumberTest extends AbstractTest {
     assertEquals(150L, eval("#e15#", env));
     assertEquals(new SCMBigRational("101", "10"), eval("#e#d10.1", env));
 
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  eval("1+2i", env));
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(-2)), eval("1-2i", env));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  eval("1+2i", env));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(-2)), eval("1-2i", env));
     assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  eval("-1+2i", env));
     assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(-2)), eval("-1-2i", env));
-    assertEquals(new SCMBigComplex(new BigDecimal(1),  new BigDecimal(2)),  eval("#e1+2i", env));
+    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  eval("#e1+2i", env));
     assertEquals(new SCMBigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")), eval("#i1+2i", env));
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  eval("#e#b101+11101i", env));
     assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  eval("#e#b101+11101i", env));

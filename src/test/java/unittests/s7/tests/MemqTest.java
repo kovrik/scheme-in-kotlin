@@ -1,7 +1,6 @@
 package unittests.s7.tests;
 
 import core.scm.SCMCons;
-import core.scm.SCMSymbol;
 import org.junit.Test;
 import unittests.AbstractTest;
 
@@ -56,11 +55,5 @@ public class MemqTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("memq: wrong type argument in position 5 (expecting list): (c d f b . c)", e.getMessage());
     }
-//    assertEquals(list(new Eq()), eval("(memq eq? (list 2 eqv? 1 eq?))", env));
-//    assertEquals(, eval("(memq memq (list abs + memq car))", env));
-  }
-
-  private static SCMSymbol s(String str) {
-    return SCMSymbol.of(str);
   }
 }

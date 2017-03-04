@@ -129,7 +129,6 @@ public class ContinuationsTest extends AbstractTest {
     } catch (ReentrantContinuationException e) {
       // success
     }
-
     Repl.setCurrentOutputPort(old);
   }
 }

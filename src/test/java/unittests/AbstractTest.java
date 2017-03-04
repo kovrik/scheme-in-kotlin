@@ -4,6 +4,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.reader.StringReader;
+import core.scm.SCMSymbol;
 
 public abstract class AbstractTest {
 
@@ -21,5 +22,9 @@ public abstract class AbstractTest {
   /* Helper method: evaluates first S-expression */
   protected Object eval(String sexp, Environment env) {
     return eval.macroexpandAndEvaluate(reader.readFirst(sexp), env);
+  }
+
+  protected SCMSymbol s(String str) {
+    return SCMSymbol.of(str);
   }
 }

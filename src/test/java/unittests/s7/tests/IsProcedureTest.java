@@ -23,6 +23,15 @@ public class IsProcedureTest extends AbstractTest {
     assertEquals(TRUE, eval("(letrec ((a (lambda () (procedure? a)))) (a))", env));
     assertEquals(FALSE, eval("(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", env));
     assertEquals(TRUE, eval("(let () (define (hi) 1) (procedure? hi))", env));
+    assertEquals(FALSE, eval("(procedure? 'and)", env));
+    assertEquals(FALSE, eval("(procedure? 'let)", env));
+    assertEquals(FALSE, eval("(procedure? 'quasiquote)", env));
+    assertEquals(FALSE, eval("(procedure? 'cond)", env));
+    assertEquals(FALSE, eval("(procedure? 'do)", env));
+    assertEquals(FALSE, eval("(procedure? 'set!)", env));
+    assertEquals(FALSE, eval("(procedure? \"hi\")", env));
+    assertEquals(FALSE, eval("(procedure? '(1 2))", env));
+    assertEquals(FALSE, eval("(procedure? #(1 2))", env));
     try {
       eval("(procedure? begin)", env);
       fail();
@@ -35,15 +44,6 @@ public class IsProcedureTest extends AbstractTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("lambda: bad syntax in form: lambda", e.getMessage());
     }
-    assertEquals(FALSE, eval("(procedure? 'and)", env));
-    assertEquals(FALSE, eval("(procedure? 'let)", env));
-    assertEquals(FALSE, eval("(procedure? 'quasiquote)", env));
-    assertEquals(FALSE, eval("(procedure? 'cond)", env));
-    assertEquals(FALSE, eval("(procedure? 'do)", env));
-    assertEquals(FALSE, eval("(procedure? 'set!)", env));
-    assertEquals(FALSE, eval("(procedure? \"hi\")", env));
-    assertEquals(FALSE, eval("(procedure? '(1 2))", env));
-    assertEquals(FALSE, eval("(procedure? #(1 2))", env));
     try {
       eval("(procedure? and)", env);
       fail();
