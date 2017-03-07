@@ -1,6 +1,5 @@
 package core.scm;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.utils.NumberUtils;
@@ -210,13 +209,6 @@ public enum SCMClass implements ISCMClass {
     }
     /* Not a special case, just map Java class to SCMClass */
     return valueOf(number.getClass());
-  }
-
-  public static boolean assertClass(String name, Object o, Class<?> c) {
-    if (checkType(o, c)) {
-      return true;
-    }
-    throw new WrongTypeException(name, c.getSimpleName(), o);
   }
 
   public static boolean checkType(Object o, Class<?> expected) {

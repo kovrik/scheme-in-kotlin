@@ -1,5 +1,6 @@
 package core.procedures.predicates;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
@@ -32,15 +33,15 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_RATIONAL = new SCMPredicate("rational?", NumberUtils::isRational);
   public static final SCMPredicate IS_REAL = new SCMPredicate("real?", NumberUtils::isReal);
   public static final SCMPredicate IS_COMPLEX = new SCMPredicate("complex?", o -> (o instanceof Number));
-  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (SCMClass.assertClass("zero?", o, Number.class) && NumberUtils.isZero(o)));
-  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (SCMClass.assertClass("positive?", o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
-  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (SCMClass.assertClass("negative?", o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
-  public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (SCMClass.assertClass("exact?", o, Number.class) && NumberUtils.isExact(o)));
-  public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (SCMClass.assertClass("inexact?", o, Number.class) && NumberUtils.isInexact(o)));
+  public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (assertClass("zero?", o, Number.class) && NumberUtils.isZero(o)));
+  public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (assertClass("positive?", o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
+  public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (assertClass("negative?", o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
+  public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (assertClass("exact?", o, Number.class) && NumberUtils.isExact(o)));
+  public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (assertClass("inexact?", o, Number.class) && NumberUtils.isInexact(o)));
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
   public static final SCMPredicate IS_MUTABLE = new SCMPredicate("mutable?", SCMPredicate::isMutable);
-  public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (SCMClass.assertClass("even?", o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
-  public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (SCMClass.assertClass("odd?", o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (assertClass("even?", o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (assertClass("odd?", o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
 
   private final String name;
   private final Predicate<Object> predicate;
@@ -78,4 +79,12 @@ public final class SCMPredicate extends AFn {
   private static boolean isImmutable(Object o) {
     return !((o instanceof SCMMutableString) || (o instanceof SCMMutableVector));
   }
+
+  private static boolean assertClass(String name, Object o, Class<?> c) {
+    if (SCMClass.checkType(o, c)) {
+      return true;
+    }
+    throw new WrongTypeException(name, c.getSimpleName(), o);
+  }
+
 }
