@@ -28,4 +28,8 @@ public class SCMThunk {
   public Environment getContext() {
     return context;
   }
+
+  public Environment getContextOrDefault(Environment other) {
+    return context == null ? other : context;
+  }
 }

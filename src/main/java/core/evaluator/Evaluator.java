@@ -36,11 +36,8 @@ public class Evaluator {
     try {
       result = evalIter(sexp, env);
       while (result instanceof SCMThunk) {
-        Environment context = ((SCMThunk) result).getContext();
-        if (context == null) {
-          context = env;
-        }
-        result = evalIter(((SCMThunk) result).getExpr(), context);
+        result = evalIter(((SCMThunk) result).getExpr(),
+                          ((SCMThunk) result).getContextOrDefault(env));
       }
     } catch (CalledContinuation cc) {
       if (cc.getContinuation().isInvoked()) {
