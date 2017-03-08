@@ -48,9 +48,9 @@ public class Writer implements IWriter {
     if (o instanceof Number) {
       if (Double.isNaN(((Number) o).doubleValue())) {
         return "+nan.0";
-      } else if (((Number)o).doubleValue() == Double.POSITIVE_INFINITY) {
+      } else if (o.equals(Double.POSITIVE_INFINITY)) {
         return "+inf.0";
-      } else if (((Number)o).doubleValue() == Double.NEGATIVE_INFINITY) {
+      } else if (o.equals(Double.NEGATIVE_INFINITY)) {
         return "-inf.0";
       }
       return o.toString();

@@ -250,7 +250,7 @@ public class RosettaCodeTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    eval("(define // quotient", tempEnv);
+    eval("(define // quotient)", tempEnv);
 
     eval("(define (y a a1 b c d e)" +
          "  (if (or (= c d) (= c e))" +
