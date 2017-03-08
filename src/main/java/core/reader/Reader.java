@@ -8,7 +8,6 @@ import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import core.scm.specialforms.Unquote;
 import core.scm.specialforms.UnquoteSplicing;
-import core.utils.NumberUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -310,48 +309,36 @@ public class Reader implements IReader {
    * <character name> --> space | newline
    */
   private Character readCharacter() throws IOException {
-    int i;
+    int i = reader.read();
+    String rest = readUntilDelimiter();
+    if (rest.isEmpty()) {
+      return (char)i;
+    }
     /* Check if it is a codepoint */
-    if (isValid.test(i = reader.read()) && (Character.isDigit((char)i) || ((char)i == 'u') || ((char)i == 'U'))) {
-      /* Hex or Octal? */
-      char radixChar;
-      char firstChar = (char)i;
-      if (((char)i == 'u') || ((char)i == 'U')) {
-        radixChar = 'x';
-      } else {
-        radixChar = 'o';
-        reader.unread((char) i);
-      }
-
-      String identifier = readIdentifier().toString();
-      if (identifier.isEmpty()) {
-        /* #\\u and #\\U chars */
-        return firstChar;
-      }
-      int radix = NumberUtils.getRadixByChar(radixChar);
-      if (radix == 8  && identifier.length() == 1) {
-        return identifier.charAt(0);
-      }
-      Object codepoint = preProcessNumber(identifier, 'e', radix);
+    int radix = 16;
+    boolean isCodepoint = ((char)i == 'u') || ((char)i == 'U');
+    if (Character.isDigit((char)i)) {
+      radix = 8;
+      rest = (char)i + rest;
+      isCodepoint = true;
+    }
+    if (isCodepoint) {
+      Object codepoint = preProcessNumber(rest, 'e', radix);
       if (!(codepoint instanceof Number)) {
         throw new IllegalSyntaxException("read: no hex digit following \\u in string");
       }
       return (char)((Number)codepoint).intValue();
     }
-
-    StringBuilder character = new StringBuilder().append((char)i).append(readUntilDelimiter());
-    /* Check if it is a Named Character */
-    if (character.length() > 1) {
-      if ("linefeed".equals(character.toString())) {
-        return NAMED_CHARS.get("newline");
-      }
-      Character namedChar = NAMED_CHARS.get(character.toString());
-      if (namedChar == null) {
-        throw new IllegalSyntaxException("read: unknown named character: \"" + character + "\"");
-      }
-      return namedChar;
+    /* Must be a named char */
+    String character = ((char)i) + rest;
+    if ("linefeed".equals(character)) {
+      return NAMED_CHARS.get("newline");
     }
-    return character.charAt(0);
+    Character namedChar = NAMED_CHARS.get(character);
+    if (namedChar == null) {
+      throw new IllegalSyntaxException("read: unknown named character: \"" + character + "\"");
+    }
+    return namedChar;
   }
 
   /**
