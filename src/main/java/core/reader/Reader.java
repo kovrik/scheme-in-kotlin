@@ -150,11 +150,8 @@ public class Reader implements IReader {
     } else if (isRadix.test(c) || isExactness.test(c)) {
       /* Read identifier, not a number */
       String number = "#" + c + readUntilDelimiter();
-      if (number.length() == 1) {
-        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
-      }
       /* Read radix and/or exactness and a number */
-      Character radixChar = null;
+      Character radix = null;
       Character exactness = null;
       String restNumber = number;
       while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
@@ -168,30 +165,29 @@ public class Reader implements IReader {
           continue;
         }
         if (isRadix.test(ch)) {
-          if (radixChar != null) {
+          if (radix != null) {
             throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
           }
-          radixChar = ch;
+          radix = ch;
           restNumber = restNumber.substring(2);
           continue;
         }
         break;
       }
-      radixChar = (radixChar == null) ? 'd' : radixChar;
 
       if (restNumber.isEmpty() || "+".equals(restNumber) || "-".equals(restNumber)) {
         throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
       }
 
       /* Check if this is a proper number */
-      Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radixChar));
+      Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radix));
       if (!(result instanceof Number)) {
         throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
       }
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
-    StringBuilder token = new StringBuilder().append('#').append(c);
+    StringBuilder token = new StringBuilder("#").append(c);
     if (!Character.isWhitespace(c)) {
       token.append(readUntilDelimiter());
     }
@@ -236,7 +232,7 @@ public class Reader implements IReader {
     while (isValid.test(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
       /* Read everything until line break */
     }
-    /* Comments are ignored, so just return null */
+    /* Comments are ignored, return null */
     return null;
   }
 
@@ -286,17 +282,17 @@ public class Reader implements IReader {
    * <character name> --> space | newline
    */
   private char readCharacter() throws IOException {
-    int i = reader.read();
+    int first = reader.read();
     String rest = readUntilDelimiter();
     if (rest.isEmpty()) {
-      return (char)i;
+      return (char)first;
     }
     /* Check if it is a codepoint */
     int radix = 16;
-    boolean isCodepoint = ((char)i == 'u') || ((char)i == 'U');
-    if (Character.isDigit((char)i)) {
+    boolean isCodepoint = ((char)first == 'u') || ((char)first == 'U');
+    if (Character.isDigit((char)first)) {
       radix = 8;
-      rest = (char)i + rest;
+      rest = (char)first + rest;
       isCodepoint = true;
     }
     if (isCodepoint) {
@@ -307,7 +303,7 @@ public class Reader implements IReader {
       return (char)((Number)codepoint).intValue();
     }
     /* Must be a named char */
-    String character = ((char)i) + rest;
+    String character = ((char)first) + rest;
     if ("linefeed".equals(character)) {
       return NAMED_CHARS.get("newline");
     }

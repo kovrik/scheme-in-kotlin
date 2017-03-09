@@ -54,10 +54,7 @@ public final class StringToNumber extends AFn {
     if (restNumber.isEmpty()) {
       return Boolean.FALSE;
     }
-
-    radixChar = (radixChar == null) ? 'd' : radixChar;
     int radix = NumberUtils.getRadixByChar(radixChar);
-
     /* Get default (optional) radix if present */
     if (args.length == 2) {
       int optRadix = ((Long)args[1]).intValue();

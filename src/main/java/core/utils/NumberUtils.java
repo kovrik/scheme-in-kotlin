@@ -48,14 +48,15 @@ public class NumberUtils {
 
   private static final Map<Character, Integer> NAMED_RADICES = new HashMap<>();
   static {
-    NAMED_RADICES.put('b', 2);
-    NAMED_RADICES.put('B', 2);
-    NAMED_RADICES.put('o', 8);
-    NAMED_RADICES.put('O', 8);
-    NAMED_RADICES.put('d', 10);
-    NAMED_RADICES.put('D', 10);
-    NAMED_RADICES.put('x', 16);
-    NAMED_RADICES.put('X', 16);
+    NAMED_RADICES.put('b',  2);
+    NAMED_RADICES.put('B',  2);
+    NAMED_RADICES.put('o',  8);
+    NAMED_RADICES.put('O',  8);
+    NAMED_RADICES.put('d',  10);
+    NAMED_RADICES.put('D',  10);
+    NAMED_RADICES.put('x',  16);
+    NAMED_RADICES.put('X',  16);
+    NAMED_RADICES.put(null, 10);
   }
 
   private static final Map<Integer, BigDecimal> BIG_DECIMAL_RADICES = new HashMap<>();
@@ -63,7 +64,7 @@ public class NumberUtils {
     IntStream.rangeClosed(2, 16).forEach(r -> BIG_DECIMAL_RADICES.put(r, new BigDecimal(r)));
   }
 
-  public static int getRadixByChar(char radixChar) {
+  public static int getRadixByChar(Character radixChar) {
     return NAMED_RADICES.get(radixChar);
   }
 
