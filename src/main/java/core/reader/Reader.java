@@ -1,6 +1,7 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
+import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMMutableVector;
 import core.scm.SCMSymbol;
@@ -147,9 +148,8 @@ public class Reader implements IReader {
     char c = (char)reader.read();
     /* Decimal number */
     if (isValidForRadix(c, 10)) {
-      reader.unread(c);
       /* Read identifier, not a number */
-      String number = readIdentifier().toString();
+      String number = c + readUntilDelimiter();
       /* Now check if it IS a valid number */
       return preProcessNumber(number, null, 10);
     } else if (c == ';') {
@@ -157,8 +157,7 @@ public class Reader implements IReader {
     } else if (c == '"') {
       return readString();
     } else {
-      reader.unread(c);
-      return readIdentifier();
+      return SCMSymbol.of(c + readUntilDelimiter());
     }
   }
 
@@ -173,10 +172,8 @@ public class Reader implements IReader {
     } else if (c == 'f' || c == 'F') {
       return Boolean.FALSE;
     } else if (isRadix.test(c) || isExactness.test(c)) {
-      reader.unread(c);
-      reader.unread('#');
       /* Read identifier, not a number */
-      String number = readIdentifier().toString();
+      String number = "#" + c + readUntilDelimiter();
       if (number.length() == 1) {
         throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
       }
@@ -239,16 +236,6 @@ public class Reader implements IReader {
   }
 
   /**
-   * Read identifier
-   *
-   * Syntax:
-   * <identifier> --> <initial> <subsequent>* | <peculiar identifier>
-   */
-  private SCMSymbol readIdentifier() throws IOException {
-    return SCMSymbol.of(readUntilDelimiter());
-  }
-
-  /**
    * Read a comment
    *
    * Syntax:
@@ -308,7 +295,7 @@ public class Reader implements IReader {
    * <character> --> #\ <any character> | #\ <character name>
    * <character name> --> space | newline
    */
-  private Character readCharacter() throws IOException {
+  private char readCharacter() throws IOException {
     int i = reader.read();
     String rest = readUntilDelimiter();
     if (rest.isEmpty()) {
@@ -349,13 +336,10 @@ public class Reader implements IReader {
    */
   private SCMCons<Object> readList() throws IOException {
     SCMCons<Object> list = SCMCons.NIL;
-    /* Position of a dot (if we have it) */
+    /* Remember position of a dot (if we meet it) */
     int dotPos = -1;
-    /* Current index */
-    int pos = -1;
     int i;
     char c;
-    boolean isEmpty = true;
     while (isValid.test(i = reader.read()) && ((c = (char)i) != ')')) {
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
@@ -366,22 +350,18 @@ public class Reader implements IReader {
       }
       reader.unread(c);
       Object token = nextToken();
-      if (token != null) {
-        pos += 1;
-        /* Check if current token is a dot */
-        if (DOT.equals(token)) {
-          if (pos == 0 || dotPos > -1) {
-            throw new IllegalSyntaxException("read: illegal use of '.'");
-          }
-          /* Remember the dot position */
-          dotPos = pos;
-          continue;
+      /* Check if current token is a dot */
+      if (DOT.equals(token)) {
+        if (list.isEmpty() || dotPos > -1) {
+          throw new IllegalSyntaxException("read: illegal use of '.'");
         }
+        /* Remember the dot position */
+        dotPos = list.size();
+      } else if (token != null) {
         /* List is empty so far */
-        if (isEmpty) {
+        if (list.getSCMClass() == SCMClass.NIL) {
           /* Initialize list with the first element (can't modify NIL) */
           list = SCMCons.list(token);
-          isEmpty = false;
         } else {
           /* Add list element */
           list.add(token);
@@ -389,7 +369,7 @@ public class Reader implements IReader {
       }
     }
     /* Was it a proper list? */
-    if (dotPos < 0) {
+    if (dotPos == -1) {
       return list;
     }
     /* Process improper list */
