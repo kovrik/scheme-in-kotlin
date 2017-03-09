@@ -117,47 +117,23 @@ public class Reader implements IReader {
     if (!isValid.test((int)c) || LINE_BREAKS.indexOf(c) > -1) {
       return null;
     }
-    switch (c) {
-      case '\'':
-        return readQuote(Quote.QUOTE_SYMBOL);
-      case '`':
-        return readQuote(Quasiquote.QUASIQUOTE_SYMBOL);
-      case ',': {
-        char next = (char) reader.read();
-        if (next == '@') {
-          return readQuote(UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL);
-        } else {
-          reader.unread(next);
-          return readQuote(Unquote.UNQUOTE_SYMBOL);
-        }
-      }
-      case '#':
-        return readHash();
-      case '(':
-        return readList();
-      case ')':
-        throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
-      default: {
-        reader.unread(c);
-        return readAtom();
-      }
-    }
-  }
-
-  private Object readAtom() throws IOException {
-    char c = (char)reader.read();
     /* Decimal number */
-    if (isValidForRadix(c, 10)) {
+    if (c != '#' && isValidForRadix(c, 10)) {
       /* Read identifier, not a number */
       String number = c + readUntilDelimiter();
       /* Now check if it IS a valid number */
       return preProcessNumber(number, null, 10);
-    } else if (c == ';') {
-      return readComment();
-    } else if (c == '"') {
-      return readString();
-    } else {
-      return SCMSymbol.of(c + readUntilDelimiter());
+    }
+    switch (c) {
+      case '\'': return readQuote(c);
+      case '`':  return readQuote(c);
+      case ',':  return readQuote(c);
+      case '#':  return readHash();
+      case '(':  return readList();
+      case ';':  return readComment();
+      case '"':  return readString();
+      case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
+      default:   return SCMSymbol.of(c + readUntilDelimiter());
     }
   }
 
@@ -231,7 +207,21 @@ public class Reader implements IReader {
    * <unquote>          -> ,<form>
    * <unquote-splicing> -> ,@<form>
    */
-  private List readQuote(SCMSymbol symbol) throws IOException {
+  private List readQuote(char c) throws IOException {
+    SCMSymbol symbol = null;
+    if (c == '\'') {
+      symbol = Quote.QUOTE_SYMBOL;
+    } else if (c == '`') {
+      symbol = Quasiquote.QUASIQUOTE_SYMBOL;
+    } else if (c == ',') {
+      char next = (char) reader.read();
+      if (next == '@') {
+        symbol = UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
+      } else {
+        reader.unread(next);
+        symbol = Unquote.UNQUOTE_SYMBOL;
+      }
+    }
     return SCMCons.list(symbol, nextNonNullToken());
   }
 
