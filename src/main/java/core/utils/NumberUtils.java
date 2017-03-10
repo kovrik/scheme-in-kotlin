@@ -177,7 +177,7 @@ public class NumberUtils {
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
         return SCMSymbol.of(number);
       }
-      /* Check if we have a digit char */
+      /* Check if it is a digit, not a hash/sign char */
       if ("#+-.".indexOf(c) == -1) {
         hasAtLeastOneDigit = true;
       }
@@ -196,13 +196,13 @@ public class NumberUtils {
     }
 
     /* Check if it is a rational number and if it is valid */
-    boolean isRational = (n.indexOf('/') > -1);
+    boolean isRational = n.indexOf('/') > -1;
     if (isRational && (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
       return SCMSymbol.of(number);
     }
 
     /* Rational and Integral numbers are exact by default */
-    boolean isIntegral = (n.indexOf('.') < 0);
+    boolean isIntegral = n.indexOf('.') < 0;
     if (exactness == null) {
       exactness = isRational || isIntegral ? 'e' : 'i';
     }
