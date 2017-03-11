@@ -48,6 +48,7 @@ public class Reader implements IReader {
   }
 
   private static final Predicate<Integer>   isValid     = i -> i > -1 && i < 65535;
+  private static final Predicate<Character> isLineBreak = c -> LINE_BREAKS.indexOf(c) > -1;
   public  static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
   public  static final Predicate<Character> isExact     = c -> c == 'e' || c == 'E';
   public  static final Predicate<Character> isInexact   = c -> c == 'i' || c == 'I';
@@ -109,12 +110,12 @@ public class Reader implements IReader {
     char c = (char)i;
     /* Skip whitespaces until line break */
     if (Character.isWhitespace(c)) {
-      while (isValid.test((int)c) && Character.isWhitespace(c) && LINE_BREAKS.indexOf(c) < 0) {
+      while (isValid.test((int)c) && Character.isWhitespace(c) && !isLineBreak.test(c)) {
         c = (char) reader.read();
       }
     }
     /* Check if there is anything to read */
-    if (!isValid.test((int)c) || LINE_BREAKS.indexOf(c) > -1) {
+    if (!isValid.test((int)c) || isLineBreak.test(c)) {
       return null;
     }
     /* Decimal number */
@@ -232,7 +233,7 @@ public class Reader implements IReader {
    */
   private String readComment() throws IOException {
     int i;
-    while (isValid.test(i = reader.read()) && (LINE_BREAKS.indexOf((char)i) < 0)) {
+    while (isValid.test(i = reader.read()) && !isLineBreak.test((char)i)) {
       /* Read everything until line break */
     }
     /* Comments are ignored, return null */

@@ -164,6 +164,12 @@ public class ReaderTest extends AbstractTest {
     assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
     assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
+    try {
+      reader.readFirst(")");
+      fail();
+    } catch (IllegalSyntaxException e) {
+      assertEquals("read: unexpected list terminator: ')'", e.getMessage());
+    }
   }
 
   @Test
