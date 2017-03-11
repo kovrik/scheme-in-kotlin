@@ -252,11 +252,16 @@ public class ReaderTest extends AbstractTest {
     assertEquals(new SCMBigRational("23", "1"), reader.readFirst("#e2.3e1"));
     assertEquals(230L, reader.readFirst("#e23e1"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
-    assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#i2.3e-51"));
+    assertEquals(2.3e-51, reader.readFirst("#i2.3e-51"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#I2.3e-5"));
-    assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#I2.3e-51"));
+    assertEquals(2.3e-51, reader.readFirst("#I2.3e-51"));
     assertEquals(92160d, reader.readFirst("#b101101e1011"));
     assertEquals(4484907929698304d, reader.readFirst("#xfefsa"));
+    assertEquals(-234d, reader.readFirst("-234e0"));
+    assertEquals(Double.POSITIVE_INFINITY, reader.readFirst("1e999999999"));
+    assertEquals(Double.NEGATIVE_INFINITY, reader.readFirst("-1e999999999"));
+    assertEquals(0d,  reader.readFirst("1e-1000"));
+    assertEquals(-0d, reader.readFirst("-1e-1000"));
     String[] badExps = {"#e23e1.3", "#e34e1."};
     for (String bad : badExps) {
       try {

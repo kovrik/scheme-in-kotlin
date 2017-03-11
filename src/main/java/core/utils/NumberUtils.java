@@ -130,12 +130,12 @@ public class NumberUtils {
     if (last == 'i' || last == 'I') {
       return processComplexNumber(number, exactness, radix);
     }
-
+    /* Multiple decimal points are not allowed*/
     if (number.indexOf('.') != number.lastIndexOf('.')) {
       return SCMSymbol.of(number);
     }
 
-    /* Exponent mark */
+    /* Read exponent mark if present */
     Long exp = null;
     Pattern exponentPattern = EXPONENT_PATTERN;
     String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
@@ -267,8 +267,17 @@ public class NumberUtils {
         result = Long.parseLong(number, r);
       }
     }
-    if (exp != null) {
-      result = Multiplication.apply(result, Expt.expt(r.longValue(), exp));
+    if (exp != null && !isZero(exp)) {
+      if (exp > 999999) {
+        return isPositive(result) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+      } else if (exp < -999) {
+        return isPositive(result) ? 0d : -0d;
+      }
+      if (r == 10 && Reader.isInexact(exactness)) {
+        return Double.parseDouble(result + "e" + exp);
+      } else {
+        result = Multiplication.apply(result, Expt.expt(r.longValue(), exp));
+      }
     }
     return processExactness(result, exactness);
   }
@@ -320,7 +329,7 @@ public class NumberUtils {
     Number num = processNumber(numerator,   r, 'e', useBigNum, null);
     Number den = processNumber(denominator, r, 'e', useBigNum, null);
     SCMBigRational number = new SCMBigRational(num.toString(), den.toString());
-    if (exactness == 'i') {
+    if (Reader.isInexact(exactness)) {
       Number result = ToInexact.toInexact(number);
       return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));
     }
