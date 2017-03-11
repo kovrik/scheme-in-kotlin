@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static core.utils.NumberUtils.*;
 
@@ -47,12 +46,12 @@ public class Reader implements IReader {
     NAMED_CHARS.put("nul",       Character.MIN_VALUE);
   }
 
-  private static final Predicate<Integer>   isValid     = i -> i > -1 && i < 65535;
-  private static final Predicate<Character> isLineBreak = c -> LINE_BREAKS.indexOf(c) > -1;
-  public  static final Predicate<Character> isRadix     = c -> "bodxBODX".indexOf(c) > -1;
-  public  static final Predicate<Character> isExact     = c -> c == 'e' || c == 'E';
-  public  static final Predicate<Character> isInexact   = c -> c == 'i' || c == 'I';
-  public  static final Predicate<Character> isExactness = c -> isExact.test(c) || isInexact.test(c);
+  private static boolean isValid(int i)      { return i > Character.MIN_VALUE && i < Character.MAX_VALUE;}
+  private static boolean isLineBreak(char c) { return LINE_BREAKS.indexOf(c) > -1;}
+  public  static boolean isRadix(char c)     { return "bodxBODX".indexOf(c) > -1;}
+  public  static boolean isExact(char c)     { return c == 'e'   || c == 'E';}
+  public  static boolean isInexact(char c)   { return c == 'i'   || c == 'I';}
+  public  static boolean isExactness(char c) { return isExact(c) || isInexact(c);}
 
   PushbackReader reader;
 
@@ -85,7 +84,7 @@ public class Reader implements IReader {
   private String readUntilDelimiter() throws IOException {
     StringBuilder token = new StringBuilder();
     int i;
-    while (isValid.test(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
+    while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
       token.append((char)i);
     }
     reader.unread((char)i);
@@ -104,18 +103,18 @@ public class Reader implements IReader {
    */
   Object nextToken() throws IOException {
     int i;
-    if (!isValid.test(i = reader.read())) {
+    if (!isValid(i = reader.read())) {
       return null;
     }
     char c = (char)i;
     /* Skip whitespaces until line break */
     if (Character.isWhitespace(c)) {
-      while (isValid.test((int)c) && Character.isWhitespace(c) && !isLineBreak.test(c)) {
+      while (isValid((int)c) && Character.isWhitespace(c) && !isLineBreak(c)) {
         c = (char) reader.read();
       }
     }
     /* Check if there is anything to read */
-    if (!isValid.test((int)c) || isLineBreak.test(c)) {
+    if (!isValid((int)c) || isLineBreak(c)) {
       return null;
     }
     /* Decimal number */
@@ -148,7 +147,7 @@ public class Reader implements IReader {
       return Boolean.TRUE;
     } else if (c == 'f' || c == 'F') {
       return Boolean.FALSE;
-    } else if (isRadix.test(c) || isExactness.test(c)) {
+    } else if (isRadix(c) || isExactness(c)) {
       /* Read identifier, not a number */
       String number = "#" + c + readUntilDelimiter();
       /* Read radix and/or exactness and a number */
@@ -157,7 +156,7 @@ public class Reader implements IReader {
       String restNumber = number;
       while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
         char ch = restNumber.charAt(1);
-        if (isExactness.test(ch)) {
+        if (isExactness(ch)) {
           if (exactness != null) {
             throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
           }
@@ -165,7 +164,7 @@ public class Reader implements IReader {
           restNumber = restNumber.substring(2);
           continue;
         }
-        if (isRadix.test(ch)) {
+        if (isRadix(ch)) {
           if (radix != null) {
             throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
           }
@@ -189,7 +188,7 @@ public class Reader implements IReader {
     }
     /* Bad hash syntax: read token and throw exception */
     StringBuilder token = new StringBuilder("#");
-    if (isValid.test((int)c)) {
+    if (isValid((int)c)) {
       token.append(c);
     }
     if (!Character.isWhitespace(c)) {
@@ -233,7 +232,7 @@ public class Reader implements IReader {
    */
   private String readComment() throws IOException {
     int i;
-    while (isValid.test(i = reader.read()) && !isLineBreak.test((char)i)) {
+    while (isValid(i = reader.read()) && !isLineBreak((char)i)) {
       /* Read everything until line break */
     }
     /* Comments are ignored, return null */
@@ -252,7 +251,7 @@ public class Reader implements IReader {
     StringBuilder string = new StringBuilder();
     int i;
     char c;
-    while ((isValid.test(i = reader.read())) && ((c = (char)i) != '"')) {
+    while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
       /* Escaping */
       if (c == '\\') {
         char next = (char)reader.read();
@@ -333,7 +332,7 @@ public class Reader implements IReader {
     int dotPos = -1;
     int i;
     char c;
-    while (isValid.test(i = reader.read()) && ((c = (char)i) != ')')) {
+    while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
         c = (char)reader.read();

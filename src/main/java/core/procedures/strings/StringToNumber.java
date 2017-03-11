@@ -32,7 +32,7 @@ public final class StringToNumber extends AFn {
     String restNumber = number;
     while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
       char ch = restNumber.charAt(1);
-      if (isExactness.test(ch)) {
+      if (isExactness(ch)) {
         if (exactness != null) {
           return Boolean.FALSE;
         }
@@ -40,7 +40,7 @@ public final class StringToNumber extends AFn {
         restNumber = restNumber.substring(2);
         continue;
       }
-      if (isRadix.test(ch)) {
+      if (isRadix(ch)) {
         if (radixChar != null) {
           return Boolean.FALSE;
         }
