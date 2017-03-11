@@ -22,7 +22,7 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
     Object value = get(key);
     if (value == null) {
       if (outer == null) {
-        throw new IllegalArgumentException("Unbound variable: " + key);
+        throw new IllegalArgumentException("undefined identifier: " + key);
       }
       return outer.find(key);
     }
@@ -33,7 +33,7 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
     Object v = get(key);
     if (v == null) {
       if (outer == null) {
-        throw new IllegalArgumentException("Unbound variable: " + key);
+        throw new IllegalArgumentException("undefined identifier: " + key);
       }
       return outer.findAndPut(key, value);
     }

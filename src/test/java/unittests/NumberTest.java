@@ -65,13 +65,13 @@ public class NumberTest extends AbstractTest {
       eval("+#", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: +#", e.getMessage());
+      assertEquals("undefined identifier: +#", e.getMessage());
     }
     try {
       eval("+1#1", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: +1#1", e.getMessage());
+      assertEquals("undefined identifier: +1#1", e.getMessage());
     }
   }
 
@@ -669,6 +669,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(FALSE, eval("(string->number \"#e#i1\")", env));
     assertEquals(FALSE, eval("(string->number \"#e#b#\")", env));
     assertEquals(FALSE, eval("(string->number \"#e#i#e\")", env));
+    assertEquals(FALSE, eval("(string->number \"1.1.1\")", env));
     try {
       eval("(string->number \"#b1e5\")", env);
       fail();

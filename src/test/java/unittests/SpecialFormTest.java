@@ -177,7 +177,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(foo 5)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: foo", e.getMessage());
+      assertEquals("undefined identifier: foo", e.getMessage());
     }
 
     String d1 = "(define (test-internal-define)" +
@@ -293,7 +293,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(begin (set! b 99) b)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: b", e.getMessage());
+      assertEquals("undefined identifier: b", e.getMessage());
     }
   }
 
@@ -353,7 +353,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let ((z 1) (b (+ z 1))) b)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: z", e.getMessage());
+      assertEquals("undefined identifier: z", e.getMessage());
     }
   }
 
@@ -484,7 +484,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(begin (set! x 5) (+ x 1))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Unbound variable: x", e.getMessage());
+      assertEquals("undefined identifier: x", e.getMessage());
     }
     SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();

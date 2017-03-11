@@ -56,7 +56,7 @@ public class QuasiquoteTest extends AbstractTest {
       eval("`(1 , @(list 2 3))", env);
       fail();
     } catch (Exception e) {
-      assertEquals("Unbound variable: @", e.getMessage());
+      assertEquals("undefined identifier: @", e.getMessage());
     }
   }
 }
