@@ -720,6 +720,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(FALSE, eval("(rational? +nan.0)", env));
     assertEquals(FALSE, eval("(rational? -nan.0)", env));
     assertEquals(FALSE, eval("(rational? \"test\")", env));
+    assertEquals(FALSE, eval("(rational? 12-4i)", env));
   }
 
   @Test

@@ -5,16 +5,15 @@ import core.reader.StringReader;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.scm.SCMMutableVector;
-import core.scm.SCMSymbol;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import static core.scm.SCMCons.list;
-import static core.scm.specialforms.Lambda.LAMBDA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -49,7 +48,6 @@ public class ReaderTest extends AbstractTest {
     assertEquals(455L, reader.readFirst("#o0707"));
     assertEquals(585L, reader.readFirst("#o1111"));
     assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
-    assertEquals(SCMSymbol.of("+5+5"), reader.readFirst("+5+5"));
     assertEquals(255.99609375, reader.readFirst("#d255.99609375"));
     assertEquals(255.99609375, reader.readFirst("#xff.ff"));
     assertEquals(171.67111108726925, reader.readFirst("#xab.abcdefabcdef"));
@@ -73,6 +71,8 @@ public class ReaderTest extends AbstractTest {
     assertEquals(new SCMBigRational("3", "4"), reader.readFirst("#e3/4"));
     assertEquals(1500d,  reader.readFirst("15e2"));
     assertEquals(15000d, reader.readFirst("15e3"));
+    assertEquals(new SCMBigRational("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
+                 reader.readFirst("#e999999999999999999999999999999999999999999999999999999999999999999999.999"));
 
     String[] badNumbers = {"#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1",
                            "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1"};
@@ -114,12 +114,6 @@ public class ReaderTest extends AbstractTest {
     assertEquals("test \\\\u", reader.readFirst("\"test \\\\u\""));
     assertEquals("test \\\\U", reader.readFirst("\"test \\\\U\""));
     assertEquals("test \\\\x", reader.readFirst("\"test \\\\x\""));
-    try {
-      reader.readFirst("\"test \\uu\"");
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: no hex digit following \\u in string", e.getMessage());
-    }
     try {
       reader.readFirst("\"test \\u\"");
       fail();
@@ -242,17 +236,9 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testReadIdentifier() {
-    assertEquals(SCMSymbol.of("test"), reader.readFirst("test"));
-    assertEquals(SCMSymbol.of(LAMBDA.toString()), reader.readFirst("lambda"));
-    assertEquals(SCMSymbol.of("list->vector"), reader.readFirst("list->vector"));
-    assertEquals(SCMSymbol.of("+"), reader.readFirst("+"));
-    assertEquals(SCMSymbol.of("<=?"), reader.readFirst("<=?"));
-    assertEquals(SCMSymbol.of("the-word-recursion-has-many-meanings"), reader.readFirst("the-word-recursion-has-many-meanings"));
-    assertEquals(SCMSymbol.of("a34kTMNs"), reader.readFirst("a34kTMNs"));
-    assertEquals(SCMSymbol.of("V17a"), reader.readFirst("V17a"));
-    assertEquals(SCMSymbol.of("soup"), reader.readFirst("soup"));
-    assertEquals(SCMSymbol.of("a"), reader.readFirst("a"));
-    assertEquals(SCMSymbol.of("ab"), reader.readFirst("ab"));
+    String[] ids = {"test", "lambda", "list->vector", "+", "<=?", "the-word-recursion-has-many-meanings", "soup", "a",
+                    "ab", "+5+5", "1/1/1", "---", "123_", "....", "@@@", "&", "$", "~", "//", "ab-3i", "3-ai", "1/1/-2i"};
+    Arrays.stream(ids).forEach(id -> assertEquals(s(id), reader.readFirst(id)));
   }
 
   @Test
@@ -292,6 +278,32 @@ public class ReaderTest extends AbstractTest {
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: unknown escape sequence \\x in string", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testReadBadSyntax() {
+    String[] badSyntax = {"#", "##", "###"};
+    for (String bad : badSyntax) {
+      try {
+        reader.readFirst(bad);
+        fail();
+      } catch (IllegalSyntaxException e) {
+        assertEquals("read: bad syntax: " + bad, e.getMessage());
+      }
+    }
+  }
+
+  @Test
+  public void testReadUnknownNamedCharacters() {
+    String[] unknown = {"qwerty", "unknown", "uu"};
+    for (String u : unknown) {
+      try {
+        reader.readFirst("#\\" + u);
+        fail();
+      } catch (IllegalSyntaxException e) {
+        assertEquals("read: bad character constant: #\\" + u, e.getMessage());
+      }
     }
   }
 }

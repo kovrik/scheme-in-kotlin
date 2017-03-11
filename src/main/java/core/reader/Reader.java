@@ -187,11 +187,14 @@ public class Reader implements IReader {
       return result;
     }
     /* Bad hash syntax: read token and throw exception */
-    StringBuilder token = new StringBuilder("#").append(c);
+    StringBuilder token = new StringBuilder("#");
+    if (isValid.test((int)c)) {
+      token.append(c);
+    }
     if (!Character.isWhitespace(c)) {
       token.append(readUntilDelimiter());
     }
-    throw new IllegalSyntaxException("read: bad syntax: " + token);
+    throw new IllegalSyntaxException("read: bad syntax: " + token.toString());
   }
 
   /**
@@ -295,6 +298,9 @@ public class Reader implements IReader {
       rest = (char)first + rest;
       isCodepoint = true;
     }
+    if (!isValidForRadix(rest.charAt(0), radix)) {
+      isCodepoint = false;
+    }
     if (isCodepoint) {
       Object codepoint = preProcessNumber(rest, 'e', radix);
       if (!(codepoint instanceof Number)) {
@@ -309,7 +315,7 @@ public class Reader implements IReader {
     }
     Character namedChar = NAMED_CHARS.get(character);
     if (namedChar == null) {
-      throw new IllegalSyntaxException("read: unknown named character: \"" + character + "\"");
+      throw new IllegalSyntaxException("read: bad character constant: #\\" + character);
     }
     return namedChar;
   }

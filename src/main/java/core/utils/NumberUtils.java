@@ -109,11 +109,7 @@ public class NumberUtils {
 
   /* Check if digit is valid for a number in a specific radix */
   public static boolean isValidForRadix(char c, int radix) {
-    String s = RADIX_CHARS.get(radix);
-    if (s == null) {
-      throw new IllegalSyntaxException("read: bad radix: " + radix);
-    }
-    return s.indexOf(c) > -1;
+    return RADIX_CHARS.get(radix).indexOf(c) > -1;
   }
 
   /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
@@ -297,9 +293,8 @@ public class NumberUtils {
           BigDecimal bigDecimal = new BigDecimal(number.toString());
           int scale = bigDecimal.scale();
           return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
-        } else {
-          return ToExact.toExact(number);
         }
+        return ToExact.toExact(number);
       }
     }
     if (Reader.isInexact.test(exactness)) {
@@ -377,19 +372,7 @@ public class NumberUtils {
   }
 
   public static boolean isInexact(Object o) {
-    if (!(o instanceof Number)) {
-      return false;
-    }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
-      return false;
-    }
-    if (o instanceof BigDecimal) {
-      return ((BigDecimal)o).scale() != 0;
-    }
-    if (o instanceof SCMBigComplex) {
-      return isInexact(((SCMBigComplex) o).getRe()) || isInexact(((SCMBigComplex) o).getIm());
-    }
-    return true;
+    return !isExact(o);
   }
 
   public static boolean isInteger(Object o) {
