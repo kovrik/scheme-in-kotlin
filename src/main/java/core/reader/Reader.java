@@ -84,7 +84,7 @@ public class Reader implements IReader {
   private String readUntilDelimiter() throws IOException {
     StringBuilder token = new StringBuilder();
     int i;
-    while (isValid(i = reader.read()) && (DELIMITERS.indexOf((char)i) < 0)) {
+    while (isValid(i = reader.read()) && DELIMITERS.indexOf((char)i) < 0) {
       token.append((char)i);
     }
     reader.unread((char)i);
@@ -129,7 +129,7 @@ public class Reader implements IReader {
       case '`':  return readQuote(c);
       case ',':  return readQuote(c);
       case '#':  return readHash();
-      case '(':  return readList();
+      case '(':  return readList(true);
       case ';':  return readComment();
       case '"':  return readString();
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
@@ -158,7 +158,7 @@ public class Reader implements IReader {
         char ch = restNumber.charAt(1);
         if (isExactness(ch)) {
           if (exactness != null) {
-            throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+            throw new IllegalSyntaxException("read: bad number: " + number);
           }
           exactness = ch;
           restNumber = restNumber.substring(2);
@@ -166,7 +166,7 @@ public class Reader implements IReader {
         }
         if (isRadix(ch)) {
           if (radix != null) {
-            throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+            throw new IllegalSyntaxException("read: bad number: " + number);
           }
           radix = ch;
           restNumber = restNumber.substring(2);
@@ -176,13 +176,13 @@ public class Reader implements IReader {
       }
 
       if (restNumber.isEmpty() || "+".equals(restNumber) || "-".equals(restNumber)) {
-        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+        throw new IllegalSyntaxException("read: bad number: " + number);
       }
 
       /* Check if this is a proper number */
       Object result = preProcessNumber(restNumber, exactness, getRadixByChar(radix));
       if (!(result instanceof Number)) {
-        throw new IllegalSyntaxException(String.format("read: bad number: %s", number));
+        throw new IllegalSyntaxException("read: bad number: " + number);
       }
       return result;
     }
@@ -251,7 +251,7 @@ public class Reader implements IReader {
     StringBuilder string = new StringBuilder();
     int i;
     char c;
-    while ((isValid(i = reader.read())) && ((c = (char)i) != '"')) {
+    while ((isValid(i = reader.read())) && (c = (char)i) != '"') {
       /* Escaping */
       if (c == '\\') {
         char next = (char)reader.read();
@@ -326,7 +326,7 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private SCMCons<Object> readList() throws IOException {
+  private SCMCons<Object> readList(boolean allowImproperList) throws IOException {
     SCMCons<Object> list = SCMCons.NIL;
     /* Remember position of a dot (if we meet it) */
     int dotPos = -1;
@@ -344,7 +344,7 @@ public class Reader implements IReader {
       Object token = nextToken();
       /* Check if current token is a dot */
       if (DOT.equals(token)) {
-        if (list.isEmpty() || dotPos > -1) {
+        if (!allowImproperList || list.isEmpty() || dotPos > -1) {
           throw new IllegalSyntaxException("read: illegal use of '.'");
         }
         /* Remember the dot position */
@@ -379,11 +379,7 @@ public class Reader implements IReader {
    * <vector> -> #(<vector_contents>)
    */
   private SCMMutableVector readVector() throws IOException {
-    SCMCons<Object> list = readList();
     /* Improper lists are not allowed */
-    if (!list.isList()) {
-      throw new IllegalSyntaxException("read: illegal use of '.'");
-    }
-    return new SCMMutableVector(list.toArray());
+    return new SCMMutableVector(readList(false).toArray());
   }
 }
