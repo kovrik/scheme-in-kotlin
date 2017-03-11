@@ -191,7 +191,7 @@ public final class Expt extends AFn {
         if (isNegative) {
           return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
         }
-        return result;
+        return NumberUtils.tryToDowncast(result);
       } else {
         /* If we came here, then exponent is greater than Integer.MAX_VALUE */
         if (Math.abs(base.longValue()) < 1) {

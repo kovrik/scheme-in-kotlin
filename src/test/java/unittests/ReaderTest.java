@@ -71,6 +71,9 @@ public class ReaderTest extends AbstractTest {
     assertEquals(new SCMBigRational("1500", BigInteger.ONE), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
     assertEquals(new SCMBigRational("3", "4"), reader.readFirst("#e3/4"));
+    assertEquals(1500d,  reader.readFirst("15e2"));
+    assertEquals(15000d, reader.readFirst("15e3"));
+
     String[] badNumbers = {"#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1",
                            "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1"};
     for (String bad : badNumbers) {
@@ -260,8 +263,17 @@ public class ReaderTest extends AbstractTest {
     assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#i2.3e-51"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#I2.3e-5"));
     assertEquals(new BigDecimal("2.3e-51"), reader.readFirst("#I2.3e-51"));
-    assertEquals(new BigDecimal("92160.0"), reader.readFirst("#b101101e1011"));
-    assertEquals(new BigDecimal("4484907929698304.0"), reader.readFirst("#xfefsa"));
+    assertEquals(92160d, reader.readFirst("#b101101e1011"));
+    assertEquals(4484907929698304d, reader.readFirst("#xfefsa"));
+    String[] badExps = {"#e23e1.3", "#e34e1."};
+    for (String bad : badExps) {
+      try {
+        reader.readFirst(bad);
+        fail();
+      } catch (IllegalSyntaxException e) {
+        // expected
+      }
+    }
   }
 
   @Test

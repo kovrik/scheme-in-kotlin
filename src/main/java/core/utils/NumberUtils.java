@@ -35,7 +35,7 @@ public class NumberUtils {
 
   private static final String EXPONENT_MARKS_PATTERN = "(s|l|d|e|f|S|L|D|E|F)";
   private static final String EXPONENT16_MARKS_PATTERN = "(s|l|S|L)";
-  private static final Pattern EXPONENT_PATTERN = Pattern.compile(".+" + EXPONENT_MARKS_PATTERN + "[+-]?\\d+$");
+  private static final Pattern EXPONENT_PATTERN = Pattern.compile(".+" + EXPONENT_MARKS_PATTERN + "[+-]?\\d+(\\.\\d*)?$");
   private static final Pattern EXPONENT16_PATTERN = Pattern.compile(".+" + EXPONENT16_MARKS_PATTERN + "[+-]?\\w+$");
 
   private static final Map<String, Number> SPECIAL_NUMBERS = new HashMap<>();
@@ -155,14 +155,13 @@ public class NumberUtils {
       try {
         Number e = processNumber(exponent, radix, 'e', false, null);
         if (!(e instanceof Long)) {
-          /* Invalid exponent */
-          return SCMSymbol.of(number);
+          throw new IllegalSyntaxException("read: bad exponent: " + number);
         }
         exp = (Long) e;
       } catch (NumberFormatException ex) {
         throw new IllegalSyntaxException("read: bad exponent: " + number);
       }
-      exactness = (exactness == null) ? 'i' : exactness;
+      exactness = exactness == null ? 'i' : exactness;
     }
 
     /* Validate sign */
@@ -189,7 +188,7 @@ public class NumberUtils {
     if (n.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(n).matches()) {
         n = n.replace('#', '0');
-        exactness = (exactness == null) ? 'i' : exactness;
+        exactness = exactness == null ? 'i' : exactness;
       } else {
         return SCMSymbol.of(number);
       }
@@ -215,7 +214,7 @@ public class NumberUtils {
       boolean useBigNum = (numerator.length() > (threshold + hasSign)) || (denominator.length() > (threshold + hasSign));
       return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
     }
-    boolean useBigNum = (n.length() > (threshold + hasSign));
+    boolean useBigNum = n.length() > threshold + hasSign;
     return processNumber(n, radix, exactness, useBigNum, exp);
   }
 
@@ -239,7 +238,7 @@ public class NumberUtils {
     if (!(im instanceof Number)) {
       return SCMSymbol.of(number);
     }
-    return (isZero(re) && isZero(im)) ? 0L : new SCMBigComplex((Number)re, (Number)im);
+    return isZero(re) && isZero(im) ? 0L : new SCMBigComplex((Number)re, (Number)im);
   }
 
   /* Parse string into a number */
@@ -323,12 +322,12 @@ public class NumberUtils {
   private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
     boolean useBigNum, Long exp) {
 
-    Number num = processNumber(numerator, r, 'e', useBigNum, null);
+    Number num = processNumber(numerator,   r, 'e', useBigNum, null);
     Number den = processNumber(denominator, r, 'e', useBigNum, null);
-    SCMBigRational number = new SCMBigRational(new BigInteger(num.toString()), new BigInteger(den.toString()));
+    SCMBigRational number = new SCMBigRational(num.toString(), den.toString());
     if (exactness == 'i') {
       Number result = ToInexact.toInexact(number);
-      return (exp != null) ? (Multiplication.apply(result, Expt.expt(r, exp))) : result;
+      return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));
     }
     return number;
   }
