@@ -149,7 +149,7 @@ public class NumberUtils {
       n = split[0];
       String exponent = split[1];
       try {
-        Number e = processNumber(exponent, radix, 'e', false, null);
+        Number e = processNumber(exponent, radix, true, false, null);
         if (!(e instanceof Long)) {
           throw new IllegalSyntaxException("read: bad exponent: " + number);
         }
@@ -211,7 +211,7 @@ public class NumberUtils {
       return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
     }
     boolean useBigNum = n.length() > threshold + hasSign;
-    return processNumber(n, radix, exactness, useBigNum, exp);
+    return processNumber(n, radix, Reader.isExact(exactness), useBigNum, exp);
   }
 
   private static Object processComplexNumber(String number, Character exactness, int radix) {
@@ -238,7 +238,7 @@ public class NumberUtils {
   }
 
   /* Parse string into a number */
-  private static Number processNumber(String number, Integer r, char exactness, boolean useBigNum, Long exp) {
+  private static Number processNumber(String number, Integer r, boolean exact, boolean useBigNum, Long exp) {
     Number result;
     int dot = number.indexOf('.');
     if (useBigNum) {
@@ -273,17 +273,17 @@ public class NumberUtils {
       } else if (exp < -999) {
         return isPositive(result) ? 0d : -0d;
       }
-      if (r == 10 && Reader.isInexact(exactness)) {
+      if (r == 10 && !exact) {
         return Double.parseDouble(result + "e" + exp);
       } else {
         result = Multiplication.apply(result, Expt.expt(r.longValue(), exp));
       }
     }
-    return processExactness(result, exactness);
+    return processExactness(result, exact);
   }
 
-  private static Number processExactness(Number number, char exactness) {
-    if (Reader.isExact(exactness)) {
+  private static Number processExactness(Number number, boolean exact) {
+    if (exact) {
       /* For some reason (optimization?), Racket's Reader does not convert into exact numbers 'properly':
        *
        * #e2.3 returns 23/10
@@ -305,19 +305,15 @@ public class NumberUtils {
       }
       return number;
     }
-    if (Reader.isInexact(exactness)) {
-      return ToInexact.toInexact(number);
-    }
-    /* Other numbers are inexact by default, nothing to do */
-    return number;
+    return ToInexact.toInexact(number);
   }
 
   /* Parse string into a rational number */
   private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
     boolean useBigNum, Long exp) {
 
-    Number num = processNumber(numerator,   r, 'e', useBigNum, null);
-    Number den = processNumber(denominator, r, 'e', useBigNum, null);
+    Number num = processNumber(numerator,   r, true, useBigNum, null);
+    Number den = processNumber(denominator, r, true, useBigNum, null);
     SCMBigRational number = new SCMBigRational(num.toString(), den.toString());
     if (Reader.isInexact(exactness)) {
       Number result = ToInexact.toInexact(number);
