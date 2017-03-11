@@ -10,7 +10,7 @@ import java.util.List;
 public class StringReader extends Reader {
 
   public Object readFirst(String string) {
-    reader = new PushbackReader(new java.io.StringReader(string), 2);
+    reader = new PushbackReader(new java.io.StringReader(string), 1);
     try {
       Object token = nextToken();
       if (DOT.equals(token)) {
@@ -29,7 +29,7 @@ public class StringReader extends Reader {
   }
 
   public List<Object> read(String string) {
-    reader = new PushbackReader(new java.io.StringReader(string), 2);
+    reader = new PushbackReader(new java.io.StringReader(string), 1);
     try {
       List<Object> tokens = new ArrayList<>();
       Object token;

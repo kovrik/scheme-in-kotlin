@@ -59,7 +59,7 @@ public class Reader implements IReader {
   }
 
   public Reader(InputStream inputStream) {
-    this.reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 2);
+    this.reader = new PushbackReader(new BufferedReader(new InputStreamReader(inputStream)), 1);
   }
 
   @Override

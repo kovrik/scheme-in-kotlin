@@ -15,7 +15,7 @@ public class FileReader extends Reader {
 
   public List<Object> read(File file) {
     try {
-      reader = new PushbackReader(new BufferedReader(new java.io.FileReader(file)), 2);
+      reader = new PushbackReader(new BufferedReader(new java.io.FileReader(file)), 1);
     } catch (FileNotFoundException e) {
       throw new SCMFileNotFoundException(file.getPath());
     }
