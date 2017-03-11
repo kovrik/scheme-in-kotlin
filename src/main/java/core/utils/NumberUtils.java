@@ -208,7 +208,7 @@ public class NumberUtils {
       String numerator = n.substring(0, n.indexOf('/'));
       String denominator = n.substring(n.indexOf('/') + 1);
       boolean useBigNum = (numerator.length() > (threshold + hasSign)) || (denominator.length() > (threshold + hasSign));
-      return processRationalNumber(numerator, denominator, radix, exactness, useBigNum, exp);
+      return processRationalNumber(numerator, denominator, radix, Reader.isExact(exactness), useBigNum, exp);
     }
     boolean useBigNum = n.length() > threshold + hasSign;
     return processNumber(n, radix, Reader.isExact(exactness), useBigNum, exp);
@@ -309,13 +309,13 @@ public class NumberUtils {
   }
 
   /* Parse string into a rational number */
-  private static Number processRationalNumber(String numerator, String denominator, Integer r, char exactness,
+  private static Number processRationalNumber(String numerator, String denominator, Integer r, boolean exact,
     boolean useBigNum, Long exp) {
 
     Number num = processNumber(numerator,   r, true, useBigNum, null);
     Number den = processNumber(denominator, r, true, useBigNum, null);
     SCMBigRational number = new SCMBigRational(num.toString(), den.toString());
-    if (Reader.isInexact(exactness)) {
+    if (!exact) {
       Number result = ToInexact.toInexact(number);
       return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));
     }
