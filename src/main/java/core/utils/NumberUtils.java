@@ -292,9 +292,7 @@ public class NumberUtils {
        *
        * Guile returns 2589569785738035/1125899906842624 in both cases.
        */
-      if (isExact(number)) {
-        return number;
-      } else {
+      if (!isExact(number)) {
         if (number instanceof Double) {
           /* #e2.3 should return 23/10,
            * but (inexact->exact 2.3) should return 2589569785738035/1125899906842624
@@ -305,18 +303,10 @@ public class NumberUtils {
         }
         return ToExact.toExact(number);
       }
+      return number;
     }
     if (Reader.isInexact(exactness)) {
-      if (number instanceof Long) {
-        return number.doubleValue();
-      }
-      if (number instanceof BigDecimal) {
-        int scale = Math.max(1, ((BigDecimal) number).scale());
-        return ((BigDecimal) number).setScale(scale, NumberUtils.ROUNDING_MODE);
-      }
-      if (number instanceof SCMBigRational) {
-        return ((SCMBigRational)number).toBigDecimalInexact();
-      }
+      return ToInexact.toInexact(number);
     }
     /* Other numbers are inexact by default, nothing to do */
     return number;
