@@ -188,7 +188,7 @@ public class NumberUtils {
 
     if (n.indexOf('#') > -1) {
       if (HASH_PATTERN.matcher(n).matches()) {
-        n = n.replaceAll("#", "0");
+        n = n.replace('#', '0');
         exactness = (exactness == null) ? 'i' : exactness;
       } else {
         return SCMSymbol.of(number);
