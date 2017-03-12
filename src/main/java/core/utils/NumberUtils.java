@@ -136,13 +136,13 @@ public class NumberUtils {
     }
 
     /* Read exponent mark if present */
-    Long exp = null;
     Pattern exponentPattern = EXPONENT_PATTERN;
     String exponentMarksPattern = EXPONENT_MARKS_PATTERN;
     if (radix == 16) {
       exponentPattern = EXPONENT16_PATTERN;
       exponentMarksPattern = EXPONENT16_MARKS_PATTERN;
     }
+    Long exp = null;
     String n = number;
     if (exponentPattern.matcher(number).matches()) {
       String[] split = number.split(exponentMarksPattern);
@@ -159,7 +159,6 @@ public class NumberUtils {
       }
       exactness = exactness == null ? 'i' : exactness;
     }
-
     /* Validate sign */
     if ((n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0)) {
       return SCMSymbol.of(number);
@@ -272,7 +271,7 @@ public class NumberUtils {
         return isPositive(result) ? 0d : -0d;
       }
       if (r == 10 && !exact) {
-        return Double.parseDouble(result + "e" + exp);
+        return Double.parseDouble(result + "E" + exp);
       } else {
         result = Multiplication.apply(result, Expt.expt(r.longValue(), exp));
       }
@@ -282,19 +281,14 @@ public class NumberUtils {
 
   private static Number processExactness(Number number, boolean exact) {
     if (exact) {
-      /* For some reason (optimization?), Racket's Reader does not convert into exact numbers 'properly':
-       *
+      /* Racket's Reader does not convert into exact numbers 'properly':
        * #e2.3 returns 23/10
-       * but
-       * (inexact->exact 2.3) returns 2589569785738035/1125899906842624
+       * but (inexact->exact 2.3) returns 2589569785738035/1125899906842624
        *
        * Guile returns 2589569785738035/1125899906842624 in both cases.
        */
       if (!isExact(number)) {
         if (number instanceof Double) {
-          /* #e2.3 should return 23/10,
-           * but (inexact->exact 2.3) should return 2589569785738035/1125899906842624
-           */
           BigDecimal bigDecimal = new BigDecimal(number.toString());
           int scale = bigDecimal.scale();
           return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
@@ -328,7 +322,7 @@ public class NumberUtils {
       return ((SCMBigRational) number).toBigDecimal();
     }
     if (number instanceof SCMBigComplex) {
-      throw new UnsupportedOperationException("Undefined for Complex!");
+      throw new UnsupportedOperationException("undefined for complex!");
     }
     return new BigDecimal(number.toString());
   }
