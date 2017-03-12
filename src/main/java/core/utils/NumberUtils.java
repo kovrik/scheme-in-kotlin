@@ -198,9 +198,7 @@ public class NumberUtils {
 
     /* Rational and Integral numbers are exact by default */
     boolean isIntegral = n.indexOf('.') < 0;
-    if (exactness == null) {
-      exactness = isRational || isIntegral ? 'e' : 'i';
-    }
+    boolean exact = exactness != null ? Reader.isExact(exactness) : isRational || isIntegral;
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
     int hasSign = (n.charAt(0) == '-' || n.charAt(0) == '+') ? 1 : 0;
@@ -208,10 +206,10 @@ public class NumberUtils {
       String numerator = n.substring(0, n.indexOf('/'));
       String denominator = n.substring(n.indexOf('/') + 1);
       boolean useBigNum = (numerator.length() > (threshold + hasSign)) || (denominator.length() > (threshold + hasSign));
-      return processRationalNumber(numerator, denominator, radix, Reader.isExact(exactness), useBigNum, exp);
+      return processRationalNumber(numerator, denominator, radix, exact, useBigNum, exp);
     }
     boolean useBigNum = n.length() > threshold + hasSign;
-    return processNumber(n, radix, Reader.isExact(exactness), useBigNum, exp);
+    return processNumber(n, radix, exact, useBigNum, exp);
   }
 
   private static Object processComplexNumber(String number, Character exactness, int radix) {
