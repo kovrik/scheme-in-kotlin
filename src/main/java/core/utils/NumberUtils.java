@@ -191,20 +191,20 @@ public class NumberUtils {
     }
 
     /* Check if it is a rational number and if it is valid */
-    boolean isRational = n.indexOf('/') > -1;
-    if (isRational && (n.indexOf('/') != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
+    int slashIndex = n.indexOf('/');
+    if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
       return SCMSymbol.of(number);
     }
 
     /* Rational and Integral numbers are exact by default */
     boolean isIntegral = n.indexOf('.') < 0;
-    boolean exact = exactness != null ? Reader.isExact(exactness) : isRational || isIntegral;
+    boolean exact = exactness != null ? Reader.isExact(exactness) : slashIndex > -1 || isIntegral;
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
     int hasSign = (n.charAt(0) == '-' || n.charAt(0) == '+') ? 1 : 0;
-    if (isRational) {
-      String numerator = n.substring(0, n.indexOf('/'));
-      String denominator = n.substring(n.indexOf('/') + 1);
+    if (slashIndex > -1) {
+      String numerator = n.substring(0, slashIndex);
+      String denominator = n.substring(slashIndex + 1);
       boolean useBigNum = (numerator.length() > (threshold + hasSign)) || (denominator.length() > (threshold + hasSign));
       return processRationalNumber(numerator, denominator, radix, exact, useBigNum, exp);
     }
