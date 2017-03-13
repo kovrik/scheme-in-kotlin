@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 
 import static java.lang.Long.parseLong;
 
-public class NumberUtils {
+public final class NumberUtils {
 
   private NumberUtils() {}
 
@@ -121,7 +121,7 @@ public class NumberUtils {
   /* Check if string represents a valid number and process it */
   public static Object preProcessNumber(final String number, Character exactness, int radix) {
     /* First check if it is a special number */
-    Number special = NumberUtils.SPECIAL_NUMBERS.get(number);
+    Number special = SPECIAL_NUMBERS.get(number);
     if (special != null) {
       return special;
     }
@@ -247,7 +247,7 @@ public class NumberUtils {
       if (dot > -1) {
         bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
         if (bigDecimal.stripTrailingZeros().scale() == 0) {
-          bigDecimal = bigDecimal.setScale(1, NumberUtils.ROUNDING_MODE);
+          bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE);
         }
       }
       result = bigDecimal;
@@ -287,7 +287,7 @@ public class NumberUtils {
        *
        * Guile returns 2589569785738035/1125899906842624 in both cases.
        */
-      if (!isExact(number)) {
+      if (isInexact(number)) {
         if (number instanceof Double) {
           BigDecimal bigDecimal = new BigDecimal(number.toString());
           int scale = bigDecimal.scale();
@@ -503,11 +503,11 @@ public class NumberUtils {
   }
 
   public static boolean isExactPositiveInteger(Object o) {
-    return NumberUtils.isExact(o) && isInteger(o) && isPositive(o);
+    return isExact(o) && isInteger(o) && isPositive(o);
   }
 
   public static boolean isExactNonNegativeInteger(Object o) {
-    return NumberUtils.isExact(o) && isInteger(o) && isNonNegative(o);
+    return isExact(o) && isInteger(o) && isNonNegative(o);
   }
 
   public static boolean isReal(Object o) {
@@ -534,10 +534,10 @@ public class NumberUtils {
     if (d <= 0 || d > 19) {
       return number;
     }
-    if (NumberUtils.isInteger(number)) {
+    if (isInteger(number)) {
       try {
         long smaller = number.longValueExact();
-        if (NumberUtils.isInexact(number)) {
+        if (isInexact(number)) {
           return (double)smaller;
         }
         return smaller;
