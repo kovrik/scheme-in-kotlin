@@ -800,12 +800,9 @@ public class NumberTest extends AbstractTest {
     assertEquals(FALSE, eval("(inexact? -3/5)", env));
     assertEquals(FALSE, eval("(inexact? 99999999999999999999999999999999999999999999999999999999999999999999)", env));
 
-    assertEquals(TRUE, eval("(inexact? -2.5)", env));
-    assertEquals(TRUE, eval("(inexact? +inf.0)", env));
-    assertEquals(TRUE, eval("(inexact? -inf.0)", env));
-    assertEquals(TRUE, eval("(inexact? +nan.0)", env));
-    assertEquals(TRUE, eval("(inexact? -nan.0)", env));
-
+    String[] trues = {"(inexact? -2.5)", "(inexact? +inf.0)", "(inexact? -inf.0)", "(inexact? +nan.0)",
+                      "(inexact? -nan.0)", };
+    assertAllEqual(TRUE, trues, env);
     try {
       eval("(inexact? \"test\")", env);
       fail();

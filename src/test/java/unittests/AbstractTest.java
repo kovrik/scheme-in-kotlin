@@ -6,6 +6,10 @@ import core.evaluator.Evaluator;
 import core.reader.StringReader;
 import core.scm.SCMSymbol;
 
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+
 public abstract class AbstractTest {
 
   private final StringReader reader = new StringReader();
@@ -26,5 +30,9 @@ public abstract class AbstractTest {
 
   protected SCMSymbol s(String str) {
     return SCMSymbol.of(str);
+  }
+
+  protected void assertAllEqual(Object expected, String[] forms, Environment env) {
+    Arrays.stream(forms).forEach(form -> assertEquals(form, expected, eval(form, env)));
   }
 }
