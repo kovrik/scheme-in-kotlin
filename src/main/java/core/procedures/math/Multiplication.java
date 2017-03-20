@@ -75,7 +75,7 @@ public final class Multiplication extends AFn {
       try {
         return Math.multiplyExact((Long) first, (Long) second);
       } catch (ArithmeticException e) {
-        return new BigDecimal(first.toString()).multiply(new BigDecimal(second.toString()));
+        return new BigDecimal((Long)first).multiply(new BigDecimal((Long)second));
       }
     }
     if (first instanceof BigDecimal) {

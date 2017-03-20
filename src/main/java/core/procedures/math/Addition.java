@@ -73,7 +73,7 @@ public final class Addition extends AFn {
       try {
         return Math.addExact((Long)first, (Long)second);
       } catch (ArithmeticException e) {
-        return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
+        return new BigDecimal((Long)first).add(new BigDecimal((Long)second));
       }
     }
     if (first instanceof BigDecimal) {
