@@ -158,7 +158,6 @@ public final class Expt extends AFn {
     if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
       return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
-    // FIXME This code is probably wrong and is not working BEGIN ---------------------------------------------------
     /* Long */
     if ((base instanceof Long) && (exponent instanceof Long)) {
       boolean isNegative = false;
@@ -168,7 +167,7 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = new BigDecimal(base.toString()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        BigDecimal result = new BigDecimal((Long)base).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
         if (isNegative) {
           return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
         }
@@ -203,8 +202,10 @@ public final class Expt extends AFn {
     if (Double.isInfinite(result)) {
       return new BigDecimal(base.toString()).pow(exponent.intValue());
     }
+    if (Double.isNaN(result)) {
+      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
+    }
     return result;
-    // FIXME This code is probably wrong and is not working END -----------------------------------------------------
   }
 
   private static Number exptBig(BigDecimal n, BigDecimal e) {
@@ -212,7 +213,7 @@ public final class Expt extends AFn {
       int i = e.intValueExact();
       return n.pow(i);
     } catch (ArithmeticException ex) {
-      // FIXME NEGATIVE_INFINITY and zero in some cases
+      // FIXME NEGATIVE_INFINITY and zero in some cases?
       return Double.POSITIVE_INFINITY;
     }
   }

@@ -533,6 +533,13 @@ public class NumberTest extends AbstractTest {
     assertEquals(Double.POSITIVE_INFINITY, eval("(expt 2 2147483648", env));
     assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -2 2147483647", env));
     assertEquals(Double.POSITIVE_INFINITY, eval("(expt -2 2147483648", env));
+    assertEquals(9.610000000000001, eval("(expt -3.1 2)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("-0.0029666184064708"), new BigDecimal("0.0009639127514694")),
+                 eval("(expt -3.1 -5.1)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("-0.0007509092057438"), new BigDecimal("-0.0001938306001686")),
+                 eval("(expt -3.1 2+3i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("-2.4728383E-9"), new BigDecimal("9.0752993E-9")),
+                 eval("(expt -2.3-3.4i -4.5-5.6i)", env));
   }
 
   @Test
