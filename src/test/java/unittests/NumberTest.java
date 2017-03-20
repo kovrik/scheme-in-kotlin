@@ -530,6 +530,9 @@ public class NumberTest extends AbstractTest {
     assertEquals(0d, eval("(expt 5 -inf.0)", env));
     assertEquals(Double.NaN, eval("(expt 2+3i -inf.0)", env));
     assertEquals(Double.NaN, eval("(expt 0 +nan.0)", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt 2 2147483648", env));
+    assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -2 2147483647", env));
+    assertEquals(Double.POSITIVE_INFINITY, eval("(expt -2 2147483648", env));
   }
 
   @Test

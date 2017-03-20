@@ -69,23 +69,16 @@ public final class Expt extends AFn {
     if (NumberUtils.isZero(base) && (NumberUtils.isFinite(exponent))) {
       if (base.equals(-0d)) {
         if (NumberUtils.isNegative(exponent)) {
-          if (NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent)) {
-            return Double.NEGATIVE_INFINITY;
-          }
-          return Double.POSITIVE_INFINITY;
+          return NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ?
+                 Double.NEGATIVE_INFINITY :
+                 Double.POSITIVE_INFINITY;
         } else {
-          if (NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent)) {
-            return -0d;
-          } else {
-            return 0d;
-          }
+          return NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         }
       }
-      if (NumberUtils.isNegative(exponent)) {
-        return Double.POSITIVE_INFINITY;
-      } else {
-        return NumberUtils.inexactnessTaint(0L, base);
-      }
+      return NumberUtils.isNegative(exponent) ?
+             Double.valueOf(Double.POSITIVE_INFINITY) :
+             NumberUtils.inexactnessTaint(0L, base);
     }
     if (NumberUtils.isOne(base)) {
       return NumberUtils.inexactnessTaint(base, exponent);
@@ -110,17 +103,9 @@ public final class Expt extends AFn {
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
       if (NumberUtils.isInteger(exponent)) {
         if (NumberUtils.isNegative(exponent)) {
-          if (SCMPredicate.IS_ODD.apply1(exponent)) {
-            return -0d;
-          } else {
-            return 0d;
-          }
+          return SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         } else {
-          if (SCMPredicate.IS_ODD.apply1(exponent)) {
-            return Double.NEGATIVE_INFINITY;
-          } else {
-            return Double.POSITIVE_INFINITY;
-          }
+          return SCMPredicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }
@@ -130,11 +115,7 @@ public final class Expt extends AFn {
      *  w is positive — +inf.0
      */
     if ((base instanceof Double) && Double.POSITIVE_INFINITY == (Double)base) {
-      if (NumberUtils.isPositive(exponent)) {
-        return Double.POSITIVE_INFINITY;
-      } else {
-        return 0d;
-      }
+      return NumberUtils.isPositive(exponent) ? Double.POSITIVE_INFINITY : 0d;
     }
 
     /* (expt z -inf.0) for positive z:
@@ -177,8 +158,8 @@ public final class Expt extends AFn {
     if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
       return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
-
-    // FIXME This code is wrong and probably doesn't work in many cases BEGIN ---------------------------------------------------
+    // FIXME This code is probably wrong and is not working BEGIN ---------------------------------------------------
+    /* Long */
     if ((base instanceof Long) && (exponent instanceof Long)) {
       boolean isNegative = false;
       if (exponent.longValue() < Integer.MAX_VALUE) {
@@ -200,34 +181,30 @@ public final class Expt extends AFn {
         if (base.longValue() > 0) {
           return Double.POSITIVE_INFINITY;
         } else {
-          return Double.NEGATIVE_INFINITY;
+          return SCMPredicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }
     /* BigDecimals */
     if (base instanceof BigDecimal && NumberUtils.isInteger(exponent)) {
       if (NumberUtils.isInteger(base)) {
-        int exp;
-        try {
-          if (exponent instanceof BigDecimal) {
-            exp = ((BigDecimal) exponent).intValueExact();
-          } else {
-            exp = exponent.intValue();
+        if (exponent instanceof BigDecimal) {
+          try {
+            return ((BigDecimal) base).pow(((BigDecimal) exponent).intValueExact());
+          } catch (ArithmeticException e) {
+            return exptBig((BigDecimal) base, (BigDecimal) exponent);
           }
-          return ((BigDecimal) base).pow(exp);
-        } catch (ArithmeticException e) {
-          return exptBig((BigDecimal)base, new BigDecimal(exponent.toString()));
         }
-      } else {
-        return exptBig((BigDecimal) base, new BigDecimal(exponent.toString()));
       }
+      return exptBig((BigDecimal) base, new BigDecimal(exponent.toString()));
     }
+    /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
       return new BigDecimal(base.toString()).pow(exponent.intValue());
     }
     return result;
-    // FIXME This code is wrong and probably doesn't work in many cases END -----------------------------------------------------
+    // FIXME This code is probably wrong and is not working END -----------------------------------------------------
   }
 
   private static Number exptBig(BigDecimal n, BigDecimal e) {
