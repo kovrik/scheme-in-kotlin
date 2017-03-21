@@ -16,22 +16,15 @@ public class IsProcedureTest extends AbstractTest {
   public void testIsProcedure() {
     assertEquals(TRUE, eval("(procedure? car)", env));
     assertEquals(TRUE, eval("(procedure? procedure?)", env));
-    assertEquals(FALSE, eval("(procedure? 'car)", env));
     assertEquals(TRUE, eval("(procedure? (lambda (x) x))", env));
-    assertEquals(FALSE, eval("(procedure? '(lambda (x) x))", env));
     assertEquals(TRUE, eval("(let ((a (lambda (x) x)))	(procedure? a))", env));
     assertEquals(TRUE, eval("(letrec ((a (lambda () (procedure? a)))) (a))", env));
-    assertEquals(FALSE, eval("(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", env));
     assertEquals(TRUE, eval("(let () (define (hi) 1) (procedure? hi))", env));
-    assertEquals(FALSE, eval("(procedure? 'and)", env));
-    assertEquals(FALSE, eval("(procedure? 'let)", env));
-    assertEquals(FALSE, eval("(procedure? 'quasiquote)", env));
-    assertEquals(FALSE, eval("(procedure? 'cond)", env));
-    assertEquals(FALSE, eval("(procedure? 'do)", env));
-    assertEquals(FALSE, eval("(procedure? 'set!)", env));
-    assertEquals(FALSE, eval("(procedure? \"hi\")", env));
-    assertEquals(FALSE, eval("(procedure? '(1 2))", env));
-    assertEquals(FALSE, eval("(procedure? #(1 2))", env));
+    String[] falses = {"(procedure? 'car)", "(procedure? '(lambda (x) x))",
+        "(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", "(procedure? 'and)", "(procedure? 'let)",
+        "(procedure? 'quasiquote)", "(procedure? 'cond)", "(procedure? 'do)", "(procedure? 'set!)", "(procedure? \"hi\")",
+        "(procedure? '(1 2))", "(procedure? #(1 2))",};
+    assertAllEqual(FALSE, falses, env);
     try {
       eval("(procedure? begin)", env);
       fail();

@@ -13,72 +13,23 @@ public class IsCharTest extends AbstractTest {
 
   @Test
   public void testIsChar() {
-    assertEquals(TRUE,  eval("(char? #\\a)", env));
-    assertEquals(TRUE,  eval("(char? #\\()", env));
-    assertEquals(TRUE,  eval("(char? #\\space)", env));
-    assertEquals(TRUE,  eval("(char? '#\\newline)", env));
-    assertEquals(TRUE,  eval("(char? #\\1)", env));
-    assertEquals(TRUE,  eval("(char? #\\$)", env));
-    assertEquals(TRUE,  eval("(char? #\\.)", env));
-    assertEquals(TRUE,  eval("(char? #\\\\)", env));
-    assertEquals(TRUE,  eval("(char? #\\))", env));
-    assertEquals(TRUE,  eval("(char? #\\%)", env));
-    assertEquals(TRUE,  eval("(char? '#\\space)", env));
-    assertEquals(TRUE,  eval("(char? '#\\ )", env));
-    assertEquals(TRUE,  eval("(char? '#\\newline)", env));
-    assertEquals(TRUE,  eval("(char? '#\\a)", env));
-    assertEquals(TRUE,  eval("(char? '#\\8)", env));
-    assertEquals(TRUE,  eval("(char? #\\-)", env));
-    assertEquals(TRUE,  eval("(char? #\\n)", env));
-    assertEquals(TRUE,  eval("(char? #\\()", env));
-    assertEquals(FALSE, eval("(char? #e1)", env));
-    assertEquals(TRUE,  eval("(char? #\\#)", env));
-    assertEquals(TRUE,  eval("(char? #\\x)", env));
-    assertEquals(TRUE,  eval("(char? #\\o)", env));
-    assertEquals(TRUE,  eval("(char? #\\b)", env));
-    assertEquals(FALSE, eval("(char? #b101)", env));
-    assertEquals(FALSE, eval("(char? #o73)", env));
-    assertEquals(FALSE, eval("(char? #x73)", env));
-    assertEquals(FALSE, eval("(char? 'a)", env));
-    assertEquals(FALSE, eval("(char? 97)", env));
-    assertEquals(FALSE, eval("(char? \"a\")", env));
-    assertEquals(TRUE,  eval("(char? (string-ref \"hi\" 0))", env));
-    assertEquals(TRUE,  eval("(char? (string-ref (make-string 1) 0))", env));
-    assertEquals(TRUE,  eval("(char? #\\\")", env));
-    assertEquals(TRUE,  eval("(char? #\\\')", env));
-    assertEquals(TRUE,  eval("(char? #\\`)", env));
-    assertEquals(TRUE,  eval("(char? #\\@)", env));
-    assertEquals(FALSE, eval("(char? 'begin)", env));
-    assertEquals(TRUE,  eval("(char? #\\u65)", env));
-    assertEquals(TRUE,  eval("(char? #\\u000000000065)", env));
-    assertEquals(TRUE,  eval("(char? #\\u0)", env));
-    assertEquals(TRUE,  eval("(char=? #\\u000 #\\null)", env));
-    assertEquals(TRUE,  eval("(char=? #\\u08 #\\u8)", env));
-//    ; Guile thinks both of these names are bogus
-    assertEquals(TRUE,  eval("(char=? #\\u0e    #\\ue)", env));
-    assertEquals(TRUE,  eval("(char=? #\\u00e   #\\ue)", env));
-    assertEquals(TRUE,  eval("(char=? #\\u0000e #\\ue)", env));
-//    ; hmmm -- surely this is a bug
-    assertEquals(TRUE,  eval("(char=? #\\u00000000e #\\ue)", env));
-    assertEquals(TRUE,  eval("(char? #\\uff)", env));
-    assertEquals(TRUE,  eval("(char=? #\\u6a #\\j)", env));
-    assertEquals(TRUE,  eval("(char=? #\\return #\\ud)", env));
-    assertEquals(TRUE,  eval("(char=? #\\null #\\u0)", env));
-    assertEquals(TRUE,  eval("(char? #\\return)", env));
-    assertEquals(TRUE,  eval("(char? #\\null)", env));
-    assertEquals(TRUE,  eval("(char? #\\nul)", env));
-    assertEquals(TRUE,  eval("(char? #\\linefeed)", env));
-    assertEquals(TRUE,  eval("(char? #\\tab)", env));
-    assertEquals(TRUE,  eval("(char? #\\space)", env));
-    assertEquals(TRUE,  eval("(char=? #\\null #\\nul)", env));
-    assertEquals(TRUE,  eval("(char=? #\\newline #\\linefeed)", env));
-    assertEquals(TRUE,  eval("(char? #\\backspace)", env));
-    assertEquals(TRUE,  eval("(char? #\\page)", env));
-    assertEquals(TRUE,  eval("(char? #\\escape)", env));
-    assertEquals(TRUE,  eval("(char? #\\alarm)", env));
-    assertEquals(TRUE,  eval("(char? #\\delete)", env));
-    assertEquals(FALSE, eval("(char=? #\\delete #\\backspace)", env));
-    assertEquals(FALSE, eval("(char? '1e311)", env));
+    String[] trues = {"(char? #\\a)", "(char? #\\()", "(char? #\\space)", "(char? '#\\newline)", "(char? #\\1)",
+        "(char? #\\$)", "(char? #\\.)", "(char? #\\\\)", "(char? #\\))", "(char? #\\%)", "(char? '#\\space)",
+        "(char? '#\\ )", "(char? '#\\newline)", "(char? '#\\a)", "(char? '#\\8)", "(char? #\\-)", "(char? #\\n)",
+        "(char? #\\()", "(char? #\\#)", "(char? #\\x)", "(char? #\\o)", "(char? #\\b)", "(char? (string-ref \"hi\" 0))",
+        "(char? (string-ref (make-string 1) 0))", "(char? #\\\")", "(char? #\\\')", "(char? #\\`)", "(char? #\\@)",
+        "(char? #\\u65)", "(char? #\\u000000000065)", "(char? #\\u0)", "(char=? #\\u000 #\\null)", "(char=? #\\u08 #\\u8)",
+        "(char=? #\\u0e    #\\ue)", "(char=? #\\u00e   #\\ue)", "(char=? #\\u0000e #\\ue)", "(char=? #\\u00000000e #\\ue)",
+        "(char? #\\uff)", "(char=? #\\u6a #\\j)", "(char=? #\\return #\\ud)", "(char=? #\\null #\\u0)",
+        "(char? #\\return)", "(char? #\\null)", "(char? #\\nul)", "(char? #\\linefeed)", "(char? #\\tab)",
+        "(char? #\\space)", "(char=? #\\null #\\nul)", "(char=? #\\newline #\\linefeed)", "(char? #\\backspace)",
+        "(char? #\\page)", "(char? #\\escape)", "(char? #\\alarm)", "(char? #\\delete)", };
+    assertAllEqual(TRUE, trues, env);
+
+    String[] falses = {"(char=? #\\delete #\\backspace)", "(char? '1e311)", "(char? #e1)", "(char? #b101)",
+                       "(char? #o73)", "(char? #x73)", "(char? 'a)", "(char? 97)", "(char? \"a\")", "(char? 'begin)", };
+    assertAllEqual(FALSE, falses, env);
+
     try {
       eval("(char?) 'error)", env);
       fail();

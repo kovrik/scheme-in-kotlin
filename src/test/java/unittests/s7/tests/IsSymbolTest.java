@@ -13,35 +13,17 @@ public class IsSymbolTest extends AbstractTest {
 
   @Test
   public void testIsSymbol() {
-    assertEquals(TRUE, eval("(symbol? 't)  ", env));
-    assertEquals(FALSE, eval("(symbol? \"t\") ", env));
-    assertEquals(FALSE, eval("(symbol? '(t))", env));
-    assertEquals(FALSE, eval("(symbol? #t)  ", env));
-    assertEquals(FALSE, eval("(symbol? 4)   ", env));
-    assertEquals(TRUE, eval("(symbol? 'foo)", env));
-    assertEquals(TRUE, eval("(symbol? (car '(a b)))", env));
-    assertEquals(TRUE, eval("(symbol? 'nil)", env));
-    assertEquals(FALSE, eval("(symbol? '())", env));
-    assertEquals(FALSE, eval("(symbol? #())", env));
-    assertEquals(FALSE, eval("(symbol? #f)", env));
-    assertEquals(TRUE, eval("(symbol? 'car)", env));
-    assertEquals(FALSE, eval("(symbol? car)", env));
-    assertEquals(FALSE, eval("(symbol? '#f)", env));
-    assertEquals(FALSE, eval("(symbol? #())", env));
-    assertEquals(TRUE, eval("(symbol? ':)", env));
-    assertEquals(TRUE, eval("(symbol? '|)", env));
-    assertEquals(TRUE, eval("(symbol? '|')", env));
-    assertEquals(TRUE, eval("(symbol? '@)", env));
-    assertEquals(TRUE, eval("(symbol? 'sym0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789)", env));
-    assertEquals(TRUE, eval("(symbol? (vector-ref #(1 a 34) 1))", env));
-    assertEquals(TRUE, eval("(symbol? (string->symbol \"if\"))", env));
-    assertEquals(TRUE, eval("(symbol? 'quote)", env));
-    assertEquals(FALSE, eval("(symbol? '(AB\\c () xyz))", env));
-    assertEquals(TRUE, eval("(symbol? 'begin)", env));
-    assertEquals(TRUE, eval("(symbol? 'if)", env));
-    assertEquals(FALSE, eval("(symbol? #b1)", env));
-    assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0e) #t)", env));
-    assertEquals(TRUE, eval("(if (symbol? '1+) (symbol? '0000eeesve) #t)", env));
+    String[] trues = {"(symbol? 't)  ", "(symbol? 'foo)", "(symbol? (car '(a b)))", "(symbol? 'nil)", "(symbol? 'car)",
+        "(symbol? ':)", "(symbol? '|)", "(symbol? '|')", "(symbol? '@)",
+        "(symbol? 'sym0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789)",
+        "(symbol? (vector-ref #(1 a 34) 1))", "(symbol? (string->symbol \"if\"))", "(symbol? 'quote)",
+        "(symbol? 'begin)", "(symbol? 'if)", "(if (symbol? '1+) (symbol? '0e) #t)", "(if (symbol? '1+) (symbol? '0000eeesve) #t)",};
+    assertAllEqual(TRUE, trues, env);
+
+    String[] falses = {"(symbol? '(AB\\c () xyz))", "(symbol? #b1)", "(symbol? car)", "(symbol? '#f)", "(symbol? #())",
+        "(symbol? '())", "(symbol? #())", "(symbol? #f)", "(symbol? \"t\") ", "(symbol? '(t))", "(symbol? #t)  ", "(symbol? 4)   ",};
+    assertAllEqual(FALSE, falses, env);
+
     try {
       eval("(if (symbol? '1+) (symbol? '#xff0000eeesve) #t)", env);
       fail();

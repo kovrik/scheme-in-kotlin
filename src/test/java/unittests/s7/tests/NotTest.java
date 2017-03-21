@@ -13,19 +13,10 @@ public class NotTest extends AbstractTest {
   public void testNot() {
     assertEquals(TRUE,  eval("(not #f)", env));
     assertEquals(TRUE,  eval("(not (not #t))", env));
-    assertEquals(FALSE, eval("(not #t)", env));
-    assertEquals(FALSE, eval("(not 0)", env));
-    assertEquals(FALSE, eval("(not 1)", env));
-    assertEquals(FALSE, eval("(not '())", env));
-    assertEquals(FALSE, eval("(not 't)", env));
-    assertEquals(FALSE, eval("(not (list))", env));
-    assertEquals(FALSE, eval("(not (list 3))", env));
-    assertEquals(FALSE, eval("(not 'nil)", env));
-    assertEquals(FALSE, eval("(not not)", env));
-    assertEquals(FALSE, eval("(not \"\")", env));
-    assertEquals(FALSE, eval("(not 'lambda)", env));
-    assertEquals(FALSE, eval("(not 'quote)", env));
-    assertEquals(FALSE, eval("(not 'and)", env));
-    assertEquals(FALSE, eval("(not 'case)", env));
+
+    String[] falses = {"(not #t)", "(not 0)", "(not 1)", "(not '())", "(not 't)", "(not (list))",
+        "(not (list 3))", "(not 'nil)", "(not not)", "(not \"\")", "(not 'lambda)", "(not 'quote)",
+        "(not 'and)", "(not 'case)",};
+    assertAllEqual(FALSE, falses, env);
   }
 }

@@ -11,60 +11,27 @@ public class EqTest extends AbstractTest {
 
   @Test
   public void testEq() {
-    assertEquals(FALSE, eval("(eq? 'a 3)", env));
-    assertEquals(FALSE, eval("(eq? #t 't)", env));
-    assertEquals(FALSE, eval("(eq? \"abs\" 'abc)", env));
-    assertEquals(FALSE, eval("(eq? \"hi\" '(hi))", env));
-    assertEquals(TRUE, eval("(eq? \"hi\" \"hi\")", env));
-    assertEquals(FALSE, eval("(eq? \"()\" '())", env));
-    assertEquals(FALSE, eval("(eq? '(1) '(1))", env));
-    assertEquals(FALSE, eval("(eq? '(#f) '(#f))", env));
-    assertEquals(FALSE, eval("(eq? #\\a #\\b)", env));
-    assertEquals(TRUE, eval("(eq? #t #t)", env));
-    assertEquals(TRUE, eval("(eq? #f #f)", env));
-    assertEquals(FALSE, eval("(eq? #f #t)", env));
-    assertEquals(TRUE, eval("(eq? (null? '()) #t)", env));
-    assertEquals(TRUE, eval("(eq? (null? '(a)) #f)", env));
-    assertEquals(TRUE, eval("(eq? (cdr '(a)) '())", env));
-    assertEquals(TRUE, eval("(eq? 'a 'a)", env));
-    assertEquals(FALSE, eval("(eq? 'a 'b)", env));
-    assertEquals(TRUE, eval("(eq? 'a (string->symbol \"a\"))", env));
-    assertEquals(TRUE, eval("(let ((x '(a . b))) (eq? x x))", env));
-    assertEquals(TRUE, eval("(let ((x (cons 'a 'b))) (eq? x x))", env));
-    assertEquals(FALSE, eval("(eq? (cons 'a 'b) (cons 'a 'b))", env));
-    assertEquals(FALSE, eval("(eq? \"abc\" \"cba\")", env));
-    assertEquals(TRUE, eval("(let ((x \"hi\")) (eq? x x))", env));
-    assertEquals(FALSE, eval("(eq? (string #\\h #\\i) (string #\\h #\\i))", env));
-    assertEquals(FALSE, eval("(eq? #(a) #(b))", env));
-    assertEquals(TRUE, eval("(let ((x (vector 'a))) (eq? x x))", env));
-    assertEquals(FALSE,eval("(eq? (vector 'a) (vector 'a))", env));
-    assertEquals(TRUE, eval("(eq? car car)", env));
-    assertEquals(FALSE, eval("(eq? car cdr)", env));
-    assertEquals(TRUE, eval("(let ((x (lambda () 1))) (eq? x x))", env));
-    assertEquals(TRUE, eval("(let ((x (lambda () 1))) (let ((y x)) (eq? x y)))", env));
-    assertEquals(FALSE, eval("(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", env));
-    assertEquals(TRUE, eval("(eq? 'abc 'abc)", env));
-    assertEquals(TRUE, eval("(eq? eq? eq?)", env));
-    assertEquals(FALSE, eval("(eq? (if #f 1) 1)", env));
-    assertEquals(TRUE, eval("(eq? '() '())", env));
-    assertEquals(TRUE, eval("(eq? '() '(  ))", env));
-    assertEquals(TRUE, eval("(eq? '()'())", env));
-    assertEquals(TRUE, eval("(eq? '() (list))", env));
-    assertEquals(TRUE, eval("(eq? '() (list))", env));
-    assertEquals(FALSE, eval("(eq? ''#\\a '#\\a)", env));
-    assertEquals(FALSE, eval("(eq? 'car car)", env));
-    assertEquals(FALSE, eval("(eq? ''() '())", env));
-    assertEquals(TRUE, eval("(eq? '#f #f)", env));
-    assertEquals(TRUE, eval("(eq? '#f '#f)", env));
-    assertEquals(TRUE, eval("(eq? #f '  #f)", env));
-    assertEquals(TRUE, eval("(eq? '()'())", env));
-    assertEquals(FALSE, eval("(let ((f (lambda () (cons 1 (string #\\H))))) (eq? (f) (f)))", env));
-    assertEquals(TRUE, eval("(eq? 'if 'if)", env));
-    assertEquals(FALSE, eval("(eq? (string) \"\")", env));
-    assertEquals(FALSE, eval("(eq? (vector) (vector))", env));
-    assertEquals(FALSE, eval("(eq? (vector) #())", env));
-    assertEquals(TRUE, eval("(eq? (list) (list))", env));
-    assertEquals(TRUE, eval("(eq? (list) '())", env));
+    String[] trues = {
+        "(eq? \"hi\" \"hi\")", "(eq? #t #t)", "(eq? #f #f)", "(eq? (null? '()) #t)", "(eq? (null? '(a)) #f)",
+        "(eq? (cdr '(a)) '())", "(eq? 'a 'a)", "(eq? 'a (string->symbol \"a\"))", "(let ((x '(a . b))) (eq? x x))",
+        "(let ((x (cons 'a 'b))) (eq? x x))", "(let ((x \"hi\")) (eq? x x))", "(let ((x (vector 'a))) (eq? x x))",
+        "(eq? car car)", "(let ((x (lambda () 1))) (eq? x x))", "(let ((x (lambda () 1))) (let ((y x)) (eq? x y)))",
+        "(eq? 'abc 'abc)", "(eq? eq? eq?)", "(eq? '() '())", "(eq? '() '(  ))", "(eq? '()'())", "(eq? '() (list))",
+        "(eq? '() (list))", "(eq? '#f #f)", "(eq? '#f '#f)", "(eq? #f '  #f)", "(eq? '()'())", "(eq? 'if 'if)",
+        "(eq? (list) (list))", "(eq? (list) '())", };
+    assertAllEqual(TRUE, trues, env);
+
+    String[] falses = {
+        "(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", "(eq? (if #f 1) 1)",
+        "(eq? ''#\\a '#\\a)", "(eq? 'car car)", "(eq? ''() '())", "(eq? (string) \"\")",
+        "(let ((f (lambda () (cons 1 (string #\\H))))) (eq? (f) (f)))", "(eq? (vector) (vector))",
+        "(eq? (vector) #())", "(eq? 'a 3)", "(eq? #t 't)", "(eq? \"abs\" 'abc)", "(eq? \"hi\" '(hi))",
+        "(eq? \"()\" '())", "(eq? '(1) '(1))", "(eq? '(#f) '(#f))", "(eq? #\\a #\\b)", "(eq? #f #t)",
+        "(eq? 'a 'b)", "(eq? (cons 'a 'b) (cons 'a 'b))", "(eq? \"abc\" \"cba\")",
+        "(eq? (string #\\h #\\i) (string #\\h #\\i))", "(eq? #(a) #(b))", "(eq? (vector 'a) (vector 'a))",
+        "(eq? car cdr)", };
+    assertAllEqual(FALSE, falses, env);
+
     eval("(define (counter count)" +
          "  (lambda ()" +
          "    (set! count (+ 1 count))" +
