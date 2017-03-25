@@ -549,11 +549,14 @@ public final class NumberUtils {
   }
 
   public static Number tryToDowncast(BigInteger number) {
-    try {
-      return number.longValueExact();
-    } catch (ArithmeticException e) {
-      return new BigDecimal(number);
+    if (number.bitLength() <= 63) {
+      try {
+        return number.longValueExact();
+      } catch (ArithmeticException e) {
+        // ignore
+      }
     }
+    return new BigDecimal(number);
   }
 
   public static boolean isFinite(Number number) {
