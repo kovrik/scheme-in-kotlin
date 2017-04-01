@@ -9,11 +9,16 @@ import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
 import core.procedures.delayed.Force;
-import core.scm.*;
+import core.scm.SCMBigRational;
+import core.scm.SCMPromise;
+import core.scm.SCMSymbol;
+import core.scm.SCMThunk;
 import core.scm.specialforms.ISpecialForm;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +72,12 @@ public class Evaluator {
   private Object evalIter(Object sexp, Environment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
-      Object o = env.find(sexp);
+      Object o = env.findOrDefault(sexp, null);
       if (o instanceof ISpecialForm) {
         throw IllegalSyntaxException.of(o.toString(), sexp);
+      }
+      if (o == null) {
+        return evalJavaStaticField(sexp.toString());
       }
       return o;
     } else if (sexp instanceof List) {
@@ -90,7 +98,10 @@ public class Evaluator {
     Object op = sexp.get(0);
     if (op instanceof SCMSymbol) {
       /* Lookup symbol */
-      op = env.find(op);
+      op = env.findOrDefault(op, null);
+      if (op == null) {
+        return evalJavaMethod(sexp);
+      }
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
@@ -132,5 +143,110 @@ public class Evaluator {
     }
     /* Call AFn via helper method */
     return fn.applyN(args);
+  }
+
+  private Class getClass(String name) {
+    if (name.indexOf('.') == -1) {
+      name = "java.lang." + name;
+    }
+    try {
+      return Class.forName(name);
+    } catch (ClassNotFoundException e) {
+      throw new IllegalSyntaxException("class not found: " + name);
+    }
+  }
+
+  private Object evalJavaStaticField(String s) {
+
+    /* Java Interop: static fields */
+    if (s.indexOf('/') > -1) {
+      String[] classAndField = s.split("/");
+      String className = classAndField[0];
+      String field = classAndField[1];
+      Class c = getClass(className);
+      try {
+        return c.getField(field).get(c);
+      } catch (NoSuchFieldException e) {
+        throw new IllegalSyntaxException(String.format("unable to find static field %s in class %s", field, className));
+      } catch (IllegalAccessException e) {
+        throw new IllegalSyntaxException(String.format("unable to access static field %s in class %s", field, className));
+      }
+    }
+    throw new IllegalArgumentException("undefined identifier: " + s);
+  }
+
+  // FIXME resolve arg types? downcast if required? (.equals 5 5) (.substring "test" 1)
+  // TODO get instance field value
+  // TODO Native methods? (.getClass)
+  private Object evalJavaMethod(List<Object> sexp) {
+
+    Object op = sexp.get(0);
+    /* Java Interop: instance method call */
+    String m = op.toString();
+    if (m.indexOf('.') == 0) {
+      String methodName = m.substring(1);
+      Object o = sexp.get(1);
+      String name = o.toString();
+      Class<?> clazz;
+      boolean isClass = false;
+      if (Character.isUpperCase(name.charAt(0))) {
+        clazz = getClass(name);
+        isClass = true;
+      } else {
+        clazz = o.getClass();
+      }
+      Object[] args = sexp.subList(2, sexp.size()).toArray();
+      Class[] argTypes = new Class[args.length];
+      for (int i = 0; i < args.length; i++) {
+        argTypes[i] = args[i].getClass();
+      }
+      Method method;
+      try {
+        if (isClass) {
+          method = Class.class.getMethod(methodName, argTypes);
+        } else {
+          method = clazz.getMethod(methodName, argTypes);
+        }
+      } catch (NoSuchMethodException e) {
+        throw new IllegalSyntaxException(String.format("method %s not found in class %s", methodName, clazz.getName()));
+      }
+      try {
+        if (isClass) {
+          return method.invoke(clazz, args);
+        } else {
+          return method.invoke(o, args);
+        }
+      } catch (IllegalAccessException e) {
+        throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
+      } catch (InvocationTargetException e) {
+        e.printStackTrace();
+      }
+    }
+    /* Java Interop: static method call */
+    if (m.indexOf('/') != -1) {
+      String[] classAndMethod = m.split("/");
+      String className = classAndMethod[0];
+      String methodName = classAndMethod[1];
+      Class clazz = getClass(className);
+      Object[] args = sexp.subList(1, sexp.size()).toArray();
+      Class[] argTypes = new Class[args.length];
+      for (int i = 0; i < args.length; i++) {
+        argTypes[i] = args[i].getClass();
+      }
+      Method method;
+      try {
+        method = clazz.getMethod(methodName, argTypes);
+      } catch (NoSuchMethodException e) {
+        throw new IllegalSyntaxException(String.format("static method %s not found in class %s", methodName, clazz.getName()));
+      }
+      try {
+        return method.invoke(null, args);
+      } catch (IllegalAccessException e) {
+        throw new IllegalSyntaxException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
+      } catch (InvocationTargetException e) {
+        e.printStackTrace();
+      }
+    }
+    throw new IllegalArgumentException("undefined identifier: " + op);
   }
 }
