@@ -189,7 +189,7 @@ public class Evaluator {
       String name = o.toString();
       Class<?> clazz;
       boolean isClass = false;
-      if (Character.isUpperCase(name.charAt(0))) {
+      if (Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
         clazz = getClass(name);
         isClass = true;
       } else {
