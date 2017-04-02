@@ -156,8 +156,17 @@ public class Evaluator {
     }
   }
 
-  private Object evalJavaStaticField(String s) {
+  // TODO Overloaded method resolution
+  // TODO Native methods? (.getClass)
+  private Method getMethod(Class clazz, String name, Class<?>... parameterTypes) {
+    try {
+      return clazz.getMethod(name, parameterTypes);
+    } catch (NoSuchMethodException e) {
+      throw new IllegalSyntaxException(String.format("method %s not found in class %s", name, clazz.getName()));
+    }
+  }
 
+  private Object evalJavaStaticField(String s) {
     /* Java Interop: static fields */
     if (s.indexOf('/') > -1) {
       String[] classAndField = s.split("/");
@@ -175,11 +184,9 @@ public class Evaluator {
     throw new IllegalArgumentException("undefined identifier: " + s);
   }
 
-  // FIXME resolve arg types? downcast if required? (.equals 5 5) (.substring "test" 1)
+  // TODO Move reflection to a separate class
   // TODO get instance field value
-  // TODO Native methods? (.getClass)
   private Object evalJavaMethod(List<Object> sexp) {
-
     Object op = sexp.get(0);
     /* Java Interop: instance method call */
     String m = op.toString();
@@ -200,22 +207,9 @@ public class Evaluator {
       for (int i = 0; i < args.length; i++) {
         argTypes[i] = args[i].getClass();
       }
-      Method method;
+      Method method = getMethod(isClass ? Class.class : clazz, methodName, argTypes);
       try {
-        if (isClass) {
-          method = Class.class.getMethod(methodName, argTypes);
-        } else {
-          method = clazz.getMethod(methodName, argTypes);
-        }
-      } catch (NoSuchMethodException e) {
-        throw new IllegalSyntaxException(String.format("method %s not found in class %s", methodName, clazz.getName()));
-      }
-      try {
-        if (isClass) {
-          return method.invoke(clazz, args);
-        } else {
-          return method.invoke(o, args);
-        }
+        return method.invoke(isClass ? clazz : o, args);
       } catch (IllegalAccessException e) {
         throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
       } catch (InvocationTargetException e) {
@@ -233,12 +227,7 @@ public class Evaluator {
       for (int i = 0; i < args.length; i++) {
         argTypes[i] = args[i].getClass();
       }
-      Method method;
-      try {
-        method = clazz.getMethod(methodName, argTypes);
-      } catch (NoSuchMethodException e) {
-        throw new IllegalSyntaxException(String.format("static method %s not found in class %s", methodName, clazz.getName()));
-      }
+      Method method = getMethod(clazz, methodName, argTypes);
       try {
         return method.invoke(null, args);
       } catch (IllegalAccessException e) {
