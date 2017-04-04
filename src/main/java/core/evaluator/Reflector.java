@@ -4,18 +4,69 @@ import core.exceptions.IllegalSyntaxException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class Reflector {
 
+  private static final Map<Class, Class> UNBOXED = new HashMap<>();
+  static {
+    UNBOXED.put(Byte.class,      byte.class);
+    UNBOXED.put(Short.class,     short.class);
+    UNBOXED.put(Integer.class,   int.class);
+    UNBOXED.put(Long.class,      long.class);
+    UNBOXED.put(Float.class,     float.class);
+    UNBOXED.put(Double.class,    double.class);
+    UNBOXED.put(Character.class, char.class);
+    UNBOXED.put(Boolean.class,   boolean.class);
+  }
+
+  private static final Map<Class, Class> BOXED = new HashMap<>();
+  static {
+    for (Map.Entry<Class, Class> entry : UNBOXED.entrySet()) {
+      BOXED.put(entry.getValue(), entry.getKey());
+    }
+  }
+
   // TODO Overloaded method resolution
-  // TODO Native methods? (.getClass)
-  private Method getMethod(Class clazz, String name, Class<?>... parameterTypes) {
+  private Method getMethod(Class clazz, String name, Object[] args, Class<?>[] parameterTypes) {
     try {
       return clazz.getMethod(name, parameterTypes);
     } catch (NoSuchMethodException e) {
-      throw new IllegalSyntaxException(String.format("method %s not found in class %s", name, clazz.getName()));
+      // FIXME Generify and optimize
+      // no exact match found, try to find inexact match
+      for (int i = 0; i < parameterTypes.length; i++) {
+        Class<?> parameterType = parameterTypes[i];
+        if (Number.class.isAssignableFrom(BOXED.getOrDefault(parameterType, parameterType))) {
+          // cast to int
+          parameterTypes[i] = int.class;
+          args[i] = ((Number)args[i]).intValue();
+        } else {
+          parameterTypes[i] = Object.class;
+        }
+      }
+      try {
+        return clazz.getMethod(name, parameterTypes);
+      } catch (NoSuchMethodException ex) {
+        throw new IllegalSyntaxException(String.format("method %s%s not found in class %s", name,
+                                                       Arrays.toString(parameterTypes), clazz.getName()));
+      }
     }
+  }
+
+  private Class unboxIfPossible(Class clazz) {
+    return UNBOXED.getOrDefault(clazz, clazz);
+  }
+
+  private Object upcastIfPossible(Object value) {
+    if (value instanceof Integer || value instanceof Short || value instanceof Byte) {
+      return ((Number)value).longValue();
+    } else if (value instanceof Float) {
+      return ((Number)value).doubleValue();
+    }
+    return value;
   }
 
   private Class getClass(String name) {
@@ -59,7 +110,7 @@ class Reflector {
       String name = o.toString();
       Class<?> clazz;
       boolean isClass = false;
-      if (Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
+      if (!name.isEmpty() && Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
         clazz = getClass(name);
         isClass = true;
       } else {
@@ -68,11 +119,11 @@ class Reflector {
       Object[] args = sexp.subList(2, sexp.size()).toArray();
       Class[] argTypes = new Class[args.length];
       for (int i = 0; i < args.length; i++) {
-        argTypes[i] = args[i].getClass();
+        argTypes[i] = unboxIfPossible(args[i].getClass());
       }
-      Method method = getMethod(isClass ? Class.class : clazz, methodName, argTypes);
+      Method method = getMethod(isClass ? Class.class : clazz, methodName, args, argTypes);
       try {
-        return method.invoke(isClass ? clazz : o, args);
+        return upcastIfPossible(method.invoke(isClass ? clazz : o, args));
       } catch (IllegalAccessException e) {
         throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
       } catch (InvocationTargetException e) {
@@ -88,11 +139,11 @@ class Reflector {
       Object[] args = sexp.subList(1, sexp.size()).toArray();
       Class[] argTypes = new Class[args.length];
       for (int i = 0; i < args.length; i++) {
-        argTypes[i] = args[i].getClass();
+        argTypes[i] = unboxIfPossible(args[i].getClass());
       }
-      Method method = getMethod(clazz, methodName, argTypes);
+      Method method = getMethod(clazz, methodName, args, argTypes);
       try {
-        return method.invoke(null, args);
+        return upcastIfPossible(method.invoke(null, args));
       } catch (IllegalAccessException e) {
         throw new IllegalSyntaxException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
       } catch (InvocationTargetException e) {

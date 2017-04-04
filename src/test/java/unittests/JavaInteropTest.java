@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,5 +28,14 @@ public class JavaInteropTest extends AbstractTest {
   public void testJavaClassMethods() {
     assertEquals("java.lang.String", eval("(.getName String)", env));
     assertEquals("java.util.Collections", eval("(.getName java.util.Collections)", env));
+  }
+
+  @Test
+  public void testJavaDowncast() {
+    assertEquals("es", eval("(.substring \"test\" 1 3)", env));
+    assertEquals("zesz", eval("(.replace \"test\" #\\t #\\z)", env));
+    assertEquals(TRUE, eval("(.isEmpty \"\")", env));
+    assertEquals('e', eval("(.charAt \"test\" 1)", env));
+    assertEquals(4L, eval("(.length \"test\")", env));
   }
 }
