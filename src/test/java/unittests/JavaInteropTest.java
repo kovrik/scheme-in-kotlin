@@ -3,6 +3,7 @@ package unittests;
 import core.scm.SCMCons;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import static java.lang.Boolean.TRUE;
@@ -42,7 +43,10 @@ public class JavaInteropTest extends AbstractTest {
   @Test
   public void testJavaNewInstance() {
     assertEquals(1L, eval("(new Long 1)", env));
+    assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env));
+    assertEquals(123, eval("(new Integer 123)", env));
     // FIXME
-//    assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env));
+//    assertEquals(123, eval("(new Short 123)", env));
+//    (.signum (new java.math.BigDecimal 10))
   }
 }

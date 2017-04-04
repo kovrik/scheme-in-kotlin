@@ -14,6 +14,7 @@ import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
 import core.scm.specialforms.ISpecialForm;
+import core.scm.specialforms.New;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
@@ -53,7 +54,10 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    // FIXME Do not downcast in case of `new` SpecialForm
+    /* Do not downcast in case of `new` Special Form (workaround) */
+    if (result instanceof New.NewInstanceResult) {
+      return ((New.NewInstanceResult) result).getInstance();
+    }
     /* Try to downcast Big Numbers */
     if (result instanceof BigDecimal) {
       result = NumberUtils.tryToDowncast((BigDecimal) result);
@@ -78,6 +82,7 @@ public class Evaluator {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
       if (o == null) {
+        // FIXME eval args first
         return reflector.evalJavaStaticField(sexp.toString());
       }
       return o;
@@ -101,6 +106,7 @@ public class Evaluator {
       /* Lookup symbol */
       op = env.findOrDefault(op, null);
       if (op == null) {
+        // FIXME eval args first
         return reflector.evalJavaMethod(sexp);
       }
       /* Inline Special Forms and Pure functions */

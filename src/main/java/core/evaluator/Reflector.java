@@ -2,6 +2,7 @@ package core.evaluator;
 
 import core.exceptions.IllegalSyntaxException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,28 +31,48 @@ public class Reflector {
     }
   }
 
-  // TODO Overloaded method resolution
   private Method getMethod(Class clazz, String name, Object[] args, Class<?>[] parameterTypes) {
     try {
       return clazz.getMethod(name, parameterTypes);
     } catch (NoSuchMethodException e) {
-      // FIXME Generify and optimize
       // no exact match found, try to find inexact match
-      for (int i = 0; i < parameterTypes.length; i++) {
-        Class<?> parameterType = parameterTypes[i];
-        if (Number.class.isAssignableFrom(BOXED.getOrDefault(parameterType, parameterType))) {
-          // cast to int
-          parameterTypes[i] = int.class;
-          args[i] = ((Number)args[i]).intValue();
-        } else {
-          parameterTypes[i] = Object.class;
-        }
-      }
+      downcastArgs(args, parameterTypes);
       try {
         return clazz.getMethod(name, parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new IllegalSyntaxException(String.format("method %s%s not found in class %s", name,
+        throw new IllegalSyntaxException(String.format("unable to find method %s%s in class %s", name,
                                                        Arrays.toString(parameterTypes), clazz.getName()));
+      }
+    }
+  }
+
+  private Constructor getConstructor(Class clazz, Object[] args, Class<?>[] parameterTypes) {
+    try {
+      return clazz.getConstructor(parameterTypes);
+    } catch (NoSuchMethodException e) {
+      // no exact match found, try to find inexact match
+      downcastArgs(args, parameterTypes);
+      try {
+        return clazz.getConstructor(parameterTypes);
+      } catch (NoSuchMethodException ex) {
+        throw new IllegalSyntaxException(String.format("unable to find constructor %s for class %s",
+                                         Arrays.toString(parameterTypes), clazz.getName()));
+      }
+    }
+  }
+
+  // TODO Overloaded method resolution
+  // FIXME Generify and optimize
+  // TODO Other types: short, byte etc.
+  private void downcastArgs(Object[] args, Class<?>[] parameterTypes) {
+    for (int i = 0; i < parameterTypes.length; i++) {
+      Class<?> parameterType = parameterTypes[i];
+      if (Number.class.isAssignableFrom(BOXED.getOrDefault(parameterType, parameterType))) {
+        // cast to int
+        parameterTypes[i] = int.class;
+        args[i] = ((Number)args[i]).intValue();
+      } else {
+        parameterTypes[i] = Object.class;
       }
     }
   }
@@ -69,7 +90,7 @@ public class Reflector {
     return value;
   }
 
-  // FIXME java.math.BigDecimal and other non java.lang.* classes
+  // TODO java.math.BigDecimal and other non java.lang.* classes
   private Class getClass(String name) {
     if (name.indexOf('.') == -1) {
       name = "java.lang." + name;
@@ -81,6 +102,7 @@ public class Reflector {
     }
   }
 
+  // TODO Special Forms for primitive types (byte, short, int, long etc.)
   public Object newInstance(String clazz, Object... args) {
     Class c = getClass(clazz);
     Class[] argTypes = new Class[args.length];
@@ -88,18 +110,16 @@ public class Reflector {
       argTypes[i] = unboxIfPossible(args[i].getClass());
     }
     try {
-      return c.getConstructor(argTypes).newInstance(args);
+      return getConstructor(c, args, argTypes).newInstance(args);
     } catch (InstantiationException | InvocationTargetException e) {
       throw new IllegalSyntaxException(e.getMessage());
     } catch (IllegalAccessException e) {
       throw new IllegalSyntaxException(String.format("unable to access constructor for class %s", clazz));
-    } catch (NoSuchMethodException e) {
-      throw new IllegalSyntaxException(String.format("unable to find constructor for class %s", clazz));
     }
   }
 
+  /* Java Interop: static fields */
   Object evalJavaStaticField(String s) {
-    /* Java Interop: static fields */
     if (s.indexOf('/') > -1) {
       String[] classAndField = s.split("/");
       String className = classAndField[0];
@@ -116,58 +136,67 @@ public class Reflector {
     throw new IllegalArgumentException("undefined identifier: " + s);
   }
 
-  // TODO Move reflection to a separate class
   // TODO get instance field value
   Object evalJavaMethod(List<Object> sexp) {
-    Object op = sexp.get(0);
-    /* Java Interop: instance method call */
-    String m = op.toString();
+    String m = sexp.get(0).toString();
     if (m.indexOf('.') == 0) {
-      String methodName = m.substring(1);
-      Object o = sexp.get(1);
-      String name = o.toString();
-      Class<?> clazz;
-      boolean isClass = false;
-      if (!name.isEmpty() && Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
-        clazz = getClass(name);
-        isClass = true;
-      } else {
-        clazz = o.getClass();
-      }
-      Object[] args = sexp.subList(2, sexp.size()).toArray();
-      Class[] argTypes = new Class[args.length];
-      for (int i = 0; i < args.length; i++) {
-        argTypes[i] = unboxIfPossible(args[i].getClass());
-      }
-      Method method = getMethod(isClass ? Class.class : clazz, methodName, args, argTypes);
-      try {
-        return upcastIfPossible(method.invoke(isClass ? clazz : o, args));
-      } catch (IllegalAccessException e) {
-        throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      }
+      return evalJavaInstanceMethod(sexp);
+    } else if (m.indexOf('/') != -1) {
+      return evalJavaStaticMethod(sexp);
     }
-    /* Java Interop: static method call */
-    if (m.indexOf('/') != -1) {
-      String[] classAndMethod = m.split("/");
-      String className = classAndMethod[0];
-      String methodName = classAndMethod[1];
-      Class clazz = getClass(className);
-      Object[] args = sexp.subList(1, sexp.size()).toArray();
-      Class[] argTypes = new Class[args.length];
-      for (int i = 0; i < args.length; i++) {
-        argTypes[i] = unboxIfPossible(args[i].getClass());
-      }
-      Method method = getMethod(clazz, methodName, args, argTypes);
-      try {
-        return upcastIfPossible(method.invoke(null, args));
-      } catch (IllegalAccessException e) {
-        throw new IllegalSyntaxException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      }
+    throw new IllegalArgumentException("undefined identifier: " + m);
+  }
+
+  /* Java Interop: instance method call */
+  private Object evalJavaInstanceMethod(List<Object> sexp) {
+    Object op = sexp.get(0);
+    String m = op.toString();
+    String methodName = m.substring(1);
+    Object o = sexp.get(1);
+    String name = o.toString();
+    Class<?> clazz;
+    boolean isClass = false;
+    if (!name.isEmpty() && Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
+      clazz = getClass(name);
+      isClass = true;
+    } else {
+      clazz = o.getClass();
     }
-    throw new IllegalArgumentException("undefined identifier: " + op);
+    Object[] args = sexp.subList(2, sexp.size()).toArray();
+    Class[] argTypes = new Class[args.length];
+    for (int i = 0; i < args.length; i++) {
+      argTypes[i] = unboxIfPossible(args[i].getClass());
+    }
+    Method method = getMethod(isClass ? Class.class : clazz, methodName, args, argTypes);
+    try {
+      return upcastIfPossible(method.invoke(isClass ? clazz : o, args));
+    } catch (IllegalAccessException e) {
+      throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException("reflection exception");
+    }
+  }
+
+  /* Java Interop: static method call */
+  private Object evalJavaStaticMethod(List<Object> sexp) {
+    Object op = sexp.get(0);
+    String m = op.toString();
+    String[] classAndMethod = m.split("/");
+    String className = classAndMethod[0];
+    String methodName = classAndMethod[1];
+    Class clazz = getClass(className);
+    Object[] args = sexp.subList(1, sexp.size()).toArray();
+    Class[] argTypes = new Class[args.length];
+    for (int i = 0; i < args.length; i++) {
+      argTypes[i] = unboxIfPossible(args[i].getClass());
+    }
+    Method method = getMethod(clazz, methodName, args, argTypes);
+    try {
+      return upcastIfPossible(method.invoke(null, args));
+    } catch (IllegalAccessException e) {
+      throw new IllegalSyntaxException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException("reflection exception");
+    }
   }
 }

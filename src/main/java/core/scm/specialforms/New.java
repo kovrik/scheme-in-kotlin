@@ -12,6 +12,20 @@ public enum New implements ISpecialForm {
 
   private final Reflector reflector = new Reflector();
 
+  /* Wrapper to avoid downcast */
+  public static class NewInstanceResult {
+
+    private Object instance;
+
+    private NewInstanceResult(Object instance) {
+      this.instance = instance;
+    }
+
+    public Object getInstance() {
+      return instance;
+    }
+  }
+
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
@@ -25,7 +39,7 @@ public enum New implements ISpecialForm {
 //      throw new WrongTypeException(toString(), "String", expression.get(1));
 //    }
     String clazz = expression.get(1).toString();
-    return reflector.newInstance(clazz, arguments);
+    return new NewInstanceResult(reflector.newInstance(clazz, arguments));
   }
 
   @Override
