@@ -53,6 +53,7 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
+    // FIXME Do not downcast in case of `new` SpecialForm
     /* Try to downcast Big Numbers */
     if (result instanceof BigDecimal) {
       result = NumberUtils.tryToDowncast((BigDecimal) result);

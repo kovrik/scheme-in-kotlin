@@ -38,4 +38,11 @@ public class JavaInteropTest extends AbstractTest {
     assertEquals('e', eval("(.charAt \"test\" 1)", env));
     assertEquals(4L, eval("(.length \"test\")", env));
   }
+
+  @Test
+  public void testJavaNewInstance() {
+    assertEquals(1L, eval("(new Long 1)", env));
+    // FIXME
+//    assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env));
+  }
 }

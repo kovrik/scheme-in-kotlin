@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Reflector {
+public class Reflector {
 
   private static final Map<Class, Class> UNBOXED = new HashMap<>();
   static {
@@ -69,6 +69,7 @@ class Reflector {
     return value;
   }
 
+  // FIXME java.math.BigDecimal and other non java.lang.* classes
   private Class getClass(String name) {
     if (name.indexOf('.') == -1) {
       name = "java.lang." + name;
@@ -77,6 +78,23 @@ class Reflector {
       return Class.forName(name);
     } catch (ClassNotFoundException e) {
       throw new IllegalSyntaxException("class not found: " + name);
+    }
+  }
+
+  public Object newInstance(String clazz, Object... args) {
+    Class c = getClass(clazz);
+    Class[] argTypes = new Class[args.length];
+    for (int i = 0; i < args.length; i++) {
+      argTypes[i] = unboxIfPossible(args[i].getClass());
+    }
+    try {
+      return c.getConstructor(argTypes).newInstance(args);
+    } catch (InstantiationException | InvocationTargetException e) {
+      throw new IllegalSyntaxException(e.getMessage());
+    } catch (IllegalAccessException e) {
+      throw new IllegalSyntaxException(String.format("unable to access constructor for class %s", clazz));
+    } catch (NoSuchMethodException e) {
+      throw new IllegalSyntaxException(String.format("unable to find constructor for class %s", clazz));
     }
   }
 
