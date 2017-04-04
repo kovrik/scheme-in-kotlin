@@ -81,9 +81,7 @@ public class Evaluator {
       if (o instanceof ISpecialForm) {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
-      // TODO Check if op starts with '.' instead
       if (o == null) {
-        // FIXME eval args first
         return reflector.evalJavaStaticField(sexp.toString());
       }
       return o;
