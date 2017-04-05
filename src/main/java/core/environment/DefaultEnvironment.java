@@ -25,6 +25,9 @@ import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
+import core.procedures.reflection.BooleanType;
+import core.procedures.reflection.CharType;
+import core.procedures.reflection.PrimitiveNumberType;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -40,6 +43,16 @@ import java.util.List;
 public final class DefaultEnvironment extends Environment {
 
   private static final AFn[] STANDARD_PROCEDURES = {
+      /* Primitive Types */
+      PrimitiveNumberType.BYTE,
+      PrimitiveNumberType.SHORT,
+      PrimitiveNumberType.INT,
+      PrimitiveNumberType.LONG,
+      PrimitiveNumberType.DOUBLE,
+      PrimitiveNumberType.FLOAT,
+      new BooleanType(),
+      new CharType(),
+
       /* System */
       new Exit(),
       new ClassOf(),
