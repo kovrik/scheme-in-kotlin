@@ -100,15 +100,13 @@ public class Evaluator {
       throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
     }
 
+    boolean javaMethod = false;
     Object op = sexp.get(0);
     if (op instanceof SCMSymbol) {
       /* Lookup symbol */
       op = env.findOrDefault(op, null);
-      // TODO Check if op starts with '.' instead
-      if (op == null) {
-        // FIXME eval args first
-        return reflector.evalJavaMethod(sexp);
-      }
+      // TODO Check if op starts with '.' instead?
+      javaMethod = op == null;
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
@@ -124,18 +122,23 @@ public class Evaluator {
     if (!(op instanceof AFn)) {
       op = eval(op, env);
       /* If result is not a function, then raise an error */
-      if (!(op instanceof AFn)) {
+      if (!(op instanceof AFn) && !javaMethod) {
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
       }
     }
-    AFn fn = (AFn)op;
 
     /* Scheme has applicative order, so evaluate all arguments first */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
     for (int i = 1; i < sexp.size(); i++) {
       args.add(eval(sexp.get(i), env));
     }
+
+    if (javaMethod) {
+      return reflector.evalJavaMethod(sexp.get(0).toString(), args.toArray());
+    }
+
     // TODO Turn them into Special Forms?
+    AFn fn = (AFn)op;
     /* force */
     if (fn instanceof Force) {
       return ((Force)fn).force((SCMPromise)args.get(0), env, this);

@@ -27,8 +27,9 @@ public class JavaInteropTest extends AbstractTest {
 
   @Test
   public void testJavaClassMethods() {
-    assertEquals("java.lang.String", eval("(.getName String)", env));
-    assertEquals("java.util.Collections", eval("(.getName java.util.Collections)", env));
+    assertEquals("java.lang.String", eval("(.getName \"String\")", env));
+    assertEquals("java.util.Collections", eval("(.getName \"java.util.Collections\")", env));
+    assertEquals("java.util.Collections", eval("(.getName (let ((clazz \"java.util.Collections\")) clazz)", env));
   }
 
   @Test
@@ -42,9 +43,11 @@ public class JavaInteropTest extends AbstractTest {
 
   @Test
   public void testJavaNewInstance() {
-    assertEquals(1L, eval("(new Long 1)", env));
-    assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env));
-    assertEquals(123, eval("(new Integer 123)", env));
+    assertEquals(1L, eval("(new \"Long\" 1)", env));
+    assertEquals(6L, eval("(new \"Long\" (+ 1 2 3))", env));
+    assertEquals(31L, eval("(new \"Long\" (.substring \"123123\" 2 4))", env));
+    assertEquals(BigDecimal.ONE, eval("(new \"java.math.BigDecimal\" 1)", env));
+    assertEquals(123, eval("(new \"Integer\" 123)", env));
     // FIXME
 //    assertEquals(123, eval("(new Short 123)", env));
 //    (.signum (new java.math.BigDecimal 10))

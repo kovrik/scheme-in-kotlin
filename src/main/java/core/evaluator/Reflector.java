@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Reflector {
@@ -31,7 +30,7 @@ public class Reflector {
     }
   }
 
-  private Method getMethod(Class clazz, String name, Object[] args, Class<?>[] parameterTypes) {
+  private Method getMethod(Class<?> clazz, String name, Object[] args, Class<?>[] parameterTypes) {
     try {
       return clazz.getMethod(name, parameterTypes);
     } catch (NoSuchMethodException e) {
@@ -46,7 +45,7 @@ public class Reflector {
     }
   }
 
-  private Constructor getConstructor(Class clazz, Object[] args, Class<?>[] parameterTypes) {
+  private Constructor getConstructor(Class<?> clazz, Object[] args, Class<?>[] parameterTypes) {
     try {
       return clazz.getConstructor(parameterTypes);
     } catch (NoSuchMethodException e) {
@@ -77,7 +76,7 @@ public class Reflector {
     }
   }
 
-  private Class unboxIfPossible(Class clazz) {
+  private Class unboxIfPossible(Class<?> clazz) {
     return UNBOXED.getOrDefault(clazz, clazz);
   }
 
@@ -90,7 +89,7 @@ public class Reflector {
     return value;
   }
 
-  // TODO java.math.BigDecimal and other non java.lang.* classes
+  // TODO java.math.BigDecimal and other non-java.lang.* classes
   private Class getClass(String name) {
     if (name.indexOf('.') == -1) {
       name = "java.lang." + name;
@@ -136,56 +135,49 @@ public class Reflector {
     throw new IllegalArgumentException("undefined identifier: " + s);
   }
 
-  // TODO get instance field value
-  Object evalJavaMethod(List<Object> sexp) {
-    String m = sexp.get(0).toString();
-    if (m.indexOf('.') == 0) {
-      return evalJavaInstanceMethod(sexp);
-    } else if (m.indexOf('/') != -1) {
-      return evalJavaStaticMethod(sexp);
+  Object evalJavaMethod(String method, Object[] args) {
+    if (method.indexOf('.') == 0) {
+      Object instance = args[0];
+      args = Arrays.copyOfRange(args, 1, args.length);
+      return evalJavaInstanceMethod(method, instance, args);
+    } else if (method.indexOf('/') != -1) {
+      return evalJavaStaticMethod(method, args);
     }
-    throw new IllegalArgumentException("undefined identifier: " + m);
+    throw new IllegalArgumentException("undefined identifier: " + method);
   }
 
   /* Java Interop: instance method call */
-  private Object evalJavaInstanceMethod(List<Object> sexp) {
-    Object op = sexp.get(0);
-    String m = op.toString();
+  private Object evalJavaInstanceMethod(String m, Object instance, Object[] args) {
     String methodName = m.substring(1);
-    Object o = sexp.get(1);
-    String name = o.toString();
+    String name = instance.toString();
     Class<?> clazz;
     boolean isClass = false;
     if (!name.isEmpty() && Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
       clazz = getClass(name);
       isClass = true;
     } else {
-      clazz = o.getClass();
+      clazz = instance.getClass();
     }
-    Object[] args = sexp.subList(2, sexp.size()).toArray();
     Class[] argTypes = new Class[args.length];
     for (int i = 0; i < args.length; i++) {
       argTypes[i] = unboxIfPossible(args[i].getClass());
     }
     Method method = getMethod(isClass ? Class.class : clazz, methodName, args, argTypes);
     try {
-      return upcastIfPossible(method.invoke(isClass ? clazz : o, args));
+      return upcastIfPossible(method.invoke(isClass ? clazz : instance, args));
     } catch (IllegalAccessException e) {
-      throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, o));
+      throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, instance));
     } catch (InvocationTargetException e) {
       throw new RuntimeException("reflection exception");
     }
   }
 
   /* Java Interop: static method call */
-  private Object evalJavaStaticMethod(List<Object> sexp) {
-    Object op = sexp.get(0);
-    String m = op.toString();
+  private Object evalJavaStaticMethod(String m, Object[] args) {
     String[] classAndMethod = m.split("/");
     String className = classAndMethod[0];
     String methodName = classAndMethod[1];
     Class clazz = getClass(className);
-    Object[] args = sexp.subList(1, sexp.size()).toArray();
     Class[] argTypes = new Class[args.length];
     for (int i = 0; i < args.length; i++) {
       argTypes[i] = unboxIfPossible(args[i].getClass());
