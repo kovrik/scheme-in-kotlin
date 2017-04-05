@@ -107,6 +107,9 @@ public class Evaluator {
       op = env.findOrDefault(op, null);
       // TODO Check if op starts with '.' instead?
       javaMethod = op == null;
+      if (javaMethod && sexp.size() < 2) {
+        throw IllegalSyntaxException.of("eval", sexp, "illegal member expression");
+      }
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
