@@ -346,7 +346,9 @@ public final class NumberUtils {
     if (!(o instanceof Number)) {
       return false;
     }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer || o instanceof BigInteger) {
+    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer ||
+        o instanceof BigInteger || o instanceof Short || o instanceof Byte) {
+
       return true;
     }
     if (o instanceof BigDecimal) {
@@ -366,7 +368,7 @@ public final class NumberUtils {
     if (!(o instanceof Number)) {
       return false;
     }
-    if (o instanceof Long || o instanceof Integer || o instanceof BigInteger) {
+    if (o instanceof Long || o instanceof Integer || o instanceof BigInteger || o instanceof Short || o instanceof Byte) {
       return true;
     }
     if (o instanceof BigDecimal) {
@@ -405,6 +407,12 @@ public final class NumberUtils {
     if (o instanceof Integer) {
       return Integer.signum((Integer)o) == 0;
     }
+    if (o instanceof Short) {
+      return Integer.signum((Short)o) == 0;
+    }
+    if (o instanceof Byte) {
+      return Integer.signum((Byte)o) == 0;
+    }
     if (o instanceof Float) {
       return Math.signum((Float)o) == 0;
     }
@@ -432,6 +440,12 @@ public final class NumberUtils {
     }
     if (o instanceof Integer) {
       return ((Integer)o) == 1;
+    }
+    if (o instanceof Short) {
+      return (Short)o == 1;
+    }
+    if (o instanceof Byte) {
+      return (Byte)o == 1;
     }
     if (o instanceof Float) {
       return Float.floatToRawIntBits((Float)o) == 1;
@@ -461,6 +475,12 @@ public final class NumberUtils {
     if (o instanceof Integer) {
       return Integer.signum((Integer)o) == 1;
     }
+    if (o instanceof Short) {
+      return Integer.signum((Short)o) == 1;
+    }
+    if (o instanceof Byte) {
+      return Integer.signum((Byte)o) == 1;
+    }
     if (o instanceof Float) {
       return Math.signum((Float)o) == 1;
     }
@@ -488,6 +508,12 @@ public final class NumberUtils {
     }
     if (o instanceof Integer) {
       return Integer.signum((Integer)o) == -1;
+    }
+    if (o instanceof Short) {
+      return Integer.signum((Short)o) == -1;
+    }
+    if (o instanceof Byte) {
+      return Integer.signum((Byte)o) == -1;
     }
     if (o instanceof Float) {
       return Math.signum((Float)o) == -1;
