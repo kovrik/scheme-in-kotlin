@@ -1,6 +1,7 @@
 package core.evaluator;
 
 import core.exceptions.IllegalSyntaxException;
+import core.scm.SCMSymbol;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -54,8 +55,8 @@ public class Reflector {
       try {
         return clazz.getConstructor(parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new IllegalSyntaxException(String.format("unable to find constructor %s for class %s",
-                                         Arrays.toString(parameterTypes), clazz.getName()));
+        throw new IllegalSyntaxException(String.format("unable to find constructor %s%s",
+                                         clazz.getName(), Arrays.toString(parameterTypes)));
       }
     }
   }
@@ -149,11 +150,10 @@ public class Reflector {
   /* Java Interop: instance method call */
   private Object evalJavaInstanceMethod(String m, Object instance, Object[] args) {
     String methodName = m.substring(1);
-    String name = instance.toString();
     Class<?> clazz;
     boolean isClass = false;
-    if (!name.isEmpty() && Character.isUpperCase(name.substring(name.lastIndexOf('.') + 1).charAt(0))) {
-      clazz = getClass(name);
+    if (instance instanceof SCMSymbol) {
+      clazz = getClass(instance.toString());
       isClass = true;
     } else {
       clazz = instance.getClass();

@@ -4,8 +4,6 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.evaluator.Reflector;
 import core.exceptions.IllegalSyntaxException;
-import core.exceptions.WrongTypeException;
-import core.scm.SCMClass;
 
 import java.util.List;
 
@@ -33,9 +31,9 @@ public enum New implements ISpecialForm {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-    if (!SCMClass.checkType(expression.get(1), String.class)) {
-      throw new WrongTypeException(toString(), "String", expression.get(1));
-    }
+//    if (!SCMClass.checkType(expression.get(1), String.class)) {
+//      throw new WrongTypeException(toString(), "String", expression.get(1));
+//    }
     String clazz = expression.get(1).toString();
 
     /* Eval args */

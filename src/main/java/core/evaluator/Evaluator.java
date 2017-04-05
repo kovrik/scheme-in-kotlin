@@ -129,12 +129,27 @@ public class Evaluator {
 
     /* Scheme has applicative order, so evaluate all arguments first */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
-    for (int i = 1; i < sexp.size(); i++) {
-      args.add(eval(sexp.get(i), env));
+    if (javaMethod) {
+      String method = sexp.get(0).toString();
+      /* Check if it is instance or static method */
+      int n = 0;
+      if (method.startsWith(".")) {
+        n = 1;
+      }
+      if (sexp.get(1) instanceof SCMSymbol) {
+        n = 2;
+        args.add(sexp.get(1));
+      }
+
+      for (int i = n; i < sexp.size(); i++) {
+        args.add(eval(sexp.get(i), env));
+      }
+      return reflector.evalJavaMethod(method, args.toArray());
     }
 
-    if (javaMethod) {
-      return reflector.evalJavaMethod(sexp.get(0).toString(), args.toArray());
+    /* Evaluate args */
+    for (int i = 1; i < sexp.size(); i++) {
+      args.add(eval(sexp.get(i), env));
     }
 
     // TODO Turn them into Special Forms?
