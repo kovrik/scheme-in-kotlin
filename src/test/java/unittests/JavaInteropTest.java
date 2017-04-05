@@ -29,6 +29,15 @@ public class JavaInteropTest extends AbstractTest {
   public void testJavaInstanceMethods() {
     assertEquals("FRED", eval("(.toUpperCase \"fred\")", env));
     assertEquals(Long.class, eval("(.getClass 5)", env));
+    assertEquals(Class.class, eval("(.getClass String)", env));
+    assertEquals(String.class, eval("(.getClass \"String\")", env));
+    String map = "(define h (new java.util.HashMap))";
+    eval(map, env);
+    eval("(.put h \"KEY\" \"VALUE\")", env);
+    assertEquals("VALUE", eval("(.get h \"KEY\")", env));
+    assertEquals(5L, eval("(.length (.get h \"KEY\"))", env));
+    eval("(.put h 1 1)", env);
+    assertEquals(1L, eval("(.get h 1)", env));
   }
 
   @Test

@@ -40,8 +40,14 @@ public class Reflector {
       try {
         return clazz.getMethod(name, parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new IllegalSyntaxException(String.format("unable to find method %s%s in class %s", name,
-                                                       Arrays.toString(parameterTypes), clazz.getName()));
+        try {
+          // TODO Check if implemented properly
+          castToObject(parameterTypes);
+          return clazz.getMethod(name, parameterTypes);
+        } catch (NoSuchMethodException ex2) {
+          throw new IllegalSyntaxException(String.format("unable to find method %s%s in class %s", name,
+                                                         Arrays.toString(parameterTypes), clazz.getName()));
+        }
       }
     }
   }
@@ -74,6 +80,12 @@ public class Reflector {
       } else {
         parameterTypes[i] = Object.class;
       }
+    }
+  }
+
+  private void castToObject(Class<?>[] parameterTypes) {
+    for (int i = 0; i < parameterTypes.length; i++) {
+      parameterTypes[i] = Object.class;
     }
   }
 

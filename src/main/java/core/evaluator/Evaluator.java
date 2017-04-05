@@ -135,10 +135,11 @@ public class Evaluator {
     if (javaMethod) {
       String method = sexp.get(0).toString();
       /* Check if it is instance or static method */
-      int n = 1;
+      int n = 2;
       if (sexp.get(1) instanceof SCMSymbol) {
-        n = 2;
-        args.add(sexp.get(1));
+        args.add(env.findOrDefault(sexp.get(1), sexp.get(1)));
+      } else {
+        args.add(eval(sexp.get(1), env));
       }
 
       for (int i = n; i < sexp.size(); i++) {
