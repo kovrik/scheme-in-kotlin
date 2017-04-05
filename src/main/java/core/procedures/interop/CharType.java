@@ -1,4 +1,4 @@
-package core.procedures.reflection;
+package core.procedures.interop;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
