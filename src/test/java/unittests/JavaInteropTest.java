@@ -20,6 +20,12 @@ public class JavaInteropTest extends AbstractTest {
   }
 
   @Test
+  public void testJavaStaticMethods() {
+    System.setProperty("TESTKEY", "TESTVALUE");
+    assertEquals("TESTVALUE", eval("(System/getProperty \"TESTKEY\")", env));
+  }
+
+  @Test
   public void testJavaInstanceMethods() {
     assertEquals("FRED", eval("(.toUpperCase \"fred\")", env));
     assertEquals(Long.class, eval("(.getClass 5)", env));
