@@ -45,8 +45,8 @@ public class Reflector {
           castToObject(parameterTypes);
           return clazz.getMethod(name, parameterTypes);
         } catch (NoSuchMethodException ex2) {
-          throw new IllegalSyntaxException(String.format("unable to find method %s%s in class %s", name,
-                                                         Arrays.toString(parameterTypes), clazz.getName()));
+          throw new IllegalSyntaxException(String.format("unable to find matching method %s in class %s", name,
+                                                         clazz.getName()));
         }
       }
     }
@@ -61,15 +61,15 @@ public class Reflector {
       try {
         return clazz.getConstructor(parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new IllegalSyntaxException(String.format("unable to find constructor %s%s",
-                                         clazz.getName(), Arrays.toString(parameterTypes)));
+        throw new IllegalSyntaxException(String.format("unable to find matching constructor for class %s",
+                                         clazz.getName()));
       }
     }
   }
 
   // TODO Overloaded method resolution
   // FIXME Generify and optimize
-  // TODO Other types: short, byte etc.
+  // TODO Other types: short, byte etc.?
   private void downcastArgs(Object[] args, Class<?>[] parameterTypes) {
     for (int i = 0; i < parameterTypes.length; i++) {
       Class<?> parameterType = parameterTypes[i];
@@ -77,8 +77,6 @@ public class Reflector {
         // cast to int
         parameterTypes[i] = int.class;
         args[i] = ((Number)args[i]).intValue();
-      } else {
-        parameterTypes[i] = Object.class;
       }
     }
   }

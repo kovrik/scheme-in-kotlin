@@ -23,6 +23,8 @@ public class JavaInteropTest extends AbstractTest {
   public void testJavaStaticMethods() {
     System.setProperty("TESTKEY", "TESTVALUE");
     assertEquals("TESTVALUE", eval("(System/getProperty \"TESTKEY\")", env));
+    assertEquals(5L, eval("(Short/parseShort \"12\" 3)", env));
+//    assertEquals(3L, eval("(Short/valueOf 3)", env));
   }
 
   @Test
