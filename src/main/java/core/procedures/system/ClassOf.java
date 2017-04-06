@@ -21,7 +21,11 @@ public final class ClassOf extends AFn {
   }
 
   @Override
-  public SCMClass apply1(Object arg) {
-    return SCMClass.classOf(arg);
+  public Object apply1(Object arg) {
+    SCMClass scmClass = SCMClass.classOf(arg);
+    if (scmClass == null) {
+      return arg.getClass();
+    }
+    return scmClass;
   }
 }

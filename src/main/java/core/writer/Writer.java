@@ -76,6 +76,7 @@ public class Writer implements IWriter {
     if (scmClass != null) {
       return scmClass.getName();
     }
+    // FIXME format class name: #<class:Clazz>
     return clazz.getSimpleName();
   }
 
