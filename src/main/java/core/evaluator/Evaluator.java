@@ -1,6 +1,7 @@
 package core.evaluator;
 
 import core.environment.Environment;
+import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
@@ -20,7 +21,9 @@ import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Evaluator {
 
@@ -87,6 +90,8 @@ public class Evaluator {
       return o;
     } else if (sexp instanceof List) {
       return evlis((List<Object>)sexp, env);
+    } else if (sexp instanceof Map) {
+      return evalMap((Map)sexp, env);
     } else {
       return sexp;
     }
@@ -119,6 +124,21 @@ public class Evaluator {
     /* If it is a Special Form, then evaluate it */
     if (op instanceof ISpecialForm) {
       return ((ISpecialForm)op).eval(sexp, env, this);
+    }
+
+    /* Maps like as functions of their keys */
+    if (op instanceof Map) {
+      if (sexp.size() > 3) {
+        throw new ArityException("hashmap", 1, 2, sexp.size() - 1);
+      }
+      Map map = evalMap((Map)op, env);
+      /* Evaluate key */
+      Object key = eval(sexp.get(1), env);
+      Object defaultValue = null;
+      if (sexp.size() == 3) {
+        defaultValue = eval(sexp.get(2), env);
+      }
+      return map.getOrDefault(key, defaultValue);
     }
 
     /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
@@ -169,5 +189,16 @@ public class Evaluator {
     }
     /* Call AFn via helper method */
     return fn.applyN(args);
+  }
+
+  /* Evaluate hash map */
+  private Map evalMap(Map<Object, Object> map, Environment env) {
+    Map<Object, Object> result = new HashMap<>(map.size());
+    for (Map.Entry<Object, Object> entry : map.entrySet()) {
+      Object key = eval(entry.getKey(), env);
+      Object value = eval(entry.getValue(), env);
+      result.put(key, value);
+    }
+    return result;
   }
 }

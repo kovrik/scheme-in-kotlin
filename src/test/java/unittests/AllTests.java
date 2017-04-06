@@ -26,7 +26,8 @@ import unittests.s7.S7Tests;
     RosettaCodeTest.class,
     /* S7 Test Suite: https://ccrma.stanford.edu/software/snd/snd/s7.html */
     S7Tests.class,
-    JavaInteropTest.class
+    JavaInteropTest.class,
+    HashmapTest.class,
 })
 public class AllTests {
 }
