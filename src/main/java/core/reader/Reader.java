@@ -25,7 +25,7 @@ public class Reader implements IReader {
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + ";()\"\u0000\uffff";
+  private static final String DELIMITERS = WHITESPACES + ";(){}\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
@@ -130,9 +130,11 @@ public class Reader implements IReader {
       case ',':  return readQuote(c);
       case '#':  return readHash();
       case '(':  return readList(true);
+      case '{':  return readHashmap();
       case ';':  return readComment();
       case '"':  return readString();
-      case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: ')'");
+      case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
+      case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
       default:   return SCMSymbol.of(c + readUntilDelimiter());
     }
   }
@@ -381,5 +383,41 @@ public class Reader implements IReader {
   private SCMMutableVector readVector() throws IOException {
     /* Improper lists are not allowed */
     return new SCMMutableVector(readList(false).toArray());
+  }
+
+  /**
+   * Read hashmap
+   *
+   * Syntax:
+   * <list> -> {<key1> <value1>, ..., <keyN> <valueN>}
+   */
+  private Map<Object, Object> readHashmap() throws IOException {
+    Map<Object, Object> hashmap = new HashMap<>();
+    int i;
+    char c;
+    while (isValid(i = reader.read()) && ((c = (char)i) != '}')) {
+      /* Skip whitespaces */
+      while (Character.isWhitespace(c)) {
+        c = (char)reader.read();
+      }
+      if (c == '}') {
+        break;
+      }
+      reader.unread(c);
+      Object key = nextToken();
+
+      // TODO separate pairs with commas!
+
+      /* Skip whitespaces */
+      while (Character.isWhitespace(c)) {
+        c = (char)reader.read();
+      }
+      if (c == '}') {
+        break;
+      }
+      Object value = nextToken();
+      hashmap.put(key, value);
+    }
+    return hashmap;
   }
 }

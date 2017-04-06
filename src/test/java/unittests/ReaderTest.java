@@ -168,7 +168,7 @@ public class ReaderTest extends AbstractTest {
       reader.readFirst(")");
       fail();
     } catch (IllegalSyntaxException e) {
-      assertEquals("read: unexpected list terminator: ')'", e.getMessage());
+      assertEquals("read: unexpected list terminator: )", e.getMessage());
     }
   }
 
