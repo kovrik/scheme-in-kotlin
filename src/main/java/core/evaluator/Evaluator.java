@@ -129,6 +129,15 @@ public class Evaluator {
       return ((ISpecialForm)op).eval(sexp, env, this);
     }
 
+    /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
+    if (!(op instanceof AFn)) {
+      op = eval(op, env);
+      /* If result is not a function, then raise an error */
+      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map)) {
+        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
+      }
+    }
+
     /* Maps like as functions of their keys */
     if (op instanceof Map) {
       if (sexp.size() > 3) {
@@ -142,15 +151,6 @@ public class Evaluator {
         defaultValue = eval(sexp.get(2), env);
       }
       return map.getOrDefault(key, defaultValue);
-    }
-
-    /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
-    if (!(op instanceof AFn)) {
-      op = eval(op, env);
-      /* If result is not a function, then raise an error */
-      if (!(op instanceof AFn) && !javaMethod) {
-        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
-      }
     }
 
     /* Scheme has applicative order, so evaluate all arguments first */

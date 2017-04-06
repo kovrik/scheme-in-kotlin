@@ -16,6 +16,7 @@ import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
+import core.procedures.hashmaps.HashMapProc;
 import core.procedures.io.*;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
@@ -231,6 +232,9 @@ public final class DefaultEnvironment extends Environment {
       /* Continuations */
       new CallCC(),
       new DynamicWind(),
+
+      /* Hashmaps */
+      new HashMapProc(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
