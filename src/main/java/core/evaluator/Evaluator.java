@@ -63,11 +63,14 @@ public class Evaluator {
     }
     /* Try to downcast Big Numbers */
     if (result instanceof BigDecimal) {
-      result = NumberUtils.tryToDowncast((BigDecimal) result);
+      return NumberUtils.tryToDowncast((BigDecimal) result);
     }
     /* Try to downcast Rationals */
     if ((result instanceof SCMBigRational) && (((SCMBigRational) result).isDenominatorEqualToOne())) {
-      result = NumberUtils.tryToDowncast(((SCMBigRational) result).getNumerator());
+      return NumberUtils.tryToDowncast(((SCMBigRational) result).getNumerator());
+    }
+    if (result instanceof Number) {
+      return maybeUpcast((Number) result);
     }
     return result;
   }
@@ -200,5 +203,17 @@ public class Evaluator {
       result.put(key, value);
     }
     return result;
+  }
+
+  /* Upcast if required
+   * (float to double, byte, short and int to long)
+   */
+  private Number maybeUpcast(Number number) {
+    if ((number instanceof Byte) || (number instanceof Short) || (number instanceof Integer)) {
+      return number.longValue();
+    } else if (number instanceof Float) {
+      return number.doubleValue();
+    }
+    return number;
   }
 }

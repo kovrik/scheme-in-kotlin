@@ -78,6 +78,8 @@ public class NumberTest extends AbstractTest {
   @Test
   public void testEvalMath() {
     assertEquals(6L,  eval("(+ 1 2 3)", env));
+    assertEquals(6L,  eval("(+ (byte 1) (int 2) (short 3))", env));
+    assertEquals(2.1d, eval("(+ (byte 1) (double 1.1)", env));
     assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env));
     assertEquals(5.0, eval("(/ 10.0 2)", env));
     assertEquals(new SCMBigRational(BigInteger.ONE, BigInteger.TEN), eval("(/ 10)", env));
