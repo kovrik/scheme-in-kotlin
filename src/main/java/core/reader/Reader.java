@@ -20,12 +20,18 @@ import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
+  // TODO Get rid of this workaround?
+  private enum ReadContext {
+    DEFAULT,
+    HASHMAP;
+  }
+
   static final SCMSymbol DOT = SCMSymbol.of(".");
 
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + ";(){}\"\u0000\uffff";
+  private static final String DELIMITERS = WHITESPACES + ";(){},\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
@@ -98,10 +104,14 @@ public class Reader implements IReader {
     return token;
   }
 
+  Object nextToken() throws IOException {
+    return nextToken(ReadContext.DEFAULT);
+  }
+
   /**
    * Read next token
    */
-  Object nextToken() throws IOException {
+  Object nextToken(ReadContext context) throws IOException {
     int i;
     if (!isValid(i = reader.read())) {
       return null;
@@ -127,7 +137,13 @@ public class Reader implements IReader {
     switch (c) {
       case '\'': return readQuote(c);
       case '`':  return readQuote(c);
-      case ',':  return readQuote(c);
+      case ',': {
+        if (context == ReadContext.DEFAULT) {
+          return readQuote(c);
+        } else if (context == ReadContext.HASHMAP) {
+          return null;
+        }
+      }
       case '#':  return readHash();
       case '(':  return readList(true);
       case '{':  return readHashmap();
@@ -391,6 +407,7 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> {<key1> <value1>, ..., <keyN> <valueN>}
    */
+  // TODO Check and simplify
   private Map<Object, Object> readHashmap() throws IOException {
     Map<Object, Object> hashmap = new HashMap<>();
     int i;
@@ -404,9 +421,18 @@ public class Reader implements IReader {
         break;
       }
       reader.unread(c);
-      Object key = nextToken();
-
-      // TODO separate pairs with commas!
+      /* Skip comma */
+      if (c == ',') {
+        c = (char)reader.read();
+      }
+      /* Skip whitespaces */
+      while (Character.isWhitespace(c)) {
+        c = (char)reader.read();
+      }
+      if (c == '}') {
+        break;
+      }
+      Object key = nextToken(ReadContext.HASHMAP);
 
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
@@ -415,7 +441,9 @@ public class Reader implements IReader {
       if (c == '}') {
         break;
       }
-      Object value = nextToken();
+      // TODO Raise 'map must have an even number of forms' error in case hashmap is invalid?
+      // TODO Ignore trailing comma?
+      Object value = nextToken(ReadContext.HASHMAP);
       hashmap.put(key, value);
     }
     return hashmap;

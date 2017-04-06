@@ -12,10 +12,10 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Map;
 
 import static core.scm.SCMCons.list;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class ReaderTest extends AbstractTest {
 
@@ -316,5 +316,14 @@ public class ReaderTest extends AbstractTest {
         assertEquals("read: bad character constant: #\\" + u, e.getMessage());
       }
     }
+  }
+
+  @Test
+  public void testReadHashmapLiteral() {
+    assertTrue(reader.readFirst("{}") instanceof Map);
+    assertTrue(reader.readFirst("{   }") instanceof Map);
+    assertTrue(reader.readFirst("  {    }  ") instanceof Map);
+    assertTrue(reader.readFirst("  {  1 2  }  ") instanceof Map);
+    assertEquals(4, ((Map)reader.readFirst("  {  1 2,3 4, 5 6    ,  7     8  }  ")).size());
   }
 }
