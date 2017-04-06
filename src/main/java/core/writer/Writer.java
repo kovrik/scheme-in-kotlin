@@ -91,7 +91,11 @@ public class Writer implements IWriter {
       } else {
         sb.append(", ");
       }
-      sb.append(write(entry.getKey())).append(' ').append(write(entry.getValue()));
+      Object key = entry.getKey();
+      sb.append(key == map ? "(this hashmap)" : write(key));
+      sb.append(' ');
+      Object value = entry.getValue();
+      sb.append(value == map? "(this hashmap)" : write(value));
     }
     return sb.append('}').toString();
   }
