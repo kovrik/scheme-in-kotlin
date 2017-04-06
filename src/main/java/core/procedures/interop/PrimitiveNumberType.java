@@ -33,7 +33,6 @@ public final class PrimitiveNumberType extends AFn {
 
   @Override
   public Number apply1(Object arg) {
-    // FIXME?
     /* Have to box it */
     Number number = (Number)arg;
     if (clazz == byte.class) {

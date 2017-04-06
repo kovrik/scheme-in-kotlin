@@ -22,7 +22,6 @@ public final class CharType extends AFn {
 
   @Override
   public Character apply1(Object arg) {
-    // FIXME?
     /* Have to box it */
     if (arg instanceof Number) {
       return (char)((Number) arg).intValue();

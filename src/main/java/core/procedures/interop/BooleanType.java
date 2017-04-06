@@ -22,7 +22,6 @@ public final class BooleanType extends AFn {
 
   @Override
   public Boolean apply1(Object arg) {
-    // FIXME?
     /* Have to box it */
     if (SCMBoolean.toBoolean(arg)) {
       return Boolean.TRUE;
