@@ -65,6 +65,9 @@ public class Writer implements IWriter {
     if (o instanceof Exception) {
       return ((Exception) o).getMessage();
     }
+    if (o instanceof Map) {
+      return writeMap((Map)o);
+    }
     return o.toString();
   }
 
@@ -74,5 +77,22 @@ public class Writer implements IWriter {
       return scmClass.getName();
     }
     return clazz.getSimpleName();
+  }
+
+  private static String writeMap(Map<Object, Object> map) {
+    if (map.isEmpty()) {
+      return  "{}";
+    }
+    StringBuilder sb = new StringBuilder().append('{');
+    boolean first = true;
+    for (Map.Entry<Object, Object> entry : map.entrySet()) {
+      if (first) {
+        first = false;
+      } else {
+        sb.append(", ");
+      }
+      sb.append(write(entry.getKey())).append(' ').append(write(entry.getValue()));
+    }
+    return sb.append('}').toString();
   }
 }
