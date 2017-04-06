@@ -17,6 +17,9 @@ import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
 import core.procedures.hashmaps.HashMapProc;
+import core.procedures.interop.BooleanType;
+import core.procedures.interop.CharType;
+import core.procedures.interop.PrimitiveNumberType;
 import core.procedures.io.*;
 import core.procedures.lists.AssocProc;
 import core.procedures.lists.Length;
@@ -26,9 +29,6 @@ import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
-import core.procedures.interop.BooleanType;
-import core.procedures.interop.CharType;
-import core.procedures.interop.PrimitiveNumberType;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -354,11 +354,6 @@ public final class DefaultEnvironment extends Environment {
   public DefaultEnvironment() {
     super(null);
 
-    /* Constants and special cases */
-    put(SCMSymbol.of("pi"),  Math.PI);
-    put(SCMSymbol.of("eof"), SCMConstant.EOF);
-    put(SCMSymbol.of("call/cc"), new CallCC());
-
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
       put(SCMSymbol.of(specialForm.toString()), specialForm);
@@ -368,5 +363,12 @@ public final class DefaultEnvironment extends Environment {
     for (AFn proc : STANDARD_PROCEDURES) {
       put(SCMSymbol.of(proc.getName()), proc);
     }
+
+    /* Constants and special cases, synonyms*/
+    put(SCMSymbol.of("pi"),      Math.PI);
+    put(SCMSymbol.of("eof"),     SCMConstant.EOF);
+    put(SCMSymbol.of("call/cc"), get(SCMSymbol.of("call-with-current-continuation")));
+    put(SCMSymbol.of("type"),    get(SCMSymbol.of("class-of")));
+    put(SCMSymbol.of("class"),   get(SCMSymbol.of("class-of")));
   }
 }
