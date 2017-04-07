@@ -396,7 +396,7 @@ public class ListTest extends AbstractTest {
       eval("(assoc 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().startsWith("assoc: type mismatch; (expected: List, given:"));
+      assertTrue(e.getMessage().startsWith("assoc: type mismatch; (expected: List or Map, given:"));
     }
     try {
       eval("(assoc 1 '((a 2) 3))", env);
