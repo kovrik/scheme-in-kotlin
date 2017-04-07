@@ -19,10 +19,7 @@ import core.procedures.functional.Void;
 import core.procedures.generic.Count;
 import core.procedures.generic.Get;
 import core.procedures.generic.Nth;
-import core.procedures.hashmaps.HashMapProc;
-import core.procedures.hashmaps.Keys;
-import core.procedures.hashmaps.Put;
-import core.procedures.hashmaps.Values;
+import core.procedures.hashmaps.*;
 import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
 import core.procedures.interop.PrimitiveNumberType;
@@ -244,6 +241,7 @@ public final class DefaultEnvironment extends Environment {
       new Put(),
       new Keys(),
       new Values(),
+      new Merge(),
 
       /* Generic */
       new Count(),
