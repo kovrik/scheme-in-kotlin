@@ -23,6 +23,7 @@ public final class Sort extends AFn {
     return "sort";
   }
 
+  // TODO accept comparator as optional first argument
   @Override
   public Object apply1(Object arg) {
     try {
