@@ -1,4 +1,4 @@
-* TODO: [34/44]
+* TODO: [35/46]
 
 ** TODO [#A] Macros
 ** TODO [#A] Math procedures: fix precision loss
@@ -57,6 +57,8 @@ CLOSED: [2016-12-05 Mon 20:46]
 *** TODO Reduce number of new objects
 *** TODO Inline procedures
 ** TODO [#B] Compilation
+** DONE [#B] Java interop
+CLOSED: [2017-04-07 Fri 18:00]
 ** DONE [#A] Expt special cases
 CLOSED: [2017-02-23 Thu 21:49]
 ** DONE [#A] Fix `do` Special Form (each iteration must establishe bindings to fresh locations)
