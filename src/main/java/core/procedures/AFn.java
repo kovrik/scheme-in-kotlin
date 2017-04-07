@@ -97,21 +97,21 @@ public abstract class AFn implements IFn<Object[], Object> {
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
         if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
-          throw new WrongTypeException(getName(), Writer.write(mandatoryArgsTypes[i]), arg);
+          throw new WrongTypeException(getName(), Writer.writeClass(mandatoryArgsTypes[i]), arg);
         }
         continue;
       }
       /* Last argument (optional special case) */
       if (i == argsSize - 1 && (lastArgType != null)) {
         if (!(SCMClass.checkType(arg, lastArgType))) {
-          throw new WrongTypeException(getName(), Writer.write(lastArgType), arg);
+          throw new WrongTypeException(getName(), Writer.writeClass(lastArgType), arg);
         }
         continue;
       }
       /* Rest args */
       if (restArgsType != null) {
         if (!(SCMClass.checkType(arg, restArgsType))) {
-          throw new WrongTypeException(getName(), Writer.write(restArgsType), arg);
+          throw new WrongTypeException(getName(), Writer.writeClass(restArgsType), arg);
         }
       }
     }

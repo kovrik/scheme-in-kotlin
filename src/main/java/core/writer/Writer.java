@@ -37,7 +37,12 @@ public class Writer implements IWriter {
       return o.toString();
     }
     if (o instanceof Class) {
-      return writeClass((Class) o);
+      SCMClass scmClass = SCMClass.valueOf((Class) o);
+      String name = ((Class)o).getSimpleName();
+      if (scmClass == null) {
+        name = ((Class)o).getName();
+      }
+      return "#<class:" + name + ">";
     }
     if (o instanceof List) {
       return SCMCons.toString((List) o);
@@ -71,12 +76,11 @@ public class Writer implements IWriter {
     return o.toString();
   }
 
-  private static String writeClass(Class clazz) {
+  public static String writeClass(Class clazz) {
     SCMClass scmClass = SCMClass.valueOf(clazz);
     if (scmClass != null) {
       return scmClass.getName();
     }
-    // FIXME format class name: #<class:Clazz>
     return clazz.getSimpleName();
   }
 
