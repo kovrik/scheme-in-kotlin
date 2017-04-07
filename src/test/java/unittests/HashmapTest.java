@@ -1,7 +1,9 @@
 package unittests;
 
+import core.scm.SCMCons;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -53,5 +55,14 @@ public class HashmapTest extends AbstractTest {
     assertEquals(8L, eval("((hash-map (+ 1 2 3) (* 2 4)) 6)", env));
     assertEquals(10L, eval("(({* *, + +} +) 1 2 3 4)", env));
     assertEquals(10L, eval("(((hash-map * * + +) +) 1 2 3 4)", env));
+  }
+
+  @Test
+  public void testHashmapKeysValues() {
+    assertEquals(SCMCons.list(1L, 2L, 3L), eval("(keys {1 + 2 - 3 /})", env));
+    assertEquals(SCMCons.list(), eval("(keys {})", env));
+    assertEquals(SCMCons.list(1L, 2L, 3L), eval("(values (zipmap [+ - /] '(1 2 3)))", env));
+    assertEquals(SCMCons.list(), eval("(values {})", env));
+    assertEquals(new HashMap<>(), eval("(zipmap [] '())", env));
   }
 }
