@@ -24,7 +24,7 @@ public final class VectorSet extends AFn {
     SCMMutableVector vec = (SCMMutableVector)arg1;
     Long pos = ((Number)arg2).longValue();
     if (pos >= vec.length()) {
-      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), pos));
+      throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), pos));
     }
     vec.set(pos.intValue(), arg3);
     return UNSPECIFIED;

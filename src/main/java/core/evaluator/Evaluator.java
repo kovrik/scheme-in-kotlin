@@ -4,6 +4,7 @@ import core.environment.Environment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
@@ -14,6 +15,7 @@ import core.scm.SCMBigRational;
 import core.scm.SCMPromise;
 import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
+import core.scm.SCMVector;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
 import core.utils.NumberUtils;
@@ -95,6 +97,8 @@ public class Evaluator {
       return evlis((List<Object>)sexp, env);
     } else if (sexp instanceof Map) {
       return evalMap((Map)sexp, env);
+//    } else if (sexp instanceof SCMVector) {
+//      return evalVector((SCMVector)sexp, env);
     } else {
       return sexp;
     }
@@ -133,12 +137,12 @@ public class Evaluator {
     if (!(op instanceof AFn)) {
       op = eval(op, env);
       /* If result is not a function, then raise an error */
-      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map)) {
+      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map) && !(op instanceof SCMVector)) {
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
       }
     }
 
-    /* Maps like as functions of their keys */
+    /* Maps are functions of their keys */
     if (op instanceof Map) {
       if (sexp.size() > 3) {
         throw new ArityException("hashmap", 1, 2, sexp.size() - 1);
@@ -151,6 +155,27 @@ public class Evaluator {
         defaultValue = eval(sexp.get(2), env);
       }
       return map.getOrDefault(key, defaultValue);
+    }
+
+    /* Vectors are functions of index  */
+    if (op instanceof SCMVector) {
+      if (sexp.size() > 2) {
+        throw new ArityException("vector", 1, 1, sexp.size() - 1);
+      }
+      /* Do not eval vector (unless created via `vector` procedure) */
+      SCMVector vector = (SCMVector)op;
+      /* Alternative: always evaluate vector
+       * SCMVector vector = evalVector((SCMVector) op, env);
+       */
+      Object index = sexp.get(1);
+      if (!NumberUtils.isInteger(index)) {
+        throw new WrongTypeException("vector", "Integer", index);
+      }
+      int i = ((Number) index).intValue();
+      if (i >= vector.length()) {
+        throw new IndexOutOfBoundsException("vector: value out of range: " + i);
+      }
+      return eval(vector.get(i), env);
     }
 
     /* Scheme has applicative order, so evaluate all arguments first */
@@ -203,6 +228,14 @@ public class Evaluator {
       result.put(key, value);
     }
     return result;
+  }
+
+  /* Evaluate vector */
+  private SCMVector evalVector(SCMVector vector, Environment env) {
+    for (int i = 0; i < vector.length(); i++) {
+      vector.getArray()[i] = eval(vector.getArray()[i], env);
+    }
+    return vector;
   }
 
   /* Upcast if required

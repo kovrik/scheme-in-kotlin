@@ -181,13 +181,13 @@ public class StringTest extends AbstractTest {
     try {
       eval("(string-ref \"tes\" 3)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("string-ref: value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-ref \"\" 0)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("string-ref: value out of range: 0", e.getMessage());
     }
     try {
@@ -227,13 +227,13 @@ public class StringTest extends AbstractTest {
     try {
       eval("(string-set! (string #\\a #\\b #\\c) 3 #\\z)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("string-set!: value out of range: 3", e.getMessage());
     }
     try {
       eval("(string-set! (make-string 0) 0 #\\z)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("string-set!: value out of range: 0", e.getMessage());
     }
     try {

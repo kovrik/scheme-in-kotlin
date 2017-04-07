@@ -31,14 +31,14 @@ public final class ListTail extends AFn {
     }
     List list = (List) arg1;
     if (p >= list.size() + 1) {
-      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), p));
+      throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), p));
     }
     /* Cons cell */
     if ((list instanceof SCMCons) && !((SCMCons)list).isList()) {
       if (p == 1) {
         return ((SCMCons)list).cdr();
       } else {
-        throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), p));
+        throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), p));
       }
     }
     return list.subList(p.intValue(), list.size());

@@ -22,7 +22,7 @@ public final class Substring extends AFn {
     String s = args[0].toString();
     long start = ((Number)args[1]).longValue();
     if (start > s.length()) {
-      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), start));
+      throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), start));
     }
 
     long end = s.length();
@@ -30,7 +30,7 @@ public final class Substring extends AFn {
       end = (long) args[2];
     }
     if (end > s.length()) {
-      throw new IllegalArgumentException(String.format("%s: value out of range: %s", getName(), end));
+      throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), end));
     }
     return s.substring((int)start, (int)end);
   }

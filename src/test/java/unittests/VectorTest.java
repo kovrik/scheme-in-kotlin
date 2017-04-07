@@ -1,6 +1,5 @@
 package unittests;
 
-import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 import org.junit.Test;
 
@@ -79,13 +78,13 @@ public class VectorTest extends AbstractTest {
     try {
       eval("(vector-ref (vector 1 2 3) 3)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("vector-ref: value out of range: 3", e.getMessage());
     }
     try {
       eval("(vector-ref (vector) 0)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("vector-ref: value out of range: 0", e.getMessage());
     }
     try {
@@ -127,7 +126,7 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("vector-set!: value out of range: 3", e.getMessage());
     }
 
@@ -136,7 +135,7 @@ public class VectorTest extends AbstractTest {
     try {
       eval(sexp, env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       assertEquals("vector-set!: value out of range: 0", e.getMessage());
     }
 
@@ -200,5 +199,17 @@ public class VectorTest extends AbstractTest {
     assertEquals(TRUE,  eval("(mutable? (vector 1 2 3))", env));
     assertEquals(FALSE, eval("(immutable? (vector 1 2 3))", env));
     assertEquals(TRUE,  eval("(immutable? (vector->immutable-vector (vector 1 2 3)))", env));
+  }
+
+  @Test
+  public void testVectorsAsFunctionsOfIndex() {
+    assertEquals(5L, eval("([0 5 10] 1)", env));
+    assertEquals(5L, eval("((vector 0 (+ 2 3) 10) 1)", env));
+    try {
+      eval("([0 (+ 2 3) 10] 10)", env);
+      fail();
+    } catch (IndexOutOfBoundsException e) {
+      // success
+    }
   }
 }
