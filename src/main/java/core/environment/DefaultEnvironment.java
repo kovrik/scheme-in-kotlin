@@ -243,6 +243,7 @@ public final class DefaultEnvironment extends Environment {
       new Keys(),
       new Values(),
       new Merge(),
+      new Zipmap(),
 
       /* Generic */
       new Count(),
