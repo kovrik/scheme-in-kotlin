@@ -22,8 +22,29 @@ public class HashmapTest extends AbstractTest {
   public void testHashmapGet() {
     assertEquals(5L, eval("({3 5} 3)", env));
     assertEquals(5L, eval("({3 5} 7 5)", env));
+    assertEquals(5L, eval("(get {3 5} 3)", env));
+    assertEquals(5L, eval("(get {3 5} 7 5)", env));
     assertEquals("B", eval("({3 5, \"A\" \"B\"} \"A\" 5)", env));
     assertEquals("B", eval("((hash-map 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("(get {3 5, \"A\" \"B\"} \"A\" 5)", env));
+    assertEquals("B", eval("(get (hash-map 3 5 \"A\" \"B\") \"A\" 5)", env));
+
+    assertEquals(5L, eval("(.get {3 5} 3)", env));
+    assertEquals(5L, eval("(.getOrDefault {3 5} 7 5)", env));
+    assertEquals("B", eval("(.getOrDefault {3 5, \"A\" \"B\"} \"A\" 5)", env));
+    assertEquals("B", eval("(.getOrDefault (hash-map 3 5 \"A\" \"B\") \"A\" 5)", env));
+  }
+
+  @Test
+  public void testHashmapPut() {
+    assertEquals(5L, eval("( (put {} 3 5) 3)", env));
+    assertEquals(5L, eval("( (put {} 3 (+ 2 3)) 7 5)", env));
+    assertEquals(5L, eval("(get (put {} 3 (+ 2 3)) (+ 1 2))", env));
+    assertEquals(5L, eval("(get (put {} 3 (+ 2 3)) 7 5)", env));
+    assertEquals("B", eval("( (put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("( (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("(get (put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("(get (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
   }
 
   @Test

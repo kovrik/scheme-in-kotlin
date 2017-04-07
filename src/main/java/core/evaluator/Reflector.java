@@ -3,6 +3,7 @@ package core.evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,11 +37,18 @@ public class Reflector {
       return clazz.getMethod(name, parameterTypes);
     } catch (NoSuchMethodException e) {
       // no exact match found, try to find inexact match
+      // FIXME Workaround: save state before downcasting
+      Object[] argsOld = Arrays.copyOf(args, args.length);
+      Class<?>[] paramsOld = Arrays.copyOf(parameterTypes, parameterTypes.length);
       downcastArgs(args, parameterTypes);
       try {
         return clazz.getMethod(name, parameterTypes);
       } catch (NoSuchMethodException ex) {
         try {
+          // FIXME Workaround: restore previous state
+          // restore saved state
+          System.arraycopy(argsOld, 0, args, 0, argsOld.length);
+          System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.length);
           // TODO Check if implemented properly
           castToObject(parameterTypes);
           return clazz.getMethod(name, parameterTypes);

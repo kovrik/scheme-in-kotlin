@@ -16,7 +16,9 @@ import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
+import core.procedures.hashmaps.Get;
 import core.procedures.hashmaps.HashMapProc;
+import core.procedures.hashmaps.Put;
 import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
 import core.procedures.interop.PrimitiveNumberType;
@@ -235,6 +237,8 @@ public final class DefaultEnvironment extends Environment {
 
       /* Hashmaps */
       new HashMapProc(),
+      new Put(),
+      new Get(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
