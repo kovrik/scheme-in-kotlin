@@ -3,6 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 import core.utils.NumberUtils;
 
@@ -30,8 +31,8 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
-    if (!(col instanceof SCMVector) && !(col instanceof List)) {
-      throw new WrongTypeException(getName(), "List or Vector", col);
+    if (!(col instanceof SCMVector) && !(col instanceof List) && !(col instanceof String) && !(col instanceof SCMMutableString)) {
+      throw new WrongTypeException(getName(), "List or Vector or String", col);
     }
 
     Object index = args[1];
