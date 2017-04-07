@@ -3,7 +3,6 @@ package core.evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -75,8 +74,6 @@ public class Reflector {
     }
   }
 
-  // TODO Overloaded method resolution
-  // FIXME Generify and optimize
   // TODO Other types: short, byte etc.?
   private void downcastArgs(Object[] args, Class<?>[] parameterTypes) {
     for (int i = 0; i < parameterTypes.length; i++) {
@@ -120,7 +117,6 @@ public class Reflector {
     }
   }
 
-  // TODO Special Forms for primitive types (byte, short, int, long etc.)
   public Object newInstance(String clazz, Object... args) {
     Class c = getClass(clazz);
     Class[] argTypes = new Class[args.length];
