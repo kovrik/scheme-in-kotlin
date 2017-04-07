@@ -20,7 +20,9 @@ import core.procedures.generic.Count;
 import core.procedures.generic.Get;
 import core.procedures.generic.Nth;
 import core.procedures.hashmaps.HashMapProc;
+import core.procedures.hashmaps.Keys;
 import core.procedures.hashmaps.Put;
+import core.procedures.hashmaps.Values;
 import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
 import core.procedures.interop.PrimitiveNumberType;
@@ -240,6 +242,8 @@ public final class DefaultEnvironment extends Environment {
       /* Hashmaps */
       new HashMapProc(),
       new Put(),
+      new Keys(),
+      new Values(),
 
       /* Generic */
       new Count(),
@@ -312,7 +316,7 @@ public final class DefaultEnvironment extends Environment {
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     /* Naive implementations (not via Continuations) */
-    LIBRARY_PROCEDURES.add("(define values list)");
+//    LIBRARY_PROCEDURES.add("(define values list)");
     LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))");
 
     LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");

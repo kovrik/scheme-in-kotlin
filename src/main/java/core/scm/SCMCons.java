@@ -96,12 +96,12 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return (elements == null || elements.length == 0) ? NIL : list(Arrays.asList(elements));
   }
 
-  public static <E> SCMCons<E> list(List<E> list) {
-    if (list == null || list.isEmpty()) {
+  public static <E> SCMCons<E> list(Collection<E> collection) {
+    if (collection == null || collection.isEmpty()) {
       return NIL;
     }
     SCMCons<E> result = list();
-    result.addAll(list);
+    result.addAll(collection);
     return result;
   }
 
