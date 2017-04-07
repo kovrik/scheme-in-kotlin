@@ -252,6 +252,7 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_NULL,
       SCMPredicate.IS_PAIR,
       SCMPredicate.IS_LIST,
+      SCMPredicate.IS_MAP,
       SCMPredicate.IS_PROMISE,
       SCMPredicate.IS_CHAR,
       SCMPredicate.IS_STRING,

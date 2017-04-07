@@ -9,6 +9,7 @@ import core.scm.*;
 import core.utils.NumberUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public final class SCMPredicate extends AFn {
@@ -17,6 +18,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
+  public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
   public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (o instanceof SCMPromise));
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
   public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof SCMMutableString || o instanceof String));
