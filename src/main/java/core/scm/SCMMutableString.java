@@ -45,6 +45,11 @@ public class SCMMutableString implements ISCMClass {
     string.setLength(0);
   }
 
+  public SCMMutableString reverse() {
+    string.reverse();
+    return this;
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.MUTABLE_STRING;

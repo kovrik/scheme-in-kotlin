@@ -3,9 +3,7 @@ package core.procedures.cons;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
-import core.scm.SCMMutableVector;
-import core.scm.SCMVector;
+import core.scm.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +33,12 @@ public final class Reverse extends AFn {
       Collections.reverse(Arrays.asList(reversed.getArray()));
       return reversed;
     }
-    throw new WrongTypeException(getName(), "List or Vector", arg);
+    if (arg instanceof String) {
+      return new StringBuilder((String) arg).reverse().toString();
+    }
+    if (arg instanceof SCMMutableString) {
+      return ((SCMMutableString) arg).reverse();
+    }
+    throw new WrongTypeException(getName(), "List or Vector or String", arg);
   }
 }
