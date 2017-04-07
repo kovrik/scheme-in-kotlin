@@ -1,4 +1,4 @@
-package core.procedures.cons;
+package core.procedures.generic;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;

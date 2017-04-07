@@ -1,10 +1,9 @@
-package core.procedures.lists;
+package core.procedures.generic;
 
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.equivalence.Equal;
-import core.procedures.generic.Get;
 import core.scm.SCMBoolean;
 import core.scm.SCMClass;
 import core.scm.SCMCons;

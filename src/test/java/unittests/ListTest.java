@@ -296,7 +296,7 @@ public class ListTest extends AbstractTest {
       eval("(length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("length: type mismatch; (expected: List, given: 1)", e.getMessage());
+      assertEquals("length: type mismatch; (expected: List or Map or Vector or String, given: 1)", e.getMessage());
     }
   }
 
