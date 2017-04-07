@@ -1,13 +1,14 @@
 package core.procedures.functional;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.cons.Append;
-import core.scm.SCMClass;
 import core.scm.SCMCons;
-import core.scm.specialforms.Quote;
 import core.scm.SCMThunk;
+import core.scm.SCMVector;
+import core.scm.specialforms.Quote;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +16,7 @@ import java.util.List;
 public final class Apply extends AFn {
 
   public Apply() {
-    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class, Object.class})
-                             .lastArgType(SCMClass.SCMProperList.class));
+    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class, Object.class}));
   }
 
   @Override
@@ -34,8 +34,17 @@ public final class Apply extends AFn {
     }
 
     Object last = args[args.length - 1];
-    for (Object o : (List) last) {
-      sexp.add(SCMCons.list(Quote.QUOTE, o));
+    if (!(last instanceof SCMVector) && !(last instanceof List)) {
+      throw new WrongTypeException(getName(), "List or Vector", last);
+    }
+    if (last instanceof List) {
+      for (Object o : (List) last) {
+        sexp.add(SCMCons.list(Quote.QUOTE, o));
+      }
+    } else if (last instanceof SCMVector) {
+      for (Object o : ((SCMVector) last).getArray()) {
+        sexp.add(SCMCons.list(Quote.QUOTE, o));
+      }
     }
     return new SCMThunk(sexp, null);
   }
