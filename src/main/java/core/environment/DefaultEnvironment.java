@@ -19,6 +19,7 @@ import core.procedures.functional.Void;
 import core.procedures.generic.Count;
 import core.procedures.generic.Get;
 import core.procedures.generic.Nth;
+import core.procedures.generic.Sort;
 import core.procedures.hashmaps.*;
 import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
@@ -247,6 +248,7 @@ public final class DefaultEnvironment extends Environment {
       new Count(),
       new Get(),
       new Nth(),
+      new Sort(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
