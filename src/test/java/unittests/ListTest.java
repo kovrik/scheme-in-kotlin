@@ -12,6 +12,7 @@ import static core.scm.SCMConstant.UNSPECIFIED;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ListTest extends AbstractTest {
@@ -55,7 +56,7 @@ public class ListTest extends AbstractTest {
       eval("(list->vector #(1 2 3))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("list->vector: type mismatch; (expected: List, given: #(1 2 3))", e.getMessage());
+      assertTrue(e.getMessage().startsWith("list->vector: type mismatch; (expected: List, given:"));
     }
   }
 
@@ -319,7 +320,7 @@ public class ListTest extends AbstractTest {
       eval("(member 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("member: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("member: type mismatch; (expected: List, given:"));
     }
   }
 
@@ -347,7 +348,7 @@ public class ListTest extends AbstractTest {
       eval("(memq 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("memq: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("memq: type mismatch; (expected: List, given:"));
     }
   }
 
@@ -377,7 +378,7 @@ public class ListTest extends AbstractTest {
       eval("(memv 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("memv: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("memv: type mismatch; (expected: List, given:"));
     }
   }
 
@@ -395,7 +396,7 @@ public class ListTest extends AbstractTest {
       eval("(assoc 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("assoc: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("assoc: type mismatch; (expected: List, given:"));
     }
     try {
       eval("(assoc 1 '((a 2) 3))", env);
@@ -421,7 +422,7 @@ public class ListTest extends AbstractTest {
       eval("(assq 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("assq: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("assq: type mismatch; (expected: List, given:"));
     }
     try {
       eval("(assq 1 '((a 2) 3))", env);
@@ -444,7 +445,7 @@ public class ListTest extends AbstractTest {
       eval("(assv 1 #())", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("assv: type mismatch; (expected: List, given: #())", e.getMessage());
+      assertTrue(e.getMessage().startsWith("assv: type mismatch; (expected: List, given:"));
     }
     try {
       eval("(assv 1 '((a 2) 3))", env);

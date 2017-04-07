@@ -5,6 +5,14 @@ import java.util.Arrays;
 /* Abstract superclass of both Immutable and Mutable Vectors */
 public abstract class SCMVector implements ISCMClass {
 
+  /* Scheme Vector syntax */
+//  private static final String OPEN = "#(";
+//  private static final String CLOSE = ")";
+  /* Alternative (Clojure-like) Vector syntax */
+  private static final String OPEN = "[";
+  private static final String CLOSE = "]";
+
+  // TODO Replace with ArrayList?
   /* Contents of Vector: plain Java array */
   private final Object[] array;
 
@@ -45,10 +53,10 @@ public abstract class SCMVector implements ISCMClass {
   @Override
   public String toString() {
     if (getArray().length == 0) {
-      return "#()";
+      return OPEN + CLOSE;
     }
     StringBuilder sb = new StringBuilder();
-    sb.append("#(");
+    sb.append(OPEN);
     for (int i = 0; i < getArray().length; i++) {
       Object e = getArray()[i];
       if (e == this) {
@@ -59,7 +67,7 @@ public abstract class SCMVector implements ISCMClass {
         sb.append(e);
       }
       if (i == (getArray().length - 1)) {
-        return sb.append(')').toString();
+        return sb.append(CLOSE).toString();
       }
       sb.append(' ');
     }
