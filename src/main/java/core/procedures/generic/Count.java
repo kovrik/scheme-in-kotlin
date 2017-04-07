@@ -26,7 +26,7 @@ public final class Count extends AFn {
   }
 
   @Override
-  public Number apply1(Object arg) {
+  public Integer apply1(Object arg) {
     if (arg instanceof Map) {
       return ((Map)arg).size();
     } else if (arg instanceof List) {

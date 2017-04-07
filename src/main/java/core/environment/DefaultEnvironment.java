@@ -17,7 +17,8 @@ import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
 import core.procedures.generic.Count;
-import core.procedures.hashmaps.Get;
+import core.procedures.generic.Get;
+import core.procedures.generic.Nth;
 import core.procedures.hashmaps.HashMapProc;
 import core.procedures.hashmaps.Put;
 import core.procedures.interop.BooleanType;
@@ -239,10 +240,11 @@ public final class DefaultEnvironment extends Environment {
       /* Hashmaps */
       new HashMapProc(),
       new Put(),
-      new Get(),
 
       /* Generic */
       new Count(),
+      new Get(),
+      new Nth(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
