@@ -25,7 +25,7 @@ public class Reader implements IReader {
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + ";(){},\"\u0000\uffff";
+  private static final String DELIMITERS = WHITESPACES + ";(){}[],\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
@@ -129,12 +129,14 @@ public class Reader implements IReader {
       case '`':  return readQuote(c);
       case ',':  return readQuote(c);
       case '#':  return readHash();
-      case '(':  return readList(true);
+      case '(':  return readList(true, ')');
       case '{':  return readHashmap();
+      case '[':  return readVector(']');
       case ';':  return readComment();
       case '"':  return readString();
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
       case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
+      case ']':  throw new IllegalSyntaxException("read: unexpected vector terminator: " + c);
       default:   return SCMSymbol.of(c + readUntilDelimiter());
     }
   }
@@ -142,7 +144,7 @@ public class Reader implements IReader {
   private Object readHash() throws IOException {
     char c = (char) reader.read();
     if (c == '(') {
-      return readVector();
+      return readVector(')');
     } else if (c == '\\') {
       return readCharacter();
     } else if (c == 't' || c == 'T') {
@@ -328,18 +330,18 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private SCMCons<Object> readList(boolean allowImproperList) throws IOException {
+  private SCMCons<Object> readList(boolean allowImproperList, char terminator) throws IOException {
     SCMCons<Object> list = SCMCons.NIL;
     /* Remember position of a dot (if we meet it) */
     int dotPos = -1;
     int i;
     char c;
-    while (isValid(i = reader.read()) && ((c = (char)i) != ')')) {
+    while (isValid(i = reader.read()) && ((c = (char)i) != terminator)) {
       /* Skip whitespaces */
       while (Character.isWhitespace(c)) {
         c = (char)reader.read();
       }
-      if (c == ')') {
+      if (c == terminator) {
         break;
       }
       reader.unread(c);
@@ -380,9 +382,9 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private SCMMutableVector readVector() throws IOException {
+  private SCMMutableVector readVector(char terminator) throws IOException {
     /* Improper lists are not allowed */
-    return new SCMMutableVector(readList(false).toArray());
+    return new SCMMutableVector(readList(false, terminator).toArray());
   }
 
   /**
