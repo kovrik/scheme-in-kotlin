@@ -28,7 +28,10 @@ import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
+import core.procedures.sets.Difference;
+import core.procedures.sets.Intersection;
 import core.procedures.sets.SetProc;
+import core.procedures.sets.Union;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -244,6 +247,9 @@ public final class DefaultEnvironment extends Environment {
 
       /* Sets */
       new SetProc(),
+      new Union(),
+      new Intersection(),
+      new Difference(),
 
       /* Generic */
       new Count(),
