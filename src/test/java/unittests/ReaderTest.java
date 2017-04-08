@@ -125,15 +125,15 @@ public class ReaderTest extends AbstractTest {
   @Test
   public void testReadVector() {
     assertEquals(new SCMMutableVector(), reader.readFirst("#()"));
-    assertEquals(new SCMMutableVector(0L), reader.readFirst("#(0)"));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("#(1 2 3)"));
-    assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("#(1 \"test\" 3)"));
-    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("#(1 #(2) 3)"));
+    assertEquals(new SCMMutableVector(0L), reader.readFirst("[0]"));
+    assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
+    assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
+    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
     assertEquals(new SCMMutableVector(), reader.readFirst("[]"));
     assertEquals(new SCMMutableVector(0L), reader.readFirst("[0]"));
     assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
     assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
-    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("[1 #(2) 3]"));
+    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
     try {
       reader.readFirst("#(1 . 2)");
       fail();
@@ -167,7 +167,7 @@ public class ReaderTest extends AbstractTest {
     assertEquals(list(0L), reader.readFirst("(0)"));
     assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
     assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
-    assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 #(2) 3)"));
+    assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 [2] 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
     try {
       reader.readFirst(")");

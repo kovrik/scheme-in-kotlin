@@ -589,9 +589,9 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env));
     assertEquals(list(SCMSymbol.of("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env));
 
-    assertEquals(new SCMMutableVector(1L, 5L), eval("`#(1 ,(+ 2 3))", env));
+    assertEquals(new SCMMutableVector(1L, 5L), eval("`[1 ,(+ 2 3)]", env));
     assertEquals(new SCMMutableVector(1L, list(SCMSymbol.of("quasiquote"), list(SCMSymbol.of("unquote"), list(1L, 5L)))),
-                 eval("`#(1 `,(1 ,(+ 2 3)))", env));
+                 eval("`[1 `,(1 ,(+ 2 3))]", env));
 
     assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env));
     assertEquals(cons(SCMSymbol.of("unquote-splicing"), SCMSymbol.of("foo")), eval("`(unquote-splicing . foo)", env));
@@ -615,7 +615,7 @@ public class SpecialFormTest extends AbstractTest {
       assertEquals("unquote: bad syntax (unquote expects exactly one expression) in form: (unquote 1 2)", e.getMessage());
     }
     try {
-      eval("`#(1 unquote 2)", env);
+      eval("`[1 unquote 2]", env);
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("read: illegal use of '.'", e.getMessage());

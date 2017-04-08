@@ -33,8 +33,8 @@ public class ListTest extends AbstractTest {
     assertEquals(TRUE, eval("(list? (car '((1 2 3))))", env));
     assertEquals(TRUE, eval("(list? (cdr '((1 2 3))))", env));
     assertEquals(FALSE, eval("(list? (car '((1 . 2))))", env));
-    assertEquals(FALSE, eval("(list? (vector-ref '#((1 2 3 . 4)) 0))", env));
-    assertEquals(FALSE, eval("(list? (vector-ref '#((1 . 2)) 0))", env));
+    assertEquals(FALSE, eval("(list? (vector-ref #((1 2 3 . 4)) 0))", env));
+    assertEquals(FALSE, eval("(list? (vector-ref #((1 . 2)) 0))", env));
   }
 
   @Test

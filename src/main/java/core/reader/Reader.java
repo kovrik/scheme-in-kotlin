@@ -144,7 +144,11 @@ public class Reader implements IReader {
   private Object readHash() throws IOException {
     char c = (char) reader.read();
     if (c == '(') {
-      return readVector(')');
+      SCMMutableVector vector = readVector(')');
+      if (vector.length() == 0) {
+        return vector;
+      }
+      return SCMCons.list(Quote.QUOTE_SYMBOL, vector);
     } else if (c == '\\') {
       return readCharacter();
     } else if (c == 't' || c == 'T') {
