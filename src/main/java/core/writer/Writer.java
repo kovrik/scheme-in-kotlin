@@ -6,6 +6,7 @@ import core.scm.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Writer implements IWriter {
 
@@ -73,6 +74,9 @@ public class Writer implements IWriter {
     if (o instanceof Map) {
       return writeMap((Map)o);
     }
+    if (o instanceof Set) {
+      return writeSet((Set)o);
+    }
     return o.toString();
   }
 
@@ -101,6 +105,23 @@ public class Writer implements IWriter {
       sb.append(' ');
       Object value = entry.getValue();
       sb.append(value == map? "(this hashmap)" : write(value));
+    }
+    return sb.append('}').toString();
+  }
+
+  private static String writeSet(Set<Object> set) {
+    if (set.isEmpty()) {
+      return  "#{}";
+    }
+    StringBuilder sb = new StringBuilder().append("#{");
+    boolean first = true;
+    for (Object e : set) {
+      if (first) {
+        first = false;
+      } else {
+        sb.append(' ');
+      }
+      sb.append(e == set ? "(this set)" : write(e));
     }
     return sb.append('}').toString();
   }

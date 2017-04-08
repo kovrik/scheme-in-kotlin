@@ -8,6 +8,7 @@ import core.utils.NumberUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class Get extends AFn {
 
@@ -40,6 +41,10 @@ public final class Get extends AFn {
     } else if (col instanceof List) {
       if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
         return ((List)col).get(((Number)key).intValue());
+      }
+    } else if (col instanceof Set) {
+      if (((Set)col).contains(key)) {
+        return key;
       }
     } else if (col instanceof SCMVector) {
       if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((SCMVector) col).length())) {

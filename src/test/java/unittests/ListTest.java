@@ -211,7 +211,7 @@ public class ListTest extends AbstractTest {
       eval("(reverse 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("reverse: type mismatch; (expected: List or Vector or String, given: 1)", e.getMessage());
+      assertEquals("reverse: type mismatch; (expected: List or Vector or Set or String, given: 1)", e.getMessage());
     }
     try {
       eval("(reverse '(1 2) '(3 4))", env);
@@ -296,7 +296,7 @@ public class ListTest extends AbstractTest {
       eval("(length 1)", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("length: type mismatch; (expected: List or Map or Vector or String, given: 1)", e.getMessage());
+      assertEquals("length: type mismatch; (expected: List or Map or Vector or Set or String, given: 1)", e.getMessage());
     }
   }
 

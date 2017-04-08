@@ -11,21 +11,14 @@ import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
 import core.procedures.delayed.Force;
-import core.scm.SCMBigRational;
-import core.scm.SCMPromise;
-import core.scm.SCMSymbol;
-import core.scm.SCMThunk;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Evaluator {
 
@@ -99,6 +92,8 @@ public class Evaluator {
       return evalMap((Map)sexp, env);
     } else if (sexp instanceof SCMVector) {
       return evalVector((SCMVector)sexp, env);
+    } else if (sexp instanceof Set) {
+      return evalSet((Set)sexp, env);
     } else {
       return sexp;
     }
@@ -236,6 +231,15 @@ public class Evaluator {
       vector.getArray()[i] = eval(vector.getArray()[i], env);
     }
     return vector;
+  }
+
+  /* Evaluate set */
+  private Set<Object> evalSet(Set<Object> set, Environment env) {
+    Set<Object> result = new HashSet<>(set.size());
+    for (Object e : set) {
+      result.add(eval(e, env));
+    }
+    return result;
   }
 
   /* Upcast if required

@@ -3,6 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMCons;
 import core.scm.SCMVector;
 
 import java.util.*;
@@ -30,6 +31,11 @@ public final class Sort extends AFn {
       if (arg instanceof List) {
         Collections.sort((List) arg);
         return arg;
+      }
+      if (arg instanceof Set) {
+        SCMCons list = SCMCons.list((Set) arg);
+        Collections.sort(list);
+        return list;
       }
       if (arg instanceof SCMVector) {
         Arrays.sort(((SCMVector) arg).getArray());

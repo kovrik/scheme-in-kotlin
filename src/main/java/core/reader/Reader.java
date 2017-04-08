@@ -11,10 +11,7 @@ import core.scm.specialforms.Unquote;
 import core.scm.specialforms.UnquoteSplicing;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static core.utils.NumberUtils.*;
 
@@ -149,6 +146,8 @@ public class Reader implements IReader {
         return vector;
       }
       return SCMCons.list(Quote.QUOTE_SYMBOL, vector);
+    } else if (c == '{') {
+      return readSet();
     } else if (c == '\\') {
       return readCharacter();
     } else if (c == 't' || c == 'T') {
@@ -395,7 +394,7 @@ public class Reader implements IReader {
    * Read hashmap
    *
    * Syntax:
-   * <list> -> {<key1> <value1>, ..., <keyN> <valueN>}
+   * <hashmap> -> {<key1> <value1>, ..., <keyN> <valueN>}
    */
   // TODO Check and simplify
   private Map<Object, Object> readHashmap() throws IOException {
@@ -437,5 +436,34 @@ public class Reader implements IReader {
       hashmap.put(key, value);
     }
     return hashmap;
+  }
+
+  /**
+   * Read set
+   *
+   * Syntax:
+   * <set> -> #{<value1>, ..., <valueN>}
+   */
+  private Set<Object> readSet() throws IOException {
+    Set<Object> set = new HashSet<>();
+    int i;
+    char c;
+    while (isValid(i = reader.read()) && ((c = (char)i) != '}')) {
+      /* Skip whitespaces */
+      while (Character.isWhitespace(c)) {
+        c = (char)reader.read();
+      }
+      if (c == '}') {
+        break;
+      }
+      reader.unread(c);
+      /* Skip comma */
+      if (c == ',') {
+        c = (char)reader.read();
+      }
+      Object token = nextToken();
+      set.add(token);
+    }
+    return set;
   }
 }

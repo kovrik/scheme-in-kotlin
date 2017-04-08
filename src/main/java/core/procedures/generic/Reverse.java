@@ -5,9 +5,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public final class Reverse extends AFn {
 
@@ -27,6 +25,9 @@ public final class Reverse extends AFn {
       ((List) arg).forEach(result::push);
       return result;
     }
+    if (arg instanceof Set) {
+      return SCMCons.list((Set)arg);
+    }
     if (arg instanceof SCMVector) {
       Object[] array = ((SCMVector) arg).getArray();
       SCMMutableVector reversed = new SCMMutableVector(Arrays.copyOf(array, array.length));
@@ -39,6 +40,6 @@ public final class Reverse extends AFn {
     if (arg instanceof SCMMutableString) {
       return ((SCMMutableString) arg).reverse();
     }
-    throw new WrongTypeException(getName(), "List or Vector or String", arg);
+    throw new WrongTypeException(getName(), "List or Vector or Set or String", arg);
   }
 }

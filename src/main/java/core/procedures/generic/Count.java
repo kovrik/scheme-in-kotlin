@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 public class Count extends AFn {
@@ -29,8 +29,8 @@ public class Count extends AFn {
   public Integer apply1(Object arg) {
     if (arg instanceof Map) {
       return ((Map)arg).size();
-    } else if (arg instanceof List) {
-      return ((List)arg).size();
+    } else if (arg instanceof Collection) {
+      return ((Collection)arg).size();
     } else if (arg instanceof SCMVector) {
       return ((SCMVector)arg).length();
     } else if (arg instanceof String) {
@@ -40,6 +40,6 @@ public class Count extends AFn {
     } else if (arg instanceof StringBuilder)  {
       return ((StringBuilder) arg).length();
     }
-    throw new WrongTypeException(getName(), "List or Map or Vector or String", arg);
+    throw new WrongTypeException(getName(), "List or Map or Vector or Set or String", arg);
   }
 }
