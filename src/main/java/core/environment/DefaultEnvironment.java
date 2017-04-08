@@ -28,6 +28,7 @@ import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
+import core.procedures.sets.SetProc;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -240,6 +241,9 @@ public final class DefaultEnvironment extends Environment {
       new Values(),
       new Merge(),
       new Zipmap(),
+
+      /* Sets */
+      new SetProc(),
 
       /* Generic */
       new Count(),
