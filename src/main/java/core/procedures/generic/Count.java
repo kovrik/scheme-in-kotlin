@@ -9,7 +9,7 @@ import core.scm.SCMVector;
 import java.util.List;
 import java.util.Map;
 
-public final class Count extends AFn {
+public class Count extends AFn {
 
   public Count() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1));

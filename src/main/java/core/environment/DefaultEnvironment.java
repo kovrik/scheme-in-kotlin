@@ -56,6 +56,8 @@ public final class DefaultEnvironment extends Environment {
       /* System */
       new Exit(),
       new ClassOf(),
+      new ClassOf() { @Override public String getName() { return "type"; } },
+      new ClassOf() { @Override public String getName() { return "class"; } },
       new ErrorProc(),
       new Eval(),
       new RandomProc(),
@@ -188,7 +190,6 @@ public final class DefaultEnvironment extends Environment {
       new CallWithOutputFile(),
 
       /* Pairs */
-      new Length(),
       new MemberProc("member", new Equal()),
       new MemberProc("memq", new Eq()),
       new MemberProc("memv", new Eqv()),
@@ -245,6 +246,7 @@ public final class DefaultEnvironment extends Environment {
       new Get(),
       new Nth(),
       new Sort(),
+      new Count() { @Override public String getName() { return "length"; } },
 
       /* Predicates */
       SCMPredicate.IS_NULL,
@@ -381,7 +383,5 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("pi"),      Math.PI);
     put(SCMSymbol.of("eof"),     SCMConstant.EOF);
     put(SCMSymbol.of("call/cc"), get(SCMSymbol.of("call-with-current-continuation")));
-    put(SCMSymbol.of("type"),    get(SCMSymbol.of("class-of")));
-    put(SCMSymbol.of("class"),   get(SCMSymbol.of("class-of")));
   }
 }

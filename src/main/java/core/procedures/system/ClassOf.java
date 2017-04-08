@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 
-public final class ClassOf extends AFn {
+public class ClassOf extends AFn {
 
   public ClassOf() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1));
