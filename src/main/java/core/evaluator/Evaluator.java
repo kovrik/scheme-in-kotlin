@@ -97,8 +97,8 @@ public class Evaluator {
       return evlis((List<Object>)sexp, env);
     } else if (sexp instanceof Map) {
       return evalMap((Map)sexp, env);
-//    } else if (sexp instanceof SCMVector) {
-//      return evalVector((SCMVector)sexp, env);
+    } else if (sexp instanceof SCMVector) {
+      return evalVector((SCMVector)sexp, env);
     } else {
       return sexp;
     }

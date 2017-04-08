@@ -28,7 +28,7 @@ public class EqTest extends AbstractTest {
         "(eq? (vector) #())", "(eq? 'a 3)", "(eq? #t 't)", "(eq? \"abs\" 'abc)", "(eq? \"hi\" '(hi))",
         "(eq? \"()\" '())", "(eq? '(1) '(1))", "(eq? '(#f) '(#f))", "(eq? #\\a #\\b)", "(eq? #f #t)",
         "(eq? 'a 'b)", "(eq? (cons 'a 'b) (cons 'a 'b))", "(eq? \"abc\" \"cba\")",
-        "(eq? (string #\\h #\\i) (string #\\h #\\i))", "(eq? #(a) #(b))", "(eq? (vector 'a) (vector 'a))",
+        "(eq? (string #\\h #\\i) (string #\\h #\\i))", "(eq? '#(a) '#(b))", "(eq? (vector 'a) (vector 'a))",
         "(eq? car cdr)", };
     assertAllEqual(FALSE, falses, env);
 

@@ -570,7 +570,7 @@ public class SpecialFormTest extends AbstractTest {
                  eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env));
 
     assertEquals(list(1L, list(SCMSymbol.of("quasiquote"), list(SCMSymbol.of("unquote"), list(SCMSymbol.of("+"), 1L, new SCMMutableVector(SCMSymbol.of("+"), 2L, 3L)))), 4L),
-                 eval("`(1 `,(+ 1 ,#(+ 2 3)) 4)", env));
+                 eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env));
 
     assertEquals(list(SCMSymbol.of("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
     assertEquals(list(SCMSymbol.of("list"), SCMSymbol.of("a"), list(SCMSymbol.of("quote"), SCMSymbol.of("a"))),

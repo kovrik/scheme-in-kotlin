@@ -16,7 +16,7 @@ public class IsSymbolTest extends AbstractTest {
     String[] trues = {"(symbol? 't)  ", "(symbol? 'foo)", "(symbol? (car '(a b)))", "(symbol? 'nil)", "(symbol? 'car)",
         "(symbol? ':)", "(symbol? '|)", "(symbol? '|')", "(symbol? '@)",
         "(symbol? 'sym0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789)",
-        "(symbol? (vector-ref #(1 a 34) 1))", "(symbol? (string->symbol \"if\"))", "(symbol? 'quote)",
+        "(symbol? (vector-ref '#(1 a 34) 1))", "(symbol? (string->symbol \"if\"))", "(symbol? 'quote)",
         "(symbol? 'begin)", "(symbol? 'if)", "(if (symbol? '1+) (symbol? '0e) #t)", "(if (symbol? '1+) (symbol? '0000eeesve) #t)",};
     assertAllEqual(TRUE, trues, env);
 
