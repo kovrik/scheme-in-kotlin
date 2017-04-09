@@ -13,7 +13,9 @@ import core.scm.SCMVector;
 import core.scm.specialforms.Quote;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public final class MapProc extends AFn {
 
@@ -38,8 +40,8 @@ public final class MapProc extends AFn {
     final int size = count.apply1(args[1]);
     for (int i = 1; i < args.length; i++) {
       /* Check type */
-      if (!(args[i] instanceof SCMVector) && !(args[i] instanceof List)) {
-        throw new WrongTypeException(getName(), "List or Vector", args[i]);
+      if (!(args[i] instanceof SCMVector) && !(args[i] instanceof Collection)) {
+        throw new WrongTypeException(getName(), "List or Vector or Set", args[i]);
       }
       /* Check size */
       if (count.apply1(args[i]) != size) {
@@ -51,7 +53,11 @@ public final class MapProc extends AFn {
     for (int i = 0; i < size; i++) {
       lists.add(i, SCMCons.list(args[0]));
       for (int n = 1; n < args.length; n++) {
-        Object e = get.apply(args[n], i);
+        Object list = args[n];
+        if (list instanceof Set) {
+          list = new ArrayList<>((Set)list);
+        }
+        Object e = get.apply(list, i);
         lists.get(i).add(SCMCons.list(Quote.QUOTE, e));
       }
     }

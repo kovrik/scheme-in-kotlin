@@ -11,7 +11,9 @@ import core.scm.SCMVector;
 import core.scm.specialforms.Quote;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public final class Apply extends AFn {
 
@@ -34,8 +36,8 @@ public final class Apply extends AFn {
     }
 
     Object last = args[args.length - 1];
-    if (!(last instanceof SCMVector) && !(last instanceof List)) {
-      throw new WrongTypeException(getName(), "List or Vector", last);
+    if (!(last instanceof SCMVector) && !(last instanceof Collection)) {
+      throw new WrongTypeException(getName(), "List or Vector or Set", last);
     }
     if (last instanceof List) {
       for (Object o : (List) last) {
@@ -43,6 +45,10 @@ public final class Apply extends AFn {
       }
     } else if (last instanceof SCMVector) {
       for (Object o : ((SCMVector) last).getArray()) {
+        sexp.add(SCMCons.list(Quote.QUOTE, o));
+      }
+    } else if (last instanceof Set) {
+      for (Object o : ((Set) last)) {
         sexp.add(SCMCons.list(Quote.QUOTE, o));
       }
     }
