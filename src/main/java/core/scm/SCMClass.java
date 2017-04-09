@@ -125,6 +125,7 @@ public enum SCMClass implements ISCMClass {
   public abstract class Exact {}
   public abstract class Inexact {}
   public abstract class Real {}
+  public abstract class Nil {}
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
@@ -214,6 +215,11 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static boolean checkType(Object o, Class<?> expected) {
+    if (o == null) {
+      return true;
+      // TODO?
+//      return Nil.class.equals(expected);
+    }
     Class<?> actual = o.getClass();
     if (expected == actual || expected.isAssignableFrom(actual)) {
       return true;
