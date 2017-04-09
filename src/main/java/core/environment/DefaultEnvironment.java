@@ -151,6 +151,12 @@ public final class DefaultEnvironment extends Environment {
       StringComparison.STRING_LE_OR_EQ_CI,
       StringComparison.STRING_EQ,
       StringComparison.STRING_EQ_CI,
+      new EndsWith(),
+      new Includes(),
+      new Lowercase(),
+      new StartsWith(),
+      new Trim(),
+      new Uppercase(),
 
       /* Characters */
       new IntegerToChar(),

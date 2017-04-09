@@ -8,14 +8,14 @@ import core.procedures.math.Remainder;
 import core.scm.*;
 import core.utils.NumberUtils;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public final class SCMPredicate extends AFn {
 
   public static final SCMPredicate IS_NULL = new SCMPredicate("null?", SCMCons::isNull);
-  public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || ((o instanceof List) && (((List)o).isEmpty()))));
+  public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
   public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
@@ -89,4 +89,16 @@ public final class SCMPredicate extends AFn {
     throw new WrongTypeException(name, c.getSimpleName(), o);
   }
 
+  private static boolean isEmpty(Object o) {
+    if (o instanceof Collection) {
+      return ((Collection)o).isEmpty();
+    } else if (o instanceof SCMVector) {
+      return ((SCMVector)o).length() == 0;
+    } else if (o instanceof CharSequence) {
+      return ((CharSequence)o).length() == 0;
+    } else if (o instanceof Map) {
+      return ((Map)o).size() == 0;
+    }
+    return false;
+  }
 }
