@@ -8,7 +8,7 @@ package core.scm;
  * This SCMMutableString class holds a mutable StringBuilder instance
  * and delegates it all string operations.
  */
-public class SCMMutableString implements ISCMClass {
+public class SCMMutableString implements ISCMClass, CharSequence {
 
   private final StringBuilder string;
 
@@ -31,6 +31,16 @@ public class SCMMutableString implements ISCMClass {
 
   public int length() {
     return this.string.length();
+  }
+
+  @Override
+  public char charAt(int index) {
+    return string.charAt(index);
+  }
+
+  @Override
+  public CharSequence subSequence(int start, int end) {
+    return string.subSequence(start, end);
   }
 
   public void setCharAt(int index, char ch) {

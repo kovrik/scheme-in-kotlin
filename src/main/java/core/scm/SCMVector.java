@@ -1,9 +1,10 @@
 package core.scm;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /* Abstract superclass of both Immutable and Mutable Vectors */
-public abstract class SCMVector implements ISCMClass {
+public abstract class SCMVector implements ISCMClass, Iterable {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -72,6 +73,11 @@ public abstract class SCMVector implements ISCMClass {
       sb.append(' ');
     }
     return sb.toString();
+  }
+
+  @Override
+  public Iterator<Object> iterator() {
+    return Arrays.asList(array).iterator();
   }
 
   @Override
