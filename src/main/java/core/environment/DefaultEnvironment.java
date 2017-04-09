@@ -153,6 +153,8 @@ public final class DefaultEnvironment extends Environment {
       StringComparison.STRING_EQ_CI,
       new EndsWith(),
       new Includes(),
+      new IndexOf(),
+      new LastIndexOf(),
       new Lowercase(),
       new StartsWith(),
       new Trim(),
