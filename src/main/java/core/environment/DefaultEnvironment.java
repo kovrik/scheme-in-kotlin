@@ -324,6 +324,7 @@ public final class DefaultEnvironment extends Environment {
     Cond.COND,
     Else.ELSE,
     New.NEW,
+    Comment.COMMENT,
     // TODO Macros
     DefineSyntax.DEFINE_SYNTAX,
     LetSyntax.LET_SYNTAX,
