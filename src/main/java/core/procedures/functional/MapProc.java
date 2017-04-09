@@ -6,7 +6,10 @@ import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.generic.Count;
 import core.procedures.generic.Get;
-import core.scm.*;
+import core.scm.SCMCons;
+import core.scm.SCMSymbol;
+import core.scm.SCMThunk;
+import core.scm.SCMVector;
 import core.scm.specialforms.Quote;
 
 import java.util.ArrayList;
@@ -48,14 +51,17 @@ public final class MapProc extends AFn {
 
     List<List> lists = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      lists.add(i, SCMCons.list(args[0]));
+      /* Add procedure as first element */
+      lists.add(SCMCons.list(args[0]));
+      /* Now add each Nth element of all lists */
       for (int n = 1; n < args.length; n++) {
-        Object list = args[n];
-        if (list instanceof Set) {
-          list = new ArrayList<>((Set)list);
-        }
+        Object list = (args[n] instanceof Set) ? new ArrayList<>((Set)args[n]) : args[n];
         Object e = get.apply(list, i);
-        lists.get(i).add(SCMCons.list(Quote.QUOTE, e));
+        if ((e instanceof List) || (e instanceof SCMSymbol)) {
+          lists.get(i).add(Quote.quote(e));
+        } else {
+          lists.get(i).add(e);
+        }
       }
     }
     SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));

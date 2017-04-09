@@ -6,6 +6,7 @@ import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.cons.Append;
 import core.scm.SCMCons;
+import core.scm.SCMSymbol;
 import core.scm.SCMThunk;
 import core.scm.SCMVector;
 import core.scm.specialforms.Quote;
@@ -41,15 +42,27 @@ public final class Apply extends AFn {
     }
     if (last instanceof List) {
       for (Object o : (List) last) {
-        sexp.add(SCMCons.list(Quote.QUOTE, o));
+        if ((o instanceof List) || (o instanceof SCMSymbol)) {
+          sexp.add(Quote.quote(o));
+        } else {
+          sexp.add(o);
+        }
       }
     } else if (last instanceof SCMVector) {
       for (Object o : ((SCMVector) last).getArray()) {
-        sexp.add(SCMCons.list(Quote.QUOTE, o));
+        if ((o instanceof List) || (o instanceof SCMSymbol)) {
+          sexp.add(Quote.quote(o));
+        } else {
+          sexp.add(o);
+        }
       }
     } else if (last instanceof Set) {
       for (Object o : ((Set) last)) {
-        sexp.add(SCMCons.list(Quote.QUOTE, o));
+        if ((o instanceof List) || (o instanceof SCMSymbol)) {
+          sexp.add(Quote.quote(o));
+        } else {
+          sexp.add(o);
+        }
       }
     }
     return new SCMThunk(sexp, null);

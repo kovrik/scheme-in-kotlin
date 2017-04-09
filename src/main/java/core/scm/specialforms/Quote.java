@@ -2,6 +2,7 @@ package core.scm.specialforms;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
+import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 
 import java.util.List;
@@ -25,5 +26,9 @@ public enum Quote implements ISpecialForm {
   @Override
   public String toString() {
     return "quote";
+  }
+
+  public static List quote(Object obj) {
+    return SCMCons.list(QUOTE, obj);
   }
 }
