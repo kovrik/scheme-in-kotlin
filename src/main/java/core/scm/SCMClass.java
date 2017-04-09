@@ -53,6 +53,7 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMBigComplex.class,         COMPLEX);
     SCM_CLASSES.put(Character.class,             CHARACTER);
     SCM_CLASSES.put(String.class,                STRING);
+    SCM_CLASSES.put(CharSequence.class,          STRING);
     SCM_CLASSES.put(SCMImmutableString.class,    IMMUTABLE_STRING);
     SCM_CLASSES.put(StringBuilder.class,         MUTABLE_STRING);
     SCM_CLASSES.put(SCMMutableString.class,      MUTABLE_STRING);
@@ -127,6 +128,7 @@ public enum SCMClass implements ISCMClass {
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
+    TYPE_PREDICATES.put(CharSequence.class, o -> SCMImmutableString.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(String.class, o -> SCMImmutableString.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(SCMImmutableString.class, o -> String.class.equals(o.getClass()) || SCMImmutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(SCMMutableString.class, o -> StringBuilder.class.equals(o.getClass()) || SCMMutableString.class.equals(o.getClass()));

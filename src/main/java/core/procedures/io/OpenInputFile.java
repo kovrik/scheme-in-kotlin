@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 public final class OpenInputFile extends AFn {
 
   public OpenInputFile() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
   }
 
   @Override

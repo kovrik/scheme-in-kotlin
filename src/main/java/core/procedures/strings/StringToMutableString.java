@@ -7,7 +7,7 @@ import core.scm.SCMMutableString;
 public final class StringToMutableString extends AFn {
 
   public StringToMutableString() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
   }
 
   @Override

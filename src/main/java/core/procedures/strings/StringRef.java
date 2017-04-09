@@ -8,7 +8,7 @@ public final class StringRef extends AFn {
 
   public StringRef() {
     super(new FnArgsBuilder().minArgs(2).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{String.class, SCMClass.ExactNonNegativeInteger.class}));
+                             .mandatoryArgsTypes(new Class[]{CharSequence.class, SCMClass.ExactNonNegativeInteger.class}));
   }
 
   @Override

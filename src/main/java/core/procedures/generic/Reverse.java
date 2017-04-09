@@ -34,11 +34,8 @@ public final class Reverse extends AFn {
       Collections.reverse(Arrays.asList(reversed.getArray()));
       return reversed;
     }
-    if (arg instanceof String) {
-      return new StringBuilder((String) arg).reverse().toString();
-    }
-    if (arg instanceof SCMMutableString) {
-      return ((SCMMutableString) arg).reverse();
+    if (arg instanceof CharSequence) {
+      return new StringBuilder((CharSequence) arg).reverse().toString();
     }
     throw new WrongTypeException(getName(), "List or Vector or Set or String", arg);
   }

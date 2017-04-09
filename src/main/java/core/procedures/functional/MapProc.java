@@ -6,10 +6,7 @@ import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.generic.Count;
 import core.procedures.generic.Get;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
-import core.scm.SCMThunk;
-import core.scm.SCMVector;
+import core.scm.*;
 import core.scm.specialforms.Quote;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public final class MapProc extends AFn {
     final int size = count.apply1(args[1]);
     for (int i = 1; i < args.length; i++) {
       /* Check type */
-      if (!(args[i] instanceof SCMVector) && !(args[i] instanceof Collection)) {
+      if (!(args[i] instanceof SCMVector) && !(args[i] instanceof Collection) && !(args[i] instanceof CharSequence)) {
         throw new WrongTypeException(getName(), "List or Vector or Set", args[i]);
       }
       /* Check size */

@@ -3,7 +3,6 @@ package core.procedures.sets;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 
 import java.util.Arrays;
@@ -35,18 +34,9 @@ public final class SetProc extends AFn {
     if (arg instanceof Collection) {
       return new HashSet<>((Collection)arg);
     }
-    if (arg instanceof String) {
-      Set<Object> set = new HashSet<>(((String)arg).length());
-      for (char c : ((String) arg).toCharArray()) {
-        set.add(c);
-      }
-      return set;
-    }
-    if (arg instanceof SCMMutableString) {
-      Set<Object> set = new HashSet<>(((SCMMutableString)arg).length());
-      for (char c : ((SCMMutableString) arg).toString().toCharArray()) {
-        set.add(c);
-      }
+    if (arg instanceof CharSequence) {
+      Set<Object> set = new HashSet<>(((CharSequence)arg).length());
+      ((CharSequence)arg).chars().forEach(c -> set.add((char)c));
       return set;
     }
     if (arg instanceof SCMVector) {

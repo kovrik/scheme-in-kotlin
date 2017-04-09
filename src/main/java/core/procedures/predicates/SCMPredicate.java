@@ -21,7 +21,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
   public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (o instanceof SCMPromise));
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
-  public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof SCMMutableString || o instanceof String));
+  public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof CharSequence));
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));

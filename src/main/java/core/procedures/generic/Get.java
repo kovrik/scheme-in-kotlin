@@ -2,7 +2,6 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 import core.utils.NumberUtils;
 
@@ -50,13 +49,9 @@ public final class Get extends AFn {
       if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((SCMVector) col).length())) {
         return ((SCMVector)col).get(((Number)key).intValue());
       }
-    } else if (col instanceof String) {
-      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((String) col).length())) {
-        return ((String) col).charAt(((Number) key).intValue());
-      }
-    } else if (col instanceof SCMMutableString) {
-      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((SCMMutableString) col).length())) {
-        return ((SCMMutableString) col).toString().charAt(((Number) key).intValue());
+    } else if (col instanceof CharSequence) {
+      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((CharSequence) col).length())) {
+        return ((CharSequence) col).charAt(((Number) key).intValue());
       }
     }
     return defaultValue;

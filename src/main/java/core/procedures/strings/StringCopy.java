@@ -7,7 +7,7 @@ import core.scm.SCMMutableString;
 public final class StringCopy extends AFn {
 
   public StringCopy() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{String.class}));
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
   }
 
   @Override

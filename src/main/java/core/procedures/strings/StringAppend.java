@@ -8,7 +8,7 @@ import java.util.Arrays;
 public final class StringAppend extends AFn {
 
   public StringAppend() {
-    super(new FnArgsBuilder().restArgsType(String.class));
+    super(new FnArgsBuilder().restArgsType(CharSequence.class));
   }
 
   @Override

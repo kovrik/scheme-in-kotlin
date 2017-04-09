@@ -3,7 +3,6 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 import core.utils.NumberUtils;
 
@@ -31,7 +30,7 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
-    if (!(col instanceof SCMVector) && !(col instanceof List) && !(col instanceof String) && !(col instanceof SCMMutableString)) {
+    if (!(col instanceof SCMVector) && !(col instanceof List) && !(col instanceof CharSequence)) {
       throw new WrongTypeException(getName(), "List or Vector or String", col);
     }
 
@@ -42,7 +41,7 @@ public final class Nth extends AFn {
     int i = ((Number)args[1]).intValue();
 
     int size = count.apply1(col);
-    if (size < i && args.length < 3) {
+    if (size <= i && args.length < 3) {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), i));
     }
     return get.apply(args);

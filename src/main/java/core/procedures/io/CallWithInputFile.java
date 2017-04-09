@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 public final class CallWithInputFile extends AFn {
 
   public CallWithInputFile() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{String.class, IFn.class}));
+    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{CharSequence.class, IFn.class}));
   }
 
   @Override

@@ -3,7 +3,6 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
 import core.scm.SCMVector;
 
 import java.util.Collection;
@@ -33,12 +32,8 @@ public class Count extends AFn {
       return ((Collection)arg).size();
     } else if (arg instanceof SCMVector) {
       return ((SCMVector)arg).length();
-    } else if (arg instanceof String) {
-      return ((String) arg).length();
-    } else if (arg instanceof SCMMutableString)  {
-      return ((SCMMutableString) arg).length();
-    } else if (arg instanceof StringBuilder)  {
-      return ((StringBuilder) arg).length();
+    } else if (arg instanceof CharSequence) {
+      return ((CharSequence) arg).length();
     }
     throw new WrongTypeException(getName(), "List or Map or Vector or Set or String", arg);
   }
