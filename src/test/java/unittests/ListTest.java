@@ -39,13 +39,17 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalEmpty() {
-    assertEquals(TRUE,  eval("(null?  '())", env));
+    assertEquals(TRUE,  eval("(nil?   null)", env));
+    assertEquals(TRUE,  eval("(nil?   nil)", env));
+    assertEquals(TRUE,  eval("(null?  nil)", env));
+    assertEquals(TRUE,  eval("(null?  null)", env));
+    assertEquals(FALSE, eval("(null?  '())", env));
     assertEquals(TRUE,  eval("(empty? '())", env));
     assertEquals(FALSE, eval("(null?  '(1 2 3))", env));
     assertEquals(FALSE, eval("(empty? '(1 2 3))", env));
     assertEquals(FALSE, eval("(null?  1)", env));
     assertEquals(FALSE, eval("(empty? 1)", env));
-    assertEquals(TRUE,  eval("(null? (cdr '(1)))", env));
+    assertEquals(TRUE,  eval("(empty? (cdr '(1)))", env));
   }
 
   @Test
@@ -117,8 +121,8 @@ public class ListTest extends AbstractTest {
     assertEquals("test", eval("(cdr (cons 2 \"test\"))", env));
     assertEquals(cons(2L, 3L), eval("(cdr (cons 1 (cons 2 3)))", env));
     assertEquals(list(2L, 3L), eval("(cdr '(1 2 3))", env));
-    assertEquals(SCMCons.NIL, eval("(cdr '(1))", env));
-    assertEquals(SCMCons.NIL, eval("(cdr (list 1))", env));
+    assertEquals(SCMCons.EMPTY, eval("(cdr '(1))", env));
+    assertEquals(SCMCons.EMPTY, eval("(cdr (list 1))", env));
     try {
       eval("(cdr '())", env);
       fail();
@@ -186,7 +190,7 @@ public class ListTest extends AbstractTest {
     assertEquals(cons(1L, 2L), eval("(append '() (cons 1 2))", env));
     assertEquals(cons(1L, cons(1L, 2L)), eval("(append '(1) (cons 1 2))", env));
     assertEquals(cons(1L, cons(1L, cons(1L, 2L))), eval("(append '(1 1) (cons 1 2))", env));
-    assertEquals(NIL, eval("(append '() '() '() '())", env));
+    assertEquals(EMPTY, eval("(append '() '() '() '())", env));
     try {
       eval("(append 1 '())", env);
       fail();
@@ -203,7 +207,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testReverse() {
-    assertEquals(NIL, eval("(reverse '())", env));
+    assertEquals(EMPTY, eval("(reverse '())", env));
     assertEquals(list(1L), eval("(reverse '(1))", env));
     assertEquals(list(1L, 2L, 3L), eval("(reverse '(3 2 1))", env));
     assertEquals(list(1L, 2L, 3L), eval("(reverse (reverse '(1 2 3)))", env));

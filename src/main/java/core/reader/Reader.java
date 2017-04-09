@@ -334,7 +334,7 @@ public class Reader implements IReader {
    * <list> -> (<list_contents>)
    */
   private SCMCons<Object> readList(boolean allowImproperList, char terminator) throws IOException {
-    SCMCons<Object> list = SCMCons.NIL;
+    SCMCons<Object> list = SCMCons.EMPTY;
     /* Remember position of a dot (if we meet it) */
     int dotPos = -1;
     int i;
@@ -358,8 +358,8 @@ public class Reader implements IReader {
         dotPos = list.size();
       } else if (token != null) {
         /* List is empty so far */
-        if (list.getSCMClass() == SCMClass.NIL) {
-          /* Initialize list with the first element (can't modify NIL) */
+        if (list.isEmpty()) {
+          /* Initialize list with the first element (can't modify EMPTY) */
           list = SCMCons.list(token);
         } else {
           /* Add list element */

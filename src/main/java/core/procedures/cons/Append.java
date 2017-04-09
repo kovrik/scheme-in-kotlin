@@ -21,7 +21,7 @@ public final class Append extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return Arrays.stream(args).reduce(SCMCons.NIL, Append::append);
+    return Arrays.stream(args).reduce(SCMCons.EMPTY, Append::append);
   }
 
   public static Object append(Object first, Object second) {

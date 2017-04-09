@@ -14,7 +14,7 @@ public class EqvTest extends AbstractTest {
         "(eqv? 'quote 'quote) #t)", "(eqv? '2 '2)", "(eqv? '2 2)", "(eqv? '#\\a #\\a)",
         "(eqv? '#f #f)", "(eqv? '#f '#f)", "(eqv? #\\a #\\a)", "(eqv? #\\space #\\space)",
         "(eqv? #\\  #\\space)", "(eqv? #\\space #\\space)", "(eqv? #\\newline '#\\newline)",
-        "(let ((x (string-ref \"hi\" 0))) (eqv? x x))", "(eqv? #t #t)", "(eqv? #f #f)", "(eqv? (null? '()) #t)",
+        "(let ((x (string-ref \"hi\" 0))) (eqv? x x))", "(eqv? #t #t)", "(eqv? #f #f)", "(eqv? (null? null) #t)",
         "(eqv? (null? '(a)) #f)", "(eqv? (cdr '(a)) '())", "(eqv? 'a 'a)", "(let ((x '(a . b))) (eqv? x x))",
         "(let ((x (cons 'a 'b))) (eqv? x x))", "(let ((x \"hi\")) (eqv? x x))",
     };

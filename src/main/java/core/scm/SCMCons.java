@@ -9,10 +9,10 @@ import static core.writer.Writer.write;
 // TODO Separate class for Proper and Improper Lists
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
-  /* Nil constant: empty list */
-  public static final SCMCons NIL = new SCMCons() {
+  /* Empty list constants */
+  public static final SCMCons EMPTY = new SCMCons() {
     @Override public boolean isList() { return true; }
-    @Override public SCMClass getSCMClass() { return SCMClass.NIL; }
+    @Override public SCMClass getSCMClass() { return SCMClass.LIST; }
   };
 
   private boolean isList;
@@ -46,7 +46,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   @Override
   public E car() {
     if (isEmpty()) {
-      throw new WrongTypeException("car", SCMClass.PAIR.getName(), NIL);
+      throw new WrongTypeException("car", SCMClass.PAIR.getName(), EMPTY);
     }
     return getFirst();
   }
@@ -83,9 +83,9 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
   public static <E> SCMCons<E> cons(E car, E cdr) {
     if (car == null && cdr == null) {
-      return NIL;
+      return EMPTY;
     }
-    return (cdr == null) ? new SCMCons(car, NIL) : new SCMCons<>(car, cdr);
+    return (cdr == null) ? new SCMCons(car, EMPTY) : new SCMCons<>(car, cdr);
   }
 
   public static <E> SCMCons<E> list() {
@@ -93,12 +93,12 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   public static <E> SCMCons<E> list(E... elements) {
-    return (elements == null || elements.length == 0) ? NIL : list(Arrays.asList(elements));
+    return (elements == null || elements.length == 0) ? EMPTY : list(Arrays.asList(elements));
   }
 
   public static <E> SCMCons<E> list(Collection<E> collection) {
     if (collection == null || collection.isEmpty()) {
-      return NIL;
+      return EMPTY;
     }
     SCMCons<E> result = list();
     result.addAll(collection);
@@ -174,7 +174,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (this == o) return true;
     if (o == null) return false;
     if (!(o instanceof List)) return false;
-    /* Two empty lists (NILs) are equal */
+    /* Two empty lists (EMPTYs) are equal */
     if ((o instanceof SCMCons) && (((SCMCons) o).isEmpty()) && (this.isEmpty())) return true;
     if ((o instanceof SCMCons) && (isList != ((SCMCons) o).isList)) return false;
     if (this.size() != ((List)o).size()) return false;

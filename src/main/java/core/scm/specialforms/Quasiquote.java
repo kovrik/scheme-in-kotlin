@@ -95,7 +95,7 @@ public enum Quasiquote implements ISpecialForm {
       Object o = list.get(n);
 
       /* Append quoted forms recursively */
-      if (!(o instanceof List) || (SCMCons.NIL.equals(o))) {
+      if (!(o instanceof List) || (SCMCons.EMPTY.equals(o))) {
         /* Check special cases: `(1 unquote 2) => `(1 . 2) */
         if (n > 0 && UNQUOTE_SYMBOL.equals(o)) {
           /* if UNQUOTE is just before the last element a */

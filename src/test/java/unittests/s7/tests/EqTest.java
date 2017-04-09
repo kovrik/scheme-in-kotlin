@@ -12,7 +12,7 @@ public class EqTest extends AbstractTest {
   @Test
   public void testEq() {
     String[] trues = {
-        "(eq? \"hi\" \"hi\")", "(eq? #t #t)", "(eq? #f #f)", "(eq? (null? '()) #t)", "(eq? (null? '(a)) #f)",
+        "(eq? \"hi\" \"hi\")", "(eq? #t #t)", "(eq? #f #f)", "(eq? (null? null) #t)", "(eq? (null? '(a)) #f)",
         "(eq? (cdr '(a)) '())", "(eq? 'a 'a)", "(eq? 'a (string->symbol \"a\"))", "(let ((x '(a . b))) (eq? x x))",
         "(let ((x (cons 'a 'b))) (eq? x x))", "(let ((x \"hi\")) (eq? x x))", "(let ((x (vector 'a))) (eq? x x))",
         "(eq? car car)", "(let ((x (lambda () 1))) (eq? x x))", "(let ((x (lambda () 1))) (let ((y x)) (eq? x y)))",

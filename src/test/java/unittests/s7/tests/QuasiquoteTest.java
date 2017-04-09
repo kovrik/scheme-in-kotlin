@@ -4,7 +4,7 @@ import core.procedures.cons.ConsProc;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMCons.NIL;
+import static core.scm.SCMCons.EMPTY;
 import static core.scm.SCMCons.list;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
@@ -16,7 +16,7 @@ public class QuasiquoteTest extends AbstractTest {
   @Test
   public void testQuasiquote() {
     assertEquals(list(1L, 2L, 3L), eval("`(1 2 3)", env));
-    assertEquals(NIL, eval("`()", env));
+    assertEquals(EMPTY, eval("`()", env));
     assertEquals(list(s("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
     assertEquals(list(1L, 1L, 2L, 4L), eval("`(1 ,@(list 1 2) 4)", env));
     assertEquals(list(s("a"), 3L, 4L, 5L, 6L, s("b")), eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env));
@@ -39,7 +39,7 @@ public class QuasiquoteTest extends AbstractTest {
     assertEquals(list(0L, 1L, 2L, 3L), eval("(let ((x '(1 2 3))) `(0 . ,x))", env));
     assertEquals(list(0L, list(1L, 2L, 3L)), eval("(let ((x '(1 2 3))) `(0 ,x))", env));
     assertEquals(list(1L, 2L, 3L), eval("(quasiquote (1 2 3))", env));
-    assertEquals(NIL, eval("(quasiquote ())", env));
+    assertEquals(EMPTY, eval("(quasiquote ())", env));
     assertEquals(list(s("list"), 3L, 4L), eval("(quasiquote (list ,(+ 1 2) 4))", env));
     assertEquals(list(1L, 1L, 2L, 4L), eval("(quasiquote (1 ,@(list 1 2) 4))", env));
     assertEquals(list(s("a"), 3L, 4L, 5L, 6L, s("b")), eval("(quasiquote (a ,(+ 1 2) ,@(map abs '(4 -5 6)) b))", env));

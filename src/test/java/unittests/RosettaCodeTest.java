@@ -27,7 +27,7 @@ public class RosettaCodeTest extends AbstractTest {
     String group = "(let loop ((numbers '(3 -2 1 6 -5))" +
         "           (nonneg '())" +
         "           (neg '()))" +
-        "  (cond ((null? numbers) (list nonneg neg))" +
+        "  (cond ((empty? numbers) (list nonneg neg))" +
         "        ((>= (car numbers) 0)" +
         "         (loop (cdr numbers)" +
         "               (cons (car numbers) nonneg)" +
@@ -44,7 +44,7 @@ public class RosettaCodeTest extends AbstractTest {
   public void testFlattenList() {
 
     String flatten = "(define (flatten x)" +
-        "    (cond ((null? x) '())" +
+        "    (cond ((empty? x) '())" +
         "          ((not (pair? x)) (list x))" +
         "          (else (append (flatten (car x))" +
         "                        (flatten (cdr x))))))";
@@ -60,7 +60,7 @@ public class RosettaCodeTest extends AbstractTest {
         "  (let loop ((low '())" +
         "             (high '())" +
         "             (l l))" +
-        "    (cond ((null? l)" +
+        "    (cond ((empty? l)" +
         "           (k low high))" +
         "          ((p (car l))" +
         "           (loop low (cons (car l) high) (cdr l)))" +
@@ -68,7 +68,7 @@ public class RosettaCodeTest extends AbstractTest {
         "           (loop (cons (car l) low) high (cdr l))))))";
 
     String quick = "(define (quicksort l gt?)" +
-        "  (if (null? l)" +
+        "  (if (empty? l)" +
         "      '()" +
         "      (split-by (cdr l) " +
         "                (lambda (x) (gt? x (car l)))" +
@@ -89,13 +89,13 @@ public class RosettaCodeTest extends AbstractTest {
     String gnome = "(define (gnome-sort-compar in-order input-list)" +
         "  (let gnome ((p (list (car input-list)))" +
         "              (n (cdr input-list)))" +
-        "    (if (null? n)" +
+        "    (if (empty? n)" +
         "        p" +
         "        (let ((prev-pot (car p))" +
         "              (next-pot (car n)))" +
         "          (if (in-order next-pot prev-pot)" +
         "              (gnome (cons next-pot p) (cdr n))" +
-        "              (if (null? (cdr p))" +
+        "              (if (empty? (cdr p))" +
         "                  (gnome (list next-pot) (cons prev-pot (cdr n)))" +
         "                  (gnome (cdr p) (cons next-pot (cons prev-pot (cdr n))))))))))";
     eval(gnome, env);
@@ -147,7 +147,7 @@ public class RosettaCodeTest extends AbstractTest {
   public void testEvalHornersRule() {
     String horner = "(define (horner lst x)" +
         "  (define (*horner lst x acc)" +
-        "    (if (null? lst)" +
+        "    (if (empty? lst)" +
         "        acc" +
         "        (*horner (cdr lst) x (+ (* acc x) (car lst)))))" +
         "  (*horner (reverse lst) x 0))";

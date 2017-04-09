@@ -39,7 +39,7 @@ public class SCMProcedure extends AFn {
 
   public SCMProcedure(String name, List<SCMSymbol> args, Object body, Environment localEnvironment, boolean isVariadic) {
     this.name = name;
-    this.args = (args == null) ? SCMCons.NIL : args;
+    this.args = (args == null) ? SCMCons.EMPTY : args;
     this.body = body;
     this.localEnvironment = localEnvironment;
     if (isVariadic) {

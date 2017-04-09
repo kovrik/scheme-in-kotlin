@@ -23,7 +23,7 @@ public class ContinuationsTest extends AbstractTest {
                      "  (call/cc (lambda (exit)" +
                      "    (let loop ((lst lst))" +
                      "       (cond ((pair? lst) (cons (add1 (car lst)) (loop (cdr lst))))" +
-                     "             ((null? lst) '())" +
+                     "             ((empty? lst) '())" +
                      "             (else (exit #f)))))))";
     eval(listadd, env);
     assertEquals(SCMCons.list(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env));

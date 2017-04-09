@@ -22,7 +22,7 @@ public final class ConsProc extends AFn {
 
   public static SCMCons cons(Object car, Object cdr) {
     if (car == null && cdr == null) {
-      return SCMCons.NIL;
+      return SCMCons.EMPTY;
     }
     return SCMCons.cons(car, cdr);
   }

@@ -3,7 +3,7 @@ package core.procedures.equivalence;
 import core.procedures.AFn;
 import core.scm.SCMSymbol;
 
-import static core.scm.SCMCons.NIL;
+import static core.scm.SCMCons.EMPTY;
 
 public final class Eq extends AFn {
 
@@ -37,6 +37,6 @@ public final class Eq extends AFn {
     if ((first instanceof SCMSymbol) && (second instanceof SCMSymbol)) {
       return first.equals(second);
     }
-    return NIL.equals(first) && (NIL.equals(second)) || first == second;
+    return EMPTY.equals(first) && (EMPTY.equals(second)) || first == second;
   }
 }

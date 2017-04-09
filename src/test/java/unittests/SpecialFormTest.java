@@ -119,7 +119,7 @@ public class SpecialFormTest extends AbstractTest {
 
     // rest arguments
     assertEquals(list(1L, 2L, 3L), eval("((lambda x x) 1 2 3)", env));
-    assertEquals(NIL, eval("((lambda x x))", env));
+    assertEquals(EMPTY, eval("((lambda x x))", env));
     assertEquals(1L, eval("((lambda x (car x)) 1 2 3)", env));
     assertEquals(1L, eval("((lambda (f s . rs) f) 1 2 3 4)", env));
     assertEquals(2L, eval("((lambda (f s . rs) s) 1 2 3 4)", env));
@@ -308,7 +308,7 @@ public class SpecialFormTest extends AbstractTest {
     String doTest2 = "(let ((x '(1 3 5 7 9)))" +
         "  (do ((x x (cdr x))" +
         "       (sum 0 (+ sum (car x))))" +
-        "      ((null? x) sum)))";
+        "      ((empty? x) sum)))";
     assertEquals(25L, eval(doTest2, env));
 
     String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
@@ -518,7 +518,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMClass.CLASS, eval("(class-of (class-of 'test))", env));
     assertEquals(SCMClass.MUTABLE_VECTOR, eval("(class-of #(1 2 3))", env));
     assertEquals(SCMClass.LIST, eval("(class-of '(1 2 3))", env));
-    assertEquals(SCMClass.NIL, eval("(class-of '())", env));
+    assertEquals(SCMClass.LIST, eval("(class-of '())", env));
     assertEquals(SCMClass.BOOLEAN, eval("(class-of #t)", env));
     assertEquals(SCMClass.BOOLEAN, eval("(class-of (= 1 2))", env));
     assertEquals(SCMClass.PROCEDURE, eval("(class-of +)", env));
@@ -597,10 +597,10 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(cons(SCMSymbol.of("unquote-splicing"), SCMSymbol.of("foo")), eval("`(unquote-splicing . foo)", env));
     assertEquals(cons(SCMSymbol.of("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
 
-    assertEquals(NIL, eval("`()", env));
+    assertEquals(EMPTY, eval("`()", env));
     assertEquals(new SCMMutableVector(), eval("`#()", env));
-    assertEquals(list(1L, 2L, list(NIL)), eval("`(1 2 ())", env));
-    assertEquals(list(1L, 2L, list(SCMSymbol.of("quote"), NIL)), eval("`(1 2 '())", env));
+    assertEquals(list(1L, 2L, list(EMPTY)), eval("`(1 2 ())", env));
+    assertEquals(list(1L, 2L, list(SCMSymbol.of("quote"), EMPTY)), eval("`(1 2 '())", env));
 
     try {
       eval("unquote", env);

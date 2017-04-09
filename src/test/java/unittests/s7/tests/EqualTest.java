@@ -13,7 +13,7 @@ public class EqualTest extends AbstractTest {
 
     String[] trues = {"(equal? #(a) #(a))", "(equal? '(1) '(1))", "(equal? '(#f) '(#f))", "(equal? '(()) '(() . ()))",
         "(equal? #\\a #\\a)", "(let ((x (string-ref \"hi\" 0))) (equal? x x))", "(equal? #t #t)",
-        "(equal? #f #f)", "(equal? (null? '()) #t)", "(equal? (null? '(a)) #f)",
+        "(equal? #f #f)", "(equal? (null? null) #t)", "(equal? (null? '(a)) #f)",
         "(equal? (cdr '(a)) '())", "(equal? 'a 'a)", "(equal? '(a) '(a))", "(let ((x '(a . b))) (equal? x x))",
         "(let ((x (cons 'a 'b))) (equal? x x))", "(equal? (cons 'a 'b) (cons 'a 'b))",
         "(equal?(cons 'a 'b)(cons 'a 'b))", "(equal? \"abc\" \"abc\")",

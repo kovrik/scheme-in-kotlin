@@ -31,7 +31,7 @@ public class MemvTest extends AbstractTest {
     assertEquals(list("hi", 2L), eval("(memv \"hi\" '(1 \"hi\" 2))", env));
     assertEquals(list('a', 2L), eval("(memv #\\a '(1 #f #\\a 2))", env));
     assertEquals(FALSE, eval("(memv #(1) '(1 #(1) 2))", env));
-    assertEquals(list(NIL, 2L), eval("(memv '() '(1 () 2))", env));
+    assertEquals(list(EMPTY, 2L), eval("(memv '() '(1 () 2))", env));
     assertEquals(list(new SCMMutableVector(1L, 2L, 3L), new SCMMutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env));
     assertEquals(FALSE, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env));
     try {

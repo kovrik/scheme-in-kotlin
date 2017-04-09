@@ -66,7 +66,11 @@ public class Repl {
         for (Object expr : sexps) {
           /* Macroexpand and then Evaluate each S-expression */
           Object result = evaluator.macroexpandAndEvaluate(expr, env);
-          if (result != null && result != UNSPECIFIED) {
+          if (result != UNSPECIFIED) {
+            if (result == null) {
+              currentOutputPort.writeln(writer.toString(result));
+              continue;
+            }
             /* Put result into environment */
             SCMSymbol id = getNextID();
             env.put(id, result);

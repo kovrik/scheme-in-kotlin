@@ -1,6 +1,7 @@
 package unittests;
 
 import core.scm.SCMCons;
+import core.scm.SCMConstant;
 import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
@@ -8,7 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static core.scm.SCMCons.NIL;
+import static core.scm.SCMCons.EMPTY;
 import static org.junit.Assert.assertEquals;
 
 public class WriterTest {
@@ -31,8 +32,8 @@ public class WriterTest {
 
   @Test
   public void testWriteNil() {
-    assertEquals("()", writer.toString(null));
-    assertEquals("()", writer.toString(NIL));
+    assertEquals(SCMConstant.NIL.toString(), writer.toString(null));
+    assertEquals("()", writer.toString(EMPTY));
     assertEquals("()", writer.toString(SCMCons.list()));
     assertEquals("()", writer.toString(new ArrayList()));
     assertEquals("()", writer.toString(Arrays.asList(1, 2, 3).subList(3, 3)));
@@ -44,6 +45,7 @@ public class WriterTest {
     assertEquals("(1 2 3 4)", writer.toString(Arrays.asList(1, 2, 3, 4)));
     assertEquals("(#\\a #\\b #\\c)", writer.toString(Arrays.asList('a', 'b', 'c')));
     assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList("test", "string")));
-    assertEquals("(() () ())", writer.toString(Arrays.asList(null, null, null)));
+    assertEquals(String.format("(%s %s %s)", SCMConstant.NIL, SCMConstant.NIL, SCMConstant.NIL),
+                 writer.toString(Arrays.asList(null, null, null)));
   }
 }
