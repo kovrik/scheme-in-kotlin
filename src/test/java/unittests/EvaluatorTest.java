@@ -65,6 +65,24 @@ public class EvaluatorTest extends AbstractTest {
   }
 
   @Test
+  public void testEvalBooleanPredicates() {
+    assertEquals(TRUE,  eval("(boolean? #f)",  env));
+    assertEquals(TRUE,  eval("(boolean? #t)",  env));
+    assertEquals(TRUE,  eval("(boolean? (= 1 1))",  env));
+    assertEquals(FALSE, eval("(boolean? #\\f)",  env));
+    assertEquals(FALSE, eval("(boolean? 1)",  env));
+    assertEquals(TRUE,  eval("(true? #t)",  env));
+    assertEquals(FALSE, eval("(true? #f)",  env));
+    assertEquals(FALSE, eval("(true? 1)",  env));
+    assertEquals(TRUE,  eval("(true? (= 1 1))",  env));
+    assertEquals(FALSE, eval("(false? #t)",  env));
+    assertEquals(TRUE,  eval("(false? #f)",  env));
+    assertEquals(FALSE, eval("(false? 1)",  env));
+    assertEquals(FALSE, eval("(false? (= 1 1))",  env));
+    assertEquals(TRUE, eval("(false? (= 1 2))",  env));
+  }
+
+  @Test
   public void testEvalNegation() {
     assertEquals(FALSE, eval("(not #t)",  env));
     assertEquals(TRUE,  eval("(not #f)",  env));

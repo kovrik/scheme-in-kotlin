@@ -25,6 +25,8 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
+  public static final SCMPredicate IS_TRUE = new SCMPredicate("true?", o -> (o instanceof Boolean) && (Boolean)o);
+  public static final SCMPredicate IS_FALSE = new SCMPredicate("false?", o -> (o instanceof Boolean) && !(Boolean)o);
   public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", o -> (o instanceof IFn));
   public static final SCMPredicate IS_PORT = new SCMPredicate("port?", o -> (o instanceof ISCMPort));
   public static final SCMPredicate IS_INPUT_PORT = new SCMPredicate("input-port?", o -> (o instanceof SCMInputPort));

@@ -284,6 +284,8 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_VECTOR,
       SCMPredicate.IS_SYMBOL,
       SCMPredicate.IS_BOOLEAN,
+      SCMPredicate.IS_TRUE,
+      SCMPredicate.IS_FALSE,
       SCMPredicate.IS_PROC,
       SCMPredicate.IS_PORT,
       SCMPredicate.IS_INPUT_PORT,
