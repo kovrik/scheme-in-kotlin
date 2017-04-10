@@ -295,6 +295,7 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_NUMBER,
       SCMPredicate.IS_COMPLEX,
       SCMPredicate.IS_RATIONAL,
+      SCMPredicate.IS_RATIO,
       SCMPredicate.IS_REAL,
       SCMPredicate.IS_EXACT,
       SCMPredicate.IS_INEXACT,
