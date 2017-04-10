@@ -1,5 +1,6 @@
 package core.scm;
 
+import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 
@@ -13,7 +14,7 @@ public class SCMKeyword extends AFn implements ISCMClass {
   private final String name;
 
   private SCMKeyword(String name) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Map.class}));
+    super(new FnArgsBuilder().mandatoryArgsTypes(new Class[]{Map.class}));
     this.name = name;
   }
 
@@ -38,11 +39,14 @@ public class SCMKeyword extends AFn implements ISCMClass {
 
   @Override
   public String getName() {
-    return toString() + " keyword";
+    return name;
   }
 
   @Override
   public Object apply(Object... args) {
+    if (args.length == 0 || args.length > 2) {
+      throw new ArityException(toString() + " keyword", 1, 2, args.length);
+    }
     Object defaultValue = (args.length == 2) ? args[1] : null;
     return ((Map)args[0]).getOrDefault(this, defaultValue);
   }

@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * will reference to the same symbol object.
  */
-public class SCMSymbol implements ISCMClass {
+public class SCMSymbol implements ISCMClass, INamed {
 
   /* Map of all interned symbols */
   private static final Map<String, SCMSymbol> INTERNED = new HashMap<>();
@@ -64,6 +64,11 @@ public class SCMSymbol implements ISCMClass {
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.SYMBOL;
+  }
+
+  @Override
+  public String getName() {
+    return value;
   }
 
   @Override

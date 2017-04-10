@@ -68,6 +68,7 @@ public final class DefaultEnvironment extends Environment {
       new RandomProc(),
       new HashCode(),
       new ToString(),
+      new Name(),
 
       /* Delayed */
       new Force(),

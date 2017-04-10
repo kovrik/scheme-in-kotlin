@@ -2,13 +2,14 @@ package core.procedures;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
+import core.scm.INamed;
 import core.scm.SCMClass;
 import core.writer.Writer;
 
 import java.util.List;
 
 /* Abstract superclass of all functions */
-public abstract class AFn implements IFn<Object[], Object> {
+public abstract class AFn implements IFn<Object[], Object>, INamed {
 
   private final int minArgs;
   private final int maxArgs;
@@ -70,6 +71,7 @@ public abstract class AFn implements IFn<Object[], Object> {
     throw new ArityException(getName(), minArgs, maxArgs, args.length);
   }
 
+  @Override
   public String getName() {
     return getClass().getSimpleName();
   }
