@@ -20,12 +20,13 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
-  public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
   public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (o instanceof SCMPromise));
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
   public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof CharSequence));
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
   public static final SCMPredicate IS_SET = new SCMPredicate("set?", o -> (o instanceof Set));
+  public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
+  public static final SCMPredicate IS_COLL = new SCMPredicate("coll?", o -> o instanceof Collection || o instanceof Map || o instanceof SCMVector);
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
   public static final SCMPredicate IS_TRUE = new SCMPredicate("true?", o -> (o instanceof Boolean) && (Boolean)o);
