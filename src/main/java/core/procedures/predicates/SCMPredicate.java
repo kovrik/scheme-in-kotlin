@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 public final class SCMPredicate extends AFn {
 
   public static final SCMPredicate IS_NULL = new SCMPredicate("null?", o -> o == null || o == SCMNil.NIL);
+  public static final SCMPredicate IS_SOME = new SCMPredicate("some?", o -> o != null && o != SCMNil.NIL);
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
