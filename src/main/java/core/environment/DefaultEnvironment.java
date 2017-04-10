@@ -37,8 +37,7 @@ import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.*;
 import core.procedures.vectors.*;
-import core.scm.SCMCons;
-import core.scm.SCMConstant;
+import core.scm.SCMNil;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.*;
 
@@ -287,7 +286,6 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_COMPLEX,
       SCMPredicate.IS_RATIONAL,
       SCMPredicate.IS_REAL,
-      SCMPredicate.IS_EOF,
       SCMPredicate.IS_EXACT,
       SCMPredicate.IS_INEXACT,
       SCMPredicate.IS_ZERO,
@@ -401,11 +399,12 @@ public final class DefaultEnvironment extends Environment {
     }
 
     /* Constants and special cases, synonyms*/
-    put(SCMSymbol.of("pi"),      Math.PI);
-    put(SCMSymbol.of("eof"),     SCMConstant.EOF);
-    put(SCMSymbol.of("nil"),     SCMConstant.NIL);
-    put(SCMSymbol.of("null"),    SCMConstant.NIL);
-    put(SCMSymbol.of("call/cc"), get(SCMSymbol.of("call-with-current-continuation")));
-    put(SCMSymbol.of("nil?"),    get(SCMSymbol.of("null?")));
+    put(SCMSymbol.of("pi"),          Math.PI);
+    put(SCMSymbol.of("eof"), SCMNil.NIL);
+    put(SCMSymbol.of("nil"), SCMNil.NIL);
+    put(SCMSymbol.of("null"), SCMNil.NIL);
+    put(SCMSymbol.of("call/cc"),     get(SCMSymbol.of("call-with-current-continuation")));
+    put(SCMSymbol.of("nil?"),        get(SCMSymbol.of("null?")));
+    put(SCMSymbol.of("eof-object?"), get(SCMSymbol.of("null?")));
   }
 }

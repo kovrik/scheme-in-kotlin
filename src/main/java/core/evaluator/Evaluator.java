@@ -86,7 +86,7 @@ public class Evaluator {
         return reflector.evalJavaStaticField(sexp.toString());
       }
       /* Evaluate nil constant to null */
-      if (o == SCMConstant.NIL) {
+      if (o == SCMNil.NIL) {
         return null;
       }
       return o;

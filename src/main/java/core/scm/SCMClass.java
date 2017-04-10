@@ -38,7 +38,6 @@ public enum SCMClass implements ISCMClass {
   PORT("Port"),
   INPUT_PORT("InputPort"),
   OUTPUT_PORT("OutputPort"),
-  EOF("EOF")
   ;
 
   private static final Map<Class, SCMClass> SCM_CLASSES = new HashMap<>();
@@ -215,7 +214,7 @@ public enum SCMClass implements ISCMClass {
 
   public static boolean checkType(Object o, Class<?> expected) {
     /* Nil is possible value of any data type */
-    if (o == null || o == SCMConstant.NIL) {
+    if (o == null || o == SCMNil.NIL) {
       return true;
     }
     Class<?> actual = o.getClass();

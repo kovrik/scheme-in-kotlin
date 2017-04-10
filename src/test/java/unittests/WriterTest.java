@@ -1,7 +1,7 @@
 package unittests;
 
 import core.scm.SCMCons;
-import core.scm.SCMConstant;
+import core.scm.SCMNil;
 import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class WriterTest {
 
   @Test
   public void testWriteNil() {
-    assertEquals(SCMConstant.NIL.toString(), writer.toString(null));
+    assertEquals(SCMNil.NIL.toString(), writer.toString(null));
     assertEquals("()", writer.toString(EMPTY));
     assertEquals("()", writer.toString(SCMCons.list()));
     assertEquals("()", writer.toString(new ArrayList()));
@@ -45,7 +45,7 @@ public class WriterTest {
     assertEquals("(1 2 3 4)", writer.toString(Arrays.asList(1, 2, 3, 4)));
     assertEquals("(#\\a #\\b #\\c)", writer.toString(Arrays.asList('a', 'b', 'c')));
     assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList("test", "string")));
-    assertEquals(String.format("(%s %s %s)", SCMConstant.NIL, SCMConstant.NIL, SCMConstant.NIL),
+    assertEquals(String.format("(%s %s %s)", SCMNil.NIL, SCMNil.NIL, SCMNil.NIL),
                  writer.toString(Arrays.asList(null, null, null)));
   }
 }

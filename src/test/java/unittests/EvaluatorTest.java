@@ -7,7 +7,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
 import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
-import core.scm.SCMConstant;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;

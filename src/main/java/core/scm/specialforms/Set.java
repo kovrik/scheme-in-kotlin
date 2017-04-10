@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
-import core.scm.SCMConstant;
+import core.scm.SCMNil;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public enum Set implements ISpecialForm {
   SET;
 
   @Override
-  public SCMConstant eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMNil eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 3) {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", expression.size() - 1));
     }
