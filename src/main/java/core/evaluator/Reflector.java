@@ -3,6 +3,7 @@ package core.evaluator;
 import core.scm.SCMSymbol;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -151,7 +152,10 @@ public class Reflector {
   }
 
   Object evalJavaMethod(String method, Object[] args) {
-    if (method.indexOf('.') == 0) {
+    if (method.startsWith(".-") && args.length == 1) {
+      Object instance = args[0];
+      return evalJavaInstanceField(method, instance);
+    } else if (method.indexOf('.') == 0) {
       Object instance = args[0];
       args = Arrays.copyOfRange(args, 1, args.length);
       return evalJavaInstanceMethod(method, instance, args);
@@ -183,6 +187,28 @@ public class Reflector {
       throw new RuntimeException(String.format("unable to access method %s of %s", methodName, instance));
     } catch (InvocationTargetException e) {
       throw new RuntimeException("reflection exception");
+    }
+  }
+
+  /* Java Interop: instance field */
+  private Object evalJavaInstanceField(String f, Object instance) {
+    Class<?> clazz;
+    boolean isClass = false;
+    if (instance instanceof SCMSymbol) {
+      clazz = getClass(instance.toString());
+      isClass = true;
+    } else {
+      clazz = instance.getClass();
+    }
+    Class c = isClass ? Class.class : clazz;
+    String fieldName = f.substring(2);
+    try {
+      Field field = c.getField(fieldName);
+      return upcastIfPossible(field.get(isClass ? clazz : instance));
+    } catch (NoSuchFieldException e) {
+      throw new RuntimeException(String.format("unable to find field %s of %s", fieldName, instance));
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(String.format("unable to access method %s of %s", fieldName, instance));
     }
   }
 
