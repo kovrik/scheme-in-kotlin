@@ -8,8 +8,6 @@ import core.scm.SCMThunk;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 /* Syntax:
  * (letrec <bindings> <body>)
  *
@@ -33,7 +31,7 @@ public enum LetRec implements ISpecialForm {
     List<List> bindings = (List)expression.get(1);
     /* Bind variables to fresh locations holding undefined values */
     Environment localEnv = new Environment(env);
-    bindings.forEach(b -> localEnv.put(b.get(0), UNSPECIFIED));
+    bindings.forEach(b -> localEnv.put(b.get(0), null));
     /* Evaluate inits */
     bindings.forEach(b -> localEnv.put(b.get(0), evaluator.eval(b.get(1), localEnv)));
     /* Evaluate body */

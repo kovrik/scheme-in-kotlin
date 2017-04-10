@@ -6,8 +6,6 @@ import core.scm.SCMMutableVector;
 
 import java.util.Arrays;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class VectorFill extends AFn {
 
   public VectorFill() {
@@ -23,6 +21,6 @@ public final class VectorFill extends AFn {
   public Object apply2(Object arg1, Object arg2) {
     SCMMutableVector vector = (SCMMutableVector) arg1;
     Arrays.fill(vector.getArray(), arg2);
-    return UNSPECIFIED;
+    return null;
   }
 }

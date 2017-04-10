@@ -6,8 +6,6 @@ import core.scm.SCMClass;
 
 import java.util.List;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class SetCar extends AFn {
 
   public SetCar() {
@@ -23,6 +21,6 @@ public final class SetCar extends AFn {
   @Override
   public Object apply2(Object arg1, Object arg2) {
     ((List)arg1).set(0, arg2);
-    return UNSPECIFIED;
+    return null;
   }
 }

@@ -179,6 +179,6 @@ public class EvaluatorTest extends AbstractTest {
 
   @Test
   public void testForEach() {
-    assertEquals(SCMConstant.UNSPECIFIED, eval("(for-each length '(() (a) (a b)))", env));
+    assertEquals(null, eval("(for-each length '(() (a) (a b)))", env));
   }
 }

@@ -5,8 +5,6 @@ import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class MakeVector extends AFn {
 
   public MakeVector() {
@@ -21,7 +19,7 @@ public final class MakeVector extends AFn {
   @Override
   public Object apply(Object... args) {
     Long s = ((Number)args[0]).longValue();
-    Object init = UNSPECIFIED;
+    Object init = null;
     if (args.length == 2) {
       init = args[1];
     }

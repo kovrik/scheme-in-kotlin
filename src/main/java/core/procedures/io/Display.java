@@ -10,8 +10,6 @@ import core.writer.Writer;
 
 import java.io.IOException;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class Display extends AFn {
 
   public Display() {
@@ -42,6 +40,6 @@ public final class Display extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return UNSPECIFIED;
+    return null;
   }
 }

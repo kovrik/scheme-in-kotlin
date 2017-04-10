@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public class Repl {
 
   private static final AtomicInteger SYM_COUNTER = new AtomicInteger(0);
@@ -67,17 +65,15 @@ public class Repl {
         for (Object expr : sexps) {
           /* Macroexpand and then Evaluate each S-expression */
           Object result = evaluator.macroexpandAndEvaluate(expr, env);
-          if (result != UNSPECIFIED) {
-            if (result == null) {
-              currentOutputPort.writeln(writer.toString(result));
-              continue;
-            }
-            /* Put result into environment */
-            SCMSymbol id = getNextID();
-            env.put(id, result);
-            /* Print */
-            currentOutputPort.writeln(id + " = " + writer.toString(result));
+          if (result == null) {
+            currentOutputPort.writeln(writer.toString(result));
+            continue;
           }
+          /* Put result into environment */
+          SCMSymbol id = getNextID();
+          env.put(id, result);
+          /* Print */
+          currentOutputPort.writeln(id + " = " + writer.toString(result));
         }
       } catch (Exception e) {
         error(e);

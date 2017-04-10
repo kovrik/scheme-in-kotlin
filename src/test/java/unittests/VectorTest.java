@@ -4,7 +4,6 @@ import core.scm.SCMMutableVector;
 import org.junit.Test;
 
 import static core.scm.SCMCons.list;
-import static core.scm.SCMConstant.UNSPECIFIED;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +31,7 @@ public class VectorTest extends AbstractTest {
   public void testEvalMakeVector() {
     assertEquals(new SCMMutableVector(1L, 1L, 1L), eval("(make-vector 3 1)", env));
     assertEquals(new SCMMutableVector(), eval("(make-vector 0)", env));
-    assertEquals(new SCMMutableVector(UNSPECIFIED, UNSPECIFIED, UNSPECIFIED), eval("(make-vector 3)", env));
+    assertEquals(new SCMMutableVector(null, null, null), eval("(make-vector 3)", env));
     try {
       eval("(make-vector 1 2 3)", env);
       fail();

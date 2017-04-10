@@ -8,8 +8,6 @@ import core.scm.SCMOutputPort;
 
 import java.io.IOException;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class Newline extends AFn {
 
   private static final String LS = System.getProperty("line.separator");
@@ -36,6 +34,6 @@ public final class Newline extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return UNSPECIFIED;
+    return null;
   }
 }

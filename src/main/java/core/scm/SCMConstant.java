@@ -2,7 +2,6 @@ package core.scm;
 
 public enum SCMConstant implements ISCMClass {
   EOF("#<eof>", SCMClass.EOF),
-  UNSPECIFIED("#<unspecified>", SCMClass.UNSPECIFIED),
   NIL("nil", SCMClass.NIL)
   ;
 

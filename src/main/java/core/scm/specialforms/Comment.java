@@ -2,7 +2,6 @@ package core.scm.specialforms;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.scm.SCMConstant;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public enum Comment implements ISpecialForm {
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
-    return SCMConstant.UNSPECIFIED;
+    return null;
   }
 
   @Override

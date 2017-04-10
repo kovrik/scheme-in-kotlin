@@ -5,7 +5,6 @@ import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
-import core.scm.SCMConstant;
 import core.writer.Writer;
 
 import java.io.IOException;
@@ -35,6 +34,6 @@ public final class Write extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return SCMConstant.UNSPECIFIED;
+    return null;
   }
 }

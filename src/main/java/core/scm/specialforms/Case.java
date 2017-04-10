@@ -8,8 +8,6 @@ import core.procedures.equivalence.Eqv;
 import java.util.List;
 import java.util.Optional;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 /* Syntax:
  * (case <key> <clause1> <clause2> ...)
  *
@@ -50,7 +48,7 @@ public enum Case implements ISpecialForm {
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }
-    return UNSPECIFIED;
+    return null;
   }
 
   @Override

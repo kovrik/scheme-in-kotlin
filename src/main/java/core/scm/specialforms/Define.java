@@ -10,8 +10,6 @@ import core.scm.SCMConstant;
 
 import java.util.List;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 /* Syntax:
  * (define <variable> <expression>)
  * (define (<variable> <formals>) <body>)
@@ -60,7 +58,7 @@ public enum Define implements ISpecialForm {
     } else {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-    return UNSPECIFIED;
+    return null;
   }
 
   @Override

@@ -3,8 +3,6 @@ package core.procedures.system;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class Exit extends AFn {
 
   public Exit() {
@@ -23,6 +21,6 @@ public final class Exit extends AFn {
     } else {
       System.exit(((Long)args[0]).intValue());
     }
-    return UNSPECIFIED;
+    return null;
   }
 }

@@ -5,8 +5,6 @@ import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMMutableVector;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class VectorSet extends AFn {
 
   public VectorSet() {
@@ -27,6 +25,6 @@ public final class VectorSet extends AFn {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), pos));
     }
     vec.set(pos.intValue(), arg3);
-    return UNSPECIFIED;
+    return null;
   }
 }

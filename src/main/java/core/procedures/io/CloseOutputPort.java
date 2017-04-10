@@ -3,7 +3,6 @@ package core.procedures.io;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
-import core.scm.SCMConstant;
 
 import java.io.IOException;
 
@@ -25,6 +24,6 @@ public final class CloseOutputPort extends AFn {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return SCMConstant.UNSPECIFIED;
+    return null;
   }
 }

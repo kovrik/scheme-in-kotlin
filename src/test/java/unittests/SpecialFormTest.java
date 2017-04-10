@@ -14,10 +14,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static core.scm.SCMCons.*;
-import static core.scm.SCMConstant.UNSPECIFIED;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SpecialFormTest extends AbstractTest {
@@ -130,7 +130,7 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalDefine() {
     eval("(define a 5)", env);
     assertEquals(5L, eval("a", env));
-    assertEquals(UNSPECIFIED, eval("(define b 7)", env));
+    assertEquals(null, eval("(define b 7)", env));
 
     eval("(define edl (lambda (n) (+ n 1)))", env);
     assertEquals(2L, eval("(edl 1)", env));
@@ -231,7 +231,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMSymbol.of("yes"), eval("(if (> 3 2) 'yes 'no)", env));
     assertEquals(SCMSymbol.of("no"), eval("(if (> 2 3) 'yes 'no)", env));
     assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env));
-    assertEquals(UNSPECIFIED, eval("(if #f 5)", env));
+    assertEquals(null, eval("(if #f 5)", env));
     try {
       eval("(if)", env);
       fail();
@@ -314,7 +314,7 @@ public class SpecialFormTest extends AbstractTest {
     String doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))";
     assertEquals("DONE", eval(doTest3, env));
 
-    assertEquals(UNSPECIFIED, eval("(do ((i 1 (add1 i))) ((> i 4)) (void i))", env));
+    assertEquals(null, eval("(do ((i 1 (add1 i))) ((> i 4)) (void i))", env));
     assertEquals("DONE", eval("(do ((i 1 (add1 i))) ((> i 4) \"DONE\") (void i))", env));
 
     try {
@@ -336,6 +336,12 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalLet() {
     assertEquals(124L, eval("(let ((c 123)) (+ c 1))", env));
     assertEquals(555L, eval("(let ((c 123) (b 432)) (+ c b))", env));
+    try {
+      eval("(let ((a 1) (b a) (c b)) c)", env);
+      fail();
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    }
     try {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
       fail();
@@ -372,6 +378,7 @@ public class SpecialFormTest extends AbstractTest {
   @Test
   public void testEvalLetStar() {
     assertEquals(2L, eval("(let* ((z 1) (b (+ z 1))) b)", env));
+    assertEquals(1L, eval("(let* ((a 1) (b a) (c b)) c)", env));
     try {
       eval("(let* ((c 123)))", env);
       fail();
@@ -386,20 +393,32 @@ public class SpecialFormTest extends AbstractTest {
                      "         (is-odd?  (lambda (n) (and (not (= n 0)) (is-even? (- n 1))))))" +
                      "  (is-odd? 11))";
     assertEquals(TRUE, eval(letrec1, env));
+    assertEquals(1L, eval("(letrec ((a 1) (b a) (c b)) c)", env));
+    try {
+      eval("(letrec ((a a)) a)", env);
+      fail();
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    }
 
-    String letrec2 = "(letrec ((a a)) a)";
-    assertEquals(UNSPECIFIED, eval(letrec2, env));
+    try {
+      eval("(letrec ((a a)) (set! a 1) a)", env);
+      fail();
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    }
 
-    String letrec3 = "(letrec ((a a)) (set! a 1) a)";
-    assertEquals(1L, eval(letrec3, env));
-
-    String letrec4 = "(eq? (letrec ((a a)) a) (if #f 0) (letrec ((a a)) a))";
-    assertEquals(TRUE, eval(letrec4, env));
+    try {
+      eval("(eq? (letrec ((a a)) a) (if #f 0) (letrec ((a a)) a))", env);
+      fail();
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    }
   }
 
   @Test
   public void testEvalCond() {
-    assertEquals(UNSPECIFIED, eval("(cond)", env));
+    assertEquals(null, eval("(cond)", env));
     // "Invalid clause in subform "
     try {
       eval("(cond 1)", env);
@@ -448,7 +467,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMSymbol.of("composite"), eval(caseform, env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 8 9) 'composite))";
-    assertEquals(UNSPECIFIED, eval(caseform, env));
+    assertEquals(null, eval(caseform, env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) (else 'composite))";
     assertEquals(SCMSymbol.of("composite"), eval(caseform, env));
@@ -476,8 +495,8 @@ public class SpecialFormTest extends AbstractTest {
 
   @Test
   public void testEvalBegin() {
-    assertEquals(UNSPECIFIED, eval("(begin)", env));
-    assertEquals(UNSPECIFIED, eval("(begin (begin))", env));
+    assertEquals(null, eval("(begin)", env));
+    assertEquals(null, eval("(begin (begin))", env));
     assertEquals(1L, eval("(begin 1)", env));
     assertEquals(3L, eval("(begin 1 2 3)", env));
     try {
@@ -495,7 +514,7 @@ public class SpecialFormTest extends AbstractTest {
       eval(proc, tempEnv);
     }
     tempEnv.put(SCMSymbol.of("display"), new Display());
-    assertEquals(UNSPECIFIED, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
+    assertEquals(null, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
     Repl.setCurrentOutputPort(old);
   }
 

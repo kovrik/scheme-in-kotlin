@@ -8,7 +8,6 @@ import core.scm.SCMSymbol;
 import org.junit.Test;
 
 import static core.scm.SCMCons.*;
-import static core.scm.SCMConstant.UNSPECIFIED;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -139,7 +138,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testSetCar() {
-    assertEquals(UNSPECIFIED, eval("(set-car! '(1) 2)", env));
+    assertEquals(null, eval("(set-car! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-car! a 3) (car a)))", env));
     assertEquals("test", eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env));
     assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env));
@@ -159,7 +158,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testSetCdr() {
-    assertEquals(UNSPECIFIED, eval("(set-cdr! '(1) 2)", env));
+    assertEquals(null, eval("(set-cdr! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env));
     assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env));
     assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env));

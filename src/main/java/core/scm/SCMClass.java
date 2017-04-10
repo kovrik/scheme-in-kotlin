@@ -38,8 +38,8 @@ public enum SCMClass implements ISCMClass {
   PORT("Port"),
   INPUT_PORT("InputPort"),
   OUTPUT_PORT("OutputPort"),
-  EOF("EOF"),
-  UNSPECIFIED("Unspecified");
+  EOF("EOF")
+  ;
 
   private static final Map<Class, SCMClass> SCM_CLASSES = new HashMap<>();
   static {
@@ -125,7 +125,6 @@ public enum SCMClass implements ISCMClass {
   public abstract class Exact {}
   public abstract class Inexact {}
   public abstract class Real {}
-  public abstract class Nil {}
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {

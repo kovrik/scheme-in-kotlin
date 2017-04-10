@@ -8,8 +8,6 @@ import core.scm.SCMConstant;
 
 import java.util.List;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 /* Syntax:
  * (set! <variable> <expression>)
  */
@@ -26,7 +24,7 @@ public enum Set implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: `%s`", identifier));
     }
     env.findAndPut(identifier, evaluator.eval(expression.get(2), env));
-    return UNSPECIFIED;
+    return null;
   }
 
   @Override

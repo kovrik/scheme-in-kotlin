@@ -7,8 +7,6 @@ import core.scm.SCMCons;
 
 import java.util.List;
 
-import static core.scm.SCMConstant.UNSPECIFIED;
-
 public final class SetCdr extends AFn {
 
   public SetCdr() {
@@ -35,6 +33,6 @@ public final class SetCdr extends AFn {
         ((SCMCons)list).setIsList(false);
       }
     }
-    return UNSPECIFIED;
+    return null;
   }
 }
