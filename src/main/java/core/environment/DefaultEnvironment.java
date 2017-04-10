@@ -266,6 +266,7 @@ public final class DefaultEnvironment extends Environment {
       new Sort(),
       new Count() { @Override public String getName() { return "length"; } },
       new Conj(),
+      new Empty(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,
