@@ -6,10 +6,10 @@ import java.util.*;
 
 import static core.writer.Writer.write;
 
-// TODO Separate class for Proper and Improper Lists
+// TODO Separate class for Proper and Improper Lists?
 public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
 
-  /* Empty list constants */
+  /* Empty list constant */
   public static final SCMCons EMPTY = new SCMCons() {
     @Override public boolean isList() { return true; }
     @Override public SCMClass getSCMClass() { return SCMClass.LIST; }
