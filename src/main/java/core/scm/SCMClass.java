@@ -39,6 +39,7 @@ public enum SCMClass implements ISCMClass {
   PORT("Port"),
   INPUT_PORT("InputPort"),
   OUTPUT_PORT("OutputPort"),
+  KEYWORD("Keyword"),
   ;
 
   private static final Map<Class, SCMClass> SCM_CLASSES = new HashMap<>();
@@ -71,6 +72,9 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMOutputPort.class,         OUTPUT_PORT);
     SCM_CLASSES.put(SCMInputPort.class,          INPUT_PORT);
     SCM_CLASSES.put(SCMError.class,              ERROR);
+    SCM_CLASSES.put(SCMKeyword.class,            KEYWORD);
+    SCM_CLASSES.put(SCMNil.class,                NIL);
+    SCM_CLASSES.put(SCMVoid.class,               VOID);
   }
 
   /* Marker classes for FnArgs annotation

@@ -2,6 +2,7 @@ package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
+import core.scm.SCMKeyword;
 import core.scm.SCMMutableVector;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.Quasiquote;
@@ -21,7 +22,7 @@ public class Reader implements IReader {
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
-  private static final String DELIMITERS = WHITESPACES + ";(){}[],\"\u0000\uffff";
+  private static final String DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
   private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
 
@@ -130,6 +131,7 @@ public class Reader implements IReader {
       case '[':  return readVector(']');
       case ';':  return readComment();
       case '"':  return readString();
+      case ':':  return readKeyword();
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
       case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
       case ']':  throw new IllegalSyntaxException("read: unexpected vector terminator: " + c);
@@ -464,5 +466,22 @@ public class Reader implements IReader {
       set.add(token);
     }
     return set;
+  }
+
+  /**
+   * Read keyword
+   *
+   * Syntax:
+   * <keyword> -> :<token>
+   */
+  private SCMKeyword readKeyword() throws IOException {
+    String s = readUntilDelimiter();
+    if (s.isEmpty()) {
+      /* Skip everything until line break */
+      char c = 0;
+      while (!isLineBreak(c)) { c = (char) reader.read(); }
+      throw new IllegalSyntaxException("read: illegal use of :");
+    }
+    return SCMKeyword.of(s);
   }
 }

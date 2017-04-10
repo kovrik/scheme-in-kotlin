@@ -28,6 +28,7 @@ import unittests.s7.S7Tests;
     S7Tests.class,
     JavaInteropTest.class,
     HashmapTest.class,
+    KeywordTest.class,
 })
 public class AllTests {
 }

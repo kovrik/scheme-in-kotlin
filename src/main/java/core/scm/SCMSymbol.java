@@ -76,7 +76,7 @@ public class SCMSymbol implements ISCMClass {
 
   @Override
   public int hashCode() {
-    return value != null ? value.hashCode() : 0;
+    return value != null ? value.hashCode() + 1037096266 : 1037096266;
   }
 
   @Override

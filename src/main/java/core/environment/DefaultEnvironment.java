@@ -22,6 +22,7 @@ import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
 import core.procedures.interop.PrimitiveNumberType;
 import core.procedures.io.*;
+import core.procedures.keywords.Keyword;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
@@ -268,6 +269,9 @@ public final class DefaultEnvironment extends Environment {
       new Conj(),
       new Empty(),
 
+      /* Keywords */
+      new Keyword(),
+
       /* Predicates */
       SCMPredicate.IS_NULL,
       SCMPredicate.IS_PAIR,
@@ -298,6 +302,7 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_NEGATIVE,
       SCMPredicate.IS_IMMUTABLE,
       SCMPredicate.IS_MUTABLE,
+      SCMPredicate.IS_KEYWORD,
       };
 
   private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {

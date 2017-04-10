@@ -4,6 +4,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.reader.StringReader;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
+import core.scm.SCMKeyword;
 import core.scm.SCMMutableVector;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
@@ -330,5 +331,12 @@ public class ReaderTest extends AbstractTest {
     assertTrue(reader.readFirst("  {    }  ") instanceof Map);
     assertTrue(reader.readFirst("  {  1 2  }  ") instanceof Map);
     assertEquals(4, ((Map)reader.readFirst("  {  1 2,3 4, 5 6    ,  7     8  }  ")).size());
+  }
+
+  @Test
+  public void testReadKeywords() {
+    assertEquals(SCMKeyword.of("a"), reader.readFirst(":a"));
+    assertEquals(SCMKeyword.of("test"), reader.readFirst(":test"));
+    assertEquals(SCMKeyword.of("_"), reader.readFirst(":_"));
   }
 }

@@ -43,6 +43,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_MUTABLE = new SCMPredicate("mutable?", SCMPredicate::isMutable);
   public static final SCMPredicate IS_EVEN = new SCMPredicate("even?", o -> (assertClass("even?", o, Integer.class) && (NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
   public static final SCMPredicate IS_ODD = new SCMPredicate("odd?", o -> (assertClass("odd?", o, Integer.class) && !(NumberUtils.isZero(Remainder.apply((Number)o, 2L)))));
+  public static final SCMPredicate IS_KEYWORD = new SCMPredicate("keyword?", o -> (o instanceof SCMKeyword));
 
   private final String name;
   private final Predicate<Object> predicate;
