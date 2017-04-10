@@ -400,9 +400,9 @@ public final class DefaultEnvironment extends Environment {
 
     /* Constants and special cases, synonyms*/
     put(SCMSymbol.of("pi"),          Math.PI);
-    put(SCMSymbol.of("eof"), SCMNil.NIL);
-    put(SCMSymbol.of("nil"), SCMNil.NIL);
-    put(SCMSymbol.of("null"), SCMNil.NIL);
+    put(SCMSymbol.of("nil"),         SCMNil.NIL);
+    put(SCMSymbol.of("null"),        SCMNil.NIL);
+    put(SCMSymbol.of("eof"),         SCMNil.NIL);
     put(SCMSymbol.of("call/cc"),     get(SCMSymbol.of("call-with-current-continuation")));
     put(SCMSymbol.of("nil?"),        get(SCMSymbol.of("null?")));
     put(SCMSymbol.of("eof-object?"), get(SCMSymbol.of("null?")));
