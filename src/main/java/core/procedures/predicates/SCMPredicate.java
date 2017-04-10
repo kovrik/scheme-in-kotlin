@@ -10,6 +10,7 @@ import core.utils.NumberUtils;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public final class SCMPredicate extends AFn {
@@ -24,6 +25,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
   public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof CharSequence));
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
+  public static final SCMPredicate IS_SET = new SCMPredicate("set?", o -> (o instanceof Set));
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
   public static final SCMPredicate IS_TRUE = new SCMPredicate("true?", o -> (o instanceof Boolean) && (Boolean)o);
