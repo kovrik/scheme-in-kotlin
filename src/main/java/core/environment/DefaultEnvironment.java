@@ -420,5 +420,6 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("nil?"),        get(SCMSymbol.of("null?")));
     put(SCMSymbol.of("eof-object?"), get(SCMSymbol.of("null?")));
     put(SCMSymbol.of("str"),         get(SCMSymbol.of("->string")));
+    put(SCMSymbol.of("hash"),        get(SCMSymbol.of("hashcode")));
   }
 }
