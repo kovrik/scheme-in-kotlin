@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO get instance fields? (.-instanceField instance)
 public class Reflector {
 
   private static final Map<Class, Class> UNBOXED = new HashMap<>();
