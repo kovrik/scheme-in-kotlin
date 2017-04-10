@@ -99,6 +99,8 @@ public class Evaluator {
     } else if (sexp instanceof Set) {
       return evalSet((Set)sexp, env);
     } else {
+      /* Everything else evaluates to itself:
+       * Numbers, Strings, Chars, Keywords etc. */
       return sexp;
     }
   }
