@@ -215,10 +215,9 @@ public enum SCMClass implements ISCMClass {
   }
 
   public static boolean checkType(Object o, Class<?> expected) {
-    if (o == null) {
+    /* Nil is possible value of any data type */
+    if (o == null || o == SCMConstant.NIL) {
       return true;
-      // TODO?
-//      return Nil.class.equals(expected);
     }
     Class<?> actual = o.getClass();
     if (expected == actual || expected.isAssignableFrom(actual)) {

@@ -1,6 +1,5 @@
 package core.evaluator;
 
-import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 
 import java.lang.reflect.Constructor;
@@ -52,8 +51,8 @@ public class Reflector {
           castToObject(parameterTypes);
           return clazz.getMethod(name, parameterTypes);
         } catch (NoSuchMethodException ex2) {
-          throw new IllegalSyntaxException(String.format("unable to find matching method %s in class %s", name,
-                                                         clazz.getName()));
+          throw new RuntimeException(String.format("unable to find matching method %s in class %s",
+                                                   name, clazz.getName()));
         }
       }
     }
@@ -68,8 +67,8 @@ public class Reflector {
       try {
         return clazz.getConstructor(parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new IllegalSyntaxException(String.format("unable to find matching constructor for class %s",
-                                         clazz.getName()));
+        throw new RuntimeException(String.format("unable to find matching constructor for class %s",
+                                                 clazz.getName()));
       }
     }
   }
@@ -113,7 +112,7 @@ public class Reflector {
     try {
       return Class.forName(name);
     } catch (ClassNotFoundException e) {
-      throw new IllegalSyntaxException("class not found: " + name);
+      throw new RuntimeException("class not found: " + name);
     }
   }
 
@@ -126,9 +125,9 @@ public class Reflector {
     try {
       return getConstructor(c, args, argTypes).newInstance(args);
     } catch (InstantiationException | InvocationTargetException e) {
-      throw new IllegalSyntaxException(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     } catch (IllegalAccessException e) {
-      throw new IllegalSyntaxException(String.format("unable to access constructor for class %s", clazz));
+      throw new RuntimeException(String.format("unable to access constructor for class %s", clazz));
     }
   }
 
@@ -142,12 +141,12 @@ public class Reflector {
       try {
         return c.getField(field).get(c);
       } catch (NoSuchFieldException e) {
-        throw new IllegalSyntaxException(String.format("unable to find static field %s in class %s", field, className));
+        throw new RuntimeException(String.format("unable to find static field %s in class %s", field, className));
       } catch (IllegalAccessException e) {
-        throw new IllegalSyntaxException(String.format("unable to access static field %s in class %s", field, className));
+        throw new RuntimeException(String.format("unable to access static field %s in class %s", field, className));
       }
     }
-    throw new IllegalArgumentException("undefined identifier: " + s);
+    throw new RuntimeException("undefined identifier: " + s);
   }
 
   Object evalJavaMethod(String method, Object[] args) {
@@ -158,7 +157,7 @@ public class Reflector {
     } else if (method.indexOf('/') != -1) {
       return evalJavaStaticMethod(method, args);
     }
-    throw new IllegalArgumentException("undefined identifier: " + method);
+    throw new RuntimeException("undefined identifier: " + method);
   }
 
   /* Java Interop: instance method call */
@@ -180,7 +179,7 @@ public class Reflector {
     try {
       return upcastIfPossible(method.invoke(isClass ? clazz : instance, args));
     } catch (IllegalAccessException e) {
-      throw new IllegalSyntaxException(String.format("unable to access method %s of %s", methodName, instance));
+      throw new RuntimeException(String.format("unable to access method %s of %s", methodName, instance));
     } catch (InvocationTargetException e) {
       throw new RuntimeException("reflection exception");
     }
@@ -200,7 +199,7 @@ public class Reflector {
     try {
       return upcastIfPossible(method.invoke(null, args));
     } catch (IllegalAccessException e) {
-      throw new IllegalSyntaxException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
+      throw new RuntimeException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
     } catch (InvocationTargetException e) {
       throw new RuntimeException("reflection exception");
     }

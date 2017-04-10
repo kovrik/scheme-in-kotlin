@@ -64,13 +64,13 @@ public class NumberTest extends AbstractTest {
     try {
       eval("+#", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: +#", e.getMessage());
     }
     try {
       eval("+1#1", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: +1#1", e.getMessage());
     }
   }

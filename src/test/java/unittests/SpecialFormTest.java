@@ -176,7 +176,7 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(foo 5)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: foo", e.getMessage());
     }
 
@@ -292,7 +292,7 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(begin (set! b 99) b)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: b", e.getMessage());
     }
   }
@@ -352,7 +352,7 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(let ((z 1) (b (+ z 1))) b)", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: z", e.getMessage());
     }
   }
@@ -483,7 +483,7 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(begin (set! x 5) (+ x 1))", env);
       fail();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       assertEquals("undefined identifier: x", e.getMessage());
     }
     SCMOutputPort old = Repl.getCurrentOutputPort();

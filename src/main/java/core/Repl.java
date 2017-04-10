@@ -6,6 +6,7 @@ import core.evaluator.Evaluator;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
+import core.scm.SCMError;
 import core.scm.SCMInputPort;
 import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
@@ -85,7 +86,13 @@ public class Repl {
   }
 
   private static void error(Exception e) throws IOException {
-    currentOutputPort.writeln("ERROR: " + e.getMessage());
+    if (e.getMessage() == null) {
+      currentOutputPort.writeln(e.getClass().getSimpleName());
+    } else if (e instanceof SCMError) {
+      currentOutputPort.writeln("Error: " + e.getMessage());
+    } else {
+      currentOutputPort.writeln(e.getClass().getSimpleName() + ": " + e.getMessage());
+    }
   }
 
   public static SCMInputPort getCurrentInputPort() {
