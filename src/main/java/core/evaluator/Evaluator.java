@@ -158,27 +158,6 @@ public class Evaluator {
       return map.getOrDefault(key, defaultValue);
     }
 
-    /* Vectors are functions of index  */
-    if (op instanceof SCMVector) {
-      if (sexp.size() > 2) {
-        throw new ArityException("vector", 1, 1, sexp.size() - 1);
-      }
-      /* Do not eval vector (unless created via `vector` procedure) */
-      SCMVector vector = (SCMVector)op;
-      /* Alternative: always evaluate vector
-       * SCMVector vector = evalVector((SCMVector) op, env);
-       */
-      Object index = sexp.get(1);
-      if (!NumberUtils.isInteger(index)) {
-        throw new WrongTypeException("vector", "Integer", index);
-      }
-      int i = ((Number) index).intValue();
-      if (i >= vector.length()) {
-        throw new IndexOutOfBoundsException("vector: value out of range: " + i);
-      }
-      return eval(vector.get(i), env);
-    }
-
     /* Scheme has applicative order, so evaluate all arguments first */
     List<Object> args = new ArrayList<>(sexp.size() - 1);
     if (javaMethod) {

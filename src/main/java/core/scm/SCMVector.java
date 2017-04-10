@@ -1,12 +1,14 @@
 package core.scm;
 
+import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
 /* Abstract superclass of both Immutable and Mutable Vectors */
-public abstract class SCMVector implements ISCMClass, Iterable {
+public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -20,20 +22,33 @@ public abstract class SCMVector implements ISCMClass, Iterable {
   private final Object[] array;
 
   SCMVector() {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
     this.array = new Object[0];
   }
 
   SCMVector(int size, Object init) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
     this.array = new Object[size];
     Arrays.fill(getArray(), init);
   }
 
   SCMVector(Object... elements) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
     this.array = elements;
   }
 
   SCMVector(Object e) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
     this.array = new Object[] {e};
+  }
+
+  @Override
+  public Object apply1(Object arg) {
+    int index = ((Number)arg).intValue();
+    if (index >= array.length) {
+      throw new IndexOutOfBoundsException(getName() + ": value out of range: " + index);
+    }
+    return array[index];
   }
 
   public Object get(int index) {
@@ -51,6 +66,11 @@ public abstract class SCMVector implements ISCMClass, Iterable {
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.VECTOR;
+  }
+
+  @Override
+  public String getName() {
+    return "vector";
   }
 
   @Override

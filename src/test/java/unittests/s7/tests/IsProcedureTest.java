@@ -23,7 +23,7 @@ public class IsProcedureTest extends AbstractTest {
     String[] falses = {"(procedure? 'car)", "(procedure? '(lambda (x) x))",
         "(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", "(procedure? 'and)", "(procedure? 'let)",
         "(procedure? 'quasiquote)", "(procedure? 'cond)", "(procedure? 'do)", "(procedure? 'set!)", "(procedure? \"hi\")",
-        "(procedure? '(1 2))", "(procedure? #(1 2))",};
+        "(procedure? '(1 2))", "(procedure? #(1 2))", "(procedure? {})", "(procedure? (find {1 2 3 4} 1))", "(procedure? [1 2 3])"};
     assertAllEqual(FALSE, falses, env);
     try {
       eval("(procedure? begin)", env);

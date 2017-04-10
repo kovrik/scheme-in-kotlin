@@ -26,12 +26,13 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
   public static final SCMPredicate IS_SET = new SCMPredicate("set?", o -> (o instanceof Set));
   public static final SCMPredicate IS_MAP = new SCMPredicate("map?", o -> o instanceof Map);
+  public static final SCMPredicate IS_MAP_ENTRY = new SCMPredicate("map-entry?", o -> o instanceof Map.Entry);
   public static final SCMPredicate IS_COLL = new SCMPredicate("coll?", o -> o instanceof Collection || o instanceof Map || o instanceof SCMVector);
   public static final SCMPredicate IS_SYMBOL = new SCMPredicate("symbol?", o -> (o instanceof SCMSymbol));
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
   public static final SCMPredicate IS_TRUE = new SCMPredicate("true?", o -> (o instanceof Boolean) && (Boolean)o);
   public static final SCMPredicate IS_FALSE = new SCMPredicate("false?", o -> (o instanceof Boolean) && !(Boolean)o);
-  public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", o -> (o instanceof IFn));
+  public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", o -> (o instanceof IFn) && !(o instanceof Map) && !(o instanceof SCMVector) && !(o instanceof Map.Entry));
   public static final SCMPredicate IS_PORT = new SCMPredicate("port?", o -> (o instanceof ISCMPort));
   public static final SCMPredicate IS_INPUT_PORT = new SCMPredicate("input-port?", o -> (o instanceof SCMInputPort));
   public static final SCMPredicate IS_OUTPUT_PORT = new SCMPredicate("output-port?", o -> (o instanceof SCMOutputPort));

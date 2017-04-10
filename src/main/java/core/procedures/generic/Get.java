@@ -36,7 +36,9 @@ public final class Get extends AFn {
 
   private Object get(Object col, Object key, Object defaultValue) {
     if (col instanceof Map) {
-      return ((Map)col).getOrDefault(key, defaultValue);
+      return ((Map) col).getOrDefault(key, defaultValue);
+    } else if ((col instanceof Map.Entry) && (((Map.Entry) col).getKey().equals(key))) {
+      return ((Map.Entry)col).getValue();
     } else if (col instanceof List) {
       if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
         return ((List)col).get(((Number)key).intValue());

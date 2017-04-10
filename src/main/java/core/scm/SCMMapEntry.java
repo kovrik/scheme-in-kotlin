@@ -1,13 +1,27 @@
 package core.scm;
 
-public class SCMMapEntry implements IMapEntry, ISCMClass {
+import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
+import core.writer.Writer;
+
+public class SCMMapEntry extends AFn implements IMapEntry, ISCMClass {
 
   private final Object key;
   private final Object val;
 
   public SCMMapEntry(Object key, Object val) {
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
     this.key = key;
     this.val = val;
+  }
+
+  @Override
+  public Object apply1(Object arg) {
+    int index = ((Number)arg).intValue();
+    if (index > 2) {
+      throw new IndexOutOfBoundsException(getName() + ": value out of range: " + index);
+    }
+    return index == 0 ? key : val;
   }
 
   @Override
@@ -41,8 +55,13 @@ public class SCMMapEntry implements IMapEntry, ISCMClass {
   }
 
   @Override
+  public String getName() {
+    return "map entry";
+  }
+
+  @Override
   public String toString() {
-    return "[" + key + " " + val + "]";
+    return "[" + Writer.write(key) + " " + Writer.write(val) + "]";
   }
 
   @Override

@@ -4,7 +4,6 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMMapEntry;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Find extends AFn {
@@ -25,7 +24,7 @@ public final class Find extends AFn {
 
   @Override
   public Map.Entry apply2(Object map, Object key) {
-    Map<Object, Object> hashMap = new HashMap((Map)map);
+    Map<Object, Object> hashMap = (Map)map;
     if (hashMap.containsKey(key)) {
       return new SCMMapEntry(key, hashMap.get(key));
     }

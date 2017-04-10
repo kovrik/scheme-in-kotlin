@@ -1,7 +1,9 @@
 package core.procedures.hashmaps;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMMapEntry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.Map;
 public final class Put extends AFn {
 
   public Put() {
-    super(new FnArgsBuilder().minArgs(3).mandatoryArgsTypes(new Class[]{Map.class, Object.class, Object.class}));
+    super(new FnArgsBuilder().minArgs(3).mandatoryArgsTypes(new Class[]{Object.class, Object.class, Object.class}));
   }
 
   @Override
@@ -24,14 +26,24 @@ public final class Put extends AFn {
   }
 
   @Override
-  public Map<Object, Object> apply(Object... args) {
-    if (args.length % 2 != 1) {
-      throw new IllegalArgumentException(getName() + ": no value supplied for key: " + args[args.length - 1]);
+  public Object apply(Object... args) {
+    Object m = args[0];
+    if (m instanceof Map) {
+      if (args.length % 2 != 1) {
+        throw new IllegalArgumentException(getName() + ": no value supplied for key: " + args[args.length - 1]);
+      }
+      Map<Object, Object> map = new HashMap((Map) args[0]);
+      for (int i = 1; i < args.length; i = i + 2) {
+        map.put(args[i], args[i + 1]);
+      }
+      return map;
     }
-    Map<Object, Object> map = new HashMap((Map)args[0]);
-    for (int i = 1; i < args.length; i = i + 2) {
-      map.put(args[i], args[i + 1]);
+    if (m instanceof Map.Entry) {
+      if (args.length > 3) {
+        throw new IndexOutOfBoundsException(String.format("%s: value out of range", getName()));
+      }
+      return new SCMMapEntry(args[1], args[2]);
     }
-    return map;
+    throw new WrongTypeException(getName(), "Map or MapEntry", m);
   }
 }
