@@ -75,7 +75,7 @@ public class SCMMutableString implements ISCMClass, CharSequence {
     if (this == o) {
       return true;
     }
-    if (o == null || (!(o instanceof String) && getClass() != o.getClass())) {
+    if (o == null || (!(o instanceof CharSequence) && getClass() != o.getClass())) {
       return false;
     }
     return string.toString().equals(o.toString());

@@ -1,5 +1,7 @@
 package core.scm;
 
+import core.writer.Writer;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -62,10 +64,8 @@ public abstract class SCMVector implements ISCMClass, Iterable {
       Object e = getArray()[i];
       if (e == this) {
         sb.append("(this Vector)");
-      } else if (e instanceof String || e instanceof SCMMutableString) {
-        sb.append('"').append(e).append('"');
       } else {
-        sb.append(e);
+        sb.append(Writer.write(e));
       }
       if (i == (getArray().length - 1)) {
         return sb.append(CLOSE).toString();

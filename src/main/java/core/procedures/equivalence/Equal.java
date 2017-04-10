@@ -32,7 +32,7 @@ public final class Equal extends AFn {
   }
 
   private boolean equal(Object first, Object second) {
-    if ((first instanceof String) && (second instanceof SCMMutableString)) {
+    if ((first instanceof CharSequence) && (second instanceof SCMMutableString)) {
       return second.equals(first);
     }
     return first.equals(second);

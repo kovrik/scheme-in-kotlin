@@ -61,7 +61,7 @@ public class Writer implements IWriter {
       }
       return o.toString();
     }
-    if ((o instanceof String) || (o instanceof SCMMutableString)) {
+    if (o instanceof CharSequence) {
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {

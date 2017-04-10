@@ -235,6 +235,7 @@ public final class DefaultEnvironment extends Environment {
       new VectorToList(),
       new VectorFill(),
       new VectorToImmutableVector(),
+      new Vec(),
 
       /* Functional */
       new Apply(),
