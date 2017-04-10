@@ -192,12 +192,8 @@ public enum SCMClass implements ISCMClass {
     if (object instanceof Number) {
       return classOfNumber((Number)object);
     }
-    /* Check Pair and Nil */
     if (object instanceof List) {
-      if (((List) object).isEmpty()) {
-        return SCMClass.NIL;
-      }
-      return SCMClass.PAIR;
+      return SCMClass.LIST;
     }
     /* Not a special case, just map Java class to SCMClass */
     return SCM_CLASSES.get(object.getClass());
