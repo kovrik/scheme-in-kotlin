@@ -249,9 +249,12 @@ public final class DefaultEnvironment extends Environment {
       new DynamicWind(),
 
       /* Hashmaps */
+      new Find(),
       new HashMapProc(),
       new Put(),
+      new Key(),
       new Keys(),
+      new Val(),
       new Vals(),
       new Merge(),
       new Zipmap(),

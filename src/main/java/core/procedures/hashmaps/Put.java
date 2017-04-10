@@ -26,7 +26,7 @@ public final class Put extends AFn {
   @Override
   public Map<Object, Object> apply(Object... args) {
     if (args.length % 2 != 1) {
-      throw new IllegalArgumentException("put: no value supplied for key: " + args[args.length - 1]);
+      throw new IllegalArgumentException(getName() + ": no value supplied for key: " + args[args.length - 1]);
     }
     Map<Object, Object> map = new HashMap((Map)args[0]);
     for (int i = 1; i < args.length; i = i + 2) {
