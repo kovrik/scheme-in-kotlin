@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
+import core.scm.SCMVoid;
 
 import java.util.List;
 
@@ -33,6 +34,6 @@ public final class SetCdr extends AFn {
         ((SCMCons)list).setIsList(false);
       }
     }
-    return null;
+    return SCMVoid.VOID;
   }
 }

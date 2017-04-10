@@ -2,6 +2,7 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMVoid;
 
 public final class Exit extends AFn {
 
@@ -15,12 +16,12 @@ public final class Exit extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
+  public SCMVoid apply(Object... args) {
     if (args.length == 0) {
       System.exit(0);
     } else {
       System.exit(((Long)args[0]).intValue());
     }
-    return null;
+    return SCMVoid.VOID;
   }
 }

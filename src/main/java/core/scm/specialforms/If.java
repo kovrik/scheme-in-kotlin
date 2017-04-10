@@ -5,6 +5,7 @@ import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMBoolean;
 import core.scm.SCMThunk;
+import core.scm.SCMVoid;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public enum If implements ISpecialForm {
       if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
          * Another option is to throw an exception (if: missing an "else" expression) */
-        return null;
+        return SCMVoid.VOID;
       }
       Object alternative = expression.get(3);
       return new SCMThunk(alternative, env);

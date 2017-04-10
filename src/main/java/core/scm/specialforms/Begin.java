@@ -3,6 +3,7 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.scm.SCMThunk;
+import core.scm.SCMVoid;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -31,7 +32,7 @@ public enum Begin implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() <= 1) {
-      return null;
+      return SCMVoid.VOID;
     }
     IntStream.range(1, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), env));
     return new SCMThunk(expression.get(expression.size() - 1), env);

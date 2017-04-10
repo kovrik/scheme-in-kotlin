@@ -5,6 +5,7 @@ import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMMutableVector;
 import core.scm.SCMSymbol;
+import core.scm.SCMVoid;
 import org.junit.Test;
 
 import static core.scm.SCMCons.*;
@@ -138,7 +139,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testSetCar() {
-    assertEquals(null, eval("(set-car! '(1) 2)", env));
+    assertEquals(SCMVoid.VOID, eval("(set-car! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-car! a 3) (car a)))", env));
     assertEquals("test", eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env));
     assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env));
@@ -158,7 +159,7 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testSetCdr() {
-    assertEquals(null, eval("(set-cdr! '(1) 2)", env));
+    assertEquals(SCMVoid.VOID, eval("(set-cdr! '(1) 2)", env));
     assertEquals(3L, eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env));
     assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env));
     assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env));

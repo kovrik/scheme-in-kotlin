@@ -3,6 +3,7 @@ package core.procedures.cons;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
+import core.scm.SCMVoid;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public final class SetCar extends AFn {
   @Override
   public Object apply2(Object arg1, Object arg2) {
     ((List)arg1).set(0, arg2);
-    return null;
+    return SCMVoid.VOID;
   }
 }

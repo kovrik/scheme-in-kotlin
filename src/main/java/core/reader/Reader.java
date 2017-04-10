@@ -1,7 +1,6 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.scm.SCMMutableVector;
 import core.scm.SCMSymbol;

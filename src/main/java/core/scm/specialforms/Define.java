@@ -7,6 +7,7 @@ import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
 import core.scm.SCMNil;
+import core.scm.SCMVoid;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public enum Define implements ISpecialForm {
   DEFINE;
 
   @Override
-  public SCMNil eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMVoid eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
@@ -58,7 +59,7 @@ public enum Define implements ISpecialForm {
     } else {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-    return null;
+    return SCMVoid.VOID;
   }
 
   @Override

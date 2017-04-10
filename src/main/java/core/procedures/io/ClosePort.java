@@ -3,6 +3,7 @@ package core.procedures.io;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.ISCMPort;
+import core.scm.SCMVoid;
 
 import java.io.IOException;
 
@@ -18,12 +19,12 @@ public final class ClosePort extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
+  public SCMVoid apply(Object... args) {
     try {
       ((ISCMPort)args[0]).close();
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return null;
+    return SCMVoid.VOID;
   }
 }

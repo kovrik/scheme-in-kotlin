@@ -5,6 +5,7 @@ import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMOutputPort;
+import core.scm.SCMVoid;
 
 import java.io.IOException;
 
@@ -34,6 +35,6 @@ public final class Newline extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return null;
+    return SCMVoid.VOID;
   }
 }

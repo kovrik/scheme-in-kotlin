@@ -24,6 +24,7 @@ public enum SCMClass implements ISCMClass {
   ENVIRONMENT("Environment"),
   SPECIAL_FORM("SpecialForm"),
   NIL("Nil"),
+  VOID("Void"),
   LIST("List"),
   PAIR("Pair"),
   SYMBOL("Symbol"),

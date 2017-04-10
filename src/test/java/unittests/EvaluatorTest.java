@@ -7,6 +7,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
 import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
+import core.scm.SCMVoid;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -178,6 +179,6 @@ public class EvaluatorTest extends AbstractTest {
 
   @Test
   public void testForEach() {
-    assertEquals(null, eval("(for-each length '(() (a) (a b)))", env));
+    assertEquals(SCMVoid.VOID, eval("(for-each length '(() (a) (a b)))", env));
   }
 }

@@ -10,6 +10,7 @@ import core.scm.SCMError;
 import core.scm.SCMInputPort;
 import core.scm.SCMOutputPort;
 import core.scm.SCMSymbol;
+import core.scm.SCMVoid;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -65,6 +66,11 @@ public class Repl {
         for (Object expr : sexps) {
           /* Macroexpand and then Evaluate each S-expression */
           Object result = evaluator.macroexpandAndEvaluate(expr, env);
+          /* Do not print and do not store void results */
+          if (result == SCMVoid.VOID) {
+            continue;
+          }
+          /* nil, on the other hand, is a valid result - print it, but not store it */
           if (result == null) {
             currentOutputPort.writeln(writer.toString(result));
             continue;
