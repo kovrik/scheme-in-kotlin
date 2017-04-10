@@ -119,7 +119,7 @@ public enum SCMClass implements ISCMClass {
     @Override public SCMClass getSCMClass() { return SCMClass.PAIR; }
   }
   /* Marker classes for numbers */
-  public abstract class ExactNonNegativeInteger {} // the only one that is actually used?
+  public abstract class ExactNonNegativeInteger {}
   public abstract class ExactInteger {}
   public abstract class ExactPositiveInteger {}
   public abstract class InexactReal {}
