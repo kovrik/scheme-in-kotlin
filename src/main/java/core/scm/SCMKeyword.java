@@ -7,7 +7,7 @@ import core.procedures.FnArgsBuilder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SCMKeyword extends AFn implements ISCMClass {
+public class SCMKeyword extends AFn implements ISCMClass, INamed {
 
   private static final ConcurrentHashMap<String, SCMKeyword> CACHE = new ConcurrentHashMap<>();
 
