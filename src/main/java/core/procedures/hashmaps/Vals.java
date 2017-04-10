@@ -6,9 +6,9 @@ import core.scm.SCMCons;
 
 import java.util.Map;
 
-public final class Values extends AFn {
+public final class Vals extends AFn {
 
-  public Values() {
+  public Vals() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Map.class}));
   }
 
@@ -19,7 +19,7 @@ public final class Values extends AFn {
 
   @Override
   public String getName() {
-    return "values";
+    return "vals";
   }
 
   @Override

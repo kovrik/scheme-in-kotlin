@@ -251,7 +251,7 @@ public final class DefaultEnvironment extends Environment {
       new HashMapProc(),
       new Put(),
       new Keys(),
-      new Values(),
+      new Vals(),
       new Merge(),
       new Zipmap(),
 
@@ -341,7 +341,7 @@ public final class DefaultEnvironment extends Environment {
   private static final List<String> LIBRARY_PROCEDURES = new ArrayList<>();
   static {
     /* Naive implementations (not via Continuations) */
-//    LIBRARY_PROCEDURES.add("(define values list)");
+    LIBRARY_PROCEDURES.add("(define values list)");
     LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))");
 
     LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
