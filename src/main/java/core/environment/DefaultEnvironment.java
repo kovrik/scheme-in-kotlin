@@ -187,6 +187,8 @@ public final class DefaultEnvironment extends Environment {
 
       /* IO */
       new Display(),
+      new Display() { @Override public String getName() { return "print"; } },
+      new Println(),
       new Newline(),
       new Load(),
       new Read(),

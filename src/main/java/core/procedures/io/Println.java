@@ -10,16 +10,16 @@ import core.writer.Writer;
 
 import java.io.IOException;
 
-public class Display extends AFn {
+public final class Println extends AFn {
 
-  public Display() {
+  public Println() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class})
                                                    .restArgsType(SCMOutputPort.class));
   }
 
   @Override
   public String getName() {
-    return "display";
+    return "println";
   }
 
   @Override
@@ -33,9 +33,9 @@ public class Display extends AFn {
     Object arg = args[0];
     try {
       if ((arg instanceof CharSequence) || (arg instanceof Character)) {
-        outputPort.write(arg.toString());
+        outputPort.writeln(arg.toString());
       } else {
-        outputPort.write(Writer.write(arg));
+        outputPort.writeln(Writer.write(arg));
       }
     } catch (IOException e) {
       throw new SCMIOException(e);
