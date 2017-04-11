@@ -36,6 +36,9 @@ public enum Lambda implements ISpecialForm {
       if (!((List) args).isEmpty()) {
         HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
+          if (!(o instanceof SCMSymbol) && !(SCMCons.isPair(o))) {
+            throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", o));
+          }
           if (temp.contains(o)) {
             throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument name: %s", o));
           }

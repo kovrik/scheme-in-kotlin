@@ -6,7 +6,6 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.scm.SCMNil;
 import core.scm.SCMVoid;
 
 import java.util.List;
@@ -42,6 +41,11 @@ public enum Define implements ISpecialForm {
 
       /* Args */
       SCMCons args = SCMCons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
+      for (Object arg : args) {
+        if (!(arg instanceof SCMSymbol) && !(SCMCons.isPair(arg))) {
+          throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", arg));
+        }
+      }
       args.setIsList(SCMCons.isList(expression.get(1)));
       l.add(args);
 
@@ -53,7 +57,11 @@ public enum Define implements ISpecialForm {
       /* Get procedure's name */
       // TODO (define (((a))) 1)
       // TODO (define ((a n) c) n)
-      SCMSymbol name = (SCMSymbol)((SCMCons)id).get(0);
+      Object n = ((SCMCons) id).get(0);
+      if (!(n instanceof SCMSymbol)) {
+        throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier for procedure name: %s", n));
+      }
+      SCMSymbol name = (SCMSymbol)n;
       lambda.setName(name.toString());
       env.put(name, lambda);
     } else {
