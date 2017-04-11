@@ -69,6 +69,7 @@ public final class DefaultEnvironment extends Environment {
       new HashCode(),
       new ToString(),
       new Name(),
+      new Identity(),
 
       /* Delayed */
       new Force(),
