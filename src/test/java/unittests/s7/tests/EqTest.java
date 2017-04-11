@@ -18,7 +18,8 @@ public class EqTest extends AbstractTest {
         "(eq? car car)", "(let ((x (lambda () 1))) (eq? x x))", "(let ((x (lambda () 1))) (let ((y x)) (eq? x y)))",
         "(eq? 'abc 'abc)", "(eq? eq? eq?)", "(eq? '() '())", "(eq? '() '(  ))", "(eq? '()'())", "(eq? '() (list))",
         "(eq? '() (list))", "(eq? '#f #f)", "(eq? '#f '#f)", "(eq? #f '  #f)", "(eq? '()'())", "(eq? 'if 'if)",
-        "(eq? (list) (list))", "(eq? (list) '())", };
+        "(eq? (list) (list))", "(eq? (list) '())", "(eq? :test :test)", "(eq? :test (keyword \"test\"))",
+        "(eq? '+ '+)", "(eq? 'test (symbol \"test\"))"};
     assertAllEqual(TRUE, trues, env);
 
     String[] falses = {

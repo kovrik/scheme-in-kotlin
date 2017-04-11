@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMSymbol;
 
-public final class StringToSymbol extends AFn {
+public class StringToSymbol extends AFn {
 
   public StringToSymbol() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));

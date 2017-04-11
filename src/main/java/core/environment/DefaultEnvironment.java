@@ -124,6 +124,7 @@ public final class DefaultEnvironment extends Environment {
       NumericalComparison.GREATER,
       NumericalComparison.GREATER_EQUAL,
       new Eq(),
+      new Eq() { @Override public String getName() { return "identical?"; }},
       new Eqv(),
       new Equal(),
 
@@ -224,6 +225,7 @@ public final class DefaultEnvironment extends Environment {
       /* Symbols */
       new SymbolToString(),
       new StringToSymbol(),
+      new StringToSymbol() { @Override public String getName() { return "symbol"; } },
 
       /* Vectors */
       new MakeVector(),
@@ -428,6 +430,5 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("hash"),        get(SCMSymbol.of("hashcode")));
     put(SCMSymbol.of("first"),       get(SCMSymbol.of("car")));
     put(SCMSymbol.of("next"),        get(SCMSymbol.of("cdr")));
-    put(SCMSymbol.of("identical?"),  get(SCMSymbol.of("eq?")));
   }
 }

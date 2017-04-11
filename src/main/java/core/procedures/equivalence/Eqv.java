@@ -1,12 +1,17 @@
 package core.procedures.equivalence;
 
 import core.procedures.AFn;
+import core.procedures.FnArgsBuilder;
 import core.scm.SCMCons;
 import core.scm.SCMSymbol;
 
 import java.util.List;
 
 public final class Eqv extends AFn {
+
+  public Eqv() {
+    super(new FnArgsBuilder().minArgs(2));
+  }
 
   @Override
   public boolean isPure() {
@@ -21,10 +26,8 @@ public final class Eqv extends AFn {
   @Override
   public Boolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
-    if (args.length > 1) {
-      for (int i = 0; i < args.length - 1; i++) {
-        result = result && eqv(args[i], args[i + 1]);
-      }
+    for (int i = 0; i < args.length - 1; i++) {
+      result = result && eqv(args[i], args[i + 1]);
     }
     return result;
   }
