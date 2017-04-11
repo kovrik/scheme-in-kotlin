@@ -8,7 +8,10 @@ import core.procedures.characters.IntegerToChar;
 import core.procedures.cons.*;
 import core.procedures.continuations.CallCC;
 import core.procedures.continuations.DynamicWind;
+import core.procedures.delayed.Deliver;
+import core.procedures.delayed.Deref;
 import core.procedures.delayed.Force;
+import core.procedures.delayed.Promise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
@@ -73,6 +76,9 @@ public final class DefaultEnvironment extends Environment {
 
       /* Delayed */
       new Force(),
+      new Promise(),
+      new Deliver(),
+      new Deref(),
 
       /* Math */
       new Negation(),
@@ -438,6 +444,5 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("next"),        get(SCMSymbol.of("cdr")));
     put(SCMSymbol.of("def"),         get(SCMSymbol.of("define")));
     put(SCMSymbol.of("fn"),          get(SCMSymbol.of("lambda")));
-    put(SCMSymbol.of("promise"),     get(SCMSymbol.of("delay")));
   }
 }

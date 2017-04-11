@@ -4,7 +4,7 @@ import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
-import core.exceptions.ReentrantPromiseException;
+import core.exceptions.ReentrantDelayException;
 import core.procedures.io.Display;
 import core.scm.*;
 import core.scm.specialforms.Quote;
@@ -60,7 +60,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(1d, eval("(force (delay 1.0))", env));
     assertEquals("test", eval("(force (delay \"test\"))", env));
     assertEquals(10L, eval("(force (delay (+ 5 2 (* 1 3))))", env));
-    assertEquals(SCMPromise.class, eval("(delay 1.0)", env).getClass());
+    assertEquals(SCMDelay.class, eval("(delay 1.0)", env).getClass());
     assertEquals(TRUE,  eval("(promise? (delay 1.0))", env));
     assertEquals(FALSE, eval("(promise? (future 1.0))", env));
     assertEquals(FALSE, eval("(future?  (delay 1.0))", env));
@@ -104,7 +104,7 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(force p)", env);
       fail();
-    } catch (ReentrantPromiseException e) {
+    } catch (ReentrantDelayException e) {
       // success
     }
   }
@@ -545,7 +545,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(SCMClass.BOOLEAN, eval("(class-of (= 1 2))", env));
     assertEquals(SCMClass.PROCEDURE, eval("(class-of +)", env));
     assertEquals(SCMClass.PROCEDURE, eval("(class-of (lambda (n) n))", env));
-    assertEquals(SCMClass.PROMISE, eval("(class-of (delay (+ 1 2)))", env));
+    assertEquals(SCMClass.DELAY, eval("(class-of (delay (+ 1 2)))", env));
   }
 
   @Test

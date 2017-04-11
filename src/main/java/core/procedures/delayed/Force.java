@@ -2,10 +2,12 @@ package core.procedures.delayed;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.exceptions.ReentrantPromiseException;
+import core.exceptions.ReentrantDelayException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMFuture;
+import core.scm.SCMDelay;
 import core.scm.SCMPromise;
 
 public final class Force extends AFn {
@@ -14,7 +16,7 @@ public final class Force extends AFn {
   public static final Force FORCE = new Force();
 
   public Force() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMPromise.class}));
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMDelay.class}));
   }
 
   @Override
@@ -28,7 +30,14 @@ public final class Force extends AFn {
   }
 
   /* Actual force implementation */
-  public Object force(SCMPromise p, Environment env, Evaluator evaluator) {
+  public Object force(Object delay, Environment env, Evaluator evaluator) {
+    if (delay instanceof SCMPromise) {
+      return delay;
+    }
+    if (!(delay instanceof SCMDelay)) {
+      throw new WrongTypeException(getName(), "Promise or Future or Delay", delay);
+    }
+    SCMDelay p  = (SCMDelay)delay;
     switch (p.getState()) {
       case FULFILLED: return p.getValue();
       case REJECTED : throw (RuntimeException) p.getValue();
@@ -40,8 +49,8 @@ public final class Force extends AFn {
             return p.getValue();
           }
         }
-        /* Not allowed to force promises multiple times! */
-        throw new ReentrantPromiseException(p);
+        /* Not allowed to force delays multiple times! */
+        throw new ReentrantDelayException(p);
       }
       default: {
         if (p instanceof SCMFuture) {
@@ -55,11 +64,10 @@ public final class Force extends AFn {
   }
 
   // TODO Make it right:
-  // - always block (even on promise, but always by current thread)
-  // - make promises deliverable
+  // - always block (even on promise and delay, but always by current thread)
   // - fix synchronization? use locks?
-  private Object forceDelayed(final SCMPromise p, Environment env, Evaluator evaluator) {
-    p.setState(SCMPromise.State.FORCED);
+  private Object forceDelayed(final SCMDelay p, Environment env, Evaluator evaluator) {
+    p.setState(SCMDelay.State.FORCED);
     try {
       /* Evaluate the body */
       Object result;
@@ -71,14 +79,14 @@ public final class Force extends AFn {
       } else {
         result = evaluator.eval(p.getExpr(), env);
       }
-      /* Mark Promise as FULFILLED */
-      p.setState(SCMPromise.State.FULFILLED);
+      /* Mark delay as FULFILLED */
+      p.setState(SCMDelay.State.FULFILLED);
       /* Memoize the result */
       p.setValue(result);
       return result;
     } catch (Exception e) {
-      /* Mark Promise as REJECTED */
-      p.setState(SCMPromise.State.REJECTED);
+      /* Mark delay as REJECTED */
+      p.setState(SCMDelay.State.REJECTED);
       /* Memoize the result */
       p.setValue(e);
       throw e;

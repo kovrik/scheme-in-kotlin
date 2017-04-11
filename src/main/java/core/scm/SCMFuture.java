@@ -1,6 +1,6 @@
 package core.scm;
 
-public class SCMFuture extends SCMPromise implements ISCMClass {
+public class SCMFuture extends SCMDelay implements ISCMClass {
 
   public SCMFuture(Object expr) {
     super(expr);

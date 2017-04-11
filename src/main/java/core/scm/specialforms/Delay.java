@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
-import core.scm.SCMPromise;
+import core.scm.SCMDelay;
 
 import java.util.List;
 
@@ -15,16 +15,16 @@ public enum Delay implements ISpecialForm {
   DELAY;
 
   @Override
-  public SCMPromise eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMDelay eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     if (expression.size() > 2) {
       SCMCons list = SCMCons.list(Begin.BEGIN);
       list.addAll(expression.subList(1, expression.size()));
-      return new SCMPromise(list);
+      return new SCMDelay(list);
     }
-    return new SCMPromise(expression.get(1));
+    return new SCMDelay(expression.get(1));
   }
 
   @Override

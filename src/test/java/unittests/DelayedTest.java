@@ -1,6 +1,6 @@
 package unittests;
 
-import core.exceptions.ReentrantPromiseException;
+import core.exceptions.ReentrantDelayException;
 import org.junit.Test;
 
 import static java.lang.Boolean.FALSE;
@@ -16,7 +16,7 @@ public class DelayedTest extends AbstractTest {
   }
 
   @Test
-  public void testEvalPromise() {
+  public void testEvalDelayed() {
     try {
       eval("((delay (* (+ 2 3) 4))))", env);
       fail();
@@ -31,7 +31,7 @@ public class DelayedTest extends AbstractTest {
   }
 
   @Test
-  public void testReentrantPromise() {
+  public void testReentrantDelay() {
     eval("(define x 0)", env);
     String conundrum = "(define p" +
                        "  (delay" +
@@ -46,8 +46,8 @@ public class DelayedTest extends AbstractTest {
     try {
       eval("(force p)", env);
       fail();
-    } catch (ReentrantPromiseException e) {
-      assertTrue(e.getMessage().startsWith("Re-entrant promise:"));
+    } catch (ReentrantDelayException e) {
+      assertTrue(e.getMessage().startsWith("Re-entrant delay:"));
     }
   }
 }

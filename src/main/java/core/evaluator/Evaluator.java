@@ -67,7 +67,7 @@ public class Evaluator {
       return maybeUpcast((Number) result);
     }
     /* Eagerly force pending (freshly created) futures */
-    if (result instanceof SCMFuture && ((SCMFuture) result).getState() == SCMPromise.State.PENDING) {
+    if (result instanceof SCMFuture && ((SCMFuture) result).getState() == SCMDelay.State.PENDING) {
       Force.FORCE.force((SCMFuture) result, env, this);
     }
     return result;
@@ -188,7 +188,7 @@ public class Evaluator {
     AFn fn = (AFn)op;
     /* force */
     if (fn instanceof Force) {
-      return ((Force)fn).force((SCMPromise)args.get(0), env, this);
+      return ((Force)fn).force(args.get(0), env, this);
     }
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {

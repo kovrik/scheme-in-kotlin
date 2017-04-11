@@ -11,6 +11,7 @@ import core.utils.NumberUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public final class SCMPredicate extends AFn {
@@ -20,7 +21,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
-  public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (SCMPromise.class.equals(o.getClass())));
+  public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (o instanceof CompletableFuture) || (SCMDelay.class.equals(o.getClass())));
   public static final SCMPredicate IS_FUTURE = new SCMPredicate("future?", o -> (SCMFuture.class.equals(o.getClass())));
   public static final SCMPredicate IS_REALIZED = new SCMPredicate("realized?", SCMPredicate::isRealized);
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
@@ -113,9 +114,12 @@ public final class SCMPredicate extends AFn {
   }
 
   private static boolean isRealized(Object o) {
-    if (!(o instanceof SCMPromise)) {
+    if (!(o instanceof SCMDelay) && !(o instanceof CompletableFuture)) {
       throw new WrongTypeException("realized?", "Promise or Future", o);
     }
-    return ((SCMPromise)o).getState() == SCMPromise.State.FULFILLED;
+    if (o instanceof CompletableFuture) {
+      return ((CompletableFuture) o).isDone();
+    }
+    return ((SCMDelay)o).getState() == SCMDelay.State.FULFILLED;
   }
 }

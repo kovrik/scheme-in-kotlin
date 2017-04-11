@@ -5,7 +5,7 @@ import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMFuture;
-import core.scm.SCMPromise;
+import core.scm.SCMDelay;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public enum Future implements ISpecialForm {
   FUTURE;
 
   @Override
-  public SCMPromise eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public SCMDelay eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
