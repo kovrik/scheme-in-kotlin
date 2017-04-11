@@ -33,6 +33,6 @@ public final class CallWithInputFile extends AFn {
     }
     IFn proc = ((IFn)args[1]);
     SCMCons sexp = SCMCons.list(proc, inputPort);
-    return new SCMThunk(sexp, null);
+    return new SCMThunk(sexp);
   }
 }

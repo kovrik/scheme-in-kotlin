@@ -24,6 +24,6 @@ public final class ForEach extends AFn {
     /* For-each is the same as Map, but ignores the result */
     SCMThunk map = MapProc.MAP_PROC.apply(args);
     /* Void (ignore) results: (void <map-results>) */
-    return new SCMThunk(SCMCons.list(Void.VOID, map.getExpr()), null);
+    return new SCMThunk(SCMCons.list(Void.VOID, map.getExpr()));
   }
 }

@@ -22,6 +22,6 @@ public final class Eval extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    return new SCMThunk(arg, null);
+    return new SCMThunk(arg);
   }
 }

@@ -32,6 +32,6 @@ public final class Read extends AFn {
     }
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
     sexps.addAll(new Reader(inputPort.getInputStream()).read());
-    return new SCMThunk(sexps, null);
+    return new SCMThunk(sexps);
   }
 }

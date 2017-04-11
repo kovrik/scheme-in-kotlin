@@ -28,6 +28,6 @@ public final class Load extends AFn {
     File file = new File(args[0].toString());
     List<Object> sexps = SCMCons.list(Begin.BEGIN);
     sexps.addAll(reader.read(file));
-    return new SCMThunk(sexps, null);
+    return new SCMThunk(sexps);
   }
 }

@@ -65,6 +65,6 @@ public final class Apply extends AFn {
         }
       }
     }
-    return new SCMThunk(sexp, null);
+    return new SCMThunk(sexp);
   }
 }

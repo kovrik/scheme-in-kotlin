@@ -16,6 +16,10 @@ public class SCMThunk {
   private final Object expr;
   private final Environment context;
 
+  public SCMThunk(Object expr) {
+    this(expr, null);
+  }
+
   public SCMThunk(Object expr, Environment context) {
     this.expr = expr;
     this.context = context;
