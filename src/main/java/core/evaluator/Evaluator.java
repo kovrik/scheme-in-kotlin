@@ -4,7 +4,6 @@ import core.environment.Environment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
@@ -66,6 +65,10 @@ public class Evaluator {
     }
     if (result instanceof Number) {
       return maybeUpcast((Number) result);
+    }
+    /* Eagerly force pending (freshly created) futures */
+    if (result instanceof SCMFuture && ((SCMFuture) result).getState() == SCMPromise.State.PENDING) {
+      Force.FORCE.force((SCMFuture) result, env, this);
     }
     return result;
   }

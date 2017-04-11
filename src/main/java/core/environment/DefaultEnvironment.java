@@ -292,6 +292,8 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_MAP_ENTRY,
       SCMPredicate.IS_COLL,
       SCMPredicate.IS_PROMISE,
+      SCMPredicate.IS_FUTURE,
+      SCMPredicate.IS_REALIZED,
       SCMPredicate.IS_CHAR,
       SCMPredicate.IS_STRING,
       SCMPredicate.IS_VECTOR,
@@ -324,6 +326,7 @@ public final class DefaultEnvironment extends Environment {
 
   private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {
     Delay.DELAY,
+    Future.FUTURE,
     Quote.QUOTE,
     Set.SET,
     Quasiquote.QUASIQUOTE,

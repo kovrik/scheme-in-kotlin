@@ -61,7 +61,10 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals("test", eval("(force (delay \"test\"))", env));
     assertEquals(10L, eval("(force (delay (+ 5 2 (* 1 3))))", env));
     assertEquals(SCMPromise.class, eval("(delay 1.0)", env).getClass());
-    assertEquals(TRUE, eval("(promise? (delay 1.0))", env));
+    assertEquals(TRUE,  eval("(promise? (delay 1.0))", env));
+    assertEquals(FALSE, eval("(promise? (future 1.0))", env));
+    assertEquals(FALSE, eval("(future?  (delay 1.0))", env));
+    assertEquals(TRUE,  eval("(future?  (future 1.0))", env));
     assertEquals(3L, eval("(force (delay (+ 1 2)))", env));
     assertEquals(list(3L, 3L), eval("(let ((p (delay (+ 1 2))))(list (force p) (force p)))", env));
 

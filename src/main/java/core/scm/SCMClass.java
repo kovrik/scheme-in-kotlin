@@ -32,6 +32,7 @@ public enum SCMClass implements ISCMClass {
   MUTABLE_VECTOR("MutableVector"),
   IMMUTABLE_VECTOR("ImmutableVector"),
   PROMISE("Promise"),
+  FUTURE("Future"),
   PROCEDURE("Procedure"),
   CONTINUATION("Continuation"),
   ERROR("Error"),
@@ -69,6 +70,7 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMImmutableVector.class,    IMMUTABLE_VECTOR);
     SCM_CLASSES.put(SCMMutableVector.class,      MUTABLE_VECTOR);
     SCM_CLASSES.put(SCMPromise.class,            PROMISE);
+    SCM_CLASSES.put(SCMFuture.class,             FUTURE);
     SCM_CLASSES.put(ISCMPort.class,              PORT);
     SCM_CLASSES.put(SCMOutputPort.class,         OUTPUT_PORT);
     SCM_CLASSES.put(SCMInputPort.class,          INPUT_PORT);

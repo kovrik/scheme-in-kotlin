@@ -4,15 +4,16 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
+import core.scm.SCMFuture;
 import core.scm.SCMPromise;
 
 import java.util.List;
 
 /* Syntax:
- * (delay <expression>)
+ * (future <expression>)
  */
-public enum Delay implements ISpecialForm {
-  DELAY;
+public enum Future implements ISpecialForm {
+  FUTURE;
 
   @Override
   public SCMPromise eval(List<Object> expression, Environment env, Evaluator evaluator) {
@@ -22,13 +23,13 @@ public enum Delay implements ISpecialForm {
     if (expression.size() > 2) {
       SCMCons list = SCMCons.list(Begin.BEGIN);
       list.addAll(expression.subList(1, expression.size()));
-      return new SCMPromise(list);
+      return new SCMFuture(list);
     }
-    return new SCMPromise(expression.get(1));
+    return new SCMFuture(expression.get(1));
   }
 
   @Override
   public String toString() {
-    return "delay";
+    return "future";
   }
 }

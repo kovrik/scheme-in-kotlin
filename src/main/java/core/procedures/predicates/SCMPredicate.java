@@ -20,7 +20,9 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);
-  public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (o instanceof SCMPromise));
+  public static final SCMPredicate IS_PROMISE = new SCMPredicate("promise?", o -> (SCMPromise.class.equals(o.getClass())));
+  public static final SCMPredicate IS_FUTURE = new SCMPredicate("future?", o -> (SCMFuture.class.equals(o.getClass())));
+  public static final SCMPredicate IS_REALIZED = new SCMPredicate("realized?", SCMPredicate::isRealized);
   public static final SCMPredicate IS_CHAR = new SCMPredicate("char?", o -> (o instanceof Character));
   public static final SCMPredicate IS_STRING = new SCMPredicate("string?", o -> (o instanceof CharSequence));
   public static final SCMPredicate IS_VECTOR = new SCMPredicate("vector?", o -> (o instanceof SCMVector));
@@ -108,5 +110,12 @@ public final class SCMPredicate extends AFn {
       return ((Map)o).size() == 0;
     }
     return false;
+  }
+
+  private static boolean isRealized(Object o) {
+    if (!(o instanceof SCMPromise)) {
+      throw new WrongTypeException("realized?", "Promise or Future", o);
+    }
+    return ((SCMPromise)o).getState() == SCMPromise.State.FULFILLED;
   }
 }

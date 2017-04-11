@@ -2,9 +2,7 @@ package core.scm;
 
 import core.writer.Writer;
 
-import static core.scm.SCMPromise.State.FULFILLED;
-import static core.scm.SCMPromise.State.PENDING;
-import static core.scm.SCMPromise.State.REJECTED;
+import static core.scm.SCMPromise.State.*;
 
 public class SCMPromise implements ISCMClass {
 
@@ -16,8 +14,8 @@ public class SCMPromise implements ISCMClass {
   }
 
   private final Object expr;
-  private Object value;
-  private State state = PENDING;
+  protected volatile Object value;
+  private volatile State state = PENDING;
 
   public SCMPromise(Object expr) {
     this.expr = expr;
@@ -43,6 +41,10 @@ public class SCMPromise implements ISCMClass {
     this.state = state;
   }
 
+  protected String getName() {
+    return "promise";
+  }
+
   @Override
   public SCMClass getSCMClass() {
     return SCMClass.PROMISE;
@@ -50,12 +52,18 @@ public class SCMPromise implements ISCMClass {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("#<promise");
-    if (state == REJECTED) {
-      sb.append("!error!").append(Writer.write(value));
-    }
-    if (state == FULFILLED) {
-      sb.append("!").append(Writer.write(value));
+    StringBuilder sb = new StringBuilder("#<").append(getName());
+    switch (state) {
+      case REJECTED:
+        sb.append("!error!").append(Writer.write(value));
+        break;
+      case FULFILLED:
+        sb.append("!").append(Writer.write(value));
+        break;
+      case PENDING:
+      case FORCED:
+        sb.append(":pending");
+        break;
     }
     return sb.append(">").toString();
   }
