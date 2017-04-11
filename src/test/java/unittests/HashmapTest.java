@@ -39,12 +39,12 @@ public class HashmapTest extends AbstractTest {
 
   @Test
   public void testHashmapPut() {
-    assertEquals(5L, eval("( (put {} 3 5) 3)", env));
-    assertEquals(5L, eval("( (put {} 3 (+ 2 3)) 7 5)", env));
+    assertEquals(5L, eval("((put {} 3 5) 3)", env));
+    assertEquals(5L, eval("((put {} 3 (+ 2 3)) 7 5)", env));
     assertEquals(5L, eval("(get (put {} 3 (+ 2 3)) (+ 1 2))", env));
     assertEquals(5L, eval("(get (put {} 3 (+ 2 3)) 7 5)", env));
-    assertEquals("B", eval("( (put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
-    assertEquals("B", eval("( (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("((put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
+    assertEquals("B", eval("((put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
     assertEquals("B", eval("(get (put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
     assertEquals("B", eval("(get (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
   }
