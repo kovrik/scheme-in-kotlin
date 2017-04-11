@@ -431,5 +431,6 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("hash"),        get(SCMSymbol.of("hashcode")));
     put(SCMSymbol.of("first"),       get(SCMSymbol.of("car")));
     put(SCMSymbol.of("next"),        get(SCMSymbol.of("cdr")));
+    put(SCMSymbol.of("def"),         get(SCMSymbol.of("define")));
   }
 }
