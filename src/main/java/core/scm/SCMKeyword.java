@@ -15,7 +15,8 @@ public class SCMKeyword extends AFn implements ISCMClass, INamed {
 
   private SCMKeyword(String name) {
     super(new FnArgsBuilder().mandatoryArgsTypes(new Class[]{Map.class}));
-    this.name = name;
+    // always intern keywords
+    this.name = name.intern();
   }
 
   public static SCMKeyword of(String value) {

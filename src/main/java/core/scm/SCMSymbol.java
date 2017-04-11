@@ -29,7 +29,8 @@ public class SCMSymbol implements ISCMClass, INamed {
   }
 
   private SCMSymbol(String value) {
-    this.value = value;
+    // always intern symbols
+    this.value = value.intern();
     this.escape = hasSpecialChars();
   }
 
