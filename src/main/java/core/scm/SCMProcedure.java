@@ -21,22 +21,6 @@ public class SCMProcedure extends AFn {
   /* Lexical environment */
   private Environment localEnvironment = null;
 
-  /* Minimum number of arguments */
-  private int minArgs = 0;
-
-  /* Maximum number of arguments */
-  private int maxArgs = 255;
-
-  @Override
-  public int minArgs() {
-    return minArgs;
-  }
-
-  @Override
-  public int maxArgs() {
-    return maxArgs;
-  }
-
   public SCMProcedure(String name, List<SCMSymbol> args, Object body, Environment localEnvironment, boolean isVariadic) {
     this.name = name;
     this.args = (args == null) ? SCMCons.EMPTY : args;

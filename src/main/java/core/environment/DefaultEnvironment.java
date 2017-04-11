@@ -432,5 +432,6 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.of("first"),       get(SCMSymbol.of("car")));
     put(SCMSymbol.of("next"),        get(SCMSymbol.of("cdr")));
     put(SCMSymbol.of("def"),         get(SCMSymbol.of("define")));
+    put(SCMSymbol.of("fn"),          get(SCMSymbol.of("lambda")));
   }
 }

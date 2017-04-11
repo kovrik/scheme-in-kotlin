@@ -10,8 +10,8 @@ import java.util.List;
 /* Abstract superclass of all functions */
 public abstract class AFn implements IFn<Object[], Object> {
 
-  private final int minArgs;
-  private final int maxArgs;
+  protected int minArgs;
+  protected int maxArgs;
   private final Class<?>[] mandatoryArgsTypes;
   private final Class<?> restArgsType;
   private final Class<?> lastArgType;
