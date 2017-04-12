@@ -1,15 +1,14 @@
 package core.procedures.delayed;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.IDeref;
 
-import java.util.concurrent.ExecutionException;
-
 public final class Deref extends AFn {
 
   public Deref() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{IDeref.class}));
+    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
   }
 
   @Override
@@ -19,10 +18,9 @@ public final class Deref extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    try {
-      return ((IDeref)arg).deref();
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException(e);
+    if (!(arg instanceof IDeref)) {
+      throw new WrongTypeException(getName(), "Delay or Promise or Future", arg);
     }
+    return ((IDeref) arg).deref();
   }
 }

@@ -249,7 +249,7 @@ public class ReaderTest extends AbstractTest {
   @Test
   public void testReadIdentifier() {
     String[] ids = {"test", "lambda", "list->vector", "+", "<=?", "the-word-recursion-has-many-meanings", "soup", "a",
-                    "ab", "+5+5", "1/1/1", "---", "123_", "....", "@@@", "&", "$", "~", "//", "ab-3i", "3-ai", "1/1/-2i"};
+                    "ab", "+5+5", "1/1/1", "---", "123_", "....", "&", "$", "~", "//", "ab-3i", "3-ai", "1/1/-2i"};
     Arrays.stream(ids).forEach(id -> assertEquals(s(id), reader.readFirst(id)));
   }
 

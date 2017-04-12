@@ -125,6 +125,7 @@ public class Reader implements IReader {
       case '\'': return readQuote(c);
       case '`':  return readQuote(c);
       case ',':  return readQuote(c);
+      case '@':  return readDeref();
       case '#':  return readHash();
       case '(':  return readList(true, ')');
       case '{':  return readHashmap();
@@ -483,5 +484,14 @@ public class Reader implements IReader {
       throw new IllegalSyntaxException("read: illegal use of :");
     }
     return SCMKeyword.of(s);
+  }
+
+  /**
+   * Deref shortcut
+   *
+   * \@f -> (deref f)
+   */
+  private List<Object> readDeref() throws IOException {
+    return SCMCons.list(SCMSymbol.of("deref"), nextNonNullToken());
   }
 }

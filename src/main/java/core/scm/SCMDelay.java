@@ -1,48 +1,63 @@
 package core.scm;
 
+import core.environment.Environment;
+import core.evaluator.Evaluator;
+import core.exceptions.ReentrantDelayException;
 import core.writer.Writer;
 
-import static core.scm.SCMDelay.State.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SCMDelay implements ISCMClass {
+public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, IDeref {
 
-  public enum State {
-    PENDING,
-    FORCED,
-    FULFILLED,
-    REJECTED
-  }
+  private final AtomicBoolean forced = new AtomicBoolean(false);
 
+  private final Evaluator evaluator;
+  private final Environment env;
   private final Object expr;
-  protected volatile Object value;
-  private volatile State state = PENDING;
 
-  public SCMDelay(Object expr) {
+  public SCMDelay(Object expr, Environment env, Evaluator evaluator) {
+    super();
+    this.evaluator = evaluator;
+    this.env = env;
     this.expr = expr;
   }
 
-  public Object getExpr() {
-    return expr;
+  @Override
+  public Object deref() {
+    if (isCancelled()) {
+      return null;
+    }
+    if (isCompletedExceptionally() || isDone()) {
+      return getValue();
+    }
+    if (!forced.compareAndSet(false, true)) {
+      /* Do not allow delay to be forced twice */
+      throw new ReentrantDelayException(this);
+    }
+    try {
+      /* Always run delay in current thread */
+      complete(evaluator.eval(expr, env));
+      return get();
+    } catch (Exception e) {
+      completeExceptionally(e);
+    }
+    return getValue();
   }
 
-  public Object getValue() {
-    return value;
-  }
-
-  public void setValue(Object value) {
-    this.value = value;
-  }
-
-  public State getState() {
-    return state;
-  }
-
-  public void setState(State state) {
-    this.state = state;
-  }
-
-  protected String getName() {
-    return "delay";
+  private Object getValue() {
+    if (isCompletedExceptionally() || isDone()) {
+      try {
+        return get();
+      } catch (InterruptedException | ExecutionException e) {
+        if (e.getCause() instanceof RuntimeException) {
+          throw (RuntimeException)e.getCause();
+        }
+        throw new RuntimeException(e.getMessage());
+      }
+    }
+    return null;
   }
 
   @Override
@@ -52,18 +67,23 @@ public class SCMDelay implements ISCMClass {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("#<").append(getName());
-    switch (state) {
-      case REJECTED:
-        sb.append("!error!").append(Writer.write(value));
-        break;
-      case FULFILLED:
-        sb.append("!").append(Writer.write(value));
-        break;
-      case PENDING:
-      case FORCED:
-        sb.append(":pending");
-        break;
+    StringBuilder sb = new StringBuilder("#<").append("delay");
+    if (isCompletedExceptionally()) {
+      Object value;
+      try {
+        value = getValue();
+      } catch (RuntimeException e) {
+        value = e;
+      }
+      sb.append("!error!").append(Writer.write(value));
+    } else if (isDone()) {
+      sb.append("!").append(Writer.write(getValue()));
+    } else if (isCancelled()) {
+      sb.append(":cancelled");
+    } else if (forced.get()) {
+      sb.append(":running");
+    } else {
+      sb.append(":pending");
     }
     return sb.append(">").toString();
   }

@@ -11,6 +11,7 @@ import core.procedures.continuations.DynamicWind;
 import core.procedures.delayed.Deliver;
 import core.procedures.delayed.Deref;
 import core.procedures.delayed.Force;
+import core.procedures.delayed.FutureCancel;
 import core.procedures.delayed.Promise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
@@ -79,6 +80,7 @@ public final class DefaultEnvironment extends Environment {
       new Promise(),
       new Deliver(),
       new Deref(),
+      new FutureCancel(),
 
       /* Math */
       new Negation(),
@@ -299,6 +301,9 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_COLL,
       SCMPredicate.IS_PROMISE,
       SCMPredicate.IS_FUTURE,
+      SCMPredicate.IS_FUTURE_DONE,
+      SCMPredicate.IS_FUTURE_CANCELLED,
+      SCMPredicate.IS_DELAY,
       SCMPredicate.IS_REALIZED,
       SCMPredicate.IS_CHAR,
       SCMPredicate.IS_STRING,

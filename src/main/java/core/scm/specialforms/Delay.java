@@ -19,12 +19,15 @@ public enum Delay implements ISpecialForm {
     if (expression.size() < 2) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
+    Object expr;
     if (expression.size() > 2) {
       SCMCons list = SCMCons.list(Begin.BEGIN);
       list.addAll(expression.subList(1, expression.size()));
-      return new SCMDelay(list);
+      expr = list;
+    } else {
+      expr = expression.get(1);
     }
-    return new SCMDelay(expression.get(1));
+    return new SCMDelay(expr, env, evaluator);
   }
 
   @Override

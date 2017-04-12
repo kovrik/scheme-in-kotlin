@@ -9,7 +9,6 @@ import core.procedures.IFn;
 import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
-import core.procedures.delayed.Force;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
@@ -18,8 +17,25 @@ import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Evaluator {
+
+  /* Executor Service for Futures */
+  private static final AtomicLong threadCounter = new AtomicLong(0);
+  public volatile static ExecutorService executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors(),
+                                                                                 createThreadFactory(threadCounter));
+
+  private static ThreadFactory createThreadFactory(AtomicLong threadCounter) {
+    return r -> {
+      Thread t = new Thread(r);
+      t.setName("executor-thread-" + threadCounter.getAndIncrement());
+      return t;
+    };
+  }
 
   private final Reflector reflector = new Reflector();
 
@@ -65,10 +81,6 @@ public class Evaluator {
     }
     if (result instanceof Number) {
       return maybeUpcast((Number) result);
-    }
-    /* Eagerly force pending (freshly created) futures */
-    if (result instanceof SCMFuture && ((SCMFuture) result).getState() == SCMDelay.State.PENDING) {
-      Force.FORCE.force((SCMFuture) result, env, this);
     }
     return result;
   }
@@ -186,10 +198,6 @@ public class Evaluator {
 
     // TODO Turn them into Special Forms?
     AFn fn = (AFn)op;
-    /* force */
-    if (fn instanceof Force) {
-      return ((Force)fn).force(args.get(0), env, this);
-    }
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
       return ((CallCC)fn).callcc((IFn) args.get(0), env, this);

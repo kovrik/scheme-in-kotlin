@@ -53,10 +53,10 @@ public class QuasiquoteTest extends AbstractTest {
     assertEquals(list(1L, 1L), eval("(quasiquote (,1 ,(quasiquote ,(quasiquote ,1))))", env));
     assertEquals(list(s("+")), eval("(let ((x '())) `(+ ,@x)) '(+)", env));
     try {
-      eval("`(1 , @(list 2 3))", env);
+      eval("`(1 , %(list 2 3))", env);
       fail();
     } catch (RuntimeException e) {
-      assertEquals("undefined identifier: @", e.getMessage());
+      assertEquals("undefined identifier: %", e.getMessage());
     }
   }
 }

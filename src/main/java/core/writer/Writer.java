@@ -69,6 +69,10 @@ public class Writer implements IWriter {
       return "#\\" + CODEPOINTS.getOrDefault(o, o.toString());
     }
     if (o instanceof Exception) {
+      Exception e = (Exception)o;
+      if (e.getMessage() == null) {
+        return e.getClass().getSimpleName();
+      }
       return ((Exception) o).getMessage();
     }
     if (o instanceof Map) {

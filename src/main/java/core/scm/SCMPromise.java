@@ -8,8 +8,12 @@ import java.util.concurrent.ExecutionException;
 public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISCMClass {
 
   @Override
-  public Object deref() throws ExecutionException, InterruptedException {
-    return get();
+  public Object deref() {
+    try {
+      return get();
+    } catch (ExecutionException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
