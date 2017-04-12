@@ -75,9 +75,10 @@ public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, ID
       } catch (RuntimeException e) {
         value = e;
       }
-      sb.append("!error!").append(Writer.write(value));
+      sb.append("!error!").append(value == this ? "(this delay)" : Writer.write(value));
     } else if (isDone()) {
-      sb.append("!").append(Writer.write(getValue()));
+      Object value = getValue();
+      sb.append("!").append(value == this ? Writer.write("(this delay)") : Writer.write(value));
     } else if (isCancelled()) {
       sb.append(":cancelled");
     } else if (forced.get()) {

@@ -37,7 +37,8 @@ public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISC
     if (isCompletedExceptionally()) {
       sb.append("!error!");
     } else if (isDone()) {
-      sb.append("!").append(Writer.write(getValue()));
+      Object value = getValue();
+      sb.append("!").append(value == this ? "(this promise)" : Writer.write(value));
     } else if (isCancelled()) {
       sb.append(":cancelled");
     } else {

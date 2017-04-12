@@ -49,7 +49,7 @@ public class SCMFuture extends FutureTask implements ISCMClass, IDeref {
         sb.append("error!");
         value = e;
       }
-      sb.append(Writer.write(value));
+      sb.append(value == this ? "(this future)" : Writer.write(value));
     } else if (isCancelled()) {
       sb.append(":cancelled");
     } else {

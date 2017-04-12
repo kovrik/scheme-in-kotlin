@@ -83,7 +83,7 @@ public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
     for (int i = 0; i < getArray().length; i++) {
       Object e = getArray()[i];
       if (e == this) {
-        sb.append("(this Vector)");
+        sb.append("(this vector)");
       } else {
         sb.append(Writer.write(e));
       }

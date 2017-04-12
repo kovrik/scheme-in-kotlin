@@ -142,11 +142,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
       /* List */
       for (int i = 0; i < list.size() - 1; i++) {
         Object e = list.get(i);
-        if (e == list) {
-          sb.append("(this List)");
-        } else {
-          sb.append(write(e));
-        }
+        sb.append(e == list ? "(this list)" : write(e));
         sb.append(' ');
       }
       sb.append(write(list.get(list.size() - 1)));
