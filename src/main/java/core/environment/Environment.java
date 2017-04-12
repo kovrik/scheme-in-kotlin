@@ -35,7 +35,7 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
       if (outer == null) {
         return defaultValue;
       }
-      return outer.find(key);
+      return outer.findOrDefault(key, defaultValue);
     }
     return value;
   }
