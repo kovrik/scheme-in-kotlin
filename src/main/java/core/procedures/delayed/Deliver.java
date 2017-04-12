@@ -18,7 +18,11 @@ public final class Deliver extends AFn {
 
   @Override
   public CompletableFuture<Object> apply2(Object promise, Object value) {
-    ((CompletableFuture) promise).complete(value);
-    return (CompletableFuture<Object>) promise;
+    CompletableFuture<Object> p = (CompletableFuture)promise;
+    if (p.isDone() || p.isCompletedExceptionally()) {
+      return null;
+    }
+    p.complete(value);
+    return p;
   }
 }
