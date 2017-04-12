@@ -9,11 +9,21 @@ public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISC
 
   @Override
   public Object deref() {
-    try {
-      return get();
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException(e);
+    return getValue();
+  }
+
+  private Object getValue() {
+    if (isDone()) {
+      try {
+        return get();
+      } catch (InterruptedException | ExecutionException e) {
+        if (e.getCause() instanceof RuntimeException) {
+          throw (RuntimeException)e.getCause();
+        }
+        throw new RuntimeException(e.getMessage());
+      }
     }
+    return null;
   }
 
   @Override
@@ -27,11 +37,7 @@ public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISC
     if (isCompletedExceptionally()) {
       sb.append("!error!");
     } else if (isDone()) {
-      try {
-        sb.append("!").append(Writer.write(get()));
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
-      }
+      sb.append("!").append(Writer.write(getValue()));
     } else if (isCancelled()) {
       sb.append(":cancelled");
     } else {
