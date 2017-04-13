@@ -50,4 +50,9 @@ public class DelayedTest extends AbstractTest {
       assertTrue(e.getMessage().startsWith("Re-entrant delay:"));
     }
   }
+
+  @Test
+  public void testPromise() {
+    assertEquals(12L, eval("(let ((p (promise))) (deliver p (+ 1 2 3)) (+ @p (deref p)))", env));
+  }
 }
