@@ -47,17 +47,14 @@ public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, ID
   }
 
   private Object getValue() {
-    if (isCompletedExceptionally() || isDone()) {
-      try {
-        return get();
-      } catch (InterruptedException | ExecutionException e) {
-        if (e.getCause() instanceof RuntimeException) {
-          throw (RuntimeException)e.getCause();
-        }
-        throw new RuntimeException(e.getMessage());
+    try {
+      return get();
+    } catch (InterruptedException | ExecutionException e) {
+      if (e.getCause() instanceof RuntimeException) {
+        throw (RuntimeException) e.getCause();
       }
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
   }
 
   @Override

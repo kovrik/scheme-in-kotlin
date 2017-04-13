@@ -15,21 +15,14 @@ public class SCMFuture extends FutureTask implements ISCMClass, IDeref {
 
   @Override
   public Object deref() {
-    return getValue();
-  }
-
-  private Object getValue() {
-    if (isDone()) {
-      try {
-        return get();
-      } catch (InterruptedException | ExecutionException e) {
-        if (e.getCause() instanceof RuntimeException) {
-          throw (RuntimeException)e.getCause();
-        }
-        throw new RuntimeException(e.getMessage());
+    try {
+      return get();
+    } catch (InterruptedException | ExecutionException e) {
+      if (e.getCause() instanceof RuntimeException) {
+        throw (RuntimeException) e.getCause();
       }
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
   }
 
   @Override
@@ -44,7 +37,7 @@ public class SCMFuture extends FutureTask implements ISCMClass, IDeref {
       sb.append("!");
       Object value;
       try {
-        value = getValue();
+        value = deref();
       } catch (RuntimeException e) {
         sb.append("error!");
         value = e;
