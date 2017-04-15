@@ -333,6 +333,7 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_IMMUTABLE,
       SCMPredicate.IS_MUTABLE,
       SCMPredicate.IS_KEYWORD,
+      SCMPredicate.IS_ANY,
       };
 
   private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {
