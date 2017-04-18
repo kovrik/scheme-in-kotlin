@@ -33,11 +33,7 @@ import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
-import core.procedures.sets.Difference;
-import core.procedures.sets.Intersection;
-import core.procedures.sets.MapInvert;
-import core.procedures.sets.SetProc;
-import core.procedures.sets.Union;
+import core.procedures.sets.*;
 import core.procedures.strings.*;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
@@ -279,6 +275,8 @@ public final class DefaultEnvironment extends Environment {
       new Union(),
       new Intersection(),
       new Difference(),
+      new IsSubset(),
+      new IsSuperset(),
 
       /* Generic */
       new Count(),
