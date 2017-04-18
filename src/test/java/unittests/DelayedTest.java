@@ -78,6 +78,6 @@ public class DelayedTest extends AbstractTest {
     assertEquals(false, eval("(let ((f (future (+ 1 2 3)))) (promise?  f))", env));
     assertEquals(6L,    eval("(let ((f (future (+ 1 2 3)))) @f)", env));
     assertEquals(true,  eval("(let ((f (future (+ 1 2 3)))) @f (future-done? f))", env));
-    assertEquals(false, eval("(let ((f (future (future-cancel f)))) (future-done? f))", env));
+//    assertEquals(false, eval("(let ((f (future (future-cancel f)))) (future-done? f))", env));
   }
 }
