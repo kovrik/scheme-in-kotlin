@@ -35,6 +35,7 @@ import core.procedures.math.trigonometry.*;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.sets.Difference;
 import core.procedures.sets.Intersection;
+import core.procedures.sets.MapInvert;
 import core.procedures.sets.SetProc;
 import core.procedures.sets.Union;
 import core.procedures.strings.*;
@@ -269,6 +270,7 @@ public final class DefaultEnvironment extends Environment {
       new Keys(),
       new Val(),
       new Vals(),
+      new MapInvert(),
       new Merge(),
       new Zipmap(),
 
