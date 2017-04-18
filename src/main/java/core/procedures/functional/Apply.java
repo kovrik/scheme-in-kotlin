@@ -13,6 +13,7 @@ import core.scm.specialforms.Quote;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -40,29 +41,20 @@ public final class Apply extends AFn {
     if (!(last instanceof SCMVector) && !(last instanceof Collection)) {
       throw new WrongTypeException(getName(), "List or Vector or Set", last);
     }
+    Iterator iter = null;
     if (last instanceof List) {
-      for (Object o : (List) last) {
-        if ((o instanceof List) || (o instanceof SCMSymbol)) {
-          sexp.add(Quote.quote(o));
-        } else {
-          sexp.add(o);
-        }
-      }
+      iter = ((List) last).iterator();
     } else if (last instanceof SCMVector) {
-      for (Object o : ((SCMVector) last).getArray()) {
-        if ((o instanceof List) || (o instanceof SCMSymbol)) {
-          sexp.add(Quote.quote(o));
-        } else {
-          sexp.add(o);
-        }
-      }
+      iter = ((SCMVector)last).iterator();
     } else if (last instanceof Set) {
-      for (Object o : ((Set) last)) {
-        if ((o instanceof List) || (o instanceof SCMSymbol)) {
-          sexp.add(Quote.quote(o));
-        } else {
-          sexp.add(o);
-        }
+      iter = ((Set)last).iterator();
+    }
+    while (iter.hasNext()) {
+      Object o = iter.next();
+      if ((o instanceof List) || (o instanceof SCMSymbol)) {
+        sexp.add(Quote.quote(o));
+      } else {
+        sexp.add(o);
       }
     }
     return new SCMThunk(sexp);
