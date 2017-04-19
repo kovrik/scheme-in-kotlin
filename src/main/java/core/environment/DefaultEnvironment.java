@@ -16,6 +16,7 @@ import core.procedures.delayed.Promise;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
+import core.procedures.equivalence.Identical;
 import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
@@ -129,8 +130,8 @@ public final class DefaultEnvironment extends Environment {
       NumericalComparison.LESS_EQUAL,
       NumericalComparison.GREATER,
       NumericalComparison.GREATER_EQUAL,
+      new Identical(),
       new Eq(),
-      new Eq() { @Override public String getName() { return "identical?"; }},
       new Eqv(),
       new Equal(),
 
