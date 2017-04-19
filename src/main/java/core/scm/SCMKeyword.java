@@ -47,7 +47,7 @@ public class SCMKeyword extends AFn implements ISCMClass, INamed {
   @Override
   public Object apply(Object... args) {
     if (args.length == 0 || args.length > 2) {
-      throw new ArityException(toString() + " keyword", 1, 2, args.length);
+      throw new ArityException(toString() + " Keyword", 1, 2, args.length);
     }
     Object defaultValue = (args.length == 2) ? args[1] : null;
     return ((Map)args[0]).getOrDefault(this, defaultValue);

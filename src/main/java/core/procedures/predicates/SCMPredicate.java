@@ -39,7 +39,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_BOOLEAN = new SCMPredicate("boolean?", o -> (o instanceof Boolean));
   public static final SCMPredicate IS_TRUE = new SCMPredicate("true?", o -> (o instanceof Boolean) && (Boolean)o);
   public static final SCMPredicate IS_FALSE = new SCMPredicate("false?", o -> (o instanceof Boolean) && !(Boolean)o);
-  public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", o -> (o instanceof IFn) && !(o instanceof Map) && !(o instanceof SCMVector) && !(o instanceof Map.Entry));
+  public static final SCMPredicate IS_PROC = new SCMPredicate("procedure?", SCMPredicate::isProcedure);
   public static final SCMPredicate IS_PORT = new SCMPredicate("port?", o -> (o instanceof ISCMPort));
   public static final SCMPredicate IS_INPUT_PORT = new SCMPredicate("input-port?", o -> (o instanceof SCMInputPort));
   public static final SCMPredicate IS_OUTPUT_PORT = new SCMPredicate("output-port?", o -> (o instanceof SCMOutputPort));
@@ -123,5 +123,10 @@ public final class SCMPredicate extends AFn {
       return ((Future) o).isDone();
     }
     throw new WrongTypeException("realized?", "Delay or Promise or Future", o);
+  }
+
+  private static boolean isProcedure(Object o) {
+    return (o instanceof IFn) && !(o instanceof SCMSymbol) && !(o instanceof SCMKeyword) && !(o instanceof Map) &&
+          !(o instanceof SCMVector) && !(o instanceof Map.Entry);
   }
 }

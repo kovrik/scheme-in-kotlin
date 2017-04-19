@@ -1,35 +1,39 @@
 package core.scm;
 
+import core.exceptions.ArityException;
+import core.procedures.AFn;
 import core.utils.InternPool;
+
+import java.util.Map;
 
 /* Symbol class
  *
  * By default all symbols are interned and stored in INTERNED Map.
  *
- * This means that two values:
+ * This means that two names:
  *
  *   (define s1 'test)
  *   (define s2 'test)
  *
  * will reference to the same symbol object.
  */
-public class SCMSymbol implements ISCMClass, INamed {
+public class SCMSymbol extends AFn implements ISCMClass, INamed {
 
   /* Pool of all interned symbols */
   private static final InternPool<SCMSymbol> POOL = new InternPool<>();
 
   private static final String SPECIAL_CHARS = "()[]{}\",'`;|\\";
 
-  private final String value;
+  private final String name;
   private final boolean escape;
 
-  public static SCMSymbol of(String value) {
+  public static SCMSymbol of(String name) {
     // always intern symbols
-    return POOL.intern(new SCMSymbol(value));
+    return POOL.intern(new SCMSymbol(name));
   }
 
-  private SCMSymbol(String value) {
-    this.value = value;
+  private SCMSymbol(String name) {
+    this.name = name;
     this.escape = hasSpecialChars();
   }
 
@@ -40,25 +44,39 @@ public class SCMSymbol implements ISCMClass, INamed {
   /* Check if Symbol has Special Characters and needs to be escaped */
   private boolean hasSpecialChars() {
     /* Check if string representation must be escaped */
-    if (value.isEmpty() || Character.isDigit(value.charAt(0))) {
+    if (name.isEmpty() || Character.isDigit(name.charAt(0))) {
       return true;
     }
-    if (value.charAt(0) == '#') {
-      if (value.length() == 1) {
+    if (name.charAt(0) == '#') {
+      if (name.length() == 1) {
         return true;
-      } else if (value.charAt(1) != '%') {
+      } else if (name.charAt(1) != '%') {
         return true;
       }
     }
-    if (value.length() == 1 && value.charAt(0) == '.') {
+    if (name.length() == 1 && name.charAt(0) == '.') {
       return true;
     }
-    for (char c : value.toCharArray()) {
+    for (char c : name.toCharArray()) {
       if (Character.isWhitespace(c) || SPECIAL_CHARS.indexOf(c) > -1) {
         return true;
       }
     }
     return false;
+  }
+
+  @Override
+  public boolean isPure() {
+    return true;
+  }
+
+  @Override
+  public Object apply(Object... args) {
+    if (args.length == 0 || args.length > 2) {
+      throw new ArityException(toString() + " Symbol", 1, 2, args.length);
+    }
+    Object defaultValue = (args.length == 2) ? args[1] : null;
+    return ((Map)args[0]).getOrDefault(this, defaultValue);
   }
 
   @Override
@@ -68,7 +86,7 @@ public class SCMSymbol implements ISCMClass, INamed {
 
   @Override
   public String getName() {
-    return value;
+    return name;
   }
 
   @Override
@@ -76,16 +94,16 @@ public class SCMSymbol implements ISCMClass, INamed {
     if (this == o) return true;
     if (o == null || !(o instanceof SCMSymbol)) return false;
     SCMSymbol scmSymbol = (SCMSymbol) o;
-    return value != null ? value.equals(scmSymbol.value) : scmSymbol.value == null;
+    return name != null ? name.equals(scmSymbol.name) : scmSymbol.name == null;
   }
 
   @Override
   public int hashCode() {
-    return value != null ? value.hashCode() + 1037096266 : 1037096266;
+    return name != null ? name.hashCode() + 1037096266 : 1037096266;
   }
 
   @Override
   public String toString() {
-    return value;
+    return name;
   }
 }
