@@ -283,6 +283,7 @@ public class Reader implements IReader {
       }
       string.append(c);
     }
+    // TODO Check if really want to intern every string?
     return string.toString().intern();
   }
 

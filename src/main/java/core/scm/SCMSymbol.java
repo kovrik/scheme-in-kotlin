@@ -1,7 +1,6 @@
 package core.scm;
 
-import java.util.HashMap;
-import java.util.Map;
+import core.utils.InternPool;
 
 /* Symbol class
  *
@@ -16,21 +15,21 @@ import java.util.Map;
  */
 public class SCMSymbol implements ISCMClass, INamed {
 
-  /* Map of all interned symbols */
-  private static final Map<String, SCMSymbol> INTERNED = new HashMap<>();
+  /* Pool of all interned symbols */
+  private static final InternPool<SCMSymbol> POOL = new InternPool<>();
 
   private static final String SPECIAL_CHARS = "()[]{}\",'`;|\\";
 
   private final String value;
-  private boolean escape = false;
+  private final boolean escape;
 
   public static SCMSymbol of(String value) {
-    return INTERNED.computeIfAbsent(value, k -> new SCMSymbol(value));
+    // always intern symbols
+    return POOL.intern(new SCMSymbol(value));
   }
 
   private SCMSymbol(String value) {
-    // always intern symbols
-    this.value = value.intern();
+    this.value = value;
     this.escape = hasSpecialChars();
   }
 

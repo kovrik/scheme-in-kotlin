@@ -3,24 +3,25 @@ package core.scm;
 import core.exceptions.ArityException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.InternPool;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SCMKeyword extends AFn implements ISCMClass, INamed {
 
-  private static final ConcurrentHashMap<String, SCMKeyword> CACHE = new ConcurrentHashMap<>();
+  /* Pool of all interned keywords */
+  private static final InternPool<SCMKeyword> POOL = new InternPool<>();
 
   private final String name;
 
   private SCMKeyword(String name) {
     super(new FnArgsBuilder().mandatoryArgsTypes(new Class[]{Map.class}));
-    // always intern keywords
-    this.name = name.intern();
+    this.name = name;
   }
 
   public static SCMKeyword of(String value) {
-    return CACHE.computeIfAbsent(value, k -> new SCMKeyword(value));
+    // always intern keywords
+    return POOL.intern(new SCMKeyword(value));
   }
 
   @Override
