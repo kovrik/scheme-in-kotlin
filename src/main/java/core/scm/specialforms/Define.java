@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMCons;
 import core.scm.SCMProcedure;
 import core.scm.SCMSymbol;
-import core.scm.SCMVoid;
+import core.writer.Writer;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public enum Define implements ISpecialForm {
   DEFINE;
 
   @Override
-  public SCMVoid eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
@@ -43,7 +43,7 @@ public enum Define implements ISpecialForm {
       SCMCons args = SCMCons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
       for (Object arg : args) {
         if (!(arg instanceof SCMSymbol) && !(SCMCons.isPair(arg))) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", arg));
+          throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", Writer.write(arg)));
         }
       }
       args.setIsList(SCMCons.isList(expression.get(1)));
@@ -57,17 +57,16 @@ public enum Define implements ISpecialForm {
       /* Get procedure's name */
       // TODO (define (((a))) 1)
       // TODO (define ((a n) c) n)
-      Object n = ((SCMCons) id).get(0);
-      if (!(n instanceof SCMSymbol)) {
-        throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier for procedure name: %s", n));
+      id = ((SCMCons) id).get(0);
+      if (!(id instanceof SCMSymbol)) {
+        throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier for procedure name: %s", Writer.write(id)));
       }
-      SCMSymbol name = (SCMSymbol)n;
-      lambda.setName(name.toString());
-      env.put(name, lambda);
+      lambda.setName(id.toString());
+      env.put(id, lambda);
     } else {
       throw IllegalSyntaxException.of(toString(), expression);
     }
-    return SCMVoid.VOID;
+    return id;
   }
 
   @Override

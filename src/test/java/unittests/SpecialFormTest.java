@@ -133,7 +133,8 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalDefine() {
     eval("(define a 5)", env);
     assertEquals(5L, eval("a", env));
-    assertEquals(SCMVoid.VOID, eval("(define b 7)", env));
+    assertEquals(SCMSymbol.of("b"), eval("(define b 7)", env));
+    assertEquals(SCMSymbol.of("c"), eval("(define (c n) (+ n 7))", env));
 
     eval("(define edl (lambda (n) (+ n 1)))", env);
     assertEquals(2L, eval("(edl 1)", env));
