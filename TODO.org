@@ -1,6 +1,7 @@
 * TODO: [35/46]
 
 ** TODO [#A] Macros
+** TODO [#A] Implement Metadata
 ** TODO [#A] Generify Lists, Vectors, Strings as Sequences
 ** TODO [#A] Math procedures: fix precision loss
 ** TODO [#A] Expt for big fractional powers
