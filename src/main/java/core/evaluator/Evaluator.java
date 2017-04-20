@@ -55,8 +55,7 @@ public class Evaluator {
     try {
       result = evalIter(sexp, env);
       while (result instanceof SCMThunk) {
-        result = evalIter(((SCMThunk) result).getExpr(),
-                          ((SCMThunk) result).getContextOrDefault(env));
+        result = evalIter(((SCMThunk) result).getExpr(), ((SCMThunk) result).getContextOrDefault(env));
       }
     } catch (CalledContinuation cc) {
       if (cc.getContinuation().isInvoked()) {
@@ -75,10 +74,11 @@ public class Evaluator {
     if (result instanceof BigDecimal) {
       return NumberUtils.tryToDowncast((BigDecimal) result);
     }
-    /* Try to downcast Rationals */
+    /* Try to downcast Rationals with denominator = 1 */
     if ((result instanceof SCMBigRational) && (((SCMBigRational) result).isDenominatorEqualToOne())) {
       return NumberUtils.tryToDowncast(((SCMBigRational) result).getNumerator());
     }
+    /* Now upcast number if required */
     if (result instanceof Number) {
       return maybeUpcast((Number) result);
     }
