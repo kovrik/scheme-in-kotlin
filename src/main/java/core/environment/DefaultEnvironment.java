@@ -33,6 +33,8 @@ import core.procedures.lists.MemberProc;
 import core.procedures.math.*;
 import core.procedures.math.complex.*;
 import core.procedures.math.trigonometry.*;
+import core.procedures.meta.MetaProc;
+import core.procedures.meta.WIthMeta;
 import core.procedures.predicates.SCMPredicate;
 import core.procedures.sets.*;
 import core.procedures.strings.*;
@@ -290,6 +292,10 @@ public final class DefaultEnvironment extends Environment {
 
       /* Keywords */
       new Keyword(),
+
+      /* Meta */
+      new MetaProc(),
+      new WIthMeta(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,

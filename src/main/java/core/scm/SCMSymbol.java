@@ -10,14 +10,14 @@ import java.util.Map;
  *
  * By default all symbols are interned and stored in INTERNED Map.
  *
- * This means that two names:
+ * This means that two values:
  *
  *   (define s1 'test)
  *   (define s2 'test)
  *
  * will reference to the same symbol object.
  */
-public class SCMSymbol extends AFn implements ISCMClass, INamed {
+public class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
 
   /* Pool of all interned symbols */
   private static final InternPool<SCMSymbol> POOL = new InternPool<>();
@@ -27,14 +27,31 @@ public class SCMSymbol extends AFn implements ISCMClass, INamed {
   private final String name;
   private final boolean escape;
 
+  /* Metadata */
+  private Map meta;
+
   public static SCMSymbol intern(String name) {
     // always intern symbols
     return POOL.intern(new SCMSymbol(name));
   }
 
   private SCMSymbol(String name) {
+    this(name, null);
+  }
+
+  /* Create Symbol with Metadata attached.
+   * Note that symbols with metadata are not interned!
+   * TODO check if should actually intern syms with meta?
+   */
+  public SCMSymbol(String name, Map meta) {
     this.name = name;
     this.escape = hasSpecialChars();
+    this.meta = meta;
+  }
+
+  @Override
+  public Map meta() {
+    return meta;
   }
 
   public boolean isEscape() {
