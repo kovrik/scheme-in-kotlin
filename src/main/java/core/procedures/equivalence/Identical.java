@@ -23,17 +23,13 @@ public class Identical extends AFn {
   public Boolean apply(Object... args) {
     Boolean result = Boolean.TRUE;
     for (int i = 0; i < args.length - 1; i++) {
-      result = result && identical(args[i], args[i + 1]);
+      result = result && apply2(args[i], args[i + 1]);
     }
     return result;
   }
 
   @Override
   public Boolean apply2(Object arg1, Object arg2) {
-    return identical(arg1, arg2);
-  }
-
-  private boolean identical(Object first, Object second) {
-    return first == second;
+    return arg1 == arg2;
   }
 }
