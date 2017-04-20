@@ -6,7 +6,6 @@ import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 public final class Max extends AFn {
 
@@ -30,7 +29,11 @@ public final class Max extends AFn {
     if (args.length == 1) {
       return (Number) args[0];
     }
-    return (Number) Arrays.stream(args).reduce(args[0], (f, s) -> max((Number)f, (Number)s));
+    Object result = args[0];
+    for (Object arg : args) {
+      result = max((Number) result, (Number) arg);
+    }
+    return (Number) result;
   }
 
   private Number max(Number first, Number second) {

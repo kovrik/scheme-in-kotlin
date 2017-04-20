@@ -8,7 +8,6 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public final class Subtraction extends AFn {
 
@@ -40,7 +39,11 @@ public final class Subtraction extends AFn {
       }
       return subtract(0L, (Number)args[0]);
     }
-    return Arrays.stream(args).reduce((f, s) -> subtract((Number)f, (Number)s)).get();
+    Object result = args[0];
+    for (int i = 1; i < args.length; i++) {
+      result = subtract((Number)result, (Number)args[i]);
+    }
+    return result;
   }
 
   private Number subtract(Number first, Number second) {

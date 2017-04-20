@@ -5,8 +5,6 @@ import core.procedures.FnArgsBuilder;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 
-import java.util.Arrays;
-
 public final class Append extends AFn {
 
   public Append() {
@@ -21,7 +19,11 @@ public final class Append extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return Arrays.stream(args).reduce(SCMCons.EMPTY, Append::append);
+    Object result = SCMCons.EMPTY;
+    for (Object arg : args) {
+      result = append(result, arg);
+    }
+    return result;
   }
 
   public static Object append(Object first, Object second) {

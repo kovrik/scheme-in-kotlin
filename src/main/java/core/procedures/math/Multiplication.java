@@ -8,7 +8,6 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public final class Multiplication extends AFn {
 
@@ -31,7 +30,13 @@ public final class Multiplication extends AFn {
     switch (args.length) {
       case 0:  return 1L;
       case 1:  return (Number)args[0];
-      default: return (Number) Arrays.stream(args).reduce(1L, (f, s) -> apply((Number)f, (Number)s));
+      default: {
+        Object result = 1L;
+        for (Object arg : args) {
+          result = apply((Number) result, (Number) arg);
+        }
+        return (Number)result;
+      }
     }
   }
 

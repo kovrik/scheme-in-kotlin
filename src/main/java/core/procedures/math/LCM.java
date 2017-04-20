@@ -36,7 +36,11 @@ public final class LCM extends AFn {
     if (args.length == 1) {
       return ABS.apply1(args[0]);
     }
-    return (Number) Arrays.stream(args).reduce((f, s) -> lcm((Number)f, (Number)s)).get();
+    Number result = (Number) args[0];
+    for (int i = 1; i < args.length; i++) {
+      result = lcm(result, (Number) args[i]);
+    }
+    return result;
   }
 
   private static long lcm(Long a, Long b) {

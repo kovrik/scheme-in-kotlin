@@ -8,7 +8,6 @@ import core.exceptions.SCMIOException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * Time Special Form:
@@ -29,7 +28,9 @@ public enum Time implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     long start = System.nanoTime();
-    IntStream.range(1, expression.size() - 1).forEach(i -> evaluator.eval(expression.get(i), env));
+    for (int i = 1; i < expression.size() - 1; i++) {
+      evaluator.eval(expression.get(i), env);
+    }
     Object result = evaluator.eval(expression.get(expression.size() - 1), env);
     long diff = (System.nanoTime() - start) / 1000000;
     try {

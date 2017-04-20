@@ -3,8 +3,6 @@ package core.procedures.strings;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 
-import java.util.Arrays;
-
 public final class StringAppend extends AFn {
 
   public StringAppend() {
@@ -26,7 +24,9 @@ public final class StringAppend extends AFn {
       return o.toString();
     }
     StringBuilder sb = new StringBuilder();
-    Arrays.stream(args).forEach(sb::append);
+    for (Object arg : args) {
+      sb.append(arg);
+    }
     return sb.toString();
   }
 }

@@ -8,7 +8,6 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public final class Addition extends AFn {
 
@@ -31,7 +30,13 @@ public final class Addition extends AFn {
     switch (args.length) {
       case 0:  return 0L;
       case 1:  return (Number)args[0];
-      default: return (Number) Arrays.stream(args).reduce(0L, (f, s) -> add((Number)f, (Number)s));
+      default: {
+        Object result = 0L;
+        for (Object arg : args) {
+          result = add((Number) result, (Number) arg);
+        }
+        return (Number) result;
+      }
     }
   }
 
