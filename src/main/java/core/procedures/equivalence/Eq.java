@@ -2,6 +2,7 @@ package core.procedures.equivalence;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMSymbol;
 
 import static core.scm.SCMCons.EMPTY;
 
@@ -36,6 +37,10 @@ public class Eq extends AFn {
   }
 
   private boolean eq(Object first, Object second) {
+    if (first instanceof SCMSymbol && second instanceof SCMSymbol && first != second) {
+      /* Now check if 2 symbols are eq without metadata (if attached) */
+      return first.equals(second);
+    }
     return EMPTY.equals(first) && (EMPTY.equals(second)) || first == second;
   }
 }

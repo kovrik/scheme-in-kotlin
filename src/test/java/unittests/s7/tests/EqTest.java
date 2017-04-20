@@ -6,6 +6,7 @@ import unittests.AbstractTest;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EqTest extends AbstractTest {
 
@@ -42,5 +43,11 @@ public class EqTest extends AbstractTest {
     assertEquals(FALSE, eval("(eq? c1 c2)", env));
     assertEquals(TRUE,  eval("(eq? c1 c1)", env));
     assertEquals(TRUE,  eval("(eq? c2 c2)", env));
+
+    eval("(define sym1 'test", env);
+    eval("(define sym2 'test", env);
+    eval("(define sym3 (with-meta sym2 {:test #t}))", env);
+    assertEquals(TRUE, eval("(eq? sym1 sym2 sym3)", env));
+    assertEquals(FALSE, eval("(identical? sym1 sym2 sym3)", env));
   }
 }
