@@ -19,6 +19,6 @@ public class WeakPool<T> {
   }
 
   public void put(T object) {
-    pool.put(object, new WeakReference<T>(object));
+    pool.put(object, new WeakReference<>(object));
   }
 }
