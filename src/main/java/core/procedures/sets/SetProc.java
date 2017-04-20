@@ -36,7 +36,10 @@ public final class SetProc extends AFn {
     }
     if (arg instanceof CharSequence) {
       Set<Object> set = new HashSet<>(((CharSequence)arg).length());
-      ((CharSequence)arg).chars().forEach(c -> set.add((char)c));
+      CharSequence cs = ((CharSequence)arg);
+      for (int i = 0; i < cs.length(); i++) {
+        set.add(cs.charAt(i));
+      }
       return set;
     }
     if (arg instanceof SCMVector) {

@@ -22,7 +22,9 @@ public final class Reverse extends AFn {
   public Object apply1(Object arg) {
     if (arg instanceof List) {
       SCMCons<Object> result = SCMCons.list();
-      ((List) arg).forEach(result::push);
+      for (Object o : (List) arg) {
+        result.push(o);
+      }
       return result;
     }
     if (arg instanceof Set) {
