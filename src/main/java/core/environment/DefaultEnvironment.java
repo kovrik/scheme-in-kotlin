@@ -72,6 +72,7 @@ public final class DefaultEnvironment extends Environment {
       new RandomProc(),
       new HashCode(),
       new ToString(),
+      new ToString() { @Override public String getName() { return "str"; } },
       new Name(),
       new Identity(),
 
@@ -452,7 +453,6 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.intern("call/cc"),     get(SCMSymbol.intern("call-with-current-continuation")));
     put(SCMSymbol.intern("nil?"),        get(SCMSymbol.intern("null?")));
     put(SCMSymbol.intern("eof-object?"), get(SCMSymbol.intern("null?")));
-    put(SCMSymbol.intern("str"),         get(SCMSymbol.intern("->string")));
     put(SCMSymbol.intern("hash"),        get(SCMSymbol.intern("hashcode")));
     put(SCMSymbol.intern("first"),       get(SCMSymbol.intern("car")));
     put(SCMSymbol.intern("next"),        get(SCMSymbol.intern("cdr")));

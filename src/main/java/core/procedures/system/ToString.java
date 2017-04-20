@@ -2,12 +2,13 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.SCMNil;
 import core.writer.Writer;
 
-public final class ToString extends AFn {
+public class ToString extends AFn {
 
   public ToString() {
-    super(new FnArgsBuilder().minArgs(0).maxArgs(1));
+    super(new FnArgsBuilder().minArgs(0));
   }
 
   @Override
@@ -25,16 +26,26 @@ public final class ToString extends AFn {
     if (args.length == 0) {
       return "";
     }
-    Object arg = args[0];
-    if (arg == null) {
+    if (args.length == 1) {
+      return str(args[0]);
+    }
+    StringBuilder sb = new StringBuilder();
+    for (Object arg : args) {
+      sb.append(str(arg));
+    }
+    return sb.toString();
+  }
+
+  private CharSequence str(Object obj) {
+    if (obj == null || obj == SCMNil.NIL) {
       return "";
     }
-    if (arg instanceof Character) {
-      return arg.toString();
+    if (obj instanceof Character) {
+      return obj.toString();
     }
-    if (arg instanceof CharSequence) {
-      return (CharSequence) arg;
+    if (obj instanceof CharSequence) {
+      return (CharSequence) obj;
     }
-    return Writer.write(arg);
+    return Writer.write(obj);
   }
 }
