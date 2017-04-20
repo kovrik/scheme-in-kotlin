@@ -26,7 +26,7 @@ import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
 public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
-  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.of(QUASIQUOTE.toString());
+  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.intern(QUASIQUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

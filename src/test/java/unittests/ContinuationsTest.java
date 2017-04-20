@@ -122,7 +122,7 @@ public class ContinuationsTest extends AbstractTest {
     eval(dw, env);
     assertEquals("special-binding", baos.toString().trim());
     assertEquals(SCMClass.CONTINUATION, eval("(class-of a-cont)", env));
-    assertEquals(SCMSymbol.of("normal-binding"), eval("x", env));
+    assertEquals(SCMSymbol.intern("normal-binding"), eval("x", env));
     try {
       eval("(a-cont #f)", env);
       fail();

@@ -64,7 +64,7 @@ public final class MapProc extends AFn {
         }
       }
     }
-    SCMCons<Object> result = SCMCons.list(SCMSymbol.of("list"));
+    SCMCons<Object> result = SCMCons.list(SCMSymbol.intern("list"));
     result.addAll(lists);
     /* Return Thunk that will be evaluated and produce results */
     return new SCMThunk(result);

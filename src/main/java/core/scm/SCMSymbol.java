@@ -27,7 +27,7 @@ public class SCMSymbol extends AFn implements ISCMClass, INamed {
   private final String name;
   private final boolean escape;
 
-  public static SCMSymbol of(String name) {
+  public static SCMSymbol intern(String name) {
     // always intern symbols
     return POOL.intern(new SCMSymbol(name));
   }

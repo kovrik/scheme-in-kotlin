@@ -335,8 +335,8 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testReadKeywords() {
-    assertEquals(SCMKeyword.of("a"), reader.readFirst(":a"));
-    assertEquals(SCMKeyword.of("test"), reader.readFirst(":test"));
-    assertEquals(SCMKeyword.of("_"), reader.readFirst(":_"));
+    assertEquals(SCMKeyword.intern("a"), reader.readFirst(":a"));
+    assertEquals(SCMKeyword.intern("test"), reader.readFirst(":test"));
+    assertEquals(SCMKeyword.intern("_"), reader.readFirst(":_"));
   }
 }

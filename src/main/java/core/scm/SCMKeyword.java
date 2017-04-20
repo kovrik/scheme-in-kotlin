@@ -19,7 +19,7 @@ public class SCMKeyword extends AFn implements ISCMClass, INamed {
     this.name = name;
   }
 
-  public static SCMKeyword of(String value) {
+  public static SCMKeyword intern(String value) {
     // always intern keywords
     return POOL.intern(new SCMKeyword(value));
   }

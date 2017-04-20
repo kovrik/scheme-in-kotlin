@@ -430,27 +430,27 @@ public final class DefaultEnvironment extends Environment {
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
-      put(SCMSymbol.of(specialForm.toString()), specialForm);
+      put(SCMSymbol.intern(specialForm.toString()), specialForm);
     }
 
     /* Standard Procedures */
     for (AFn proc : STANDARD_PROCEDURES) {
-      put(SCMSymbol.of(proc.getName()), proc);
+      put(SCMSymbol.intern(proc.getName()), proc);
     }
 
     /* Constants and special cases, synonyms*/
-    put(SCMSymbol.of("pi"),          Math.PI);
-    put(SCMSymbol.of("nil"),         SCMNil.NIL);
-    put(SCMSymbol.of("null"),        SCMNil.NIL);
-    put(SCMSymbol.of("eof"),         SCMNil.NIL);
-    put(SCMSymbol.of("call/cc"),     get(SCMSymbol.of("call-with-current-continuation")));
-    put(SCMSymbol.of("nil?"),        get(SCMSymbol.of("null?")));
-    put(SCMSymbol.of("eof-object?"), get(SCMSymbol.of("null?")));
-    put(SCMSymbol.of("str"),         get(SCMSymbol.of("->string")));
-    put(SCMSymbol.of("hash"),        get(SCMSymbol.of("hashcode")));
-    put(SCMSymbol.of("first"),       get(SCMSymbol.of("car")));
-    put(SCMSymbol.of("next"),        get(SCMSymbol.of("cdr")));
-    put(SCMSymbol.of("def"),         get(SCMSymbol.of("define")));
-    put(SCMSymbol.of("fn"),          get(SCMSymbol.of("lambda")));
+    put(SCMSymbol.intern("pi"),          Math.PI);
+    put(SCMSymbol.intern("nil"),         SCMNil.NIL);
+    put(SCMSymbol.intern("null"),        SCMNil.NIL);
+    put(SCMSymbol.intern("eof"),         SCMNil.NIL);
+    put(SCMSymbol.intern("call/cc"),     get(SCMSymbol.intern("call-with-current-continuation")));
+    put(SCMSymbol.intern("nil?"),        get(SCMSymbol.intern("null?")));
+    put(SCMSymbol.intern("eof-object?"), get(SCMSymbol.intern("null?")));
+    put(SCMSymbol.intern("str"),         get(SCMSymbol.intern("->string")));
+    put(SCMSymbol.intern("hash"),        get(SCMSymbol.intern("hashcode")));
+    put(SCMSymbol.intern("first"),       get(SCMSymbol.intern("car")));
+    put(SCMSymbol.intern("next"),        get(SCMSymbol.intern("cdr")));
+    put(SCMSymbol.intern("def"),         get(SCMSymbol.intern("define")));
+    put(SCMSymbol.intern("fn"),          get(SCMSymbol.intern("lambda")));
   }
 }

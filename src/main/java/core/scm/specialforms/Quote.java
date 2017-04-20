@@ -16,7 +16,7 @@ import java.util.List;
 public enum Quote implements ISpecialForm {
   QUOTE;
 
-  public static final SCMSymbol QUOTE_SYMBOL = SCMSymbol.of(QUOTE.toString());
+  public static final SCMSymbol QUOTE_SYMBOL = SCMSymbol.intern(QUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

@@ -1,7 +1,6 @@
 package unittests;
 
 import core.exceptions.WrongTypeException;
-import core.scm.SCMClass;
 import core.scm.SCMMutableString;
 import core.scm.SCMSymbol;
 import core.writer.Writer;
@@ -282,7 +281,7 @@ public class StringTest extends AbstractTest {
     assertEquals("abc#", Writer.write(eval("(string->symbol \"abc#\")", env)));
     assertEquals("#%abc", Writer.write(eval("(string->symbol \"#%abc\")", env)));
     assertEquals("(|a b c|)", Writer.write(eval("(list (string->symbol \"a b c\"))", env)));
-    assertEquals(SCMSymbol.of("test"), eval("(string->symbol (symbol->string 'test))", env));
+    assertEquals(SCMSymbol.intern("test"), eval("(string->symbol (symbol->string 'test))", env));
     try {
       eval("(symbol->string 1)", env);
       fail();

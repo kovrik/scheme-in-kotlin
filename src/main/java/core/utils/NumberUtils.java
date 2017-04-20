@@ -132,7 +132,7 @@ public final class NumberUtils {
     }
     /* Multiple decimal points are not allowed*/
     if (number.indexOf('.') != number.lastIndexOf('.')) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
 
     /* Read exponent mark if present */
@@ -161,7 +161,7 @@ public final class NumberUtils {
     }
     /* Validate sign */
     if ((n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0)) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
 
     /* Validate all digits */
@@ -169,7 +169,7 @@ public final class NumberUtils {
     for (char c : n.toCharArray()) {
       /* Check if char is valid for this radix AND that we don't have # before digits */
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
-        return SCMSymbol.of(number);
+        return SCMSymbol.intern(number);
       }
       /* Check if it is a digit, not a hash/sign char */
       if ("#+-.".indexOf(c) == -1) {
@@ -177,7 +177,7 @@ public final class NumberUtils {
       }
     }
     if (!hasAtLeastOneDigit) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
 
     if (n.indexOf('#') > -1) {
@@ -185,14 +185,14 @@ public final class NumberUtils {
         n = n.replace('#', '0');
         exactness = exactness == null ? 'i' : exactness;
       } else {
-        return SCMSymbol.of(number);
+        return SCMSymbol.intern(number);
       }
     }
 
     /* Check if it is a rational number and if it is valid */
     int slashIndex = n.indexOf('/');
     if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
 
     /* Rational and Integral numbers are exact by default */
@@ -220,7 +220,7 @@ public final class NumberUtils {
       re = preProcessNumber(r, exactness, radix);
     }
     if (!(re instanceof Number)) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
 
     String i = number.substring(p, number.length() - 1);
@@ -229,7 +229,7 @@ public final class NumberUtils {
     }
     Object im = preProcessNumber(i, exactness, radix);
     if (!(im instanceof Number)) {
-      return SCMSymbol.of(number);
+      return SCMSymbol.intern(number);
     }
     return isZero(re) && isZero(im) ? 0L : new SCMBigComplex((Number)re, (Number)im);
   }

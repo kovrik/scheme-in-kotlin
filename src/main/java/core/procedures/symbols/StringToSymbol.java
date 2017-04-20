@@ -22,6 +22,6 @@ public class StringToSymbol extends AFn {
 
   @Override
   public SCMSymbol apply1(Object arg) {
-    return SCMSymbol.of(arg.toString());
+    return SCMSymbol.intern(arg.toString());
   }
 }

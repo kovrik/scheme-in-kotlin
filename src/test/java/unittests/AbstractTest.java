@@ -29,7 +29,7 @@ public abstract class AbstractTest {
   }
 
   protected SCMSymbol s(String str) {
-    return SCMSymbol.of(str);
+    return SCMSymbol.intern(str);
   }
 
   protected void assertAllEqual(Object expected, String[] forms, Environment env) {

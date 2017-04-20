@@ -17,7 +17,9 @@ import static core.utils.NumberUtils.*;
 
 public class Reader implements IReader {
 
-  static final SCMSymbol DOT = SCMSymbol.of(".");
+  static final SCMSymbol DOT = SCMSymbol.intern(".");
+
+  private static final SCMSymbol DEREF = SCMSymbol.intern("deref");
 
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
@@ -136,7 +138,7 @@ public class Reader implements IReader {
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
       case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
       case ']':  throw new IllegalSyntaxException("read: unexpected vector terminator: " + c);
-      default:   return SCMSymbol.of(c + readUntilDelimiter());
+      default:   return SCMSymbol.intern(c + readUntilDelimiter());
     }
   }
 
@@ -484,7 +486,7 @@ public class Reader implements IReader {
       while (!isLineBreak(c)) { c = (char) reader.read(); }
       throw new IllegalSyntaxException("read: illegal use of :");
     }
-    return SCMKeyword.of(s);
+    return SCMKeyword.intern(s);
   }
 
   /**
@@ -493,6 +495,6 @@ public class Reader implements IReader {
    * \@f -> (deref f)
    */
   private List<Object> readDeref() throws IOException {
-    return SCMCons.list(SCMSymbol.of("deref"), nextNonNullToken());
+    return SCMCons.list(DEREF, nextNonNullToken());
   }
 }

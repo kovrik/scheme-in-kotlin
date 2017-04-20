@@ -26,9 +26,9 @@ public class KeywordTest extends AbstractTest {
 
   @Test
   public void testEvalKeywords() {
-    assertEquals(SCMKeyword.of("a"), eval(":a", env));
-    assertEquals(SCMKeyword.of("test"), eval(":test", env));
-    assertEquals(SCMKeyword.of("_"), eval(":_", env));
+    assertEquals(SCMKeyword.intern("a"), eval(":a", env));
+    assertEquals(SCMKeyword.intern("test"), eval(":test", env));
+    assertEquals(SCMKeyword.intern("_"), eval(":_", env));
   }
 
   @Test

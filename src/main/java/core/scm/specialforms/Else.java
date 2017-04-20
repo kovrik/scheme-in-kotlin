@@ -10,7 +10,7 @@ import java.util.List;
 public enum Else implements ISpecialForm {
   ELSE;
 
-  public static final SCMSymbol ELSE_SYMBOL = SCMSymbol.of("else");
+  public static final SCMSymbol ELSE_SYMBOL = SCMSymbol.intern("else");
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

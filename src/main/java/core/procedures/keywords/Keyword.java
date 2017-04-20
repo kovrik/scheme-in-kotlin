@@ -17,6 +17,6 @@ public final class Keyword extends AFn {
 
   @Override
   public SCMKeyword apply1(Object arg) {
-    return (arg == null) ? null : SCMKeyword.of(arg.toString());
+    return (arg == null) ? null : SCMKeyword.intern(arg.toString());
   }
 }

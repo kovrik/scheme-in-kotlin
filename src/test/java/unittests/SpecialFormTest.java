@@ -133,8 +133,8 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalDefine() {
     eval("(define a 5)", env);
     assertEquals(5L, eval("a", env));
-    assertEquals(SCMSymbol.of("b"), eval("(define b 7)", env));
-    assertEquals(SCMSymbol.of("c"), eval("(define (c n) (+ n 7))", env));
+    assertEquals(SCMSymbol.intern("b"), eval("(define b 7)", env));
+    assertEquals(SCMSymbol.intern("c"), eval("(define (c n) (+ n 7))", env));
 
     eval("(define edl (lambda (n) (+ n 1)))", env);
     assertEquals(2L, eval("(edl 1)", env));
@@ -232,8 +232,8 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(0L, eval("(if '() 0 5)", env));
     assertEquals(0L, eval("(if (not #f) 0 5)", env));
     assertEquals(5L, eval("(if (not (not (or #f #f))) 0 (+ 3 2))", env));
-    assertEquals(SCMSymbol.of("yes"), eval("(if (> 3 2) 'yes 'no)", env));
-    assertEquals(SCMSymbol.of("no"), eval("(if (> 2 3) 'yes 'no)", env));
+    assertEquals(SCMSymbol.intern("yes"), eval("(if (> 3 2) 'yes 'no)", env));
+    assertEquals(SCMSymbol.intern("no"), eval("(if (> 2 3) 'yes 'no)", env));
     assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env));
     assertEquals(SCMVoid.VOID, eval("(if #f 5)", env));
     try {
@@ -260,10 +260,10 @@ public class SpecialFormTest extends AbstractTest {
   public void testEvalQuote() {
     assertEquals(0L, eval("'0", env));
     assertEquals("test", eval("'\"test\"", env));
-    assertEquals(SCMCons.list(SCMSymbol.of(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env));
-    assertEquals(list(SCMSymbol.of("+"), 1L, 2L), eval("'(+ 1 2)", env));
-    assertEquals(SCMSymbol.of("0eab"), eval("'0eab", env));
-    assertEquals(SCMSymbol.of("000eab"), eval("'000eab", env));
+    assertEquals(SCMCons.list(SCMSymbol.intern(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env));
+    assertEquals(list(SCMSymbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env));
+    assertEquals(SCMSymbol.intern("0eab"), eval("'0eab", env));
+    assertEquals(SCMSymbol.intern("000eab"), eval("'000eab", env));
   }
 
   @Test
@@ -442,8 +442,8 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(1L, eval("(cond (#f 5) ((not #t) 7) (else 1))", env));
     assertEquals(7L, eval("(cond (#f 5) ((not #f) 7) (else 1))", env));
 
-    assertEquals(SCMSymbol.of("greater"), eval("(cond ((> 3 2) 'greater)((< 3 2) 'less))", env));
-    assertEquals(SCMSymbol.of("equal"), eval("(cond ((> 3 3) 'greater)((< 3 3) 'less)(else 'equal))", env));
+    assertEquals(SCMSymbol.intern("greater"), eval("(cond ((> 3 2) 'greater)((< 3 2) 'less))", env));
+    assertEquals(SCMSymbol.intern("equal"), eval("(cond ((> 3 3) 'greater)((< 3 3) 'less)(else 'equal))", env));
   }
 
   @Test
@@ -468,13 +468,13 @@ public class SpecialFormTest extends AbstractTest {
       assertEquals("case: bad syntax (else must be the last clause in subform) in form: (case (* 2 3) (else (quote prime)) ((1 4 6 8 9) (quote composite)))", e.getMessage());
     }
     String caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 6 8 9) 'composite))";
-    assertEquals(SCMSymbol.of("composite"), eval(caseform, env));
+    assertEquals(SCMSymbol.intern("composite"), eval(caseform, env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 8 9) 'composite))";
     assertEquals(SCMVoid.VOID, eval(caseform, env));
 
     caseform = "(case (* 2 3) ((2 3 5 7) 'prime) (else 'composite))";
-    assertEquals(SCMSymbol.of("composite"), eval(caseform, env));
+    assertEquals(SCMSymbol.intern("composite"), eval(caseform, env));
   }
 
   @Test
@@ -483,7 +483,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(1L, eval("(and 1)", env));
     assertEquals(TRUE, eval("(and (= 2 2) (> 2 1))", env));
     assertEquals(FALSE, eval("(and (= 2 2) (< 2 1))", env));
-    assertEquals(SCMCons.<Object>list(SCMSymbol.of("f"), SCMSymbol.of("g")),
+    assertEquals(SCMCons.<Object>list(SCMSymbol.intern("f"), SCMSymbol.intern("g")),
         eval("(and 1 2 'c '(f g)) ", env));
   }
 
@@ -493,7 +493,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(TRUE, eval("(or (= 2 2) (> 2 1)) ", env));
     assertEquals(TRUE, eval("(or (= 2 2) (< 2 1))", env));
     assertEquals(FALSE, eval("(or #f #f #f)", env));
-    assertEquals(SCMCons.<Object>list(SCMSymbol.of("f"), SCMSymbol.of("g")),
+    assertEquals(SCMCons.<Object>list(SCMSymbol.intern("f"), SCMSymbol.intern("g")),
         eval("(or '(f g) 1 2)", env));
   }
 
@@ -517,7 +517,7 @@ public class SpecialFormTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(SCMSymbol.of("display"), new Display());
+    tempEnv.put(SCMSymbol.intern("display"), new Display());
     assertEquals(SCMVoid.VOID, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv));
     Repl.setCurrentOutputPort(old);
   }
@@ -582,27 +582,27 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(15.5, eval("`15.5", env));
     assertEquals("test", eval("(quasiquote \"test\")", env));
     assertEquals("test", eval("`\"test\"", env));
-    assertEquals(SCMSymbol.of("quote"), eval("(quasiquote quote)", env));
-    assertEquals(list(SCMSymbol.of("+"), 1L, 2L), eval("`(+ 1 2)", env));
+    assertEquals(SCMSymbol.intern("quote"), eval("(quasiquote quote)", env));
+    assertEquals(list(SCMSymbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env));
     assertEquals(3L, eval("`,(+ 1 2)", env));
     assertEquals(13L, eval("`,(+ 1 (* 3 4))", env));
     assertEquals(13L, eval("(quasiquote ,(+ 1 (* 3 4)))", env));
     assertEquals(13L, eval("(quasiquote (unquote (+ 1 (* 3 4))))", env));
     assertEquals(list(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env));
-    assertEquals(list(1L, list(SCMSymbol.of("quasiquote"), list(SCMSymbol.of("unquote"), list(SCMSymbol.of("+"), 1L, 5L))), 4L),
+    assertEquals(list(1L, list(SCMSymbol.intern("quasiquote"), list(SCMSymbol.intern("unquote"), list(SCMSymbol.intern("+"), 1L, 5L))), 4L),
                  eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env));
 
-    assertEquals(list(1L, list(SCMSymbol.of("quasiquote"), list(SCMSymbol.of("unquote"), list(SCMSymbol.of("+"), 1L, new SCMMutableVector(SCMSymbol.of("+"), 2L, 3L)))), 4L),
+    assertEquals(list(1L, list(SCMSymbol.intern("quasiquote"), list(SCMSymbol.intern("unquote"), list(SCMSymbol.intern("+"), 1L, new SCMMutableVector(SCMSymbol.intern("+"), 2L, 3L)))), 4L),
                  eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env));
 
-    assertEquals(list(SCMSymbol.of("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
-    assertEquals(list(SCMSymbol.of("list"), SCMSymbol.of("a"), list(SCMSymbol.of("quote"), SCMSymbol.of("a"))),
+    assertEquals(list(SCMSymbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env));
+    assertEquals(list(SCMSymbol.intern("list"), SCMSymbol.intern("a"), list(SCMSymbol.intern("quote"), SCMSymbol.intern("a"))),
                  eval("(let ((name 'a)) `(list ,name ',name))", env));
 
-    assertEquals(list(SCMSymbol.of("a"), 3L, 4L, 5L, 6L, SCMSymbol.of("b")),
+    assertEquals(list(SCMSymbol.intern("a"), 3L, 4L, 5L, 6L, SCMSymbol.intern("b")),
                  eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env));
 
-    assertEquals(cons(list(SCMSymbol.of("foo"), 7L), SCMSymbol.of("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env));
+    assertEquals(cons(list(SCMSymbol.intern("foo"), 7L), SCMSymbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env));
     assertEquals(5L, eval("`,(+ 2 3)", env));
 
     assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env));
@@ -610,20 +610,20 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(1L, eval("`,`,`,`,`,1", env));
     assertEquals(1L, eval("`,`,`,`,`,`1", env));
     assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env));
-    assertEquals(list(SCMSymbol.of("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env));
+    assertEquals(list(SCMSymbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env));
 
     assertEquals(new SCMMutableVector(1L, 5L), eval("`[1 ,(+ 2 3)]", env));
-    assertEquals(new SCMMutableVector(1L, list(SCMSymbol.of("quasiquote"), list(SCMSymbol.of("unquote"), list(1L, 5L)))),
+    assertEquals(new SCMMutableVector(1L, list(SCMSymbol.intern("quasiquote"), list(SCMSymbol.intern("unquote"), list(1L, 5L)))),
                  eval("`[1 `,(1 ,(+ 2 3))]", env));
 
     assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env));
-    assertEquals(cons(SCMSymbol.of("unquote-splicing"), SCMSymbol.of("foo")), eval("`(unquote-splicing . foo)", env));
-    assertEquals(cons(SCMSymbol.of("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
+    assertEquals(cons(SCMSymbol.intern("unquote-splicing"), SCMSymbol.intern("foo")), eval("`(unquote-splicing . foo)", env));
+    assertEquals(cons(SCMSymbol.intern("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env));
 
     assertEquals(EMPTY, eval("`()", env));
     assertEquals(new SCMMutableVector(), eval("`#()", env));
     assertEquals(list(1L, 2L, list(EMPTY)), eval("`(1 2 ())", env));
-    assertEquals(list(1L, 2L, list(SCMSymbol.of("quote"), EMPTY)), eval("`(1 2 '())", env));
+    assertEquals(list(1L, 2L, list(SCMSymbol.intern("quote"), EMPTY)), eval("`(1 2 '())", env));
 
     try {
       eval("unquote", env);
