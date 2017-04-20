@@ -116,7 +116,7 @@ public class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
 
   @Override
   public int hashCode() {
-    return name != null ? name.hashCode() + 1037096266 : 1037096266;
+    return name.hashCode() + 1037096266;
   }
 
   @Override
