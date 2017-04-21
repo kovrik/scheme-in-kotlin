@@ -25,17 +25,10 @@ public class Writer implements IWriter {
       return SCMNil.NIL.toString();
     }
     if (o instanceof Boolean) {
-      if ((Boolean) o) {
-        return "#t";
-      } else {
-        return "#f";
-      }
+      return (Boolean) o ? "#t" : "#f";
     }
     if (o instanceof SCMSymbol) {
-      if (((SCMSymbol) o).isEscape()) {
-        return '|' + o.toString() + '|';
-      }
-      return o.toString();
+      return ((SCMSymbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
     }
     if (o instanceof Class) {
       SCMClass scmClass = SCMClass.valueOf((Class) o);
@@ -48,10 +41,7 @@ public class Writer implements IWriter {
     if (o instanceof List) {
       return SCMCons.toString((List) o);
     }
-    if (o instanceof SCMBigComplex) {
-      return o.toString();
-    }
-    if (o instanceof Number) {
+    if (o instanceof Double) {
       if (Double.isNaN(((Number) o).doubleValue())) {
         return "+nan.0";
       } else if (o.equals(Double.POSITIVE_INFINITY)) {
@@ -59,6 +49,9 @@ public class Writer implements IWriter {
       } else if (o.equals(Double.NEGATIVE_INFINITY)) {
         return "-inf.0";
       }
+      return o.toString();
+    }
+    if (o instanceof Number) {
       return o.toString();
     }
     if (o instanceof CharSequence) {
@@ -70,10 +63,7 @@ public class Writer implements IWriter {
     }
     if (o instanceof Exception) {
       Exception e = (Exception)o;
-      if (e.getMessage() == null) {
-        return e.getClass().getSimpleName();
-      }
-      return ((Exception) o).getMessage();
+      return e.getMessage() == null ? e.getClass().getSimpleName() : ((Exception) o).getMessage();
     }
     if (o instanceof Map) {
       return writeMap((Map)o);
@@ -86,10 +76,7 @@ public class Writer implements IWriter {
 
   public static String writeClass(Class clazz) {
     SCMClass scmClass = SCMClass.valueOf(clazz);
-    if (scmClass != null) {
-      return scmClass.getName();
-    }
-    return clazz.getSimpleName();
+    return scmClass != null ? scmClass.getName() : clazz.getSimpleName();
   }
 
   private static String writeMap(Map<Object, Object> map) {
