@@ -12,7 +12,7 @@ public class Writer implements IWriter {
 
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
   static {
-    Reader.NAMED_CHARS.entrySet().forEach(e -> CODEPOINTS.put(e.getValue(), e.getKey()));
+    Reader.NAMED_CHARS.forEach((key, value) -> CODEPOINTS.put(value, key));
   }
 
   @Override
