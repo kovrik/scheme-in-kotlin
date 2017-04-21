@@ -31,6 +31,7 @@ public class Range extends AFn {
     }
     // TODO Big numbers
     // TODO Fractions
+    // TODO Negative step
     SCMCons<Number> result = SCMCons.list();
     boolean exact = NumberUtils.isExactInteger(args[0]);
     if (args.length == 3) {
