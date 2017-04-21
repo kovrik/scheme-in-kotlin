@@ -8,7 +8,7 @@ import static core.scm.SCMCons.cons;
 import static core.scm.SCMCons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class MemqTest extends AbstractTest {

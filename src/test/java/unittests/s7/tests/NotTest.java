@@ -3,9 +3,9 @@ package unittests.s7.tests;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static junit.framework.TestCase.assertEquals;
-import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static org.junit.Assert.assertEquals;
 
 public class NotTest extends AbstractTest {
 

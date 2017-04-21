@@ -6,8 +6,8 @@ import unittests.AbstractTest;
 
 import static core.scm.SCMCons.EMPTY;
 import static core.scm.SCMCons.list;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class QuasiquoteTest extends AbstractTest {
 

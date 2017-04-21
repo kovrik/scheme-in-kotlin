@@ -4,9 +4,9 @@ import core.exceptions.IllegalSyntaxException;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static junit.framework.TestCase.assertEquals;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class IsSymbolTest extends AbstractTest {

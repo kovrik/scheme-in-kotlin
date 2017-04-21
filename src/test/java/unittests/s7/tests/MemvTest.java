@@ -8,8 +8,8 @@ import unittests.AbstractTest;
 
 import static core.scm.SCMCons.*;
 import static java.lang.Boolean.FALSE;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class MemvTest extends AbstractTest {
 
