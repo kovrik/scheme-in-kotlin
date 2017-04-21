@@ -66,10 +66,6 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    /* Do not downcast in case of `new` Special Form (workaround) */
-    if (result instanceof New.NewInstanceResult) {
-      return ((New.NewInstanceResult) result).getInstance();
-    }
     /* Try to downcast Big Numbers */
     if (result instanceof BigDecimal) {
       return NumberUtils.tryToDowncast((BigDecimal) result);
@@ -81,6 +77,10 @@ public class Evaluator {
     /* Now upcast number if required */
     if (result instanceof Number) {
       return maybeUpcast((Number) result);
+    }
+    /* Do not downcast in case of `new` Special Form (workaround) */
+    if (result instanceof New.NewInstanceResult) {
+      return ((New.NewInstanceResult) result).getInstance();
     }
     return result;
   }

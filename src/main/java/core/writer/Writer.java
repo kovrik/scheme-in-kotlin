@@ -30,13 +30,11 @@ public class Writer implements IWriter {
     if (o instanceof SCMSymbol) {
       return ((SCMSymbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
     }
+    if (o instanceof SCMClass) {
+      return "#<class:" + ((SCMClass)o).getName() + ">";
+    }
     if (o instanceof Class) {
-      SCMClass scmClass = SCMClass.valueOf((Class) o);
-      String name = ((Class)o).getSimpleName();
-      if (scmClass == null) {
-        name = ((Class)o).getName();
-      }
-      return "#<class:" + name + ">";
+      return "#<class:" + ((Class)o).getName() + ">";
     }
     if (o instanceof List) {
       return SCMCons.toString((List) o);
