@@ -51,9 +51,10 @@ public final class NumericalComparison extends AFn {
       if ((f instanceof Double) || (s instanceof Double)) {
         f = f.doubleValue();
         s = s.doubleValue();
-      } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
-        f = new BigDecimal(f.toString());
+      } else if ((f instanceof BigDecimal) && !(s instanceof BigDecimal)) {
         s = new BigDecimal(s.toString());
+      } else if ((s instanceof BigDecimal) && !(f instanceof BigDecimal)) {
+        f = new BigDecimal(f.toString());
       }
       if (!predicate.test((Comparable)f, s)) {
         return Boolean.FALSE;

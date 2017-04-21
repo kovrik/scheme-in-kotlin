@@ -55,6 +55,11 @@ public final class Quotient extends AFn {
     if (second instanceof BigDecimal) {
       return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
     }
+    if (((first instanceof Double) || (second instanceof Double)) &&
+        (NumberUtils.isInteger(first)) && NumberUtils.isInteger(second)) {
+
+      return Long.valueOf(first.longValue() / second.longValue()).doubleValue();
+    }
 
     if ((first instanceof Double) || (second instanceof Double) ||
         (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
