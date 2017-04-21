@@ -290,6 +290,7 @@ public final class DefaultEnvironment extends Environment {
       new Count() { @Override public String getName() { return "length"; } },
       new Conj(),
       new Empty(),
+      new Range(),
 
       /* Keywords */
       new Keyword(),
