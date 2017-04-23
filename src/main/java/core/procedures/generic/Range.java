@@ -31,49 +31,54 @@ public class Range extends AFn {
     }
     // TODO Big numbers
     // TODO Fractions
-    // TODO Negative step
     SCMCons<Number> result = SCMCons.list();
     boolean exact = NumberUtils.isExactInteger(args[0]);
     if (args.length == 3) {
       exact = exact && NumberUtils.isExactInteger(args[2]);
     }
     if (exact) {
+      long start = 0;
+      long end = 0;
+      long step = 1;
       if (args.length == 1) {
-        long end = ((Number) args[0]).longValue();
-        for (long n = 0; n < end; n++) {
-          result.add(n);
-        }
+        end = ((Number) args[0]).longValue();
       } else if (args.length == 2) {
-        long start = ((Number) args[0]).longValue();
-        long end   = ((Number) args[1]).longValue();
-        for (long n = start; n < end; n++) {
+        start = ((Number) args[0]).longValue();
+        end   = ((Number) args[1]).longValue();
+      } else if (args.length == 3) {
+        start = ((Number) args[0]).longValue();
+        end   = ((Number) args[1]).longValue();
+        step  = ((Number) args[2]).longValue();
+      }
+      if (step >= 0) {
+        for (long n = start; n < end; n += step) {
           result.add(n);
         }
-      } else if (args.length == 3) {
-        long start = ((Number) args[0]).longValue();
-        long end   = ((Number) args[1]).longValue();
-        long step  = ((Number) args[2]).longValue();
-        for (long n = start; n < end; n += step) {
+      } else {
+        for (long n = start; n > end; n += step) {
           result.add(n);
         }
       }
     } else {
+      double start = 0;
+      double end = 0;
+      double step = 1;
       if (args.length == 1) {
-        double end = ((Number) args[0]).doubleValue();
-        for (double n = 0; n < end; n++) {
-          result.add(n);
-        }
+        end = ((Number) args[0]).doubleValue();
       } else if (args.length == 2) {
-        double start = ((Number) args[0]).doubleValue();
-        double end   = ((Number) args[1]).doubleValue();
-        for (double n = start; n < end; n++) {
+        start = ((Number) args[0]).doubleValue();
+        end   = ((Number) args[1]).doubleValue();
+      } else if (args.length == 3) {
+        start = ((Number) args[0]).doubleValue();
+        end   = ((Number) args[1]).doubleValue();
+        step  = ((Number) args[2]).doubleValue();
+      }
+      if (step >= 0) {
+        for (double n = start; n < end; n += step) {
           result.add(n);
         }
-      } else if (args.length == 3) {
-        double start = ((Number) args[0]).doubleValue();
-        double end   = ((Number) args[1]).doubleValue();
-        double step  = ((Number) args[2]).doubleValue();
-        for (double n = start; n < end; n += step) {
+      } else {
+        for (double n = start; n > end; n += step) {
           result.add(n);
         }
       }
