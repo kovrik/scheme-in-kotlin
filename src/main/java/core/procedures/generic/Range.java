@@ -2,10 +2,14 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.procedures.math.Addition;
+import core.procedures.math.NumericalComparison;
+import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 import core.scm.SCMCons;
 import core.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Range extends AFn {
@@ -29,13 +33,26 @@ public class Range extends AFn {
     if (args.length == 0) {
       return SCMCons.EMPTY;
     }
-    // TODO Big numbers
-    // TODO Fractions
-    SCMCons<Number> result = SCMCons.list();
+    boolean fraction = args[0] instanceof SCMBigRational;
+    if (args.length == 3) {
+      fraction = fraction || args[2] instanceof SCMBigRational;
+    }
+    boolean big = args[0] instanceof BigDecimal;
+    if (args.length == 2) {
+      big = big || args[1] instanceof BigDecimal;
+    }
+    if (args.length == 3) {
+      big = big || args[1] instanceof BigDecimal || args[2] instanceof BigDecimal;
+    }
+    if (fraction || big) {
+      return range(args);
+    }
+
     boolean exact = NumberUtils.isExactInteger(args[0]);
     if (args.length == 3) {
-      exact = exact && NumberUtils.isExactInteger(args[2]);
+      exact = exact || NumberUtils.isExactInteger(args[2]);
     }
+    SCMCons<Number> result = SCMCons.list();
     if (exact) {
       long start = 0;
       long end = 0;
@@ -82,6 +99,33 @@ public class Range extends AFn {
           result.add(n);
         }
       }
+    }
+    return result;
+  }
+
+  private List<Number> range(Object[] args) {
+    SCMCons<Number> result = SCMCons.list();
+    Number start = 0L;
+    Number end = 0L;
+    Number step = 1L;
+    if (args.length == 1) {
+      end   = (Number)args[0];
+    } else if (args.length == 2) {
+      start = (Number)args[0];
+      end   = (Number)args[1];
+    } else if (args.length == 3) {
+      start = (Number)args[0];
+      end   = (Number)args[1];
+      step  = (Number)args[2];
+    }
+    Number cur = start;
+    NumericalComparison pred = NumericalComparison.LESS;
+    if (NumberUtils.isNegative(step)) {
+      pred = NumericalComparison.GREATER;
+    }
+    while (pred.apply(cur, end)) {
+      result.add(cur);
+      cur = Addition.add(cur, step);
     }
     return result;
   }
