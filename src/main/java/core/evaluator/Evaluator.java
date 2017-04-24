@@ -135,7 +135,7 @@ public class Evaluator {
       op = env.findOrDefault(op, null);
       // TODO Check if op starts with '.' instead?
       javaMethod = op == null;
-      if (javaMethod && sexp.size() < 2) {
+      if (javaMethod && sexp.isEmpty()) {
         throw IllegalSyntaxException.of("eval", sexp, "illegal member expression");
       }
       /* Inline Special Forms and Pure functions */
@@ -177,10 +177,12 @@ public class Evaluator {
     Object[] args = new Object[sexp.size() - 1];
     if (javaMethod) {
       String method = sexp.get(0).toString();
-      /* Check if it is instance or static method */
-      args[0] = sexp.get(1) instanceof SCMSymbol ? env.findOrDefault(sexp.get(1), sexp.get(1)) : eval(sexp.get(1), env);
-      for (int i = 2; i < sexp.size(); i++) {
-        args[i - 1] = eval(sexp.get(i), env);
+      if (sexp.size() > 1) {
+        /* Check if it is instance or static method */
+        args[0] = sexp.get(1) instanceof SCMSymbol ? env.findOrDefault(sexp.get(1), sexp.get(1)) : eval(sexp.get(1), env);
+        for (int i = 2; i < sexp.size(); i++) {
+          args[i - 1] = eval(sexp.get(i), env);
+        }
       }
       return reflector.evalJavaMethod(method, args);
     }
