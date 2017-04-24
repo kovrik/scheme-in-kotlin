@@ -174,37 +174,31 @@ public class Evaluator {
     }
 
     /* Scheme has applicative order, so evaluate all arguments first */
-    List<Object> args = new ArrayList<>(sexp.size() - 1);
+    Object[] args = new Object[sexp.size() - 1];
     if (javaMethod) {
       String method = sexp.get(0).toString();
       /* Check if it is instance or static method */
-      int n = 2;
-      if (sexp.get(1) instanceof SCMSymbol) {
-        args.add(env.findOrDefault(sexp.get(1), sexp.get(1)));
-      } else {
-        args.add(eval(sexp.get(1), env));
+      args[0] = sexp.get(1) instanceof SCMSymbol ? env.findOrDefault(sexp.get(1), sexp.get(1)) : eval(sexp.get(1), env);
+      for (int i = 2; i < sexp.size(); i++) {
+        args[i - 1] = eval(sexp.get(i), env);
       }
-
-      for (int i = n; i < sexp.size(); i++) {
-        args.add(eval(sexp.get(i), env));
-      }
-      return reflector.evalJavaMethod(method, args.toArray());
+      return reflector.evalJavaMethod(method, args);
     }
 
     /* Evaluate args */
     for (int i = 1; i < sexp.size(); i++) {
-      args.add(eval(sexp.get(i), env));
+      args[i - 1] = eval(sexp.get(i), env);
     }
 
     // TODO Turn them into Special Forms?
     AFn fn = (AFn)op;
     /* call-with-current-continuation */
     if (fn instanceof CallCC) {
-      return ((CallCC)fn).callcc((IFn) args.get(0), env, this);
+      return ((CallCC)fn).callcc((IFn) args[0], env, this);
     }
     /* dynamic-wind */
     if (fn instanceof DynamicWind) {
-      return ((DynamicWind)fn).dynamicWind((IFn)args.get(0), (IFn)args.get(1), (IFn)args.get(2), env, this);
+      return ((DynamicWind)fn).dynamicWind((IFn)args[0], (IFn)args[1], (IFn)args[2], env, this);
     }
     /* Call AFn via helper method */
     return fn.applyN(args);

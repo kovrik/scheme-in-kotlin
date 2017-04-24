@@ -5,8 +5,6 @@ import core.exceptions.WrongTypeException;
 import core.scm.SCMClass;
 import core.writer.Writer;
 
-import java.util.List;
-
 /* Abstract superclass of all functions */
 public abstract class AFn implements IFn<Object[], Object> {
 
@@ -96,14 +94,14 @@ public abstract class AFn implements IFn<Object[], Object> {
   /**
    * Checks the number of arguments and their types
    */
-  private void checkArgs(List<Object> args) {
+  private void checkArgs(Object[] args) {
     /* Check arg count */
-    int argsSize = args.size();
+    int argsSize = args.length;
     if (argsSize < minArgs || argsSize > maxArgs) {
       throw new ArityException(getName(), minArgs, maxArgs, argsSize);
     }
     for (int i = 0; i < argsSize; i++) {
-      Object arg = args.get(i);
+      Object arg = args[i];
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
         if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
@@ -133,18 +131,18 @@ public abstract class AFn implements IFn<Object[], Object> {
    * then calls applyN() methods (where N is arity).
    * Calls variadic apply() otherwise.
    */
-  public final Object applyN(List<Object> args) {
+  public final Object applyN(Object[] args) {
     /* Check args */
     checkArgs(args);
     /* if minArgs == maxArgs, then function is not variadic, hence get arity */
     int arity = (minArgs == maxArgs) ? minArgs : -1;
     switch (arity) {
       case 0:  return apply0();
-      case 1:  return apply1(args.get(0));
-      case 2:  return apply2(args.get(0), args.get(1));
-      case 3:  return apply3(args.get(0), args.get(1), args.get(2));
-      case 4:  return apply4(args.get(0), args.get(1), args.get(2), args.get(3));
-      default: return apply(args.toArray());
+      case 1:  return apply1(args[0]);
+      case 2:  return apply2(args[0], args[1]);
+      case 3:  return apply3(args[0], args[1], args[2]);
+      case 4:  return apply4(args[0], args[1], args[2], args[3]);
+      default: return apply(args);
     }
   }
 }
