@@ -9,6 +9,11 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
 
   private final Environment outer;
 
+  public Environment(int size, Environment outer) {
+    super(size);
+    this.outer = outer;
+  }
+
   public Environment(Environment outer) {
     this.outer = outer;
   }

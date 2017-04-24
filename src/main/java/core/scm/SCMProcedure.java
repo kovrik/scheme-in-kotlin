@@ -45,7 +45,7 @@ public class SCMProcedure extends AFn {
   // TODO Optimize
   private Environment bindArgs(Object... values) {
     /* Evaluate mandatory params and put values into new local environment */
-    Environment env = new Environment(this.localEnvironment);
+    Environment env = new Environment(values.length, this.localEnvironment);
     List<SCMSymbol> args = getArgs();
     for (int i = 0; i < minArgs; i++) {
       env.put(args.get(i), values[i]);
@@ -61,19 +61,19 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply0() {
-    return new SCMThunk(body, new Environment(this.localEnvironment));
+    return new SCMThunk(body, new Environment(0, this.localEnvironment));
   }
 
   @Override
   public Object apply1(Object arg1) {
-    Environment environment = new Environment(this.localEnvironment);
+    Environment environment = new Environment(1, this.localEnvironment);
     environment.put(args.get(0), arg1);
     return new SCMThunk(body, environment);
   }
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    Environment environment = new Environment(this.localEnvironment);
+    Environment environment = new Environment(2, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
     return new SCMThunk(body, environment);
@@ -81,7 +81,7 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply3(Object arg1, Object arg2, Object arg3) {
-    Environment environment = new Environment(this.localEnvironment);
+    Environment environment = new Environment(3, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
     environment.put(args.get(2), arg3);
@@ -90,7 +90,7 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply4(Object arg1, Object arg2, Object arg3, Object arg4) {
-    Environment environment = new Environment(this.localEnvironment);
+    Environment environment = new Environment(4, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
     environment.put(args.get(2), arg3);
