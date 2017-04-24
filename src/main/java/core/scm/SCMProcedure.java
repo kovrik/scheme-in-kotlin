@@ -5,6 +5,8 @@ import core.procedures.AFn;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /* Lambda */
 public class SCMProcedure extends AFn {
@@ -17,6 +19,9 @@ public class SCMProcedure extends AFn {
   /* Body form of the procedure */
   private Object body;
 
+  /* Is body a constant? If it is, then no need to evaluate it */
+  private boolean isBodyConst;
+
   /* Lexical environment */
   private Environment localEnvironment = null;
 
@@ -24,6 +29,7 @@ public class SCMProcedure extends AFn {
     this.name = name;
     this.args = (args == null) ? SCMCons.EMPTY : args;
     this.body = body;
+    this.isBodyConst = isConst(body);
     this.localEnvironment = localEnvironment;
     if (isVariadic) {
       /* Do not count rest arg */
@@ -32,6 +38,12 @@ public class SCMProcedure extends AFn {
       this.minArgs = this.args.size();
       this.maxArgs = this.args.size();
     }
+  }
+
+  // TODO Check collections?
+  public static boolean isConst(Object obj) {
+    return !((obj instanceof SCMSymbol) || (obj instanceof List) || (obj instanceof Map) ||
+             (obj instanceof SCMVector) || (obj instanceof Set));
   }
 
   public List<SCMSymbol> getArgs() {
@@ -61,11 +73,17 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply0() {
+    if (isBodyConst) {
+      return body;
+    }
     return new SCMThunk(body, new Environment(0, this.localEnvironment));
   }
 
   @Override
   public Object apply1(Object arg1) {
+    if (isBodyConst) {
+      return body;
+    }
     Environment environment = new Environment(1, this.localEnvironment);
     environment.put(args.get(0), arg1);
     return new SCMThunk(body, environment);
@@ -73,6 +91,9 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
+    if (isBodyConst) {
+      return body;
+    }
     Environment environment = new Environment(2, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
@@ -81,6 +102,9 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply3(Object arg1, Object arg2, Object arg3) {
+    if (isBodyConst) {
+      return body;
+    }
     Environment environment = new Environment(3, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
@@ -90,6 +114,9 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply4(Object arg1, Object arg2, Object arg3, Object arg4) {
+    if (isBodyConst) {
+      return body;
+    }
     Environment environment = new Environment(4, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
@@ -100,6 +127,9 @@ public class SCMProcedure extends AFn {
 
   @Override
   public Object apply(Object... args) {
+    if (isBodyConst) {
+      return body;
+    }
     return new SCMThunk(body, bindArgs(args));
   }
 
