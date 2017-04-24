@@ -61,10 +61,10 @@ public class Range extends AFn {
         end = args[0] instanceof Double ? Math.round((Double) args[0]) : ((Number) args[0]).longValue();
       } else if (args.length == 2) {
         start = ((Number) args[0]).longValue();
-        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[0]).longValue();
+        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[1]).longValue();
       } else if (args.length == 3) {
         start = ((Number) args[0]).longValue();
-        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[0]).longValue();
+        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[1]).longValue();
         step  = ((Number) args[2]).longValue();
       }
       if (step >= 0) {
