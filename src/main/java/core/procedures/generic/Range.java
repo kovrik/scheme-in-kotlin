@@ -50,7 +50,7 @@ public class Range extends AFn {
 
     boolean exact = NumberUtils.isExactInteger(args[0]);
     if (args.length == 3) {
-      exact = exact || NumberUtils.isExactInteger(args[2]);
+      exact = exact && NumberUtils.isExactInteger(args[2]);
     }
     SCMCons<Number> result = SCMCons.list();
     if (exact) {
@@ -58,13 +58,13 @@ public class Range extends AFn {
       long end = 0;
       long step = 1;
       if (args.length == 1) {
-        end = ((Number) args[0]).longValue();
+        end = args[0] instanceof Double ? Math.round((Double) args[0]) : ((Number) args[0]).longValue();
       } else if (args.length == 2) {
         start = ((Number) args[0]).longValue();
-        end   = ((Number) args[1]).longValue();
+        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[0]).longValue();
       } else if (args.length == 3) {
         start = ((Number) args[0]).longValue();
-        end   = ((Number) args[1]).longValue();
+        end = args[1] instanceof Double ? Math.round((Double) args[1]) : ((Number) args[0]).longValue();
         step  = ((Number) args[2]).longValue();
       }
       if (step >= 0) {
