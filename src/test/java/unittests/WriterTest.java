@@ -6,8 +6,8 @@ import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static core.scm.SCMCons.EMPTY;
 import static org.junit.Assert.assertEquals;
@@ -35,7 +35,7 @@ public class WriterTest {
     assertEquals(SCMNil.NIL.toString(), writer.toString(null));
     assertEquals("()", writer.toString(EMPTY));
     assertEquals("()", writer.toString(SCMCons.list()));
-    assertEquals("()", writer.toString(new ArrayList()));
+    assertEquals("()", writer.toString(Collections.EMPTY_LIST));
     assertEquals("()", writer.toString(Arrays.asList(1, 2, 3).subList(3, 3)));
   }
 

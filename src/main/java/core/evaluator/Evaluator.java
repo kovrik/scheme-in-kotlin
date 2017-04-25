@@ -184,6 +184,7 @@ public class Evaluator {
           args[i - 1] = eval(sexp.get(i), env);
         }
       }
+      // FIXME Do not downcast/upcast if using reflection!
       return reflector.evalJavaMethod(method, args);
     }
 

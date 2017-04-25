@@ -3,21 +3,17 @@ package unittests;
 import core.scm.SCMNil;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 import static core.procedures.cons.Car.car;
 import static core.procedures.cons.Cdr.cdr;
 import static core.procedures.cons.ConsProc.cons;
-import static core.procedures.predicates.SCMPredicate.IS_LIST;
-import static core.procedures.predicates.SCMPredicate.IS_NULL;
-import static core.procedures.predicates.SCMPredicate.IS_PAIR;
-import static core.scm.SCMCons.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static java.lang.Boolean.TRUE;
+import static core.procedures.predicates.SCMPredicate.*;
+import static core.scm.SCMCons.EMPTY;
+import static core.scm.SCMCons.list;
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static org.junit.Assert.*;
 
 public class SCMConsTest {
 
@@ -48,8 +44,8 @@ public class SCMConsTest {
     assertEquals("(() (1 2 ()) ())", list(EMPTY, list(1, 2, EMPTY), EMPTY).toString());
     assertEquals("()", list().toString());
     assertEquals("(1)", list(1).toString());
-    assertEquals("(1)", cons(1, new ArrayList()).toString());
-    assertEquals("(2 1)", cons(2, cons(1, new ArrayList())).toString());
+    assertEquals("(1)", cons(1, Collections.EMPTY_LIST).toString());
+    assertEquals("(2 1)", cons(2, cons(1, Collections.EMPTY_LIST)).toString());
     assertEquals("(1 2)", list(1, 2).toString());
     assertEquals("(1 2 3 4)", list(1, 2, 3, 4).toString());
     assertEquals("(1 2 () 4)", list(1, 2, EMPTY, 4).toString());
