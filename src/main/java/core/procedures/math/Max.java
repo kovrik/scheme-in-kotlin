@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -55,10 +56,10 @@ public final class Max extends AFn {
       return ((BigDecimal)first).max((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).max(new BigDecimal(second.toString()));
+      return ((BigDecimal)first).max(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).max(new BigDecimal(first.toString()));
+      return ((BigDecimal)second).max(NumberUtils.toBigDecimal(first));
     }
     return Math.max(first.doubleValue(), second.doubleValue());
   }

@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -53,10 +54,10 @@ public final class Min extends AFn {
       return ((BigDecimal)first).min((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).min(new BigDecimal(second.toString()));
+      return ((BigDecimal)first).min(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).min(new BigDecimal(first.toString()));
+      return ((BigDecimal)second).min(NumberUtils.toBigDecimal(first));
     }
     return Math.min(first.doubleValue(), second.doubleValue());
   }

@@ -80,14 +80,14 @@ public final class Multiplication extends AFn {
       try {
         return Math.multiplyExact((Long) first, (Long) second);
       } catch (ArithmeticException e) {
-        return new BigDecimal((Long)first).multiply(new BigDecimal((Long)second));
+        return BigDecimal.valueOf((Long)first).multiply(BigDecimal.valueOf((Long)second));
       }
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).multiply(new BigDecimal(second.toString()));
+      return ((BigDecimal)first).multiply(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).multiply(new BigDecimal(first.toString()));
+      return ((BigDecimal)second).multiply(NumberUtils.toBigDecimal(first));
     }
     double result = first.doubleValue() * second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -86,19 +87,19 @@ public final class LCM extends AFn {
       return lcm((SCMBigRational) first, (SCMBigRational)second);
     }
     if (first instanceof SCMBigRational) {
-      return lcm(((SCMBigRational) first).toBigDecimal(), new BigDecimal(second.toString()));
+      return lcm(((SCMBigRational) first).toBigDecimal(), NumberUtils.toBigDecimal(second));
     }
     if (second instanceof SCMBigRational) {
-      return lcm(new BigDecimal(first.toString()), ((SCMBigRational) second).toBigDecimal());
+      return lcm(NumberUtils.toBigDecimal(first), ((SCMBigRational) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return lcm((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return lcm((BigDecimal)first, new BigDecimal(second.toString()));
+      return lcm((BigDecimal)first, NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return lcm(new BigDecimal(first.toString()), (BigDecimal)second);
+      return lcm(NumberUtils.toBigDecimal(first), (BigDecimal)second);
     }
     return lcm(first.doubleValue(), second.doubleValue());
   }

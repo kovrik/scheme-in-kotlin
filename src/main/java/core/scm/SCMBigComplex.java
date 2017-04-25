@@ -169,7 +169,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
       if (e instanceof SCMBigRational) {
         c = ((SCMBigRational) e).toBigDecimal();
       } else {
-        c = new BigDecimal(e.toString());
+        c = NumberUtils.toBigDecimal(e);
       }
       d = BigDecimal.ZERO;
     }

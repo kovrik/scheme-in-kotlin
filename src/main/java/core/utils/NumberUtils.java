@@ -289,7 +289,7 @@ public final class NumberUtils {
        */
       if (isInexact(number)) {
         if (number instanceof Double) {
-          BigDecimal bigDecimal = new BigDecimal(number.toString());
+          BigDecimal bigDecimal = toBigDecimal(number);
           int scale = bigDecimal.scale();
           return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
         }
@@ -317,6 +317,12 @@ public final class NumberUtils {
   public static BigDecimal toBigDecimal(Number number) {
     if (number instanceof BigDecimal) {
       return (BigDecimal)number;
+    }
+    if (number instanceof Long) {
+      return BigDecimal.valueOf((Long)number);
+    }
+    if (number instanceof Double) {
+      return BigDecimal.valueOf((Double)number);
     }
     if (number instanceof SCMBigRational) {
       return ((SCMBigRational) number).toBigDecimal();
@@ -574,7 +580,8 @@ public final class NumberUtils {
     return number;
   }
 
-  public static Number tryToDowncast(BigInteger number) {
+  public static Number tryToDowncast(SCMBigRational bigRational) {
+    BigInteger number = bigRational.getNumerator();
     if (number.bitLength() <= 63) {
       try {
         return number.longValueExact();

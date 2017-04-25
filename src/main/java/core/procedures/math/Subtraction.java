@@ -81,14 +81,14 @@ public final class Subtraction extends AFn {
       try {
         return Math.subtractExact((Long)first, (Long)second);
       } catch (ArithmeticException e) {
-        return new BigDecimal((Long)first).subtract(new BigDecimal((Long)second));
+        return BigDecimal.valueOf((Long)first).subtract(BigDecimal.valueOf((Long)second));
       }
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).subtract(new BigDecimal(second.toString()));
+      return ((BigDecimal)first).subtract(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return new BigDecimal(first.toString()).subtract((BigDecimal)second);
+      return NumberUtils.toBigDecimal(first).subtract((BigDecimal)second);
     }
     double result = first.doubleValue() - second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

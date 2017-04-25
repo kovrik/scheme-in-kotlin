@@ -71,7 +71,7 @@ public class Evaluator {
     }
     /* Try to downcast Rationals with denominator = 1 */
     if ((result instanceof SCMBigRational) && (((SCMBigRational) result).isDenominatorEqualToOne())) {
-      return NumberUtils.tryToDowncast(((SCMBigRational) result).getNumerator());
+      return NumberUtils.tryToDowncast((SCMBigRational) result);
     }
     /* Now upcast number if required */
     if (result instanceof Number) {

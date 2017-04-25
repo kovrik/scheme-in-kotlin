@@ -50,10 +50,10 @@ public final class Quotient extends AFn {
       return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
     }
     if (((first instanceof Double) || (second instanceof Double)) &&
         (NumberUtils.isInteger(first)) && NumberUtils.isInteger(second)) {
@@ -64,7 +64,7 @@ public final class Quotient extends AFn {
     if ((first instanceof Double) || (second instanceof Double) ||
         (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
 
-      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
     }
     return first.longValue() / second.longValue();
   }

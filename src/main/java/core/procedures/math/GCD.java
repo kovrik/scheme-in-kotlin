@@ -4,6 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -90,19 +91,19 @@ public final class GCD extends AFn {
       return gcd((SCMBigRational) first, (SCMBigRational)second);
     }
     if (first instanceof SCMBigRational) {
-      return gcd(((SCMBigRational) first).toBigDecimal(), new BigDecimal(second.toString()));
+      return gcd(((SCMBigRational) first).toBigDecimal(), NumberUtils.toBigDecimal(second));
     }
     if (second instanceof SCMBigRational) {
-      return gcd(new BigDecimal(first.toString()), ((SCMBigRational) second).toBigDecimal());
+      return gcd(NumberUtils.toBigDecimal(first), ((SCMBigRational) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return gcd((BigDecimal) first, (BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return gcd((BigDecimal) first, new BigDecimal(second.toString()));
+      return gcd((BigDecimal) first, NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return gcd(new BigDecimal(first.toString()), (BigDecimal) second);
+      return gcd(NumberUtils.toBigDecimal(first), (BigDecimal) second);
     }
     return gcd(first.doubleValue(), second.doubleValue());
   }

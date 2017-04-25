@@ -78,14 +78,14 @@ public final class Addition extends AFn {
       try {
         return Math.addExact((Long)first, (Long)second);
       } catch (ArithmeticException e) {
-        return new BigDecimal((Long)first).add(new BigDecimal((Long)second));
+        return BigDecimal.valueOf((Long)first).add(BigDecimal.valueOf((Long)second));
       }
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).add(new BigDecimal(second.toString()));
+      return ((BigDecimal)first).add(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return new BigDecimal(first.toString()).add((BigDecimal) second);
+      return NumberUtils.toBigDecimal(first).add((BigDecimal) second);
     }
     double result = first.doubleValue() + second.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

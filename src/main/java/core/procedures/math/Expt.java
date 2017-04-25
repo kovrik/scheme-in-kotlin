@@ -167,7 +167,7 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = new BigDecimal((Long)base).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        BigDecimal result = BigDecimal.valueOf((Long)base).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
         if (isNegative) {
           return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
         }
@@ -195,7 +195,7 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBig((BigDecimal) base, new BigDecimal(exponent.toString()));
+      return exptBig((BigDecimal) base, NumberUtils.toBigDecimal(exponent));
     }
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());

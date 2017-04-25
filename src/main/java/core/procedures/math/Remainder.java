@@ -3,6 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -48,10 +49,10 @@ public final class Remainder extends AFn {
       return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, new BigDecimal(second.toString()));
+      return apply((BigDecimal)first, NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return apply(new BigDecimal(first.toString()), new BigDecimal(second.toString()));
+      return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
     }
 
     if ((first instanceof Double) || (second instanceof Double)) {

@@ -70,10 +70,10 @@ public final class Division extends AFn {
       return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
     }
     if (numerator instanceof BigDecimal) {
-      return safeBigDecimalDivision((BigDecimal)numerator, new BigDecimal(denominator.toString()));
+      return safeBigDecimalDivision((BigDecimal)numerator, NumberUtils.toBigDecimal(denominator));
     }
     if (denominator instanceof BigDecimal) {
-      return safeBigDecimalDivision(new BigDecimal(numerator.toString()), (BigDecimal)denominator);
+      return safeBigDecimalDivision(NumberUtils.toBigDecimal(numerator), (BigDecimal)denominator);
     }
     double result = numerator.doubleValue() / denominator.doubleValue();
     if (Double.isNaN(result) || Double.isInfinite(result)) {

@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 import core.scm.SCMClass;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.util.function.BiPredicate;
@@ -52,9 +53,9 @@ public final class NumericalComparison extends AFn {
         f = f.doubleValue();
         s = s.doubleValue();
       } else if ((f instanceof BigDecimal) && !(s instanceof BigDecimal)) {
-        s = new BigDecimal(s.toString());
+        s = NumberUtils.toBigDecimal(s);
       } else if ((s instanceof BigDecimal) && !(f instanceof BigDecimal)) {
-        f = new BigDecimal(f.toString());
+        f = NumberUtils.toBigDecimal(f);
       }
       if (!predicate.test((Comparable)f, s)) {
         return Boolean.FALSE;
