@@ -11,7 +11,6 @@ import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
-import core.scm.specialforms.New;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
@@ -78,9 +77,10 @@ public class Evaluator {
     if (result instanceof Number) {
       return maybeUpcast((Number) result);
     }
+    // FIXME Get rid of this workaround
     /* Do not downcast in case of `new` Special Form (workaround) */
-    if (result instanceof New.NewInstanceResult) {
-      return ((New.NewInstanceResult) result).getInstance();
+    if (result instanceof ReflectorResult) {
+      return ((ReflectorResult) result).get();
     }
     return result;
   }
@@ -98,7 +98,7 @@ public class Evaluator {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
       if (o == null) {
-        return reflector.evalJavaStaticField(sexp.toString());
+        return new ReflectorResult(reflector.evalJavaStaticField(sexp.toString()));
       }
       /* Evaluate nil constant to null */
       if (o == SCMNil.NIL) {
@@ -184,8 +184,7 @@ public class Evaluator {
           args[i - 1] = eval(sexp.get(i), env);
         }
       }
-      // FIXME Do not downcast/upcast if using reflection!
-      return reflector.evalJavaMethod(method, args);
+      return new ReflectorResult(reflector.evalJavaMethod(method, args));
     }
 
     /* Evaluate args */
