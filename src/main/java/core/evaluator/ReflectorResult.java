@@ -13,5 +13,12 @@ public final class ReflectorResult {
   public Object get() {
     return value;
   }
+
+  public static Object maybeWrap(Object value) {
+    if (value instanceof Number) {
+      return new ReflectorResult(value);
+    }
+    return value;
+  }
 }
 

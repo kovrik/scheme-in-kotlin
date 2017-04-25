@@ -24,7 +24,7 @@ public enum New implements ISpecialForm {
     for (int i = 0; i < args.length; i++) {
       args[i] = evaluator.eval(expression.get(i + 2), env);
     }
-    return new ReflectorResult(reflector.newInstance(clazz, args));
+    return ReflectorResult.maybeWrap(reflector.newInstance(clazz, args));
   }
 
   @Override

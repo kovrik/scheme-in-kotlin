@@ -98,7 +98,7 @@ public class Evaluator {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
       if (o == null) {
-        return new ReflectorResult(reflector.evalJavaStaticField(sexp.toString()));
+        return ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
       }
       /* Evaluate nil constant to null */
       if (o == SCMNil.NIL) {
@@ -184,7 +184,7 @@ public class Evaluator {
           args[i - 1] = eval(sexp.get(i), env);
         }
       }
-      return new ReflectorResult(reflector.evalJavaMethod(method, args));
+      return ReflectorResult.maybeWrap(reflector.evalJavaMethod(method, args));
     }
 
     /* Evaluate args */
