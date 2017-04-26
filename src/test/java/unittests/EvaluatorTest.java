@@ -199,4 +199,9 @@ public class EvaluatorTest extends AbstractTest {
   public void testForEach() {
     assertEquals(SCMVoid.VOID, eval("(for-each length '(() (a) (a b)))", env));
   }
+
+  @Test
+  public void testManyArgs() {
+    assertEquals(524794L, eval("(apply + (map inc (range 3 1024)))", env));
+  }
 }

@@ -16,7 +16,7 @@ public abstract class AFn implements IFn<Object[], Object> {
 
   public AFn() {
     minArgs = 0;
-    maxArgs = 255;
+    maxArgs = Integer.MAX_VALUE;
     mandatoryArgsTypes = new Class<?>[]{};
     restArgsType = null;
     lastArgType = null;
