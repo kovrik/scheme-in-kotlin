@@ -52,7 +52,7 @@ public final class Addition extends AFn {
       return ((SCMBigComplex) first).plus(second);
     }
     if (second instanceof SCMBigComplex) {
-      return new SCMBigComplex(first).plus(second);
+      return ((SCMBigComplex) second).plus(first);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {

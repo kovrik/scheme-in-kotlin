@@ -55,7 +55,7 @@ public final class Multiplication extends AFn {
       return ((SCMBigComplex) first).multiply(second);
     }
     if (second instanceof SCMBigComplex) {
-      return new SCMBigComplex(first).multiply(second);
+      return ((SCMBigComplex) second).multiply(first);
     }
     /* Big Rational numbers */
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {

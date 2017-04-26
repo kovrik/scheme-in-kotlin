@@ -231,7 +231,7 @@ public final class NumberUtils {
     if (!(im instanceof Number)) {
       return SCMSymbol.intern(number);
     }
-    return isZero(re) && isZero(im) ? 0L : new SCMBigComplex((Number)re, (Number)im);
+    return isZero(re) && isZero(im) ? 0L : new SCMBigComplex(toBigDecimal((Number) re), toBigDecimal((Number)im));
   }
 
   /* Parse string into a number */
