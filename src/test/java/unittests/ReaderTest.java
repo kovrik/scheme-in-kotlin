@@ -11,7 +11,6 @@ import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -36,8 +35,8 @@ public class ReaderTest extends AbstractTest {
     assertEquals(-1235.0d, reader.readFirst("-1235."));
     assertEquals(.5d, reader.readFirst(".5"));
     assertEquals(-.5d, reader.readFirst("-.5"));
-    assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#e#d-.5"));
-    assertEquals(new SCMBigRational("-1", "2"), reader.readFirst("#E#d-.5"));
+    assertEquals(SCMBigRational.valueOf("-1", "2"), reader.readFirst("#e#d-.5"));
+    assertEquals(SCMBigRational.valueOf("-1", "2"), reader.readFirst("#E#d-.5"));
     assertEquals(+4.5d, reader.readFirst("#i#d+4.5"));
     assertEquals(4999999.5d, reader.readFirst("#i#d+4999999.5"));
     assertEquals(5L, reader.readFirst("#e#b101"));
@@ -64,15 +63,15 @@ public class ReaderTest extends AbstractTest {
     assertEquals(1500d, reader.readFirst("#i15##"));
     assertEquals(1500d, reader.readFirst("#I15##.####"));
     assertEquals(1500d, reader.readFirst("#I15##"));
-    assertEquals(new SCMBigRational("500", BigInteger.ONE), reader.readFirst("#e5###/1#"));
-    assertEquals(new SCMBigRational("500", BigInteger.ONE), reader.readFirst("#E5###/1#"));
+    assertEquals(SCMBigRational.valueOf("500", "1"), reader.readFirst("#e5###/1#"));
+    assertEquals(SCMBigRational.valueOf("500", "1"), reader.readFirst("#E5###/1#"));
     assertEquals(new BigDecimal("500.0"), reader.readFirst(" 5###/1#"));
-    assertEquals(new SCMBigRational("1500", BigInteger.ONE), reader.readFirst("#e15##.####"));
+    assertEquals(SCMBigRational.valueOf("1500", "1"), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
-    assertEquals(new SCMBigRational("3", "4"), reader.readFirst("#e3/4"));
+    assertEquals(SCMBigRational.valueOf("3", "4"), reader.readFirst("#e3/4"));
     assertEquals(1500d,  reader.readFirst("15e2"));
     assertEquals(15000d, reader.readFirst("15e3"));
-    assertEquals(new SCMBigRational("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
+    assertEquals(SCMBigRational.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
                  reader.readFirst("#e999999999999999999999999999999999999999999999999999999999999999999999.999"));
 
     String[] badNumbers = {"#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1",
@@ -255,7 +254,7 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testScientificNotation() {
-    assertEquals(new SCMBigRational("23", "1"), reader.readFirst("#e2.3e1"));
+    assertEquals(SCMBigRational.valueOf("23", "1"), reader.readFirst("#e2.3e1"));
     assertEquals(230L, reader.readFirst("#e23e1"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
     assertEquals(2.3e-51, reader.readFirst("#i2.3e-51"));

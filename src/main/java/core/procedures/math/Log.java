@@ -58,7 +58,7 @@ public final class Log extends AFn {
       return logBig(((SCMBigRational)number).toBigDecimal());
     }
     if (number instanceof BigDecimal) {
-      if (((BigDecimal)number).compareTo(BigDecimal.ZERO) == 0) {
+      if (((BigDecimal)number).signum() == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
       return logBig((BigDecimal) number);

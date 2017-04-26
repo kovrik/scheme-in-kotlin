@@ -57,7 +57,8 @@ public class Writer implements IWriter {
     }
     if (o instanceof Character) {
       /* Check named characters */
-      return "#\\" + CODEPOINTS.getOrDefault(o, o.toString());
+      String codepoint = CODEPOINTS.get(o);
+      return codepoint == null ? "#\\" + o.toString() : "#\\" + codepoint;
     }
     if (o instanceof Exception) {
       Exception e = (Exception)o;

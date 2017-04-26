@@ -15,65 +15,57 @@ import java.util.Map;
  */
 public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMBigRational> {
 
-  public static final SCMBigRational ZERO = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
-  public static final SCMBigRational ONE  = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
+  public static final SCMBigRational ZERO  = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
+  public static final SCMBigRational ONE   = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
+
   private static final Map<String, BigInteger> CONSTANTS = new HashMap<>();
   static {
+    CONSTANTS.put("-2", new BigInteger("-2").negate());
+    CONSTANTS.put("-1", BigInteger.ONE.negate());
     CONSTANTS.put("0",  BigInteger.ZERO);
     CONSTANTS.put("1",  BigInteger.ONE);
+    CONSTANTS.put("2",  new BigInteger("2"));
     CONSTANTS.put("10", BigInteger.TEN);
   }
 
-  private BigInteger numerator;
-  private BigInteger denominator;
+  private final BigInteger numerator;
+  private final BigInteger denominator;
+
+  public static SCMBigRational valueOf(String numerator, String denominator) {
+    BigInteger den = parseBigInteger(denominator);
+    if (BigInteger.ZERO.equals(den)) {
+      throw new ArithmeticException("/ by zero");
+    }
+    BigInteger num = parseBigInteger(numerator);
+    if (BigInteger.ZERO.equals(num)) {
+      return ZERO;
+    }
+    if (BigInteger.ONE.equals(num) && BigInteger.ONE.equals(den)) {
+      return ONE;
+    }
+    return new SCMBigRational(num, den);
+  }
 
   public SCMBigRational(BigInteger numerator, BigInteger denominator) {
-    init(numerator, denominator);
-  }
-
-  public SCMBigRational(String numerator, String denominator) {
-    BigInteger num = parseBigInteger(numerator);
-    BigInteger den = parseBigInteger(denominator);
-    init(num, den);
-  }
-
-  public SCMBigRational(String numerator) {
-    BigInteger num = parseBigInteger(numerator);
-    init(num, BigInteger.ONE);
-  }
-
-  public SCMBigRational(BigInteger numerator, String denominator) {
-    BigInteger den = parseBigInteger(denominator);
-    init(numerator, den);
-  }
-
-  public SCMBigRational(String numerator, BigInteger denominator) {
-    BigInteger num = parseBigInteger(numerator);
-    init(num, denominator);
-  }
-
-  public SCMBigRational(int numerator, int denominator) {
-    init(new BigInteger(Integer.toString(numerator)), new BigInteger(Integer.toString(denominator)));
-  }
-
-  private void init(BigInteger numerator, BigInteger denominator) {
-    if (denominator.equals(BigInteger.ZERO)) {
+    if (BigInteger.ZERO.equals(denominator)) {
       throw new ArithmeticException("/ by zero");
     }
     // reduce fraction
     BigInteger g = numerator.gcd(denominator);
-    this.numerator = numerator.divide(g);
-    this.denominator = denominator.divide(g);
-
+    BigInteger den = denominator.divide(g);
     // to ensure invariant that denominator is positive
-    if (this.denominator.compareTo(BigInteger.ZERO) < 0) {
-      this.denominator = this.denominator.negate();
-      this.numerator = this.numerator.negate();
+    if (den.signum() < 0) {
+      this.numerator = numerator.negate();
+      this.denominator = den.negate();
+    } else {
+      this.numerator = numerator.divide(g);
+      this.denominator = den;
     }
   }
 
   private static BigInteger parseBigInteger(String number) {
-    return CONSTANTS.getOrDefault(number, new BigInteger(number));
+    BigInteger bigInteger = CONSTANTS.get(number);
+    return bigInteger == null ? new BigInteger(number) : bigInteger;
   }
 
   public BigInteger getNumerator() {

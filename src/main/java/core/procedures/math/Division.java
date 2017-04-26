@@ -7,7 +7,6 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public final class Division extends AFn {
 
@@ -51,14 +50,14 @@ public final class Division extends AFn {
     }
     if (numerator instanceof SCMBigRational) {
       if (NumberUtils.isExact(denominator)) {
-        return ((SCMBigRational) numerator).divide(new SCMBigRational(new BigInteger(denominator.toString()), BigInteger.ONE));
+        return ((SCMBigRational) numerator).divide(SCMBigRational.valueOf(denominator.toString(), "1"));
       } else {
         numerator = ((SCMBigRational) numerator).doubleOrBigDecimalValue();
       }
     }
     if (denominator instanceof SCMBigRational) {
       if (NumberUtils.isExact(numerator)) {
-        return (new SCMBigRational(new BigInteger(numerator.toString()), BigInteger.ONE).divide((SCMBigRational) denominator));
+        return (SCMBigRational.valueOf(numerator.toString(), "1").divide((SCMBigRational) denominator));
       } else {
         denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
       }
@@ -67,7 +66,7 @@ public final class Division extends AFn {
     if (NumberUtils.isExact(numerator) &&
         NumberUtils.isExact(denominator)) {
 
-      return new SCMBigRational(new BigInteger(numerator.toString()), new BigInteger(denominator.toString()));
+      return SCMBigRational.valueOf(numerator.toString(), denominator.toString());
     }
     if (numerator instanceof BigDecimal) {
       return safeBigDecimalDivision((BigDecimal)numerator, NumberUtils.toBigDecimal(denominator));

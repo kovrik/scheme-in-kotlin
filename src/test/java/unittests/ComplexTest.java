@@ -89,7 +89,7 @@ public class ComplexTest extends AbstractTest {
     assertEquals(0L, eval("(real-part 0+1i)", env));
     assertEquals(1L, eval("(real-part 1)", env));
     assertEquals(-2.5, eval("(real-part -2.5)", env));
-    assertEquals(new SCMBigRational("3", "4"), eval("(real-part 3/4)", env));
+    assertEquals(SCMBigRational.valueOf("3", "4"), eval("(real-part 3/4)", env));
   }
 
   @Test

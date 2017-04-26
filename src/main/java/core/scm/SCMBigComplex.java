@@ -219,7 +219,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
   public Number angle() {
     BigDecimal re = getRe();
     BigDecimal im = getIm();
-    if (re.compareTo(BigDecimal.ZERO) == 0) {
+    if (re.signum() == 0) {
       if (im.signum() > 0) {
         return Math.PI/2;
       } else if (im.signum() < 0) {
@@ -227,7 +227,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
       } else {
         throw new ArithmeticException("Undefined for 0+0i");
       }
-    } else if (re.compareTo(BigDecimal.ZERO) < 0) {
+    } else if (re.signum() < 0) {
       double atan = Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
       return (im.signum() >= 0) ? atan + Math.PI : atan - Math.PI;
     } else {
@@ -264,7 +264,7 @@ public class SCMBigComplex extends Number implements ISCMClass {
    * Complex number is a zero if both real and imaginary parts are zeroes
    */
   public boolean isZero() {
-    return re.compareTo(BigDecimal.ZERO) == 0 && im.compareTo(BigDecimal.ZERO) == 0;
+    return re.signum() == 0 && im.signum() == 0;
   }
 
   @Override
@@ -285,6 +285,6 @@ public class SCMBigComplex extends Number implements ISCMClass {
 
   @Override
   public String toString() {
-    return (im.compareTo(BigDecimal.ZERO) <  0) ? (re + "-" + (im.negate()) + "i") : (re + "+" + im + "i");
+    return (im.signum() <  0) ? (re + "-" + (im.negate()) + "i") : (re + "+" + im + "i");
   }
 }

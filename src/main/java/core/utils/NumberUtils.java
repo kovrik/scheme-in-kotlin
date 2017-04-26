@@ -306,7 +306,7 @@ public final class NumberUtils {
 
     Number num = processNumber(numerator,   r, true, useBigNum, null);
     Number den = processNumber(denominator, r, true, useBigNum, null);
-    SCMBigRational number = new SCMBigRational(num.toString(), den.toString());
+    SCMBigRational number = SCMBigRational.valueOf(num.toString(), den.toString());
     if (!exact) {
       Number result = ToInexact.toInexact(number);
       return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));

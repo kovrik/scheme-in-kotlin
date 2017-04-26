@@ -35,7 +35,7 @@ public final class Truncate extends AFn {
       }
     } else if (arg instanceof BigDecimal) {
       BigDecimal bd = (BigDecimal) arg;
-      if (bd.compareTo(BigDecimal.ZERO) < 0) {
+      if (bd.signum() < 0) {
         return bd.setScale(0, BigDecimal.ROUND_UP);
       } else {
         return bd.setScale(0, BigDecimal.ROUND_DOWN);

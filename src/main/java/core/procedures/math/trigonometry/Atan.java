@@ -67,14 +67,14 @@ public final class Atan extends AFn {
     double a2 = a*a;
     double b2 = b*b;
     double re;
-    if (r.compareTo(BigDecimal.ZERO) == 0 && (i.compareTo(BigDecimal.ONE.negate()) > 0) && (i.compareTo(BigDecimal.ONE) < 0)) {
+    if (r.signum() == 0 && (i.compareTo(BigDecimal.ONE.negate()) > 0) && (i.compareTo(BigDecimal.ONE) < 0)) {
       /* when x = 0 and -1 < y < 1 */
       re = 0;
-    } else if (r.compareTo(BigDecimal.ZERO) == 0 && i.multiply(i).compareTo(BigDecimal.ONE) > 0) {
+    } else if (r.signum() == 0 && i.multiply(i).compareTo(BigDecimal.ONE) > 0) {
       /* when x = 0 and 1 < y^2
        * re(arctan(x + iy)) = pi/2 */
       re = Math.PI / 2;
-    } else if (r.compareTo(BigDecimal.ZERO) > 0) {
+    } else if (r.signum() > 0) {
       /* when x > 0
        * re(arctan(x + iy)) = pi/4 - (1/2) arctan ( (1 - x^2 - y^2)/(2x) ) */
       re = Math.PI/4 - 0.5*Math.atan((1 - a2 - b2) / (2*a));

@@ -7,7 +7,6 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public final class Subtraction extends AFn {
 
@@ -64,14 +63,14 @@ public final class Subtraction extends AFn {
     }
     if (first instanceof SCMBigRational) {
       if (second instanceof Long) {
-        return ((SCMBigRational) first).minus(new SCMBigRational(new BigInteger(second.toString()), BigInteger.ONE));
+        return ((SCMBigRational) first).minus(SCMBigRational.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof SCMBigRational) {
       if (first instanceof Long) {
-        return new SCMBigRational(new BigInteger(first.toString()), BigInteger.ONE).minus((SCMBigRational) second);
+        return SCMBigRational.valueOf(first.toString(), "1").minus((SCMBigRational) second);
       } else {
         second = second.doubleValue();
       }

@@ -31,7 +31,7 @@ public final class Remainder extends AFn {
   }
 
   private static Number apply(BigDecimal first, BigDecimal second) {
-    if (second.compareTo(BigDecimal.ZERO) == 0) {
+    if (second.signum() == 0) {
       throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
     }
     return first.remainder(second);

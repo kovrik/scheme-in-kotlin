@@ -4,8 +4,6 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 
-import java.math.BigDecimal;
-
 public final class Sqrt extends AFn {
 
   public Sqrt() {
@@ -29,7 +27,7 @@ public final class Sqrt extends AFn {
 
   public static Number sqrt(Number number) {
     if (number instanceof SCMBigComplex) {
-      if (((SCMBigComplex)number).getIm().compareTo(BigDecimal.ZERO) == 0) {
+      if (((SCMBigComplex)number).getIm().signum()== 0) {
         return sqrt(((SCMBigComplex)number).getRe());
       }
       return ((SCMBigComplex)number).sqrt();

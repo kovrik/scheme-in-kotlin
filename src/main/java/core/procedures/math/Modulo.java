@@ -30,14 +30,14 @@ public final class Modulo extends AFn {
   }
 
   private BigDecimal apply(BigDecimal first, BigDecimal second) {
-    if (second.compareTo(BigDecimal.ZERO) == 0) {
+    if (second.signum() == 0) {
       throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
     BigDecimal remainder = first.remainder(second);
-    if (remainder.compareTo(BigDecimal.ZERO) == 0) {
+    if (remainder.signum() == 0) {
       return remainder;
     }
-    if ((first.compareTo(BigDecimal.ZERO) > 0) == (second.compareTo(BigDecimal.ZERO) > 0)) {
+    if ((first.signum() > 0) == (second.signum() > 0)) {
       return remainder;
     }
     return second.add(remainder);
