@@ -153,7 +153,7 @@ public class Evaluator {
     if (!(op instanceof AFn)) {
       op = eval(op, env);
       /* If result is not a function, then raise an error */
-      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map) && !(op instanceof SCMVector)) {
+      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map)) {
         throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
       }
     }

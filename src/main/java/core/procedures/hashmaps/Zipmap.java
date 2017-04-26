@@ -35,8 +35,8 @@ public final class Zipmap extends AFn {
     if (!(arg1 instanceof SCMVector) && !(arg1 instanceof List)) {
       throw new WrongTypeException(getName(), "List or Vector", arg1);
     }
-    if (!(arg1 instanceof SCMVector) && !(arg1 instanceof List)) {
-      throw new WrongTypeException(getName(), "List or Vector", arg1);
+    if (!(arg2 instanceof SCMVector) && !(arg2 instanceof List)) {
+      throw new WrongTypeException(getName(), "List or Vector", arg2);
     }
     int size = Math.min(count.apply1(arg1), count.apply1(arg2));
     Map<Object, Object> map = new HashMap<>();
