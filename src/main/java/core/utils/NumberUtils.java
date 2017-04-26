@@ -33,8 +33,8 @@ public final class NumberUtils {
 
   private static final Pattern HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$");
 
-  private static final String EXPONENT_MARKS_PATTERN = "(s|l|d|e|f|S|L|D|E|F)";
-  private static final String EXPONENT16_MARKS_PATTERN = "(s|l|S|L)";
+  private static final String EXPONENT_MARKS_PATTERN = "[sldefSLDEF]";
+  private static final String EXPONENT16_MARKS_PATTERN = "[slSL]";
   private static final Pattern EXPONENT_PATTERN = Pattern.compile(".+" + EXPONENT_MARKS_PATTERN + "[+-]?\\d+(\\.\\d*)?$");
   private static final Pattern EXPONENT16_PATTERN = Pattern.compile(".+" + EXPONENT16_MARKS_PATTERN + "[+-]?\\w+$");
 
