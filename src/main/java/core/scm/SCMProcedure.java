@@ -14,13 +14,13 @@ public class SCMProcedure extends AFn {
   private String name;
 
   /* List of arguments the procedure expects */
-  private List<SCMSymbol> args;
+  private final List<SCMSymbol> args;
 
   /* Body form of the procedure */
-  private Object body;
+  private final Object body;
 
   /* Is body a constant? If it is, then no need to evaluate it */
-  private boolean isBodyConst;
+  private final boolean isBodyConst;
 
   /* Lexical environment */
   private Environment localEnvironment = null;
@@ -41,12 +41,12 @@ public class SCMProcedure extends AFn {
   }
 
   // TODO Check collections?
-  public static boolean isConst(Object obj) {
+  private static boolean isConst(Object obj) {
     return !((obj instanceof SCMSymbol) || (obj instanceof List) || (obj instanceof Map) ||
              (obj instanceof SCMVector) || (obj instanceof Set));
   }
 
-  public List<SCMSymbol> getArgs() {
+  private List<SCMSymbol> getArgs() {
     return args;
   }
 
