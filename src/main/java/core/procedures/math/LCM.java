@@ -7,7 +7,6 @@ import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 import static core.procedures.math.GCD.gcd;
 
