@@ -226,10 +226,7 @@ public final class DefaultEnvironment extends Environment {
       new AssocProc("assv", new Eqv()),
       new ConsProc(),
       new Car(),
-      new Car() { @Override public String getName() { return "first"; } },
       new Cdr(),
-      new Cdr() { @Override public String getName() { return "next"; } },
-      new Cdr() { @Override public String getName() { return "rest"; } },
       new SetCar(),
       new SetCdr(),
       new Append(),
@@ -295,6 +292,9 @@ public final class DefaultEnvironment extends Environment {
       new Conj(),
       new Empty(),
       new Range(),
+      new First(),
+      new Next(),
+      new Next() { @Override public String getName() { return "rest"; } },
 
       /* Keywords */
       new Keyword(),
