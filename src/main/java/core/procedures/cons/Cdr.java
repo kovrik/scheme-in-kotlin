@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 
 import java.util.List;
 
-public final class Cdr extends AFn {
+public class Cdr extends AFn {
 
   public Cdr() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class}));

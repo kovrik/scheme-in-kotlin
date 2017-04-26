@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 
 import java.util.List;
 
-public final class Car extends AFn {
+public class Car extends AFn {
 
   public Car() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class}));

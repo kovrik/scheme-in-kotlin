@@ -71,6 +71,7 @@ public final class DefaultEnvironment extends Environment {
       new Eval(),
       new RandomProc(),
       new HashCode(),
+      new HashCode() { @Override public String getName() { return "hash"; } },
       new ToString(),
       new ToString() { @Override public String getName() { return "str"; } },
       new Name(),
@@ -225,7 +226,10 @@ public final class DefaultEnvironment extends Environment {
       new AssocProc("assv", new Eqv()),
       new ConsProc(),
       new Car(),
+      new Car() { @Override public String getName() { return "first"; } },
       new Cdr(),
+      new Cdr() { @Override public String getName() { return "next"; } },
+      new Cdr() { @Override public String getName() { return "rest"; } },
       new SetCar(),
       new SetCdr(),
       new Append(),
@@ -301,6 +305,8 @@ public final class DefaultEnvironment extends Environment {
 
       /* Predicates */
       SCMPredicate.IS_NULL,
+      SCMPredicate.IS_NIL,
+      SCMPredicate.IS_EOF,
       SCMPredicate.IS_SOME,
       SCMPredicate.IS_PAIR,
       SCMPredicate.IS_LIST,
@@ -452,11 +458,6 @@ public final class DefaultEnvironment extends Environment {
     put(SCMSymbol.intern("null"),        SCMNil.NIL);
     put(SCMSymbol.intern("eof"),         SCMNil.NIL);
     put(SCMSymbol.intern("call/cc"),     get(SCMSymbol.intern("call-with-current-continuation")));
-    put(SCMSymbol.intern("nil?"),        get(SCMSymbol.intern("null?")));
-    put(SCMSymbol.intern("eof-object?"), get(SCMSymbol.intern("null?")));
-    put(SCMSymbol.intern("hash"),        get(SCMSymbol.intern("hashcode")));
-    put(SCMSymbol.intern("first"),       get(SCMSymbol.intern("car")));
-    put(SCMSymbol.intern("next"),        get(SCMSymbol.intern("cdr")));
     put(SCMSymbol.intern("def"),         get(SCMSymbol.intern("define")));
     put(SCMSymbol.intern("fn"),          get(SCMSymbol.intern("lambda")));
   }

@@ -3,7 +3,7 @@ package core.procedures.system;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 
-public final class HashCode extends AFn {
+public class HashCode extends AFn {
 
   public HashCode() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1));
