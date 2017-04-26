@@ -702,8 +702,9 @@ public class NumberTest extends AbstractTest {
     String chars = "123456789abcdef";
     for (int r = 2; r <= 16; r++) {
       StringBuilder sb = new StringBuilder();
+      char ch = chars.charAt(r - 2);
       for (int c = 1; c <= 70; c++) {
-        sb.append(chars.charAt(r - 2));
+        sb.append(ch);
         assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", sb.toString(), r), env));
       }
     }
