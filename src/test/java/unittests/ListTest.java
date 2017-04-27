@@ -1,19 +1,13 @@
 package unittests;
 
 import core.exceptions.ArityException;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMMutableVector;
-import core.scm.SCMSymbol;
-import core.scm.SCMVoid;
+import core.scm.*;
 import org.junit.Test;
 
 import static core.scm.SCMCons.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class ListTest extends AbstractTest {
 
@@ -457,5 +451,23 @@ public class ListTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("assv: wrong type argument in position 1 (expecting association list): ((a 2) 3)", e.getMessage());
     }
+  }
+
+  @Test
+  public void testEvalFirst() {
+    assertEquals(null, eval("(first '())", env));
+    assertEquals(1L, eval("(first '(1))", env));
+    assertEquals(2L, eval("(first '(2 3 4))", env));
+    assertEquals(SCMCons.EMPTY, eval("(first '(() 3 4))", env));
+  }
+
+  @Test
+  public void testEvalNext() {
+    assertEquals(null, eval("(next '())", env));
+    assertEquals(SCMCons.EMPTY, eval("(next '(1))", env));
+    assertEquals(SCMCons.list(3L, 4L), eval("(next '(2 3 4))", env));
+    assertEquals(null, eval("(rest '())", env));
+    assertEquals(SCMCons.EMPTY, eval("(rest '(1))", env));
+    assertEquals(SCMCons.list(3L, 4L), eval("(rest '(2 3 4))", env));
   }
 }
