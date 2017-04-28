@@ -3,6 +3,7 @@ package core;
 import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
+import core.exceptions.ISCMException;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
@@ -81,20 +82,31 @@ public class Repl {
           /* Print */
           currentOutputPort.writeln(id + " = " + writer.toString(result));
         }
-      } catch (Exception e) {
+      } catch (Throwable e) {
         error(e);
       }
     }
   }
 
-  private static void error(Exception e) throws IOException {
-    if (e.getMessage() == null) {
-      currentOutputPort.writeln(e.getClass().getSimpleName());
-    } else if (e instanceof SCMError) {
-      currentOutputPort.writeln("Error: " + e.getMessage());
+  private static void error(Throwable e) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    if (e instanceof SCMError) {
+      sb.append("Error: ").append(e.getMessage());
     } else {
-      currentOutputPort.writeln(e.getClass().getSimpleName() + ": " + e.getMessage());
+      if (e.getMessage() == null) {
+        sb.append(e.getClass().getSimpleName());
+      } else {
+        sb.append(e.getClass().getSimpleName()).append(": ").append(e.getMessage());
+      }
+      if (!(e instanceof ISCMException)) {
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        if (stackTrace.length > 0) {
+          StackTraceElement frame = stackTrace[0];
+          sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
+        }
+      }
     }
+    currentOutputPort.writeln(sb.toString());
   }
 
   public static SCMInputPort getCurrentInputPort() {

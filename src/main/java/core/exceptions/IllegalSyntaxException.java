@@ -1,9 +1,8 @@
 package core.exceptions;
 
 import core.scm.ISCMClass;
-import core.scm.SCMClass;
 
-public class IllegalSyntaxException extends RuntimeException implements ISCMClass {
+public class IllegalSyntaxException extends RuntimeException implements ISCMClass, ISCMException {
 
   public IllegalSyntaxException(String message) {
     super(message);
@@ -21,10 +20,5 @@ public class IllegalSyntaxException extends RuntimeException implements ISCMClas
 
   public static IllegalSyntaxException of(String syntax, Object expression) {
     return of(syntax, expression, null);
-  }
-
-  @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.ERROR;
   }
 }

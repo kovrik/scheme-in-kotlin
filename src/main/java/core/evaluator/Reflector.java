@@ -106,15 +106,23 @@ public class Reflector {
     return value;
   }
 
-  // TODO java.math.BigDecimal and other non-java.lang.* classes
   private Class getClass(String name) {
+    Class clazz = _getClass(name);
+    if (clazz == null) {
+      throw new RuntimeException("class not found: " + name);
+    }
+    return clazz;
+  }
+
+  // TODO java.math.BigDecimal and other non-java.lang.* classes
+  protected Class _getClass(String name) {
     if (name.indexOf('.') == -1) {
       name = "java.lang." + name;
     }
     try {
       return Class.forName(name);
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException("class not found: " + name);
+      return null;
     }
   }
 

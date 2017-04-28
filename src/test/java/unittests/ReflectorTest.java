@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ReflectorTest extends AbstractTest {
 
@@ -35,6 +36,18 @@ public class ReflectorTest extends AbstractTest {
     assertEquals(String.class, eval("(.getClass \"\")", env));
     assertEquals(Long.class, eval("(.getClass 1)", env));
     assertEquals("123", eval("(.toString 123)", env));
+    try {
+      eval("(.getClass nil)", env);
+      fail();
+    } catch (NullPointerException e) {
+      // expected
+    }
+    try {
+      eval("(.toString nil)", env);
+      fail();
+    } catch (NullPointerException e) {
+      // expected
+    }
     // TODO
   }
 

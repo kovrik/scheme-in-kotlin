@@ -98,7 +98,9 @@ public class Evaluator {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
       if (o == null) {
-        return ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
+        /* Check if it is a Java class. If not found, then assume it is a static field */
+        Class clazz = reflector._getClass(((SCMSymbol) sexp).getName());
+        return clazz != null ? clazz : ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
       }
       /* Evaluate nil constant to null */
       if (o == SCMNil.NIL) {
@@ -175,21 +177,13 @@ public class Evaluator {
 
     /* Scheme has applicative order, so evaluate all arguments first */
     Object[] args = new Object[sexp.size() - 1];
-    if (javaMethod) {
-      String method = sexp.get(0).toString();
-      if (sexp.size() > 1) {
-        /* Check if it is instance or static method */
-        args[0] = sexp.get(1) instanceof SCMSymbol ? env.findOrDefault(sexp.get(1), sexp.get(1)) : eval(sexp.get(1), env);
-        for (int i = 2; i < sexp.size(); i++) {
-          args[i - 1] = eval(sexp.get(i), env);
-        }
-      }
-      return ReflectorResult.maybeWrap(reflector.evalJavaMethod(method, args));
-    }
-
-    /* Evaluate args */
     for (int i = 1; i < sexp.size(); i++) {
       args[i - 1] = eval(sexp.get(i), env);
+    }
+
+    if (javaMethod) {
+      String method = sexp.get(0).toString();
+      return ReflectorResult.maybeWrap(reflector.evalJavaMethod(method, args));
     }
 
     // TODO Turn them into Special Forms?
