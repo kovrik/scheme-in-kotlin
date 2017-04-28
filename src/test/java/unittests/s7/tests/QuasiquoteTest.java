@@ -1,5 +1,6 @@
 package unittests.s7.tests;
 
+import core.exceptions.UndefinedIdentifierException;
 import core.procedures.cons.ConsProc;
 import org.junit.Test;
 import unittests.AbstractTest;
@@ -55,8 +56,8 @@ public class QuasiquoteTest extends AbstractTest {
     try {
       eval("`(1 , %(list 2 3))", env);
       fail();
-    } catch (RuntimeException e) {
-      assertEquals("undefined identifier: %", e.getMessage());
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
   }
 }

@@ -10,4 +10,9 @@ public class ArityException extends IllegalArgumentException implements ISCMClas
            "expected: " + ((min == max) ? min : ((max > 255) ? "at least " + min : min + " to " + max)) +
            ", given: " + given + ")", null);
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }

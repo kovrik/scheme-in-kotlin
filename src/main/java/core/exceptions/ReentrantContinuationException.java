@@ -7,4 +7,9 @@ public class ReentrantContinuationException extends RuntimeException implements 
   public ReentrantContinuationException() {
     super("Re-entrant continuation: implementation restriction: continuation can only be used once");
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }

@@ -9,4 +9,9 @@ public class WrongTypeException extends IllegalArgumentException implements ISCM
     super((name.isEmpty() ? "#<procedure>" : name) + ": type mismatch; " + "(" +
            "expected: " + expected + ", given: " + Writer.write(given) + ")", null);
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }

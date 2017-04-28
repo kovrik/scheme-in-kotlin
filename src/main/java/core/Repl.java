@@ -98,12 +98,10 @@ public class Repl {
       } else {
         sb.append(e.getClass().getSimpleName()).append(": ").append(e.getMessage());
       }
-      if (!(e instanceof ISCMException)) {
-        StackTraceElement[] stackTrace = e.getStackTrace();
-        if (stackTrace.length > 0) {
-          StackTraceElement frame = stackTrace[0];
-          sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
-        }
+      StackTraceElement[] stackTrace = e.getStackTrace();
+      if (stackTrace.length > 0) {
+        StackTraceElement frame = stackTrace[0];
+        sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
       }
     }
     currentOutputPort.writeln(sb.toString());

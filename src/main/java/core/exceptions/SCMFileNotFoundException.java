@@ -5,4 +5,9 @@ public class SCMFileNotFoundException extends RuntimeException implements ISCMEx
   public SCMFileNotFoundException(String filename) {
     super("Cannot open file: " + filename);
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }

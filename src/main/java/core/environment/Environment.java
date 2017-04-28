@@ -1,5 +1,6 @@
 package core.environment;
 
+import core.exceptions.UndefinedIdentifierException;
 import core.scm.ISCMClass;
 import core.scm.SCMClass;
 
@@ -27,7 +28,7 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
     Object value = get(key);
     if (value == null) {
       if (outer == null) {
-        throw new RuntimeException("undefined identifier: " + key);
+        throw new UndefinedIdentifierException(key.toString());
       }
       return outer.find(key);
     }
@@ -49,7 +50,7 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
     Object v = get(key);
     if (v == null) {
       if (outer == null) {
-        throw new RuntimeException("undefined identifier: " + key);
+        throw new UndefinedIdentifierException(key.toString());
       }
       return outer.findAndPut(key, value);
     }

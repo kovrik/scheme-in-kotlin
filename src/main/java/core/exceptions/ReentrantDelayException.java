@@ -9,4 +9,9 @@ public class ReentrantDelayException extends RuntimeException implements ISCMCla
   public ReentrantDelayException(SCMDelay delay) {
     super(String.format("Re-entrant delay: %s", Writer.write(delay)), null);
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }

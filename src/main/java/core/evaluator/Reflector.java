@@ -1,5 +1,6 @@
 package core.evaluator;
 
+import core.exceptions.UndefinedIdentifierException;
 import core.scm.SCMSymbol;
 
 import java.lang.reflect.Constructor;
@@ -156,7 +157,7 @@ public class Reflector {
         throw new RuntimeException(String.format("unable to access static field %s in class %s", field, className));
       }
     }
-    throw new RuntimeException("undefined identifier: " + s);
+    throw new UndefinedIdentifierException(s);
   }
 
   Object evalJavaMethod(String method, Object[] args) {
@@ -170,7 +171,7 @@ public class Reflector {
     } else if (method.indexOf('/') != -1) {
       return evalJavaStaticMethod(method, args);
     }
-    throw new RuntimeException("undefined identifier: " + method);
+    throw new UndefinedIdentifierException(method);
   }
 
   /* Java Interop: instance method call */

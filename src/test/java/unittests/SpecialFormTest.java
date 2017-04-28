@@ -5,6 +5,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantDelayException;
+import core.exceptions.UndefinedIdentifierException;
 import core.procedures.io.Display;
 import core.scm.*;
 import core.scm.specialforms.Quote;
@@ -180,8 +181,8 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(foo 5)", env);
       fail();
-    } catch (RuntimeException e) {
-      assertEquals("undefined identifier: foo", e.getMessage());
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
 
     String d1 = "(define (test-internal-define)" +
@@ -296,8 +297,8 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(begin (set! b 99) b)", env);
       fail();
-    } catch (RuntimeException e) {
-      assertEquals("undefined identifier: b", e.getMessage());
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
   }
 
@@ -343,8 +344,8 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(let ((a 1) (b a) (c b)) c)", env);
       fail();
-    } catch (RuntimeException e) {
-      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
     try {
       eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env);
@@ -363,7 +364,7 @@ public class SpecialFormTest extends AbstractTest {
       eval("(let ((z 1) (b (+ z 1))) b)", env);
       fail();
     } catch (RuntimeException e) {
-      assertEquals("undefined identifier: z", e.getMessage());
+      // expected
     }
   }
 
@@ -401,22 +402,22 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(letrec ((a a)) a)", env);
       fail();
-    } catch (RuntimeException e) {
-      assertTrue(e.getMessage().startsWith("undefined identifier"));
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
 
     try {
       eval("(letrec ((a a)) (set! a 1) a)", env);
       fail();
     } catch (RuntimeException e) {
-      assertTrue(e.getMessage().startsWith("undefined identifier"));
+      // expected
     }
 
     try {
       eval("(eq? (letrec ((a a)) a) (if #f 0) (letrec ((a a)) a))", env);
       fail();
     } catch (RuntimeException e) {
-      assertTrue(e.getMessage().startsWith("undefined identifier"));
+      // expected
     }
   }
 
@@ -506,8 +507,8 @@ public class SpecialFormTest extends AbstractTest {
     try {
       eval("(begin (set! x 5) (+ x 1))", env);
       fail();
-    } catch (RuntimeException e) {
-      assertEquals("undefined identifier: x", e.getMessage());
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
     SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();

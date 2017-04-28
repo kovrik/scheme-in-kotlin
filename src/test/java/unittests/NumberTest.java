@@ -2,6 +2,7 @@ package unittests;
 
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.UndefinedIdentifierException;
 import core.exceptions.WrongTypeException;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
@@ -63,14 +64,14 @@ public class NumberTest extends AbstractTest {
     try {
       eval("+#", env);
       fail();
-    } catch (RuntimeException e) {
-      assertEquals("undefined identifier: +#", e.getMessage());
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
     try {
       eval("+1#1", env);
       fail();
     } catch (RuntimeException e) {
-      assertEquals("undefined identifier: +1#1", e.getMessage());
+      // expected
     }
   }
 

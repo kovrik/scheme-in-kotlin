@@ -21,4 +21,9 @@ public class IllegalSyntaxException extends RuntimeException implements ISCMClas
   public static IllegalSyntaxException of(String syntax, Object expression) {
     return of(syntax, expression, null);
   }
+
+  @Override
+  public synchronized Throwable fillInStackTrace() {
+    return null;
+  }
 }
