@@ -11,6 +11,7 @@ import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
+import core.scm.specialforms.New;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
@@ -133,16 +134,26 @@ public class Evaluator {
     boolean javaMethod = false;
     Object op = sexp.get(0);
     if (op instanceof SCMSymbol) {
+      SCMSymbol sym = (SCMSymbol) op;
       /* Lookup symbol */
-      op = env.findOrDefault(op, null);
-      // TODO Check if op starts with '.' instead?
-      javaMethod = op == null;
-      if (javaMethod && sexp.isEmpty()) {
-        throw IllegalSyntaxException.of("eval", sexp, "illegal member expression");
-      }
+      op = env.findOrDefault(sym, null);
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
+      }
+      // TODO Check if op starts with '.' instead?
+      javaMethod = op == null;
+      if (javaMethod) {
+        if (sexp.isEmpty()) {
+          throw IllegalSyntaxException.of("eval", sexp, "illegal member expression");
+        }
+        /* Special case: constructor call If Symbol ends with . */
+        if (sym.getName().charAt(sym.getName().length() - 1) == '.') {
+          // TODO Optimize and cleanup
+          sexp.set(0, SCMSymbol.intern(sym.getName().substring(0, sym.getName().length() - 1)));
+          op = New.NEW;
+          ((SCMCons) sexp).push(op);
+        }
       }
     }
 

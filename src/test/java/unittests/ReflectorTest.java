@@ -54,7 +54,9 @@ public class ReflectorTest extends AbstractTest {
   @Test
   public void testEvalConstructors() {
     assertTrue(eval("(new Object)", env) != null);
+    assertTrue(eval("(Object.)", env) != null);
     assertEquals("123", eval("(new String \"123\")", env));
+    assertEquals("123", eval("(String. \"123\")", env));
     // TODO
   }
 }
