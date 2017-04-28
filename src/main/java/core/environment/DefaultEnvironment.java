@@ -68,6 +68,7 @@ public final class DefaultEnvironment extends Environment {
       new ClassOf() { @Override public String getName() { return "type"; } },
       new ClassProc(),
       new ErrorProc(),
+      new Pst(),
       new Eval(),
       new RandomProc(),
       new HashCode(),
