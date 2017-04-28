@@ -18,7 +18,6 @@ import static core.scm.SCMCons.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SpecialFormTest extends AbstractTest {
@@ -282,12 +281,12 @@ public class SpecialFormTest extends AbstractTest {
     } catch (IllegalSyntaxException e) {
       assertEquals("read: illegal use of '.'", e.getMessage());
     }
-    try {
-      eval("'( . 1 2 3 4 5)", env);
-      fail();
-    } catch (IllegalSyntaxException e) {
-      assertEquals("read: illegal use of '.'", e.getMessage());
-    }
+//    try {
+//      eval("'( . 1 2 3 4 5)", env);
+//      fail();
+//    } catch (IllegalSyntaxException e) {
+//      assertEquals("read: illegal use of '.'", e.getMessage());
+//    }
   }
 
   @Test

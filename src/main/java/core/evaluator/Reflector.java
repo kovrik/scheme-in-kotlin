@@ -143,7 +143,7 @@ public class Reflector {
   }
 
   /* Java Interop: static fields */
-  Object evalJavaStaticField(String s) {
+  public Object evalJavaStaticField(String s) {
     if (s.indexOf('/') > -1) {
       String[] classAndField = s.split("/");
       String className = classAndField[0];
@@ -152,7 +152,7 @@ public class Reflector {
       try {
         return c.getField(field).get(c);
       } catch (NoSuchFieldException e) {
-        throw new RuntimeException(String.format("unable to find static field %s in class %s", field, className));
+        throw new RuntimeException(String.format("unable to find static field %s in class %s", field, className), e);
       } catch (IllegalAccessException e) {
         throw new RuntimeException(String.format("unable to access static field %s in class %s", field, className));
       }
@@ -160,7 +160,7 @@ public class Reflector {
     throw new UndefinedIdentifierException(s);
   }
 
-  Object evalJavaMethod(String method, Object[] args) {
+  public Object evalJavaMethod(String method, Object[] args) {
     if (method.startsWith(".-") && args.length == 1) {
       Object instance = args[0];
       return evalJavaInstanceField(method, instance);

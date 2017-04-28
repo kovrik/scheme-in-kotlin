@@ -14,7 +14,9 @@ public class ReflectorTest extends AbstractTest {
   @Test
   public void testEvalStaticMethods() {
     assertTrue(((List)eval("(java.util.Collections/emptyList)", env)).isEmpty());
+    assertTrue(((List)eval("(. java.util.Collections emptyList)", env)).isEmpty());
     assertEquals(-15L, eval("(Long/valueOf -15)", env));
+    assertEquals(-15L, eval("(. Long valueOf -15)", env));
     // TODO
   }
 
@@ -22,6 +24,7 @@ public class ReflectorTest extends AbstractTest {
   public void testEvalStaticFields() {
     assertEquals(BigDecimal.ONE, eval("java.math.BigDecimal/ONE", env));
     assertEquals(Math.PI, eval("Math/PI", env));
+    assertEquals(Math.PI, eval("(. java.lang.Math PI)", env));
     // TODO
   }
 
@@ -34,8 +37,12 @@ public class ReflectorTest extends AbstractTest {
   @Test
   public void testEvalMemberMethods() {
     assertEquals(String.class, eval("(.getClass \"\")", env));
+    assertEquals(String.class, eval("(. \"\" getClass)", env));
     assertEquals(Long.class, eval("(.getClass 1)", env));
+    assertEquals(Long.class, eval("(. 1 getClass)", env));
+    assertEquals(Long.class, eval("(. (+ 2 3 4) getClass)", env));
     assertEquals("123", eval("(.toString 123)", env));
+    assertEquals(1L, eval("(. (+ 1 2 3) compareTo (+ 1 2))", env));
     try {
       eval("(.getClass nil)", env);
       fail();

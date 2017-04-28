@@ -356,11 +356,15 @@ public class Reader implements IReader {
       Object token = nextToken();
       /* Check if current token is a dot */
       if (DOT.equals(token)) {
-        if (!allowImproperList || list.isEmpty() || dotPos > -1) {
+        if (!allowImproperList || dotPos > -1) {
           throw new IllegalSyntaxException("read: illegal use of '.'");
         }
         /* Remember the dot position */
         dotPos = list.size();
+        /* Dot Special Form is allowed as the first element of a list */
+        if (dotPos == 0) {
+          list = SCMCons.list(DOT);
+        }
       } else if (token != null) {
         /* List is empty so far */
         if (list.isEmpty()) {
@@ -372,8 +376,8 @@ public class Reader implements IReader {
         }
       }
     }
-    /* Was it a proper list? */
-    if (dotPos == -1) {
+    /* Was it a proper list or dot is the first element? */
+    if (dotPos < 1) {
       return list;
     }
     /* Process improper list */

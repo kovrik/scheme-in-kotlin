@@ -272,7 +272,7 @@ public class StringTest extends AbstractTest {
     assertEquals("|6bsdf|", Writer.write(eval("(string->symbol \"6bsdf\")", env)));
     assertEquals("|one two three|", Writer.write(eval("(string->symbol \"one two three\")", env)));
     assertEquals("|  |", Writer.write(eval("(string->symbol \"  \")", env)));
-    assertEquals("|.|", Writer.write(eval("(string->symbol \".\")", env)));
+//    assertEquals("|.|", Writer.write(eval("(string->symbol \".\")", env)));
     assertEquals("test.", Writer.write(eval("(string->symbol \"test.\")", env)));
     assertEquals("|#|", Writer.write(eval("(string->symbol \"#\")", env)));
     assertEquals("|#123|", Writer.write(eval("(string->symbol \"#123\")", env)));
