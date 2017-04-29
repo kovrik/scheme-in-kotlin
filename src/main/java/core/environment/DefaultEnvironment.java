@@ -6,8 +6,6 @@ import core.procedures.characters.CharPredicate;
 import core.procedures.characters.CharProc;
 import core.procedures.characters.IntegerToChar;
 import core.procedures.cons.*;
-import core.procedures.continuations.CallCC;
-import core.procedures.continuations.DynamicWind;
 import core.procedures.delayed.Deliver;
 import core.procedures.delayed.Deref;
 import core.procedures.delayed.Force;
@@ -260,10 +258,6 @@ public final class DefaultEnvironment extends Environment {
       new ForEach(),
       new Void(),
 
-      /* Continuations */
-      new CallCC(),
-      new DynamicWind(),
-
       /* Hashmaps */
       new Find(),
       new HashMapProc(),
@@ -380,6 +374,9 @@ public final class DefaultEnvironment extends Environment {
     Comment.COMMENT,
     Dot.DOT,
     Throw.THROW,
+    DynamicWind.DYNAMIC_WIND,
+    CallCC.CALL_WITH_CURRENT_CONTINUATION,
+    CallCC.CALL_CC,
     // TODO Macros
     DefineSyntax.DEFINE_SYNTAX,
     LetSyntax.LET_SYNTAX,

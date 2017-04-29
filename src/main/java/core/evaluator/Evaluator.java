@@ -5,10 +5,7 @@ import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
-import core.procedures.IFn;
-import core.procedures.continuations.CallCC;
 import core.procedures.continuations.CalledContinuation;
-import core.procedures.continuations.DynamicWind;
 import core.scm.*;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
@@ -191,24 +188,12 @@ public class Evaluator {
     for (int i = 1; i < sexp.size(); i++) {
       args[i - 1] = eval(sexp.get(i), env);
     }
-
     if (javaMethod) {
       String method = sexp.get(0).toString();
       return ReflectorResult.maybeWrap(reflector.evalJavaMethod(method, args));
     }
-
-    // TODO Turn them into Special Forms?
-    AFn fn = (AFn)op;
-    /* call-with-current-continuation */
-    if (fn instanceof CallCC) {
-      return ((CallCC)fn).callcc((IFn) args[0], env, this);
-    }
-    /* dynamic-wind */
-    if (fn instanceof DynamicWind) {
-      return ((DynamicWind)fn).dynamicWind((IFn)args[0], (IFn)args[1], (IFn)args[2], env, this);
-    }
     /* Call AFn via helper method */
-    return fn.applyN(args);
+    return ((AFn)op).applyN(args);
   }
 
   /* Evaluate hash map */

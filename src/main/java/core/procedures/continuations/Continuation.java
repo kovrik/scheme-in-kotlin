@@ -9,7 +9,7 @@ import core.scm.SCMClass;
  */
 public final class Continuation extends AFn {
 
-  Continuation() {
+  public Continuation() {
     super(new FnArgsBuilder().minArgs(1).maxArgs(1));
   }
 
