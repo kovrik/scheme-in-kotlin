@@ -3,15 +3,11 @@ package core;
 import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.exceptions.ISCMException;
+import core.exceptions.ThrowableWrapper;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
-import core.scm.SCMError;
-import core.scm.SCMInputPort;
-import core.scm.SCMOutputPort;
-import core.scm.SCMSymbol;
-import core.scm.SCMVoid;
+import core.scm.*;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -82,6 +78,9 @@ public class Repl {
           /* Print */
           currentOutputPort.writeln(id + " = " + writer.toString(result));
         }
+      } catch (ThrowableWrapper e) {
+        /* Unwrap */
+        error(e.getCause());
       } catch (Throwable e) {
         error(e);
       }

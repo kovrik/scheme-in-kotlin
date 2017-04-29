@@ -13,6 +13,10 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
     this.outputStream = outputStream;
   }
 
+  public OutputStream getOutputStream() {
+    return outputStream;
+  }
+
   @Override
   public void close() throws IOException {
     outputStream.close();
