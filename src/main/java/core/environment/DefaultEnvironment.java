@@ -374,6 +374,7 @@ public final class DefaultEnvironment extends Environment {
     Comment.COMMENT,
     Dot.DOT,
     Throw.THROW,
+    Try.TRY,
     DynamicWind.DYNAMIC_WIND,
     CallCC.CALL_WITH_CURRENT_CONTINUATION,
     CallCC.CALL_CC,

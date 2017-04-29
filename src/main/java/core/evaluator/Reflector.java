@@ -54,7 +54,7 @@ public class Reflector {
           castToObject(parameterTypes);
           return clazz.getMethod(name, parameterTypes);
         } catch (NoSuchMethodException ex2) {
-          throw new RuntimeException(String.format("unable to find matching method %s in class %s",
+          throw new RuntimeException(String.format("reflector: unable to find matching method %s in class %s",
                                                    name, clazz.getName()));
         }
       }
@@ -70,7 +70,7 @@ public class Reflector {
       try {
         return clazz.getConstructor(parameterTypes);
       } catch (NoSuchMethodException ex) {
-        throw new RuntimeException(String.format("unable to find matching constructor for class %s",
+        throw new RuntimeException(String.format("reflector: unable to find matching constructor for class %s",
                                                  clazz.getName()));
       }
     }
@@ -107,10 +107,10 @@ public class Reflector {
     return value;
   }
 
-  private Class getClass(String name) {
+  public Class getClazz(String name) {
     Class clazz = _getClass(name);
     if (clazz == null) {
-      throw new RuntimeException("class not found: " + name);
+      throw new RuntimeException("reflector: class not found: " + name);
     }
     return clazz;
   }
@@ -128,7 +128,7 @@ public class Reflector {
   }
 
   public Object newInstance(String clazz, Object... args) {
-    Class c = getClass(clazz);
+    Class c = getClazz(clazz);
     Class[] argTypes = new Class[args.length];
     for (int i = 0; i < args.length; i++) {
       argTypes[i] = unboxIfPossible(args[i].getClass());
@@ -138,7 +138,7 @@ public class Reflector {
     } catch (InstantiationException | InvocationTargetException e) {
       throw new RuntimeException(e.getMessage());
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(String.format("unable to access constructor for class %s", clazz));
+      throw new RuntimeException(String.format("reflector: unable to access constructor for class %s", clazz));
     }
   }
 
@@ -148,13 +148,13 @@ public class Reflector {
       String[] classAndField = s.split("/");
       String className = classAndField[0];
       String field = classAndField[1];
-      Class c = getClass(className);
+      Class c = getClazz(className);
       try {
         return c.getField(field).get(c);
       } catch (NoSuchFieldException e) {
-        throw new RuntimeException(String.format("unable to find static field %s in class %s", field, className), e);
+        throw new RuntimeException(String.format("reflector: unable to find static field %s in class %s", field, className), e);
       } catch (IllegalAccessException e) {
-        throw new RuntimeException(String.format("unable to access static field %s in class %s", field, className));
+        throw new RuntimeException(String.format("reflector: unable to access static field %s in class %s", field, className));
       }
     }
     throw new UndefinedIdentifierException(s);
@@ -180,7 +180,7 @@ public class Reflector {
     Class<?> clazz;
     boolean isClass = false;
     if (instance instanceof SCMSymbol) {
-      clazz = getClass(instance.toString());
+      clazz = getClazz(instance.toString());
       isClass = true;
     } else {
       clazz = instance.getClass();
@@ -193,9 +193,9 @@ public class Reflector {
     try {
       return upcastIfPossible(method.invoke(isClass ? clazz : instance, args));
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(String.format("unable to access method %s of %s", methodName, instance));
+      throw new RuntimeException(String.format("reflector: unable to access method %s of %s", methodName, instance));
     } catch (InvocationTargetException e) {
-      throw new RuntimeException("reflection exception");
+      throw new RuntimeException("reflector: reflection exception");
     }
   }
 
@@ -204,7 +204,7 @@ public class Reflector {
     Class<?> clazz;
     boolean isClass = false;
     if (instance instanceof SCMSymbol) {
-      clazz = getClass(instance.toString());
+      clazz = getClazz(instance.toString());
       isClass = true;
     } else {
       clazz = instance.getClass();
@@ -215,9 +215,9 @@ public class Reflector {
       Field field = c.getField(fieldName);
       return upcastIfPossible(field.get(isClass ? clazz : instance));
     } catch (NoSuchFieldException e) {
-      throw new RuntimeException(String.format("unable to find field %s of %s", fieldName, instance));
+      throw new RuntimeException(String.format("reflector: unable to find field %s of %s", fieldName, instance));
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(String.format("unable to access method %s of %s", fieldName, instance));
+      throw new RuntimeException(String.format("reflector: unable to access method %s of %s", fieldName, instance));
     }
   }
 
@@ -226,7 +226,7 @@ public class Reflector {
     String[] classAndMethod = m.split("/");
     String className = classAndMethod[0];
     String methodName = classAndMethod[1];
-    Class clazz = getClass(className);
+    Class clazz = getClazz(className);
     Class[] argTypes = new Class[args.length];
     for (int i = 0; i < args.length; i++) {
       argTypes[i] = unboxIfPossible(args[i].getClass());
@@ -235,9 +235,9 @@ public class Reflector {
     try {
       return upcastIfPossible(method.invoke(null, args));
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(String.format("unable to access static method %s of %s", methodName, clazz.getName()));
+      throw new RuntimeException(String.format("reflector: unable to access static method %s of %s", methodName, clazz.getName()));
     } catch (InvocationTargetException e) {
-      throw new RuntimeException("reflection exception");
+      throw new RuntimeException("reflector: reflection exception");
     }
   }
 }
