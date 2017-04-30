@@ -8,12 +8,8 @@ public enum SCMNil implements ISCMClass {
   NIL;
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.NIL;
-  }
+  public SCMClass getSCMClass() { return SCMClass.NIL; }
 
   @Override
-  public String toString() {
-    return "nil";
-  }
+  public String toString() { return "nil"; }
 }

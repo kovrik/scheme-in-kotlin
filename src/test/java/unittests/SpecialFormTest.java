@@ -366,6 +366,12 @@ public class SpecialFormTest extends AbstractTest {
     } catch (RuntimeException e) {
       // expected
     }
+    try {
+      eval("(let ((a a)) a)", env);
+      fail();
+    } catch (UndefinedIdentifierException e) {
+      // expected
+    }
   }
 
   @Test
@@ -381,7 +387,7 @@ public class SpecialFormTest extends AbstractTest {
   }
 
   @Test
-  public void testEvalLetStar() {
+  public void testEvalLetSeq() {
     assertEquals(2L, eval("(let* ((z 1) (b (+ z 1))) b)", env));
     assertEquals(1L, eval("(let* ((a 1) (b a) (c b)) c)", env));
     try {
@@ -389,6 +395,12 @@ public class SpecialFormTest extends AbstractTest {
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("let*: bad syntax in form: (let* ((c 123)))", e.getMessage());
+    }
+    try {
+      eval("(let* ((a a)) a)", env);
+      fail();
+    } catch (UndefinedIdentifierException e) {
+      // expected
     }
   }
 
@@ -724,5 +736,14 @@ public class SpecialFormTest extends AbstractTest {
         // success
       }
     }
+  }
+
+  @Test
+  public void testNilValue() {
+    assertEquals(null, eval("(let ((a nil)) a)", env));
+    assertEquals(null, eval("(let* ((a nil)) a)", env));
+    assertEquals(null, eval("(letrec ((a nil)) a)", env));
+    assertEquals(null, eval("(begin (define nv nil) nv)", env));
+    assertEquals(null, eval("(begin (define nv 5) (set! nv nil) nv)", env));
   }
 }
