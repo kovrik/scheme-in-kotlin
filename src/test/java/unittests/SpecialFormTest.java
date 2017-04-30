@@ -5,6 +5,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantDelayException;
+import core.exceptions.ThrowableWrapper;
 import core.exceptions.UndefinedIdentifierException;
 import core.procedures.io.Display;
 import core.scm.*;
@@ -673,6 +674,55 @@ public class SpecialFormTest extends AbstractTest {
       fail();
     } catch (IllegalSyntaxException e) {
       assertEquals("lambda: bad syntax (duplicate argument name: b) in form: (lambda (b b) b)", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testThrow() {
+    try {
+      eval("(throw (new Exception))", env);
+      fail();
+    } catch (ThrowableWrapper e) {
+      assertEquals(Exception.class, e.getCause().getClass());
+    }
+    try {
+      eval("(throw (new NullPointerException \"BOOM\"))", env);
+      fail();
+    } catch (ThrowableWrapper e) {
+      assertEquals(NullPointerException.class, e.getCause().getClass());
+      assertEquals("BOOM", e.getCause().getMessage());
+    }
+    try {
+      eval("(throw (new StackOverflowError))", env);
+      fail();
+    } catch (ThrowableWrapper e) {
+      assertEquals(StackOverflowError.class, e.getCause().getClass());
+    }
+  }
+
+  @Test
+  public void testTryCatchFinally() {
+    assertEquals(null, eval("(try)", env));
+    assertEquals(null, eval("(try (catch Exception e))", env));
+    assertEquals(null, eval("(try (finally))", env));
+    assertEquals(null, eval("(try (catch Exception e) (finally))", env));
+    assertEquals(6L, eval("(try 6)", env));
+    assertEquals(6L, eval("(try (+ 1 2 3) (finally))", env));
+    assertEquals(3L, eval("(try 1 2 3 (catch Exception e) (finally))", env));
+    assertEquals(3L, eval("(let ((a 0)) (try (set! a (inc a)) (throw (new Exception)) (catch Exception e (set! a (inc a))) (finally (set! a (inc a)))) a)", env));
+    assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (throw (new Exception)) (catch Exception e (set! a (inc a)))) a)", env));
+    assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (finally (set! a (inc a)))) a)", env));
+    assertEquals(6L, eval("(let ((a 0)) (try (set! a 5) (finally (set! a (inc a)))) a)", env));
+    String[] illegalSyntax = {"(try 1 2 (finally) 3 (catch Exception e) (finally))",
+      "(try 1 2 3 (catch Exception e) (finally) (catch Exception e))", "(try 1 (catch Exception e) 2 3)",
+      "(try 1 (catch Exception))", "(try 1 (catch))", "(try 1 (catch 1))", "(try 1 (catch a))", "(try 1 (catch Exception 123))"
+    };
+    for (String illegal : illegalSyntax) {
+      try {
+        eval(illegal, env);
+      } catch (IllegalSyntaxException e) {
+        // success
+      }
     }
   }
 }
