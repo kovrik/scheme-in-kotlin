@@ -91,11 +91,11 @@ public class Evaluator {
   private Object evalIter(Object sexp, Environment env) {
     if (sexp instanceof SCMSymbol) {
       /* Check if it is a Special Form */
-      Object o = env.findOrDefault(sexp, null);
+      Object o = env.findOrDefault(sexp, Environment.UNDEFINED);
       if (o instanceof ISpecialForm) {
         throw IllegalSyntaxException.of(o.toString(), sexp);
       }
-      if (o == null) {
+      if (o == Environment.UNDEFINED) {
         /* Check if it is a Java class. If not found, then assume it is a static field */
         Class clazz = reflector._getClass(((SCMSymbol) sexp).getName());
         return clazz != null ? clazz : ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
@@ -133,13 +133,13 @@ public class Evaluator {
     if (op instanceof SCMSymbol) {
       SCMSymbol sym = (SCMSymbol) op;
       /* Lookup symbol */
-      op = env.findOrDefault(sym, null);
+      op = env.findOrDefault(sym, Environment.UNDEFINED);
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
         sexp.set(0, op);
       }
       // TODO Check if op starts with '.' instead?
-      javaMethod = op == null;
+      javaMethod = op == Environment.UNDEFINED;
       if (javaMethod) {
         if (sexp.isEmpty()) {
           throw IllegalSyntaxException.of("eval", sexp, "illegal member expression");

@@ -26,12 +26,17 @@ public enum Let implements ISpecialForm {
      * (let ((id expr) ...) body ...+) */
     if (expression.get(1) instanceof List) {
       Environment localEnv = new Environment(env);
+      List<List> bindings = (List<List>) expression.get(1);
+      /* Bind variables to fresh locations holding undefined values */
+      for (List binding : bindings) {
+        Object var = binding.get(0);
+        localEnv.put(var, Environment.UNDEFINED);
+      }
       /* Evaluate inits */
-      List bindings = (List) expression.get(1);
       for (Object binding : bindings) {
         Object var  = ((List)binding).get(0);
         Object init = ((List)binding).get(1);
-        if (localEnv.get(var) != null) {
+        if (localEnv.get(var) != Environment.UNDEFINED) {
           throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", var));
         }
         localEnv.put(var, evaluator.eval(init, env));

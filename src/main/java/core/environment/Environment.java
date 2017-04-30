@@ -8,6 +8,9 @@ import java.util.*;
 
 public class Environment extends HashMap<Object, Object> implements ISCMClass {
 
+  /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
+  public static final Object UNDEFINED = new Object();
+
   private final Environment outer;
 
   public Environment(int size, Environment outer) {
@@ -25,30 +28,27 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
   }
 
   public Object find(Object key) {
-    Object value = get(key);
-    if (value == null) {
+    if (!containsKey(key)) {
       if (outer == null) {
         throw new UndefinedIdentifierException(key.toString());
       }
       return outer.find(key);
     }
-    return value;
+    return get(key);
   }
 
   public Object findOrDefault(Object key, Object defaultValue) {
-    Object value = get(key);
-    if (value == null) {
+    if (!containsKey(key)) {
       if (outer == null) {
         return defaultValue;
       }
       return outer.findOrDefault(key, defaultValue);
     }
-    return value;
+    return get(key);
   }
 
   public Object findAndPut(Object key, Object value) {
-    Object v = get(key);
-    if (v == null) {
+    if (!containsKey(key)) {
       if (outer == null) {
         throw new UndefinedIdentifierException(key.toString());
       }
