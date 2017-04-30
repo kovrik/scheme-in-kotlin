@@ -19,6 +19,7 @@ import static core.scm.SCMCons.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SpecialFormTest extends AbstractTest {
@@ -751,5 +752,20 @@ public class SpecialFormTest extends AbstractTest {
       // expected
     }
     assertEquals(null, eval("(begin (define some-undefined-identifier nil) some-undefined-identifier)", env));
+  }
+
+  @Test
+  public void testInstanceOf() {
+    assertEquals(TRUE,  eval("(instance? String \"str\")", env));
+    assertEquals(TRUE,  eval("(instance? Object \"str\")", env));
+    assertEquals(TRUE,  eval("(instance? Object (new NullPointerException))", env));
+    assertEquals(TRUE,  eval("(instance? Class (.getClass 1))", env));
+    assertEquals(TRUE,  eval("(instance? (.getClass []) [])", env));
+    assertEquals(TRUE,  eval("(instance? java.math.BigDecimal (new java.math.BigDecimal 10))", env));
+    assertEquals(FALSE, eval("(instance? String 1)", env));
+    assertEquals(FALSE, eval("(instance? String [])", env));
+    assertEquals(FALSE, eval("(instance? String (new Object))", env));
+    assertEquals(FALSE, eval("(instance? Number \"\")", env));
+    assertEquals(FALSE, eval("(instance? (.getClass {}) #{})", env));
   }
 }
