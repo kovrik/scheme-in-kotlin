@@ -1,6 +1,5 @@
 package unittests;
 
-import core.scm.SCMNil;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -110,7 +109,7 @@ public class SCMConsTest {
 
   @Test
   public void testIsNil() {
-    assertEquals(TRUE,  IS_NULL.apply(SCMNil.NIL));
+    assertEquals(TRUE,  IS_NULL.apply((Object)null));
     assertEquals(FALSE, IS_NULL.apply(EMPTY));
     assertEquals(FALSE, IS_NULL.apply(cons(1, null)));
     assertEquals(FALSE, IS_NULL.apply(cons(null, 2)));

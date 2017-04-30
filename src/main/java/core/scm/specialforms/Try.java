@@ -6,7 +6,6 @@ import core.evaluator.Reflector;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ThrowableWrapper;
 import core.scm.SCMCons;
-import core.scm.SCMNil;
 import core.scm.SCMSymbol;
 
 import java.util.*;
@@ -59,7 +58,7 @@ public enum Try implements ISpecialForm {
             catchBindings = new HashMap<>();
           }
           Class clazz = REFLECTOR.getClazz(expr.get(1).toString());
-          Object catchExpr = SCMNil.NIL;
+          Object catchExpr = null;
           if (expr.size() > 3) {
             catchExpr = SCMCons.list(Begin.BEGIN);
             ((SCMCons)catchExpr).addAll(expr.subList(3, expr.size()));

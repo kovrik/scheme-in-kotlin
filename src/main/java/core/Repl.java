@@ -25,7 +25,7 @@ public class Repl {
   private static final String PROMPT = "> ";
 
   private static final Evaluator evaluator = new Evaluator();
-  private static final Environment defaultEnvironment = new DefaultEnvironment();
+  private static final DefaultEnvironment defaultEnvironment = new DefaultEnvironment();
 
   private static SCMInputPort currentInputPort = new SCMInputPort(new BufferedInputStream(System.in));
   private static SCMOutputPort currentOutputPort = new SCMOutputPort(System.out);

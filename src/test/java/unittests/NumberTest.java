@@ -77,6 +77,7 @@ public class NumberTest extends AbstractTest {
 
   @Test
   public void testEvalMath() {
+    assertEquals(null,  eval("(+ nil)", env));
     assertEquals(6L,  eval("(+ 1 2 3)", env));
     assertEquals(6L,  eval("(+ (byte 1) (int 2) (short 3))", env));
     assertEquals(2.1d, eval("(+ (byte 1) (double 1.1)", env));
@@ -94,6 +95,11 @@ public class NumberTest extends AbstractTest {
     assertEquals(SCMBigRational.valueOf("9999", "3332"), eval("(/ 3332/9999)", env));
     assertEquals(SCMBigRational.valueOf("9999", "3332"), eval("(/ 1 3332/9999)", env));
     assertEquals(3.0009003601440574, eval("(/ 1.0 3332/9999)", env));
+    try {
+      eval("(+ nil nil)", env);
+    } catch (NullPointerException e) {
+      // expected
+    }
 
     // abs
     try {

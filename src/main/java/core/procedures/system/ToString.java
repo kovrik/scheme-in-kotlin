@@ -2,7 +2,6 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMNil;
 import core.writer.Writer;
 
 public class ToString extends AFn {
@@ -37,7 +36,7 @@ public class ToString extends AFn {
   }
 
   private CharSequence str(Object obj) {
-    if (obj == null || obj == SCMNil.NIL) {
+    if (obj == null) {
       return "";
     }
     if (obj instanceof Character) {

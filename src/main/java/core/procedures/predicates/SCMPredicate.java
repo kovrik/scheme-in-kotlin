@@ -10,6 +10,7 @@ import core.utils.NumberUtils;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -17,10 +18,10 @@ import java.util.function.Predicate;
 
 public final class SCMPredicate extends AFn {
 
-  public static final SCMPredicate IS_NULL = new SCMPredicate("null?", o -> o == null || o == SCMNil.NIL);
-  public static final SCMPredicate IS_NIL = new SCMPredicate("nil?", o -> o == null || o == SCMNil.NIL);
-  public static final SCMPredicate IS_EOF = new SCMPredicate("eof-object?", o -> o == null || o == SCMNil.NIL);
-  public static final SCMPredicate IS_SOME = new SCMPredicate("some?", o -> o != null && o != SCMNil.NIL);
+  public static final SCMPredicate IS_NULL = new SCMPredicate("null?", Objects::isNull);
+  public static final SCMPredicate IS_NIL = new SCMPredicate("nil?", Objects::isNull);
+  public static final SCMPredicate IS_EOF = new SCMPredicate("eof-object?", Objects::isNull);
+  public static final SCMPredicate IS_SOME = new SCMPredicate("some?", Objects::nonNull);
   public static final SCMPredicate IS_EMPTY = new SCMPredicate("empty?", o -> (o == null || (isEmpty(o))));
   public static final SCMPredicate IS_PAIR = new SCMPredicate("pair?", SCMCons::isPair);
   public static final SCMPredicate IS_LIST = new SCMPredicate("list?", SCMCons::isList);

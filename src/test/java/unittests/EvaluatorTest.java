@@ -131,7 +131,7 @@ public class EvaluatorTest extends AbstractTest {
     SCMOutputPort old = Repl.getCurrentOutputPort();
     Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
 
-    Environment tempEnv = new DefaultEnvironment();
+    DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);

@@ -40,7 +40,6 @@ import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.*;
 import core.procedures.vectors.*;
-import core.scm.SCMNil;
 import core.scm.SCMSymbol;
 import core.scm.specialforms.*;
 
@@ -435,7 +434,6 @@ public final class DefaultEnvironment extends Environment {
           "         (else (do-find-between lo hi)))))))");
   }
 
-  @Override
   public List<String> getLibraryProcedures() {
     return LIBRARY_PROCEDURES;
   }
@@ -455,9 +453,9 @@ public final class DefaultEnvironment extends Environment {
 
     /* Constants and special cases, synonyms*/
     put(SCMSymbol.intern("pi"),          Math.PI);
-    put(SCMSymbol.intern("nil"),         SCMNil.NIL);
-    put(SCMSymbol.intern("null"),        SCMNil.NIL);
-    put(SCMSymbol.intern("eof"),         SCMNil.NIL);
+    put(SCMSymbol.intern("nil"),         null);
+    put(SCMSymbol.intern("null"),        null);
+    put(SCMSymbol.intern("eof"),         null);
     put(SCMSymbol.intern("call/cc"),     get(SCMSymbol.intern("call-with-current-continuation")));
     put(SCMSymbol.intern("def"),         get(SCMSymbol.intern("define")));
     put(SCMSymbol.intern("fn"),          get(SCMSymbol.intern("lambda")));

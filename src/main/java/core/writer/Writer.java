@@ -22,7 +22,7 @@ public class Writer implements IWriter {
 
   public static String write(Object o) {
     if (o == null) {
-      return SCMNil.NIL.toString();
+      return "nil";
     }
     if (o instanceof Boolean) {
       return (Boolean) o ? "#t" : "#f";

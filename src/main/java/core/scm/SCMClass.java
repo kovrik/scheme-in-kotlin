@@ -78,7 +78,6 @@ public enum SCMClass implements ISCMClass {
     SCM_CLASSES.put(SCMInputPort.class,          INPUT_PORT);
     SCM_CLASSES.put(SCMError.class,              ERROR);
     SCM_CLASSES.put(SCMKeyword.class,            KEYWORD);
-    SCM_CLASSES.put(SCMNil.class,                NIL);
     SCM_CLASSES.put(SCMVoid.class,               VOID);
     SCM_CLASSES.put(IMapEntry.class,             MAP_ENTRY);
   }
@@ -221,7 +220,7 @@ public enum SCMClass implements ISCMClass {
 
   public static boolean checkType(Object o, Class<?> expected) {
     /* Nil is possible value of any data type */
-    if (o == null || o == SCMNil.NIL) {
+    if (o == null) {
       return true;
     }
     Class<?> actual = o.getClass();

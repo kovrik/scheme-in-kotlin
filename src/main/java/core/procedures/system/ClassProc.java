@@ -2,7 +2,6 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMNil;
 
 public class ClassProc extends AFn {
 
@@ -22,6 +21,6 @@ public class ClassProc extends AFn {
 
   @Override
   public Class apply1(Object arg) {
-    return (arg == null || arg == SCMNil.NIL) ? null : arg.getClass();
+    return arg == null ? null : arg.getClass();
   }
 }

@@ -100,10 +100,6 @@ public class Evaluator {
         Class clazz = reflector._getClass(((SCMSymbol) sexp).getName());
         return clazz != null ? clazz : ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
       }
-      /* Evaluate nil constant to null */
-      if (o == SCMNil.NIL) {
-        return null;
-      }
       return o;
     } else if (sexp instanceof List) {
       return evlis((List<Object>)sexp, env);

@@ -525,7 +525,7 @@ public class SpecialFormTest extends AbstractTest {
     SCMOutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
-    Environment tempEnv = new DefaultEnvironment();
+    DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -745,5 +745,11 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(null, eval("(letrec ((a nil)) a)", env));
     assertEquals(null, eval("(begin (define nv nil) nv)", env));
     assertEquals(null, eval("(begin (define nv 5) (set! nv nil) nv)", env));
+    try {
+      eval("some-undefined-identifier", env);
+    } catch (UndefinedIdentifierException e) {
+      // expected
+    }
+    assertEquals(null, eval("(begin (define some-undefined-identifier nil) some-undefined-identifier)", env));
   }
 }

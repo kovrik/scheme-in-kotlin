@@ -191,7 +191,7 @@ public class RosettaCodeTest extends AbstractTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
-    Environment tempEnv = new DefaultEnvironment();
+    DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -245,7 +245,7 @@ public class RosettaCodeTest extends AbstractTest {
                           "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
                           "      (y a a1 b c d e))))";
 
-    Environment tempEnv = new DefaultEnvironment();
+    DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
@@ -301,7 +301,7 @@ public class RosettaCodeTest extends AbstractTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Repl.setCurrentOutputPort(new SCMOutputPort(baos));
 
-    Environment tempEnv = new DefaultEnvironment();
+    DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
