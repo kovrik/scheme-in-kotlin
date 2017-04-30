@@ -10,6 +10,7 @@ import static core.scm.SCMCons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class StringTest extends AbstractTest {
@@ -309,15 +310,22 @@ public class StringTest extends AbstractTest {
     assertEquals(FALSE, eval("(eq? (string #\\a) (string #\\a))", env));
     assertEquals(FALSE, eval("(eqv? (string #\\a) (string #\\a))", env));
     assertEquals(TRUE,  eval("(equal? (string #\\a) (string #\\a))", env));
-
     assertEquals(TRUE,  eval("(equal? \"a\" (string #\\a))", env));
     assertEquals(TRUE,  eval("(equal? (string #\\a) \"a\" )", env));
-
     assertEquals(TRUE,  eval("(mutable? (string #\\a))", env));
     assertEquals(FALSE, eval("(immutable? (string #\\a))", env));
     assertEquals(TRUE,  eval("(immutable? \"a\")", env));
-    assertEquals(FALSE,  eval("(mutable? \"a\")", env));
-
+    assertEquals(FALSE, eval("(mutable? \"a\")", env));
     assertEquals(TRUE,  eval("(immutable? (string->immutable-string (string #\\a)))", env));
+  }
+
+  @Test
+  public void testIsBlank() {
+    assertEquals(TRUE,  eval("(blank? nil)", env));
+    assertEquals(TRUE,  eval("(blank? \"\")", env));
+    assertEquals(TRUE,  eval("(blank? \"      \")", env));
+    assertEquals(TRUE,  eval("(blank? \" \t\t\r\n    \")", env));
+    assertEquals(FALSE, eval("(blank? \" \t\ta\r\n    \")", env));
+    assertEquals(FALSE, eval("(blank? \"not-blank\")", env));
   }
 }
