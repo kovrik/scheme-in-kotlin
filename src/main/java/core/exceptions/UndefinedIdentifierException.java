@@ -1,8 +1,6 @@
 package core.exceptions;
 
-import core.scm.ISCMClass;
-
-public class UndefinedIdentifierException extends RuntimeException implements ISCMClass, ISCMException {
+public class UndefinedIdentifierException extends RuntimeException implements ISCMException {
 
   public UndefinedIdentifierException(String identifier) {
     super("unable to resolve symbol: " + identifier);

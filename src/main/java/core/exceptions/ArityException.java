@@ -1,8 +1,6 @@
 package core.exceptions;
 
-import core.scm.ISCMClass;
-
-public class ArityException extends IllegalArgumentException implements ISCMClass, ISCMException {
+public class ArityException extends IllegalArgumentException implements ISCMException {
 
   public ArityException(String name, int min, int max, int given) {
     super((name.isEmpty() ? "#<procedure>" : name) + ": arity mismatch; " +

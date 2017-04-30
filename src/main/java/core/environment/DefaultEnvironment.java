@@ -15,6 +15,8 @@ import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
 import core.procedures.equivalence.Identical;
+import core.procedures.exceptions.ExData;
+import core.procedures.exceptions.ExInfo;
 import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
@@ -296,6 +298,10 @@ public final class DefaultEnvironment extends Environment {
       /* Meta */
       new MetaProc(),
       new WIthMeta(),
+
+      /* Exceptions */
+      new ExData(),
+      new ExInfo(),
 
       /* Predicates */
       SCMPredicate.IS_NULL,

@@ -3,6 +3,7 @@ package core;
 import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
+import core.exceptions.ExInfoException;
 import core.exceptions.ThrowableWrapper;
 import core.reader.IReader;
 import core.reader.Reader;
@@ -91,6 +92,8 @@ public class Repl {
     StringBuilder sb = new StringBuilder();
     if (e instanceof SCMError) {
       sb.append("Error: ").append(e.getMessage());
+    } else if (e instanceof ExInfoException) {
+      sb.append(e);
     } else {
       if (e.getMessage() == null) {
         sb.append(e.getClass().getSimpleName());

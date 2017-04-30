@@ -1,9 +1,8 @@
 package core.exceptions;
 
-import core.scm.ISCMClass;
 import core.writer.Writer;
 
-public class WrongTypeException extends IllegalArgumentException implements ISCMClass, ISCMException {
+public class WrongTypeException extends IllegalArgumentException implements ISCMException {
 
   public WrongTypeException(String name, String expected, Object given) {
     super((name.isEmpty() ? "#<procedure>" : name) + ": type mismatch; " + "(" +
