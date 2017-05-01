@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.evaluator.Reflector;
-import core.evaluator.ReflectorResult;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMSymbol;
 
@@ -37,11 +36,11 @@ public enum Dot implements ISpecialForm {
         /* (. Classname-symbol member-symbol) */
         /* try static field first */
         try {
-          result = reflector.evalJavaStaticField(statik);
+          return reflector.evalJavaStaticField(statik);
         } catch (RuntimeException e) {
           if (e.getCause() instanceof NoSuchFieldException) {
             /* now try static no-args static method */
-            result = reflector.evalJavaMethod(statik, new Object[]{});
+            return reflector.evalJavaMethod(statik, new Object[]{});
           } else {
             throw e;
           }
@@ -53,7 +52,7 @@ public enum Dot implements ISpecialForm {
         for (int i = 0; i < args.length; i++) {
           args[i] = evaluator.eval(expression.get(i + 3), env);
         }
-        result = reflector.evalJavaMethod(statik, args);
+        return reflector.evalJavaMethod(statik, args);
       }
     } else {
       /* (. instance-expr member-symbol)
@@ -68,9 +67,8 @@ public enum Dot implements ISpecialForm {
       for (int i = 1; i < args.length; i++) {
         args[i] = evaluator.eval(expression.get(i + 2), env);
       }
-      result = reflector.evalJavaMethod(method, args);
+      return reflector.evalJavaMethod(method, args);
     }
-    return ReflectorResult.maybeWrap(result);
   }
 
   @Override
