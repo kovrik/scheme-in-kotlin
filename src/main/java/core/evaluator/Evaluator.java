@@ -63,17 +63,8 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    /* Try to downcast Big Numbers */
-    if (result instanceof BigDecimal) {
-      return NumberUtils.tryToDowncast((BigDecimal) result);
-    }
-    /* Try to downcast Rationals with denominator = 1 */
-    if ((result instanceof SCMBigRational) && (((SCMBigRational) result).isDenominatorEqualToOne())) {
-      return NumberUtils.tryToDowncast((SCMBigRational) result);
-    }
-    /* Now upcast number if required */
     if (result instanceof Number) {
-      return maybeUpcast((Number) result);
+      return upcastOrDowncastNumber((Number) result);
     }
     // FIXME Get rid of this workaround
     /* Do not downcast in case of `new` Special Form (workaround) */
@@ -220,10 +211,16 @@ public class Evaluator {
     return result;
   }
 
-  /* Upcast if required
-   * (float to double, byte, short and int to long)
-   */
-  private Number maybeUpcast(Number number) {
+  private static Number upcastOrDowncastNumber(Number number) {
+    /* Try to downcast Big Numbers */
+    if (number instanceof BigDecimal) {
+      return NumberUtils.tryToDowncast((BigDecimal) number);
+    }
+    /* Try to downcast Rationals with denominator = 1 */
+    if ((number instanceof SCMBigRational) && (((SCMBigRational) number).isDenominatorEqualToOne())) {
+      return NumberUtils.tryToDowncast((SCMBigRational) number);
+    }
+    /* Upcast number if required */
     if ((number instanceof Byte) || (number instanceof Short) || (number instanceof Integer)) {
       return number.longValue();
     } else if (number instanceof Float) {
