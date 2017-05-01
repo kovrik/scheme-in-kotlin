@@ -89,7 +89,7 @@ public class Evaluator {
       if (o == Environment.UNDEFINED) {
         /* Check if it is a Java class. If not found, then assume it is a static field */
         Class clazz = reflector._getClass(((SCMSymbol) sexp).getName());
-        return clazz != null ? clazz : ReflectorResult.maybeWrap(reflector.evalJavaStaticField(sexp.toString()));
+        return clazz != null ? clazz : reflector.evalJavaStaticField(sexp.toString());
       }
       return o;
     } else if (sexp instanceof List) {
@@ -149,10 +149,6 @@ public class Evaluator {
     /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
     if (!(op instanceof AFn)) {
       op = eval(op, env);
-      /* If result is not a function, then raise an error */
-      if (!(op instanceof AFn) && !javaMethod && !(op instanceof Map)) {
-        throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
-      }
     }
 
     /* Maps are functions of their keys */
@@ -170,14 +166,21 @@ public class Evaluator {
       return map.getOrDefault(key, defaultValue);
     }
 
+    /* If result is not a function, then raise an error */
+    if (!(op instanceof AFn) && !javaMethod) {
+      throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
+    }
+
     /* Scheme has applicative order, so evaluate all arguments first */
     Object[] args = new Object[sexp.size() - 1];
     for (int i = 1; i < sexp.size(); i++) {
       args[i - 1] = eval(sexp.get(i), env);
     }
+
+    /* Call Java method */
     if (javaMethod) {
       String method = sexp.get(0).toString();
-      return ReflectorResult.maybeWrap(reflector.evalJavaMethod(method, args));
+      return reflector.evalJavaMethod(method, args);
     }
     /* Call AFn via helper method */
     return ((AFn)op).applyN(args);

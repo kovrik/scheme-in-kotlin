@@ -150,7 +150,7 @@ public class Reflector {
       String field = classAndField[1];
       Class c = getClazz(className);
       try {
-        return c.getField(field).get(c);
+        return ReflectorResult.maybeWrap(c.getField(field).get(c));
       } catch (NoSuchFieldException e) {
         throw new RuntimeException(String.format("reflector: unable to find static field %s in class %s", field, className), e);
       } catch (IllegalAccessException e) {
@@ -161,17 +161,20 @@ public class Reflector {
   }
 
   public Object evalJavaMethod(String method, Object[] args) {
+    Object result;
     if (method.startsWith(".-") && args.length == 1) {
       Object instance = args[0];
-      return evalJavaInstanceField(method, instance);
+      result = evalJavaInstanceField(method, instance);
     } else if (method.indexOf('.') == 0) {
       Object instance = args[0];
       args = Arrays.copyOfRange(args, 1, args.length);
-      return evalJavaInstanceMethod(method, instance, args);
+      result = evalJavaInstanceMethod(method, instance, args);
     } else if (method.indexOf('/') != -1) {
-      return evalJavaStaticMethod(method, args);
+      result = evalJavaStaticMethod(method, args);
+    } else {
+      throw new UndefinedIdentifierException(method);
     }
-    throw new UndefinedIdentifierException(method);
+    return ReflectorResult.maybeWrap(result);
   }
 
   /* Java Interop: instance method call */
