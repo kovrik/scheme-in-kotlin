@@ -4,13 +4,14 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.SCMBoolean;
-import core.scm.SCMError;
 import core.scm.SCMMutableString;
 
 import java.util.List;
 
 public enum Assert implements ISpecialForm {
   ASSERT;
+
+  private static final StackTraceElement[] EMPTY = new StackTraceElement[0];
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
@@ -24,9 +25,11 @@ public enum Assert implements ISpecialForm {
         if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof SCMMutableString)) {
           throw IllegalSyntaxException.of(toString(), expression);
         }
-        message = expression.get(2).toString();
+        message = ": " + expression.get(2).toString();
       }
-      throw new SCMError(message);
+      AssertionError assertionError = new AssertionError("assert failed" + message);
+      assertionError.setStackTrace(EMPTY);
+      throw assertionError;
     }
     return Boolean.TRUE;
   }
