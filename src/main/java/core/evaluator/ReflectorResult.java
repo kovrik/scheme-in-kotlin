@@ -6,7 +6,7 @@ public final class ReflectorResult {
 
   private final Object value;
 
-  public ReflectorResult(Object value) {
+  private ReflectorResult(Object value) {
     this.value = value;
   }
 
