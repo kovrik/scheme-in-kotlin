@@ -23,10 +23,10 @@ public class ExInfo extends AFn {
   }
 
   @Override
-  public Map apply(Object... args) {
+  public ExInfoException apply(Object... args) {
     if (args.length == 2) {
-      throw new ExInfoException((String)args[0], (Map)args[1]);
+      return new ExInfoException((String)args[0], (Map)args[1]);
     }
-    throw new ExInfoException((String)args[0], (Map)args[1], (Throwable)args[2]);
+    return new ExInfoException((String)args[0], (Map)args[1], (Throwable)args[2]);
   }
 }

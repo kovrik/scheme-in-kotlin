@@ -1,5 +1,6 @@
 package core.writer;
 
+import core.exceptions.ExInfoException;
 import core.reader.Reader;
 import core.scm.*;
 
@@ -61,6 +62,9 @@ public class Writer implements IWriter {
       return codepoint == null ? "#\\" + o.toString() : "#\\" + codepoint;
     }
     if (o instanceof Exception) {
+      if (o instanceof ExInfoException) {
+        return o.toString();
+      }
       Exception e = (Exception)o;
       return e.getMessage() == null ? e.getClass().getSimpleName() : ((Exception) o).getMessage();
     }
