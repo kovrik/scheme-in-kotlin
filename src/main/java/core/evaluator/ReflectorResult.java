@@ -15,10 +15,7 @@ public final class ReflectorResult {
   }
 
   public static Object maybeWrap(Object value) {
-    if (value instanceof Number) {
-      return new ReflectorResult(value);
-    }
-    return value;
+    return value instanceof Number ? new ReflectorResult(value) : value;
   }
 }
 
