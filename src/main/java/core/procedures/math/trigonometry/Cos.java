@@ -8,6 +8,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Cos extends AFn {
 
@@ -35,21 +36,29 @@ public final class Cos extends AFn {
     if (NumberUtils.isZero(number)) {
       return 1L;
     }
-    if (number instanceof Long) {
-      return Math.cos((Long) number);
-    } else if (number instanceof Double) {
-      return Math.cos((Double) number);
-    } else if (number instanceof BigDecimal) {
+    if (number instanceof BigDecimal) {
       return cos((BigDecimal)number);
+    } else if (number instanceof BigInteger) {
+      return cos((BigInteger)number);
     } else if (number instanceof SCMBigComplex) {
       return Cos.cos((SCMBigComplex)number);
-    } else {
+    } else if (number instanceof SCMBigRational) {
       return cos(((SCMBigRational)number).toBigDecimal());
     }
+    return Math.cos(number.doubleValue());
   }
 
   public static double cos(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.cos(v);
+    }
+  }
+
+  public static double cos(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

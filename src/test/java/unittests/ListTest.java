@@ -281,9 +281,9 @@ public class ListTest extends AbstractTest {
 
   @Test
   public void testEvalLength() {
-    assertEquals(0L, eval("(length '())", env));
-    assertEquals(1L, eval("(length '(1))", env));
-    assertEquals(5L, eval("(length '(1 2 3 4 5))", env));
+    assertEquals(0, eval("(length '())", env));
+    assertEquals(1, eval("(length '(1))", env));
+    assertEquals(5, eval("(length '(1 2 3 4 5))", env));
     try {
       eval("(length)", env);
       fail();

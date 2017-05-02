@@ -84,8 +84,10 @@ public final class GCD extends AFn {
   }
 
   private static Number gcd(Number first, Number second) {
-    if ((first instanceof Long) && (second instanceof Long)) {
-      return gcd((Long)first, (Long)second);
+    Number f = NumberUtils.upcast(first);
+    Number s = NumberUtils.upcast(second);
+    if ((f instanceof Long) && (s instanceof Long)) {
+      return gcd((Long)f, (Long)s);
     }
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
       return gcd((SCMBigRational) first, (SCMBigRational)second);
@@ -104,6 +106,9 @@ public final class GCD extends AFn {
     }
     if (second instanceof BigDecimal) {
       return gcd(NumberUtils.toBigDecimal(first), (BigDecimal) second);
+    }
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return gcd((BigInteger) first, (BigInteger) second);
     }
     return gcd(first.doubleValue(), second.doubleValue());
   }

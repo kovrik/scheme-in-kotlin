@@ -2,7 +2,6 @@ package unittests;
 
 import core.Repl;
 import core.environment.DefaultEnvironment;
-import core.environment.Environment;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
 import core.scm.SCMCons;

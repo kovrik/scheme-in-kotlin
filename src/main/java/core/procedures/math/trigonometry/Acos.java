@@ -6,6 +6,7 @@ import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Acos extends AFn {
 
@@ -25,25 +26,20 @@ public final class Acos extends AFn {
 
   @Override
   public Number apply1(Object arg) {
-    if (arg instanceof Long) {
-      double acos = Math.acos((Long) arg);
-      if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex((Number)arg));
-      }
-      return acos;
-    } else if (arg instanceof Double) {
-      double acos = Math.acos((Double) arg);
-      if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex((Number)arg));
-      }
-      return acos;
-    } else if (arg instanceof BigDecimal) {
+    if (arg instanceof BigDecimal) {
       return acos((BigDecimal)arg);
+    } else if (arg instanceof BigInteger) {
+      return acos((BigInteger)arg);
     } else if (arg instanceof SCMBigComplex) {
       return acos((SCMBigComplex)arg);
-    } else {
+    } else if (arg instanceof SCMBigRational) {
       return acos(((SCMBigRational)arg).toBigDecimal());
     }
+    double acos = Math.acos(((Number)arg).doubleValue());
+    if (Double.isNaN(acos)) {
+      return acos(new SCMBigComplex((Number)arg));
+    }
+    return acos;
   }
 
   private static Number acos(BigDecimal bd) {
@@ -54,6 +50,19 @@ public final class Acos extends AFn {
       double acos = Math.acos(v);
       if (Double.isNaN(acos)) {
         return acos(new SCMBigComplex(bd));
+      }
+      return acos;
+    }
+  }
+
+  private static Number acos(BigInteger bi) {
+    double v = bi.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      double acos = Math.acos(v);
+      if (Double.isNaN(acos)) {
+        return acos(new SCMBigComplex(bi));
       }
       return acos;
     }

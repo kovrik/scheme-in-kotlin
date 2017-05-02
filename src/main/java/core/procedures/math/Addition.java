@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Addition extends AFn {
 
@@ -72,24 +73,38 @@ public final class Addition extends AFn {
         second = ((SCMBigRational)second).doubleOrBigDecimalValue();
       }
     }
-
-    if ((first instanceof Long) && (second instanceof Long)) {
-      try {
-        return Math.addExact((Long)first, (Long)second);
-      } catch (ArithmeticException e) {
-        return BigDecimal.valueOf((Long)first).add(BigDecimal.valueOf((Long)second));
+    if (first instanceof Float && second instanceof Float) {
+      float result = first.floatValue() + second.floatValue();
+      if (Float.isNaN(result) || Float.isInfinite(result)) {
+        return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
       }
+      return result;
+    }
+    if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
+      double result = first.doubleValue() + second.doubleValue();
+      if (Double.isNaN(result) || Double.isInfinite(result)) {
+        return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
+      }
+      return result;
     }
     if (first instanceof BigDecimal) {
       return ((BigDecimal)first).add(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return NumberUtils.toBigDecimal(first).add((BigDecimal) second);
+      return ((BigDecimal) second).add(NumberUtils.toBigDecimal(first));
     }
-    double result = first.doubleValue() + second.doubleValue();
-    if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return new BigDecimal(first.toString()).add(new BigDecimal(second.toString()));
+    if (first instanceof BigInteger) {
+      return ((BigInteger)first).add(new BigInteger(second.toString()));
     }
-    return result;
+    if (second instanceof BigInteger) {
+      return ((BigInteger)second).add(new BigInteger(first.toString()));
+    }
+    long f = first.longValue();
+    long s = second.longValue();
+    try {
+      return Math.addExact(f, s);
+    } catch (ArithmeticException e) {
+      return BigDecimal.valueOf(f).add(BigDecimal.valueOf(s));
+    }
   }
 }

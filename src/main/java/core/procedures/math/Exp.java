@@ -4,6 +4,8 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 
+import java.math.BigInteger;
+
 import static core.utils.NumberUtils.E;
 
 public final class Exp extends AFn {
@@ -37,7 +39,16 @@ public final class Exp extends AFn {
       }
       return Math.exp(number.doubleValue());
     }
-    if (number instanceof Long) {
+    if (number instanceof Float) {
+      if ((Float)number == Float.NEGATIVE_INFINITY) {
+        return 0L;
+      }
+      if ((Float.isNaN((Float) number)) || (Float.isInfinite((Float) number))) {
+        return number;
+      }
+      return Math.exp(number.doubleValue());
+    }
+    if (number instanceof Long || number instanceof Byte || number instanceof Short || number instanceof Integer) {
       if (number.longValue() == 0) {
         return 1L;
       }

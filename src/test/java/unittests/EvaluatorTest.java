@@ -180,9 +180,9 @@ public class EvaluatorTest extends AbstractTest {
         eval("(map (lambda (number1 number2) (+ number1 number2)) '(1 2 3 4) '(10 100 1000 10000))", env));
 
     assertEquals(list(1L, 4L), eval("(map car '((1 2 3) (4 5 6)))", env));
-    assertEquals(list(3L, 2L, 4L), eval("(map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") ))", env));
+    assertEquals(list(3, 2, 4), eval("(map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") ))", env));
     assertEquals(list(12L, 15L, 16L), eval("(map * '(2 3 4) '(6 5 4))", env));
-    assertEquals(list(0L, 1L, 2L), eval("(map length '(() (a) (a b)))", env));
+    assertEquals(list(0, 1, 2), eval("(map length '(() (a) (a b)))", env));
   }
 
   @Test

@@ -7,6 +7,7 @@ import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 
 public final class Round extends AFn {
@@ -31,10 +32,8 @@ public final class Round extends AFn {
   }
 
   private Number round(Number number) {
-    if (number instanceof Long) {
+    if (number instanceof Long || number instanceof Integer || number instanceof Short || number instanceof Byte || number instanceof BigInteger) {
       return number;
-    } else if (number instanceof Double) {
-      return Math.rint((Double) number);
     } else if (number instanceof BigDecimal) {
       BigDecimal bd = (BigDecimal) number;
       if (bd.scale() == 0) {
@@ -42,8 +41,9 @@ public final class Round extends AFn {
       } else {
         return bd.round(NumberUtils.DEFAULT_CONTEXT);
       }
-    } else {
+    } else if (number instanceof SCMBigRational) {
       return ((SCMBigRational) number).round();
     }
+    return Math.rint(number.doubleValue());
   }
 }

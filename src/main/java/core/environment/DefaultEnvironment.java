@@ -23,6 +23,8 @@ import core.procedures.functional.MapProc;
 import core.procedures.functional.Void;
 import core.procedures.generic.*;
 import core.procedures.hashmaps.*;
+import core.procedures.interop.BigDecimalType;
+import core.procedures.interop.BigIntegerType;
 import core.procedures.interop.BooleanType;
 import core.procedures.interop.CharType;
 import core.procedures.interop.PrimitiveNumberType;
@@ -60,6 +62,8 @@ public final class DefaultEnvironment extends Environment {
       PrimitiveNumberType.FLOAT,
       new BooleanType(),
       new CharType(),
+      new BigIntegerType(),
+      new BigDecimalType(),
 
       /* System */
       new Exit(),

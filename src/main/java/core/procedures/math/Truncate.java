@@ -6,6 +6,7 @@ import core.scm.SCMBigRational;
 import core.scm.SCMClass;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Truncate extends AFn {
 
@@ -25,13 +26,11 @@ public final class Truncate extends AFn {
 
   @Override
   public Number apply1(Object arg) {
-    if (arg instanceof Long) {
-      return (Long) arg;
-    } else if (arg instanceof Double) {
-      if ((Double)arg < 0) {
-        return Math.ceil((Double)arg);
+    if (arg instanceof Double || arg instanceof Float) {
+      if (((Number)arg).doubleValue() < 0) {
+        return Math.ceil(((Number)arg).doubleValue());
       } else {
-        return Math.floor((Double)arg);
+        return Math.floor(((Number)arg).doubleValue());
       }
     } else if (arg instanceof BigDecimal) {
       BigDecimal bd = (BigDecimal) arg;
@@ -40,8 +39,9 @@ public final class Truncate extends AFn {
       } else {
         return bd.setScale(0, BigDecimal.ROUND_DOWN);
       }
-    } else {
+    } else if (arg instanceof SCMBigRational){
       return ((SCMBigRational) arg).truncate();
     }
+    return (Number)arg;
   }
 }

@@ -79,7 +79,9 @@ public final class LCM extends AFn {
   }
 
   private Number lcm(Number first, Number second) {
-    if ((first instanceof Long) && (second instanceof Long)) {
+    Number f = NumberUtils.upcast(first);
+    Number s = NumberUtils.upcast(second);
+    if ((f instanceof Long) && (s instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
     if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
@@ -99,6 +101,9 @@ public final class LCM extends AFn {
     }
     if (second instanceof BigDecimal) {
       return lcm(NumberUtils.toBigDecimal(first), (BigDecimal)second);
+    }
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return lcm((BigInteger)first, (BigInteger)second);
     }
     return lcm(first.doubleValue(), second.doubleValue());
   }

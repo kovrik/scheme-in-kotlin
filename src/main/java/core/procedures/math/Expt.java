@@ -158,8 +158,10 @@ public final class Expt extends AFn {
     if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
       return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
     }
-    /* Long */
-    if ((base instanceof Long) && (exponent instanceof Long)) {
+    /* Long, Integer, Short, Byte */
+    Number b = NumberUtils.upcast(base);
+    Number ex = NumberUtils.upcast(exponent);
+    if ((b instanceof Long) && (ex instanceof Long)) {
       boolean isNegative = false;
       if (exponent.longValue() < Integer.MAX_VALUE) {
         int e = exponent.intValue();
@@ -167,11 +169,11 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = BigDecimal.valueOf((Long)base).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        BigDecimal result = BigDecimal.valueOf(base.longValue()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
         if (isNegative) {
           return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
         }
-        return NumberUtils.tryToDowncast(result);
+        return NumberUtils.downcastNumber(result);
       } else {
         /* If we came here, then exponent is greater than Integer.MAX_VALUE */
         if (Math.abs(base.longValue()) < 1) {
@@ -196,6 +198,19 @@ public final class Expt extends AFn {
         }
       }
       return exptBig((BigDecimal) base, NumberUtils.toBigDecimal(exponent));
+    }
+    /* BigIntegers */
+    if (base instanceof BigInteger && NumberUtils.isInteger(exponent)) {
+      if (NumberUtils.isInteger(base)) {
+        if (exponent instanceof BigInteger) {
+          try {
+            return ((BigInteger) base).pow(((BigInteger) exponent).intValueExact());
+          } catch (ArithmeticException e) {
+            // ignore
+          }
+        }
+      }
+      return exptBig(NumberUtils.toBigDecimal(base), NumberUtils.toBigDecimal(exponent));
     }
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());

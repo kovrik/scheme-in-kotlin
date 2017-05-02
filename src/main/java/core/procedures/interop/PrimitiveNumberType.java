@@ -5,12 +5,12 @@ import core.procedures.FnArgsBuilder;
 
 public final class PrimitiveNumberType extends AFn {
 
-  public static final PrimitiveNumberType BYTE = new PrimitiveNumberType(byte.class);
-  public static final PrimitiveNumberType SHORT = new PrimitiveNumberType(short.class);
-  public static final PrimitiveNumberType INT = new PrimitiveNumberType(int.class);
-  public static final PrimitiveNumberType LONG = new PrimitiveNumberType(long.class);
+  public static final PrimitiveNumberType BYTE   = new PrimitiveNumberType(byte.class);
+  public static final PrimitiveNumberType SHORT  = new PrimitiveNumberType(short.class);
+  public static final PrimitiveNumberType INT    = new PrimitiveNumberType(int.class);
+  public static final PrimitiveNumberType LONG   = new PrimitiveNumberType(long.class);
   public static final PrimitiveNumberType DOUBLE = new PrimitiveNumberType(double.class);
-  public static final PrimitiveNumberType FLOAT = new PrimitiveNumberType(float.class);
+  public static final PrimitiveNumberType FLOAT  = new PrimitiveNumberType(float.class);
 
   private final String name;
   private final Class clazz;
@@ -31,9 +31,9 @@ public final class PrimitiveNumberType extends AFn {
     return name;
   }
 
+  /* FIXME Have to box it */
   @Override
   public Number apply1(Object arg) {
-    /* Have to box it */
     Number number = (Number)arg;
     if (clazz == byte.class) {
       return number.byteValue();

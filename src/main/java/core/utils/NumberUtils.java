@@ -556,10 +556,22 @@ public final class NumberUtils {
     return isInexact(other) && isExact(result) ? ToInexact.toInexact(result) : result;
   }
 
+  public static Number downcastNumber(Number number) {
+    /* Try to downcast Big Numbers */
+    if (number instanceof BigDecimal) {
+      return tryToDowncast((BigDecimal) number);
+    }
+    /* Try to downcast Rationals with denominator = 1 */
+    if ((number instanceof SCMBigRational) && (((SCMBigRational) number).isDenominatorEqualToOne())) {
+      return tryToDowncast((SCMBigRational) number);
+    }
+    return number;
+  }
+
   /**
    * Tries to downcast big number to a smaller type (if possible)
    **/
-  public static Number tryToDowncast(BigDecimal number) {
+  private static Number tryToDowncast(BigDecimal number) {
     /* Same checks are performed in longValueExact() method,
      * but we don't want exception to be thrown, just return the number */
     int d = number.precision() - number.scale();
@@ -580,7 +592,7 @@ public final class NumberUtils {
     return number;
   }
 
-  public static Number tryToDowncast(SCMBigRational bigRational) {
+  private static Number tryToDowncast(SCMBigRational bigRational) {
     BigInteger number = bigRational.getNumerator();
     if (number.bitLength() <= 63) {
       try {
@@ -604,5 +616,15 @@ public final class NumberUtils {
 
   public static boolean isNaN(Number number) {
     return number instanceof Double && Double.isNaN((Double) number);
+  }
+
+  /* Upcast number if required */
+  public static Number upcast(Number number) {
+    if ((number instanceof Byte) || (number instanceof Short) || (number instanceof Integer)) {
+      return number.longValue();
+    } else if (number instanceof Float) {
+      return number.doubleValue();
+    }
+    return number;
   }
 }

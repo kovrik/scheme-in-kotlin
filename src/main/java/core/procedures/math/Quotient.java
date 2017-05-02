@@ -6,6 +6,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Quotient extends AFn {
 
@@ -45,6 +46,10 @@ public final class Quotient extends AFn {
     }
   }
 
+  private Number apply(BigInteger first, BigInteger second) {
+    return first.divide(second);
+  }
+
   private Number apply(Number first, Number second) {
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal)first, (BigDecimal)second);
@@ -55,7 +60,16 @@ public final class Quotient extends AFn {
     if (second instanceof BigDecimal) {
       return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
     }
-    if (((first instanceof Double) || (second instanceof Double)) &&
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return apply((BigInteger)first, (BigInteger)second);
+    }
+    if (first instanceof BigInteger) {
+      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
+    }
+    if (second instanceof BigInteger) {
+      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
+    }
+    if (((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) &&
         (NumberUtils.isInteger(first)) && NumberUtils.isInteger(second)) {
 
       return Long.valueOf(first.longValue() / second.longValue()).doubleValue();

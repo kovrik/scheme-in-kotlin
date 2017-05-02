@@ -384,7 +384,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(5.0,  eval("(max 5.0)",  env));
     assertEquals(-5.0, eval("(max -5.0)", env));
     assertEquals(-5.0, eval("(max -6 -7 -5.0)", env));
-    assertEquals(7.0,  eval("(max 6 7 5.0)",    env));
+    assertEquals(7L,  eval("(max 6 7 5.0)",    env));
 
     try {
       eval("(max \"test\" 1 2 3)", env);
@@ -406,7 +406,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(0L,   eval("(min 0)",    env));
     assertEquals(5.0,  eval("(min 5.0)",  env));
     assertEquals(-5.0, eval("(min -5.0)", env));
-    assertEquals(-7.0, eval("(min -6 -7 -5.0)", env));
+    assertEquals(-7L, eval("(min -6 -7 -5.0)", env));
     assertEquals(5.0,  eval("(min 6 7 5.0)",    env));
     try {
       eval("(min \"test\" 1 2 3)", env);

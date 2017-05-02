@@ -4,8 +4,10 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
+import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Log extends AFn {
 
@@ -39,14 +41,15 @@ public final class Log extends AFn {
     if (number instanceof Double) {
       return Math.log(number.doubleValue());
     }
-    if (number instanceof Long) {
-      if (number.longValue() == 0) {
+    Number n = NumberUtils.upcast(number);
+    if (n instanceof Long) {
+      if (n.longValue() == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
-      if (number.longValue() == 1) {
+      if (n.longValue() == 1) {
         return 0L;
       }
-      return Math.log(number.doubleValue());
+      return Math.log(n.doubleValue());
     }
     if (number instanceof SCMBigRational) {
       if (((SCMBigRational) number).isZero()){
@@ -62,6 +65,12 @@ public final class Log extends AFn {
         throw new ArithmeticException("log: undefined for 0");
       }
       return logBig((BigDecimal) number);
+    }
+    if (number instanceof BigInteger) {
+      if (((BigInteger)number).signum() == 0) {
+        throw new ArithmeticException("log: undefined for 0");
+      }
+      return logBig(NumberUtils.toBigDecimal(number));
     }
     return Math.log(number.doubleValue());
   }

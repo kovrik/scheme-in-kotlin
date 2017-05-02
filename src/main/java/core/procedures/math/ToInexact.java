@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class ToInexact extends AFn {
 
@@ -36,6 +37,9 @@ public final class ToInexact extends AFn {
     }
     if (o instanceof SCMBigRational) {
       return ((SCMBigRational)o).toBigDecimalInexact();
+    }
+    if (o instanceof BigInteger) {
+      return new BigDecimal(o.toString());
     }
     if (o instanceof BigDecimal) {
       int scale = Math.max(1, ((BigDecimal)o).scale());

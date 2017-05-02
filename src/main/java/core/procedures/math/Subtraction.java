@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Subtraction extends AFn {
 
@@ -30,11 +31,25 @@ public final class Subtraction extends AFn {
       if (args[0] instanceof BigDecimal) {
         return ((BigDecimal)args[0]).negate();
       }
+      if (args[0] instanceof BigInteger) {
+        return ((BigInteger)args[0]).negate();
+      }
       if (args[0] instanceof SCMBigRational) {
         return ((SCMBigRational)args[0]).negate();
       }
       if (args[0] instanceof Long) {
-        return Math.negateExact(((Long)args[0]));
+        try {
+          return Math.negateExact(((Long)args[0]));
+        } catch (ArithmeticException e) {
+          return BigInteger.valueOf((long)args[0]).negate();
+        }
+      }
+      if (args[0] instanceof Integer) {
+        try {
+          return Math.negateExact(((Integer) args[0]));
+        } catch (ArithmeticException e) {
+          return Math.negateExact(((Integer)args[0]).longValue());
+        }
       }
       return subtract(0L, (Number)args[0]);
     }
@@ -75,24 +90,38 @@ public final class Subtraction extends AFn {
         second = second.doubleValue();
       }
     }
-
-    if ((first instanceof Long) && (second instanceof Long)) {
-      try {
-        return Math.subtractExact((Long)first, (Long)second);
-      } catch (ArithmeticException e) {
-        return BigDecimal.valueOf((Long)first).subtract(BigDecimal.valueOf((Long)second));
+    if (first instanceof Float && second instanceof Float) {
+      float result = first.floatValue() - second.floatValue();
+      if (Float.isNaN(result) || Float.isInfinite(result)) {
+        return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
       }
+      return result;
+    }
+    if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
+      double result = first.doubleValue() - second.doubleValue();
+      if (Double.isNaN(result) || Double.isInfinite(result)) {
+        return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+      }
+      return result;
     }
     if (first instanceof BigDecimal) {
       return ((BigDecimal)first).subtract(NumberUtils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return NumberUtils.toBigDecimal(first).subtract((BigDecimal)second);
+      return ((BigDecimal) second).subtract(NumberUtils.toBigDecimal(first));
     }
-    double result = first.doubleValue() - second.doubleValue();
-    if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+    if (first instanceof BigInteger) {
+      return ((BigInteger)first).subtract(new BigInteger(second.toString()));
     }
-    return result;
+    if (second instanceof BigInteger) {
+      return ((BigInteger)second).subtract(new BigInteger(first.toString()));
+    }
+    long f = first.longValue();
+    long s = second.longValue();
+    try {
+      return Math.subtractExact(f, s);
+    } catch (ArithmeticException e) {
+      return BigDecimal.valueOf(f).subtract(BigDecimal.valueOf(s));
+    }
   }
 }

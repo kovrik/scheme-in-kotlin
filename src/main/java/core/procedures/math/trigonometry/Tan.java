@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Tan extends AFn {
 
@@ -30,21 +31,29 @@ public final class Tan extends AFn {
     if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (arg instanceof Long) {
-      return Math.tan((Long) arg);
-    } else if (arg instanceof Double) {
-      return Math.tan((Double) arg);
-    } else if (arg instanceof BigDecimal) {
+    if (arg instanceof BigDecimal) {
       return tan((BigDecimal)arg);
+    } else if (arg instanceof BigInteger) {
+      return tan((BigInteger)arg);
     } else if (arg instanceof SCMBigComplex) {
-      return Tan.tan((SCMBigComplex)arg);
-    } else {
+      return tan((SCMBigComplex)arg);
+    } else if (arg instanceof SCMBigRational) {
       return tan(((SCMBigRational)arg).toBigDecimal());
     }
+    return Math.tan(((Number)arg).doubleValue());
   }
 
   private static double tan(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.tan(v);
+    }
+  }
+
+  private static double tan(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

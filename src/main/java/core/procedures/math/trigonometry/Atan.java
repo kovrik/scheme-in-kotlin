@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Atan extends AFn {
 
@@ -30,21 +31,29 @@ public final class Atan extends AFn {
     if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (arg instanceof Long) {
-      return Math.atan((Long) arg);
-    } else if (arg instanceof Double) {
-      return Math.atan((Double) arg);
-    } else if (arg instanceof BigDecimal) {
+    if (arg instanceof BigDecimal) {
       return atan((BigDecimal)arg);
+    } else if (arg instanceof BigInteger) {
+      return atan((BigInteger)arg);
     } else if (arg instanceof SCMBigComplex) {
       return atan((SCMBigComplex)arg);
-    } else {
+    } else if (arg instanceof SCMBigRational) {
       return atan(((SCMBigRational)arg).toBigDecimal());
     }
+    return Math.atan(((Number)arg).doubleValue());
   }
 
   public static double atan(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.atan(v);
+    }
+  }
+
+  public static double atan(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Sinh extends AFn {
 
@@ -30,21 +31,29 @@ public final class Sinh extends AFn {
     if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (arg instanceof Long) {
-      return Math.sinh((Long) arg);
-    } else if (arg instanceof Double) {
-      return Math.sinh((Double) arg);
-    } else if (arg instanceof BigDecimal) {
+    if (arg instanceof BigDecimal) {
       return sinh((BigDecimal)arg);
+    } else if (arg instanceof BigInteger) {
+      return sinh((BigInteger)arg);
     } else if (arg instanceof SCMBigComplex) {
       return sinh((SCMBigComplex)arg);
-    } else {
+    } else if (arg instanceof SCMBigRational) {
       return sinh(((SCMBigRational)arg).toBigDecimal());
     }
+    return Math.sinh(((Number)arg).doubleValue());
   }
 
   static double sinh(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.sinh(v);
+    }
+  }
+
+  static double sinh(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

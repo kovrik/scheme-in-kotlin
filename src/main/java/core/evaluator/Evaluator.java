@@ -12,7 +12,6 @@ import core.scm.specialforms.New;
 import core.utils.NumberUtils;
 import core.writer.Writer;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,7 +63,7 @@ public class Evaluator {
       throw cc;
     }
     if (result instanceof Number) {
-      return upcastOrDowncastNumber((Number) result);
+      return NumberUtils.downcastNumber((Number) result);
     }
     // FIXME Get rid of this workaround
     /* Do not downcast in case of `new` Special Form (workaround) */
@@ -212,23 +211,5 @@ public class Evaluator {
       result.add(eval(e, env));
     }
     return result;
-  }
-
-  private static Number upcastOrDowncastNumber(Number number) {
-    /* Try to downcast Big Numbers */
-    if (number instanceof BigDecimal) {
-      return NumberUtils.tryToDowncast((BigDecimal) number);
-    }
-    /* Try to downcast Rationals with denominator = 1 */
-    if ((number instanceof SCMBigRational) && (((SCMBigRational) number).isDenominatorEqualToOne())) {
-      return NumberUtils.tryToDowncast((SCMBigRational) number);
-    }
-    /* Upcast number if required */
-    if ((number instanceof Byte) || (number instanceof Short) || (number instanceof Integer)) {
-      return number.longValue();
-    } else if (number instanceof Float) {
-      return number.doubleValue();
-    }
-    return number;
   }
 }

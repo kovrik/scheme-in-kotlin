@@ -7,6 +7,7 @@ import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Max extends AFn {
 
@@ -48,19 +49,37 @@ public final class Max extends AFn {
     if (second instanceof SCMBigRational) {
       second = second.doubleValue();
     }
-    if ((first instanceof Long) && (second instanceof Long)) {
-      return Math.max((Long)first, (Long)second);
+    if ((first instanceof Integer) && (second instanceof Integer)) {
+      return Math.max((int)first, (int)second);
     }
-
+    if ((first instanceof Long) && (second instanceof Long)) {
+      return Math.max((long)first, (long)second);
+    }
+    if ((first instanceof Float) && (second instanceof Float)) {
+      return Math.max((float)first, (float)second);
+    }
+    if ((first instanceof Double) && (second instanceof Double)) {
+      return Math.max((double)first, (double) second);
+    }
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return ((BigInteger)first).max((BigInteger) second);
+    }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return ((BigDecimal)first).max((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).max(NumberUtils.toBigDecimal(second));
+      int i = ((BigDecimal) first).compareTo(NumberUtils.toBigDecimal(second));
+      return (i < 0) ? second : first;
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).max(NumberUtils.toBigDecimal(first));
+      int i = ((BigDecimal) second).compareTo(NumberUtils.toBigDecimal(first));
+      return (i < 0) ? first : second;
     }
-    return Math.max(first.doubleValue(), second.doubleValue());
+    if (first.doubleValue() == second.doubleValue()) {
+      return first;
+    } else if (first.doubleValue() > second.doubleValue()) {
+      return first;
+    }
+    return second;
   }
 }

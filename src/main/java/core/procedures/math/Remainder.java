@@ -6,6 +6,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Remainder extends AFn {
 
@@ -37,6 +38,13 @@ public final class Remainder extends AFn {
     return first.remainder(second);
   }
 
+  private static Number apply(BigInteger first, BigInteger second) {
+    if (second.signum() == 0) {
+      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
+    }
+    return first.remainder(second);
+  }
+
   public static Number apply(Number first, Number second) {
     if (first instanceof SCMBigRational) {
       first = ((SCMBigRational) first).toBigDecimal();
@@ -54,8 +62,16 @@ public final class Remainder extends AFn {
     if (second instanceof BigDecimal) {
       return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
     }
-
-    if ((first instanceof Double) || (second instanceof Double)) {
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return apply((BigInteger) first, (BigInteger)second);
+    }
+    if (first instanceof BigInteger) {
+      return apply((BigInteger)first, new BigInteger(second.toString()));
+    }
+    if (second instanceof BigInteger) {
+      return apply(new BigInteger(first.toString()), (BigInteger)second);
+    }
+    if ((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) {
       if (second.intValue() == 0) {
         throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
       }
@@ -66,12 +82,10 @@ public final class Remainder extends AFn {
         return Math.abs(result);
       }
       return result;
-    } else if ((first instanceof Long) && (second instanceof Long)) {
-      if (second.intValue() == 0) {
-        throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
-      }
-      return (Long)first % (Long)second;
     }
-    throw new IllegalArgumentException(String.format("Wrong type argument to `%s`", NAME));
+    if (second.longValue() == 0) {
+      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
+    }
+    return first.longValue() % second.longValue();
   }
 }

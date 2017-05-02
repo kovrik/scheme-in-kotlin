@@ -44,7 +44,7 @@ public final class Denominator extends AFn {
       }
       return result;
     }
-    if (exact instanceof Long || exact instanceof Integer) {
+    if (exact instanceof Long || exact instanceof Integer || exact instanceof Byte || exact instanceof Short) {
       return 1L;
     }
     if (exact instanceof Double || exact instanceof Float) {

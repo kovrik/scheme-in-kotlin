@@ -8,6 +8,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Sin extends AFn {
 
@@ -35,21 +36,29 @@ public final class Sin extends AFn {
     if (NumberUtils.isZero(number)) {
       return 0L;
     }
-    if (number instanceof Long) {
-      return Math.sin((Long) number);
-    } else if (number instanceof Double) {
-      return Math.sin((Double) number);
-    } else if (number instanceof BigDecimal) {
-      return sin((BigDecimal)number);
+    if (number instanceof BigDecimal) {
+      return sin((BigDecimal) number);
+    } else if (number instanceof BigInteger) {
+      return sin((BigInteger)number);
     } else if (number instanceof SCMBigComplex) {
       return sin((SCMBigComplex)number);
-    } else {
+    } else if (number instanceof SCMBigRational) {
       return sin(((SCMBigRational)number).toBigDecimal());
     }
+    return Math.sin(number.doubleValue());
   }
 
   public static double sin(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.sin(v);
+    }
+  }
+
+  public static double sin(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

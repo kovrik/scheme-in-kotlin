@@ -75,8 +75,7 @@ public class ComplexTest extends AbstractTest {
 
   @Test
   public void testExpt() {
-    // FIXME precision
-    assertEquals(new SCMBigComplex(new BigDecimal("0.2739572538301212"), new BigDecimal("0.5837007587586148")),  eval("(expt 1+1i 1+1i)", env));
+    assertEquals(new SCMBigComplex(new BigDecimal("0.2739572538301211"), new BigDecimal("0.5837007587586147")),  eval("(expt 1+1i 1+1i)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("0.0004911725350693"), new BigDecimal("-0.0007294124825312")), eval("(expt 7+2.3i -4-3i)", env));
     assertEquals(new SCMBigComplex(new BigDecimal("-345.3968959025678"), new BigDecimal("11.028099235573535")),  eval("(expt 3.4-5.2i 3.2)", env));
   }

@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Cosh extends AFn {
 
@@ -30,21 +31,29 @@ public final class Cosh extends AFn {
     if (NumberUtils.isZero(arg)) {
       return 1L;
     }
-    if (arg instanceof Long) {
-      return Math.cosh((Long) arg);
-    } else if (arg instanceof Double) {
-      return Math.cosh((Double) arg);
-    } else if (arg instanceof BigDecimal) {
-      return cosh((BigDecimal)arg);
+    if (arg instanceof BigDecimal) {
+      return cosh((BigDecimal) arg);
+    } else if (arg instanceof BigInteger) {
+      return cosh((BigInteger) arg);
     } else if (arg instanceof SCMBigComplex) {
       return cosh((SCMBigComplex)arg);
-    } else {
+    } else if (arg instanceof SCMBigRational){
       return cosh(((SCMBigRational)arg).toBigDecimal());
     }
+    return Math.cosh(((Number)arg).doubleValue());
   }
 
   static double cosh(BigDecimal bd) {
     double v = bd.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      return Math.cosh(v);
+    }
+  }
+
+  static double cosh(BigInteger bi) {
+    double v = bi.doubleValue();
     if (Double.isInfinite(v) || Double.isNaN(v)) {
       return Double.NaN;
     } else {

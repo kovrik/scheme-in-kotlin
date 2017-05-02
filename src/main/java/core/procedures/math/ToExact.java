@@ -48,8 +48,16 @@ public final class ToExact extends AFn {
       SCMBigComplex c = ((SCMBigComplex)o);
       return new SCMBigComplex(toExact(c.getRe()), toExact(c.getIm()));
     }
-    if (o instanceof Float && (Float.isInfinite((Float) o) || Float.isNaN((Float) o))) {
-      throw new ArithmeticException(NAME + ": no exact representation of: " + Writer.write(o));
+    if (o instanceof Float) {
+      Float f = (Float)o;
+      if ((Float.isInfinite(f) || Float.isNaN(f))) {
+        throw new ArithmeticException(NAME + ": no exact representation of: " + Writer.write(f));
+      }
+      /* Check if Double is integral */
+      if (f == Math.floor(f)) {
+        return f;
+      }
+      return doubleToExact(f.doubleValue());
     }
     if (o instanceof Double) {
       Double d = (Double)o;

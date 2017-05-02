@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Division extends AFn {
 
@@ -62,23 +63,40 @@ public final class Division extends AFn {
         denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
       }
     }
-
     if (NumberUtils.isExact(numerator) &&
         NumberUtils.isExact(denominator)) {
 
       return SCMBigRational.valueOf(numerator.toString(), denominator.toString());
     }
+    if (numerator instanceof Float && denominator instanceof Float) {
+      float result = numerator.floatValue() / denominator.floatValue();
+      if (Float.isNaN(result) || Float.isInfinite(result)) {
+        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), NumberUtils.DEFAULT_CONTEXT);
+      }
+      return result;
+    }
+    if (numerator instanceof Double || denominator instanceof Double || numerator instanceof Float || denominator instanceof Float) {
+      double result = numerator.doubleValue() / denominator.doubleValue();
+      if (Double.isNaN(result) || Double.isInfinite(result)) {
+        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), NumberUtils.DEFAULT_CONTEXT);
+      }
+      return result;
+    }
     if (numerator instanceof BigDecimal) {
-      return safeBigDecimalDivision((BigDecimal)numerator, NumberUtils.toBigDecimal(denominator));
+      return ((BigDecimal)numerator).divide(NumberUtils.toBigDecimal(denominator), NumberUtils.DEFAULT_CONTEXT);
     }
     if (denominator instanceof BigDecimal) {
-      return safeBigDecimalDivision(NumberUtils.toBigDecimal(numerator), (BigDecimal)denominator);
+      return ((BigDecimal) denominator).divide(NumberUtils.toBigDecimal(numerator), NumberUtils.DEFAULT_CONTEXT);
     }
-    double result = numerator.doubleValue() / denominator.doubleValue();
-    if (Double.isNaN(result) || Double.isInfinite(result)) {
-      return safeBigDecimalDivision(new BigDecimal(numerator.toString()), new BigDecimal(denominator.toString()));
+    if (numerator instanceof BigInteger) {
+      return ((BigInteger)numerator).divide(new BigInteger(denominator.toString()));
     }
-    return result;
+    if (denominator instanceof BigInteger) {
+      return ((BigInteger)denominator).divide(new BigInteger(numerator.toString()));
+    }
+    double f = numerator.doubleValue();
+    double s = denominator.doubleValue();
+    return f / s;
   }
 
   /**

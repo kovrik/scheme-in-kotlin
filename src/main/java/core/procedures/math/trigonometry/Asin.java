@@ -7,6 +7,7 @@ import core.scm.SCMBigRational;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Asin extends AFn {
 
@@ -30,25 +31,20 @@ public final class Asin extends AFn {
     if (NumberUtils.isZero(arg)) {
       return 0L;
     }
-    if (arg instanceof Long) {
-      double asin = Math.asin((Long) arg);
-      if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex((Number)arg));
-      }
-      return asin;
-    } else if (arg instanceof Double) {
-      double asin = Math.asin((Double) arg);
-      if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex((Number)arg));
-      }
-      return asin;
-    } else if (arg instanceof BigDecimal) {
+    if (arg instanceof BigDecimal) {
       return asin((BigDecimal)arg);
+    } else if (arg instanceof BigInteger) {
+      return asin((BigInteger)arg);
     } else if (arg instanceof SCMBigComplex) {
       return asin((SCMBigComplex)arg);
-    } else {
+    } else if (arg instanceof SCMBigRational) {
       return asin(((SCMBigRational)arg).toBigDecimal());
     }
+    double asin = Math.asin(((Number)arg).doubleValue());
+    if (Double.isNaN(asin)) {
+      return asin(new SCMBigComplex((Number)arg));
+    }
+    return asin;
   }
 
   private static Number asin(BigDecimal bd) {
@@ -59,6 +55,19 @@ public final class Asin extends AFn {
       double asin = Math.asin(v);
       if (Double.isNaN(asin)) {
         return asin(new SCMBigComplex(bd));
+      }
+      return asin;
+    }
+  }
+
+  private static Number asin(BigInteger bi) {
+    double v = bi.doubleValue();
+    if (Double.isInfinite(v) || Double.isNaN(v)) {
+      return Double.NaN;
+    } else {
+      double asin = Math.asin(v);
+      if (Double.isNaN(asin)) {
+        return asin(new SCMBigComplex(bi));
       }
       return asin;
     }

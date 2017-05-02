@@ -7,6 +7,7 @@ import core.scm.SCMClass;
 import core.utils.NumberUtils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class Min extends AFn {
 
@@ -47,18 +48,37 @@ public final class Min extends AFn {
     if (second instanceof SCMBigRational) {
       second = second.doubleValue();
     }
+    if ((first instanceof Integer) && (second instanceof Integer)) {
+      return Math.min((int)first, (int)second);
+    }
     if ((first instanceof Long) && (second instanceof Long)) {
-      return Math.min((Long)first, (Long)second);
+      return Math.min((long)first, (long)second);
+    }
+    if ((first instanceof Float) && (second instanceof Float)) {
+      return Math.min((float)first, (float)second);
+    }
+    if ((first instanceof Double) && (second instanceof Double)) {
+      return Math.min((double)first, (double) second);
+    }
+    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
+      return ((BigInteger)first).min((BigInteger) second);
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return ((BigDecimal)first).min((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).min(NumberUtils.toBigDecimal(second));
+      int i = ((BigDecimal) first).compareTo(NumberUtils.toBigDecimal(second));
+      return (i > 0) ? second : first;
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal)second).min(NumberUtils.toBigDecimal(first));
+      int i = ((BigDecimal) second).compareTo(NumberUtils.toBigDecimal(first));
+      return (i > 0) ? first : second;
     }
-    return Math.min(first.doubleValue(), second.doubleValue());
+    if (first.doubleValue() == second.doubleValue()) {
+      return first;
+    } else if (first.doubleValue() < second.doubleValue()) {
+      return first;
+    }
+    return second;
   }
 }
