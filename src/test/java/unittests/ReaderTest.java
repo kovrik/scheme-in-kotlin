@@ -244,6 +244,8 @@ public class ReaderTest extends AbstractTest {
     assertEquals(Boolean.FALSE, reader.readFirst("#f"));
     assertEquals(Boolean.TRUE,  reader.readFirst("#T"));
     assertEquals(Boolean.FALSE, reader.readFirst("#F"));
+    assertEquals(Boolean.TRUE,  reader.readFirst("true"));
+    assertEquals(Boolean.FALSE, reader.readFirst("false"));
   }
 
   @Test

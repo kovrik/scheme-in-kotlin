@@ -138,7 +138,15 @@ public class Reader implements IReader {
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
       case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
       case ']':  throw new IllegalSyntaxException("read: unexpected vector terminator: " + c);
-      default:   return SCMSymbol.intern(c + readUntilDelimiter());
+      default:   {
+        String s = c + readUntilDelimiter();
+        /* Read true and false as #t and #f */
+        switch (s) {
+          case "true":  return true;
+          case "false": return false;
+          default: return SCMSymbol.intern(s);
+        }
+      }
     }
   }
 
