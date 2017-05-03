@@ -177,6 +177,7 @@ import core.procedures.system.Name;
 import core.procedures.system.Num;
 import core.procedures.system.Pst;
 import core.procedures.system.RandomProc;
+import core.procedures.system.Sleep;
 import core.procedures.system.ToString;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.MakeVector;
@@ -261,6 +262,7 @@ public final class DefaultEnvironment extends Environment {
       new Name(),
       new Identity(),
       new Num(),
+      new Sleep(),
 
       /* Delayed */
       new Force(),
