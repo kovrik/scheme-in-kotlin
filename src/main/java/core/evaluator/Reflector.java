@@ -1,5 +1,6 @@
 package core.evaluator;
 
+import core.exceptions.IllegalSyntaxException;
 import core.exceptions.UndefinedIdentifierException;
 import core.scm.SCMSymbol;
 
@@ -162,10 +163,16 @@ public class Reflector {
 
   public Object evalJavaMethod(String method, Object[] args) {
     Object result;
-    if (method.startsWith(".-") && args.length == 1) {
+    if (method.startsWith(".-")) {
+      if (args.length == 0) {
+        throw new IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)");
+      }
       Object instance = args[0];
       result = evalJavaInstanceField(method, instance);
     } else if (method.indexOf('.') == 0) {
+      if (args.length == 0) {
+        throw new IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)");
+      }
       Object instance = args[0];
       args = Arrays.copyOfRange(args, 1, args.length);
       result = evalJavaInstanceMethod(method, instance, args);
