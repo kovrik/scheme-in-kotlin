@@ -278,6 +278,7 @@ public final class DefaultEnvironment extends Environment {
       new Exp(),
       new Log(),
       new Modulo(),
+      new Modulo() { @Override public String getName() { return "mod"; } },
       new Remainder(),
       new Quotient(),
       new Round(),

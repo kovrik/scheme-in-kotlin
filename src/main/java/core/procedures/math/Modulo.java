@@ -7,7 +7,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public final class Modulo extends AFn {
+public class Modulo extends AFn {
 
   private static final Remainder REM = new Remainder();
 
