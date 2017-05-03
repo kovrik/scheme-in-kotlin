@@ -67,6 +67,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_BLANK = new SCMPredicate("blank?", o -> assertClass("blank?", o, String.class) && o == null || o.toString().isEmpty() || o.toString().trim().isEmpty());
   public static final SCMPredicate IS_CLASS = new SCMPredicate("class?", o -> o instanceof Class);
   public static final SCMPredicate IS_DECIMAL = new SCMPredicate("decimal?", o -> o instanceof BigDecimal);
+  public static final SCMPredicate IS_FLOAT = new SCMPredicate("float?", o -> o instanceof Float || o instanceof Double);
 
   private final String name;
   private final Predicate<Object> predicate;
