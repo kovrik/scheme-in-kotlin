@@ -170,15 +170,16 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (this == o) return true;
     if (o == null) return false;
     if (!(o instanceof List)) return false;
-    /* Two empty lists (EMPTYs) are equal */
-    if ((o instanceof SCMCons) && (((SCMCons) o).isEmpty()) && (this.isEmpty())) return true;
-    if ((o instanceof SCMCons) && (isList != ((SCMCons) o).isList)) return false;
+    /* Two empty lists are always equal */
+    if (size() == 0 && ((List) o).size() == 0) return true;
     if (this.size() != ((List)o).size()) return false;
+    /* Improper lists are not equal to Proper lists, even if they have the same elements */
+    if ((o instanceof SCMCons) && (isList != ((SCMCons) o).isList)) return false;
     Iterator<E> thisIterator = this.iterator();
-    Iterator oIterator = ((List) o).iterator();
-    while (thisIterator.hasNext() && oIterator.hasNext()) {
+    Iterator otherIterator = ((List) o).iterator();
+    while (thisIterator.hasNext() && otherIterator.hasNext()) {
       Object thisNext = thisIterator.next();
-      Object oNext = oIterator.next();
+      Object oNext = otherIterator.next();
       if (!thisNext.equals(oNext)) {
         return false;
       }
