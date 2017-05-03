@@ -45,7 +45,7 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
    */
   public SCMSymbol(String name, Map meta) {
     this.name = name;
-    this.escape = hasSpecialChars();
+    this.escape = hasSpecialChars(name);
     this.meta = meta;
   }
 
@@ -56,27 +56,6 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
 
   public boolean isEscape() {
     return escape;
-  }
-
-  /* Check if Symbol has Special Characters and needs to be escaped */
-  private boolean hasSpecialChars() {
-    /* Check if string representation must be escaped */
-    if (name.isEmpty() || Character.isDigit(name.charAt(0))) {
-      return true;
-    }
-    if (name.charAt(0) == '#') {
-      if (name.length() == 1) {
-        return true;
-      } else if (name.charAt(1) != '%') {
-        return true;
-      }
-    }
-    for (char c : name.toCharArray()) {
-      if (Character.isWhitespace(c) || SPECIAL_CHARS.indexOf(c) > -1) {
-        return true;
-      }
-    }
-    return false;
   }
 
   @Override
@@ -119,5 +98,27 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
   @Override
   public String toString() {
     return name;
+  }
+
+  /* Check if Symbol has Special Characters and needs to be escaped */
+  private static boolean hasSpecialChars(String name) {
+    /* Check if string representation must be escaped */
+    if (name.isEmpty() || Character.isDigit(name.charAt(0))) {
+      return true;
+    }
+    if (name.charAt(0) == '#') {
+      if (name.length() == 1) {
+        return true;
+      }
+      if (name.charAt(1) != '%') {
+        return true;
+      }
+    }
+    for (char c : name.toCharArray()) {
+      if (Character.isWhitespace(c) || SPECIAL_CHARS.indexOf(c) > -1) {
+        return true;
+      }
+    }
+    return false;
   }
 }
