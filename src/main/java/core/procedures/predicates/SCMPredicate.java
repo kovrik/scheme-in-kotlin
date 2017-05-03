@@ -8,6 +8,7 @@ import core.procedures.math.Remainder;
 import core.scm.*;
 import core.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -65,6 +66,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_ANY = new SCMPredicate("any?", o -> true);
   public static final SCMPredicate IS_BLANK = new SCMPredicate("blank?", o -> assertClass("blank?", o, String.class) && o == null || o.toString().isEmpty() || o.toString().trim().isEmpty());
   public static final SCMPredicate IS_CLASS = new SCMPredicate("class?", o -> o instanceof Class);
+  public static final SCMPredicate IS_DECIMAL = new SCMPredicate("decimal?", o -> o instanceof BigDecimal);
 
   private final String name;
   private final Predicate<Object> predicate;
