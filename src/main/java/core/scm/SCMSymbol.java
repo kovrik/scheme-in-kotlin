@@ -106,9 +106,9 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || !(o instanceof SCMSymbol)) return false;
-    SCMSymbol scmSymbol = (SCMSymbol) o;
-    return name != null ? name.equals(scmSymbol.name) : scmSymbol.name == null;
+    if (o == null || (o.getClass() != SCMSymbol.class)) return false;
+    SCMSymbol other = (SCMSymbol) o;
+    return name != null ? name.equals(other.name) : other.name == null;
   }
 
   @Override
