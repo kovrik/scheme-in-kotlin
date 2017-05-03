@@ -163,6 +163,7 @@ import core.procedures.strings.Trim;
 import core.procedures.strings.Uppercase;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
+import core.procedures.system.Cast;
 import core.procedures.system.ClassOf;
 import core.procedures.system.ClassProc;
 import core.procedures.system.ErrorProc;
@@ -245,6 +246,7 @@ public final class DefaultEnvironment extends Environment {
       new ClassOf(),
       new ClassOf() { @Override public String getName() { return "type"; } },
       new IsInstance(),
+      new Cast(),
       new ClassProc(),
       new ErrorProc(),
       new Pst(),
