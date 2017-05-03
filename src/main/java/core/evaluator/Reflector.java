@@ -147,6 +147,9 @@ public class Reflector {
   public Object evalJavaStaticField(String s) {
     if (s.indexOf('/') > -1) {
       String[] classAndField = s.split("/");
+      if (classAndField.length < 2) {
+        throw new IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)");
+      }
       String className = classAndField[0];
       String field = classAndField[1];
       Class c = getClazz(className);
@@ -234,6 +237,9 @@ public class Reflector {
   /* Java Interop: static method call */
   private Object evalJavaStaticMethod(String m, Object[] args) {
     String[] classAndMethod = m.split("/");
+    if (classAndMethod.length < 2) {
+      throw new IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)");
+    }
     String className = classAndMethod[0];
     String methodName = classAndMethod[1];
     Class clazz = getClazz(className);
