@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * TODO Create SCMComplex class for small complex numbers
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
-public class SCMBigComplex extends Number implements ISCMClass {
+public final class SCMBigComplex extends Number implements ISCMClass {
 
   /* Imaginary unit (i) */
   public static final SCMBigComplex I = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);

@@ -50,7 +50,7 @@ public class Evaluator {
     Object result;
     try {
       result = evalIter(sexp, env);
-      while (result instanceof SCMThunk) {
+      while (result != null && result.getClass() == SCMThunk.class) {
         result = evalIter(((SCMThunk) result).getExpr(), ((SCMThunk) result).getContextOrDefault(env));
       }
     } catch (CalledContinuation cc) {
@@ -67,7 +67,7 @@ public class Evaluator {
     }
     // FIXME Get rid of this workaround
     /* Do not downcast in case of `new` Special Form (workaround) */
-    if (result instanceof ReflectorResult) {
+    if (result != null && result.getClass() == ReflectorResult.class) {
       return ((ReflectorResult) result).get();
     }
     return result;

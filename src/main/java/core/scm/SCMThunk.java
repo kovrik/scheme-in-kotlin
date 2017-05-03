@@ -11,7 +11,7 @@ import core.environment.Environment;
  *
  * See https://groups.csail.mit.edu/mac/ftpdir/scheme-reports/r5rs-html.old/r5rs_22.html
  */
-public class SCMThunk {
+public final class SCMThunk {
 
   private final Object expr;
   private final Environment context;

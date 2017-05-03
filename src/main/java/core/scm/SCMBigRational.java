@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * TODO Create SCMRational class for small rational numbers
  */
-public class SCMBigRational extends Number implements ISCMClass, Comparable<SCMBigRational> {
+public final class SCMBigRational extends Number implements ISCMClass, Comparable<SCMBigRational> {
 
   public static final SCMBigRational ZERO  = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
   public static final SCMBigRational ONE   = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
