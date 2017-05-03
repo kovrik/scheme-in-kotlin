@@ -1,6 +1,7 @@
 package core.utils;
 
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.WrongTypeException;
 import core.procedures.math.Expt;
 import core.procedures.math.Multiplication;
 import core.procedures.math.ToExact;
@@ -9,6 +10,7 @@ import core.reader.Reader;
 import core.scm.SCMBigComplex;
 import core.scm.SCMBigRational;
 import core.scm.SCMSymbol;
+import core.writer.Writer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -626,5 +628,12 @@ public final class NumberUtils {
       return number.doubleValue();
     }
     return number;
+  }
+
+  public static boolean isBitOpSupported(Object obj) {
+    if (!(obj instanceof Byte || obj instanceof Short || obj instanceof Integer || obj instanceof Long)) {
+      throw new WrongTypeException("bit operation not supported for: " + Writer.write(obj));
+    }
+    return true;
   }
 }

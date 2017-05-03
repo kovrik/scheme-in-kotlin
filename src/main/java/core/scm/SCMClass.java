@@ -124,16 +124,17 @@ public enum SCMClass implements ISCMClass {
     @Override public SCMClass getSCMClass() { return SCMClass.PAIR; }
   }
   /* Marker classes for numbers */
-  public abstract class ExactNonNegativeInteger {}
-  public abstract class ExactInteger {}
-  public abstract class ExactPositiveInteger {}
-  public abstract class InexactReal {}
-  public abstract class Positive {}
-  public abstract class Negative {}
-  public abstract class NonNegative {}
-  public abstract class Exact {}
-  public abstract class Inexact {}
-  public abstract class Real {}
+  public static final class ExactNonNegativeInteger {}
+  public static final class ExactInteger {}
+  public static final class ExactPositiveInteger {}
+  public static final class InexactReal {}
+  public static final class Positive {}
+  public static final class Negative {}
+  public static final class NonNegative {}
+  public static final class Exact {}
+  public static final class Inexact {}
+  public static final class Real {}
+  public static final class BitOp {}
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
@@ -156,6 +157,7 @@ public enum SCMClass implements ISCMClass {
     TYPE_PREDICATES.put(Negative.class, NumberUtils::isNegative);
     TYPE_PREDICATES.put(NonNegative.class, NumberUtils::isNonNegative);
     TYPE_PREDICATES.put(Real.class, NumberUtils::isReal);
+    TYPE_PREDICATES.put(BitOp.class, NumberUtils::isBitOpSupported);
   }
 
   private final String name;
