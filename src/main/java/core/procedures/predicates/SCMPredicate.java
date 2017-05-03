@@ -55,7 +55,9 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_COMPLEX = new SCMPredicate("complex?", o -> (o instanceof Number));
   public static final SCMPredicate IS_ZERO = new SCMPredicate("zero?", o -> (assertClass("zero?", o, Number.class) && NumberUtils.isZero(o)));
   public static final SCMPredicate IS_POSITIVE = new SCMPredicate("positive?", o -> (assertClass("positive?", o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
+  public static final SCMPredicate IS_POS = new SCMPredicate("pos?", o -> (assertClass("pos?", o, SCMClass.Real.class) && NumberUtils.isPositive(o)));
   public static final SCMPredicate IS_NEGATIVE = new SCMPredicate("negative?", o -> (assertClass("negative?", o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
+  public static final SCMPredicate IS_NEG = new SCMPredicate("neg?", o -> (assertClass("neg?", o, SCMClass.Real.class) && NumberUtils.isNegative(o)));
   public static final SCMPredicate IS_EXACT = new SCMPredicate("exact?", o -> (assertClass("exact?", o, Number.class) && NumberUtils.isExact(o)));
   public static final SCMPredicate IS_INEXACT = new SCMPredicate("inexact?", o -> (assertClass("inexact?", o, Number.class) && NumberUtils.isInexact(o)));
   public static final SCMPredicate IS_IMMUTABLE = new SCMPredicate("immutable?", SCMPredicate::isImmutable);
