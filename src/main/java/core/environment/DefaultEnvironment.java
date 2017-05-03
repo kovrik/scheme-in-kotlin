@@ -548,6 +548,7 @@ public final class DefaultEnvironment extends Environment {
       SCMPredicate.IS_CLASS,
       SCMPredicate.IS_DECIMAL,
       SCMPredicate.IS_FLOAT,
+      SCMPredicate.IS_FN,
       };
 
   private static final ISpecialForm[] SPECIAL_FORMS = new ISpecialForm[] {

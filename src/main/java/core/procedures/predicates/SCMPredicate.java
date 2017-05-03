@@ -68,6 +68,7 @@ public final class SCMPredicate extends AFn {
   public static final SCMPredicate IS_CLASS = new SCMPredicate("class?", o -> o instanceof Class);
   public static final SCMPredicate IS_DECIMAL = new SCMPredicate("decimal?", o -> o instanceof BigDecimal);
   public static final SCMPredicate IS_FLOAT = new SCMPredicate("float?", o -> o instanceof Float || o instanceof Double);
+  public static final SCMPredicate IS_FN = new SCMPredicate("fn?", SCMPredicate::isProcedure);
 
   private final String name;
   private final Predicate<Object> predicate;
