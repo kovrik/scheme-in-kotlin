@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public final class Quotient extends AFn {
+public class Quotient extends AFn {
 
   public Quotient() {
     super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));

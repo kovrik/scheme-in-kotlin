@@ -283,6 +283,7 @@ public final class DefaultEnvironment extends Environment {
       new Modulo() { @Override public String getName() { return "mod"; } },
       new Remainder(),
       new Quotient(),
+      new Quotient() { @Override public String getName() { return "quot"; } },
       new Round(),
       new Floor(),
       new Ceiling(),
