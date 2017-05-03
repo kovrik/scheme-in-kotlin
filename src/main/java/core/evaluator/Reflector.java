@@ -100,9 +100,13 @@ public class Reflector {
   }
 
   private Object upcastIfPossible(Object value) {
-    if (value instanceof Integer || value instanceof Short || value instanceof Byte) {
+    if (value == null) {
+      return null;
+    }
+    Class<?> clazz = value.getClass();
+    if (clazz == Integer.class || clazz == Short.class || clazz == Byte.class) {
       return ((Number)value).longValue();
-    } else if (value instanceof Float) {
+    } else if (clazz == Float.class) {
       return ((Number)value).doubleValue();
     }
     return value;
@@ -117,7 +121,7 @@ public class Reflector {
   }
 
   // TODO java.math.BigDecimal and other non-java.lang.* classes
-  protected Class _getClass(String name) {
+  Class _getClass(String name) {
     if (name.indexOf('.') == -1) {
       name = "java.lang." + name;
     }
@@ -190,9 +194,9 @@ public class Reflector {
   /* Java Interop: instance method call */
   private Object evalJavaInstanceMethod(String m, Object instance, Object[] args) {
     String methodName = m.substring(1);
-    Class<?> clazz;
+    Class<?> clazz = instance.getClass();
     boolean isClass = false;
-    if (instance instanceof SCMSymbol) {
+    if (clazz == SCMSymbol.class) {
       clazz = getClazz(instance.toString());
       isClass = true;
     } else {
@@ -214,9 +218,9 @@ public class Reflector {
 
   /* Java Interop: instance field */
   private Object evalJavaInstanceField(String f, Object instance) {
-    Class<?> clazz;
+    Class<?> clazz = instance.getClass();
     boolean isClass = false;
-    if (instance instanceof SCMSymbol) {
+    if (clazz == SCMSymbol.class) {
       clazz = getClazz(instance.toString());
       isClass = true;
     } else {

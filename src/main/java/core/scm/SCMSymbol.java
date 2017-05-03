@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * will reference to the same symbol object.
  */
-public class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
+public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
 
   /* Pool of all interned symbols */
   private static final InternPool<SCMSymbol> POOL = new InternPool<>();
