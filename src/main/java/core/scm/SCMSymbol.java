@@ -71,10 +71,6 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
         return true;
       }
     }
-    /* dot is not a special char anymore, it is a Special Form for Java interop */
-//    if (name.length() == 1 && name.charAt(0) == '.') {
-//      return true;
-//    }
     for (char c : name.toCharArray()) {
       if (Character.isWhitespace(c) || SPECIAL_CHARS.indexOf(c) > -1) {
         return true;
