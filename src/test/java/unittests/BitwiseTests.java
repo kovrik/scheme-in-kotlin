@@ -6,7 +6,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
 
-public class BitTest extends AbstractTest {
+public class BitwiseTests extends AbstractTest {
 
   @Test
   public void testBitAnd() {
