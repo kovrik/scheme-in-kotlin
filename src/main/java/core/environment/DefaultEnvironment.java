@@ -47,6 +47,7 @@ import core.procedures.generic.First;
 import core.procedures.generic.Get;
 import core.procedures.generic.Next;
 import core.procedures.generic.Nth;
+import core.procedures.generic.RandNth;
 import core.procedures.generic.Range;
 import core.procedures.generic.Reverse;
 import core.procedures.generic.Sort;
@@ -477,6 +478,7 @@ public final class DefaultEnvironment extends Environment {
       new First(),
       new Next(),
       new Next() { @Override public String getName() { return "rest"; } },
+      new RandNth(),
 
       /* Keywords */
       new Keyword(),
