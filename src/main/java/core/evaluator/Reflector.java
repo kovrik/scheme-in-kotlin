@@ -27,6 +27,13 @@ public class Reflector {
     UNBOXED.put(Boolean.class,   boolean.class);
   }
 
+  /* Some common classes that are not in java.lang. package could be resolved without package name */
+  private static final Map<String, String> CLASS_PACKAGE_MAPPING = new HashMap<>();
+  static {
+    CLASS_PACKAGE_MAPPING.put("BigInteger", "java.math.BigInteger");
+    CLASS_PACKAGE_MAPPING.put("BigDecimal", "java.math.BigDecimal");
+  }
+
   private static final Map<Class, Class> BOXED = new HashMap<>();
   static {
     for (Map.Entry<Class, Class> entry : UNBOXED.entrySet()) {
@@ -120,10 +127,9 @@ public class Reflector {
     return clazz;
   }
 
-  // TODO java.math.BigDecimal and other non-java.lang.* classes
   Class _getClass(String name) {
     if (name.indexOf('.') == -1) {
-      name = "java.lang." + name;
+      name = CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang." + name);
     }
     try {
       return Class.forName(name);

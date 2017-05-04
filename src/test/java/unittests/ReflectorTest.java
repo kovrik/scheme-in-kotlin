@@ -3,6 +3,7 @@ package unittests;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +24,8 @@ public class ReflectorTest extends AbstractTest {
   @Test
   public void testEvalStaticFields() {
     assertEquals(BigDecimal.ONE, eval("java.math.BigDecimal/ONE", env));
+    assertEquals(BigDecimal.ONE, eval("BigDecimal/ONE", env));
+    assertEquals(BigInteger.ONE, eval("BigInteger/ONE", env));
     assertEquals(Math.PI, eval("Math/PI", env));
     assertEquals(Math.PI, eval("(. java.lang.Math PI)", env));
     // TODO
