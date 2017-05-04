@@ -10,10 +10,12 @@ import static core.writer.Writer.write;
 public class Cons<E> extends LinkedList<E> implements ICons, ITyped {
 
   /* Empty list constant */
-  public static final Cons EMPTY = new Cons() {
+  public static final Cons EMPTY = new EmptyCons();
+
+  private static class EmptyCons<E> extends Cons<E> {
     @Override public boolean isList() { return true; }
     @Override public Type getType() { return Type.LIST; }
-  };
+  }
 
   private boolean isList;
 
