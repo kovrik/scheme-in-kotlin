@@ -61,7 +61,7 @@ public class HashmapTest extends AbstractTest {
   public void testHashmapKeysValues() {
     assertEquals(SCMCons.list(1L, 2L, 3L), eval("(keys {1 + 2 - 3 /})", env));
     assertEquals(SCMCons.EMPTY, eval("(keys {})", env));
-    assertEquals(SCMCons.list(1L, 2L, 3L), eval("(vals (zipmap '[+ - /] '(1 2 3)))", env));
+    assertEquals(6L, eval("(apply + (vals (zipmap '[+ - /] '(1 2 3))))", env));
     assertEquals(SCMCons.EMPTY, eval("(vals {})", env));
     assertEquals(new HashMap<>(), eval("(zipmap [] '())", env));
   }
