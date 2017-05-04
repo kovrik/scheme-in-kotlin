@@ -97,6 +97,27 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return new SCMCons<>();
   }
 
+  public static <E> SCMCons<E> list(E e) {
+    SCMCons<E> list = new SCMCons<>();
+    list.add(e);
+    return list;
+  }
+
+  public static <E> SCMCons<E> list(E e1, E e2) {
+    SCMCons<E> list = new SCMCons<>();
+    list.add(e1);
+    list.add(e2);
+    return list;
+  }
+
+  public static <E> SCMCons<E> list(E e1, E e2, E e3) {
+    SCMCons<E> list = new SCMCons<>();
+    list.add(e1);
+    list.add(e2);
+    list.add(e3);
+    return list;
+  }
+
   public static <E> SCMCons<E> list(E... elements) {
     return (elements == null || elements.length == 0) ? EMPTY : list(Arrays.asList(elements));
   }
