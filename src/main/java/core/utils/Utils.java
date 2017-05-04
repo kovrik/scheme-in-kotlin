@@ -317,19 +317,20 @@ public final class Utils {
   }
 
   public static BigDecimal toBigDecimal(Number number) {
-    if (number instanceof BigDecimal) {
+    Class clazz = number.getClass();
+    if (clazz == BigDecimal.class) {
       return (BigDecimal)number;
     }
-    if (number instanceof Long) {
+    if (clazz == Long.class) {
       return BigDecimal.valueOf((Long)number);
     }
-    if (number instanceof Double) {
+    if (clazz == Double.class) {
       return BigDecimal.valueOf((Double)number);
     }
-    if (number instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational) number).toBigDecimal();
     }
-    if (number instanceof BigComplex) {
+    if (clazz == BigComplex.class) {
       throw new UnsupportedOperationException("undefined for complex!");
     }
     return new BigDecimal(number.toString());
@@ -339,30 +340,32 @@ public final class Utils {
     if (!(o instanceof Number)) {
       return false;
     }
-    if (o instanceof BigComplex) {
+    Class clazz = o.getClass();
+    if (clazz == BigComplex.class) {
       return false;
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return !Double.isInfinite((Double) o) && !Double.isNaN((Double) o);
-    } else if (o instanceof Float) {
+    } else if (clazz == Float.class) {
       return !Float.isInfinite((Float) o) && !Float.isNaN((Float) o);
     }
     return true;
   }
 
   public static boolean isExact(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long || o instanceof BigRational || o instanceof Integer ||
-        o instanceof BigInteger || o instanceof Short || o instanceof Byte) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class || clazz == BigRational.class || clazz == Integer.class ||
+        clazz == BigInteger.class || clazz == Short.class || clazz == Byte.class) {
 
       return true;
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).scale() == 0;
     }
-    if (o instanceof BigComplex) {
+    if (clazz == BigComplex.class) {
       return isExact(((BigComplex) o).getRe()) && isExact(((BigComplex) o).getIm());
     }
     return false;
@@ -373,20 +376,21 @@ public final class Utils {
   }
 
   public static boolean isInteger(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long || o instanceof Integer || o instanceof BigInteger || o instanceof Short || o instanceof Byte) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class || clazz == Integer.class || clazz == BigInteger.class || clazz == Short.class || clazz == Byte.class) {
       return true;
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       BigDecimal bd = (BigDecimal)o;
       return bd.signum() == 0 || bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0;
     }
-    if (o instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational)o).isDenominatorEqualToOne();
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return (Double)o == Math.floor((Double)o) && !Double.isInfinite((Double)o);
     }
     return false;
@@ -397,136 +401,140 @@ public final class Utils {
   }
 
   public static boolean isZero(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class) {
       return Long.signum((Long)o) == 0;
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return Math.signum((Double)o) == 0.0;
     }
-    if (o instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational)o).signum() == 0;
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == 0;
     }
-    if (o instanceof Integer) {
+    if (clazz == Integer.class) {
       return Integer.signum((Integer)o) == 0;
     }
-    if (o instanceof Short) {
+    if (clazz == Short.class) {
       return Integer.signum((Short)o) == 0;
     }
-    if (o instanceof Byte) {
+    if (clazz == Byte.class) {
       return Integer.signum((Byte)o) == 0;
     }
-    if (o instanceof Float) {
+    if (clazz == Float.class) {
       return Math.signum((Float)o) == 0;
     }
-    if (o instanceof BigInteger) {
+    if (clazz == BigInteger.class) {
       return ((BigInteger)o).signum() == 0;
     }
     return false;
   }
 
   public static boolean isOne(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class) {
       return ((Long)o) == 1;
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return Double.compare((Double)o, 1d) == 0;
     }
-    if (o instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational)o).isOne();
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).compareTo(BigDecimal.ONE) == 0;
     }
-    if (o instanceof Integer) {
+    if (clazz == Integer.class) {
       return ((Integer)o) == 1;
     }
-    if (o instanceof Short) {
+    if (clazz == Short.class) {
       return (Short)o == 1;
     }
-    if (o instanceof Byte) {
+    if (clazz == Byte.class) {
       return (Byte)o == 1;
     }
-    if (o instanceof Float) {
+    if (clazz == Float.class) {
       return Float.floatToRawIntBits((Float)o) == 1;
     }
-    if (o instanceof BigInteger) {
+    if (clazz == BigInteger.class) {
       return ((BigInteger)o).compareTo(BigInteger.ONE) == 0;
     }
     return false;
   }
 
   public static boolean isPositive(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class) {
       return Long.signum((Long)o) == 1;
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return Math.signum((Double)o) == 1.0;
     }
-    if (o instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational)o).signum() == 1;
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == 1;
     }
-    if (o instanceof Integer) {
+    if (clazz == Integer.class) {
       return Integer.signum((Integer)o) == 1;
     }
-    if (o instanceof Short) {
+    if (clazz == Short.class) {
       return Integer.signum((Short)o) == 1;
     }
-    if (o instanceof Byte) {
+    if (clazz == Byte.class) {
       return Integer.signum((Byte)o) == 1;
     }
-    if (o instanceof Float) {
+    if (clazz == Float.class) {
       return Math.signum((Float)o) == 1;
     }
-    if (o instanceof BigInteger) {
+    if (clazz == BigInteger.class) {
       return ((BigInteger)o).signum() == 1;
     }
     return false;
   }
 
   public static boolean isNegative(Object o) {
-    if (!(o instanceof Number)) {
+    if (o == null) {
       return false;
     }
-    if (o instanceof Long) {
+    Class clazz = o.getClass();
+    if (clazz == Long.class) {
       return Long.signum((Long)o) == -1;
     }
-    if (o instanceof Double) {
+    if (clazz == Double.class) {
       return Math.signum((Double)o) == -1.0;
     }
-    if (o instanceof BigRational) {
+    if (clazz == BigRational.class) {
       return ((BigRational)o).signum() == -1;
     }
-    if (o instanceof BigDecimal) {
+    if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == -1;
     }
-    if (o instanceof Integer) {
+    if (clazz == Integer.class) {
       return Integer.signum((Integer)o) == -1;
     }
-    if (o instanceof Short) {
+    if (clazz == Short.class) {
       return Integer.signum((Short)o) == -1;
     }
-    if (o instanceof Byte) {
+    if (clazz == Byte.class) {
       return Integer.signum((Byte)o) == -1;
     }
-    if (o instanceof Float) {
+    if (clazz == Float.class) {
       return Math.signum((Float)o) == -1;
     }
-    if (o instanceof BigInteger) {
+    if (clazz == BigInteger.class) {
       return ((BigInteger)o).signum() == -1;
     }
     return false;
@@ -607,24 +615,31 @@ public final class Utils {
   }
 
   public static boolean isFinite(Number number) {
-    if (number instanceof Double) {
+    if (number == null) {
+      return true;
+    }
+    if (number.getClass() == Double.class) {
       return Double.isFinite((Double) number);
     }
-    if (number instanceof Float) {
+    if (number.getClass() == Float.class) {
       return Float.isFinite((Float) number);
     }
     return true;
   }
 
   public static boolean isNaN(Number number) {
-    return number instanceof Double && Double.isNaN((Double) number);
+    return number != null && number.getClass() == Double.class && Double.isNaN((Double) number);
   }
 
   /* Upcast number if required */
   public static Number upcast(Number number) {
-    if ((number instanceof Byte) || (number instanceof Short) || (number instanceof Integer)) {
+    if (number == null) {
+      return number;
+    }
+    Class clazz = number.getClass();
+    if ((clazz == Byte.class) || (clazz == Short.class) || (clazz == Integer.class)) {
       return number.longValue();
-    } else if (number instanceof Float) {
+    } else if (clazz == Float.class) {
       return number.doubleValue();
     }
     return number;
