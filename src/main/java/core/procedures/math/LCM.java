@@ -105,6 +105,12 @@ public final class LCM extends AFn {
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return lcm((BigInteger)first, (BigInteger)second);
     }
+    if (first instanceof BigInteger) {
+      return lcm((BigInteger)first, Utils.toBigInteger(second));
+    }
+    if (second instanceof BigInteger) {
+      return lcm(Utils.toBigInteger(first), (BigInteger)second);
+    }
     return lcm(first.doubleValue(), second.doubleValue());
   }
 }

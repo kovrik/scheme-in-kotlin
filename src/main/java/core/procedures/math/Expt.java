@@ -186,19 +186,6 @@ public final class Expt extends AFn {
         }
       }
     }
-    /* BigDecimals */
-    if (base instanceof BigDecimal && Utils.isInteger(exponent)) {
-      if (Utils.isInteger(base)) {
-        if (exponent instanceof BigDecimal) {
-          try {
-            return ((BigDecimal) base).pow(((BigDecimal) exponent).intValueExact());
-          } catch (ArithmeticException e) {
-            return exptBig((BigDecimal) base, (BigDecimal) exponent);
-          }
-        }
-      }
-      return exptBig((BigDecimal) base, Utils.toBigDecimal(exponent));
-    }
     /* BigIntegers */
     if (base instanceof BigInteger && Utils.isInteger(exponent)) {
       if (Utils.isInteger(base)) {
@@ -210,7 +197,20 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBig(Utils.toBigDecimal(base), Utils.toBigDecimal(exponent));
+      return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent));
+    }
+    /* BigDecimals */
+    if (base instanceof BigDecimal && Utils.isInteger(exponent)) {
+      if (Utils.isInteger(base)) {
+        if (exponent instanceof BigDecimal) {
+          try {
+            return ((BigDecimal) base).pow(((BigDecimal) exponent).intValueExact());
+          } catch (ArithmeticException e) {
+            return exptBigDec((BigDecimal) base, (BigDecimal) exponent);
+          }
+        }
+      }
+      return exptBigDec((BigDecimal) base, Utils.toBigDecimal(exponent));
     }
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());
@@ -223,7 +223,17 @@ public final class Expt extends AFn {
     return result;
   }
 
-  private static Number exptBig(BigDecimal n, BigDecimal e) {
+  private static Number exptBigInt(BigInteger n, BigInteger e) {
+    try {
+      int i = e.intValueExact();
+      return n.pow(i);
+    } catch (ArithmeticException ex) {
+      // FIXME NEGATIVE_INFINITY and zero in some cases?
+      return Double.POSITIVE_INFINITY;
+    }
+  }
+
+  private static Number exptBigDec(BigDecimal n, BigDecimal e) {
     try {
       int i = e.intValueExact();
       return n.pow(i);

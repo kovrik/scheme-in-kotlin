@@ -336,6 +336,20 @@ public final class Utils {
     return new BigDecimal(number.toString());
   }
 
+  public static BigInteger toBigInteger(Number number) {
+    Class clazz = number.getClass();
+    if (clazz == BigInteger.class) {
+      return (BigInteger)number;
+    }
+    if (clazz == Long.class) {
+      return BigInteger.valueOf((Long)number);
+    }
+    if (clazz == BigComplex.class) {
+      throw new UnsupportedOperationException("undefined for complex!");
+    }
+    return new BigInteger(number.toString());
+  }
+
   public static boolean isRational(Object o) {
     if (!(o instanceof Number)) {
       return false;
@@ -571,6 +585,9 @@ public final class Utils {
     if (number instanceof BigDecimal) {
       return tryToDowncast((BigDecimal) number);
     }
+    if (number instanceof BigInteger) {
+      return tryToDowncast((BigInteger) number);
+    }
     /* Try to downcast Rationals with denominator = 1 */
     if ((number instanceof BigRational) && (((BigRational) number).isDenominatorEqualToOne())) {
       return tryToDowncast((BigRational) number);
@@ -587,6 +604,30 @@ public final class Utils {
     int d = number.precision() - number.scale();
     if (d <= 0 || d > 19) {
       return number;
+    }
+    if (isInteger(number)) {
+      try {
+        long smaller = number.longValueExact();
+        if (isInexact(number)) {
+          return (double)smaller;
+        }
+        return smaller;
+      } catch (ArithmeticException e) {
+        /* Down-casting has failed, ignore and return the original number */
+        // return number.toBigInteger();
+      }
+    }
+    return number;
+  }
+
+  /**
+   * Tries to downcast big number to a smaller type (if possible)
+   **/
+  private static Number tryToDowncast(BigInteger number) {
+    /* Same checks are performed in longValueExact() method,
+     * but we don't want exception to be thrown, just return the number */
+    if (number.bitLength() <= 63) {
+      return number.longValue();
     }
     if (isInteger(number)) {
       try {

@@ -110,6 +110,12 @@ public final class GCD extends AFn {
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return gcd((BigInteger) first, (BigInteger) second);
     }
+    if (first instanceof BigInteger) {
+      return gcd((BigInteger) first, Utils.toBigInteger(second));
+    }
+    if (second instanceof BigInteger) {
+      return gcd(Utils.toBigInteger(first), (BigInteger) second);
+    }
     return gcd(first.doubleValue(), second.doubleValue());
   }
 }

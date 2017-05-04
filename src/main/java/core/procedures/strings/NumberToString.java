@@ -6,6 +6,7 @@ import core.scm.Type;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public final class NumberToString extends AFn {
 
@@ -48,6 +49,17 @@ public final class NumberToString extends AFn {
       /* Check if it is integral */
       if (Utils.isInteger(bigDecimal)) {
         return bigDecimal.toBigInteger().toString(radix);
+      }
+      throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
+    }
+    if (o instanceof BigInteger) {
+      BigInteger bigInteger = (BigInteger) o;
+      if (radix == 10) {
+        return bigInteger.toString();
+      }
+      /* Check if it is integral */
+      if (Utils.isInteger(bigInteger)) {
+        return bigInteger.toString(radix);
       }
       throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
     }
