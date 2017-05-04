@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 public final class NumberToString extends AFn {
 
   public NumberToString() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{Number.class})
-                             .restArgsType(SCMClass.ExactPositiveInteger.class));
+    super(new FnArgsBuilder().min(1).max(2)
+                             .mandatory(new Class[]{Number.class})
+                             .rest(SCMClass.ExactPositiveInteger.class).build());
   }
 
   @Override

@@ -15,7 +15,7 @@ public class SCMKeyword extends AFn implements ISCMClass, INamed {
   private final String name;
 
   private SCMKeyword(String name) {
-    super(new FnArgsBuilder().mandatoryArgsTypes(new Class[]{Map.class}));
+    super(new FnArgsBuilder().mandatory(new Class[]{Map.class}).build());
     this.name = name;
   }
 

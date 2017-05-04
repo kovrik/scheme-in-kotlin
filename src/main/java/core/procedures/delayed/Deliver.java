@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 public final class Deliver extends AFn {
 
   public Deliver() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{CompletableFuture.class, Object.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{CompletableFuture.class, Object.class}).build());
   }
 
   @Override

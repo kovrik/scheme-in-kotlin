@@ -9,7 +9,7 @@ import static core.scm.SCMCons.EMPTY;
 public class Eq extends AFn {
 
   public Eq() {
-    super(new FnArgsBuilder().minArgs(2));
+    super(new FnArgsBuilder().min(2).build());
   }
 
   @Override

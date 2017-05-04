@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 public final class StringAppend extends AFn {
 
   public StringAppend() {
-    super(new FnArgsBuilder().restArgsType(CharSequence.class));
+    super(new FnArgsBuilder().rest(CharSequence.class).build());
   }
 
   @Override

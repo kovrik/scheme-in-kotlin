@@ -10,7 +10,7 @@ public class SCMMapEntry extends AFn implements IMapEntry, ISCMClass {
   private final Object val;
 
   public SCMMapEntry(Object key, Object val) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
     this.key = key;
     this.val = val;
   }

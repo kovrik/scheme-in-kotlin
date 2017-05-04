@@ -9,7 +9,7 @@ import java.util.Set;
 public final class Difference extends AFn {
 
   public Difference() {
-    super(new FnArgsBuilder().minArgs(1).mandatoryArgsTypes(new Class[]{Set.class}).restArgsType(Set.class));
+    super(new FnArgsBuilder().min(1).mandatory(new Class[]{Set.class}).rest(Set.class).build());
   }
 
   @Override

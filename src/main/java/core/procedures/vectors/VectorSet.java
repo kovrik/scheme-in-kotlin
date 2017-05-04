@@ -9,8 +9,8 @@ import core.scm.SCMVoid;
 public final class VectorSet extends AFn {
 
   public VectorSet() {
-    super(new FnArgsBuilder().minArgs(3).maxArgs(3)
-                             .mandatoryArgsTypes(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(3).max(3)
+                             .mandatory(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

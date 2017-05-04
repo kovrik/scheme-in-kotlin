@@ -12,7 +12,7 @@ import java.util.Map;
 public final class Put extends AFn {
 
   public Put() {
-    super(new FnArgsBuilder().minArgs(3).mandatoryArgsTypes(new Class[]{Object.class, Object.class, Object.class}));
+    super(new FnArgsBuilder().min(3).mandatory(new Class[]{Object.class, Object.class, Object.class}).build());
   }
 
   @Override

@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 public class IsInstance extends AFn {
 
   public IsInstance() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Class.class, Object.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Class.class, Object.class}).build());
   }
 
   @Override

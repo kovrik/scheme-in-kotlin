@@ -15,7 +15,7 @@ public final class ToExact extends AFn {
   private static final String NAME = "inexact->exact";
 
   public ToExact() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Number.class}).build());
   }
 
   @Override

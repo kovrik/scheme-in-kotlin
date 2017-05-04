@@ -10,7 +10,7 @@ import java.util.Arrays;
 public final class VectorFill extends AFn {
 
   public VectorFill() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMMutableVector.class, Object.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{SCMMutableVector.class, Object.class}).build());
   }
 
   @Override

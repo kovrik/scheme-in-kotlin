@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 public final class BitTest extends AFn {
 
   public BitTest() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[] {SCMClass.BitOp.class, Long.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[] {SCMClass.BitOp.class, Long.class}).build());
   }
 
   @Override

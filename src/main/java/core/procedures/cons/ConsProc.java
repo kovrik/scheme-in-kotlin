@@ -7,7 +7,7 @@ import core.scm.SCMCons;
 public final class ConsProc extends AFn {
 
   public ConsProc() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2));
+    super(new FnArgsBuilder().min(2).max(2).build());
   }
 
   @Override

@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public class Quotient extends AFn {
 
   public Quotient() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Long.class, Long.class}).build());
   }
 
   @Override

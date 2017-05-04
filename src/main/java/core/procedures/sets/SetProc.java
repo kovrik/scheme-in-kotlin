@@ -13,7 +13,7 @@ import java.util.Set;
 public final class SetProc extends AFn {
 
   public SetProc() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

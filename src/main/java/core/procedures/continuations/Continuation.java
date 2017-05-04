@@ -10,7 +10,7 @@ import core.scm.SCMClass;
 public final class Continuation extends AFn {
 
   public Continuation() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   private boolean invoked = false;

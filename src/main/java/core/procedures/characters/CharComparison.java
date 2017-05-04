@@ -27,9 +27,9 @@ public final class CharComparison extends AFn {
   private final BiPredicate<Character, Character> predicate;
 
   private CharComparison(String name, BiPredicate<Character, Character> predicate) {
-    super(new FnArgsBuilder().minArgs(2)
-                             .mandatoryArgsTypes(new Class[]{Character.class, Character.class})
-                             .restArgsType(Character.class));
+    super(new FnArgsBuilder().min(2)
+                             .mandatory(new Class[]{Character.class, Character.class})
+                             .rest(Character.class).build());
     this.name = name;
     this.predicate = predicate;
   }

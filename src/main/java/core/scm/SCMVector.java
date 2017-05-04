@@ -22,23 +22,23 @@ public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
   private final Object[] array;
 
   SCMVector() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
     this.array = new Object[0];
   }
 
   SCMVector(int size, Object init) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
     this.array = new Object[size];
     Arrays.fill(getArray(), init);
   }
 
   SCMVector(Object... elements) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
     this.array = elements;
   }
 
   SCMVector(Object e) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
     this.array = new Object[] {e};
   }
 

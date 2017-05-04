@@ -7,9 +7,9 @@ import core.scm.SCMClass;
 public final class Substring extends AFn {
 
   public Substring() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(3)
-                             .mandatoryArgsTypes(new Class[]{CharSequence.class, SCMClass.ExactNonNegativeInteger.class})
-                             .restArgsType(SCMClass.ExactNonNegativeInteger.class));
+    super(new FnArgsBuilder().min(2).max(3)
+                             .mandatory(new Class[]{CharSequence.class, SCMClass.ExactNonNegativeInteger.class})
+                             .rest(SCMClass.ExactNonNegativeInteger.class).build());
   }
 
   @Override

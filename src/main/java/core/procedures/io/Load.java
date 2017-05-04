@@ -15,7 +15,7 @@ public final class Load extends AFn {
   private final FileReader reader = new FileReader();
 
   public Load() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{CharSequence.class}).build());
   }
 
   @Override

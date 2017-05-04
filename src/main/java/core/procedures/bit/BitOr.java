@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 public final class BitOr extends AFn {
 
   public BitOr() {
-    super(new FnArgsBuilder().minArgs(2).restArgsType(SCMClass.BitOp.class));
+    super(new FnArgsBuilder().min(2).rest(SCMClass.BitOp.class).build());
   }
 
   @Override

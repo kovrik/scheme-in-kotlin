@@ -7,7 +7,7 @@ import core.scm.SCMMutableString;
 public final class Equal extends AFn {
 
   public Equal() {
-    super(new FnArgsBuilder().minArgs(2));
+    super(new FnArgsBuilder().min(2).build());
   }
 
   @Override

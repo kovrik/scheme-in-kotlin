@@ -14,7 +14,7 @@ public final class Nth extends AFn {
   private final Get get = new Get();
 
   public Nth() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(3));
+    super(new FnArgsBuilder().min(2).max(3).build());
   }
 
   @Override

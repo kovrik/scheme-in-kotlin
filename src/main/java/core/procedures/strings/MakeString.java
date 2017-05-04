@@ -8,9 +8,9 @@ import core.scm.SCMMutableString;
 public final class MakeString extends AFn {
 
   public MakeString() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class})
-                             .restArgsType(Character.class));
+    super(new FnArgsBuilder().min(1).max(2)
+                             .mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class})
+                             .rest(Character.class).build());
   }
 
   @Override

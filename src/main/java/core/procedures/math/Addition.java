@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public final class Addition extends AFn {
 
   public Addition() {
-    super(new FnArgsBuilder().restArgsType(Number.class));
+    super(new FnArgsBuilder().rest(Number.class).build());
   }
 
   @Override

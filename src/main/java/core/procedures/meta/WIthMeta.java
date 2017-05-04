@@ -11,7 +11,7 @@ import java.util.Map;
 public final class WIthMeta extends AFn {
 
   public WIthMeta() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[] {IMeta.class, Map.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[] {IMeta.class, Map.class}).build());
   }
 
   @Override

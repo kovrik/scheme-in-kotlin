@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 public class Identical extends AFn {
 
   public Identical() {
-    super(new FnArgsBuilder().minArgs(2));
+    super(new FnArgsBuilder().min(2).build());
   }
 
   @Override

@@ -9,7 +9,7 @@ import java.util.Map;
 public class ExInfo extends AFn {
 
   public ExInfo() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(3).mandatoryArgsTypes(new Class[]{String.class, Map.class}).restArgsType(Throwable.class));
+    super(new FnArgsBuilder().min(2).max(3).mandatory(new Class[]{String.class, Map.class}).rest(Throwable.class).build());
   }
 
   @Override

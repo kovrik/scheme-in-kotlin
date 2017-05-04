@@ -12,8 +12,8 @@ import java.math.BigInteger;
 public final class Min extends AFn {
 
   public Min() {
-    super(new FnArgsBuilder().minArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class})
-                                        .restArgsType(SCMClass.Real.class));
+    super(new FnArgsBuilder().min(1).mandatory(new Class[]{SCMClass.Real.class})
+                             .rest(SCMClass.Real.class).build());
   }
 
   @Override

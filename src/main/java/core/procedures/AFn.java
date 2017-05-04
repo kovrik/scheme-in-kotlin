@@ -22,20 +22,16 @@ public abstract class AFn implements IFn<Object[], Object> {
     lastArgType = null;
   }
 
-  protected AFn(FnArgsBuilder fnArgsBuilder) {
-    this.minArgs = fnArgsBuilder.getMinArgs();
-    this.maxArgs = fnArgsBuilder.getMaxArgs();
-    this.mandatoryArgsTypes = fnArgsBuilder.getMandatoryArgsTypes();
-    this.restArgsType = fnArgsBuilder.getRestArgsType();
-    this.lastArgType = fnArgsBuilder.getLastArgType();
+  protected AFn(FnArgs fnArgs) {
+    this.minArgs = fnArgs.min();
+    this.maxArgs = fnArgs.max();
+    this.mandatoryArgsTypes = fnArgs.mandatory();
+    this.restArgsType = fnArgs.rest();
+    this.lastArgType = fnArgs.last();
   }
 
-  public int minArgs() {
+  protected int minArgs() {
     return minArgs;
-  }
-
-  public int maxArgs() {
-    return maxArgs;
   }
 
   /* Return true if function is pure (referentially transparent) */
@@ -134,7 +130,7 @@ public abstract class AFn implements IFn<Object[], Object> {
   public final Object applyN(Object[] args) {
     /* Check args */
     checkArgs(args);
-    /* if minArgs == maxArgs, then function is not variadic, hence get arity */
+    /* if min == max, then function is not variadic, hence get arity */
     int arity = (minArgs == maxArgs) ? minArgs : -1;
     switch (arity) {
       case 0:  return apply0();

@@ -9,9 +9,9 @@ import core.scm.SCMVoid;
 public final class StringSet extends AFn {
 
   public StringSet() {
-    super(new FnArgsBuilder().minArgs(3).maxArgs(3).mandatoryArgsTypes(new Class[]{SCMMutableString.class,
-                                                                                   SCMClass.ExactNonNegativeInteger.class,
-                                                                                   Character.class}));
+    super(new FnArgsBuilder().min(3).max(3).mandatory(new Class[]{SCMMutableString.class,
+                                                                  SCMClass.ExactNonNegativeInteger.class,
+                                                                  Character.class}).build());
   }
 
   @Override

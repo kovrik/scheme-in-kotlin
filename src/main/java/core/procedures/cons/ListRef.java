@@ -10,8 +10,8 @@ import java.util.List;
 public final class ListRef extends AFn {
 
   public ListRef() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(2).max(2)
+                             .mandatory(new Class[]{SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

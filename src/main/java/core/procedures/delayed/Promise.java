@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 public final class Promise extends AFn {
 
   public Promise() {
-    super(new FnArgsBuilder().maxArgs(0));
+    super(new FnArgsBuilder().max(0).build());
   }
 
   @Override

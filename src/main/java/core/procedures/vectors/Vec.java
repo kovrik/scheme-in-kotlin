@@ -11,7 +11,7 @@ import java.util.List;
 public final class Vec extends AFn {
 
   public Vec() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

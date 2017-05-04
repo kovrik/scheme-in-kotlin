@@ -9,7 +9,7 @@ import java.util.Map;
 public final class MapInvert extends AFn {
 
   public MapInvert() {
-    super(new FnArgsBuilder().minArgs(1).mandatoryArgsTypes(new Class[] {Map.class}));
+    super(new FnArgsBuilder().min(1).mandatory(new Class[] {Map.class}).build());
   }
 
   @Override

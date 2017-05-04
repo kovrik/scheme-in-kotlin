@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public final class Multiplication extends AFn {
 
   public Multiplication() {
-    super(new FnArgsBuilder().restArgsType(Number.class));
+    super(new FnArgsBuilder().rest(Number.class).build());
   }
 
   @Override

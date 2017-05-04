@@ -9,7 +9,7 @@ import java.util.Map;
 public final class MetaProc extends AFn {
 
   public MetaProc() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[] {IMeta.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[] {IMeta.class}).build());
   }
 
   @Override

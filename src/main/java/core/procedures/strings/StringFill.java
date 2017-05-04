@@ -7,8 +7,8 @@ import core.scm.SCMMutableString;
 public final class StringFill extends AFn {
 
   public StringFill() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{SCMMutableString.class, Character.class}));
+    super(new FnArgsBuilder().min(2).max(2)
+                             .mandatory(new Class[]{SCMMutableString.class, Character.class}).build());
   }
 
   @Override

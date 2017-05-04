@@ -10,7 +10,7 @@ import java.io.IOException;
 public final class CloseInputPort extends AFn {
 
   public CloseInputPort() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMInputPort.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMInputPort.class}).build());
   }
 
   @Override

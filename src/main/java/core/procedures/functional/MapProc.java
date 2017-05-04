@@ -25,7 +25,7 @@ public final class MapProc extends AFn {
   private final Get get = new Get();
 
   public MapProc() {
-    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class}));
+    super(new FnArgsBuilder().min(2).mandatory(new Class[]{IFn.class}).build());
   }
 
   @Override

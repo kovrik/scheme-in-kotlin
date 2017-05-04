@@ -10,7 +10,7 @@ import java.io.IOException;
 public final class ClosePort extends AFn {
 
   public ClosePort() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{ISCMPort.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{ISCMPort.class}).build());
   }
 
   @Override

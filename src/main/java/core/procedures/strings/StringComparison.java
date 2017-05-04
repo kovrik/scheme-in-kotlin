@@ -27,7 +27,7 @@ public final class StringComparison extends AFn {
   private final BiPredicate<String, String> predicate;
 
   private StringComparison(String name, BiPredicate<String, String> predicate) {
-    super(new FnArgsBuilder().restArgsType(CharSequence.class));
+    super(new FnArgsBuilder().rest(CharSequence.class).build());
     this.name = name;
     this.predicate = predicate;
   }

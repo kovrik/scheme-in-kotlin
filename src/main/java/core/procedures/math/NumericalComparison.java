@@ -22,9 +22,9 @@ public final class NumericalComparison extends AFn {
   private final BiPredicate<Comparable<Number>, Number> predicate;
 
   private NumericalComparison(String name, BiPredicate<Comparable<Number>, Number> predicate) {
-    super(new FnArgsBuilder().minArgs(2)
-                             .mandatoryArgsTypes(new Class[]{SCMClass.Real.class, SCMClass.Real.class})
-                             .restArgsType(SCMClass.Real.class));
+    super(new FnArgsBuilder().min(2)
+                             .mandatory(new Class[]{SCMClass.Real.class, SCMClass.Real.class})
+                             .rest(SCMClass.Real.class).build());
     this.name = name;
     this.predicate = predicate;
   }

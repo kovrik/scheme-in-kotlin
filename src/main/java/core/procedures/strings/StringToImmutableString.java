@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 public final class StringToImmutableString extends AFn {
 
   public StringToImmutableString() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{CharSequence.class}).build());
   }
 
   @Override

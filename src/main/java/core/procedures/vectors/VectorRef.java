@@ -8,8 +8,8 @@ import core.scm.SCMMutableVector;
 public final class VectorRef extends AFn {
 
   public VectorRef() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(2).max(2)
+                             .mandatory(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

@@ -9,7 +9,7 @@ import java.util.Map;
 public class ExData extends AFn {
 
   public ExData() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

@@ -2,58 +2,42 @@ package core.procedures;
 
 public class FnArgsBuilder {
 
-  private int minArgs = 0;
+  private int min = 0;
   /* JVM restricts max number of arguments to 255
-   * If maxArgs is more than 255, then we assume that function accepts ANY number of arguments.
-   * If maxArgs is less or equal to 255, then we assume that function accepts exactly up to maxArgs arguments.
+   * If max is more than 255, then we assume that function accepts ANY number of arguments.
+   * If max is less or equal to 255, then we assume that function accepts exactly up to max arguments.
    **/
-  private int maxArgs = Integer.MAX_VALUE;
-  private Class<?>[] mandatoryArgsTypes = new Class[]{};
-  private Class<?> restArgsType = null;
-  private Class<?> lastArgType = null;
+  private int max = Integer.MAX_VALUE;
+  private Class<?>[] mandatory = new Class[]{};
+  private Class<?> rest = null;
+  private Class<?> last = null;
 
-  public int getMinArgs() {
-    return minArgs;
+  public FnArgs build() {
+    return new FnArgs(min, max, mandatory, rest, last);
   }
 
-  public FnArgsBuilder minArgs(int minArgs) {
-    this.minArgs = minArgs;
+  public FnArgsBuilder min(int min) {
+    this.min = min;
     return this;
   }
 
-  public int getMaxArgs() {
-    return maxArgs;
-  }
-
-  public FnArgsBuilder maxArgs(int maxArgs) {
-    this.maxArgs = maxArgs;
+  public FnArgsBuilder max(int max) {
+    this.max = max;
     return this;
   }
 
-  public Class<?>[] getMandatoryArgsTypes() {
-    return mandatoryArgsTypes;
-  }
-
-  public FnArgsBuilder mandatoryArgsTypes(Class<?>[] mandatoryArgsTypes) {
-    this.mandatoryArgsTypes = mandatoryArgsTypes;
+  public FnArgsBuilder mandatory(Class<?>[] mandatoryTypes) {
+    this.mandatory = mandatoryTypes;
     return this;
   }
 
-  public Class<?> getRestArgsType() {
-    return restArgsType;
-  }
-
-  public FnArgsBuilder restArgsType(Class<?> restArgsType) {
-    this.restArgsType = restArgsType;
+  public FnArgsBuilder rest(Class<?> restType) {
+    this.rest = restType;
     return this;
   }
 
-  public Class<?> getLastArgType() {
-    return lastArgType;
-  }
-
-  public FnArgsBuilder lastArgType(Class<?> lastArgType) {
-    this.lastArgType = lastArgType;
+  public FnArgsBuilder last(Class<?> lastType) {
+    this.last = lastType;
     return this;
   }
 }

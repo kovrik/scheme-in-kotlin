@@ -4,14 +4,12 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.SCMBigRational;
 
-import java.math.BigInteger;
-
 import static core.utils.NumberUtils.E;
 
 public final class Exp extends AFn {
 
   public Exp() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Number.class}).build());
   }
 
   @Override

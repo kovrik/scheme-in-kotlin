@@ -8,8 +8,8 @@ import core.scm.SCMCons;
 public final class Append extends AFn {
 
   public Append() {
-    super(new FnArgsBuilder().restArgsType(SCMClass.SCMProperList.class)
-                             .lastArgType(Object.class));
+    super(new FnArgsBuilder().rest(SCMClass.SCMProperList.class)
+                             .last(Object.class).build());
   }
 
   @Override

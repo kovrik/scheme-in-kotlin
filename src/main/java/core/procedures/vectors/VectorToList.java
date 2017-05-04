@@ -9,7 +9,7 @@ import core.scm.SCMVector;
 public final class VectorToList extends AFn {
 
   public VectorToList() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMVector.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMVector.class}).build());
   }
 
   @Override

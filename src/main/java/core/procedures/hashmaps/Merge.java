@@ -10,7 +10,7 @@ import java.util.Map;
 public final class Merge extends AFn {
 
   public Merge() {
-    super(new FnArgsBuilder().minArgs(0).restArgsType(Map.class));
+    super(new FnArgsBuilder().min(0).rest(Map.class).build());
   }
 
   @Override

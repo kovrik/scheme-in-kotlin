@@ -9,7 +9,7 @@ import java.util.Map;
 public final class Keys extends AFn {
 
   public Keys() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Map.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Map.class}).build());
   }
 
   @Override

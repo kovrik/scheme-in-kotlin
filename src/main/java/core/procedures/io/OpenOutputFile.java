@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 public final class OpenOutputFile extends AFn {
 
   public OpenOutputFile() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{CharSequence.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{CharSequence.class}).build());
   }
 
   @Override

@@ -12,7 +12,7 @@ import core.scm.SCMClass;
 public final class MakePolar extends AFn {
 
   public MakePolar() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMClass.Real.class, SCMClass.Real.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{SCMClass.Real.class, SCMClass.Real.class}).build());
   }
 
   @Override

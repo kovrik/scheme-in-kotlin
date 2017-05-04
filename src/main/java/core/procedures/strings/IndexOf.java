@@ -8,7 +8,7 @@ import core.utils.NumberUtils;
 public final class IndexOf extends AFn {
 
   public IndexOf() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(3).mandatoryArgsTypes(new Class[]{CharSequence.class}));
+    super(new FnArgsBuilder().min(2).max(3).mandatory(new Class[]{CharSequence.class}).build());
   }
 
   @Override

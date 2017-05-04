@@ -11,7 +11,7 @@ import java.util.Map;
 public class Count extends AFn {
 
   public Count() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

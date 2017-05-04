@@ -7,7 +7,7 @@ import core.writer.Writer;
 public class ToString extends AFn {
 
   public ToString() {
-    super(new FnArgsBuilder().minArgs(0));
+    super(new FnArgsBuilder().min(0).build());
   }
 
   @Override

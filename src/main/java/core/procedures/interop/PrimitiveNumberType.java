@@ -16,7 +16,7 @@ public final class PrimitiveNumberType extends AFn {
   private final Class clazz;
 
   private PrimitiveNumberType(Class clazz) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Number.class}).build());
     this.name = clazz.getSimpleName();
     this.clazz = clazz;
   }

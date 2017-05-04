@@ -12,7 +12,7 @@ import java.util.Set;
 public final class Get extends AFn {
 
   public Get() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(3));
+    super(new FnArgsBuilder().min(2).max(3).build());
   }
 
   @Override

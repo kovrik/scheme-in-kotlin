@@ -15,7 +15,7 @@ import java.util.List;
 public class Range extends AFn {
 
   public Range() {
-    super(new FnArgsBuilder().minArgs(0).maxArgs(3).restArgsType(SCMClass.Real.class));
+    super(new FnArgsBuilder().min(0).max(3).rest(SCMClass.Real.class).build());
   }
 
   @Override

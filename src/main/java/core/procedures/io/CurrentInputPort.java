@@ -7,7 +7,7 @@ import core.procedures.FnArgsBuilder;
 public final class CurrentInputPort extends AFn {
 
   public CurrentInputPort() {
-    super(new FnArgsBuilder().maxArgs(0));
+    super(new FnArgsBuilder().max(0).build());
   }
 
   @Override

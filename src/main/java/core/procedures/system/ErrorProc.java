@@ -7,7 +7,7 @@ import core.scm.SCMError;
 public final class ErrorProc extends AFn {
 
   public ErrorProc() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

@@ -13,7 +13,7 @@ public final class Remainder extends AFn {
   private static final String NAME = "remainder";
 
   public Remainder() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Long.class, Long.class}).build());
   }
 
   @Override

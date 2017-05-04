@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public final class Numerator extends AFn {
 
   public Numerator() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMBigRational.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMBigRational.class}).build());
   }
 
   @Override

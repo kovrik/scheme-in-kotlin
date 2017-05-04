@@ -17,7 +17,7 @@ public final class MemberProc extends AFn {
   private final AFn predicate;
 
   public MemberProc(String name, AFn predicate) {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class, List.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Object.class, List.class}).build());
     this.name = name;
     this.predicate = predicate;
   }

@@ -8,7 +8,7 @@ import core.scm.SCMClass;
 public final class MakeRectangular extends AFn {
 
   public MakeRectangular() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMClass.Real.class, SCMClass.Real.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{SCMClass.Real.class, SCMClass.Real.class}).build());
   }
 
   @Override

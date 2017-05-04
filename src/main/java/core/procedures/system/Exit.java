@@ -7,7 +7,7 @@ import core.scm.SCMVoid;
 public final class Exit extends AFn {
 
   public Exit() {
-    super(new FnArgsBuilder().maxArgs(1).restArgsType(Long.class));
+    super(new FnArgsBuilder().max(1).rest(Long.class).build());
   }
 
   @Override

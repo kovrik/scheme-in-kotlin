@@ -11,8 +11,8 @@ import java.io.IOException;
 public final class WriteChar extends AFn {
 
   public WriteChar() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{Character.class})
-                                                   .restArgsType(SCMOutputPort.class));
+    super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{Character.class})
+                             .rest(SCMOutputPort.class).build());
   }
 
   @Override

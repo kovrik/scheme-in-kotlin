@@ -7,7 +7,7 @@ import core.scm.SCMVoid;
 public final class Pst extends AFn {
 
   public Pst() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Throwable.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Throwable.class}).build());
   }
 
   @Override

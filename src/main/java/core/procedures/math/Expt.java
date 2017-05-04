@@ -14,7 +14,7 @@ import java.math.BigInteger;
 public final class Expt extends AFn {
 
   public Expt() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Number.class, Number.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Number.class, Number.class}).build());
   }
 
   @Override

@@ -9,7 +9,7 @@ import java.util.Set;
 public final class Union extends AFn {
 
   public Union() {
-    super(new FnArgsBuilder().minArgs(0).restArgsType(Set.class));
+    super(new FnArgsBuilder().min(0).rest(Set.class).build());
   }
 
   @Override

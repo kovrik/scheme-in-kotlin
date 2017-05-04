@@ -10,7 +10,7 @@ import java.util.List;
 public final class Eqv extends AFn {
 
   public Eqv() {
-    super(new FnArgsBuilder().minArgs(2));
+    super(new FnArgsBuilder().min(2).build());
   }
 
   @Override

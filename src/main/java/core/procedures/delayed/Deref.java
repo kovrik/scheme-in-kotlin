@@ -8,7 +8,7 @@ import core.scm.IDeref;
 public final class Deref extends AFn {
 
   public Deref() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
   }
 
   @Override

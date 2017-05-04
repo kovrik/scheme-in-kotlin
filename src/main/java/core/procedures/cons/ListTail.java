@@ -11,8 +11,8 @@ import java.util.List;
 public final class ListTail extends AFn {
 
   public ListTail() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{Object.class, SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(2).max(2)
+                             .mandatory(new Class[]{Object.class, SCMClass.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

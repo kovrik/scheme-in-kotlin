@@ -12,7 +12,7 @@ import java.util.*;
 public final class Conj extends AFn {
 
   public Conj() {
-    super(new FnArgsBuilder().minArgs(1));
+    super(new FnArgsBuilder().min(1).build());
   }
 
   @Override

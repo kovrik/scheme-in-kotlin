@@ -17,7 +17,7 @@ public final class Zipmap extends AFn {
   private final Nth nth = new Nth();
 
   public Zipmap() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2));
+    super(new FnArgsBuilder().min(2).max(2).build());
   }
 
   @Override

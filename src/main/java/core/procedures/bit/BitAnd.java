@@ -7,7 +7,7 @@ import core.scm.SCMClass;
 public final class BitAnd extends AFn {
 
   public BitAnd() {
-    super(new FnArgsBuilder().minArgs(2).restArgsType(SCMClass.BitOp.class));
+    super(new FnArgsBuilder().min(2).rest(SCMClass.BitOp.class).build());
   }
 
   @Override

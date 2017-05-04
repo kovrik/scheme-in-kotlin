@@ -11,9 +11,9 @@ import static core.reader.Reader.isRadix;
 public final class StringToNumber extends AFn {
 
   public StringToNumber() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2)
-                             .mandatoryArgsTypes(new Class[]{CharSequence.class})
-                             .restArgsType(SCMClass.ExactPositiveInteger.class));
+    super(new FnArgsBuilder().min(1).max(2)
+                             .mandatory(new Class[]{CharSequence.class})
+                             .rest(SCMClass.ExactPositiveInteger.class).build());
   }
 
   @Override

@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public final class Division extends AFn {
 
   public Division() {
-    super(new FnArgsBuilder().minArgs(1).restArgsType(Number.class));
+    super(new FnArgsBuilder().min(1).rest(Number.class).build());
   }
 
   @Override

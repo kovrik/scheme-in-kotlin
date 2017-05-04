@@ -12,7 +12,7 @@ public class Modulo extends AFn {
   private static final Remainder REM = new Remainder();
 
   public Modulo() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Long.class, Long.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Long.class, Long.class}).build());
   }
 
   @Override

@@ -15,7 +15,7 @@ public final class GCD extends AFn {
   private static final Abs ABS = new Abs();
 
   public GCD() {
-    super(new FnArgsBuilder().restArgsType(SCMBigRational.class));
+    super(new FnArgsBuilder().rest(SCMBigRational.class).build());
   }
 
   @Override

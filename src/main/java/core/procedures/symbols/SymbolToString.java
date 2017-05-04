@@ -7,7 +7,7 @@ import core.scm.SCMSymbol;
 public final class SymbolToString extends AFn {
 
   public SymbolToString() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMSymbol.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMSymbol.class}).build());
   }
 
   @Override

@@ -11,7 +11,7 @@ import java.io.IOException;
 public final class PeekChar extends AFn {
 
   public PeekChar() {
-    super(new FnArgsBuilder().maxArgs(1).restArgsType(SCMInputPort.class));
+    super(new FnArgsBuilder().max(1).rest(SCMInputPort.class).build());
   }
 
   @Override

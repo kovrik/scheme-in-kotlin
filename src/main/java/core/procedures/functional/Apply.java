@@ -20,7 +20,7 @@ import java.util.Set;
 public final class Apply extends AFn {
 
   public Apply() {
-    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class, Object.class}));
+    super(new FnArgsBuilder().min(2).mandatory(new Class[]{IFn.class, Object.class}).build());
   }
 
   @Override

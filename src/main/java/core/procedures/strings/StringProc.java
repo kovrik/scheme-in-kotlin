@@ -7,7 +7,7 @@ import core.scm.SCMMutableString;
 public final class StringProc extends AFn {
 
   public StringProc() {
-    super(new FnArgsBuilder().restArgsType(Character.class));
+    super(new FnArgsBuilder().rest(Character.class).build());
   }
 
   @Override

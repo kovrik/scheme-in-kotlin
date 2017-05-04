@@ -13,7 +13,7 @@ import java.math.MathContext;
 public final class Round extends AFn {
 
   public Round() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
   }
 
   @Override

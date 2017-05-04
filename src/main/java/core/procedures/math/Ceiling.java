@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public final class Ceiling extends AFn {
 
   public Ceiling() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{SCMClass.Real.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
   }
 
   @Override

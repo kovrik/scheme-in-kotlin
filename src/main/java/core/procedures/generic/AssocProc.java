@@ -21,7 +21,7 @@ public final class AssocProc extends AFn {
   private final AFn predicate;
 
   public AssocProc(String name, AFn predicate) {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{Object.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Object.class}).build());
     this.name = name;
     this.predicate = predicate;
   }

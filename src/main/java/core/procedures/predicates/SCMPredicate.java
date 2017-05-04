@@ -76,7 +76,7 @@ public final class SCMPredicate extends AFn {
   private final Predicate<Object> predicate;
 
   private SCMPredicate(String name, Predicate<Object> predicate) {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1));
+    super(new FnArgsBuilder().min(1).max(1).build());
     this.name = name;
     this.predicate = predicate;
   }

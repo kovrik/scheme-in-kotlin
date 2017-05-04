@@ -9,7 +9,7 @@ import java.util.Map;
 public final class Find extends AFn {
 
   public Find() {
-    super(new FnArgsBuilder().maxArgs(2).minArgs(2).mandatoryArgsTypes(new Class[]{Map.class, Object.class}));
+    super(new FnArgsBuilder().max(2).min(2).mandatory(new Class[]{Map.class, Object.class}).build());
   }
 
   @Override

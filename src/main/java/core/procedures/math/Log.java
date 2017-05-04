@@ -16,7 +16,7 @@ public final class Log extends AFn {
   private static final double VALUE = Math.log(Math.pow(10, MAX_DIGITS));
 
   public Log() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(1).mandatoryArgsTypes(new Class[]{Number.class}));
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Number.class}).build());
   }
 
   @Override

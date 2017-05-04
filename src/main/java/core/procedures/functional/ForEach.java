@@ -10,8 +10,8 @@ import core.scm.SCMThunk;
 public final class ForEach extends AFn {
 
   public ForEach() {
-    super(new FnArgsBuilder().minArgs(2).mandatoryArgsTypes(new Class[]{IFn.class})
-                             .restArgsType(SCMClass.SCMProperList.class));
+    super(new FnArgsBuilder().min(2).mandatory(new Class[]{IFn.class})
+                             .rest(SCMClass.SCMProperList.class).build());
   }
 
   @Override

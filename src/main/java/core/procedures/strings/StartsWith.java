@@ -6,7 +6,7 @@ import core.procedures.FnArgsBuilder;
 public final class StartsWith extends AFn {
 
   public StartsWith() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[]{CharSequence.class, CharSequence.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{CharSequence.class, CharSequence.class}).build());
   }
 
   @Override

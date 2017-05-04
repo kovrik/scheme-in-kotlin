@@ -8,7 +8,7 @@ import core.scm.SCMMutableVector;
 public final class MakeVector extends AFn {
 
   public MakeVector() {
-    super(new FnArgsBuilder().minArgs(1).maxArgs(2).mandatoryArgsTypes(new Class[]{SCMClass.ExactNonNegativeInteger.class}));
+    super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

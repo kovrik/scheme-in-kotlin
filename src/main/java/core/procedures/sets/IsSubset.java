@@ -8,7 +8,7 @@ import java.util.Set;
 public final class IsSubset extends AFn {
 
   public IsSubset() {
-    super(new FnArgsBuilder().minArgs(2).maxArgs(2).mandatoryArgsTypes(new Class[] {Set.class, Set.class}));
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[] {Set.class, Set.class}).build());
   }
 
   @Override
