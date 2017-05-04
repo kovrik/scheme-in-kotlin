@@ -2,14 +2,14 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMMutableVector;
+import core.scm.Type;
+import core.scm.MutableVector;
 
 public final class VectorRef extends AFn {
 
   public VectorRef() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{SCMMutableVector.class, SCMClass.ExactNonNegativeInteger.class}).build());
+                             .mandatory(new Class[]{MutableVector.class, Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override
@@ -24,7 +24,7 @@ public final class VectorRef extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    SCMMutableVector vec = (SCMMutableVector)arg1;
+    MutableVector vec = (MutableVector)arg1;
     Long pos = ((Number)arg2).longValue();
     if (pos >= vec.length()) {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), pos));

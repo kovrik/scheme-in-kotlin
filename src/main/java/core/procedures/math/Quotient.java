@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,10 +27,10 @@ public class Quotient extends AFn {
   @Override
   public Number apply2(Object arg1, Object arg2) {
     /* Special cases */
-    if (NumberUtils.isOne(arg2)) {
-      return NumberUtils.inexactnessTaint((Number)arg1, (Number) arg2);
+    if (Utils.isOne(arg2)) {
+      return Utils.inexactnessTaint((Number)arg1, (Number) arg2);
     }
-    if (NumberUtils.isZero(arg2)) {
+    if (Utils.isZero(arg2)) {
       throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
     return apply((Number) arg1, (Number) arg2);
@@ -39,10 +39,10 @@ public class Quotient extends AFn {
   private Number apply(BigDecimal first, BigDecimal second) {
     int scale = Math.max(first.scale(), second.scale());
     if (scale > 0) {
-      return first.divide(second, NumberUtils.DEFAULT_CONTEXT).setScale(0, NumberUtils.ROUNDING_MODE)
-                  .setScale(1, NumberUtils.ROUNDING_MODE);
+      return first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE)
+                  .setScale(1, Utils.ROUNDING_MODE);
     } else {
-      return first.divideToIntegralValue(second).setScale(scale, NumberUtils.ROUNDING_MODE);
+      return first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE);
     }
   }
 
@@ -55,30 +55,30 @@ public class Quotient extends AFn {
       return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, NumberUtils.toBigDecimal(second));
+      return apply((BigDecimal)first, Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
+      return apply(Utils.toBigDecimal(first), (BigDecimal)second);
     }
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return apply((BigInteger)first, (BigInteger)second);
     }
     if (first instanceof BigInteger) {
-      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
+      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
     if (second instanceof BigInteger) {
-      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
+      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
     if (((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) &&
-        (NumberUtils.isInteger(first)) && NumberUtils.isInteger(second)) {
+        (Utils.isInteger(first)) && Utils.isInteger(second)) {
 
       return Long.valueOf(first.longValue() / second.longValue()).doubleValue();
     }
 
     if ((first instanceof Double) || (second instanceof Double) ||
-        (first instanceof SCMBigRational) || (second instanceof SCMBigRational)) {
+        (first instanceof BigRational) || (second instanceof BigRational)) {
 
-      return apply(NumberUtils.toBigDecimal(first), NumberUtils.toBigDecimal(second));
+      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
     return first.longValue() / second.longValue();
   }

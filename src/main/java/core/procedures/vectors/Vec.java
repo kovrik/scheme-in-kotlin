@@ -3,8 +3,8 @@ package core.procedures.vectors;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableVector;
-import core.scm.SCMVector;
+import core.scm.MutableVector;
+import core.scm.Vector;
 
 import java.util.List;
 
@@ -20,16 +20,16 @@ public final class Vec extends AFn {
   }
 
   @Override
-  public SCMMutableVector apply1(Object arg) {
-    if (arg instanceof SCMVector) {
-      return new SCMMutableVector(((SCMVector)arg).getArray());
+  public MutableVector apply1(Object arg) {
+    if (arg instanceof Vector) {
+      return new MutableVector(((Vector)arg).getArray());
     }
     if (arg instanceof List) {
-      return new SCMMutableVector(((List)arg).toArray());
+      return new MutableVector(((List)arg).toArray());
     }
     if (arg instanceof CharSequence) {
       int size = ((CharSequence) arg).length();
-      SCMMutableVector vector = new SCMMutableVector(size, null);
+      MutableVector vector = new MutableVector(size, null);
       for (int i = 0; i < size; i++) {
         vector.set(i, ((CharSequence)arg).charAt(i));
       }

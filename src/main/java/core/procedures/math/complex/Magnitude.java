@@ -3,7 +3,7 @@ package core.procedures.math.complex;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.math.*;
-import core.scm.SCMBigComplex;
+import core.scm.BigComplex;
 
 public final class Magnitude extends AFn {
 
@@ -23,8 +23,8 @@ public final class Magnitude extends AFn {
 
   @Override
   public Number apply1(Object arg) {
-    if (arg instanceof SCMBigComplex) {
-      return ((SCMBigComplex)arg).magnitude();
+    if (arg instanceof BigComplex) {
+      return ((BigComplex)arg).magnitude();
     }
     return Abs.abs((Number) arg);
   }

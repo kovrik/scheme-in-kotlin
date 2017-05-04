@@ -3,8 +3,8 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ public final class GCD extends AFn {
   private static final Abs ABS = new Abs();
 
   public GCD() {
-    super(new FnArgsBuilder().rest(SCMBigRational.class).build());
+    super(new FnArgsBuilder().rest(BigRational.class).build());
   }
 
   @Override
@@ -78,34 +78,34 @@ public final class GCD extends AFn {
     return a.gcd(b);
   }
 
-  static SCMBigRational gcd(SCMBigRational first, SCMBigRational second) {
-    return new SCMBigRational(first.getNumerator().gcd(second.getNumerator()),
-                              LCM.lcm(first.getDenominator(), second.getDenominator()));
+  static BigRational gcd(BigRational first, BigRational second) {
+    return new BigRational(first.getNumerator().gcd(second.getNumerator()),
+                           LCM.lcm(first.getDenominator(), second.getDenominator()));
   }
 
   private static Number gcd(Number first, Number second) {
-    Number f = NumberUtils.upcast(first);
-    Number s = NumberUtils.upcast(second);
+    Number f = Utils.upcast(first);
+    Number s = Utils.upcast(second);
     if ((f instanceof Long) && (s instanceof Long)) {
       return gcd((Long)f, (Long)s);
     }
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return gcd((SCMBigRational) first, (SCMBigRational)second);
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return gcd((BigRational) first, (BigRational)second);
     }
-    if (first instanceof SCMBigRational) {
-      return gcd(((SCMBigRational) first).toBigDecimal(), NumberUtils.toBigDecimal(second));
+    if (first instanceof BigRational) {
+      return gcd(((BigRational) first).toBigDecimal(), Utils.toBigDecimal(second));
     }
-    if (second instanceof SCMBigRational) {
-      return gcd(NumberUtils.toBigDecimal(first), ((SCMBigRational) second).toBigDecimal());
+    if (second instanceof BigRational) {
+      return gcd(Utils.toBigDecimal(first), ((BigRational) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return gcd((BigDecimal) first, (BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      return gcd((BigDecimal) first, NumberUtils.toBigDecimal(second));
+      return gcd((BigDecimal) first, Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return gcd(NumberUtils.toBigDecimal(first), (BigDecimal) second);
+      return gcd(Utils.toBigDecimal(first), (BigDecimal) second);
     }
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return gcd((BigInteger) first, (BigInteger) second);

@@ -2,10 +2,10 @@ package unittests;
 
 import core.exceptions.IllegalSyntaxException;
 import core.reader.StringReader;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.scm.SCMKeyword;
-import core.scm.SCMMutableVector;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.scm.Keyword;
+import core.scm.MutableVector;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.list;
 import static org.junit.Assert.*;
 
 public class ReaderTest extends AbstractTest {
@@ -35,8 +35,8 @@ public class ReaderTest extends AbstractTest {
     assertEquals(-1235.0d, reader.readFirst("-1235."));
     assertEquals(.5d, reader.readFirst(".5"));
     assertEquals(-.5d, reader.readFirst("-.5"));
-    assertEquals(SCMBigRational.valueOf("-1", "2"), reader.readFirst("#e#d-.5"));
-    assertEquals(SCMBigRational.valueOf("-1", "2"), reader.readFirst("#E#d-.5"));
+    assertEquals(BigRational.valueOf("-1", "2"), reader.readFirst("#e#d-.5"));
+    assertEquals(BigRational.valueOf("-1", "2"), reader.readFirst("#E#d-.5"));
     assertEquals(+4.5d, reader.readFirst("#i#d+4.5"));
     assertEquals(4999999.5d, reader.readFirst("#i#d+4999999.5"));
     assertEquals(5L, reader.readFirst("#e#b101"));
@@ -63,15 +63,15 @@ public class ReaderTest extends AbstractTest {
     assertEquals(1500d, reader.readFirst("#i15##"));
     assertEquals(1500d, reader.readFirst("#I15##.####"));
     assertEquals(1500d, reader.readFirst("#I15##"));
-    assertEquals(SCMBigRational.valueOf("500", "1"), reader.readFirst("#e5###/1#"));
-    assertEquals(SCMBigRational.valueOf("500", "1"), reader.readFirst("#E5###/1#"));
+    assertEquals(BigRational.valueOf("500", "1"), reader.readFirst("#e5###/1#"));
+    assertEquals(BigRational.valueOf("500", "1"), reader.readFirst("#E5###/1#"));
     assertEquals(new BigDecimal("500.0"), reader.readFirst(" 5###/1#"));
-    assertEquals(SCMBigRational.valueOf("1500", "1"), reader.readFirst("#e15##.####"));
+    assertEquals(BigRational.valueOf("1500", "1"), reader.readFirst("#e15##.####"));
     assertEquals(new BigDecimal("0.75"), reader.readFirst("#i3/4"));
-    assertEquals(SCMBigRational.valueOf("3", "4"), reader.readFirst("#e3/4"));
+    assertEquals(BigRational.valueOf("3", "4"), reader.readFirst("#e3/4"));
     assertEquals(1500d,  reader.readFirst("15e2"));
     assertEquals(15000d, reader.readFirst("15e3"));
-    assertEquals(SCMBigRational.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
+    assertEquals(BigRational.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
                  reader.readFirst("#e999999999999999999999999999999999999999999999999999999999999999999999.999"));
 
     String[] badNumbers = {"#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1",
@@ -89,19 +89,19 @@ public class ReaderTest extends AbstractTest {
   @Test
   public void testReadComplex() {
     assertEquals(0L, reader.readFirst("0+0i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("0+i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("-0+i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  BigDecimal.ONE),  reader.readFirst("+i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ZERO,  new BigDecimal(-1)), reader.readFirst("-i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  reader.readFirst("1+2i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(-2)), reader.readFirst("1-2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(2)),  reader.readFirst("-1+2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal(-1), new BigDecimal(-2)), reader.readFirst("-1-2i"));
-    assertEquals(new SCMBigComplex(BigDecimal.ONE,  new BigDecimal(2)),  reader.readFirst("#e1+2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")),  reader.readFirst("#i1+2i"));
-    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
-    assertEquals(new SCMBigComplex(new BigDecimal("5"),   new BigDecimal("29")),  reader.readFirst("#e#b101+11101i"));
-    assertEquals(new SCMBigComplex(new BigDecimal("255.0"),  new BigDecimal("2987.9375")), reader.readFirst("#x#iFf+BaB.fI"));
+    assertEquals(new BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readFirst("0+i"));
+    assertEquals(new BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readFirst("-0+i"));
+    assertEquals(new BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readFirst("+i"));
+    assertEquals(new BigComplex(BigDecimal.ZERO, new BigDecimal(-1)), reader.readFirst("-i"));
+    assertEquals(new BigComplex(BigDecimal.ONE, new BigDecimal(2)), reader.readFirst("1+2i"));
+    assertEquals(new BigComplex(BigDecimal.ONE, new BigDecimal(-2)), reader.readFirst("1-2i"));
+    assertEquals(new BigComplex(new BigDecimal(-1), new BigDecimal(2)), reader.readFirst("-1+2i"));
+    assertEquals(new BigComplex(new BigDecimal(-1), new BigDecimal(-2)), reader.readFirst("-1-2i"));
+    assertEquals(new BigComplex(BigDecimal.ONE, new BigDecimal(2)), reader.readFirst("#e1+2i"));
+    assertEquals(new BigComplex(new BigDecimal("1.0"), new BigDecimal("2.0")), reader.readFirst("#i1+2i"));
+    assertEquals(new BigComplex(new BigDecimal("5"), new BigDecimal("29")), reader.readFirst("#e#b101+11101i"));
+    assertEquals(new BigComplex(new BigDecimal("5"), new BigDecimal("29")), reader.readFirst("#e#b101+11101i"));
+    assertEquals(new BigComplex(new BigDecimal("255.0"), new BigDecimal("2987.9375")), reader.readFirst("#x#iFf+BaB.fI"));
   }
 
   @Test
@@ -124,16 +124,16 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testReadVector() {
-    assertEquals(new SCMMutableVector(), reader.readFirst("#()"));
-    assertEquals(new SCMMutableVector(0L), reader.readFirst("[0]"));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
-    assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
-    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
-    assertEquals(new SCMMutableVector(), reader.readFirst("[]"));
-    assertEquals(new SCMMutableVector(0L), reader.readFirst("[0]"));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
-    assertEquals(new SCMMutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
-    assertEquals(new SCMMutableVector(1L, new SCMMutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
+    assertEquals(new MutableVector(), reader.readFirst("#()"));
+    assertEquals(new MutableVector(0L), reader.readFirst("[0]"));
+    assertEquals(new MutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
+    assertEquals(new MutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
+    assertEquals(new MutableVector(1L, new MutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
+    assertEquals(new MutableVector(), reader.readFirst("[]"));
+    assertEquals(new MutableVector(0L), reader.readFirst("[0]"));
+    assertEquals(new MutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"));
+    assertEquals(new MutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"));
+    assertEquals(new MutableVector(1L, new MutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"));
     try {
       reader.readFirst("#(1 . 2)");
       fail();
@@ -168,7 +168,7 @@ public class ReaderTest extends AbstractTest {
     assertEquals(list(0L), reader.readFirst("(0)"));
     assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"));
     assertEquals(list(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"));
-    assertEquals(list(1L, new SCMMutableVector(2L), 3L), reader.readFirst("(1 [2] 3)"));
+    assertEquals(list(1L, new MutableVector(2L), 3L), reader.readFirst("(1 [2] 3)"));
     assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"));
     try {
       reader.readFirst(")");
@@ -257,7 +257,7 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testScientificNotation() {
-    assertEquals(SCMBigRational.valueOf("23", "1"), reader.readFirst("#e2.3e1"));
+    assertEquals(BigRational.valueOf("23", "1"), reader.readFirst("#e2.3e1"));
     assertEquals(230L, reader.readFirst("#e23e1"));
     assertEquals(Double.valueOf("2.3e-5"), reader.readFirst("#i2.3e-5"));
     assertEquals(2.3e-51, reader.readFirst("#i2.3e-51"));
@@ -337,8 +337,8 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testReadKeywords() {
-    assertEquals(SCMKeyword.intern("a"), reader.readFirst(":a"));
-    assertEquals(SCMKeyword.intern("test"), reader.readFirst(":test"));
-    assertEquals(SCMKeyword.intern("_"), reader.readFirst(":_"));
+    assertEquals(Keyword.intern("a"), reader.readFirst(":a"));
+    assertEquals(Keyword.intern("test"), reader.readFirst(":test"));
+    assertEquals(Keyword.intern("_"), reader.readFirst(":_"));
   }
 }

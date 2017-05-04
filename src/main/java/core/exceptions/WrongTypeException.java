@@ -2,7 +2,7 @@ package core.exceptions;
 
 import core.writer.Writer;
 
-public class WrongTypeException extends IllegalArgumentException implements ISCMException {
+public class WrongTypeException extends IllegalArgumentException implements IException {
 
   public WrongTypeException(String message) {
     super(message);

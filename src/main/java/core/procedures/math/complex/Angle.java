@@ -2,8 +2,8 @@ package core.procedures.math.complex;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.utils.Utils;
 
 public final class Angle extends AFn {
 
@@ -27,9 +27,9 @@ public final class Angle extends AFn {
   }
 
   private Number angle(Number number) {
-    if (NumberUtils.isZero(number)) {
+    if (Utils.isZero(number)) {
       throw new ArithmeticException(getName() + ": undefined for 0");
     }
-    return SCMBigComplex.of(number).angle();
+    return BigComplex.of(number).angle();
   }
 }

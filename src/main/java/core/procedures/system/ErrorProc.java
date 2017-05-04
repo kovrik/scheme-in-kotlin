@@ -2,7 +2,7 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMError;
+import core.scm.Error;
 
 public final class ErrorProc extends AFn {
 
@@ -17,6 +17,6 @@ public final class ErrorProc extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    throw new SCMError(arg.toString());
+    throw new Error(arg.toString());
   }
 }

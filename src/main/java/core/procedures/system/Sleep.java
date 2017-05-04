@@ -3,7 +3,7 @@ package core.procedures.system;
 import core.exceptions.ThrowableWrapper;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVoid;
+import core.scm.Void;
 
 public final class Sleep extends AFn {
 
@@ -17,12 +17,12 @@ public final class Sleep extends AFn {
   }
 
   @Override
-  public SCMVoid apply1(Object arg) {
+  public Void apply1(Object arg) {
     try {
       Thread.sleep(((Number)arg).longValue());
     } catch (InterruptedException e) {
       throw new ThrowableWrapper(e);
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 }

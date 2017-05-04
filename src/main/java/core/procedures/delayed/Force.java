@@ -3,9 +3,9 @@ package core.procedures.delayed;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMDelay;
-import core.scm.SCMFuture;
-import core.scm.SCMPromise;
+import core.scm.Delay;
+import core.scm.Future;
+import core.scm.Promise;
 
 public final class Force extends AFn {
 
@@ -20,12 +20,12 @@ public final class Force extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    if (arg instanceof SCMFuture || arg instanceof SCMPromise) {
+    if (arg instanceof Future || arg instanceof Promise) {
       return arg;
     }
     /* Force derefs delays */
-    if (arg instanceof SCMDelay) {
-      return ((SCMDelay) arg).deref();
+    if (arg instanceof Delay) {
+      return ((Delay) arg).deref();
     }
     throw new WrongTypeException(getName(), "Delay or Promise or Future", arg);
   }

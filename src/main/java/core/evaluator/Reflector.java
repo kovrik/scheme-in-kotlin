@@ -2,7 +2,7 @@ package core.evaluator;
 
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.UndefinedIdentifierException;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -202,7 +202,7 @@ public class Reflector {
     String methodName = m.substring(1);
     Class<?> clazz = instance.getClass();
     boolean isClass = false;
-    if (clazz == SCMSymbol.class) {
+    if (clazz == Symbol.class) {
       clazz = getClazz(instance.toString());
       isClass = true;
     } else {
@@ -226,7 +226,7 @@ public class Reflector {
   private Object evalJavaInstanceField(String f, Object instance) {
     Class<?> clazz = instance.getClass();
     boolean isClass = false;
-    if (clazz == SCMSymbol.class) {
+    if (clazz == Symbol.class) {
       clazz = getClazz(instance.toString());
       isClass = true;
     } else {

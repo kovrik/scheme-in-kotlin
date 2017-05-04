@@ -2,13 +2,13 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMMutableVector;
+import core.scm.Type;
+import core.scm.MutableVector;
 
 public final class MakeVector extends AFn {
 
   public MakeVector() {
-    super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+    super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override
@@ -23,6 +23,6 @@ public final class MakeVector extends AFn {
     if (args.length == 2) {
       init = args[1];
     }
-    return new SCMMutableVector(s.intValue(), init);
+    return new MutableVector(s.intValue(), init);
   }
 }

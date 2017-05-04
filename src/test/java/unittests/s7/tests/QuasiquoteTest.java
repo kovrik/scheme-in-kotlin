@@ -5,8 +5,8 @@ import core.procedures.cons.ConsProc;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMCons.EMPTY;
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.EMPTY;
+import static core.scm.Cons.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

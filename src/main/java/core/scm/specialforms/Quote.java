@@ -2,8 +2,8 @@ package core.scm.specialforms;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.Symbol;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public enum Quote implements ISpecialForm {
   QUOTE;
 
-  public static final SCMSymbol QUOTE_SYMBOL = SCMSymbol.intern(QUOTE.toString());
+  public static final Symbol QUOTE_SYMBOL = Symbol.intern(QUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
@@ -29,6 +29,6 @@ public enum Quote implements ISpecialForm {
   }
 
   public static List quote(Object obj) {
-    return SCMCons.list(QUOTE, obj);
+    return Cons.list(QUOTE, obj);
   }
 }

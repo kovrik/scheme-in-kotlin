@@ -3,7 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVector;
+import core.scm.Vector;
 
 import java.util.Collection;
 import java.util.Map;
@@ -30,8 +30,8 @@ public class Count extends AFn {
       return ((Map)arg).size();
     } else if (arg instanceof Collection) {
       return ((Collection)arg).size();
-    } else if (arg instanceof SCMVector) {
-      return ((SCMVector)arg).length();
+    } else if (arg instanceof Vector) {
+      return ((Vector)arg).length();
     } else if (arg instanceof CharSequence) {
       return ((CharSequence) arg).length();
     }

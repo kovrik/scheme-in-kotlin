@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -46,21 +46,21 @@ public final class Remainder extends AFn {
   }
 
   public static Number apply(Number first, Number second) {
-    if (first instanceof SCMBigRational) {
-      first = ((SCMBigRational) first).toBigDecimal();
+    if (first instanceof BigRational) {
+      first = ((BigRational) first).toBigDecimal();
     }
-    if (second instanceof SCMBigRational) {
-      second = ((SCMBigRational) second).toBigDecimal();
+    if (second instanceof BigRational) {
+      second = ((BigRational) second).toBigDecimal();
     }
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, NumberUtils.toBigDecimal(second));
+      return apply((BigDecimal)first, Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return apply(NumberUtils.toBigDecimal(first), (BigDecimal)second);
+      return apply(Utils.toBigDecimal(first), (BigDecimal)second);
     }
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return apply((BigInteger) first, (BigInteger)second);

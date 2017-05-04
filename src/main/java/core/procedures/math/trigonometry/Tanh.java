@@ -2,9 +2,9 @@ package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,17 +28,17 @@ public final class Tanh extends AFn {
   @Override
   public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(arg)) {
+    if (Utils.isZero(arg)) {
       return 0L;
     }
     if (arg instanceof BigDecimal) {
       return tanh((BigDecimal)arg);
     } else if (arg instanceof BigInteger) {
       return tanh((BigInteger)arg);
-    } else if (arg instanceof SCMBigComplex) {
-      return tanh((SCMBigComplex)arg);
-    } else if (arg instanceof SCMBigRational) {
-      return tanh(((SCMBigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigComplex) {
+      return tanh((BigComplex)arg);
+    } else if (arg instanceof BigRational) {
+      return tanh(((BigRational)arg).toBigDecimal());
     }
     return Math.tanh(((Number)arg).doubleValue());
   }
@@ -61,7 +61,7 @@ public final class Tanh extends AFn {
     }
   }
 
-  private static Number tanh(SCMBigComplex c) {
+  private static Number tanh(BigComplex c) {
     Number sinh = Sinh.sinh(c);
     if ((sinh instanceof Double) && (Double.isInfinite((Double)sinh) || Double.isNaN((Double)sinh))) {
       return Double.NaN;
@@ -70,6 +70,6 @@ public final class Tanh extends AFn {
     if ((cosh instanceof Double) && (Double.isInfinite((Double)cosh) || Double.isNaN((Double)cosh))) {
       return Double.NaN;
     }
-    return ((SCMBigComplex)sinh).divide(cosh);
+    return ((BigComplex)sinh).divide(cosh);
   }
 }

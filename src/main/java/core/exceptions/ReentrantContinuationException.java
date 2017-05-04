@@ -1,6 +1,6 @@
 package core.exceptions;
 
-public class ReentrantContinuationException extends RuntimeException implements ISCMException {
+public class ReentrantContinuationException extends RuntimeException implements IException {
 
   public ReentrantContinuationException() {
     super("Re-entrant continuation: implementation restriction: continuation can only be used once");

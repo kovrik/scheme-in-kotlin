@@ -6,10 +6,10 @@ import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
 import core.procedures.generic.Count;
 import core.procedures.generic.Get;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
-import core.scm.SCMThunk;
-import core.scm.SCMVector;
+import core.scm.Cons;
+import core.scm.Symbol;
+import core.scm.Thunk;
+import core.scm.Vector;
 import core.scm.specialforms.Quote;
 
 import java.util.ArrayList;
@@ -35,12 +35,12 @@ public final class MapProc extends AFn {
 
   // TODO Very naive implementation. Re-implement and optimize
   @Override
-  public SCMThunk apply(Object... args) {
+  public Thunk apply(Object... args) {
     /* Check that all lists/vectors are of the same size */
     final int size = count.apply1(args[1]);
     for (int i = 1; i < args.length; i++) {
       /* Check type */
-      if (!(args[i] instanceof SCMVector) && !(args[i] instanceof Collection) && !(args[i] instanceof CharSequence)) {
+      if (!(args[i] instanceof Vector) && !(args[i] instanceof Collection) && !(args[i] instanceof CharSequence)) {
         throw new WrongTypeException(getName(), "List or Vector or Set", args[i]);
       }
       /* Check size */
@@ -52,21 +52,21 @@ public final class MapProc extends AFn {
     List<List> lists = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
       /* Add procedure as first element */
-      lists.add(SCMCons.list(args[0]));
+      lists.add(Cons.list(args[0]));
       /* Now add each Nth element of all lists */
       for (int n = 1; n < args.length; n++) {
         Object list = (args[n] instanceof Set) ? new ArrayList<>((Set)args[n]) : args[n];
         Object e = get.apply(list, i);
-        if ((e instanceof List) || (e instanceof SCMSymbol)) {
+        if ((e instanceof List) || (e instanceof Symbol)) {
           lists.get(i).add(Quote.quote(e));
         } else {
           lists.get(i).add(e);
         }
       }
     }
-    SCMCons<Object> result = SCMCons.list(SCMSymbol.intern("list"));
+    Cons<Object> result = Cons.list(Symbol.intern("list"));
     result.addAll(lists);
     /* Return Thunk that will be evaluated and produce results */
-    return new SCMThunk(result);
+    return new Thunk(result);
   }
 }

@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.evaluator.Reflector;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public enum Dot implements ISpecialForm {
     }
     // FIXME Optimize and cleanup
     Object first = expression.get(1);
-    if (first instanceof SCMSymbol) {
+    if (first instanceof Symbol) {
       first = env.findOrDefault(first, null);
       if (first == null) {
         first = evaluator.eval(expression.get(1), env);

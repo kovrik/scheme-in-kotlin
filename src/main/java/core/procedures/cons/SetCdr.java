@@ -2,9 +2,9 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMVoid;
+import core.scm.Type;
+import core.scm.Cons;
+import core.scm.Void;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public final class SetCdr extends AFn {
 
   public SetCdr() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{SCMClass.SCMPair.class, Object.class}).build());
+                             .mandatory(new Class[]{Type.SCMPair.class, Object.class}).build());
   }
 
   @Override
@@ -30,10 +30,10 @@ public final class SetCdr extends AFn {
       list.addAll((List) arg2);
     } else {
       list.add(arg2);
-      if (list instanceof SCMCons) {
-        ((SCMCons)list).setIsList(false);
+      if (list instanceof Cons) {
+        ((Cons)list).setIsList(false);
       }
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 }

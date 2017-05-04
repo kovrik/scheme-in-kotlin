@@ -1,8 +1,8 @@
 package core.procedures.math;
 
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBoolean;
 import core.procedures.AFn;
+import core.utils.Utils;
 
 public final class Negation extends AFn {
 
@@ -22,6 +22,6 @@ public final class Negation extends AFn {
 
   @Override
   public Boolean apply1(Object arg) {
-    return !SCMBoolean.toBoolean(arg);
+    return !Utils.toBoolean(arg);
   }
 }

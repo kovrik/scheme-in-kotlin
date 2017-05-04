@@ -4,10 +4,10 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.math.Addition;
 import core.procedures.math.NumericalComparison;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.scm.Type;
+import core.scm.Cons;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class Range extends AFn {
 
   public Range() {
-    super(new FnArgsBuilder().min(0).max(3).rest(SCMClass.Real.class).build());
+    super(new FnArgsBuilder().min(0).max(3).rest(Type.Real.class).build());
   }
 
   @Override
@@ -31,11 +31,11 @@ public class Range extends AFn {
   @Override
   public List<Number> apply(Object... args) {
     if (args.length == 0) {
-      return SCMCons.EMPTY;
+      return Cons.EMPTY;
     }
-    boolean fraction = args[0] instanceof SCMBigRational;
+    boolean fraction = args[0] instanceof BigRational;
     if (args.length == 3) {
-      fraction = fraction || args[2] instanceof SCMBigRational;
+      fraction = fraction || args[2] instanceof BigRational;
     }
     boolean big = args[0] instanceof BigDecimal;
     if (args.length == 2) {
@@ -48,11 +48,11 @@ public class Range extends AFn {
       return range(args);
     }
 
-    boolean exact = NumberUtils.isExactInteger(args[0]);
+    boolean exact = Utils.isExactInteger(args[0]);
     if (args.length == 3) {
-      exact = exact && NumberUtils.isExactInteger(args[2]);
+      exact = exact && Utils.isExactInteger(args[2]);
     }
-    SCMCons<Number> result = SCMCons.list();
+    Cons<Number> result = Cons.list();
     if (exact) {
       long start = 0;
       long end = 0;
@@ -104,7 +104,7 @@ public class Range extends AFn {
   }
 
   private List<Number> range(Object[] args) {
-    SCMCons<Number> result = SCMCons.list();
+    Cons<Number> result = Cons.list();
     Number start = 0L;
     Number end = 0L;
     Number step = 1L;
@@ -120,7 +120,7 @@ public class Range extends AFn {
     }
     Number cur = start;
     NumericalComparison pred = NumericalComparison.LESS;
-    if (NumberUtils.isNegative(step)) {
+    if (Utils.isNegative(step)) {
       pred = NumericalComparison.GREATER;
     }
     while (pred.apply(cur, end)) {

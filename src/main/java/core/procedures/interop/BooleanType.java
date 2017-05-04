@@ -2,7 +2,7 @@ package core.procedures.interop;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBoolean;
+import core.utils.Utils;
 
 public final class BooleanType extends AFn {
 
@@ -23,7 +23,7 @@ public final class BooleanType extends AFn {
   @Override
   public Boolean apply1(Object arg) {
     /* Have to box it */
-    if (SCMBoolean.toBoolean(arg)) {
+    if (Utils.toBoolean(arg)) {
       return Boolean.TRUE;
     } else {
       return Boolean.FALSE;

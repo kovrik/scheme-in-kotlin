@@ -2,8 +2,8 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVector;
-import core.utils.NumberUtils;
+import core.scm.Vector;
+import core.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
@@ -40,19 +40,19 @@ public final class Get extends AFn {
     } else if ((col instanceof Map.Entry) && (((Map.Entry) col).getKey().equals(key))) {
       return ((Map.Entry)col).getValue();
     } else if (col instanceof List) {
-      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
+      if (Utils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
         return ((List)col).get(((Number)key).intValue());
       }
     } else if (col instanceof Set) {
       if (((Set)col).contains(key)) {
         return key;
       }
-    } else if (col instanceof SCMVector) {
-      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((SCMVector) col).length())) {
-        return ((SCMVector)col).get(((Number)key).intValue());
+    } else if (col instanceof Vector) {
+      if (Utils.isInteger(key) && (((Number) key).intValue() < ((Vector) col).length())) {
+        return ((Vector)col).get(((Number)key).intValue());
       }
     } else if (col instanceof CharSequence) {
-      if (NumberUtils.isInteger(key) && (((Number) key).intValue() < ((CharSequence) col).length())) {
+      if (Utils.isInteger(key) && (((Number) key).intValue() < ((CharSequence) col).length())) {
         return ((CharSequence) col).charAt(((Number) key).intValue());
       }
     }

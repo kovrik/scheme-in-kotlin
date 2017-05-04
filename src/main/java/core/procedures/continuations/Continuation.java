@@ -2,7 +2,7 @@ package core.procedures.continuations;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 /*
  * "Upward" one-shot continuation
@@ -39,8 +39,8 @@ public final class Continuation extends AFn {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.CONTINUATION;
+  public Type getType() {
+    return Type.CONTINUATION;
   }
 
   @Override

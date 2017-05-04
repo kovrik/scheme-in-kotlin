@@ -165,7 +165,6 @@ import core.procedures.strings.Uppercase;
 import core.procedures.symbols.StringToSymbol;
 import core.procedures.symbols.SymbolToString;
 import core.procedures.system.Cast;
-import core.procedures.system.ClassOf;
 import core.procedures.system.ClassProc;
 import core.procedures.system.ErrorProc;
 import core.procedures.system.Eval;
@@ -190,7 +189,7 @@ import core.procedures.vectors.VectorRef;
 import core.procedures.vectors.VectorSet;
 import core.procedures.vectors.VectorToImmutableVector;
 import core.procedures.vectors.VectorToList;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 import core.scm.specialforms.And;
 import core.scm.specialforms.Assert;
 import core.scm.specialforms.Begin;
@@ -246,11 +245,10 @@ public final class DefaultEnvironment extends Environment {
 
       /* System */
       new Exit(),
-      new ClassOf(),
-      new ClassOf() { @Override public String getName() { return "type"; } },
       new IsInstance(),
       new Cast(),
       new ClassProc(),
+      new ClassProc() { @Override public String getName() { return "class-of"; } },
       new ErrorProc(),
       new Pst(),
       new Eval(),
@@ -659,21 +657,21 @@ public final class DefaultEnvironment extends Environment {
 
     /* Special Forms */
     for (ISpecialForm specialForm : SPECIAL_FORMS) {
-      put(SCMSymbol.intern(specialForm.toString()), specialForm);
+      put(Symbol.intern(specialForm.toString()), specialForm);
     }
 
     /* Standard Procedures */
     for (AFn proc : STANDARD_PROCEDURES) {
-      put(SCMSymbol.intern(proc.getName()), proc);
+      put(Symbol.intern(proc.getName()), proc);
     }
 
     /* Constants and special cases, synonyms*/
-    put(SCMSymbol.intern("pi"),          Math.PI);
-    put(SCMSymbol.intern("nil"),         null);
-    put(SCMSymbol.intern("null"),        null);
-    put(SCMSymbol.intern("eof"),         null);
-    put(SCMSymbol.intern("call/cc"),     get(SCMSymbol.intern("call-with-current-continuation")));
-    put(SCMSymbol.intern("def"),         get(SCMSymbol.intern("define")));
-    put(SCMSymbol.intern("fn"),          get(SCMSymbol.intern("lambda")));
+    put(Symbol.intern("pi"), Math.PI);
+    put(Symbol.intern("nil"), null);
+    put(Symbol.intern("null"), null);
+    put(Symbol.intern("eof"), null);
+    put(Symbol.intern("call/cc"), get(Symbol.intern("call-with-current-continuation")));
+    put(Symbol.intern("def"), get(Symbol.intern("define")));
+    put(Symbol.intern("fn"), get(Symbol.intern("lambda")));
   }
 }

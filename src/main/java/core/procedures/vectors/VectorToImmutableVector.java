@@ -2,13 +2,13 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMImmutableVector;
-import core.scm.SCMVector;
+import core.scm.ImmutableVector;
+import core.scm.Vector;
 
 public final class VectorToImmutableVector extends AFn {
 
   public VectorToImmutableVector() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMVector.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Vector.class}).build());
   }
 
   @Override
@@ -18,10 +18,10 @@ public final class VectorToImmutableVector extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    if (arg instanceof SCMImmutableVector) {
+    if (arg instanceof ImmutableVector) {
       return arg;
     } else {
-      return new SCMImmutableVector(((SCMVector)arg).getArray());
+      return new ImmutableVector(((Vector)arg).getArray());
     }
   }
 }

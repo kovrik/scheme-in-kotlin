@@ -4,7 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.equivalence.Eqv;
-import core.scm.SCMVoid;
+import core.scm.Void;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public enum Case implements ISpecialForm {
         }
       }
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 
   @Override

@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.math.BigDecimal;
@@ -35,7 +35,7 @@ public final class ToExact extends AFn {
 
   public static Number toExact(Object o) {
     /* Special cases */
-    if (NumberUtils.isZero(o)) {
+    if (Utils.isZero(o)) {
       if (o instanceof Double) {
         return 0d;
       } else if (o instanceof Float) {
@@ -44,9 +44,9 @@ public final class ToExact extends AFn {
         return BigDecimal.ZERO;
       }
     }
-    if (o instanceof SCMBigComplex) {
-      SCMBigComplex c = ((SCMBigComplex)o);
-      return new SCMBigComplex(toExact(c.getRe()), toExact(c.getIm()));
+    if (o instanceof BigComplex) {
+      BigComplex c = ((BigComplex)o);
+      return new BigComplex(toExact(c.getRe()), toExact(c.getIm()));
     }
     if (o instanceof Float) {
       Float f = (Float)o;
@@ -95,15 +95,15 @@ public final class ToExact extends AFn {
     if (sign == 1) {
       a *= -1;
     }
-    return new SCMBigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
+    return new BigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 
-  private static SCMBigRational bigDecimalToExact(BigDecimal number) {
+  private static BigRational bigDecimalToExact(BigDecimal number) {
     int scale = number.scale();
     if (scale > 0) {
-      return new SCMBigRational(number.unscaledValue(), BigInteger.TEN.pow(scale));
+      return new BigRational(number.unscaledValue(), BigInteger.TEN.pow(scale));
     } else {
-      return new SCMBigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
+      return new BigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
     }
   }
 }

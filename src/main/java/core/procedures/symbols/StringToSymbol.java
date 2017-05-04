@@ -2,7 +2,7 @@ package core.procedures.symbols;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 public class StringToSymbol extends AFn {
 
@@ -21,7 +21,7 @@ public class StringToSymbol extends AFn {
   }
 
   @Override
-  public SCMSymbol apply1(Object arg) {
-    return SCMSymbol.intern(arg.toString());
+  public Symbol apply1(Object arg) {
+    return Symbol.intern(arg.toString());
   }
 }

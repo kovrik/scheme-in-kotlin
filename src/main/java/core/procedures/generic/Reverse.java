@@ -4,6 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.*;
+import core.scm.Vector;
 
 import java.util.*;
 
@@ -21,18 +22,18 @@ public final class Reverse extends AFn {
   @Override
   public Object apply1(Object arg) {
     if (arg instanceof List) {
-      SCMCons<Object> result = SCMCons.list();
+      Cons<Object> result = Cons.list();
       for (Object o : (List) arg) {
         result.push(o);
       }
       return result;
     }
     if (arg instanceof Set) {
-      return SCMCons.list((Set)arg);
+      return Cons.list((Set)arg);
     }
-    if (arg instanceof SCMVector) {
-      Object[] array = ((SCMVector) arg).getArray();
-      SCMMutableVector reversed = new SCMMutableVector(Arrays.copyOf(array, array.length));
+    if (arg instanceof Vector) {
+      Object[] array = ((Vector) arg).getArray();
+      MutableVector reversed = new MutableVector(Arrays.copyOf(array, array.length));
       Collections.reverse(Arrays.asList(reversed.getArray()));
       return reversed;
     }

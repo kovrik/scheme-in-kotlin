@@ -2,7 +2,7 @@ package core.procedures.hashmaps;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVoid;
+import core.scm.Void;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public final class Merge extends AFn {
   @Override
   public Object apply(Object... args) {
     if (args.length == 0) {
-      return SCMVoid.VOID;
+      return Void.VOID;
     }
     Map<Object, Object> result = new HashMap<>();
     for (Object m : args) {

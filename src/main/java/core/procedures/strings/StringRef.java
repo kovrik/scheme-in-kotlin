@@ -2,13 +2,13 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 public final class StringRef extends AFn {
 
   public StringRef() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{CharSequence.class, SCMClass.ExactNonNegativeInteger.class}).build());
+                             .mandatory(new Class[]{CharSequence.class, Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

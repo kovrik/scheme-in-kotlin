@@ -2,7 +2,7 @@ package core.procedures.hashmaps;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 import java.util.Map;
 
@@ -24,6 +24,6 @@ public final class Keys extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    return SCMCons.list(((Map)arg).keySet());
+    return Cons.list(((Map)arg).keySet());
   }
 }

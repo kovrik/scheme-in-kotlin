@@ -3,7 +3,7 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMThunk;
+import core.scm.Thunk;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public enum LetSeq implements ISpecialForm {
     for (int i = 2; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), localEnv);
     }
-    return new SCMThunk(expression.get(expression.size() - 1), localEnv);
+    return new Thunk(expression.get(expression.size() - 1), localEnv);
   }
 
   @Override

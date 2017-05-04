@@ -4,14 +4,14 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMInputPort;
+import core.scm.InputPort;
 
 import java.io.IOException;
 
 public final class IsCharReady extends AFn {
 
   public IsCharReady() {
-    super(new FnArgsBuilder().max(1).rest(SCMInputPort.class).build());
+    super(new FnArgsBuilder().max(1).rest(InputPort.class).build());
   }
 
   @Override
@@ -21,11 +21,11 @@ public final class IsCharReady extends AFn {
 
   @Override
   public Boolean apply(Object... args) {
-    SCMInputPort inputPort;
+    InputPort inputPort;
     if (args.length == 0) {
       inputPort = Repl.getCurrentInputPort();
     } else {
-      inputPort = ((SCMInputPort)args[0]);
+      inputPort = ((InputPort)args[0]);
     }
     int bytesAvailable;
     try {

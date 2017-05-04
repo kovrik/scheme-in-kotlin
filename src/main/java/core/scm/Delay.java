@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, IDeref {
+public class Delay extends CompletableFuture<Object> implements ITyped, IDeref {
 
   private final AtomicBoolean forced = new AtomicBoolean(false);
 
@@ -17,7 +17,7 @@ public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, ID
   private final Environment env;
   private final Object expr;
 
-  public SCMDelay(Object expr, Environment env, Evaluator evaluator) {
+  public Delay(Object expr, Environment env, Evaluator evaluator) {
     super();
     this.evaluator = evaluator;
     this.env = env;
@@ -58,8 +58,8 @@ public class SCMDelay extends CompletableFuture<Object> implements ISCMClass, ID
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.DELAY;
+  public Type getType() {
+    return Type.DELAY;
   }
 
   @Override

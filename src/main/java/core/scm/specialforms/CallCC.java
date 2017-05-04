@@ -6,7 +6,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
 import core.procedures.continuations.CalledContinuation;
 import core.procedures.continuations.Continuation;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public enum CallCC implements ISpecialForm {
     Continuation cont = new Continuation();
     try {
       /* Pass Continuation to the Procedure: (proc cont) */
-      return evaluator.eval(SCMCons.list(proc, cont), env);
+      return evaluator.eval(Cons.list(proc, cont), env);
     } catch (CalledContinuation ex) {
       if (ex.getContinuation() != cont) {
         /* Not our continuation, throw it further */

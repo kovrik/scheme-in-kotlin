@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -42,35 +42,35 @@ public final class Addition extends AFn {
 
   public static Number add(Number first, Number second) {
     /* Special cases */
-    if (NumberUtils.isZero(first)) {
-      return NumberUtils.inexactnessTaint(second, first);
+    if (Utils.isZero(first)) {
+      return Utils.inexactnessTaint(second, first);
     }
-    if (NumberUtils.isZero(second)) {
-      return NumberUtils.inexactnessTaint(first, second);
+    if (Utils.isZero(second)) {
+      return Utils.inexactnessTaint(first, second);
     }
     /* Complex numbers*/
-    if (first instanceof SCMBigComplex) {
-      return ((SCMBigComplex) first).plus(second);
+    if (first instanceof BigComplex) {
+      return ((BigComplex) first).plus(second);
     }
-    if (second instanceof SCMBigComplex) {
-      return ((SCMBigComplex) second).plus(first);
+    if (second instanceof BigComplex) {
+      return ((BigComplex) second).plus(first);
     }
     /* Big Rational numbers */
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return ((SCMBigRational)first).plus((SCMBigRational)second);
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return ((BigRational)first).plus((BigRational)second);
     }
-    if (first instanceof SCMBigRational) {
+    if (first instanceof BigRational) {
       if (second instanceof Long || second instanceof BigDecimal) {
-        return ((SCMBigRational) first).plus(SCMBigRational.valueOf(second.toString(), "1"));
+        return ((BigRational) first).plus(BigRational.valueOf(second.toString(), "1"));
       } else {
-        first = ((SCMBigRational)first).doubleOrBigDecimalValue();
+        first = ((BigRational)first).doubleOrBigDecimalValue();
       }
     }
-    if (second instanceof SCMBigRational) {
+    if (second instanceof BigRational) {
       if (first instanceof Long || first instanceof BigDecimal) {
-        return SCMBigRational.valueOf(first.toString(), "1").plus((SCMBigRational) second);
+        return BigRational.valueOf(first.toString(), "1").plus((BigRational) second);
       } else {
-        second = ((SCMBigRational)second).doubleOrBigDecimalValue();
+        second = ((BigRational)second).doubleOrBigDecimalValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {
@@ -88,10 +88,10 @@ public final class Addition extends AFn {
       return result;
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).add(NumberUtils.toBigDecimal(second));
+      return ((BigDecimal)first).add(Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).add(NumberUtils.toBigDecimal(first));
+      return ((BigDecimal) second).add(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
       return ((BigInteger)first).add(new BigInteger(second.toString()));

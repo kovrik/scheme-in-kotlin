@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /* Abstract superclass of both Immutable and Mutable Vectors */
-public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
+public abstract class Vector extends AFn implements ITyped, Iterable {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -21,24 +21,24 @@ public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
   /* Contents of Vector: plain Java array */
   private final Object[] array;
 
-  SCMVector() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+  Vector() {
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[0];
   }
 
-  SCMVector(int size, Object init) {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+  Vector(int size, Object init) {
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[size];
     Arrays.fill(getArray(), init);
   }
 
-  SCMVector(Object... elements) {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+  Vector(Object... elements) {
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = elements;
   }
 
-  SCMVector(Object e) {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+  Vector(Object e) {
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[] {e};
   }
 
@@ -64,8 +64,8 @@ public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.VECTOR;
+  public Type getType() {
+    return Type.VECTOR;
   }
 
   @Override
@@ -107,6 +107,6 @@ public abstract class SCMVector extends AFn implements ISCMClass, Iterable {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof SCMVector && Arrays.equals(getArray(), ((SCMVector) obj).getArray());
+    return obj instanceof Vector && Arrays.equals(getArray(), ((Vector) obj).getArray());
   }
 }

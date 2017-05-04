@@ -2,7 +2,7 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMThunk;
+import core.scm.Thunk;
 
 public final class Eval extends AFn {
 
@@ -22,6 +22,6 @@ public final class Eval extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    return new SCMThunk(arg);
+    return new Thunk(arg);
   }
 }

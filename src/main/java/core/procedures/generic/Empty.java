@@ -2,9 +2,9 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
-import core.scm.SCMMutableVector;
-import core.scm.SCMVector;
+import core.scm.Cons;
+import core.scm.MutableVector;
+import core.scm.Vector;
 
 import java.util.*;
 
@@ -27,13 +27,13 @@ public final class Empty extends AFn {
   @Override
   public Object apply1(Object arg) {
     if (arg instanceof List) {
-      return SCMCons.list();
+      return Cons.list();
     }
     if (arg instanceof Set) {
       return new HashSet<>();
     }
-    if (arg instanceof SCMVector) {
-      return new SCMMutableVector();
+    if (arg instanceof Vector) {
+      return new MutableVector();
     }
     if (arg instanceof Map) {
       return new HashMap<>();

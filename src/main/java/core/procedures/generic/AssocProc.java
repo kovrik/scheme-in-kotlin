@@ -4,9 +4,9 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.equivalence.Equal;
-import core.scm.SCMBoolean;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
+import core.scm.Cons;
+import core.scm.Type;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.util.List;
@@ -28,12 +28,12 @@ public final class AssocProc extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    if (SCMClass.checkType(arg2, SCMClass.SCMProperList.class)) {
+    if (Type.checkType(arg2, Type.SCMProperList.class)) {
       List list = (List) arg2;
       for (int n = 0; n < list.size(); n++) {
         Object pair = list.get(n);
-        if (SCMCons.isPair(pair)) {
-          if ((SCMBoolean.toBoolean(predicate.apply2(arg1, ((SCMCons) pair).car())))) {
+        if (Cons.isPair(pair)) {
+          if ((Utils.toBoolean(predicate.apply2(arg1, ((Cons) pair).car())))) {
             return pair;
           }
         } else {

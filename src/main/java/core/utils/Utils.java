@@ -7,9 +7,9 @@ import core.procedures.math.Multiplication;
 import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
 import core.reader.Reader;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.scm.SCMSymbol;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.scm.Symbol;
 import core.writer.Writer;
 
 import java.math.BigDecimal;
@@ -23,9 +23,9 @@ import java.util.stream.IntStream;
 
 import static java.lang.Long.parseLong;
 
-public final class NumberUtils {
+public final class Utils {
 
-  private NumberUtils() {}
+  private Utils() {}
 
   public static final int DEFAULT_SCALE = 16;
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
@@ -134,7 +134,7 @@ public final class NumberUtils {
     }
     /* Multiple decimal points are not allowed*/
     if (number.indexOf('.') != number.lastIndexOf('.')) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
 
     /* Read exponent mark if present */
@@ -163,7 +163,7 @@ public final class NumberUtils {
     }
     /* Validate sign */
     if ((n.lastIndexOf('+') > 0) || (n.lastIndexOf('-') > 0)) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
 
     /* Validate all digits */
@@ -171,7 +171,7 @@ public final class NumberUtils {
     for (char c : n.toCharArray()) {
       /* Check if char is valid for this radix AND that we don't have # before digits */
       if (c != '/' && !isValidForRadix(c, radix) || (c == '#' && !hasAtLeastOneDigit)) {
-        return SCMSymbol.intern(number);
+        return Symbol.intern(number);
       }
       /* Check if it is a digit, not a hash/sign char */
       if ("#+-.".indexOf(c) == -1) {
@@ -179,7 +179,7 @@ public final class NumberUtils {
       }
     }
     if (!hasAtLeastOneDigit) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
 
     if (n.indexOf('#') > -1) {
@@ -187,14 +187,14 @@ public final class NumberUtils {
         n = n.replace('#', '0');
         exactness = exactness == null ? 'i' : exactness;
       } else {
-        return SCMSymbol.intern(number);
+        return Symbol.intern(number);
       }
     }
 
     /* Check if it is a rational number and if it is valid */
     int slashIndex = n.indexOf('/');
     if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
 
     /* Rational and Integral numbers are exact by default */
@@ -222,7 +222,7 @@ public final class NumberUtils {
       re = preProcessNumber(r, exactness, radix);
     }
     if (!(re instanceof Number)) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
 
     String i = number.substring(p, number.length() - 1);
@@ -231,9 +231,9 @@ public final class NumberUtils {
     }
     Object im = preProcessNumber(i, exactness, radix);
     if (!(im instanceof Number)) {
-      return SCMSymbol.intern(number);
+      return Symbol.intern(number);
     }
-    return isZero(re) && isZero(im) ? 0L : new SCMBigComplex(toBigDecimal((Number) re), toBigDecimal((Number)im));
+    return isZero(re) && isZero(im) ? 0L : new BigComplex(toBigDecimal((Number) re), toBigDecimal((Number)im));
   }
 
   /* Parse string into a number */
@@ -293,7 +293,7 @@ public final class NumberUtils {
         if (number instanceof Double) {
           BigDecimal bigDecimal = toBigDecimal(number);
           int scale = bigDecimal.scale();
-          return new SCMBigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+          return new BigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
         }
         return ToExact.toExact(number);
       }
@@ -308,7 +308,7 @@ public final class NumberUtils {
 
     Number num = processNumber(numerator,   r, true, useBigNum, null);
     Number den = processNumber(denominator, r, true, useBigNum, null);
-    SCMBigRational number = SCMBigRational.valueOf(num.toString(), den.toString());
+    BigRational number = BigRational.valueOf(num.toString(), den.toString());
     if (!exact) {
       Number result = ToInexact.toInexact(number);
       return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));
@@ -326,10 +326,10 @@ public final class NumberUtils {
     if (number instanceof Double) {
       return BigDecimal.valueOf((Double)number);
     }
-    if (number instanceof SCMBigRational) {
-      return ((SCMBigRational) number).toBigDecimal();
+    if (number instanceof BigRational) {
+      return ((BigRational) number).toBigDecimal();
     }
-    if (number instanceof SCMBigComplex) {
+    if (number instanceof BigComplex) {
       throw new UnsupportedOperationException("undefined for complex!");
     }
     return new BigDecimal(number.toString());
@@ -339,7 +339,7 @@ public final class NumberUtils {
     if (!(o instanceof Number)) {
       return false;
     }
-    if (o instanceof SCMBigComplex) {
+    if (o instanceof BigComplex) {
       return false;
     }
     if (o instanceof Double) {
@@ -354,7 +354,7 @@ public final class NumberUtils {
     if (!(o instanceof Number)) {
       return false;
     }
-    if (o instanceof Long || o instanceof SCMBigRational || o instanceof Integer ||
+    if (o instanceof Long || o instanceof BigRational || o instanceof Integer ||
         o instanceof BigInteger || o instanceof Short || o instanceof Byte) {
 
       return true;
@@ -362,8 +362,8 @@ public final class NumberUtils {
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).scale() == 0;
     }
-    if (o instanceof SCMBigComplex) {
-      return isExact(((SCMBigComplex) o).getRe()) && isExact(((SCMBigComplex) o).getIm());
+    if (o instanceof BigComplex) {
+      return isExact(((BigComplex) o).getRe()) && isExact(((BigComplex) o).getIm());
     }
     return false;
   }
@@ -383,8 +383,8 @@ public final class NumberUtils {
       BigDecimal bd = (BigDecimal)o;
       return bd.signum() == 0 || bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0;
     }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).isDenominatorEqualToOne();
+    if (o instanceof BigRational) {
+      return ((BigRational)o).isDenominatorEqualToOne();
     }
     if (o instanceof Double) {
       return (Double)o == Math.floor((Double)o) && !Double.isInfinite((Double)o);
@@ -406,8 +406,8 @@ public final class NumberUtils {
     if (o instanceof Double) {
       return Math.signum((Double)o) == 0.0;
     }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).signum() == 0;
+    if (o instanceof BigRational) {
+      return ((BigRational)o).signum() == 0;
     }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).signum() == 0;
@@ -440,8 +440,8 @@ public final class NumberUtils {
     if (o instanceof Double) {
       return Double.compare((Double)o, 1d) == 0;
     }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).isOne();
+    if (o instanceof BigRational) {
+      return ((BigRational)o).isOne();
     }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).compareTo(BigDecimal.ONE) == 0;
@@ -474,8 +474,8 @@ public final class NumberUtils {
     if (o instanceof Double) {
       return Math.signum((Double)o) == 1.0;
     }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).signum() == 1;
+    if (o instanceof BigRational) {
+      return ((BigRational)o).signum() == 1;
     }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).signum() == 1;
@@ -508,8 +508,8 @@ public final class NumberUtils {
     if (o instanceof Double) {
       return Math.signum((Double)o) == -1.0;
     }
-    if (o instanceof SCMBigRational) {
-      return ((SCMBigRational)o).signum() == -1;
+    if (o instanceof BigRational) {
+      return ((BigRational)o).signum() == -1;
     }
     if (o instanceof BigDecimal) {
       return ((BigDecimal)o).signum() == -1;
@@ -545,7 +545,7 @@ public final class NumberUtils {
   }
 
   public static boolean isReal(Object o) {
-    return !(o instanceof SCMBigComplex) && (o instanceof Number);
+    return !(o instanceof BigComplex) && (o instanceof Number);
   }
 
   /**
@@ -564,8 +564,8 @@ public final class NumberUtils {
       return tryToDowncast((BigDecimal) number);
     }
     /* Try to downcast Rationals with denominator = 1 */
-    if ((number instanceof SCMBigRational) && (((SCMBigRational) number).isDenominatorEqualToOne())) {
-      return tryToDowncast((SCMBigRational) number);
+    if ((number instanceof BigRational) && (((BigRational) number).isDenominatorEqualToOne())) {
+      return tryToDowncast((BigRational) number);
     }
     return number;
   }
@@ -594,7 +594,7 @@ public final class NumberUtils {
     return number;
   }
 
-  private static Number tryToDowncast(SCMBigRational bigRational) {
+  private static Number tryToDowncast(BigRational bigRational) {
     BigInteger number = bigRational.getNumerator();
     if (number.bitLength() <= 63) {
       try {
@@ -635,5 +635,14 @@ public final class NumberUtils {
       throw new WrongTypeException("bit operation not supported for: " + Writer.write(obj));
     }
     return true;
+  }
+
+  /**
+   * Converts any Object to boolean.
+   * Returns FALSE only if value is FALSE itself or null.
+   * Returns TRUE otherwise.
+   */
+  public static boolean toBoolean(Object value) {
+    return (value instanceof Boolean) ? (boolean)value : value != null;
   }
 }

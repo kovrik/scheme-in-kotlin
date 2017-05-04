@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.scm.Type;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,7 +13,7 @@ import java.math.MathContext;
 public final class Round extends AFn {
 
   public Round() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Real.class}).build());
   }
 
   @Override
@@ -39,10 +39,10 @@ public final class Round extends AFn {
       if (bd.scale() == 0) {
         return bd.round(MathContext.UNLIMITED);
       } else {
-        return bd.round(NumberUtils.DEFAULT_CONTEXT);
+        return bd.round(Utils.DEFAULT_CONTEXT);
       }
-    } else if (number instanceof SCMBigRational) {
-      return ((SCMBigRational) number).round();
+    } else if (number instanceof BigRational) {
+      return ((BigRational) number).round();
     }
     return Math.rint(number.doubleValue());
   }

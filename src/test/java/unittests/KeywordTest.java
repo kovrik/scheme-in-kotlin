@@ -1,6 +1,6 @@
 package unittests;
 
-import core.scm.SCMKeyword;
+import core.scm.Keyword;
 import org.junit.Test;
 
 import static java.lang.Boolean.FALSE;
@@ -26,9 +26,9 @@ public class KeywordTest extends AbstractTest {
 
   @Test
   public void testEvalKeywords() {
-    assertEquals(SCMKeyword.intern("a"), eval(":a", env));
-    assertEquals(SCMKeyword.intern("test"), eval(":test", env));
-    assertEquals(SCMKeyword.intern("_"), eval(":_", env));
+    assertEquals(Keyword.intern("a"), eval(":a", env));
+    assertEquals(Keyword.intern("test"), eval(":test", env));
+    assertEquals(Keyword.intern("_"), eval(":_", env));
   }
 
   @Test

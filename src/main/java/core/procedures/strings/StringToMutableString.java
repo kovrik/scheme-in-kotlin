@@ -2,7 +2,7 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
+import core.scm.MutableString;
 
 public final class StringToMutableString extends AFn {
 
@@ -17,10 +17,10 @@ public final class StringToMutableString extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    if (arg instanceof SCMMutableString || arg instanceof StringBuilder) {
+    if (arg instanceof MutableString || arg instanceof StringBuilder) {
       return arg;
     } else {
-      return new SCMMutableString(arg.toString());
+      return new MutableString(arg.toString());
     }
   }
 }

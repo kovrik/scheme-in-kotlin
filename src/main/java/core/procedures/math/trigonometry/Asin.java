@@ -2,9 +2,9 @@ package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,21 +28,21 @@ public final class Asin extends AFn {
   @Override
   public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(arg)) {
+    if (Utils.isZero(arg)) {
       return 0L;
     }
     if (arg instanceof BigDecimal) {
       return asin((BigDecimal)arg);
     } else if (arg instanceof BigInteger) {
       return asin((BigInteger)arg);
-    } else if (arg instanceof SCMBigComplex) {
-      return asin((SCMBigComplex)arg);
-    } else if (arg instanceof SCMBigRational) {
-      return asin(((SCMBigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigComplex) {
+      return asin((BigComplex)arg);
+    } else if (arg instanceof BigRational) {
+      return asin(((BigRational)arg).toBigDecimal());
     }
     double asin = Math.asin(((Number)arg).doubleValue());
     if (Double.isNaN(asin)) {
-      return asin(new SCMBigComplex((Number)arg));
+      return asin(new BigComplex((Number)arg));
     }
     return asin;
   }
@@ -54,7 +54,7 @@ public final class Asin extends AFn {
     } else {
       double asin = Math.asin(v);
       if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex(bd));
+        return asin(new BigComplex(bd));
       }
       return asin;
     }
@@ -67,7 +67,7 @@ public final class Asin extends AFn {
     } else {
       double asin = Math.asin(v);
       if (Double.isNaN(asin)) {
-        return asin(new SCMBigComplex(bi));
+        return asin(new BigComplex(bi));
       }
       return asin;
     }
@@ -79,7 +79,7 @@ public final class Asin extends AFn {
    * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
    *
    **/
-  private static Number asin(SCMBigComplex c) {
+  private static Number asin(BigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
     int signum;
@@ -112,6 +112,6 @@ public final class Asin extends AFn {
     if (Double.isInfinite(im) || Double.isNaN(im)) {
       return Double.NaN;
     }
-    return new SCMBigComplex(re, signum*im);
+    return new BigComplex(re, signum*im);
   }
 }

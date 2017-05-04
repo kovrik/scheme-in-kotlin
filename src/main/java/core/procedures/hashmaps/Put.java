@@ -3,7 +3,7 @@ package core.procedures.hashmaps;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMapEntry;
+import core.scm.MapEntry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public final class Put extends AFn {
       if (args.length > 3) {
         throw new IndexOutOfBoundsException(String.format("%s: value out of range", getName()));
       }
-      return new SCMMapEntry(args[1], args[2]);
+      return new MapEntry(args[1], args[2]);
     }
     throw new WrongTypeException(getName(), "Map or MapEntry", m);
   }

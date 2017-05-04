@@ -4,7 +4,7 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMOutputPort;
+import core.scm.OutputPort;
 import core.writer.Writer;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ public final class Write extends AFn {
 
   public Write() {
     super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{Object.class})
-                             .rest(SCMOutputPort.class).build());
+                             .rest(OutputPort.class).build());
   }
 
   @Override
@@ -23,11 +23,11 @@ public final class Write extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    SCMOutputPort outputPort;
+    OutputPort outputPort;
     if (args.length == 1) {
       outputPort = Repl.getCurrentOutputPort();
     } else {
-      outputPort = ((SCMOutputPort)args[1]);
+      outputPort = ((OutputPort)args[1]);
     }
     try {
       outputPort.write(Writer.write(args[0]));

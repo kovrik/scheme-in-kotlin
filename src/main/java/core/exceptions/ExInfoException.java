@@ -4,7 +4,7 @@ import core.writer.Writer;
 
 import java.util.Map;
 
-public class ExInfoException extends RuntimeException implements ISCMException {
+public class ExInfoException extends RuntimeException implements IException {
 
   private final Map info;
 

@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
+import core.scm.BigRational;
 
-import static core.utils.NumberUtils.E;
+import static core.utils.Utils.E;
 
 public final class Exp extends AFn {
 
@@ -52,12 +52,12 @@ public final class Exp extends AFn {
       }
       return Math.exp(number.doubleValue());
     }
-    if (number instanceof SCMBigRational) {
+    if (number instanceof BigRational) {
       /* Special cases */
-      if (((SCMBigRational) number).isZero()) {
+      if (((BigRational) number).isZero()) {
         return 1L;
       }
-      if (((SCMBigRational) number).isOne()) {
+      if (((BigRational) number).isOne()) {
         return Math.exp(1d);
       }
     }

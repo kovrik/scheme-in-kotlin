@@ -7,9 +7,9 @@ import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.VectorToList;
-import core.scm.SCMCons;
-import core.scm.SCMMutableVector;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.MutableVector;
+import core.scm.Symbol;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
 public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
-  public static final SCMSymbol QUASIQUOTE_SYMBOL = SCMSymbol.intern(QUASIQUOTE.toString());
+  public static final Symbol QUASIQUOTE_SYMBOL = Symbol.intern(QUASIQUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
@@ -49,8 +49,8 @@ public enum Quasiquote implements ISpecialForm {
    */
   // TODO Simplify
   private Object quasiquote(Object expr, Environment env, Evaluator evaluator) {
-    if (expr instanceof SCMMutableVector) {
-      SCMMutableVector vector = (SCMMutableVector) expr;
+    if (expr instanceof MutableVector) {
+      MutableVector vector = (MutableVector) expr;
       if (vector.length() == 0) {
         /* Nothing to process */
         return vector;
@@ -69,14 +69,14 @@ public enum Quasiquote implements ISpecialForm {
         return list;
       }
       /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-      if (SCMCons.isList(list) && (UNQUOTE_SYMBOL.equals(list.get(0)))) {
+      if (Cons.isList(list) && (UNQUOTE_SYMBOL.equals(list.get(0)))) {
         if (list.size() != 2) {
           throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
         }
         return evaluator.eval(list.get(1), env);
       }
       /* `,@(list 1 2) syntax is not valid */
-      if (SCMCons.isList(list) && list.size() > 0 && (UNQUOTE_SPLICING_SYMBOL.equals(list.get(0)))) {
+      if (Cons.isList(list) && list.size() > 0 && (UNQUOTE_SPLICING_SYMBOL.equals(list.get(0)))) {
         throw IllegalSyntaxException.of(list.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* List quasiquotation */
@@ -89,13 +89,13 @@ public enum Quasiquote implements ISpecialForm {
   // TODO Optimize and simplify
   private Object quasiquoteList(int depth, Object expr, Environment env, Evaluator evaluator) {
     List list = (List)expr;
-    boolean isList = (SCMCons.isList(list));
-    SCMCons result = SCMCons.list();
+    boolean isList = (Cons.isList(list));
+    Cons result = Cons.list();
     for (int n = 0; n < list.size(); n++) {
       Object o = list.get(n);
 
       /* Append quoted forms recursively */
-      if (!(o instanceof List) || (SCMCons.EMPTY.equals(o))) {
+      if (!(o instanceof List) || (Cons.EMPTY.equals(o))) {
         /* Check special cases: `(1 unquote 2) => `(1 . 2) */
         if (n > 0 && UNQUOTE_SYMBOL.equals(o)) {
           /* if UNQUOTE is just before the last element a */
@@ -106,17 +106,17 @@ public enum Quasiquote implements ISpecialForm {
             throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
         }
-        if (SCMCons.isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
+        if (Cons.isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
           throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
-        result = (SCMCons) append(result, SCMCons.list(o));
+        result = (Cons) append(result, Cons.list(o));
       } else {
         List el = (List) o;
         Object op = el.get(0);
         if (QUASIQUOTE_SYMBOL.equals(op)) {
           /* Increase depth of quasiquotation */
-          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth + 1, o, env, evaluator)));
+          result = (Cons) append(result, Cons.list(quasiquoteList(depth + 1, o, env, evaluator)));
         } else if (UNQUOTE_SYMBOL.equals(op) || (UNQUOTE_SPLICING_SYMBOL.equals(op))) {
           if (el.size() != 2) {
             throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression");
@@ -126,26 +126,26 @@ public enum Quasiquote implements ISpecialForm {
             Object eval = evaluator.eval(el.get(1), env);
             if (UNQUOTE_SYMBOL.equals(op)) {
               /* Unquote: wrap result into a list */
-              eval = SCMCons.list(eval);
+              eval = Cons.list(eval);
             }
-            result = (SCMCons) append(result, eval);
+            result = (Cons) append(result, eval);
           } else {
             /* Decrease depth of quasiquotation */
-            result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth - 1, o, env, evaluator)));
+            result = (Cons) append(result, Cons.list(quasiquoteList(depth - 1, o, env, evaluator)));
           }
         } else {
-          result = (SCMCons) append(result, SCMCons.list(quasiquoteList(depth, o, env, evaluator)));
+          result = (Cons) append(result, Cons.list(quasiquoteList(depth, o, env, evaluator)));
         }
       }
     }
     if (!isList) {
       /* In the case of a pair, if the cdr of the relevant quoted pair is empty,
        * then expr need not produce a list, and its result is used directly in place of the quoted pair */
-      if ((SCMCons.isNull(Cdr.cdr(result)))) {
+      if ((Cons.isNull(Cdr.cdr(result)))) {
         return result.get(0);
       } else {
         // TODO Is car(cdr(result)) correct?
-        return SCMCons.cons(Car.car(result), Car.car(Cdr.cdr(result)));
+        return Cons.cons(Car.car(result), Car.car(Cdr.cdr(result)));
       }
     }
     return result;
@@ -153,10 +153,10 @@ public enum Quasiquote implements ISpecialForm {
 
   // TODO Optimize vector->list and list-<vector conversions
   private Object quasiquoteVector(int depth, Object expr, Environment env, Evaluator evaluator) {
-    SCMCons list = VectorToList.vectorToList((SCMMutableVector) expr);
+    Cons list = VectorToList.vectorToList((MutableVector) expr);
     Object result = quasiquoteList(depth, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
-    if (!SCMCons.isList(result)) {
+    if (!Cons.isList(result)) {
       throw new IllegalSyntaxException("read: illegal use of '.'");
     }
     return ListToVector.listToVector(result);

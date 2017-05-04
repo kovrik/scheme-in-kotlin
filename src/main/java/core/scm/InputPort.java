@@ -3,7 +3,7 @@ package core.scm;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SCMInputPort implements ISCMClass, ISCMPort {
+public class InputPort implements ITyped, IPort {
 
   private final InputStream inputStream;
 
@@ -11,7 +11,7 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
 
   private Integer next = null;
 
-  public SCMInputPort(InputStream inputStream) {
+  public InputPort(InputStream inputStream) {
     this.inputStream = inputStream;
   }
 
@@ -50,15 +50,15 @@ public class SCMInputPort implements ISCMClass, ISCMPort {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.INPUT_PORT;
+  public Type getType() {
+    return Type.INPUT_PORT;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SCMInputPort that = (SCMInputPort) o;
+    InputPort that = (InputPort) o;
     return inputStream != null ? inputStream.equals(that.inputStream) : that.inputStream == null;
   }
 

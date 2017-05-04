@@ -3,9 +3,9 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMCons;
-import core.scm.SCMProcedure;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.Procedure;
+import core.scm.Symbol;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,12 +22,12 @@ public enum Lambda implements ISpecialForm {
   LAMBDA;
 
   @Override
-  public SCMProcedure eval(List<Object> expression, Environment env, Evaluator evaluator) {
+  public Procedure eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
       throw IllegalSyntaxException.of(toString(), expression);
     }
 
-    List<SCMSymbol> params;
+    List<Symbol> params;
     boolean variadic = false;
     /* Check if args is a List or not */
     Object args = expression.get(1);
@@ -36,7 +36,7 @@ public enum Lambda implements ISpecialForm {
       if (!((List) args).isEmpty()) {
         HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
-          if (!(o instanceof SCMSymbol) && !(SCMCons.isPair(o))) {
+          if (!(o instanceof Symbol) && !(Cons.isPair(o))) {
             throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", o));
           }
           if (temp.contains(o)) {
@@ -47,21 +47,21 @@ public enum Lambda implements ISpecialForm {
       }
       /* (lambda (arg-id ...+) body ...+) OR
        * (lambda (arg-id ...+ . rest-id) body ...+) */
-      if (SCMCons.isList(args)) {
+      if (Cons.isList(args)) {
         /* args is a proper list, hence non-variadic lambda */
-        params = (List<SCMSymbol>)args;
+        params = (List<Symbol>)args;
       } else {
         /* args is an improper list, hence variadic lambda */
-        params = SCMCons.flatten((List<SCMSymbol>)args);
+        params = Cons.flatten((List<Symbol>)args);
         variadic = true;
       }
     } else {
       /* Variadic arity */
       /* (lambda rest-id body ...+) */
-      if (!(args instanceof SCMSymbol)) {
+      if (!(args instanceof Symbol)) {
         throw new IllegalSyntaxException(String.format("lambda: bad argument sequence (%s) in form: %s",  args, expression));
       }
-      params = SCMCons.list((SCMSymbol)args);
+      params = Cons.list((Symbol)args);
       variadic = true;
     }
     Object body;
@@ -69,10 +69,10 @@ public enum Lambda implements ISpecialForm {
       body = expression.get(2);
     } else {
       /* Add implicit `begin` */
-      body = SCMCons.list(Begin.BEGIN);
+      body = Cons.list(Begin.BEGIN);
       ((List)body).addAll(expression.subList(2, expression.size()));
     }
-    return new SCMProcedure("", params, body, env, variadic);
+    return new Procedure("", params, body, env, variadic);
   }
 
   @Override

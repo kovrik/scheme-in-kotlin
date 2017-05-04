@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -35,13 +35,13 @@ public final class Log extends AFn {
   }
 
   public static Number log(Number number) {
-    if (number instanceof SCMBigComplex) {
-      return ((SCMBigComplex)number).log();
+    if (number instanceof BigComplex) {
+      return ((BigComplex)number).log();
     }
     if (number instanceof Double) {
       return Math.log(number.doubleValue());
     }
-    Number n = NumberUtils.upcast(number);
+    Number n = Utils.upcast(number);
     if (n instanceof Long) {
       if (n.longValue() == 0) {
         throw new ArithmeticException("log: undefined for 0");
@@ -51,14 +51,14 @@ public final class Log extends AFn {
       }
       return Math.log(n.doubleValue());
     }
-    if (number instanceof SCMBigRational) {
-      if (((SCMBigRational) number).isZero()){
+    if (number instanceof BigRational) {
+      if (((BigRational) number).isZero()){
         throw new ArithmeticException("log: undefined for 0");
       }
-      if (number.equals(SCMBigRational.ONE)) {
+      if (number.equals(BigRational.ONE)) {
         return 0L;
       }
-      return logBig(((SCMBigRational)number).toBigDecimal());
+      return logBig(((BigRational)number).toBigDecimal());
     }
     if (number instanceof BigDecimal) {
       if (((BigDecimal)number).signum() == 0) {
@@ -70,7 +70,7 @@ public final class Log extends AFn {
       if (((BigInteger)number).signum() == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
-      return logBig(NumberUtils.toBigDecimal(number));
+      return logBig(Utils.toBigDecimal(number));
     }
     return Math.log(number.doubleValue());
   }

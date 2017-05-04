@@ -1,7 +1,6 @@
 package core.procedures.functional;
 
 import core.procedures.AFn;
-import core.scm.SCMVoid;
 
 public final class Void extends AFn {
 
@@ -19,6 +18,6 @@ public final class Void extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    return SCMVoid.VOID;
+    return core.scm.Void.VOID;
   }
 }

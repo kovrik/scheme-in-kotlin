@@ -7,9 +7,9 @@ import core.writer.Writer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public class SCMFuture extends FutureTask implements ISCMClass, IDeref {
+public class Future extends FutureTask implements ITyped, IDeref {
 
-  public SCMFuture(Object expr, Environment env, Evaluator evaluator) {
+  public Future(Object expr, Environment env, Evaluator evaluator) {
     super(() -> evaluator.eval(expr, env));
   }
 
@@ -26,8 +26,8 @@ public class SCMFuture extends FutureTask implements ISCMClass, IDeref {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.FUTURE;
+  public Type getType() {
+    return Type.FUTURE;
   }
 
   @Override

@@ -7,27 +7,27 @@ import java.util.*;
 import static core.writer.Writer.write;
 
 // TODO Separate class for Proper and Improper Lists?
-public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
+public class Cons<E> extends LinkedList<E> implements ICons, ITyped {
 
   /* Empty list constant */
-  public static final SCMCons EMPTY = new SCMCons() {
+  public static final Cons EMPTY = new Cons() {
     @Override public boolean isList() { return true; }
-    @Override public SCMClass getSCMClass() { return SCMClass.LIST; }
+    @Override public Type getType() { return Type.LIST; }
   };
 
   private boolean isList;
 
-  private SCMCons() {
+  private Cons() {
     super();
     isList = true;
   }
 
-  private SCMCons(Collection<? extends E> c) {
+  private Cons(Collection<? extends E> c) {
     super(c);
     isList = true;
   }
 
-  private SCMCons(E car, E cdr) {
+  private Cons(E car, E cdr) {
     super();
     add(car);
     isList = isList(cdr);
@@ -51,7 +51,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   @Override
   public E car() {
     if (isEmpty()) {
-      throw new WrongTypeException("car", SCMClass.PAIR.getName(), EMPTY);
+      throw new WrongTypeException("car", Type.PAIR.getName(), EMPTY);
     }
     return getFirst();
   }
@@ -62,14 +62,14 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   /* Convert list to improper list (dotted pair, cons cells) */
-  public SCMCons<E> toCons() {
+  public Cons<E> toCons() {
     if (!isList()) {
       return this;
     }
     /* Cons backwards */
     E last = get(size() - 1);
     E beforeLast = get(size() - 2);
-    SCMCons<E> cons = cons(beforeLast, last);
+    Cons<E> cons = cons(beforeLast, last);
     for (int n = size() - 3; n >= 0; n--) {
       cons = cons(get(n), (E)cons);
     }
@@ -77,8 +77,8 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return isList ? SCMClass.LIST : SCMClass.PAIR;
+  public Type getType() {
+    return isList ? Type.LIST : Type.PAIR;
   }
 
   @Override
@@ -86,48 +86,48 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return toString(this);
   }
 
-  public static <E> SCMCons<E> cons(E car, E cdr) {
+  public static <E> Cons<E> cons(E car, E cdr) {
     if (car == null && cdr == null) {
       return EMPTY;
     }
-    return (cdr == null) ? new SCMCons(car, EMPTY) : new SCMCons<>(car, cdr);
+    return (cdr == null) ? new Cons(car, EMPTY) : new Cons<>(car, cdr);
   }
 
-  public static <E> SCMCons<E> list() {
-    return new SCMCons<>();
+  public static <E> Cons<E> list() {
+    return new Cons<>();
   }
 
-  public static <E> SCMCons<E> list(E e) {
-    SCMCons<E> list = new SCMCons<>();
+  public static <E> Cons<E> list(E e) {
+    Cons<E> list = new Cons<>();
     list.add(e);
     return list;
   }
 
-  public static <E> SCMCons<E> list(E e1, E e2) {
-    SCMCons<E> list = new SCMCons<>();
+  public static <E> Cons<E> list(E e1, E e2) {
+    Cons<E> list = new Cons<>();
     list.add(e1);
     list.add(e2);
     return list;
   }
 
-  public static <E> SCMCons<E> list(E e1, E e2, E e3) {
-    SCMCons<E> list = new SCMCons<>();
+  public static <E> Cons<E> list(E e1, E e2, E e3) {
+    Cons<E> list = new Cons<>();
     list.add(e1);
     list.add(e2);
     list.add(e3);
     return list;
   }
 
-  public static <E> SCMCons<E> list(E... elements) {
+  public static <E> Cons<E> list(E... elements) {
     return (elements == null || elements.length == 0) ? EMPTY : list(Arrays.asList(elements));
   }
 
-  public static <E> SCMCons<E> list(Collection<? extends E> c) {
+  public static <E> Cons<E> list(Collection<? extends E> c) {
     if (c == null || c.isEmpty()) { return EMPTY; }
-    return new SCMCons<>(c);
+    return new Cons<>(c);
   }
 
-  /* Return true if o is a List or SCMCons and a list */
+  /* Return true if o is a List or Cons and a list */
   public static boolean isList(Object o) {
     return ((o instanceof List) && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
   }
@@ -154,9 +154,9 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (!isList(list)) {
       sb.append(write(list.get(0)));
       Object cdr = list.get(list.size() - 1);
-      while (cdr instanceof SCMCons) {
-        sb.append(" ").append(write(((SCMCons) cdr).getFirst()));
-        cdr = ((SCMCons)cdr).getLast();
+      while (cdr instanceof Cons) {
+        sb.append(" ").append(write(((Cons) cdr).getFirst()));
+        cdr = ((Cons)cdr).getLast();
       }
       /* Dotted notation */
       sb.append(" . ").append(write(cdr));
@@ -196,7 +196,7 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     if (size() == 0 && ((List) o).size() == 0) return true;
     if (this.size() != ((List)o).size()) return false;
     /* Improper lists are not equal to Proper lists, even if they have the same elements */
-    if ((o instanceof SCMCons) && (isList != ((SCMCons) o).isList)) return false;
+    if ((o instanceof Cons) && (isList != ((Cons) o).isList)) return false;
     Iterator<E> thisIterator = this.iterator();
     Iterator otherIterator = ((List) o).iterator();
     while (thisIterator.hasNext() && otherIterator.hasNext()) {

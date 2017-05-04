@@ -3,8 +3,8 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
-import core.scm.SCMVector;
+import core.scm.Cons;
+import core.scm.Vector;
 
 import java.util.*;
 
@@ -33,12 +33,12 @@ public final class Sort extends AFn {
         return arg;
       }
       if (arg instanceof Set) {
-        SCMCons list = SCMCons.list((Set) arg);
+        Cons list = Cons.list((Set) arg);
         Collections.sort(list);
         return list;
       }
-      if (arg instanceof SCMVector) {
-        Arrays.sort(((SCMVector) arg).getArray());
+      if (arg instanceof Vector) {
+        Arrays.sort(((Vector) arg).getArray());
         return arg;
       }
       if (arg instanceof Map) {

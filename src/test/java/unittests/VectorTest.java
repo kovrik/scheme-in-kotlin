@@ -1,9 +1,9 @@
 package unittests;
 
-import core.scm.SCMMutableVector;
+import core.scm.MutableVector;
 import org.junit.Test;
 
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -19,19 +19,19 @@ public class VectorTest extends AbstractTest {
 
   @Test
   public void testEvalVector() {
-    assertEquals(new SCMMutableVector(), eval("#()", env));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("#(1 2 3 )", env));
+    assertEquals(new MutableVector(), eval("#()", env));
+    assertEquals(new MutableVector(1L, 2L, 3L), eval("#(1 2 3 )", env));
 
-    assertEquals(new SCMMutableVector(), eval("(vector)", env));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env));
-    assertEquals(new SCMMutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env));
+    assertEquals(new MutableVector(), eval("(vector)", env));
+    assertEquals(new MutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env));
+    assertEquals(new MutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env));
   }
 
   @Test
   public void testEvalMakeVector() {
-    assertEquals(new SCMMutableVector(1L, 1L, 1L), eval("(make-vector 3 1)", env));
-    assertEquals(new SCMMutableVector(), eval("(make-vector 0)", env));
-    assertEquals(new SCMMutableVector(null, null, null), eval("(make-vector 3)", env));
+    assertEquals(new MutableVector(1L, 1L, 1L), eval("(make-vector 3 1)", env));
+    assertEquals(new MutableVector(), eval("(make-vector 0)", env));
+    assertEquals(new MutableVector(null, null, null), eval("(make-vector 3)", env));
     try {
       eval("(make-vector 1 2 3)", env);
       fail();
@@ -175,12 +175,12 @@ public class VectorTest extends AbstractTest {
     String sexp = "(begin (define v (vector 1 2 3))" +
         "       (vector-fill! v 3)" +
         "       v)";
-    assertEquals(new SCMMutableVector(3L, 3L, 3L), eval(sexp, env));
+    assertEquals(new MutableVector(3L, 3L, 3L), eval(sexp, env));
 
     sexp = "(begin (define v (vector))" +
         "       (vector-fill! v 3)" +
         "       v)";
-    assertEquals(new SCMMutableVector(), eval(sexp, env));
+    assertEquals(new MutableVector(), eval(sexp, env));
 
     sexp = "(begin (define v (list 1 2 3))" +
         "       (vector-fill! v 3)" +

@@ -2,12 +2,12 @@ package core.procedures.symbols;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 public final class SymbolToString extends AFn {
 
   public SymbolToString() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMSymbol.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Symbol.class}).build());
   }
 
   @Override

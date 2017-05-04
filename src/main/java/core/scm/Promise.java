@@ -5,7 +5,7 @@ import core.writer.Writer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISCMClass {
+public class Promise extends CompletableFuture<Object> implements IDeref, ITyped {
 
   @Override
   public Object deref() {
@@ -20,8 +20,8 @@ public class SCMPromise extends CompletableFuture<Object> implements IDeref, ISC
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.PROMISE;
+  public Type getType() {
+    return Type.PROMISE;
   }
 
   @Override

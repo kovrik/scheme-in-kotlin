@@ -4,17 +4,17 @@ import core.Repl;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.reader.Reader;
-import core.scm.SCMCons;
-import core.scm.SCMInputPort;
+import core.scm.Cons;
+import core.scm.InputPort;
 import core.scm.specialforms.Begin;
-import core.scm.SCMThunk;
+import core.scm.Thunk;
 
 import java.util.List;
 
 public final class Read extends AFn {
 
   public Read() {
-    super(new FnArgsBuilder().max(1).rest(SCMInputPort.class).build());
+    super(new FnArgsBuilder().max(1).rest(InputPort.class).build());
   }
 
   @Override
@@ -24,14 +24,14 @@ public final class Read extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    SCMInputPort inputPort;
+    InputPort inputPort;
     if (args.length == 0) {
       inputPort = Repl.getCurrentInputPort();
     } else {
-      inputPort = ((SCMInputPort)args[0]);
+      inputPort = ((InputPort)args[0]);
     }
-    List<Object> sexps = SCMCons.list(Begin.BEGIN);
+    List<Object> sexps = Cons.list(Begin.BEGIN);
     sexps.addAll(new Reader(inputPort.getInputStream()).read());
-    return new SCMThunk(sexps);
+    return new Thunk(sexps);
   }
 }

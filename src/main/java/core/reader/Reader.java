@@ -1,10 +1,10 @@
 package core.reader;
 
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMCons;
-import core.scm.SCMKeyword;
-import core.scm.SCMMutableVector;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.Keyword;
+import core.scm.MutableVector;
+import core.scm.Symbol;
 import core.scm.specialforms.Quasiquote;
 import core.scm.specialforms.Quote;
 import core.scm.specialforms.Unquote;
@@ -13,13 +13,13 @@ import core.scm.specialforms.UnquoteSplicing;
 import java.io.*;
 import java.util.*;
 
-import static core.utils.NumberUtils.*;
+import static core.utils.Utils.*;
 
 public class Reader implements IReader {
 
-  static final SCMSymbol DOT = SCMSymbol.intern(".");
+  static final Symbol DOT = Symbol.intern(".");
 
-  private static final SCMSymbol DEREF = SCMSymbol.intern("deref");
+  private static final Symbol DEREF = Symbol.intern("deref");
 
   private static final String LINE_BREAKS = "\n\f\r";
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
@@ -144,7 +144,7 @@ public class Reader implements IReader {
         switch (s) {
           case "true":  return true;
           case "false": return false;
-          default: return SCMSymbol.intern(s);
+          default: return Symbol.intern(s);
         }
       }
     }
@@ -153,11 +153,11 @@ public class Reader implements IReader {
   private Object readHash() throws IOException {
     char c = (char) reader.read();
     if (c == '(') {
-      SCMMutableVector vector = readVector(')');
+      MutableVector vector = readVector(')');
       if (vector.length() == 0) {
         return vector;
       }
-      return SCMCons.list(Quote.QUOTE_SYMBOL, vector);
+      return Cons.list(Quote.QUOTE_SYMBOL, vector);
     } else if (c == '{') {
       return readSet();
     } else if (c == '\\') {
@@ -226,7 +226,7 @@ public class Reader implements IReader {
    * <unquote-splicing> -> ,@<form>
    */
   private List readQuote(char c) throws IOException {
-    SCMSymbol symbol = null;
+    Symbol symbol = null;
     if (c == '\'') {
       symbol = Quote.QUOTE_SYMBOL;
     } else if (c == '`') {
@@ -240,7 +240,7 @@ public class Reader implements IReader {
         symbol = Unquote.UNQUOTE_SYMBOL;
       }
     }
-    return SCMCons.list(symbol, nextNonNullToken());
+    return Cons.list(symbol, nextNonNullToken());
   }
 
   /**
@@ -346,8 +346,8 @@ public class Reader implements IReader {
    * Syntax:
    * <list> -> (<list_contents>)
    */
-  private SCMCons<Object> readList(boolean allowImproperList, char terminator) throws IOException {
-    SCMCons<Object> list = SCMCons.EMPTY;
+  private Cons<Object> readList(boolean allowImproperList, char terminator) throws IOException {
+    Cons<Object> list = Cons.EMPTY;
     /* Remember position of a dot (if we meet it) */
     int dotPos = -1;
     int i;
@@ -371,13 +371,13 @@ public class Reader implements IReader {
         dotPos = list.size();
         /* Dot Special Form is allowed as the first element of a list */
         if (dotPos == 0) {
-          list = SCMCons.list(DOT);
+          list = Cons.list(DOT);
         }
       } else if (token != null) {
         /* List is empty so far */
         if (list.isEmpty()) {
           /* Initialize list with the first element (can't modify EMPTY) */
-          list = SCMCons.list(token);
+          list = Cons.list(token);
         } else {
           /* Add list element */
           list.add(token);
@@ -402,9 +402,9 @@ public class Reader implements IReader {
    * Syntax:
    * <vector> -> #(<vector_contents>)
    */
-  private SCMMutableVector readVector(char terminator) throws IOException {
+  private MutableVector readVector(char terminator) throws IOException {
     /* Improper lists are not allowed */
-    return new SCMMutableVector(readList(false, terminator).toArray());
+    return new MutableVector(readList(false, terminator).toArray());
   }
 
   /**
@@ -490,7 +490,7 @@ public class Reader implements IReader {
    * Syntax:
    * <keyword> -> :<token>
    */
-  private SCMKeyword readKeyword() throws IOException {
+  private Keyword readKeyword() throws IOException {
     String s = readUntilDelimiter();
     if (s.isEmpty()) {
       /* Skip everything until line break */
@@ -498,7 +498,7 @@ public class Reader implements IReader {
       while (!isLineBreak(c)) { c = (char) reader.read(); }
       throw new IllegalSyntaxException("read: illegal use of :");
     }
-    return SCMKeyword.intern(s);
+    return Keyword.intern(s);
   }
 
   /**
@@ -507,6 +507,6 @@ public class Reader implements IReader {
    * \@f -> (deref f)
    */
   private List<Object> readDeref() throws IOException {
-    return SCMCons.list(DEREF, nextNonNullToken());
+    return Cons.list(DEREF, nextNonNullToken());
   }
 }

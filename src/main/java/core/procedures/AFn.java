@@ -2,7 +2,7 @@ package core.procedures;
 
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
-import core.scm.SCMClass;
+import core.scm.Type;
 import core.writer.Writer;
 
 /* Abstract superclass of all functions */
@@ -100,21 +100,21 @@ public abstract class AFn implements IFn<Object[], Object> {
       Object arg = args[i];
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
-        if (!(SCMClass.checkType(arg, mandatoryArgsTypes[i]))) {
+        if (!(Type.checkType(arg, mandatoryArgsTypes[i]))) {
           throw new WrongTypeException(getName(), Writer.writeClass(mandatoryArgsTypes[i]), arg);
         }
         continue;
       }
       /* Last argument (optional special case) */
       if (i == argsSize - 1 && (lastArgType != null)) {
-        if (!(SCMClass.checkType(arg, lastArgType))) {
+        if (!(Type.checkType(arg, lastArgType))) {
           throw new WrongTypeException(getName(), Writer.writeClass(lastArgType), arg);
         }
         continue;
       }
       /* Rest args */
       if (restArgsType != null) {
-        if (!(SCMClass.checkType(arg, restArgsType))) {
+        if (!(Type.checkType(arg, restArgsType))) {
           throw new WrongTypeException(getName(), Writer.writeClass(restArgsType), arg);
         }
       }

@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.utils.NumberUtils;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -63,10 +63,10 @@ public class Modulo extends AFn {
       return apply((BigDecimal) first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return apply((BigDecimal) first, NumberUtils.toBigDecimal(second));
+      return apply((BigDecimal) first, Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return apply(NumberUtils.toBigDecimal(first), (BigDecimal) second);
+      return apply(Utils.toBigDecimal(first), (BigDecimal) second);
     }
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return apply((BigInteger) first, (BigInteger)second);

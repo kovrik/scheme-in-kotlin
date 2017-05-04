@@ -17,10 +17,10 @@ import java.util.Map;
  *
  * will reference to the same symbol object.
  */
-public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
+public final class Symbol extends AFn implements ITyped, INamed, IMeta {
 
   /* Pool of all interned symbols */
-  private static final InternPool<SCMSymbol> POOL = new InternPool<>();
+  private static final InternPool<Symbol> POOL = new InternPool<>();
 
   private static final String SPECIAL_CHARS = "()[]{}\",'`;|\\";
 
@@ -30,12 +30,12 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
   /* Metadata */
   private Map meta;
 
-  public static SCMSymbol intern(String name) {
+  public static Symbol intern(String name) {
     // always intern symbols
-    return POOL.intern(new SCMSymbol(name));
+    return POOL.intern(new Symbol(name));
   }
 
-  private SCMSymbol(String name) {
+  private Symbol(String name) {
     this(name, null);
   }
 
@@ -43,7 +43,7 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
    * Note that symbols with metadata are not interned!
    * TODO check if should actually intern syms with meta?
    */
-  public SCMSymbol(String name, Map meta) {
+  public Symbol(String name, Map meta) {
     this.name = name;
     this.escape = hasSpecialChars(name);
     this.meta = meta;
@@ -73,8 +73,8 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.SYMBOL;
+  public Type getType() {
+    return Type.SYMBOL;
   }
 
   @Override
@@ -85,8 +85,8 @@ public final class SCMSymbol extends AFn implements ISCMClass, INamed, IMeta {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || (o.getClass() != SCMSymbol.class)) return false;
-    SCMSymbol other = (SCMSymbol) o;
+    if (o == null || (o.getClass() != Symbol.class)) return false;
+    Symbol other = (Symbol) o;
     return name != null ? name.equals(other.name) : other.name == null;
   }
 

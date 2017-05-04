@@ -5,8 +5,8 @@ import core.evaluator.Evaluator;
 import core.evaluator.Reflector;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ThrowableWrapper;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.Symbol;
 
 import java.util.*;
 
@@ -15,8 +15,8 @@ public enum Try implements ISpecialForm {
 
   private static final Reflector REFLECTOR = new Reflector();
 
-  private static final SCMSymbol CATCH   = SCMSymbol.intern("catch");
-  private static final SCMSymbol FINALLY = SCMSymbol.intern("finally");
+  private static final Symbol CATCH   = Symbol.intern("catch");
+  private static final Symbol FINALLY = Symbol.intern("finally");
 
   @Override
   public String toString() {
@@ -30,7 +30,7 @@ public enum Try implements ISpecialForm {
     }
     boolean hadCatch = false;
     Map<Class, Object> catches = Collections.emptyMap();
-    Map<Class, SCMSymbol> catchBindings = Collections.emptyMap();
+    Map<Class, Symbol> catchBindings = Collections.emptyMap();
     Object fin = null;
     List<Object> expressions = new ArrayList<>();
     /* Init and check syntax */
@@ -44,8 +44,8 @@ public enum Try implements ISpecialForm {
             throw new IllegalSyntaxException("try: finally clause must be last in try expression");
           }
           if (expr.size() > 1) {
-            fin = SCMCons.list(Begin.BEGIN);
-            ((SCMCons)fin).addAll(expr.subList(1, expr.size()));
+            fin = Cons.list(Begin.BEGIN);
+            ((Cons)fin).addAll(expr.subList(1, expr.size()));
           }
           continue;
         } else if (CATCH.equals(op)) {
@@ -60,15 +60,15 @@ public enum Try implements ISpecialForm {
           Class clazz = REFLECTOR.getClazz(expr.get(1).toString());
           Object catchExpr = null;
           if (expr.size() > 3) {
-            catchExpr = SCMCons.list(Begin.BEGIN);
-            ((SCMCons)catchExpr).addAll(expr.subList(3, expr.size()));
+            catchExpr = Cons.list(Begin.BEGIN);
+            ((Cons)catchExpr).addAll(expr.subList(3, expr.size()));
           }
           catches.put(clazz, catchExpr);
           Object cb = expr.get(2);
-          if (!(cb instanceof SCMSymbol)) {
+          if (!(cb instanceof Symbol)) {
             throw new IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: " + cb);
           }
-          catchBindings.put(clazz, (SCMSymbol) cb);
+          catchBindings.put(clazz, (Symbol) cb);
           continue;
         } else {
           if (hadCatch) {

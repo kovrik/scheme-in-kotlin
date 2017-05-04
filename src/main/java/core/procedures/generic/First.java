@@ -3,7 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVector;
+import core.scm.Vector;
 
 import java.util.List;
 import java.util.Set;
@@ -36,8 +36,8 @@ public class First extends AFn {
     } else if (arg instanceof Set) {
       Set set = (Set) arg;
       return set.isEmpty() ? null : set.iterator().next();
-    } else if (arg instanceof SCMVector) {
-      SCMVector vec = (SCMVector) arg;
+    } else if (arg instanceof Vector) {
+      Vector vec = (Vector) arg;
       return vec.length() == 0 ? null : vec.get(0);
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;

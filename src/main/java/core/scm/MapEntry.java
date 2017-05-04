@@ -4,13 +4,13 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
-public class SCMMapEntry extends AFn implements IMapEntry, ISCMClass {
+public class MapEntry extends AFn implements IMapEntry, ITyped {
 
   private final Object key;
   private final Object val;
 
-  public SCMMapEntry(Object key, Object val) {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.ExactNonNegativeInteger.class}).build());
+  public MapEntry(Object key, Object val) {
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.key = key;
     this.val = val;
   }
@@ -50,8 +50,8 @@ public class SCMMapEntry extends AFn implements IMapEntry, ISCMClass {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.MAP_ENTRY;
+  public Type getType() {
+    return Type.MAP_ENTRY;
   }
 
   @Override
@@ -68,7 +68,7 @@ public class SCMMapEntry extends AFn implements IMapEntry, ISCMClass {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SCMMapEntry that = (SCMMapEntry) o;
+    MapEntry that = (MapEntry) o;
     if (key != null ? !key.equals(that.key) : that.key != null) return false;
     return val != null ? val.equals(that.val) : that.val == null;
   }

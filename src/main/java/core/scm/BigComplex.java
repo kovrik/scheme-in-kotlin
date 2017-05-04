@@ -4,45 +4,45 @@ import core.procedures.math.*;
 import core.procedures.math.trigonometry.Atan;
 import core.procedures.math.trigonometry.Cos;
 import core.procedures.math.trigonometry.Sin;
-import core.utils.NumberUtils;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 
 /**
- * TODO Create SCMComplex class for small complex numbers
+ * TODO Create Complex class for small complex numbers
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
-public final class SCMBigComplex extends Number implements ISCMClass {
+public final class BigComplex extends Number implements ITyped {
 
   /* Imaginary unit (i) */
-  public static final SCMBigComplex I = new SCMBigComplex(BigDecimal.ZERO, BigDecimal.ONE);
+  public static final BigComplex I = new BigComplex(BigDecimal.ZERO, BigDecimal.ONE);
 
   private final BigDecimal re;
   private final BigDecimal im;
 
-  public SCMBigComplex(BigDecimal tre, BigDecimal tim) {
+  public BigComplex(BigDecimal tre, BigDecimal tim) {
     int minScale = (tre.scale() > 0 || tim.scale() > 0) ? 1 : 0;
     int reScaleStripped = tre.stripTrailingZeros().scale();
     int imScaleStripped = tim.stripTrailingZeros().scale();
-    int reScale = Math.min(NumberUtils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped));
-    int imScale = Math.min(NumberUtils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped));
+    int reScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped));
+    int imScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped));
     if (reScaleStripped > 0) {
-      this.re = tre.setScale(reScale, NumberUtils.ROUNDING_MODE).stripTrailingZeros();
+      this.re = tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros();
     } else {
-      this.re = tre.setScale(reScale, NumberUtils.ROUNDING_MODE);
+      this.re = tre.setScale(reScale, Utils.ROUNDING_MODE);
     }
     if (imScaleStripped > 0) {
-      this.im = tim.setScale(imScale, NumberUtils.ROUNDING_MODE).stripTrailingZeros();
+      this.im = tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros();
     } else {
-      this.im = tim.setScale(imScale, NumberUtils.ROUNDING_MODE);
+      this.im = tim.setScale(imScale, Utils.ROUNDING_MODE);
     }
   }
 
-  public SCMBigComplex(Number re, Number im) {
-    this(NumberUtils.toBigDecimal(re), NumberUtils.toBigDecimal(im));
+  public BigComplex(Number re, Number im) {
+    this(Utils.toBigDecimal(re), Utils.toBigDecimal(im));
   }
 
-  public SCMBigComplex(Number re) {
+  public BigComplex(Number re) {
     this(re, BigDecimal.ZERO);
   }
 
@@ -61,31 +61,31 @@ public final class SCMBigComplex extends Number implements ISCMClass {
   }
 
   /**
-   * Convert Number to SCMBigComplex
+   * Convert Number to BigComplex
    */
-  public static SCMBigComplex of(Number number) {
-    return (number instanceof SCMBigComplex) ? (SCMBigComplex)number : new SCMBigComplex(number);
+  public static BigComplex of(Number number) {
+    return (number instanceof BigComplex) ? (BigComplex)number : new BigComplex(number);
   }
 
   /**
    * Addition
    */
-  public SCMBigComplex plus(Number other) {
-    if (other instanceof SCMBigComplex) {
-      return new SCMBigComplex(re.add(((SCMBigComplex) other).getRe()), im.add(((SCMBigComplex) other).getIm()));
+  public BigComplex plus(Number other) {
+    if (other instanceof BigComplex) {
+      return new BigComplex(re.add(((BigComplex) other).getRe()), im.add(((BigComplex) other).getIm()));
     } else {
-      return new SCMBigComplex(re.add(NumberUtils.toBigDecimal(other)), im);
+      return new BigComplex(re.add(Utils.toBigDecimal(other)), im);
     }
   }
 
   /**
    * Subtraction
    */
-  public SCMBigComplex minus(Number other) {
-    if (other instanceof SCMBigComplex) {
-      return new SCMBigComplex(re.subtract(((SCMBigComplex) other).getRe()), im.subtract(((SCMBigComplex) other).getIm()));
+  public BigComplex minus(Number other) {
+    if (other instanceof BigComplex) {
+      return new BigComplex(re.subtract(((BigComplex) other).getRe()), im.subtract(((BigComplex) other).getIm()));
     } else {
-      return new SCMBigComplex(re.subtract(NumberUtils.toBigDecimal(other)), im);
+      return new BigComplex(re.subtract(Utils.toBigDecimal(other)), im);
     }
   }
 
@@ -94,13 +94,13 @@ public final class SCMBigComplex extends Number implements ISCMClass {
    *
    * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
    **/
-  public SCMBigComplex multiply(Number other) {
-    SCMBigComplex o = of(other);
+  public BigComplex multiply(Number other) {
+    BigComplex o = of(other);
     BigDecimal a = this.re;
     BigDecimal b = this.im;
     BigDecimal c = o.re;
     BigDecimal d = o.im;
-    return new SCMBigComplex((a.multiply(c).subtract(b.multiply(d))), (b.multiply(c).add(a.multiply(d))));
+    return new BigComplex((a.multiply(c).subtract(b.multiply(d))), (b.multiply(c).add(a.multiply(d))));
   }
 
   /**
@@ -111,7 +111,7 @@ public final class SCMBigComplex extends Number implements ISCMClass {
    * gamma = sqrt((a + sqrt(a*a + b*b))/2)
    * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
    */
-  public SCMBigComplex sqrt() {
+  public BigComplex sqrt() {
     double a   = this.re.doubleValue();
     double b   = this.im.doubleValue();
     int signum = this.im.signum();
@@ -119,7 +119,7 @@ public final class SCMBigComplex extends Number implements ISCMClass {
     double s = Math.sqrt(a * a + b * b);
     double gamma = Math.sqrt((s+a)/2);
     double delta = signum * Math.sqrt((s-a)/2);
-    return new SCMBigComplex(gamma, delta);
+    return new BigComplex(gamma, delta);
   }
 
   /**
@@ -129,8 +129,8 @@ public final class SCMBigComplex extends Number implements ISCMClass {
    * ------ =  ----------  + --------- i
    * c + di    c*c + d*d     c*c + d*d
    */
-  public SCMBigComplex divide(Number other) {
-    SCMBigComplex o = of(other);
+  public BigComplex divide(Number other) {
+    BigComplex o = of(other);
     BigDecimal a = this.re;
     BigDecimal b = this.im;
     BigDecimal c = o.re;
@@ -138,8 +138,8 @@ public final class SCMBigComplex extends Number implements ISCMClass {
     BigDecimal real = a.multiply(c).add(b.multiply(d));
     BigDecimal imag = b.multiply(c).subtract(a.multiply(d));
     BigDecimal denom = c.multiply(c).add(d.multiply(d));
-    return new SCMBigComplex(real.divide(denom, NumberUtils.DEFAULT_CONTEXT),
-                             imag.divide(denom, NumberUtils.DEFAULT_CONTEXT));
+    return new BigComplex(real.divide(denom, Utils.DEFAULT_CONTEXT),
+                          imag.divide(denom, Utils.DEFAULT_CONTEXT));
   }
 
   /**
@@ -159,17 +159,17 @@ public final class SCMBigComplex extends Number implements ISCMClass {
    * c: z2.re
    * d: z2.im
    */
-  public SCMBigComplex expt(Number e) {
+  public BigComplex expt(Number e) {
     BigDecimal c;
     BigDecimal d;
-    if (e instanceof SCMBigComplex) {
-      c = ((SCMBigComplex) e).getRe();
-      d = ((SCMBigComplex) e).getIm();
+    if (e instanceof BigComplex) {
+      c = ((BigComplex) e).getRe();
+      d = ((BigComplex) e).getIm();
     } else {
-      if (e instanceof SCMBigRational) {
-        c = ((SCMBigRational) e).toBigDecimal();
+      if (e instanceof BigRational) {
+        c = ((BigRational) e).toBigDecimal();
       } else {
-        c = NumberUtils.toBigDecimal(e);
+        c = Utils.toBigDecimal(e);
       }
       d = BigDecimal.ZERO;
     }
@@ -179,7 +179,7 @@ public final class SCMBigComplex extends Number implements ISCMClass {
     Number B = Addition.add(Multiplication.apply(c, t), Multiplication.apply(d, Log.log(r)));
     Number re = Multiplication.apply(A, Cos.cos(B));
     Number im = Multiplication.apply(A, Sin.sin(B));
-    return new SCMBigComplex(re, im);
+    return new BigComplex(re, im);
   }
 
   /**
@@ -187,10 +187,10 @@ public final class SCMBigComplex extends Number implements ISCMClass {
    *
    * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
    **/
-  public SCMBigComplex log() {
+  public BigComplex log() {
     Number re = Log.log(magnitude());
     Number im = angle();
-    return new SCMBigComplex(re, im);
+    return new BigComplex(re, im);
   }
 
   /**
@@ -228,10 +228,10 @@ public final class SCMBigComplex extends Number implements ISCMClass {
         throw new ArithmeticException("Undefined for 0+0i");
       }
     } else if (re.signum() < 0) {
-      double atan = Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
+      double atan = Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT));
       return (im.signum() >= 0) ? atan + Math.PI : atan - Math.PI;
     } else {
-      return Atan.atan(im.divide(re, NumberUtils.DEFAULT_CONTEXT));
+      return Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT));
     }
   }
 
@@ -256,8 +256,8 @@ public final class SCMBigComplex extends Number implements ISCMClass {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.COMPLEX;
+  public Type getType() {
+    return Type.COMPLEX;
   }
 
   /**
@@ -271,7 +271,7 @@ public final class SCMBigComplex extends Number implements ISCMClass {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SCMBigComplex that = (SCMBigComplex) o;
+    BigComplex that = (BigComplex) o;
     if (re != null ? !re.equals(that.re) : that.re != null) return false;
     return im != null ? im.equals(that.im) : that.im == null;
   }

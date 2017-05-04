@@ -4,7 +4,7 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.reader.StringReader;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.util.Arrays;
 
@@ -28,8 +28,8 @@ public abstract class AbstractTest {
     return eval.macroexpandAndEvaluate(reader.readFirst(sexp), env);
   }
 
-  protected SCMSymbol s(String str) {
-    return SCMSymbol.intern(str);
+  protected Symbol s(String str) {
+    return Symbol.intern(str);
   }
 
   protected void assertAllEqual(Object expected, String[] forms, Environment env) {

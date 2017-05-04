@@ -1,15 +1,15 @@
 package core.procedures;
 
-import core.scm.ISCMClass;
-import core.scm.SCMClass;
+import core.scm.ITyped;
+import core.scm.Type;
 
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
-public interface IFn<T, R> extends ISCMClass, Function<T, R>, Callable, Runnable {
+public interface IFn<T, R> extends ITyped, Function<T, R>, Callable, Runnable {
 
   @Override
-  default SCMClass getSCMClass() {
-    return SCMClass.PROCEDURE;
+  default Type getType() {
+    return Type.PROCEDURE;
   }
 }

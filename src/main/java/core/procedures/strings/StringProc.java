@@ -2,7 +2,7 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
+import core.scm.MutableString;
 
 public final class StringProc extends AFn {
 
@@ -16,11 +16,11 @@ public final class StringProc extends AFn {
   }
 
   @Override
-  public SCMMutableString apply(Object... args) {
+  public MutableString apply(Object... args) {
     if (args.length == 0) {
-      return new SCMMutableString();
+      return new MutableString();
     }
-    SCMMutableString string = new SCMMutableString(args.length);
+    MutableString string = new MutableString(args.length);
     for (Object c : args) {
       string.append(c);
     }

@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -39,54 +39,54 @@ public final class Division extends AFn {
 
   private Number apply(Number numerator, Number denominator) {
     /* Complex numbers*/
-    if (numerator instanceof SCMBigComplex) {
-      return ((SCMBigComplex) numerator).divide(denominator);
+    if (numerator instanceof BigComplex) {
+      return ((BigComplex) numerator).divide(denominator);
     }
-    if (denominator instanceof SCMBigComplex) {
-      return new SCMBigComplex(numerator).divide(denominator);
+    if (denominator instanceof BigComplex) {
+      return new BigComplex(numerator).divide(denominator);
     }
     /* Big Rational numbers */
-    if ((numerator instanceof SCMBigRational) && (denominator instanceof SCMBigRational)) {
-      return ((SCMBigRational)numerator).divide((SCMBigRational)denominator);
+    if ((numerator instanceof BigRational) && (denominator instanceof BigRational)) {
+      return ((BigRational)numerator).divide((BigRational)denominator);
     }
-    if (numerator instanceof SCMBigRational) {
-      if (NumberUtils.isExact(denominator)) {
-        return ((SCMBigRational) numerator).divide(SCMBigRational.valueOf(denominator.toString(), "1"));
+    if (numerator instanceof BigRational) {
+      if (Utils.isExact(denominator)) {
+        return ((BigRational) numerator).divide(BigRational.valueOf(denominator.toString(), "1"));
       } else {
-        numerator = ((SCMBigRational) numerator).doubleOrBigDecimalValue();
+        numerator = ((BigRational) numerator).doubleOrBigDecimalValue();
       }
     }
-    if (denominator instanceof SCMBigRational) {
-      if (NumberUtils.isExact(numerator)) {
-        return (SCMBigRational.valueOf(numerator.toString(), "1").divide((SCMBigRational) denominator));
+    if (denominator instanceof BigRational) {
+      if (Utils.isExact(numerator)) {
+        return (BigRational.valueOf(numerator.toString(), "1").divide((BigRational) denominator));
       } else {
-        denominator = ((SCMBigRational) denominator).doubleOrBigDecimalValue();
+        denominator = ((BigRational) denominator).doubleOrBigDecimalValue();
       }
     }
-    if (NumberUtils.isExact(numerator) &&
-        NumberUtils.isExact(denominator)) {
+    if (Utils.isExact(numerator) &&
+        Utils.isExact(denominator)) {
 
-      return SCMBigRational.valueOf(numerator.toString(), denominator.toString());
+      return BigRational.valueOf(numerator.toString(), denominator.toString());
     }
     if (numerator instanceof Float && denominator instanceof Float) {
       float result = numerator.floatValue() / denominator.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), NumberUtils.DEFAULT_CONTEXT);
+        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), Utils.DEFAULT_CONTEXT);
       }
       return result;
     }
     if (numerator instanceof Double || denominator instanceof Double || numerator instanceof Float || denominator instanceof Float) {
       double result = numerator.doubleValue() / denominator.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), NumberUtils.DEFAULT_CONTEXT);
+        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), Utils.DEFAULT_CONTEXT);
       }
       return result;
     }
     if (numerator instanceof BigDecimal) {
-      return ((BigDecimal)numerator).divide(NumberUtils.toBigDecimal(denominator), NumberUtils.DEFAULT_CONTEXT);
+      return ((BigDecimal)numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
     }
     if (denominator instanceof BigDecimal) {
-      return ((BigDecimal) denominator).divide(NumberUtils.toBigDecimal(numerator), NumberUtils.DEFAULT_CONTEXT);
+      return ((BigDecimal) denominator).divide(Utils.toBigDecimal(numerator), Utils.DEFAULT_CONTEXT);
     }
     if (numerator instanceof BigInteger) {
       return ((BigInteger)numerator).divide(new BigInteger(denominator.toString()));
@@ -104,9 +104,9 @@ public final class Division extends AFn {
    */
   public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
     try {
-      return num.divide(den, NumberUtils.getMathContext(num, den));
+      return num.divide(den, Utils.getMathContext(num, den));
     } catch (ArithmeticException e) {
-      return num.divide(den, NumberUtils.DEFAULT_CONTEXT);
+      return num.divide(den, Utils.DEFAULT_CONTEXT);
     }
   }
 }

@@ -3,14 +3,14 @@ package core.procedures.cons;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.ICons;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 import java.util.List;
 
 public class Car extends AFn {
 
   public Car() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.SCMPair.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.SCMPair.class}).build());
   }
 
   @Override

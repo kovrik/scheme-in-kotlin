@@ -3,7 +3,7 @@ package core.utils;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
-public class WeakPool<T> {
+class WeakPool<T> {
 
   private final WeakHashMap<T, WeakReference<T>> pool = new WeakHashMap<>();
 

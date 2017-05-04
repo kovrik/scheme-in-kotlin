@@ -21,7 +21,7 @@ import unittests.s7.S7Tests;
     CharacterTest.class,
     StringTest.class,
     ListTest.class,
-    SCMConsTest.class,
+    ConsTest.class,
     VectorTest.class,
     IOTest.class,
     RosettaCodeTest.class,

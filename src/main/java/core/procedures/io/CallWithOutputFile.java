@@ -4,9 +4,9 @@ import core.exceptions.SCMFileNotFoundException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.scm.SCMCons;
-import core.scm.SCMOutputPort;
-import core.scm.SCMThunk;
+import core.scm.Cons;
+import core.scm.OutputPort;
+import core.scm.Thunk;
 
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
@@ -25,14 +25,14 @@ public final class CallWithOutputFile extends AFn {
   @Override
   public Object apply(Object... args) {
     String filename = args[0].toString();
-    SCMOutputPort outputPort;
+    OutputPort outputPort;
     try {
-      outputPort = new SCMOutputPort(new FileOutputStream(filename));
+      outputPort = new OutputPort(new FileOutputStream(filename));
     } catch (FileNotFoundException e) {
       throw new SCMFileNotFoundException(filename);
     }
     IFn proc = ((IFn)args[1]);
-    SCMCons sexp = SCMCons.list(proc, outputPort);
-    return new SCMThunk(sexp);
+    Cons sexp = Cons.list(proc, outputPort);
+    return new Thunk(sexp);
   }
 }

@@ -1,12 +1,12 @@
 package unittests;
 
 import core.exceptions.WrongTypeException;
-import core.scm.SCMMutableString;
-import core.scm.SCMSymbol;
+import core.scm.MutableString;
+import core.scm.Symbol;
 import core.writer.Writer;
 import org.junit.Test;
 
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -48,9 +48,9 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringProc() {
-    assertEquals(new SCMMutableString(""), eval("(string)", env));
-    assertEquals(new SCMMutableString("a"), eval("(string #\\a)", env));
-    assertEquals(new SCMMutableString("abc"), eval("(string #\\a #\\b #\\c)", env));
+    assertEquals(new MutableString(""), eval("(string)", env));
+    assertEquals(new MutableString("a"), eval("(string #\\a)", env));
+    assertEquals(new MutableString("abc"), eval("(string #\\a #\\b #\\c)", env));
 
     try {
       eval("(string 1)", env);
@@ -62,13 +62,13 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalMakeString() {
-    assertEquals(new SCMMutableString(""), eval("(make-string 0)", env));
-    assertEquals(new SCMMutableString(""), eval("(make-string 0 #\\a)", env));
-    assertEquals(new SCMMutableString("a"), eval("(make-string 1 #\\a)", env));
-    assertEquals(new SCMMutableString("aa"), eval("(make-string 2 #\\a)", env));
-    assertEquals(new SCMMutableString("ZZZZZZZZ"), eval("(make-string 8 #\\Z)", env));
-    assertEquals(new SCMMutableString("\u0000\u0000\u0000"), eval("(make-string 3)", env));
-    assertEquals(new SCMMutableString("\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"), eval("(make-string 8)", env));
+    assertEquals(new MutableString(""), eval("(make-string 0)", env));
+    assertEquals(new MutableString(""), eval("(make-string 0 #\\a)", env));
+    assertEquals(new MutableString("a"), eval("(make-string 1 #\\a)", env));
+    assertEquals(new MutableString("aa"), eval("(make-string 2 #\\a)", env));
+    assertEquals(new MutableString("ZZZZZZZZ"), eval("(make-string 8 #\\Z)", env));
+    assertEquals(new MutableString("\u0000\u0000\u0000"), eval("(make-string 3)", env));
+    assertEquals(new MutableString("\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"), eval("(make-string 8)", env));
 
     try {
       eval("(make-string \"test\")", env);
@@ -117,16 +117,16 @@ public class StringTest extends AbstractTest {
       assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"test1\")", e.getMessage());
     }
 
-    assertEquals(new SCMMutableString(""), eval("(string-fill! (make-string 0) #\\a)", env));
-    assertEquals(new SCMMutableString("a"), eval("(string-fill! (make-string 1 #\\z) #\\a)", env));
-    assertEquals(new SCMMutableString("aaaaa"), eval("(string-fill! (string #\\t #\\e #\\s #\\t #\\1) #\\a)", env));
+    assertEquals(new MutableString(""), eval("(string-fill! (make-string 0) #\\a)", env));
+    assertEquals(new MutableString("a"), eval("(string-fill! (make-string 1 #\\z) #\\a)", env));
+    assertEquals(new MutableString("aaaaa"), eval("(string-fill! (string #\\t #\\e #\\s #\\t #\\1) #\\a)", env));
   }
 
   @Test
   public void testEvalStringCopy() {
-    assertEquals(new SCMMutableString(""), eval("(string-copy \"\")", env));
-    assertEquals(new SCMMutableString("test"), eval("(string-copy \"test\")", env));
-    assertEquals(new SCMMutableString("t"), eval("(string-copy \"t\")", env));
+    assertEquals(new MutableString(""), eval("(string-copy \"\")", env));
+    assertEquals(new MutableString("test"), eval("(string-copy \"test\")", env));
+    assertEquals(new MutableString("t"), eval("(string-copy \"t\")", env));
   }
 
   @Test
@@ -206,10 +206,10 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testEvalStringSet() {
-    assertEquals(new SCMMutableString("z"),   eval("(let ((s (string #\\a) )) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMMutableString("zbc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 0 #\\z) s)", env));
-    assertEquals(new SCMMutableString("azc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 1 #\\z) s)", env));
-    assertEquals(new SCMMutableString("abz"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 2 #\\z) s)", env));
+    assertEquals(new MutableString("z"), eval("(let ((s (string #\\a) )) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new MutableString("zbc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 0 #\\z) s)", env));
+    assertEquals(new MutableString("azc"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 1 #\\z) s)", env));
+    assertEquals(new MutableString("abz"), eval("(let ((s (string #\\a #\\b #\\c))) (string-set! s 2 #\\z) s)", env));
 
     try {
       eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env);
@@ -282,7 +282,7 @@ public class StringTest extends AbstractTest {
     assertEquals("abc#", Writer.write(eval("(string->symbol \"abc#\")", env)));
     assertEquals("#%abc", Writer.write(eval("(string->symbol \"#%abc\")", env)));
     assertEquals("(|a b c|)", Writer.write(eval("(list (string->symbol \"a b c\"))", env)));
-    assertEquals(SCMSymbol.intern("test"), eval("(string->symbol (symbol->string 'test))", env));
+    assertEquals(Symbol.intern("test"), eval("(string->symbol (symbol->string 'test))", env));
     try {
       eval("(symbol->string 1)", env);
       fail();

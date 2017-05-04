@@ -3,13 +3,13 @@ package core.scm;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class SCMOutputPort implements ISCMClass, ISCMPort {
+public class OutputPort implements ITyped, IPort {
 
   private static final String LS = System.getProperty("line.separator");
 
   private final OutputStream outputStream;
 
-  public SCMOutputPort(OutputStream outputStream) {
+  public OutputPort(OutputStream outputStream) {
     this.outputStream = outputStream;
   }
 
@@ -39,15 +39,15 @@ public class SCMOutputPort implements ISCMClass, ISCMPort {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.OUTPUT_PORT;
+  public Type getType() {
+    return Type.OUTPUT_PORT;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SCMOutputPort that = (SCMOutputPort) o;
+    OutputPort that = (OutputPort) o;
     return outputStream != null ? outputStream.equals(that.outputStream) : that.outputStream == null;
   }
 

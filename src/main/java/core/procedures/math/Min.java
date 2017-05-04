@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.scm.Type;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,8 +12,8 @@ import java.math.BigInteger;
 public final class Min extends AFn {
 
   public Min() {
-    super(new FnArgsBuilder().min(1).mandatory(new Class[]{SCMClass.Real.class})
-                             .rest(SCMClass.Real.class).build());
+    super(new FnArgsBuilder().min(1).mandatory(new Class[]{Type.Real.class})
+                             .rest(Type.Real.class).build());
   }
 
   @Override
@@ -39,13 +39,13 @@ public final class Min extends AFn {
   }
 
   private Number min(Number first, Number second) {
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return ((SCMBigRational)first).compareTo((SCMBigRational)second) < 0 ? first : second;
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return ((BigRational)first).compareTo((BigRational)second) < 0 ? first : second;
     }
-    if (first instanceof SCMBigRational) {
+    if (first instanceof BigRational) {
       first = first.doubleValue();
     }
-    if (second instanceof SCMBigRational) {
+    if (second instanceof BigRational) {
       second = second.doubleValue();
     }
     if ((first instanceof Integer) && (second instanceof Integer)) {
@@ -67,11 +67,11 @@ public final class Min extends AFn {
       return ((BigDecimal)first).min((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      int i = ((BigDecimal) first).compareTo(NumberUtils.toBigDecimal(second));
+      int i = ((BigDecimal) first).compareTo(Utils.toBigDecimal(second));
       return (i > 0) ? second : first;
     }
     if (second instanceof BigDecimal) {
-      int i = ((BigDecimal) second).compareTo(NumberUtils.toBigDecimal(first));
+      int i = ((BigDecimal) second).compareTo(Utils.toBigDecimal(first));
       return (i > 0) ? first : second;
     }
     if (first.doubleValue() == second.doubleValue()) {

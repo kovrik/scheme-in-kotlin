@@ -3,8 +3,8 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMBoolean;
-import core.scm.SCMMutableString;
+import core.scm.MutableString;
+import core.utils.Utils;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public enum Assert implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     Object result = evaluator.eval(expression.get(1), env);
-    if (!SCMBoolean.toBoolean(result)) {
+    if (!Utils.toBoolean(result)) {
       String message = "";
       if (expression.size() == 3) {
-        if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof SCMMutableString)) {
+        if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof MutableString)) {
           throw IllegalSyntaxException.of(toString(), expression);
         }
         message = ": " + expression.get(2).toString();

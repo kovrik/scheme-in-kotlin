@@ -1,7 +1,7 @@
 package core.scm;
 
 import core.procedures.math.Division;
-import core.utils.NumberUtils;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO Create SCMRational class for small rational numbers
+ * TODO Create Rational class for small rational numbers
  */
-public final class SCMBigRational extends Number implements ISCMClass, Comparable<SCMBigRational> {
+public final class BigRational extends Number implements ITyped, Comparable<BigRational> {
 
-  public static final SCMBigRational ZERO  = new SCMBigRational(BigInteger.ZERO, BigInteger.ONE);
-  public static final SCMBigRational ONE   = new SCMBigRational(BigInteger.ONE,  BigInteger.ONE);
+  public static final BigRational ZERO = new BigRational(BigInteger.ZERO, BigInteger.ONE);
+  public static final BigRational ONE  = new BigRational(BigInteger.ONE, BigInteger.ONE);
 
   private static final Map<String, BigInteger> CONSTANTS = new HashMap<>();
   static {
@@ -31,7 +31,7 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
   private final BigInteger numerator;
   private final BigInteger denominator;
 
-  public static SCMBigRational valueOf(String numerator, String denominator) {
+  public static BigRational valueOf(String numerator, String denominator) {
     BigInteger den = parseBigInteger(denominator);
     if (BigInteger.ZERO.equals(den)) {
       throw new ArithmeticException("/ by zero");
@@ -43,10 +43,10 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
     if (BigInteger.ONE.equals(num) && BigInteger.ONE.equals(den)) {
       return ONE;
     }
-    return new SCMBigRational(num, den);
+    return new BigRational(num, den);
   }
 
-  public SCMBigRational(BigInteger numerator, BigInteger denominator) {
+  public BigRational(BigInteger numerator, BigInteger denominator) {
     if (BigInteger.ZERO.equals(denominator)) {
       throw new ArithmeticException("/ by zero");
     }
@@ -83,7 +83,7 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
   public BigDecimal toBigDecimalInexact() {
     BigDecimal bigDecimal = Division.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
     int scale = Math.max(1, bigDecimal.scale());
-    return bigDecimal.setScale(scale, NumberUtils.ROUNDING_MODE);
+    return bigDecimal.setScale(scale, Utils.ROUNDING_MODE);
   }
 
   public boolean isDenominatorEqualToOne() {
@@ -106,27 +106,27 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
     return signum() == -1;
   }
 
-  public SCMBigRational abs() {
-    return new SCMBigRational(numerator.abs(), denominator.abs());
+  public BigRational abs() {
+    return new BigRational(numerator.abs(), denominator.abs());
   }
 
-  public SCMBigRational ceiling() {
+  public BigRational ceiling() {
     int round = isPositive() ? BigDecimal.ROUND_UP : BigDecimal.ROUND_DOWN;
-    return new SCMBigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
-  public SCMBigRational floor() {
+  public BigRational floor() {
     int round = isPositive() ? BigDecimal.ROUND_DOWN : BigDecimal.ROUND_UP;
-    return new SCMBigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
-  public SCMBigRational round() {
+  public BigRational round() {
     BigDecimal number = toBigDecimal();
-    BigDecimal round = (number.scale() == 0) ? number.round(MathContext.UNLIMITED) : number.round(NumberUtils.DEFAULT_CONTEXT);
-    return new SCMBigRational(round.toBigInteger(), BigInteger.ONE);
+    BigDecimal round = (number.scale() == 0) ? number.round(MathContext.UNLIMITED) : number.round(Utils.DEFAULT_CONTEXT);
+    return new BigRational(round.toBigInteger(), BigInteger.ONE);
   }
 
-  public SCMBigRational truncate() {
+  public BigRational truncate() {
     return isNegative() ? ceiling() : floor();
   }
 
@@ -136,7 +136,7 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
   }
 
   @Override
-  public int compareTo(SCMBigRational other) {
+  public int compareTo(BigRational other) {
     return this.numerator.multiply(other.denominator).compareTo(this.denominator.multiply(other.numerator));
   }
   @Override
@@ -144,7 +144,7 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
     if (y == this) return true;
     if (y == null) return false;
     if (y.getClass() != this.getClass()) return false;
-    SCMBigRational b = (SCMBigRational) y;
+    BigRational b = (BigRational) y;
     return compareTo(b) == 0;
   }
 
@@ -153,29 +153,29 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
     return this.toString().hashCode();
   }
 
-  public SCMBigRational multiply(SCMBigRational other) {
-    return new SCMBigRational(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator));
+  public BigRational multiply(BigRational other) {
+    return new BigRational(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator));
   }
 
-  public SCMBigRational plus(SCMBigRational other) {
+  public BigRational plus(BigRational other) {
     BigInteger numerator   = this.numerator.multiply(other.denominator).add(other.numerator.multiply(this.denominator));
     BigInteger denominator = this.denominator.multiply(other.denominator);
-    return new SCMBigRational(numerator, denominator);
+    return new BigRational(numerator, denominator);
   }
 
-  public SCMBigRational negate() {
-    return new SCMBigRational(numerator.negate(), denominator);
+  public BigRational negate() {
+    return new BigRational(numerator.negate(), denominator);
   }
 
-  public SCMBigRational minus(SCMBigRational other) {
+  public BigRational minus(BigRational other) {
     return this.plus(other.negate());
   }
 
-  private SCMBigRational reciprocal() {
-    return new SCMBigRational(denominator, numerator);
+  private BigRational reciprocal() {
+    return new BigRational(denominator, numerator);
   }
 
-  public SCMBigRational divide(SCMBigRational other) {
+  public BigRational divide(BigRational other) {
     return this.multiply(other.reciprocal());
   }
 
@@ -218,7 +218,7 @@ public final class SCMBigRational extends Number implements ISCMClass, Comparabl
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.RATIONAL;
+  public Type getType() {
+    return Type.RATIONAL;
   }
 }

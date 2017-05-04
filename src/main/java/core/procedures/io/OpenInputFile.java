@@ -3,7 +3,7 @@ package core.procedures.io;
 import core.exceptions.SCMFileNotFoundException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMInputPort;
+import core.scm.InputPort;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +23,7 @@ public final class OpenInputFile extends AFn {
   public Object apply(Object... args) {
     String filename = args[0].toString();
     try {
-      return new SCMInputPort(new FileInputStream(filename));
+      return new InputPort(new FileInputStream(filename));
     } catch (FileNotFoundException e) {
       throw new SCMFileNotFoundException(filename);
     }

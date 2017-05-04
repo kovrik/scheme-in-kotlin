@@ -28,17 +28,17 @@ public class Writer implements IWriter {
     if (o instanceof Boolean) {
       return (Boolean) o ? "#t" : "#f";
     }
-    if (o instanceof SCMSymbol) {
-      return ((SCMSymbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
+    if (o instanceof Symbol) {
+      return ((Symbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
     }
-    if (o instanceof SCMClass) {
-      return "#<class:" + ((SCMClass)o).getName() + ">";
+    if (o instanceof Type) {
+      return "#<class:" + ((Type)o).getName() + ">";
     }
     if (o instanceof Class) {
       return "#<class:" + ((Class)o).getName() + ">";
     }
     if (o instanceof List) {
-      return SCMCons.toString((List) o);
+      return Cons.toString((List) o);
     }
     if (o instanceof Double) {
       if (Double.isNaN(((Number) o).doubleValue())) {
@@ -78,8 +78,8 @@ public class Writer implements IWriter {
   }
 
   public static String writeClass(Class clazz) {
-    SCMClass scmClass = SCMClass.valueOf(clazz);
-    return scmClass != null ? scmClass.getName() : clazz.getSimpleName();
+    Type type = Type.valueOf(clazz);
+    return type != null ? type.getName() : clazz.getSimpleName();
   }
 
   private static String writeMap(Map<Object, Object> map) {

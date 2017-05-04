@@ -1,6 +1,6 @@
 package unittests;
 
-import core.scm.SCMCons;
+import core.scm.Cons;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -59,10 +59,10 @@ public class HashmapTest extends AbstractTest {
 
   @Test
   public void testHashmapKeysValues() {
-    assertEquals(SCMCons.list(1L, 2L, 3L), eval("(keys {1 + 2 - 3 /})", env));
-    assertEquals(SCMCons.EMPTY, eval("(keys {})", env));
+    assertEquals(Cons.list(1L, 2L, 3L), eval("(keys {1 + 2 - 3 /})", env));
+    assertEquals(Cons.EMPTY, eval("(keys {})", env));
     assertEquals(6L, eval("(apply + (vals (zipmap '[+ - /] '(1 2 3))))", env));
-    assertEquals(SCMCons.EMPTY, eval("(vals {})", env));
+    assertEquals(Cons.EMPTY, eval("(vals {})", env));
     assertEquals(new HashMap<>(), eval("(zipmap [] '())", env));
   }
 }

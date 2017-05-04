@@ -2,8 +2,8 @@ package core.procedures.equivalence;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.Symbol;
 
 import java.util.List;
 
@@ -42,11 +42,11 @@ public final class Eqv extends AFn {
       return first.equals(second);
     } else if (first instanceof Number && second instanceof Number) {
       return first.equals(second);
-    } else if (first instanceof SCMCons && second instanceof SCMCons) {
+    } else if (first instanceof Cons && second instanceof Cons) {
       return first == second;
     } else if (first instanceof List && second instanceof List) {
       return first.equals(second);
-    } else if (first instanceof SCMSymbol && second instanceof SCMSymbol) {
+    } else if (first instanceof Symbol && second instanceof Symbol) {
       return first.equals(second);
     }
     return first == second;

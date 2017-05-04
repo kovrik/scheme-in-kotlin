@@ -1,7 +1,7 @@
 package core.procedures.lists;
 
 import core.procedures.AFn;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 import java.util.List;
 
@@ -19,6 +19,6 @@ public final class ListProc extends AFn {
 
   @Override
   public List<Object> apply(Object... args) {
-    return SCMCons.list(args);
+    return Cons.list(args);
   }
 }

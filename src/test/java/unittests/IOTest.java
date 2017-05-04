@@ -1,8 +1,8 @@
 package unittests;
 
 import core.Repl;
-import core.scm.SCMInputPort;
-import core.scm.SCMOutputPort;
+import core.scm.InputPort;
+import core.scm.OutputPort;
 import org.junit.Test;
 
 import java.io.*;
@@ -15,18 +15,18 @@ public class IOTest extends AbstractTest {
 
   @Test
   public void testCurrentPorts() throws FileNotFoundException {
-    assertEquals(new SCMOutputPort(System.out), eval("(current-output-port)", env));
+    assertEquals(new OutputPort(System.out), eval("(current-output-port)", env));
 
     OutputStream outputStream = new ByteArrayOutputStream(0);
-    SCMOutputPort currentOutputPort = Repl.getCurrentOutputPort();
-    Repl.setCurrentOutputPort(new SCMOutputPort(outputStream));
-    assertEquals(new SCMOutputPort(outputStream), eval("(current-output-port)", env));
+    OutputPort currentOutputPort = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new OutputPort(outputStream));
+    assertEquals(new OutputPort(outputStream), eval("(current-output-port)", env));
     Repl.setCurrentOutputPort(currentOutputPort);
 
     InputStream inputStream = new ByteArrayInputStream("test".getBytes());
-    SCMInputPort currentInputPort = Repl.getCurrentInputPort();
-    Repl.setCurrentInputPort(new SCMInputPort(inputStream));
-    assertEquals(new SCMInputPort(inputStream), eval("(current-input-port)", env));
+    InputPort currentInputPort = Repl.getCurrentInputPort();
+    Repl.setCurrentInputPort(new InputPort(inputStream));
+    assertEquals(new InputPort(inputStream), eval("(current-input-port)", env));
     Repl.setCurrentInputPort(currentInputPort);
   }
 

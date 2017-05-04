@@ -2,7 +2,7 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 public final class StringToList extends AFn {
 
@@ -16,8 +16,8 @@ public final class StringToList extends AFn {
   }
 
   @Override
-  public SCMCons<Character> apply1(Object arg) {
-    SCMCons<Character> list = SCMCons.list();
+  public Cons<Character> apply1(Object arg) {
+    Cons<Character> list = Cons.list();
     for (char c : (arg.toString()).toCharArray()) {
       list.add(c);
     }

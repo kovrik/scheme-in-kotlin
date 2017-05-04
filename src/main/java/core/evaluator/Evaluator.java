@@ -7,9 +7,10 @@ import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
 import core.procedures.continuations.CalledContinuation;
 import core.scm.*;
+import core.scm.Vector;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
-import core.utils.NumberUtils;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.util.*;
@@ -50,8 +51,8 @@ public class Evaluator {
     Object result;
     try {
       result = evalIter(sexp, env);
-      while (result instanceof SCMThunk) {
-        result = evalIter(((SCMThunk) result).getExpr(), ((SCMThunk) result).getContextOrDefault(env));
+      while (result instanceof Thunk) {
+        result = evalIter(((Thunk) result).getExpr(), ((Thunk) result).getContextOrDefault(env));
       }
     } catch (CalledContinuation cc) {
       if (cc.getContinuation().isInvoked()) {
@@ -63,7 +64,7 @@ public class Evaluator {
       throw cc;
     }
     if (result instanceof Number) {
-      return NumberUtils.downcastNumber((Number) result);
+      return Utils.downcastNumber((Number) result);
     }
     // FIXME Get rid of this workaround
     /* Do not downcast in case of `new` Special Form (workaround) */
@@ -79,7 +80,7 @@ public class Evaluator {
    * If Thunk is returned, then eval() method (trampoline) continues evaluation.
    */
   private Object evalIter(Object sexp, Environment env) {
-    if (sexp instanceof SCMSymbol) {
+    if (sexp instanceof Symbol) {
       /* Check if it is a Special Form */
       Object o = env.findOrDefault(sexp, Environment.UNDEFINED);
       if (o instanceof ISpecialForm) {
@@ -87,7 +88,7 @@ public class Evaluator {
       }
       if (o == Environment.UNDEFINED) {
         /* Check if it is a Java class. If not found, then assume it is a static field */
-        Class clazz = reflector._getClass(((SCMSymbol) sexp).getName());
+        Class clazz = reflector._getClass(((Symbol) sexp).getName());
         return clazz != null ? clazz : reflector.evalJavaStaticField(sexp.toString());
       }
       return o;
@@ -95,8 +96,8 @@ public class Evaluator {
       return evlis((List<Object>)sexp, env);
     } else if (sexp instanceof Map) {
       return evalMap((Map)sexp, env);
-    } else if (sexp instanceof SCMVector) {
-      return evalVector((SCMVector)sexp, env);
+    } else if (sexp instanceof Vector) {
+      return evalVector((Vector)sexp, env);
     } else if (sexp instanceof Set) {
       return evalSet((Set)sexp, env);
     } else {
@@ -116,8 +117,8 @@ public class Evaluator {
 
     boolean javaMethod = false;
     Object op = sexp.get(0);
-    if (op instanceof SCMSymbol) {
-      SCMSymbol sym = (SCMSymbol) op;
+    if (op instanceof Symbol) {
+      Symbol sym = (Symbol) op;
       /* Lookup symbol */
       op = env.findOrDefault(sym, Environment.UNDEFINED);
       /* Inline Special Forms and Pure functions */
@@ -133,9 +134,9 @@ public class Evaluator {
         /* Special case: constructor call If Symbol ends with . */
         if (sym.getName().charAt(sym.getName().length() - 1) == '.') {
           // TODO Optimize and cleanup
-          sexp.set(0, SCMSymbol.intern(sym.getName().substring(0, sym.getName().length() - 1)));
+          sexp.set(0, Symbol.intern(sym.getName().substring(0, sym.getName().length() - 1)));
           op = New.NEW;
-          ((SCMCons) sexp).push(op);
+          ((Cons) sexp).push(op);
         }
       }
     }
@@ -197,7 +198,7 @@ public class Evaluator {
   }
 
   /* Evaluate vector */
-  private SCMVector evalVector(SCMVector vector, Environment env) {
+  private Vector evalVector(Vector vector, Environment env) {
     for (int i = 0; i < vector.length(); i++) {
       vector.getArray()[i] = eval(vector.getArray()[i], env);
     }

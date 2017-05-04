@@ -1,6 +1,6 @@
 package unittests;
 
-import core.scm.SCMCons;
+import core.scm.Cons;
 import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static core.scm.SCMCons.EMPTY;
+import static core.scm.Cons.EMPTY;
 import static org.junit.Assert.assertEquals;
 
 public class WriterTest {
@@ -33,7 +33,7 @@ public class WriterTest {
   public void testWriteNil() {
     assertEquals("nil", writer.toString(null));
     assertEquals("()", writer.toString(EMPTY));
-    assertEquals("()", writer.toString(SCMCons.list()));
+    assertEquals("()", writer.toString(Cons.list()));
     assertEquals("()", writer.toString(Collections.EMPTY_LIST));
     assertEquals("()", writer.toString(Arrays.asList(1, 2, 3).subList(3, 3)));
   }

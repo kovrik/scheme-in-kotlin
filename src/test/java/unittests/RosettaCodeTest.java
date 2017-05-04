@@ -4,9 +4,9 @@ import core.Repl;
 import core.environment.DefaultEnvironment;
 import core.procedures.io.Display;
 import core.procedures.io.Newline;
-import core.scm.SCMCons;
-import core.scm.SCMOutputPort;
-import core.scm.SCMSymbol;
+import core.scm.Cons;
+import core.scm.OutputPort;
+import core.scm.Symbol;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.list;
 import static org.junit.Assert.assertEquals;
 
 public class RosettaCodeTest extends AbstractTest {
@@ -100,7 +100,7 @@ public class RosettaCodeTest extends AbstractTest {
     eval(gnome, env);
 
     String test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))";
-    SCMCons sorted = list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
+    Cons sorted = list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L);
     assertEquals(sorted, eval(test, env));
   }
 
@@ -125,15 +125,15 @@ public class RosettaCodeTest extends AbstractTest {
     eval(hailstoneLength, env);
     eval(hailstoneMax, env);
 
-    SCMCons seq = list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
-        242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
-        700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
-        668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
-        638L, 319L, 958L, 479L, 1438L, 719L, 2158L, 1079L, 3238L, 1619L, 4858L, 2429L,
-        7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
-        2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
-        61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
-        8L, 4L, 2L, 1L);
+    Cons seq = list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
+                    242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
+                    700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
+                    668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
+                    638L, 319L, 958L, 479L, 1438L, 719L, 2158L, 1079L, 3238L, 1619L, 4858L, 2429L,
+                    7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
+                    2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
+                    61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
+                    8L, 4L, 2L, 1L);
 
     List<Number> res = (List<Number>)eval("(hailstone 27)", env);
     for (int i = 0; i < seq.size(); i++) {
@@ -186,17 +186,17 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalHanoi() {
 
-    SCMOutputPort old = Repl.getCurrentOutputPort();
+    OutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Repl.setCurrentOutputPort(new SCMOutputPort(baos));
+    Repl.setCurrentOutputPort(new OutputPort(baos));
 
     DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(SCMSymbol.intern("display"), new Display());
-    tempEnv.put(SCMSymbol.intern("newline"), new Newline());
+    tempEnv.put(Symbol.intern("display"), new Display());
+    tempEnv.put(Symbol.intern("newline"), new Newline());
 
     String hanoi = "(define (hanoi n a b c) " +
                    "  (if (> n 0)" +
@@ -296,16 +296,16 @@ public class RosettaCodeTest extends AbstractTest {
   @Test
   public void testEvalQuine() {
 
-    SCMOutputPort old = Repl.getCurrentOutputPort();
+    OutputPort old = Repl.getCurrentOutputPort();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Repl.setCurrentOutputPort(new SCMOutputPort(baos));
+    Repl.setCurrentOutputPort(new OutputPort(baos));
 
     DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(SCMSymbol.intern("display"), new Display());
+    tempEnv.put(Symbol.intern("display"), new Display());
 
     String quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
         " (quote (lambda (s) (display (list s (list (quote quote) s))))))";

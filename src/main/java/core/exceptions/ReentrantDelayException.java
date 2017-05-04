@@ -1,11 +1,11 @@
 package core.exceptions;
 
-import core.scm.SCMDelay;
+import core.scm.Delay;
 import core.writer.Writer;
 
-public class ReentrantDelayException extends RuntimeException implements ISCMException {
+public class ReentrantDelayException extends RuntimeException implements IException {
 
-  public ReentrantDelayException(SCMDelay delay) {
+  public ReentrantDelayException(Delay delay) {
     super(String.format("Re-entrant delay: %s", Writer.write(delay)), null);
   }
 

@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
+import core.scm.BigRational;
+import core.scm.Type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public final class Ceiling extends AFn {
 
   public Ceiling() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Real.class}).build());
   }
 
   @Override
@@ -34,8 +34,8 @@ public final class Ceiling extends AFn {
       return Math.ceil((Float) arg);
     } else if (arg instanceof BigDecimal) {
       return ((BigDecimal)arg).setScale(0, BigDecimal.ROUND_UP);
-    } else if (arg instanceof SCMBigRational) {
-      return ((SCMBigRational) arg).ceiling();
+    } else if (arg instanceof BigRational) {
+      return ((BigRational) arg).ceiling();
     }
     return Math.ceil(((Number)arg).doubleValue());
   }

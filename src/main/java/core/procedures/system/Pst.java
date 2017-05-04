@@ -2,7 +2,7 @@ package core.procedures.system;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVoid;
+import core.scm.Void;
 
 public final class Pst extends AFn {
 
@@ -18,6 +18,6 @@ public final class Pst extends AFn {
   @Override
   public Object apply1(Object arg) {
     ((Throwable)arg).printStackTrace();
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 }

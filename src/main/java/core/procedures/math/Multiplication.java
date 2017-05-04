@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -42,38 +42,38 @@ public final class Multiplication extends AFn {
 
   public static Number apply(Number first, Number second) {
     /* Special cases */
-    if (NumberUtils.isZero(first) || NumberUtils.isZero(second)) {
+    if (Utils.isZero(first) || Utils.isZero(second)) {
       return 0L;
     }
-    if (NumberUtils.isOne(first)) {
-      return NumberUtils.inexactnessTaint(second, first);
+    if (Utils.isOne(first)) {
+      return Utils.inexactnessTaint(second, first);
     }
-    if (NumberUtils.isOne(second)) {
-      return NumberUtils.inexactnessTaint(first, second);
+    if (Utils.isOne(second)) {
+      return Utils.inexactnessTaint(first, second);
     }
     /* Complex numbers*/
-    if (first instanceof SCMBigComplex) {
-      return ((SCMBigComplex) first).multiply(second);
+    if (first instanceof BigComplex) {
+      return ((BigComplex) first).multiply(second);
     }
-    if (second instanceof SCMBigComplex) {
-      return ((SCMBigComplex) second).multiply(first);
+    if (second instanceof BigComplex) {
+      return ((BigComplex) second).multiply(first);
     }
     /* Big Rational numbers */
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return ((SCMBigRational)first).multiply((SCMBigRational)second);
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return ((BigRational)first).multiply((BigRational)second);
     }
-    if (first instanceof SCMBigRational) {
+    if (first instanceof BigRational) {
       if (second instanceof Long) {
-        return ((SCMBigRational) first).multiply(SCMBigRational.valueOf(second.toString(), "1"));
+        return ((BigRational) first).multiply(BigRational.valueOf(second.toString(), "1"));
       } else {
-        first = ((SCMBigRational)first).doubleOrBigDecimalValue();
+        first = ((BigRational)first).doubleOrBigDecimalValue();
       }
     }
-    if (second instanceof SCMBigRational) {
+    if (second instanceof BigRational) {
       if (first instanceof Long) {
-        return ((SCMBigRational) second).multiply(SCMBigRational.valueOf(first.toString(), "1"));
+        return ((BigRational) second).multiply(BigRational.valueOf(first.toString(), "1"));
       } else {
-        second = ((SCMBigRational)second).doubleOrBigDecimalValue();
+        second = ((BigRational)second).doubleOrBigDecimalValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {
@@ -91,10 +91,10 @@ public final class Multiplication extends AFn {
       return result;
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).multiply(NumberUtils.toBigDecimal(second));
+      return ((BigDecimal)first).multiply(Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).multiply(NumberUtils.toBigDecimal(first));
+      return ((BigDecimal) second).multiply(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
       return ((BigInteger)first).multiply(new BigInteger(second.toString()));

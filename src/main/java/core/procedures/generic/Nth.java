@@ -3,8 +3,8 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVector;
-import core.utils.NumberUtils;
+import core.scm.Vector;
+import core.utils.Utils;
 
 import java.util.List;
 
@@ -30,12 +30,12 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
-    if (!(col instanceof SCMVector) && !(col instanceof List) && !(col instanceof CharSequence)) {
+    if (!(col instanceof Vector) && !(col instanceof List) && !(col instanceof CharSequence)) {
       throw new WrongTypeException(getName(), "List or Vector or String", col);
     }
 
     Object index = args[1];
-    if (!NumberUtils.isReal(index)) {
+    if (!Utils.isReal(index)) {
       throw new WrongTypeException(getName(), "Real", index);
     }
     int i = ((Number)args[1]).intValue();

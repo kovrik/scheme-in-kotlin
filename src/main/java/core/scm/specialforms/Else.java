@@ -3,14 +3,14 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.util.List;
 
 public enum Else implements ISpecialForm {
   ELSE;
 
-  public static final SCMSymbol ELSE_SYMBOL = SCMSymbol.intern("else");
+  public static final Symbol ELSE_SYMBOL = Symbol.intern("else");
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

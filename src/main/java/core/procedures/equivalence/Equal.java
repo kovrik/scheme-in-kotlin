@@ -2,7 +2,7 @@ package core.procedures.equivalence;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMutableString;
+import core.scm.MutableString;
 
 public final class Equal extends AFn {
 
@@ -35,7 +35,7 @@ public final class Equal extends AFn {
   }
 
   private boolean equal(Object first, Object second) {
-    if ((first instanceof CharSequence) && (second instanceof SCMMutableString)) {
+    if ((first instanceof CharSequence) && (second instanceof MutableString)) {
       return second.equals(first);
     }
     return first.equals(second);

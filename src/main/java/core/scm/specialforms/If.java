@@ -3,9 +3,9 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMBoolean;
-import core.scm.SCMThunk;
-import core.scm.SCMVoid;
+import core.scm.Thunk;
+import core.scm.Void;
+import core.utils.Utils;
 
 import java.util.List;
 
@@ -23,17 +23,17 @@ public enum If implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
-    if (SCMBoolean.toBoolean(evaluator.eval(test, env))) {
+    if (Utils.toBoolean(evaluator.eval(test, env))) {
       Object consequence = expression.get(2);
-      return new SCMThunk(consequence, env);
+      return new Thunk(consequence, env);
     } else {
       if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
          * Another option is to throw an exception (if: missing an "else" expression) */
-        return SCMVoid.VOID;
+        return Void.VOID;
       }
       Object alternative = expression.get(3);
-      return new SCMThunk(alternative, env);
+      return new Thunk(alternative, env);
     }
   }
 

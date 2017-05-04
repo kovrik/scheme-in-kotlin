@@ -2,12 +2,12 @@ package core.procedures.bit;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 public final class BitSet extends AFn {
 
   public BitSet() {
-    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[] {SCMClass.BitOp.class, Long.class}).build());
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[] {Type.BitOp.class, Long.class}).build());
   }
 
   @Override

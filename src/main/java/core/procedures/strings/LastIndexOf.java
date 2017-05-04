@@ -3,7 +3,7 @@ package core.procedures.strings;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.utils.NumberUtils;
+import core.utils.Utils;
 
 public final class LastIndexOf extends AFn {
 
@@ -23,7 +23,7 @@ public final class LastIndexOf extends AFn {
     }
     if (args.length == 3) {
       Object index = args[2];
-      if (!NumberUtils.isReal(index)) {
+      if (!Utils.isReal(index)) {
         throw new WrongTypeException(getName(), "Real", index);
       }
       if (args[1] instanceof Character) {

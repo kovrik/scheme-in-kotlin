@@ -3,14 +3,14 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.util.List;
 
 public enum Unquote implements ISpecialForm {
   UNQUOTE;
 
-  public static final SCMSymbol UNQUOTE_SYMBOL = SCMSymbol.intern(UNQUOTE.toString());
+  public static final Symbol UNQUOTE_SYMBOL = Symbol.intern(UNQUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

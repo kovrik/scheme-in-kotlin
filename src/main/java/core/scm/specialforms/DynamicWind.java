@@ -5,7 +5,7 @@ import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.WrongTypeException;
 import core.procedures.IFn;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 import java.util.List;
 
@@ -36,13 +36,13 @@ public enum DynamicWind implements ISpecialForm {
       throw new WrongTypeException(toString(), "Procedure", post);
     }
     /* Evaluate before-thunk first */
-    evaluator.eval(SCMCons.list(pre), env);
+    evaluator.eval(Cons.list(pre), env);
     try {
       /* Evaluate and return value-thunk */
-      return evaluator.eval(SCMCons.list(value), env);
+      return evaluator.eval(Cons.list(value), env);
     } finally {
       /* Finally, evaluate post-thunk */
-      evaluator.eval(SCMCons.list(post), env);
+      evaluator.eval(Cons.list(post), env);
     }
   }
 }

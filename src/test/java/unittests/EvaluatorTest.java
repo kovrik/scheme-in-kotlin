@@ -5,15 +5,15 @@ import core.environment.DefaultEnvironment;
 import core.environment.Environment;
 import core.exceptions.IllegalSyntaxException;
 import core.procedures.io.Display;
-import core.scm.SCMOutputPort;
-import core.scm.SCMSymbol;
-import core.scm.SCMVoid;
+import core.scm.OutputPort;
+import core.scm.Symbol;
+import core.scm.Void;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -128,15 +128,15 @@ public class EvaluatorTest extends AbstractTest {
   public void testEvalDisplay() {
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    SCMOutputPort old = Repl.getCurrentOutputPort();
-    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    OutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new OutputPort(new PrintStream(baos)));
 
     DefaultEnvironment tempEnv = new DefaultEnvironment();
     /* Eval lib procedures */
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(SCMSymbol.intern("display"), new Display());
+    tempEnv.put(Symbol.intern("display"), new Display());
 
     eval("(display 123)", tempEnv);
     assertEquals("123", baos.toString().trim());
@@ -188,7 +188,7 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testEvalApply() {
     assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env));
-    assertEquals(list(list(SCMSymbol.intern("a"), 1L), list(SCMSymbol.intern("b"), 2L), list(SCMSymbol.intern("c"), 3L)),
+    assertEquals(list(list(Symbol.intern("a"), 1L), list(Symbol.intern("b"), 2L), list(Symbol.intern("c"), 3L)),
                  eval("(apply map list '((a b c) (1 2 3)))", env));
 
     eval("(define (sqr x) (* x x))", env);
@@ -197,7 +197,7 @@ public class EvaluatorTest extends AbstractTest {
 
   @Test
   public void testForEach() {
-    assertEquals(SCMVoid.VOID, eval("(for-each length '(() (a) (a b)))", env));
+    assertEquals(Void.VOID, eval("(for-each length '(() (a) (a b)))", env));
   }
 
   @Test

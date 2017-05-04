@@ -4,6 +4,7 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.*;
+import core.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public enum Do implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     Environment tempEnv = new Environment(env);
-    List<SCMCons> steps = SCMCons.list();
+    List<Cons> steps = Cons.list();
     for (Object b : (List)bs) {
       if (!(b instanceof List)) {
         throw IllegalSyntaxException.of(toString(), expression);
@@ -45,7 +46,7 @@ public enum Do implements ISpecialForm {
       if (binding.size() == 3) {
         /* Put pair of Var and Step */
         Object step = binding.get(2);
-        steps.add(SCMCons.cons(var, step));
+        steps.add(Cons.cons(var, step));
       }
       /* Check that we have no duplicates among variables */
       if (tempEnv.containsKey(var)) {
@@ -65,7 +66,7 @@ public enum Do implements ISpecialForm {
     Object test = clause.get(0);
     List body = expression.subList(3, expression.size());
     /* While test evaluates to #f */
-    while (!SCMBoolean.toBoolean(evaluator.eval(test, tempEnv))) {
+    while (!Utils.toBoolean(evaluator.eval(test, tempEnv))) {
       /* Evaluate command expressions */
       for (Object e : body) {
         /* Each iteration establishes bindings to fresh locations
@@ -79,7 +80,7 @@ public enum Do implements ISpecialForm {
       }
       /* Evaluate steps */
       Map<Object, Object> freshLocations = new HashMap<>(steps.size());
-      for (SCMCons step : steps) {
+      for (Cons step : steps) {
         Object variable = step.car();
         Object s = step.cdr();
         freshLocations.put(variable, evaluator.eval(s, tempEnv));

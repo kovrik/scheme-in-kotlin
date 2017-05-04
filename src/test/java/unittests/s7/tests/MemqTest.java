@@ -1,11 +1,11 @@
 package unittests.s7.tests;
 
-import core.scm.SCMCons;
+import core.scm.Cons;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMCons.cons;
-import static core.scm.SCMCons.list;
+import static core.scm.Cons.cons;
+import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ public class MemqTest extends AbstractTest {
     assertEquals(cons(s("a"), s("b")), eval("(memq 'a (cons 'a 'b))", env));
     assertEquals(cons(s("a"), cons(s("b"), s("c"))), eval("(memq 'a '(a b . c))", env));
     assertEquals(cons(s("b"), s("c")), eval("(memq 'b '(a b . c))", env));
-    assertEquals(list(SCMCons.EMPTY, 3L), eval("(memq '() '(1 () 3))", env));
+    assertEquals(list(Cons.EMPTY, 3L), eval("(memq '() '(1 () 3))", env));
     assertEquals(FALSE, eval("(memq '() '(1 2))", env));
     assertEquals(list(s("a"), s("b"), s("c")), eval("(memq 'a '(c d a b c))", env));
     assertEquals(FALSE, eval("(memq 'a '(c d f b c))", env));

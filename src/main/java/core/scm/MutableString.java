@@ -5,26 +5,26 @@ package core.scm;
  *
  * Java String is immutable, StringBuilder is mutable.
  * But both classes are final and cannot be extended.
- * This SCMMutableString class holds a mutable StringBuilder instance
+ * This MutableString class holds a mutable StringBuilder instance
  * and delegates it all string operations.
  */
-public class SCMMutableString implements ISCMClass, INamed, CharSequence {
+public class MutableString implements ITyped, INamed, CharSequence {
 
   private final StringBuilder string;
 
-  public SCMMutableString() {
+  public MutableString() {
     this.string = new StringBuilder();
   }
 
-  public SCMMutableString(String string) {
+  public MutableString(String string) {
     this.string = new StringBuilder(string);
   }
 
-  public SCMMutableString(int length) {
+  public MutableString(int length) {
     this.string = new StringBuilder(length);
   }
 
-  public SCMMutableString append(Object c) {
+  public MutableString append(Object c) {
     this.string.append(c);
     return this;
   }
@@ -55,14 +55,14 @@ public class SCMMutableString implements ISCMClass, INamed, CharSequence {
     string.setLength(0);
   }
 
-  public SCMMutableString reverse() {
+  public MutableString reverse() {
     string.reverse();
     return this;
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.MUTABLE_STRING;
+  public Type getType() {
+    return Type.MUTABLE_STRING;
   }
 
   @Override

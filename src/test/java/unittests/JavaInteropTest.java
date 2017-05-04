@@ -1,6 +1,6 @@
 package unittests;
 
-import core.scm.SCMCons;
+import core.scm.Cons;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ public class JavaInteropTest extends AbstractTest {
   public void testJavaStaticFields() {
     assertEquals(Math.PI, eval("Math/PI", env));
     assertTrue(Collections.EMPTY_LIST == eval("java.util.Collections/EMPTY_LIST", env));
-    assertTrue(SCMCons.EMPTY == eval(SCMCons.class.getName() + "/EMPTY", env));
+    assertTrue(Cons.EMPTY == eval(Cons.class.getName() + "/EMPTY", env));
   }
 
   @Test

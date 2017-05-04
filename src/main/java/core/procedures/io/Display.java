@@ -4,8 +4,8 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMOutputPort;
-import core.scm.SCMVoid;
+import core.scm.OutputPort;
+import core.scm.Void;
 import core.writer.Writer;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class Display extends AFn {
 
   public Display() {
     super(new FnArgsBuilder().min(1).max(2).mandatory(new Class[]{Object.class})
-                             .rest(SCMOutputPort.class).build());
+                             .rest(OutputPort.class).build());
   }
 
   @Override
@@ -24,11 +24,11 @@ public class Display extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    SCMOutputPort outputPort;
+    OutputPort outputPort;
     if (args.length == 1) {
       outputPort = Repl.getCurrentOutputPort();
     } else {
-      outputPort = ((SCMOutputPort)args[1]);
+      outputPort = ((OutputPort)args[1]);
     }
     Object arg = args[0];
     try {
@@ -40,6 +40,6 @@ public class Display extends AFn {
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 }

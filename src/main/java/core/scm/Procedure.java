@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 /* Lambda */
-public class SCMProcedure extends AFn {
+public class Procedure extends AFn {
 
   private String name;
 
   /* List of arguments the procedure expects */
-  private final List<SCMSymbol> args;
+  private final List<Symbol> args;
 
   /* Body form of the procedure */
   private final Object body;
@@ -25,9 +25,9 @@ public class SCMProcedure extends AFn {
   /* Lexical environment */
   private Environment localEnvironment = null;
 
-  public SCMProcedure(String name, List<SCMSymbol> args, Object body, Environment localEnvironment, boolean isVariadic) {
+  public Procedure(String name, List<Symbol> args, Object body, Environment localEnvironment, boolean isVariadic) {
     this.name = name;
-    this.args = (args == null) ? SCMCons.EMPTY : args;
+    this.args = (args == null) ? Cons.EMPTY : args;
     this.body = body;
     this.isBodyConst = isConst(body);
     this.localEnvironment = localEnvironment;
@@ -42,11 +42,11 @@ public class SCMProcedure extends AFn {
 
   // TODO Check collections?
   private static boolean isConst(Object obj) {
-    return !((obj instanceof SCMSymbol) || (obj instanceof List) || (obj instanceof Map) ||
-             (obj instanceof SCMVector) || (obj instanceof Set));
+    return !((obj instanceof Symbol) || (obj instanceof List) || (obj instanceof Map) ||
+             (obj instanceof Vector) || (obj instanceof Set));
   }
 
-  private List<SCMSymbol> getArgs() {
+  private List<Symbol> getArgs() {
     return args;
   }
 
@@ -58,7 +58,7 @@ public class SCMProcedure extends AFn {
   private Environment bindArgs(Object... values) {
     /* Evaluate mandatory params and put values into new local environment */
     Environment env = new Environment(values.length, this.localEnvironment);
-    List<SCMSymbol> args = getArgs();
+    List<Symbol> args = getArgs();
     for (int i = 0; i < minArgs; i++) {
       env.put(args.get(i), values[i]);
     }
@@ -76,7 +76,7 @@ public class SCMProcedure extends AFn {
     if (isBodyConst) {
       return body;
     }
-    return new SCMThunk(body, new Environment(0, this.localEnvironment));
+    return new Thunk(body, new Environment(0, this.localEnvironment));
   }
 
   @Override
@@ -86,7 +86,7 @@ public class SCMProcedure extends AFn {
     }
     Environment environment = new Environment(1, this.localEnvironment);
     environment.put(args.get(0), arg1);
-    return new SCMThunk(body, environment);
+    return new Thunk(body, environment);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class SCMProcedure extends AFn {
     Environment environment = new Environment(2, this.localEnvironment);
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
-    return new SCMThunk(body, environment);
+    return new Thunk(body, environment);
   }
 
   @Override
@@ -109,7 +109,7 @@ public class SCMProcedure extends AFn {
     environment.put(args.get(0), arg1);
     environment.put(args.get(1), arg2);
     environment.put(args.get(2), arg3);
-    return new SCMThunk(body, environment);
+    return new Thunk(body, environment);
   }
 
   @Override
@@ -122,7 +122,7 @@ public class SCMProcedure extends AFn {
     environment.put(args.get(1), arg2);
     environment.put(args.get(2), arg3);
     environment.put(args.get(3), arg4);
-    return new SCMThunk(body, environment);
+    return new Thunk(body, environment);
   }
 
   @Override
@@ -130,7 +130,7 @@ public class SCMProcedure extends AFn {
     if (isBodyConst) {
       return body;
     }
-    return new SCMThunk(body, bindArgs(args));
+    return new Thunk(body, bindArgs(args));
   }
 
   @Override

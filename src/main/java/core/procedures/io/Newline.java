@@ -4,8 +4,8 @@ import core.Repl;
 import core.exceptions.SCMIOException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMOutputPort;
-import core.scm.SCMVoid;
+import core.scm.OutputPort;
+import core.scm.Void;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ public final class Newline extends AFn {
   private static final String LS = System.getProperty("line.separator");
 
   public Newline() {
-    super(new FnArgsBuilder().max(1).rest(SCMOutputPort.class).build());
+    super(new FnArgsBuilder().max(1).rest(OutputPort.class).build());
   }
 
   @Override
@@ -24,17 +24,17 @@ public final class Newline extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    SCMOutputPort outputPort;
+    OutputPort outputPort;
     if (args.length == 0) {
       outputPort = Repl.getCurrentOutputPort();
     } else {
-      outputPort = ((SCMOutputPort)args[0]);
+      outputPort = ((OutputPort)args[0]);
     }
     try {
       outputPort.write(LS);
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 }

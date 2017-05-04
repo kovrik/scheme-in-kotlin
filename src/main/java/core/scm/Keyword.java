@@ -7,26 +7,26 @@ import core.utils.InternPool;
 
 import java.util.Map;
 
-public class SCMKeyword extends AFn implements ISCMClass, INamed {
+public class Keyword extends AFn implements ITyped, INamed {
 
   /* Pool of all interned keywords */
-  private static final InternPool<SCMKeyword> POOL = new InternPool<>();
+  private static final InternPool<Keyword> POOL = new InternPool<>();
 
   private final String name;
 
-  private SCMKeyword(String name) {
+  private Keyword(String name) {
     super(new FnArgsBuilder().mandatory(new Class[]{Map.class}).build());
     this.name = name;
   }
 
-  public static SCMKeyword intern(String value) {
+  public static Keyword intern(String value) {
     // always intern keywords
-    return POOL.intern(new SCMKeyword(value));
+    return POOL.intern(new Keyword(value));
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.KEYWORD;
+  public Type getType() {
+    return Type.KEYWORD;
   }
 
   @Override
@@ -57,7 +57,7 @@ public class SCMKeyword extends AFn implements ISCMClass, INamed {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SCMKeyword that = (SCMKeyword) o;
+    Keyword that = (Keyword) o;
     return name != null ? name.equals(that.name) : that.name == null;
   }
 

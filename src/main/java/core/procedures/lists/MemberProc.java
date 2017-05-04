@@ -4,8 +4,8 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.cons.Car;
 import core.procedures.cons.Cdr;
-import core.scm.SCMBoolean;
-import core.scm.SCMCons;
+import core.scm.Cons;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.util.List;
@@ -38,14 +38,14 @@ public final class MemberProc extends AFn {
     while ((cons instanceof List) && (!((List) cons).isEmpty())) {
       p += 1;
       Object car = Car.car(cons);
-      if ((SCMBoolean.toBoolean(predicate.apply2(arg1, car)))) {
+      if ((Utils.toBoolean(predicate.apply2(arg1, car)))) {
         return cons;
       }
       cons = Cdr.cdr(cons);
     }
     /* Not found */
     if (p == list.size()) {
-      if (!SCMCons.isList(list)) {
+      if (!Cons.isList(list)) {
         throw new IllegalArgumentException(String.format("%s: wrong type argument in position %s (expecting list): %s",
                                                          getName(), p, Writer.write(list)));
       }

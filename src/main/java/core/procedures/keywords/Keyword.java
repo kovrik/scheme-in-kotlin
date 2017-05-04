@@ -2,7 +2,6 @@ package core.procedures.keywords;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMKeyword;
 
 public final class Keyword extends AFn {
 
@@ -16,7 +15,7 @@ public final class Keyword extends AFn {
   }
 
   @Override
-  public SCMKeyword apply1(Object arg) {
-    return (arg == null) ? null : SCMKeyword.intern(arg.toString());
+  public core.scm.Keyword apply1(Object arg) {
+    return (arg == null) ? null : core.scm.Keyword.intern(arg.toString());
   }
 }

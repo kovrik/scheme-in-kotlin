@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.IMeta;
-import core.scm.SCMSymbol;
+import core.scm.Symbol;
 
 import java.util.Map;
 
@@ -26,8 +26,8 @@ public final class WIthMeta extends AFn {
 
   @Override
   public Object apply2(Object obj, Object meta) {
-    if (obj instanceof SCMSymbol) {
-      return new SCMSymbol(((SCMSymbol) obj).getName(), (Map)meta);
+    if (obj instanceof Symbol) {
+      return new Symbol(((Symbol) obj).getName(), (Map)meta);
     }
     throw new WrongTypeException(getName(), "IMeta", obj);
   }

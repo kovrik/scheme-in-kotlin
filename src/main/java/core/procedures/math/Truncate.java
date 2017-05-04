@@ -2,15 +2,15 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
+import core.scm.BigRational;
+import core.scm.Type;
 
 import java.math.BigDecimal;
 
 public final class Truncate extends AFn {
 
   public Truncate() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Real.class}).build());
   }
 
   @Override
@@ -38,8 +38,8 @@ public final class Truncate extends AFn {
       } else {
         return bd.setScale(0, BigDecimal.ROUND_DOWN);
       }
-    } else if (arg instanceof SCMBigRational){
-      return ((SCMBigRational) arg).truncate();
+    } else if (arg instanceof BigRational){
+      return ((BigRational) arg).truncate();
     }
     return (Number)arg;
   }

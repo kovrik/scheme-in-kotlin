@@ -2,12 +2,12 @@ package core.procedures.bit;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 public final class BitNot extends AFn {
 
   public BitNot() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[] {SCMClass.BitOp.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[] {Type.BitOp.class}).build());
   }
 
   @Override

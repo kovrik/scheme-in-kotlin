@@ -2,9 +2,9 @@ package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,17 +28,17 @@ public final class Atan extends AFn {
   @Override
   public Number apply1(Object arg) {
     /* Special cases */
-    if (NumberUtils.isZero(arg)) {
+    if (Utils.isZero(arg)) {
       return 0L;
     }
     if (arg instanceof BigDecimal) {
       return atan((BigDecimal)arg);
     } else if (arg instanceof BigInteger) {
       return atan((BigInteger)arg);
-    } else if (arg instanceof SCMBigComplex) {
-      return atan((SCMBigComplex)arg);
-    } else if (arg instanceof SCMBigRational) {
-      return atan(((SCMBigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigComplex) {
+      return atan((BigComplex)arg);
+    } else if (arg instanceof BigRational) {
+      return atan(((BigRational)arg).toBigDecimal());
     }
     return Math.atan(((Number)arg).doubleValue());
   }
@@ -61,7 +61,7 @@ public final class Atan extends AFn {
     }
   }
 
-  public static Number atan(SCMBigComplex c) {
+  public static Number atan(BigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
     double a = r.doubleValue();
@@ -102,6 +102,6 @@ public final class Atan extends AFn {
     if (Double.isInfinite(im) || Double.isNaN(im)) {
       return Double.NaN;
     }
-    return new SCMBigComplex(re, im);
+    return new BigComplex(re, im);
   }
 }

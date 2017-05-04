@@ -7,12 +7,9 @@ package core.scm;
  * so we need this VOID class to represent actual void result
  * (same as #<unspecified> in Scheme)
  */
-public enum  SCMVoid implements ISCMClass {
+public enum Void implements ITyped {
   VOID {
-    @Override
-    public SCMClass getSCMClass() { return SCMClass.VOID; }
-
-    @Override
-    public String toString() { return "#<void>"; }
+    @Override public Type getType() { return Type.VOID; }
+    @Override public String toString() { return "#<void>"; }
   }
 }

@@ -3,9 +3,9 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.predicates.SCMPredicate;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.math.BigDecimal;
@@ -60,33 +60,33 @@ public final class Expt extends AFn {
      *
      *  w otherwise rational — 0.0
      */
-    if (NumberUtils.isNaN(base) || NumberUtils.isNaN(exponent)) {
+    if (Utils.isNaN(base) || Utils.isNaN(exponent)) {
       return Double.NaN;
     }
-    if (NumberUtils.isZero(base) && NumberUtils.isZero(exponent)) {
+    if (Utils.isZero(base) && Utils.isZero(exponent)) {
       return 1L;
     }
-    if (NumberUtils.isZero(base) && (NumberUtils.isFinite(exponent))) {
+    if (Utils.isZero(base) && (Utils.isFinite(exponent))) {
       if (base.equals(-0d)) {
-        if (NumberUtils.isNegative(exponent)) {
-          return NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ?
+        if (Utils.isNegative(exponent)) {
+          return Utils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ?
                  Double.NEGATIVE_INFINITY :
                  Double.POSITIVE_INFINITY;
         } else {
-          return NumberUtils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Utils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         }
       }
-      return NumberUtils.isNegative(exponent) ?
+      return Utils.isNegative(exponent) ?
              Double.valueOf(Double.POSITIVE_INFINITY) :
-             NumberUtils.inexactnessTaint(0L, base);
+             Utils.inexactnessTaint(0L, base);
     }
-    if (NumberUtils.isOne(base)) {
-      return NumberUtils.inexactnessTaint(base, exponent);
+    if (Utils.isOne(base)) {
+      return Utils.inexactnessTaint(base, exponent);
     }
-    if (NumberUtils.isZero(exponent)) {
+    if (Utils.isZero(exponent)) {
       return 1L;
     }
-    if (NumberUtils.isOne(exponent)) {
+    if (Utils.isOne(exponent)) {
       return base;
     }
     /* Special cases for Real numbers */
@@ -101,8 +101,8 @@ public final class Expt extends AFn {
      *   w is even — +inf.0
      */
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
-      if (NumberUtils.isInteger(exponent)) {
-        if (NumberUtils.isNegative(exponent)) {
+      if (Utils.isInteger(exponent)) {
+        if (Utils.isNegative(exponent)) {
           return SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         } else {
           return SCMPredicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
@@ -115,7 +115,7 @@ public final class Expt extends AFn {
      *  w is positive — +inf.0
      */
     if ((base instanceof Double) && Double.POSITIVE_INFINITY == (Double)base) {
-      return NumberUtils.isPositive(exponent) ? Double.POSITIVE_INFINITY : 0d;
+      return Utils.isPositive(exponent) ? Double.POSITIVE_INFINITY : 0d;
     }
 
     /* (expt z -inf.0) for positive z:
@@ -129,10 +129,10 @@ public final class Expt extends AFn {
      *  z is greater than 1.0 — +inf.0
      */
     if ((exponent instanceof Double) && Double.isInfinite((Double)exponent)) {
-      if (base instanceof SCMBigComplex) {
+      if (base instanceof BigComplex) {
         return Double.NaN;
       }
-      if (NumberUtils.isZero(base)) {
+      if (Utils.isZero(base)) {
         if ((Double) exponent == Double.NEGATIVE_INFINITY) {
           throw new ArithmeticException(String.format("%s: undefined for %s and %s", "expt", base, Writer.write(exponent)));
         } else {
@@ -155,12 +155,12 @@ public final class Expt extends AFn {
     }
 
     /* Complex numbers */
-    if ((base instanceof SCMBigComplex) || (exponent instanceof SCMBigComplex) ) {
-      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
+    if ((base instanceof BigComplex) || (exponent instanceof BigComplex) ) {
+      return BigComplex.of(base).expt(BigComplex.of(exponent));
     }
     /* Long, Integer, Short, Byte */
-    Number b = NumberUtils.upcast(base);
-    Number ex = NumberUtils.upcast(exponent);
+    Number b = Utils.upcast(base);
+    Number ex = Utils.upcast(exponent);
     if ((b instanceof Long) && (ex instanceof Long)) {
       boolean isNegative = false;
       if (exponent.longValue() < Integer.MAX_VALUE) {
@@ -169,11 +169,11 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = BigDecimal.valueOf(base.longValue()).pow(e).setScale(0, NumberUtils.ROUNDING_MODE);
+        BigDecimal result = BigDecimal.valueOf(base.longValue()).pow(e).setScale(0, Utils.ROUNDING_MODE);
         if (isNegative) {
-          return new SCMBigRational(BigInteger.ONE, result.toBigInteger());
+          return new BigRational(BigInteger.ONE, result.toBigInteger());
         }
-        return NumberUtils.downcastNumber(result);
+        return Utils.downcastNumber(result);
       } else {
         /* If we came here, then exponent is greater than Integer.MAX_VALUE */
         if (Math.abs(base.longValue()) < 1) {
@@ -187,8 +187,8 @@ public final class Expt extends AFn {
       }
     }
     /* BigDecimals */
-    if (base instanceof BigDecimal && NumberUtils.isInteger(exponent)) {
-      if (NumberUtils.isInteger(base)) {
+    if (base instanceof BigDecimal && Utils.isInteger(exponent)) {
+      if (Utils.isInteger(base)) {
         if (exponent instanceof BigDecimal) {
           try {
             return ((BigDecimal) base).pow(((BigDecimal) exponent).intValueExact());
@@ -197,11 +197,11 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBig((BigDecimal) base, NumberUtils.toBigDecimal(exponent));
+      return exptBig((BigDecimal) base, Utils.toBigDecimal(exponent));
     }
     /* BigIntegers */
-    if (base instanceof BigInteger && NumberUtils.isInteger(exponent)) {
-      if (NumberUtils.isInteger(base)) {
+    if (base instanceof BigInteger && Utils.isInteger(exponent)) {
+      if (Utils.isInteger(base)) {
         if (exponent instanceof BigInteger) {
           try {
             return ((BigInteger) base).pow(((BigInteger) exponent).intValueExact());
@@ -210,7 +210,7 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBig(NumberUtils.toBigDecimal(base), NumberUtils.toBigDecimal(exponent));
+      return exptBig(Utils.toBigDecimal(base), Utils.toBigDecimal(exponent));
     }
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());
@@ -218,7 +218,7 @@ public final class Expt extends AFn {
       return new BigDecimal(base.toString()).pow(exponent.intValue());
     }
     if (Double.isNaN(result)) {
-      return SCMBigComplex.of(base).expt(SCMBigComplex.of(exponent));
+      return BigComplex.of(base).expt(BigComplex.of(exponent));
     }
     return result;
   }

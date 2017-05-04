@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ public final class LCM extends AFn {
   private static final Abs ABS = new Abs();
 
   public LCM() {
-    super(new FnArgsBuilder().rest(SCMBigRational.class).build());
+    super(new FnArgsBuilder().rest(BigRational.class).build());
   }
 
   @Override
@@ -61,9 +61,9 @@ public final class LCM extends AFn {
     return first.multiply(second.divide(gcd(first, second)));
   }
 
-  private SCMBigRational lcm(SCMBigRational first, SCMBigRational second) {
-    return new SCMBigRational(lcm(first.getNumerator(), second.getNumerator()),
-                              gcd(first.getDenominator(), second.getDenominator()));
+  private BigRational lcm(BigRational first, BigRational second) {
+    return new BigRational(lcm(first.getNumerator(), second.getNumerator()),
+                           gcd(first.getDenominator(), second.getDenominator()));
   }
 
   private Number lcm(BigDecimal a, BigDecimal b) {
@@ -79,28 +79,28 @@ public final class LCM extends AFn {
   }
 
   private Number lcm(Number first, Number second) {
-    Number f = NumberUtils.upcast(first);
-    Number s = NumberUtils.upcast(second);
+    Number f = Utils.upcast(first);
+    Number s = Utils.upcast(second);
     if ((f instanceof Long) && (s instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return lcm((SCMBigRational) first, (SCMBigRational)second);
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return lcm((BigRational) first, (BigRational)second);
     }
-    if (first instanceof SCMBigRational) {
-      return lcm(((SCMBigRational) first).toBigDecimal(), NumberUtils.toBigDecimal(second));
+    if (first instanceof BigRational) {
+      return lcm(((BigRational) first).toBigDecimal(), Utils.toBigDecimal(second));
     }
-    if (second instanceof SCMBigRational) {
-      return lcm(NumberUtils.toBigDecimal(first), ((SCMBigRational) second).toBigDecimal());
+    if (second instanceof BigRational) {
+      return lcm(Utils.toBigDecimal(first), ((BigRational) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return lcm((BigDecimal)first, (BigDecimal)second);
     }
     if (first instanceof BigDecimal) {
-      return lcm((BigDecimal)first, NumberUtils.toBigDecimal(second));
+      return lcm((BigDecimal)first, Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return lcm(NumberUtils.toBigDecimal(first), (BigDecimal)second);
+      return lcm(Utils.toBigDecimal(first), (BigDecimal)second);
     }
     if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
       return lcm((BigInteger)first, (BigInteger)second);

@@ -2,7 +2,7 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMCons;
+import core.scm.Cons;
 
 public final class ConsProc extends AFn {
 
@@ -16,14 +16,14 @@ public final class ConsProc extends AFn {
   }
 
   @Override
-  public SCMCons apply2(Object arg1, Object arg2) {
+  public Cons apply2(Object arg1, Object arg2) {
     return cons(arg1, arg2);
   }
 
-  public static SCMCons cons(Object car, Object cdr) {
+  public static Cons cons(Object car, Object cdr) {
     if (car == null && cdr == null) {
-      return SCMCons.EMPTY;
+      return Cons.EMPTY;
     }
-    return SCMCons.cons(car, cdr);
+    return Cons.cons(car, cdr);
   }
 }

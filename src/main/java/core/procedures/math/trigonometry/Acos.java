@@ -2,8 +2,8 @@ package core.procedures.math.trigonometry;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
+import core.scm.BigComplex;
+import core.scm.BigRational;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,14 +30,14 @@ public final class Acos extends AFn {
       return acos((BigDecimal)arg);
     } else if (arg instanceof BigInteger) {
       return acos((BigInteger)arg);
-    } else if (arg instanceof SCMBigComplex) {
-      return acos((SCMBigComplex)arg);
-    } else if (arg instanceof SCMBigRational) {
-      return acos(((SCMBigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigComplex) {
+      return acos((BigComplex)arg);
+    } else if (arg instanceof BigRational) {
+      return acos(((BigRational)arg).toBigDecimal());
     }
     double acos = Math.acos(((Number)arg).doubleValue());
     if (Double.isNaN(acos)) {
-      return acos(new SCMBigComplex((Number)arg));
+      return acos(new BigComplex((Number)arg));
     }
     return acos;
   }
@@ -49,7 +49,7 @@ public final class Acos extends AFn {
     } else {
       double acos = Math.acos(v);
       if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex(bd));
+        return acos(new BigComplex(bd));
       }
       return acos;
     }
@@ -62,7 +62,7 @@ public final class Acos extends AFn {
     } else {
       double acos = Math.acos(v);
       if (Double.isNaN(acos)) {
-        return acos(new SCMBigComplex(bi));
+        return acos(new BigComplex(bi));
       }
       return acos;
     }
@@ -74,7 +74,7 @@ public final class Acos extends AFn {
    * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
    *
    **/
-  private static Number acos(SCMBigComplex c) {
+  private static Number acos(BigComplex c) {
     BigDecimal r = c.getRe();
     BigDecimal i = c.getIm();
     int signum;
@@ -107,6 +107,6 @@ public final class Acos extends AFn {
     if (Double.isInfinite(im) || Double.isNaN(im)) {
       return Double.NaN;
     }
-    return new SCMBigComplex(re, signum*im);
+    return new BigComplex(re, signum*im);
   }
 }

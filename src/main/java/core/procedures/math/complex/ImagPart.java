@@ -2,7 +2,7 @@ package core.procedures.math.complex;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
+import core.scm.BigComplex;
 
 public final class ImagPart extends AFn {
 
@@ -22,8 +22,8 @@ public final class ImagPart extends AFn {
 
   @Override
   public Number apply1(Object arg) {
-    if (arg instanceof SCMBigComplex) {
-      return ((SCMBigComplex)arg).getIm();
+    if (arg instanceof BigComplex) {
+      return ((BigComplex)arg).getIm();
     }
     return 0L;
   }

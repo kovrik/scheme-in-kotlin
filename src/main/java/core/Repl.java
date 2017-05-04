@@ -9,6 +9,8 @@ import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
 import core.scm.*;
+import core.scm.Error;
+import core.scm.Void;
 import core.writer.IWriter;
 import core.writer.Writer;
 
@@ -28,8 +30,8 @@ public class Repl {
   private static final Evaluator evaluator = new Evaluator();
   private static final DefaultEnvironment defaultEnvironment = new DefaultEnvironment();
 
-  private static SCMInputPort currentInputPort = new SCMInputPort(new BufferedInputStream(System.in));
-  private static SCMOutputPort currentOutputPort = new SCMOutputPort(System.out);
+  private static InputPort currentInputPort = new InputPort(new BufferedInputStream(System.in));
+  private static OutputPort currentOutputPort = new OutputPort(System.out);
 
   private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader(currentInputPort.getInputStream());
@@ -45,12 +47,12 @@ public class Repl {
     repl(WELCOME, PROMPT, defaultEnvironment);
   }
 
-  private static SCMSymbol getNextID() {
+  private static Symbol getNextID() {
     int i = SYM_COUNTER.incrementAndGet();
     if (i == SYM_LIMIT) {
       SYM_COUNTER.set(0);
     }
-    return SCMSymbol.intern("$" + i);
+    return Symbol.intern("$" + i);
   }
 
   private static void repl(String welcomeMessage, String prompt, Environment env) throws IOException {
@@ -65,7 +67,7 @@ public class Repl {
           /* Macroexpand and then Evaluate each S-expression */
           Object result = evaluator.macroexpandAndEvaluate(expr, env);
           /* Do not print and do not store void results */
-          if (result == SCMVoid.VOID) {
+          if (result == Void.VOID) {
             continue;
           }
           /* nil, on the other hand, is a valid result - print it, but not store it */
@@ -74,7 +76,7 @@ public class Repl {
             continue;
           }
           /* Put result into environment */
-          SCMSymbol id = getNextID();
+          Symbol id = getNextID();
           env.put(id, result);
           /* Print */
           currentOutputPort.writeln(id + " = " + writer.toString(result));
@@ -90,7 +92,7 @@ public class Repl {
 
   private static void error(Throwable e) throws IOException {
     StringBuilder sb = new StringBuilder();
-    if (e instanceof SCMError) {
+    if (e instanceof Error) {
       sb.append("Error: ").append(e.getMessage());
     } else if (e instanceof ExInfoException) {
       sb.append(e);
@@ -109,19 +111,19 @@ public class Repl {
     currentOutputPort.writeln(sb.toString());
   }
 
-  public static SCMInputPort getCurrentInputPort() {
+  public static InputPort getCurrentInputPort() {
     return currentInputPort;
   }
 
-  public static void setCurrentInputPort(SCMInputPort inputPort) {
+  public static void setCurrentInputPort(InputPort inputPort) {
     currentInputPort = inputPort;
   }
 
-  public static SCMOutputPort getCurrentOutputPort() {
+  public static OutputPort getCurrentOutputPort() {
     return currentOutputPort;
   }
 
-  public static void setCurrentOutputPort(SCMOutputPort outputPort) {
+  public static void setCurrentOutputPort(OutputPort outputPort) {
     currentOutputPort = outputPort;
   }
 }

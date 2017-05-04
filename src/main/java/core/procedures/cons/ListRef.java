@@ -2,8 +2,8 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
+import core.scm.Cons;
+import core.scm.Type;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public final class ListRef extends AFn {
 
   public ListRef() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{SCMClass.SCMPair.class, SCMClass.ExactNonNegativeInteger.class}).build());
+                             .mandatory(new Class[]{Type.SCMPair.class, Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override
@@ -32,9 +32,9 @@ public final class ListRef extends AFn {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), p));
     }
     /* Cons cell */
-    if ((list instanceof SCMCons) && !((SCMCons)list).isList()) {
+    if ((list instanceof Cons) && !((Cons)list).isList()) {
       if (p == 0) {
-        return ((SCMCons)list).car();
+        return ((Cons)list).car();
       } else {
         throw new IllegalArgumentException(String.format("%s: index (%s) reaches a non-pair", getName(), p));
       }

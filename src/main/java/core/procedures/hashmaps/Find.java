@@ -2,7 +2,7 @@ package core.procedures.hashmaps;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMMapEntry;
+import core.scm.MapEntry;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public final class Find extends AFn {
   public Map.Entry apply2(Object map, Object key) {
     Map<Object, Object> hashMap = (Map)map;
     if (hashMap.containsKey(key)) {
-      return new SCMMapEntry(key, hashMap.get(key));
+      return new MapEntry(key, hashMap.get(key));
     }
     return null;
   }

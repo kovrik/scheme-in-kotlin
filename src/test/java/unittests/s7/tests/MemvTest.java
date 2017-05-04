@@ -2,11 +2,11 @@ package unittests.s7.tests;
 
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMMutableVector;
+import core.scm.MutableVector;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.scm.SCMCons.*;
+import static core.scm.Cons.*;
 import static java.lang.Boolean.FALSE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -32,7 +32,7 @@ public class MemvTest extends AbstractTest {
     assertEquals(list('a', 2L), eval("(memv #\\a '(1 #f #\\a 2))", env));
     assertEquals(FALSE, eval("(memv #(1) '(1 #(1) 2))", env));
     assertEquals(list(EMPTY, 2L), eval("(memv '() '(1 () 2))", env));
-    assertEquals(list(new SCMMutableVector(1L, 2L, 3L), new SCMMutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env));
+    assertEquals(list(new MutableVector(1L, 2L, 3L), new MutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env));
     assertEquals(FALSE, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env));
     try {
       eval("(memv 'asdf '(a b . c))", env);

@@ -2,12 +2,12 @@ package core.procedures.bit;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 public final class BitXor extends AFn {
 
   public BitXor() {
-    super(new FnArgsBuilder().min(2).rest(SCMClass.BitOp.class).build());
+    super(new FnArgsBuilder().min(2).rest(Type.BitOp.class).build());
   }
 
   @Override

@@ -1,12 +1,12 @@
 package core.environment;
 
 import core.exceptions.UndefinedIdentifierException;
-import core.scm.ISCMClass;
-import core.scm.SCMClass;
+import core.scm.ITyped;
+import core.scm.Type;
 
 import java.util.*;
 
-public class Environment extends HashMap<Object, Object> implements ISCMClass {
+public class Environment extends HashMap<Object, Object> implements ITyped {
 
   /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
   public static final Object UNDEFINED = new Object();
@@ -43,8 +43,8 @@ public class Environment extends HashMap<Object, Object> implements ISCMClass {
   }
 
   @Override
-  public SCMClass getSCMClass() {
-    return SCMClass.ENVIRONMENT;
+  public Type getType() {
+    return Type.ENVIRONMENT;
   }
 
   @Override

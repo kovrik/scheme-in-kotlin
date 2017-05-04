@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
+import core.scm.BigRational;
+import core.scm.Type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public final class Floor extends AFn {
 
   public Floor() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Real.class}).build());
   }
 
   @Override
@@ -34,8 +34,8 @@ public final class Floor extends AFn {
       return Math.floor((Float) arg);
     } else if (arg instanceof BigDecimal) {
       return ((BigDecimal)arg).setScale(0, BigDecimal.ROUND_DOWN);
-    } else if (arg instanceof SCMBigRational) {
-      return ((SCMBigRational) arg).floor();
+    } else if (arg instanceof BigRational) {
+      return ((BigRational) arg).floor();
     }
     return Math.floor(((Number)arg).doubleValue());
   }

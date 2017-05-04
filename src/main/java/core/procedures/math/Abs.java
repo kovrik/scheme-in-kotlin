@@ -2,8 +2,8 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
+import core.scm.BigRational;
+import core.scm.Type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public final class Abs extends AFn {
 
   public Abs() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{SCMClass.Real.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Real.class}).build());
   }
 
   @Override
@@ -42,8 +42,8 @@ public final class Abs extends AFn {
       return ((BigInteger) number).abs();
     } else if (number instanceof BigDecimal) {
       return ((BigDecimal) number).abs();
-    } else if (number instanceof SCMBigRational) {
-      return ((SCMBigRational) number).abs();
+    } else if (number instanceof BigRational) {
+      return ((BigRational) number).abs();
     }
     return Math.abs(number.longValue());
   }

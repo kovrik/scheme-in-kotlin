@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigRational;
-import core.scm.SCMClass;
-import core.utils.NumberUtils;
+import core.scm.BigRational;
+import core.scm.Type;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,8 +23,8 @@ public final class NumericalComparison extends AFn {
 
   private NumericalComparison(String name, BiPredicate<Comparable<Number>, Number> predicate) {
     super(new FnArgsBuilder().min(2)
-                             .mandatory(new Class[]{SCMClass.Real.class, SCMClass.Real.class})
-                             .rest(SCMClass.Real.class).build());
+                             .mandatory(new Class[]{Type.Real.class, Type.Real.class})
+                             .rest(Type.Real.class).build());
     this.name = name;
     this.predicate = predicate;
   }
@@ -44,11 +44,11 @@ public final class NumericalComparison extends AFn {
     for (int i = 0; i < args.length - 1; i++) {
       Number f = (Number)args[i];
       Number s = (Number)args[i + 1];
-      if (f instanceof SCMBigRational) {
-        f = ((SCMBigRational)f).toBigDecimal();
+      if (f instanceof BigRational) {
+        f = ((BigRational)f).toBigDecimal();
       }
-      if (s instanceof SCMBigRational) {
-        s = ((SCMBigRational)s).toBigDecimal();
+      if (s instanceof BigRational) {
+        s = ((BigRational)s).toBigDecimal();
       }
       if ((f instanceof Double) || (s instanceof Double)) {
         f = f.doubleValue();
@@ -57,9 +57,9 @@ public final class NumericalComparison extends AFn {
         f = f.floatValue();
         s = s.floatValue();
       } else if ((f instanceof BigDecimal) && !(s instanceof BigDecimal)) {
-        s = NumberUtils.toBigDecimal(s);
+        s = Utils.toBigDecimal(s);
       } else if ((s instanceof BigDecimal) && !(f instanceof BigDecimal)) {
-        f = NumberUtils.toBigDecimal(f);
+        f = Utils.toBigDecimal(f);
       } else if ((f instanceof BigInteger) && !(s instanceof BigInteger)) {
         s = new BigInteger(s.toString());
       } else if ((s instanceof BigInteger) && !(f instanceof BigInteger)) {

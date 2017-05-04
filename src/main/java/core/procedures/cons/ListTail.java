@@ -3,8 +3,8 @@ package core.procedures.cons;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
+import core.scm.Cons;
+import core.scm.Type;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public final class ListTail extends AFn {
 
   public ListTail() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{Object.class, SCMClass.ExactNonNegativeInteger.class}).build());
+                             .mandatory(new Class[]{Object.class, Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override
@@ -34,9 +34,9 @@ public final class ListTail extends AFn {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), p));
     }
     /* Cons cell */
-    if ((list instanceof SCMCons) && !((SCMCons)list).isList()) {
+    if ((list instanceof Cons) && !((Cons)list).isList()) {
       if (p == 1) {
-        return ((SCMCons)list).cdr();
+        return ((Cons)list).cdr();
       } else {
         throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), p));
       }

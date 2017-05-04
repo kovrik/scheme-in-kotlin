@@ -2,14 +2,14 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
+import core.scm.Type;
 
 public final class Substring extends AFn {
 
   public Substring() {
     super(new FnArgsBuilder().min(2).max(3)
-                             .mandatory(new Class[]{CharSequence.class, SCMClass.ExactNonNegativeInteger.class})
-                             .rest(SCMClass.ExactNonNegativeInteger.class).build());
+                             .mandatory(new Class[]{CharSequence.class, Type.ExactNonNegativeInteger.class})
+                             .rest(Type.ExactNonNegativeInteger.class).build());
   }
 
   @Override

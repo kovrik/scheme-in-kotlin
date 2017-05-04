@@ -2,9 +2,9 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
-import core.scm.SCMBigRational;
-import core.utils.NumberUtils;
+import core.scm.BigComplex;
+import core.scm.BigRational;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,8 +34,8 @@ public final class Subtraction extends AFn {
       if (args[0] instanceof BigInteger) {
         return ((BigInteger)args[0]).negate();
       }
-      if (args[0] instanceof SCMBigRational) {
-        return ((SCMBigRational)args[0]).negate();
+      if (args[0] instanceof BigRational) {
+        return ((BigRational)args[0]).negate();
       }
       if (args[0] instanceof Long) {
         try {
@@ -62,30 +62,30 @@ public final class Subtraction extends AFn {
 
   private Number subtract(Number first, Number second) {
     /* Special cases */
-    if (NumberUtils.isZero(second)) {
-      return NumberUtils.inexactnessTaint(first, second);
+    if (Utils.isZero(second)) {
+      return Utils.inexactnessTaint(first, second);
     }
     /* Complex numbers*/
-    if (first instanceof SCMBigComplex) {
-      return ((SCMBigComplex) first).minus(second);
+    if (first instanceof BigComplex) {
+      return ((BigComplex) first).minus(second);
     }
-    if (second instanceof SCMBigComplex) {
-      return new SCMBigComplex(first).minus(second);
+    if (second instanceof BigComplex) {
+      return new BigComplex(first).minus(second);
     }
     /* Big Rational numbers */
-    if ((first instanceof SCMBigRational) && (second instanceof SCMBigRational)) {
-      return ((SCMBigRational)first).minus((SCMBigRational)second);
+    if ((first instanceof BigRational) && (second instanceof BigRational)) {
+      return ((BigRational)first).minus((BigRational)second);
     }
-    if (first instanceof SCMBigRational) {
+    if (first instanceof BigRational) {
       if (second instanceof Long) {
-        return ((SCMBigRational) first).minus(SCMBigRational.valueOf(second.toString(), "1"));
+        return ((BigRational) first).minus(BigRational.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
-    if (second instanceof SCMBigRational) {
+    if (second instanceof BigRational) {
       if (first instanceof Long) {
-        return SCMBigRational.valueOf(first.toString(), "1").minus((SCMBigRational) second);
+        return BigRational.valueOf(first.toString(), "1").minus((BigRational) second);
       } else {
         second = second.doubleValue();
       }
@@ -105,10 +105,10 @@ public final class Subtraction extends AFn {
       return result;
     }
     if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).subtract(NumberUtils.toBigDecimal(second));
+      return ((BigDecimal)first).subtract(Utils.toBigDecimal(second));
     }
     if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).subtract(NumberUtils.toBigDecimal(first));
+      return ((BigDecimal) second).subtract(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
       return ((BigInteger)first).subtract(new BigInteger(second.toString()));

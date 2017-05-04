@@ -2,13 +2,13 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
+import core.scm.Cons;
+import core.scm.Type;
 
 public final class Append extends AFn {
 
   public Append() {
-    super(new FnArgsBuilder().rest(SCMClass.SCMProperList.class)
+    super(new FnArgsBuilder().rest(Type.SCMProperList.class)
                              .last(Object.class).build());
   }
 
@@ -19,7 +19,7 @@ public final class Append extends AFn {
 
   @Override
   public Object apply(Object... args) {
-    Object result = SCMCons.EMPTY;
+    Object result = Cons.EMPTY;
     for (Object arg : args) {
       result = append(result, arg);
     }
@@ -27,9 +27,9 @@ public final class Append extends AFn {
   }
 
   public static Object append(Object first, Object second) {
-    if (SCMCons.isNull(first)) {
+    if (Cons.isNull(first)) {
       return second;
     }
-    return SCMCons.cons(Car.car(first), append(Cdr.cdr(first), second));
+    return Cons.cons(Car.car(first), append(Cdr.cdr(first), second));
   }
 }

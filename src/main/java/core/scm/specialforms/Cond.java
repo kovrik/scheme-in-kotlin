@@ -3,8 +3,8 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
-import core.scm.SCMBoolean;
-import core.scm.SCMVoid;
+import core.scm.Void;
+import core.utils.Utils;
 
 import java.util.List;
 
@@ -34,11 +34,11 @@ public enum Cond implements ISpecialForm {
         }
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
-      if (SCMBoolean.toBoolean(evaluator.eval(clause, env))) {
+      if (Utils.toBoolean(evaluator.eval(clause, env))) {
         return Begin.BEGIN.eval(subform, env, evaluator);
       }
     }
-    return SCMVoid.VOID;
+    return Void.VOID;
   }
 
   @Override

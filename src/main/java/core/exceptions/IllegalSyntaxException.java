@@ -1,6 +1,6 @@
 package core.exceptions;
 
-public class IllegalSyntaxException extends RuntimeException implements ISCMException {
+public class IllegalSyntaxException extends RuntimeException implements IException {
 
   public IllegalSyntaxException(String message) {
     super(message);

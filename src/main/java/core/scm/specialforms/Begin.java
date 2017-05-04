@@ -2,8 +2,8 @@ package core.scm.specialforms;
 
 import core.environment.Environment;
 import core.evaluator.Evaluator;
-import core.scm.SCMThunk;
-import core.scm.SCMVoid;
+import core.scm.Thunk;
+import core.scm.Void;
 
 import java.util.List;
 
@@ -31,12 +31,12 @@ public enum Begin implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() <= 1) {
-      return SCMVoid.VOID;
+      return Void.VOID;
     }
     for (int i = 1; i < expression.size() - 1; i++) {
       evaluator.eval(expression.get(i), env);
     }
-    return new SCMThunk(expression.get(expression.size() - 1), env);
+    return new Thunk(expression.get(expression.size() - 1), env);
   }
 
   @Override

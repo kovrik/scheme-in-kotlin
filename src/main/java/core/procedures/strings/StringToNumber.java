@@ -2,8 +2,8 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.utils.NumberUtils;
+import core.scm.Type;
+import core.utils.Utils;
 
 import static core.reader.Reader.isExactness;
 import static core.reader.Reader.isRadix;
@@ -13,7 +13,7 @@ public final class StringToNumber extends AFn {
   public StringToNumber() {
     super(new FnArgsBuilder().min(1).max(2)
                              .mandatory(new Class[]{CharSequence.class})
-                             .rest(SCMClass.ExactPositiveInteger.class).build());
+                             .rest(Type.ExactPositiveInteger.class).build());
   }
 
   @Override
@@ -54,7 +54,7 @@ public final class StringToNumber extends AFn {
     if (restNumber.isEmpty()) {
       return Boolean.FALSE;
     }
-    int radix = NumberUtils.getRadixByChar(radixChar);
+    int radix = Utils.getRadixByChar(radixChar);
     /* Get default (optional) radix if present */
     if (args.length == 2) {
       int optRadix = ((Long)args[1]).intValue();
@@ -67,7 +67,7 @@ public final class StringToNumber extends AFn {
     }
 
     /* Read number */
-    Object result = NumberUtils.preProcessNumber(restNumber, exactness, radix);
+    Object result = Utils.preProcessNumber(restNumber, exactness, radix);
     if (result instanceof Number) {
       return result;
     }

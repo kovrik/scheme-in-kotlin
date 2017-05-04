@@ -1,7 +1,7 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.SCMMutableVector;
+import core.scm.MutableVector;
 
 public final class Vector extends AFn {
 
@@ -11,7 +11,7 @@ public final class Vector extends AFn {
   }
 
   @Override
-  public SCMMutableVector apply(Object... args) {
-    return new SCMMutableVector(args);
+  public MutableVector apply(Object... args) {
+    return new MutableVector(args);
   }
 }

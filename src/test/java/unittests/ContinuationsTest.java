@@ -2,10 +2,10 @@ package unittests;
 
 import core.Repl;
 import core.exceptions.ReentrantContinuationException;
-import core.scm.SCMClass;
-import core.scm.SCMCons;
-import core.scm.SCMOutputPort;
-import core.scm.SCMSymbol;
+import core.procedures.continuations.Continuation;
+import core.scm.Cons;
+import core.scm.OutputPort;
+import core.scm.Symbol;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +26,7 @@ public class ContinuationsTest extends AbstractTest {
                      "             ((empty? lst) '())" +
                      "             (else (exit #f)))))))";
     eval(listadd, env);
-    assertEquals(SCMCons.list(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env));
+    assertEquals(Cons.list(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env));
     assertEquals(FALSE, eval("(lstadd1 '(1 2 . 3))", env));
   }
 
@@ -34,7 +34,7 @@ public class ContinuationsTest extends AbstractTest {
   public void testCC() {
     String cc = "(define (cc) (call-with-current-continuation (lambda (cc) (cc cc))))";
     eval(cc, env);
-    assertEquals(SCMClass.CONTINUATION, eval("(class-of (cc))", env));
+    assertEquals(Continuation.class, eval("(class-of (cc))", env));
     try {
       eval("((cc) display)", env);
       fail();
@@ -46,8 +46,8 @@ public class ContinuationsTest extends AbstractTest {
   @Test
   public void testYingYang() {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    SCMOutputPort old = Repl.getCurrentOutputPort();
-    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    OutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new OutputPort(new PrintStream(baos)));
 
     String yingyang = "(let* ((yin  ((lambda (cc) (display #\\@) cc) (call-with-current-continuation (lambda (c) c))))" +
                       "       (yang ((lambda (cc) (display #\\*) cc) (call-with-current-continuation (lambda (c) c)))))" +
@@ -65,8 +65,8 @@ public class ContinuationsTest extends AbstractTest {
   @Test
   public void testWikiExample() {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    SCMOutputPort old = Repl.getCurrentOutputPort();
-    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    OutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new OutputPort(new PrintStream(baos)));
 
     String example = "(define (f return)" +
                      "  (return 2)" +
@@ -116,13 +116,13 @@ public class ContinuationsTest extends AbstractTest {
                 "           (lambda () (set! x old-x)))))))";
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    SCMOutputPort old = Repl.getCurrentOutputPort();
-    Repl.setCurrentOutputPort(new SCMOutputPort(new PrintStream(baos)));
+    OutputPort old = Repl.getCurrentOutputPort();
+    Repl.setCurrentOutputPort(new OutputPort(new PrintStream(baos)));
 
     eval(dw, env);
     assertEquals("special-binding", baos.toString().trim());
-    assertEquals(SCMClass.CONTINUATION, eval("(class-of a-cont)", env));
-    assertEquals(SCMSymbol.intern("normal-binding"), eval("x", env));
+    assertEquals(Continuation.class, eval("(class-of a-cont)", env));
+    assertEquals(Symbol.intern("normal-binding"), eval("x", env));
     try {
       eval("(a-cont #f)", env);
       fail();

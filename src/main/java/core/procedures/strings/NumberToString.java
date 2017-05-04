@@ -2,8 +2,8 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMClass;
-import core.utils.NumberUtils;
+import core.scm.Type;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 
@@ -12,7 +12,7 @@ public final class NumberToString extends AFn {
   public NumberToString() {
     super(new FnArgsBuilder().min(1).max(2)
                              .mandatory(new Class[]{Number.class})
-                             .rest(SCMClass.ExactPositiveInteger.class).build());
+                             .rest(Type.ExactPositiveInteger.class).build());
   }
 
   @Override
@@ -46,7 +46,7 @@ public final class NumberToString extends AFn {
         return bigDecimal.toString();
       }
       /* Check if it is integral */
-      if (NumberUtils.isInteger(bigDecimal)) {
+      if (Utils.isInteger(bigDecimal)) {
         return bigDecimal.toBigInteger().toString(radix);
       }
       throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");

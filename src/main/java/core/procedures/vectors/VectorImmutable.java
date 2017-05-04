@@ -1,7 +1,7 @@
 package core.procedures.vectors;
 
 import core.procedures.AFn;
-import core.scm.SCMImmutableVector;
+import core.scm.ImmutableVector;
 
 public final class VectorImmutable extends AFn {
 
@@ -11,7 +11,7 @@ public final class VectorImmutable extends AFn {
   }
 
   @Override
-  public SCMImmutableVector apply1(Object arg) {
-    return new SCMImmutableVector(arg);
+  public ImmutableVector apply1(Object arg) {
+    return new ImmutableVector(arg);
   }
 }

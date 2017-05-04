@@ -3,7 +3,7 @@ package core.procedures.sets;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMVector;
+import core.scm.Vector;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,8 +42,8 @@ public final class SetProc extends AFn {
       }
       return set;
     }
-    if (arg instanceof SCMVector) {
-      return new HashSet<>(Arrays.asList(((SCMVector)arg).getArray()));
+    if (arg instanceof Vector) {
+      return new HashSet<>(Arrays.asList(((Vector)arg).getArray()));
     }
     throw new WrongTypeException(getName(), "List or Vector or Set or String", arg);
   }

@@ -3,8 +3,8 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMImmutableVector;
-import core.scm.SCMVector;
+import core.scm.ImmutableVector;
+import core.scm.Vector;
 
 import java.util.*;
 
@@ -41,9 +41,9 @@ public class Next extends AFn {
         next.add(iter.next());
       }
       return next;
-    } else if (arg instanceof SCMVector) {
-      SCMVector vec = (SCMVector) arg;
-      return vec.length() == 0 ? null : new SCMImmutableVector(Arrays.copyOfRange(vec.getArray(), 1, vec.length()));
+    } else if (arg instanceof Vector) {
+      Vector vec = (Vector) arg;
+      return vec.length() == 0 ? null : new ImmutableVector(Arrays.copyOfRange(vec.getArray(), 1, vec.length()));
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;
       return cs.length() == 0 ? null : cs.subSequence(1, cs.length());

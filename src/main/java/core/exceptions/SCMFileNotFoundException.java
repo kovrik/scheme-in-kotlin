@@ -1,6 +1,6 @@
 package core.exceptions;
 
-public class SCMFileNotFoundException extends RuntimeException implements ISCMException {
+public class SCMFileNotFoundException extends RuntimeException implements IException {
 
   public SCMFileNotFoundException(String filename) {
     super("Cannot open file: " + filename);

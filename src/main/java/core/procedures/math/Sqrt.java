@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.SCMBigComplex;
+import core.scm.BigComplex;
 
 public final class Sqrt extends AFn {
 
@@ -26,11 +26,11 @@ public final class Sqrt extends AFn {
   }
 
   public static Number sqrt(Number number) {
-    if (number instanceof SCMBigComplex) {
-      if (((SCMBigComplex)number).getIm().signum()== 0) {
-        return sqrt(((SCMBigComplex)number).getRe());
+    if (number instanceof BigComplex) {
+      if (((BigComplex)number).getIm().signum()== 0) {
+        return sqrt(((BigComplex)number).getRe());
       }
-      return ((SCMBigComplex)number).sqrt();
+      return ((BigComplex)number).sqrt();
     }
     return Math.sqrt(number.doubleValue());
   }
