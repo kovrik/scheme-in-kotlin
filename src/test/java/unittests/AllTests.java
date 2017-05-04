@@ -17,7 +17,7 @@ import unittests.s7.S7Tests;
     BitwiseTests.class,
     ComplexTest.class,
     TrigonometryTest.class,
-    SCMRationalTest.class,
+    RationalTest.class,
     CharacterTest.class,
     StringTest.class,
     ListTest.class,

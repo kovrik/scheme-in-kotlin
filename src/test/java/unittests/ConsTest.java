@@ -7,7 +7,7 @@ import java.util.Collections;
 import static core.procedures.cons.Car.car;
 import static core.procedures.cons.Cdr.cdr;
 import static core.procedures.cons.ConsProc.cons;
-import static core.procedures.predicates.SCMPredicate.*;
+import static core.procedures.predicates.Predicate.*;
 import static core.scm.Cons.EMPTY;
 import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;

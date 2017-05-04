@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.procedures.predicates.SCMPredicate;
+import core.procedures.predicates.Predicate;
 import core.scm.BigComplex;
 import core.scm.BigRational;
 import core.utils.Utils;
@@ -69,11 +69,11 @@ public final class Expt extends AFn {
     if (Utils.isZero(base) && (Utils.isFinite(exponent))) {
       if (base.equals(-0d)) {
         if (Utils.isNegative(exponent)) {
-          return Utils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ?
+          return Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ?
                  Double.NEGATIVE_INFINITY :
                  Double.POSITIVE_INFINITY;
         } else {
-          return Utils.isInteger(exponent) && SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         }
       }
       return Utils.isNegative(exponent) ?
@@ -103,9 +103,9 @@ public final class Expt extends AFn {
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
       if (Utils.isInteger(exponent)) {
         if (Utils.isNegative(exponent)) {
-          return SCMPredicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         } else {
-          return SCMPredicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+          return Predicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }
@@ -182,7 +182,7 @@ public final class Expt extends AFn {
         if (base.longValue() > 0) {
           return Double.POSITIVE_INFINITY;
         } else {
-          return SCMPredicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+          return Predicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }
