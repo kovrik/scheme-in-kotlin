@@ -22,6 +22,11 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     isList = true;
   }
 
+  private SCMCons(Collection<? extends E> c) {
+    super(c);
+    isList = true;
+  }
+
   private SCMCons(E car, E cdr) {
     super();
     add(car);
@@ -96,13 +101,9 @@ public class SCMCons<E> extends LinkedList<E> implements ICons, ISCMClass {
     return (elements == null || elements.length == 0) ? EMPTY : list(Arrays.asList(elements));
   }
 
-  public static <E> SCMCons<E> list(Collection<E> collection) {
-    if (collection == null || collection.isEmpty()) {
-      return EMPTY;
-    }
-    SCMCons<E> result = list();
-    result.addAll(collection);
-    return result;
+  public static <E> SCMCons<E> list(Collection<? extends E> c) {
+    if (c == null || c.isEmpty()) { return EMPTY; }
+    return new SCMCons<>(c);
   }
 
   /* Return true if o is a List or SCMCons and a list */
