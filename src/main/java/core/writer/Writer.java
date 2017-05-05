@@ -61,12 +61,11 @@ public class Writer implements IWriter {
       String codepoint = CODEPOINTS.get(o);
       return codepoint == null ? "#\\" + o.toString() : "#\\" + codepoint;
     }
-    if (o instanceof Exception) {
+    if (o instanceof Throwable) {
       if (o instanceof ExInfoException) {
         return o.toString();
       }
-      Exception e = (Exception)o;
-      return e.getMessage() == null ? e.getClass().getSimpleName() : ((Exception) o).getMessage();
+      return writeException((Throwable) o);
     }
     if (o instanceof Map) {
       return writeMap((Map)o);
@@ -118,5 +117,9 @@ public class Writer implements IWriter {
       sb.append(e == set ? "(this set)" : write(e));
     }
     return sb.append('}').toString();
+  }
+
+  private static String writeException(Throwable t) {
+    return "#<error:" + t.getClass().getName() + ":" + (t.getMessage() == null ? "" : t.getMessage()) + ">";
   }
 }

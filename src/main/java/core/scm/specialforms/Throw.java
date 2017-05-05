@@ -22,10 +22,7 @@ public enum Throw implements ISpecialForm {
     if (!(obj instanceof Throwable)) {
       throw new WrongTypeException(toString(), "Throwable", obj);
     }
-    Throwable throwable = (Throwable) obj;
-    /* Clear stacktrace */
-    throwable.setStackTrace(EMPTY);
-    throw new ThrowableWrapper(throwable);
+    throw new ThrowableWrapper((Throwable) obj);
   }
 
   @Override

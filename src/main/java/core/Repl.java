@@ -104,7 +104,7 @@ public class Repl {
       }
       StackTraceElement[] stackTrace = e.getStackTrace();
       if (stackTrace.length > 0) {
-        StackTraceElement frame = stackTrace[0];
+        StackTraceElement frame = stackTrace[stackTrace.length - 1];
         sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
       }
     }

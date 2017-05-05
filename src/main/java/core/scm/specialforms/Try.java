@@ -29,7 +29,7 @@ public enum Try implements ISpecialForm {
       return null;
     }
     boolean hadCatch = false;
-    Map<Class, Object> catches = Collections.emptyMap();
+    LinkedHashMap<Class, Object> catches = new LinkedHashMap<>();
     Map<Class, Symbol> catchBindings = Collections.emptyMap();
     Object fin = null;
     List<Object> expressions = new ArrayList<>();
@@ -54,7 +54,6 @@ public enum Try implements ISpecialForm {
           }
           hadCatch = true;
           if (catches.isEmpty()) {
-            catches = new HashMap<>();
             catchBindings = new HashMap<>();
           }
           Class clazz = REFLECTOR.getClazz(expr.get(1).toString());
@@ -88,13 +87,14 @@ public enum Try implements ISpecialForm {
     } catch (Throwable e) {
       /* Unwrap if it is a ThrowableWrapper */
       e = (e instanceof ThrowableWrapper) ? e.getCause() : e;
-      /* Check if we had catch block for that type of exception */
-      Object catchBlock = catches.get(e.getClass());
-      if (catchBlock != null) {
-        /* Bind exception */
-        env.put(catchBindings.get(e.getClass()), e);
-        /* Evaluate corresponding catch block */
-        return evaluator.eval(catchBlock, env);
+      /* Check if we had catch block for that type of exception (OR for any superclass) */
+      for (Class clazz : catches.keySet()) {
+        if (clazz.isAssignableFrom(e.getClass())) {
+          /* Bind exception */
+          env.put(catchBindings.get(clazz), e);
+          /* Evaluate corresponding catch block */
+          return evaluator.eval(catches.get(clazz), env);
+        }
       }
       /* Unexpected exception, re-throw it */
       throw new ThrowableWrapper(e);
