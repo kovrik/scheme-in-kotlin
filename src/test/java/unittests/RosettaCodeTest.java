@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.List;
 
@@ -290,7 +291,7 @@ public class RosettaCodeTest extends AbstractTest {
                   "       (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
                   "   e)";
 
-    assertEquals(new BigDecimal("2366310230048836102686780"), eval(code, env));
+    assertEquals(new BigInteger("2366310230048836102686780"), eval(code, env));
   }
 
   @Test

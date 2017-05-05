@@ -11,6 +11,7 @@ import core.scm.specialforms.Quote;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class ReaderTest extends AbstractTest {
     assertEquals(1L, reader.readFirst("#b#E0001"));
     assertEquals(455L, reader.readFirst("#o0707"));
     assertEquals(585L, reader.readFirst("#o1111"));
-    assertEquals(new BigDecimal("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
+    assertEquals(new BigInteger("324518553658426726783156020576255"), reader.readFirst("#xfffffffffffffffffffffffffff"));
     assertEquals(255.99609375, reader.readFirst("#d255.99609375"));
     assertEquals(255.99609375, reader.readFirst("#xff.ff"));
     assertEquals(171.67111108726925, reader.readFirst("#xab.abcdefabcdef"));

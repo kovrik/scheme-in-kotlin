@@ -9,8 +9,15 @@ import core.exceptions.ThrowableWrapper;
 import core.exceptions.UndefinedIdentifierException;
 import core.procedures.io.Display;
 import core.procedures.math.Addition;
-import core.scm.*;
+import core.scm.BigRational;
+import core.scm.Cons;
+import core.scm.Delay;
 import core.scm.Error;
+import core.scm.MutableString;
+import core.scm.MutableVector;
+import core.scm.OutputPort;
+import core.scm.Procedure;
+import core.scm.Symbol;
 import core.scm.Void;
 import core.scm.specialforms.Quote;
 import org.junit.Test;
@@ -18,12 +25,14 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
-import static core.scm.Cons.*;
+import static core.scm.Cons.EMPTY;
+import static core.scm.Cons.cons;
+import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SpecialFormTest extends AbstractTest {
@@ -545,7 +554,7 @@ public class SpecialFormTest extends AbstractTest {
     // class-of
     assertEquals(Long.class, eval("(class-of 1)", env));
     assertEquals(Long.class, eval("(class-of -2341)", env));
-    assertEquals(BigDecimal.class, eval("(class-of 9999999999999999999999999999999999)", env));
+    assertEquals(BigInteger.class, eval("(class-of 9999999999999999999999999999999999)", env));
     assertEquals(Double.class, eval("(class-of -1.0)", env));
     assertEquals(Double.class, eval("(class-of -1.5)", env));
     assertEquals(BigDecimal.class, eval("(class-of 9999999999999999999999999999999999.000)", env));

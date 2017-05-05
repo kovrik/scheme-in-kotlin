@@ -239,28 +239,30 @@ public final class Utils {
   /* Parse string into a number */
   private static Number processNumber(String number, Integer r, boolean exact, boolean useBigNum, Long exp) {
     Number result;
-    int dot = number.indexOf('.');
+    int dotPos = number.indexOf('.');
     if (useBigNum) {
-      /* Remove dot */
-      number = number.replace(".", "");
-      /* Process radix */
-      BigDecimal bigDecimal = (r == 10) ? new BigDecimal(number) : new BigDecimal(new BigInteger(number, r));
-      /* Process radix for a number with decimal point */
-      if (dot > -1) {
-        bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dot), MathContext.UNLIMITED);
+      if (dotPos < 0) {
+        result = r == 10 ? new BigInteger(number) : new BigInteger(number, r);
+      } else {
+        /* Remove dot */
+        number = number.replace(".", "");
+        /* Process radix */
+        BigDecimal bigDecimal = r == 10 ? new BigDecimal(number) : new BigDecimal(new BigInteger(number, r));
+        /* Process radix for a number with decimal point */
+        bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES.get(r).pow(number.length() - dotPos), MathContext.UNLIMITED);
         if (bigDecimal.stripTrailingZeros().scale() == 0) {
           bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE);
         }
+        result = bigDecimal;
       }
-      result = bigDecimal;
     } else {
-      if (dot > -1) {
+      if (dotPos > -1) {
         if (r == 10) {
           result = Double.parseDouble(number);
         } else {
           /* Remove dot */
           number = number.replace(".", "");
-          result = parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dot);
+          result = parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dotPos);
         }
       } else {
         result = Long.parseLong(number, r);
@@ -343,6 +345,9 @@ public final class Utils {
     }
     if (clazz == Long.class) {
       return BigInteger.valueOf((Long)number);
+    }
+    if (clazz == Double.class) {
+      return BigInteger.valueOf(number.longValue());
     }
     if (clazz == BigComplex.class) {
       throw new UnsupportedOperationException("undefined for complex!");
@@ -614,7 +619,7 @@ public final class Utils {
         return smaller;
       } catch (ArithmeticException e) {
         /* Down-casting has failed, ignore and return the original number */
-        // return number.toBigInteger();
+         return number.toBigInteger();
       }
     }
     return number;
@@ -644,15 +649,7 @@ public final class Utils {
   }
 
   private static Number tryToDowncast(BigRational bigRational) {
-    BigInteger number = bigRational.getNumerator();
-    if (number.bitLength() <= 63) {
-      try {
-        return number.longValueExact();
-      } catch (ArithmeticException e) {
-        // ignore
-      }
-    }
-    return new BigDecimal(number);
+    return tryToDowncast(bigRational.getNumerator());
   }
 
   public static boolean isFinite(Number number) {
