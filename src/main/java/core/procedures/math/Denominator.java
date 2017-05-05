@@ -38,11 +38,11 @@ public final class Denominator extends AFn {
       exact = ToExact.toExact(o);
     }
     if (exact instanceof BigRational) {
-      BigDecimal result = new BigDecimal(((BigRational) exact).getDenominator());
       if (!isExact) {
+        BigDecimal result = new BigDecimal(((BigRational) exact).getDenominator());
         return result.setScale(1, Utils.ROUNDING_MODE);
       }
-      return result;
+      return ((BigRational) exact).getDenominator();
     }
     if (exact instanceof Long || exact instanceof Integer || exact instanceof Byte || exact instanceof Short) {
       return 1L;

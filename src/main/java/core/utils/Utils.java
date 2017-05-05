@@ -586,16 +586,16 @@ public final class Utils {
   }
 
   public static Number downcastNumber(Number number) {
+    /* Try to downcast Rationals with denominator = 1 */
+    if ((number instanceof BigRational) && (((BigRational) number).isDenominatorEqualToOne())) {
+      return tryToDowncast((BigRational) number);
+    }
     /* Try to downcast Big Numbers */
     if (number instanceof BigDecimal) {
       return tryToDowncast((BigDecimal) number);
     }
     if (number instanceof BigInteger) {
       return tryToDowncast((BigInteger) number);
-    }
-    /* Try to downcast Rationals with denominator = 1 */
-    if ((number instanceof BigRational) && (((BigRational) number).isDenominatorEqualToOne())) {
-      return tryToDowncast((BigRational) number);
     }
     return number;
   }

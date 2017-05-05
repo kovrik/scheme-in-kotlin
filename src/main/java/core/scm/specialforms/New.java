@@ -3,7 +3,6 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.evaluator.Reflector;
-import core.evaluator.ReflectorResult;
 import core.exceptions.IllegalSyntaxException;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public enum New implements ISpecialForm {
     for (int i = 0; i < args.length; i++) {
       args[i] = evaluator.eval(expression.get(i + 2), env);
     }
-    return ReflectorResult.maybeWrap(reflector.newInstance(clazz, args));
+    return reflector.newInstance(clazz, args);
   }
 
   @Override

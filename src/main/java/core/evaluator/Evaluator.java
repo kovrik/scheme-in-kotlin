@@ -6,14 +6,21 @@ import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
 import core.procedures.continuations.CalledContinuation;
-import core.scm.*;
+import core.scm.BigRational;
+import core.scm.Cons;
+import core.scm.Symbol;
+import core.scm.Thunk;
 import core.scm.Vector;
 import core.scm.specialforms.ISpecialForm;
 import core.scm.specialforms.New;
 import core.utils.Utils;
 import core.writer.Writer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -63,13 +70,8 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    if (result instanceof Number) {
-      return Utils.downcastNumber((Number) result);
-    }
-    // FIXME Get rid of this workaround
-    /* Do not downcast in case of `new` Special Form (workaround) */
-    if (result instanceof ReflectorResult) {
-      return ((ReflectorResult) result).get();
+    if (result instanceof BigRational) {
+      return Utils.downcastNumber((Number)result);
     }
     return result;
   }

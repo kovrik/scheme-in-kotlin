@@ -164,7 +164,7 @@ public class Reflector {
       String field = classAndField[1];
       Class c = getClazz(className);
       try {
-        return ReflectorResult.maybeWrap(c.getField(field).get(c));
+        return c.getField(field).get(c);
       } catch (NoSuchFieldException e) {
         throw new RuntimeException(String.format("reflector: unable to find static field %s in class %s", field, className), e);
       } catch (IllegalAccessException e) {
@@ -194,7 +194,7 @@ public class Reflector {
     } else {
       throw new UndefinedIdentifierException(method);
     }
-    return ReflectorResult.maybeWrap(result);
+    return result;
   }
 
   /* Java Interop: instance method call */

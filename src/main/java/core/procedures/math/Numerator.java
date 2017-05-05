@@ -37,11 +37,11 @@ public final class Numerator extends AFn {
       exact = ToExact.toExact(o);
     }
     if (exact instanceof BigRational) {
-      BigDecimal result = new BigDecimal(((BigRational) exact).getNumerator());
       if (!isExact) {
+        BigDecimal result = new BigDecimal(((BigRational) exact).getNumerator());
         return result.setScale(1, Utils.ROUNDING_MODE);
       }
-      return result;
+      return ((BigRational) exact).getNumerator();
     }
     return exact;
   }
