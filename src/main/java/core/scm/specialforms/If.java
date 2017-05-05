@@ -24,16 +24,14 @@ public enum If implements ISpecialForm {
     }
     Object test = expression.get(1);
     if (Utils.toBoolean(evaluator.eval(test, env))) {
-      Object consequence = expression.get(2);
-      return new Thunk(consequence, env);
+      return new Thunk(expression.get(2), env);
     } else {
       if (size < 4) {
         /* Here we make `if` behave like `when` if no alternative is specified.
          * Another option is to throw an exception (if: missing an "else" expression) */
         return Void.VOID;
       }
-      Object alternative = expression.get(3);
-      return new Thunk(alternative, env);
+      return new Thunk(expression.get(3), env);
     }
   }
 
