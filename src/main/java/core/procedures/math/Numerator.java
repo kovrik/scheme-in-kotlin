@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public final class Numerator extends AFn {
 
   public Numerator() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{BigRational.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{BigRatio.class}).build());
   }
 
   @Override
@@ -36,12 +36,12 @@ public final class Numerator extends AFn {
     } else {
       exact = ToExact.toExact(o);
     }
-    if (exact instanceof BigRational) {
+    if (exact instanceof BigRatio) {
       if (!isExact) {
-        BigDecimal result = new BigDecimal(((BigRational) exact).getNumerator());
+        BigDecimal result = new BigDecimal(((BigRatio) exact).getNumerator());
         return result.setScale(1, Utils.ROUNDING_MODE);
       }
-      return ((BigRational) exact).getNumerator();
+      return ((BigRatio) exact).getNumerator();
     }
     return exact;
   }

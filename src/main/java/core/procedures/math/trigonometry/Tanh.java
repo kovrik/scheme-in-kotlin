@@ -3,7 +3,7 @@ package core.procedures.math.trigonometry;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -37,8 +37,8 @@ public final class Tanh extends AFn {
       return tanh((BigInteger)arg);
     } else if (arg instanceof BigComplex) {
       return tanh((BigComplex)arg);
-    } else if (arg instanceof BigRational) {
-      return tanh(((BigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigRatio) {
+      return tanh(((BigRatio)arg).toBigDecimal());
     }
     return Math.tanh(((Number)arg).doubleValue());
   }

@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 
 import java.math.BigDecimal;
@@ -34,8 +34,8 @@ public final class Ceiling extends AFn {
       return Math.ceil((Float) arg);
     } else if (arg instanceof BigDecimal) {
       return ((BigDecimal)arg).setScale(0, BigDecimal.ROUND_UP);
-    } else if (arg instanceof BigRational) {
-      return ((BigRational) arg).ceiling();
+    } else if (arg instanceof BigRatio) {
+      return ((BigRatio) arg).ceiling();
     }
     return Math.ceil(((Number)arg).doubleValue());
   }

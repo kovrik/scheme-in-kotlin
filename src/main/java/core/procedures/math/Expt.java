@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.predicates.Predicate;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 import core.writer.Writer;
 
@@ -171,7 +171,7 @@ public final class Expt extends AFn {
         }
         BigDecimal result = BigDecimal.valueOf(base.longValue()).pow(e).setScale(0, Utils.ROUNDING_MODE);
         if (isNegative) {
-          return new BigRational(BigInteger.ONE, result.toBigInteger());
+          return new BigRatio(BigInteger.ONE, result.toBigInteger());
         }
         return Utils.downcastNumber(result);
       } else {

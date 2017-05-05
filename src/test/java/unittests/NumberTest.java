@@ -5,7 +5,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.exceptions.UndefinedIdentifierException;
 import core.exceptions.WrongTypeException;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -50,7 +50,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(150.0, eval("+15#", env));
     assertEquals(100L, eval("#e#d10#", env));
     assertEquals(150L, eval("#e15#", env));
-    assertEquals(BigRational.valueOf("101", "10"), eval("#e#d10.1", env));
+    assertEquals(BigRatio.valueOf("101", "10"), eval("#e#d10.1", env));
 
     assertEquals(new BigComplex(BigDecimal.ONE, new BigDecimal(2)), eval("1+2i", env));
     assertEquals(new BigComplex(BigDecimal.ONE, new BigDecimal(-2)), eval("1-2i", env));
@@ -84,8 +84,8 @@ public class NumberTest extends AbstractTest {
     assertEquals(2.1d, eval("(+ (byte 1) (double 1.1)", env));
     assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env));
     assertEquals(5.0, eval("(/ 10.0 2)", env));
-    assertEquals(BigRational.valueOf("1", "10"), eval("(/ 10)", env));
-    assertEquals(BigRational.valueOf("13", "4"), eval("(/ 13 4)", env));
+    assertEquals(BigRatio.valueOf("1", "10"), eval("(/ 10)", env));
+    assertEquals(BigRatio.valueOf("13", "4"), eval("(/ 13 4)", env));
     assertEquals(2L, eval("(/ 10 5)", env));
     assertEquals(2d, eval("(/ 10.0 5)", env));
     assertEquals(2d, eval("(/ 10 5.0)", env));
@@ -93,8 +93,8 @@ public class NumberTest extends AbstractTest {
     assertEquals(5L, eval("(abs 5)", env));
     assertEquals(5L, eval("(abs -5)", env));
 
-    assertEquals(BigRational.valueOf("9999", "3332"), eval("(/ 3332/9999)", env));
-    assertEquals(BigRational.valueOf("9999", "3332"), eval("(/ 1 3332/9999)", env));
+    assertEquals(BigRatio.valueOf("9999", "3332"), eval("(/ 3332/9999)", env));
+    assertEquals(BigRatio.valueOf("9999", "3332"), eval("(/ 1 3332/9999)", env));
     assertEquals(3.0009003601440574, eval("(/ 1.0 3332/9999)", env));
     try {
       eval("(+ nil nil)", env);
@@ -127,7 +127,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(3d, eval("(sqrt 9.0)", env));
     assertTrue(Double.isNaN((Double)eval("(sqrt -5)", env)));
 
-    assertEquals(BigRational.valueOf("1", "100"), eval("(/ 1 10 10)", env));
+    assertEquals(BigRatio.valueOf("1", "100"), eval("(/ 1 10 10)", env));
   }
 
   @Test
@@ -836,7 +836,7 @@ public class NumberTest extends AbstractTest {
     assertEquals(1.0, eval("(denominator -1234.0)", env));
     assertEquals(BigInteger.valueOf(4L), eval("(denominator 17/4)", env));
     assertEquals(new BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env));
-    assertEquals(BigRational
+    assertEquals(BigRatio
                    .valueOf("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", "10000000000"), eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env));
   }
 
@@ -892,13 +892,13 @@ public class NumberTest extends AbstractTest {
                          "        (+ lo-int" +
                          "           (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int)))))))))";
     eval(findBetween, env);
-    assertEquals(BigRational.valueOf("1", "3"), eval("(find-between 3332/9999 3334/9999)", env));
+    assertEquals(BigRatio.valueOf("1", "3"), eval("(find-between 3332/9999 3334/9999)", env));
   }
 
   @Test
   public void testRationalize() {
     assertEquals(0L, eval("(rationalize 1/3 1/3)", env));
-    assertEquals(BigRational.valueOf("1", "3"), eval("(rationalize 1/3 1/9999)", env));
+    assertEquals(BigRatio.valueOf("1", "3"), eval("(rationalize 1/3 1/9999)", env));
     assertEquals(0L, eval("(rationalize 2/3 1)", env));
     assertEquals(2333L, eval("(rationalize 2335 2)", env));
     assertEquals(-2L, eval("(rationalize -5 3)", env));

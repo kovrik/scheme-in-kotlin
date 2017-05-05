@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO Create Rational class for small rational numbers
+ * TODO Create Ratio class for small ratios (with longs for num and den)
  */
-public final class BigRational extends Number implements ITyped, Comparable<BigRational> {
+public final class BigRatio extends Number implements ITyped, Comparable<BigRatio> {
 
-  public static final BigRational ZERO = new BigRational(BigInteger.ZERO, BigInteger.ONE);
-  public static final BigRational ONE  = new BigRational(BigInteger.ONE, BigInteger.ONE);
+  public static final BigRatio ZERO = new BigRatio(BigInteger.ZERO, BigInteger.ONE);
+  public static final BigRatio ONE  = new BigRatio(BigInteger.ONE, BigInteger.ONE);
 
   private static final Map<String, BigInteger> CONSTANTS = new HashMap<>();
   static {
@@ -31,7 +31,7 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
   private final BigInteger numerator;
   private final BigInteger denominator;
 
-  public static BigRational valueOf(String numerator, String denominator) {
+  public static BigRatio valueOf(String numerator, String denominator) {
     BigInteger den = parseBigInteger(denominator);
     if (BigInteger.ZERO.equals(den)) {
       throw new ArithmeticException("/ by zero");
@@ -43,10 +43,10 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
     if (BigInteger.ONE.equals(num) && BigInteger.ONE.equals(den)) {
       return ONE;
     }
-    return new BigRational(num, den);
+    return new BigRatio(num, den);
   }
 
-  public BigRational(BigInteger numerator, BigInteger denominator) {
+  public BigRatio(BigInteger numerator, BigInteger denominator) {
     if (BigInteger.ZERO.equals(denominator)) {
       throw new ArithmeticException("/ by zero");
     }
@@ -106,27 +106,27 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
     return signum() == -1;
   }
 
-  public BigRational abs() {
-    return new BigRational(numerator.abs(), denominator.abs());
+  public BigRatio abs() {
+    return new BigRatio(numerator.abs(), denominator.abs());
   }
 
-  public BigRational ceiling() {
+  public BigRatio ceiling() {
     int round = isPositive() ? BigDecimal.ROUND_UP : BigDecimal.ROUND_DOWN;
-    return new BigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
-  public BigRational floor() {
+  public BigRatio floor() {
     int round = isPositive() ? BigDecimal.ROUND_DOWN : BigDecimal.ROUND_UP;
-    return new BigRational(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
   }
 
-  public BigRational round() {
+  public BigRatio round() {
     BigDecimal number = toBigDecimal();
     BigDecimal round = (number.scale() == 0) ? number.round(MathContext.UNLIMITED) : number.round(Utils.DEFAULT_CONTEXT);
-    return new BigRational(round.toBigInteger(), BigInteger.ONE);
+    return new BigRatio(round.toBigInteger(), BigInteger.ONE);
   }
 
-  public BigRational truncate() {
+  public BigRatio truncate() {
     return isNegative() ? ceiling() : floor();
   }
 
@@ -136,7 +136,7 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
   }
 
   @Override
-  public int compareTo(BigRational other) {
+  public int compareTo(BigRatio other) {
     return this.numerator.multiply(other.denominator).compareTo(this.denominator.multiply(other.numerator));
   }
   @Override
@@ -144,7 +144,7 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
     if (y == this) return true;
     if (y == null) return false;
     if (y.getClass() != this.getClass()) return false;
-    BigRational b = (BigRational) y;
+    BigRatio b = (BigRatio) y;
     return compareTo(b) == 0;
   }
 
@@ -153,29 +153,29 @@ public final class BigRational extends Number implements ITyped, Comparable<BigR
     return this.toString().hashCode();
   }
 
-  public BigRational multiply(BigRational other) {
-    return new BigRational(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator));
+  public BigRatio multiply(BigRatio other) {
+    return new BigRatio(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator));
   }
 
-  public BigRational plus(BigRational other) {
+  public BigRatio plus(BigRatio other) {
     BigInteger numerator   = this.numerator.multiply(other.denominator).add(other.numerator.multiply(this.denominator));
     BigInteger denominator = this.denominator.multiply(other.denominator);
-    return new BigRational(numerator, denominator);
+    return new BigRatio(numerator, denominator);
   }
 
-  public BigRational negate() {
-    return new BigRational(numerator.negate(), denominator);
+  public BigRatio negate() {
+    return new BigRatio(numerator.negate(), denominator);
   }
 
-  public BigRational minus(BigRational other) {
+  public BigRatio minus(BigRatio other) {
     return this.plus(other.negate());
   }
 
-  private BigRational reciprocal() {
-    return new BigRational(denominator, numerator);
+  private BigRatio reciprocal() {
+    return new BigRatio(denominator, numerator);
   }
 
-  public BigRational divide(BigRational other) {
+  public BigRatio divide(BigRatio other) {
     return this.multiply(other.reciprocal());
   }
 

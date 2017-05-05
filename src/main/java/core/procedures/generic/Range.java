@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.math.Addition;
 import core.procedures.math.NumericalComparison;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 import core.scm.Cons;
 import core.utils.Utils;
@@ -33,9 +33,9 @@ public class Range extends AFn {
     if (args.length == 0) {
       return Cons.EMPTY;
     }
-    boolean fraction = args[0] instanceof BigRational;
+    boolean fraction = args[0] instanceof BigRatio;
     if (args.length == 3) {
-      fraction = fraction || args[2] instanceof BigRational;
+      fraction = fraction || args[2] instanceof BigRatio;
     }
     boolean big = args[0] instanceof BigDecimal;
     if (args.length == 2) {

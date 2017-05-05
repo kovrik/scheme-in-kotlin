@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 
 import java.math.BigDecimal;
@@ -38,8 +38,8 @@ public final class Truncate extends AFn {
       } else {
         return bd.setScale(0, BigDecimal.ROUND_DOWN);
       }
-    } else if (arg instanceof BigRational){
-      return ((BigRational) arg).truncate();
+    } else if (arg instanceof BigRatio){
+      return ((BigRatio) arg).truncate();
     }
     return (Number)arg;
   }

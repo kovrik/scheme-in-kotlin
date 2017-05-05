@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 import core.utils.Utils;
 
@@ -40,13 +40,13 @@ public final class Max extends AFn {
 
   private Number max(Number first, Number second) {
     /* Big Rational numbers */
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return ((BigRational)first).compareTo((BigRational)second) > 0 ? first : second;
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return ((BigRatio)first).compareTo((BigRatio)second) > 0 ? first : second;
     }
-    if (first instanceof BigRational) {
+    if (first instanceof BigRatio) {
       first = first.doubleValue();
     }
-    if (second instanceof BigRational) {
+    if (second instanceof BigRatio) {
       second = second.doubleValue();
     }
     if ((first instanceof Integer) && (second instanceof Integer)) {

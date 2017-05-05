@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 import core.utils.Utils;
 
@@ -44,11 +44,11 @@ public final class NumericalComparison extends AFn {
     for (int i = 0; i < args.length - 1; i++) {
       Number f = (Number)args[i];
       Number s = (Number)args[i + 1];
-      if (f instanceof BigRational) {
-        f = ((BigRational)f).toBigDecimal();
+      if (f instanceof BigRatio) {
+        f = ((BigRatio)f).toBigDecimal();
       }
-      if (s instanceof BigRational) {
-        s = ((BigRational)s).toBigDecimal();
+      if (s instanceof BigRatio) {
+        s = ((BigRatio)s).toBigDecimal();
       }
       if ((f instanceof Double) || (s instanceof Double)) {
         f = f.doubleValue();

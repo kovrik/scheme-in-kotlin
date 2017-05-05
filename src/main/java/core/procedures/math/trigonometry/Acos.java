@@ -3,7 +3,7 @@ package core.procedures.math.trigonometry;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -32,8 +32,8 @@ public final class Acos extends AFn {
       return acos((BigInteger)arg);
     } else if (arg instanceof BigComplex) {
       return acos((BigComplex)arg);
-    } else if (arg instanceof BigRational) {
-      return acos(((BigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigRatio) {
+      return acos(((BigRatio)arg).toBigDecimal());
     }
     double acos = Math.acos(((Number)arg).doubleValue());
     if (Double.isNaN(acos)) {

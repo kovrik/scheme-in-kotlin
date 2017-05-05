@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 
 import static core.utils.Utils.E;
 
@@ -52,12 +52,12 @@ public final class Exp extends AFn {
       }
       return Math.exp(number.doubleValue());
     }
-    if (number instanceof BigRational) {
+    if (number instanceof BigRatio) {
       /* Special cases */
-      if (((BigRational) number).isZero()) {
+      if (((BigRatio) number).isZero()) {
         return 1L;
       }
-      if (((BigRational) number).isOne()) {
+      if (((BigRatio) number).isOne()) {
         return Math.exp(1d);
       }
     }

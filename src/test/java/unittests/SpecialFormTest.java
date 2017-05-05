@@ -9,7 +9,7 @@ import core.exceptions.ThrowableWrapper;
 import core.exceptions.UndefinedIdentifierException;
 import core.procedures.io.Display;
 import core.procedures.math.Addition;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Cons;
 import core.scm.Delay;
 import core.scm.Error;
@@ -560,7 +560,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(BigDecimal.class, eval("(class-of 9999999999999999999999999999999999.000)", env));
     assertEquals(BigDecimal.class, eval("(class-of 9999999999999999999999999999999999.430)", env));
     assertEquals(Long.class, eval("(class-of 1/1)", env));
-    assertEquals(BigRational.class, eval("(class-of -2341/345)", env));
+    assertEquals(BigRatio.class, eval("(class-of -2341/345)", env));
     assertEquals(String.class,  eval("(class-of \"test\")", env));
     assertEquals(MutableString.class, eval("(class-of (string #\\a))", env));
     assertEquals(Character.class, eval("(class-of #\\A)", env));

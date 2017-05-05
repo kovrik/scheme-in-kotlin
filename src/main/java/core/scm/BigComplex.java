@@ -166,8 +166,8 @@ public final class BigComplex extends Number implements ITyped {
       c = ((BigComplex) e).getRe();
       d = ((BigComplex) e).getIm();
     } else {
-      if (e instanceof BigRational) {
-        c = ((BigRational) e).toBigDecimal();
+      if (e instanceof BigRatio) {
+        c = ((BigRatio) e).toBigDecimal();
       } else {
         c = Utils.toBigDecimal(e);
       }

@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public final class GCD extends AFn {
   private static final Abs ABS = new Abs();
 
   public GCD() {
-    super(new FnArgsBuilder().rest(BigRational.class).build());
+    super(new FnArgsBuilder().rest(BigRatio.class).build());
   }
 
   @Override
@@ -78,8 +78,8 @@ public final class GCD extends AFn {
     return a.gcd(b);
   }
 
-  static BigRational gcd(BigRational first, BigRational second) {
-    return new BigRational(first.getNumerator().gcd(second.getNumerator()),
+  static BigRatio gcd(BigRatio first, BigRatio second) {
+    return new BigRatio(first.getNumerator().gcd(second.getNumerator()),
                            LCM.lcm(first.getDenominator(), second.getDenominator()));
   }
 
@@ -89,14 +89,14 @@ public final class GCD extends AFn {
     if ((f instanceof Long) && (s instanceof Long)) {
       return gcd((Long)f, (Long)s);
     }
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return gcd((BigRational) first, (BigRational)second);
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return gcd((BigRatio) first, (BigRatio)second);
     }
-    if (first instanceof BigRational) {
-      return gcd(((BigRational) first).toBigDecimal(), Utils.toBigDecimal(second));
+    if (first instanceof BigRatio) {
+      return gcd(((BigRatio) first).toBigDecimal(), Utils.toBigDecimal(second));
     }
-    if (second instanceof BigRational) {
-      return gcd(Utils.toBigDecimal(first), ((BigRational) second).toBigDecimal());
+    if (second instanceof BigRatio) {
+      return gcd(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return gcd((BigDecimal) first, (BigDecimal) second);

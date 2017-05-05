@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.math.Multiplication;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -42,8 +42,8 @@ public final class Sin extends AFn {
       return sin((BigInteger)number);
     } else if (number instanceof BigComplex) {
       return sin((BigComplex)number);
-    } else if (number instanceof BigRational) {
-      return sin(((BigRational)number).toBigDecimal());
+    } else if (number instanceof BigRatio) {
+      return sin(((BigRatio)number).toBigDecimal());
     }
     return Math.sin(number.doubleValue());
   }

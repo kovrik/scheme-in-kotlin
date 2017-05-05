@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -46,11 +46,11 @@ public final class Remainder extends AFn {
   }
 
   public static Number apply(Number first, Number second) {
-    if (first instanceof BigRational) {
-      first = ((BigRational) first).toBigDecimal();
+    if (first instanceof BigRatio) {
+      first = ((BigRatio) first).toBigDecimal();
     }
-    if (second instanceof BigRational) {
-      second = ((BigRational) second).toBigDecimal();
+    if (second instanceof BigRatio) {
+      second = ((BigRatio) second).toBigDecimal();
     }
 
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {

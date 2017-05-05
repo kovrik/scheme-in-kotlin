@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public final class LCM extends AFn {
   private static final Abs ABS = new Abs();
 
   public LCM() {
-    super(new FnArgsBuilder().rest(BigRational.class).build());
+    super(new FnArgsBuilder().rest(BigRatio.class).build());
   }
 
   @Override
@@ -61,8 +61,8 @@ public final class LCM extends AFn {
     return first.multiply(second.divide(gcd(first, second)));
   }
 
-  private BigRational lcm(BigRational first, BigRational second) {
-    return new BigRational(lcm(first.getNumerator(), second.getNumerator()),
+  private BigRatio lcm(BigRatio first, BigRatio second) {
+    return new BigRatio(lcm(first.getNumerator(), second.getNumerator()),
                            gcd(first.getDenominator(), second.getDenominator()));
   }
 
@@ -84,14 +84,14 @@ public final class LCM extends AFn {
     if ((f instanceof Long) && (s instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return lcm((BigRational) first, (BigRational)second);
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return lcm((BigRatio) first, (BigRatio)second);
     }
-    if (first instanceof BigRational) {
-      return lcm(((BigRational) first).toBigDecimal(), Utils.toBigDecimal(second));
+    if (first instanceof BigRatio) {
+      return lcm(((BigRatio) first).toBigDecimal(), Utils.toBigDecimal(second));
     }
-    if (second instanceof BigRational) {
-      return lcm(Utils.toBigDecimal(first), ((BigRational) second).toBigDecimal());
+    if (second instanceof BigRatio) {
+      return lcm(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return lcm((BigDecimal)first, (BigDecimal)second);

@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
 import core.procedures.AFn;
 import core.procedures.continuations.CalledContinuation;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Cons;
 import core.scm.Symbol;
 import core.scm.Thunk;
@@ -70,7 +70,7 @@ public class Evaluator {
       /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
       throw cc;
     }
-    if (result instanceof BigRational) {
+    if (result instanceof BigRatio) {
       return Utils.downcastNumber((Number)result);
     }
     return result;

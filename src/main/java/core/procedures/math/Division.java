@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -46,27 +46,27 @@ public final class Division extends AFn {
       return new BigComplex(numerator).divide(denominator);
     }
     /* Big Rational numbers */
-    if ((numerator instanceof BigRational) && (denominator instanceof BigRational)) {
-      return ((BigRational)numerator).divide((BigRational)denominator);
+    if ((numerator instanceof BigRatio) && (denominator instanceof BigRatio)) {
+      return ((BigRatio)numerator).divide((BigRatio)denominator);
     }
-    if (numerator instanceof BigRational) {
+    if (numerator instanceof BigRatio) {
       if (Utils.isExact(denominator)) {
-        return ((BigRational) numerator).divide(BigRational.valueOf(denominator.toString(), "1"));
+        return ((BigRatio) numerator).divide(BigRatio.valueOf(denominator.toString(), "1"));
       } else {
-        numerator = ((BigRational) numerator).doubleOrBigDecimalValue();
+        numerator = ((BigRatio) numerator).doubleOrBigDecimalValue();
       }
     }
-    if (denominator instanceof BigRational) {
+    if (denominator instanceof BigRatio) {
       if (Utils.isExact(numerator)) {
-        return (BigRational.valueOf(numerator.toString(), "1").divide((BigRational) denominator));
+        return (BigRatio.valueOf(numerator.toString(), "1").divide((BigRatio) denominator));
       } else {
-        denominator = ((BigRational) denominator).doubleOrBigDecimalValue();
+        denominator = ((BigRatio) denominator).doubleOrBigDecimalValue();
       }
     }
     if (Utils.isExact(numerator) &&
         Utils.isExact(denominator)) {
 
-      return BigRational.valueOf(numerator.toString(), denominator.toString());
+      return BigRatio.valueOf(numerator.toString(), denominator.toString());
     }
     if (numerator instanceof Float && denominator instanceof Float) {
       float result = numerator.floatValue() / denominator.floatValue();

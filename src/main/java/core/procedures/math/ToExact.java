@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 import core.writer.Writer;
 
@@ -95,15 +95,15 @@ public final class ToExact extends AFn {
     if (sign == 1) {
       a *= -1;
     }
-    return new BigRational(BigInteger.valueOf(a), BigInteger.valueOf(b));
+    return new BigRatio(BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 
-  private static BigRational bigDecimalToExact(BigDecimal number) {
+  private static BigRatio bigDecimalToExact(BigDecimal number) {
     int scale = number.scale();
     if (scale > 0) {
-      return new BigRational(number.unscaledValue(), BigInteger.TEN.pow(scale));
+      return new BigRatio(number.unscaledValue(), BigInteger.TEN.pow(scale));
     } else {
-      return new BigRational(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
+      return new BigRatio(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
     }
   }
 }

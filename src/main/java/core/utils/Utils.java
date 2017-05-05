@@ -8,7 +8,7 @@ import core.procedures.math.ToExact;
 import core.procedures.math.ToInexact;
 import core.reader.Reader;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Symbol;
 import core.writer.Writer;
 
@@ -295,7 +295,7 @@ public final class Utils {
         if (number instanceof Double) {
           BigDecimal bigDecimal = toBigDecimal(number);
           int scale = bigDecimal.scale();
-          return new BigRational(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+          return new BigRatio(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
         }
         return ToExact.toExact(number);
       }
@@ -310,7 +310,7 @@ public final class Utils {
 
     Number num = processNumber(numerator,   r, true, useBigNum, null);
     Number den = processNumber(denominator, r, true, useBigNum, null);
-    BigRational number = BigRational.valueOf(num.toString(), den.toString());
+    BigRatio number = BigRatio.valueOf(num.toString(), den.toString());
     if (!exact) {
       Number result = ToInexact.toInexact(number);
       return exp == null ?  result : Multiplication.apply(result, Expt.expt(r, exp));
@@ -329,8 +329,8 @@ public final class Utils {
     if (clazz == Double.class) {
       return BigDecimal.valueOf((Double)number);
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational) number).toBigDecimal();
+    if (clazz == BigRatio.class) {
+      return ((BigRatio) number).toBigDecimal();
     }
     if (clazz == BigComplex.class) {
       throw new UnsupportedOperationException("undefined for complex!");
@@ -376,7 +376,7 @@ public final class Utils {
       return false;
     }
     Class clazz = o.getClass();
-    if (clazz == Long.class || clazz == BigRational.class || clazz == Integer.class ||
+    if (clazz == Long.class || clazz == BigRatio.class || clazz == Integer.class ||
         clazz == BigInteger.class || clazz == Short.class || clazz == Byte.class) {
 
       return true;
@@ -406,8 +406,8 @@ public final class Utils {
       BigDecimal bd = (BigDecimal)o;
       return bd.signum() == 0 || bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0;
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational)o).isDenominatorEqualToOne();
+    if (clazz == BigRatio.class) {
+      return ((BigRatio)o).isDenominatorEqualToOne();
     }
     if (clazz == Double.class) {
       return (Double)o == Math.floor((Double)o) && !Double.isInfinite((Double)o);
@@ -430,8 +430,8 @@ public final class Utils {
     if (clazz == Double.class) {
       return Math.signum((Double)o) == 0.0;
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational)o).signum() == 0;
+    if (clazz == BigRatio.class) {
+      return ((BigRatio)o).signum() == 0;
     }
     if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == 0;
@@ -465,8 +465,8 @@ public final class Utils {
     if (clazz == Double.class) {
       return Double.compare((Double)o, 1d) == 0;
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational)o).isOne();
+    if (clazz == BigRatio.class) {
+      return ((BigRatio)o).isOne();
     }
     if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).compareTo(BigDecimal.ONE) == 0;
@@ -500,8 +500,8 @@ public final class Utils {
     if (clazz == Double.class) {
       return Math.signum((Double)o) == 1.0;
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational)o).signum() == 1;
+    if (clazz == BigRatio.class) {
+      return ((BigRatio)o).signum() == 1;
     }
     if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == 1;
@@ -535,8 +535,8 @@ public final class Utils {
     if (clazz == Double.class) {
       return Math.signum((Double)o) == -1.0;
     }
-    if (clazz == BigRational.class) {
-      return ((BigRational)o).signum() == -1;
+    if (clazz == BigRatio.class) {
+      return ((BigRatio)o).signum() == -1;
     }
     if (clazz == BigDecimal.class) {
       return ((BigDecimal)o).signum() == -1;
@@ -587,8 +587,8 @@ public final class Utils {
 
   public static Number downcastNumber(Number number) {
     /* Try to downcast Rationals with denominator = 1 */
-    if ((number instanceof BigRational) && (((BigRational) number).isDenominatorEqualToOne())) {
-      return tryToDowncast((BigRational) number);
+    if ((number instanceof BigRatio) && (((BigRatio) number).isDenominatorEqualToOne())) {
+      return tryToDowncast((BigRatio) number);
     }
     /* Try to downcast Big Numbers */
     if (number instanceof BigDecimal) {
@@ -648,8 +648,8 @@ public final class Utils {
     return number;
   }
 
-  private static Number tryToDowncast(BigRational bigRational) {
-    return tryToDowncast(bigRational.getNumerator());
+  private static Number tryToDowncast(BigRatio bigRatio) {
+    return tryToDowncast(bigRatio.getNumerator());
   }
 
   public static boolean isFinite(Number number) {

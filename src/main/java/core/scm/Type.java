@@ -51,7 +51,7 @@ public enum Type implements ITyped {
     TYPE_MAPPINGS.put(Double.class,                REAL);
     TYPE_MAPPINGS.put(Float.class,                 REAL);
     TYPE_MAPPINGS.put(BigDecimal.class,            REAL);
-    TYPE_MAPPINGS.put(BigRational.class,           RATIONAL);
+    TYPE_MAPPINGS.put(BigRatio.class,           RATIONAL);
     TYPE_MAPPINGS.put(BigComplex.class,            COMPLEX);
     TYPE_MAPPINGS.put(Character.class,             CHARACTER);
     TYPE_MAPPINGS.put(String.class,                STRING);
@@ -102,7 +102,7 @@ public enum Type implements ITyped {
    *   number?                    -> Number.class
    *   complex?                   -> BigComplex.class
    *   real?                      -> Real.class
-   *   rational?                  -> BigRational + Utils.IsRational()
+   *   rational?                  -> BigRatio + Utils.IsRational()
    *   integer?                   -> Integer.class/Long.class
    *   exact-integer?             -> ExactInteger.class *
    *   exact-nonnegative-integer? -> ExactNonNegativeInteger.class *
@@ -142,7 +142,7 @@ public enum Type implements ITyped {
     TYPE_PREDICATES.put(MutableString.class, o -> StringBuilder.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(SCMProperList.class, Cons::isList);
     TYPE_PREDICATES.put(SCMPair.class, Cons::isPair);
-    TYPE_PREDICATES.put(BigRational.class, Utils::isRational);
+    TYPE_PREDICATES.put(BigRatio.class, Utils::isRational);
     TYPE_PREDICATES.put(Long.class, Utils::isInteger);
     TYPE_PREDICATES.put(Integer.class, Utils::isInteger);
     TYPE_PREDICATES.put(Exact.class, Utils::isExact);

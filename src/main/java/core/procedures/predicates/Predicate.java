@@ -48,7 +48,7 @@ public final class Predicate extends AFn {
   public static final Predicate IS_NUMBER = new Predicate("number?", o -> (o instanceof Number));
   public static final Predicate IS_INTEGER = new Predicate("integer?", Utils::isInteger);
   public static final Predicate IS_RATIONAL = new Predicate("rational?", Utils::isRational);
-  public static final Predicate IS_RATIO = new Predicate("ratio?", o -> o instanceof BigRational);
+  public static final Predicate IS_RATIO = new Predicate("ratio?", o -> o instanceof BigRatio);
   public static final Predicate IS_REAL = new Predicate("real?", Utils::isReal);
   public static final Predicate IS_COMPLEX = new Predicate("complex?", o -> (o instanceof Number));
   public static final Predicate IS_ZERO = new Predicate("zero?", o -> (assertClass("zero?", o, Number.class) && Utils .isZero(o)));

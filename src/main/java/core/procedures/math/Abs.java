@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 
 import java.math.BigDecimal;
@@ -42,8 +42,8 @@ public final class Abs extends AFn {
       return ((BigInteger) number).abs();
     } else if (number instanceof BigDecimal) {
       return ((BigDecimal) number).abs();
-    } else if (number instanceof BigRational) {
-      return ((BigRational) number).abs();
+    } else if (number instanceof BigRatio) {
+      return ((BigRatio) number).abs();
     }
     return Math.abs(number.longValue());
   }

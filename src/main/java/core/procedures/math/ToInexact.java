@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -35,8 +35,8 @@ public final class ToInexact extends AFn {
       BigComplex c = ((BigComplex)o);
       return new BigComplex(toInexact(c.getRe()), toInexact(c.getIm()));
     }
-    if (o instanceof BigRational) {
-      return ((BigRational)o).toBigDecimalInexact();
+    if (o instanceof BigRatio) {
+      return ((BigRatio)o).toBigDecimalInexact();
     }
     if (o instanceof BigInteger) {
       return new BigDecimal(o.toString()).setScale(1, Utils.ROUNDING_MODE);

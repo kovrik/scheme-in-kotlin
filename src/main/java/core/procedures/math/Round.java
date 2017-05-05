@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.scm.Type;
 import core.utils.Utils;
 
@@ -41,8 +41,8 @@ public final class Round extends AFn {
       } else {
         return bd.round(Utils.DEFAULT_CONTEXT);
       }
-    } else if (number instanceof BigRational) {
-      return ((BigRational) number).round();
+    } else if (number instanceof BigRatio) {
+      return ((BigRatio) number).round();
     }
     return Math.rint(number.doubleValue());
   }

@@ -3,7 +3,7 @@ package core.procedures.math.trigonometry;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -37,8 +37,8 @@ public final class Sinh extends AFn {
       return sinh((BigInteger)arg);
     } else if (arg instanceof BigComplex) {
       return sinh((BigComplex)arg);
-    } else if (arg instanceof BigRational) {
-      return sinh(((BigRational)arg).toBigDecimal());
+    } else if (arg instanceof BigRatio) {
+      return sinh(((BigRatio)arg).toBigDecimal());
     }
     return Math.sinh(((Number)arg).doubleValue());
   }

@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -51,14 +51,14 @@ public final class Log extends AFn {
       }
       return Math.log(n.doubleValue());
     }
-    if (number instanceof BigRational) {
-      if (((BigRational) number).isZero()){
+    if (number instanceof BigRatio) {
+      if (((BigRatio) number).isZero()){
         throw new ArithmeticException("log: undefined for 0");
       }
-      if (number.equals(BigRational.ONE)) {
+      if (number.equals(BigRatio.ONE)) {
         return 0L;
       }
-      return logBig(((BigRational)number).toBigDecimal());
+      return logBig(((BigRatio)number).toBigDecimal());
     }
     if (number instanceof BigDecimal) {
       if (((BigDecimal)number).signum() == 0) {

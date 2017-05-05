@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -34,8 +34,8 @@ public final class Subtraction extends AFn {
       if (args[0] instanceof BigInteger) {
         return ((BigInteger)args[0]).negate();
       }
-      if (args[0] instanceof BigRational) {
-        return ((BigRational)args[0]).negate();
+      if (args[0] instanceof BigRatio) {
+        return ((BigRatio)args[0]).negate();
       }
       if (args[0] instanceof Long) {
         try {
@@ -73,19 +73,19 @@ public final class Subtraction extends AFn {
       return new BigComplex(first).minus(second);
     }
     /* Big Rational numbers */
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return ((BigRational)first).minus((BigRational)second);
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return ((BigRatio)first).minus((BigRatio)second);
     }
-    if (first instanceof BigRational) {
+    if (first instanceof BigRatio) {
       if (second instanceof Long) {
-        return ((BigRational) first).minus(BigRational.valueOf(second.toString(), "1"));
+        return ((BigRatio) first).minus(BigRatio.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
-    if (second instanceof BigRational) {
+    if (second instanceof BigRatio) {
       if (first instanceof Long) {
-        return BigRational.valueOf(first.toString(), "1").minus((BigRational) second);
+        return BigRatio.valueOf(first.toString(), "1").minus((BigRatio) second);
       } else {
         second = second.doubleValue();
       }

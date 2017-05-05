@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -59,21 +59,21 @@ public final class Multiplication extends AFn {
       return ((BigComplex) second).multiply(first);
     }
     /* Big Rational numbers */
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return ((BigRational)first).multiply((BigRational)second);
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return ((BigRatio)first).multiply((BigRatio)second);
     }
-    if (first instanceof BigRational) {
+    if (first instanceof BigRatio) {
       if (second instanceof Long) {
-        return ((BigRational) first).multiply(BigRational.valueOf(second.toString(), "1"));
+        return ((BigRatio) first).multiply(BigRatio.valueOf(second.toString(), "1"));
       } else {
-        first = ((BigRational)first).doubleOrBigDecimalValue();
+        first = ((BigRatio)first).doubleOrBigDecimalValue();
       }
     }
-    if (second instanceof BigRational) {
+    if (second instanceof BigRatio) {
       if (first instanceof Long) {
-        return ((BigRational) second).multiply(BigRational.valueOf(first.toString(), "1"));
+        return ((BigRatio) second).multiply(BigRatio.valueOf(first.toString(), "1"));
       } else {
-        second = ((BigRational)second).doubleOrBigDecimalValue();
+        second = ((BigRatio)second).doubleOrBigDecimalValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {

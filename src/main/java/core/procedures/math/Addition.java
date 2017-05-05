@@ -3,7 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -56,21 +56,21 @@ public final class Addition extends AFn {
       return ((BigComplex) second).plus(first);
     }
     /* Big Rational numbers */
-    if ((first instanceof BigRational) && (second instanceof BigRational)) {
-      return ((BigRational)first).plus((BigRational)second);
+    if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
+      return ((BigRatio)first).plus((BigRatio)second);
     }
-    if (first instanceof BigRational) {
+    if (first instanceof BigRatio) {
       if (second instanceof Long || second instanceof BigDecimal) {
-        return ((BigRational) first).plus(BigRational.valueOf(second.toString(), "1"));
+        return ((BigRatio) first).plus(BigRatio.valueOf(second.toString(), "1"));
       } else {
-        first = ((BigRational)first).doubleOrBigDecimalValue();
+        first = ((BigRatio)first).doubleOrBigDecimalValue();
       }
     }
-    if (second instanceof BigRational) {
+    if (second instanceof BigRatio) {
       if (first instanceof Long || first instanceof BigDecimal) {
-        return BigRational.valueOf(first.toString(), "1").plus((BigRational) second);
+        return BigRatio.valueOf(first.toString(), "1").plus((BigRatio) second);
       } else {
-        second = ((BigRational)second).doubleOrBigDecimalValue();
+        second = ((BigRatio)second).doubleOrBigDecimalValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {

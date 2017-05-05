@@ -2,7 +2,7 @@ package core.procedures.math;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -76,7 +76,7 @@ public class Quotient extends AFn {
     }
 
     if ((first instanceof Double) || (second instanceof Double) ||
-        (first instanceof BigRational) || (second instanceof BigRational)) {
+        (first instanceof BigRatio) || (second instanceof BigRatio)) {
 
       return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }

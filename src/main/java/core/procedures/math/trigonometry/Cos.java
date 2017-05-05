@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.math.Multiplication;
 import core.scm.BigComplex;
-import core.scm.BigRational;
+import core.scm.BigRatio;
 import core.utils.Utils;
 
 import java.math.BigDecimal;
@@ -42,8 +42,8 @@ public final class Cos extends AFn {
       return cos((BigInteger)number);
     } else if (number instanceof BigComplex) {
       return Cos.cos((BigComplex)number);
-    } else if (number instanceof BigRational) {
-      return cos(((BigRational)number).toBigDecimal());
+    } else if (number instanceof BigRatio) {
+      return cos(((BigRatio)number).toBigDecimal());
     }
     return Math.cos(number.doubleValue());
   }
