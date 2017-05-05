@@ -111,10 +111,10 @@ public final class Subtraction extends AFn {
       return ((BigDecimal) second).subtract(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
-      return ((BigInteger)first).subtract(new BigInteger(second.toString()));
+      return ((BigInteger)first).subtract(Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return ((BigInteger)second).subtract(new BigInteger(first.toString()));
+      return Utils.toBigInteger(first).subtract((BigInteger) second);
     }
     long f = first.longValue();
     long s = second.longValue();

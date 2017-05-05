@@ -89,10 +89,10 @@ public final class Division extends AFn {
       return ((BigDecimal) denominator).divide(Utils.toBigDecimal(numerator), Utils.DEFAULT_CONTEXT);
     }
     if (numerator instanceof BigInteger) {
-      return ((BigInteger)numerator).divide(new BigInteger(denominator.toString()));
+      return ((BigInteger)numerator).divide(Utils.toBigInteger(denominator));
     }
     if (denominator instanceof BigInteger) {
-      return ((BigInteger)denominator).divide(new BigInteger(numerator.toString()));
+      return (Utils.toBigInteger(numerator)).divide((BigInteger)denominator);
     }
     double f = numerator.doubleValue();
     double s = denominator.doubleValue();

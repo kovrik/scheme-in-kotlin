@@ -94,10 +94,10 @@ public final class Addition extends AFn {
       return ((BigDecimal) second).add(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
-      return ((BigInteger)first).add(new BigInteger(second.toString()));
+      return ((BigInteger)first).add(Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return ((BigInteger)second).add(new BigInteger(first.toString()));
+      return Utils.toBigInteger(first).add((BigInteger) second);
     }
     long f = first.longValue();
     long s = second.longValue();

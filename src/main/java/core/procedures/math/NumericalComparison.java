@@ -61,9 +61,9 @@ public final class NumericalComparison extends AFn {
       } else if ((s instanceof BigDecimal) && !(f instanceof BigDecimal)) {
         f = Utils.toBigDecimal(f);
       } else if ((f instanceof BigInteger) && !(s instanceof BigInteger)) {
-        s = new BigInteger(s.toString());
+        s = Utils.toBigInteger(s);
       } else if ((s instanceof BigInteger) && !(f instanceof BigInteger)) {
-        f = new BigInteger(f.toString());
+        f = Utils.toBigInteger(f);
       } else {
         f = f.longValue();
         s = s.longValue();

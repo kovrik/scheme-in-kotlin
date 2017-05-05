@@ -64,10 +64,10 @@ public class Quotient extends AFn {
       return apply((BigInteger)first, (BigInteger)second);
     }
     if (first instanceof BigInteger) {
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.toBigInteger(first), Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.toBigInteger(first), Utils.toBigInteger(second));
     }
     if (((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) &&
         (Utils.isInteger(first)) && Utils.isInteger(second)) {

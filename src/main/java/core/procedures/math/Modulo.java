@@ -72,16 +72,14 @@ public class Modulo extends AFn {
       return apply((BigInteger) first, (BigInteger)second);
     }
     if (first instanceof BigInteger) {
-      return apply((BigInteger) first, new BigInteger(second.toString()));
+      return apply((BigInteger) first, Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return apply(new BigInteger(first.toString()), (BigInteger) second);
+      return apply(Utils.toBigInteger(first), (BigInteger) second);
     }
-
     if (second.intValue() == 0) {
       throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
-
     Number m = REM.apply2(first, second);
     if (m.intValue() == 0) {
       return m;

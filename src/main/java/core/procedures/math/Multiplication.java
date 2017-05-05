@@ -97,10 +97,10 @@ public final class Multiplication extends AFn {
       return ((BigDecimal) second).multiply(Utils.toBigDecimal(first));
     }
     if (first instanceof BigInteger) {
-      return ((BigInteger)first).multiply(new BigInteger(second.toString()));
+      return ((BigInteger)first).multiply(Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return ((BigInteger)second).multiply(new BigInteger(first.toString()));
+      return Utils.toBigInteger(first).multiply((BigInteger)second);
     }
     long f = first.longValue();
     long s = second.longValue();

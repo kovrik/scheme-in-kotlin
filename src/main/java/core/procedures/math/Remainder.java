@@ -66,10 +66,10 @@ public final class Remainder extends AFn {
       return apply((BigInteger) first, (BigInteger)second);
     }
     if (first instanceof BigInteger) {
-      return apply((BigInteger)first, new BigInteger(second.toString()));
+      return apply((BigInteger)first, Utils.toBigInteger(second));
     }
     if (second instanceof BigInteger) {
-      return apply(new BigInteger(first.toString()), (BigInteger)second);
+      return apply(Utils.toBigInteger(first), (BigInteger)second);
     }
     if ((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) {
       if (second.intValue() == 0) {
