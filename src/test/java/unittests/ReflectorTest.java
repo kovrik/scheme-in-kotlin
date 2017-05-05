@@ -69,4 +69,18 @@ public class ReflectorTest extends AbstractTest {
     assertEquals("123", eval("(String. \"123\")", env));
     // TODO
   }
+
+  @Test
+  public void testJavaTypes() {
+    assertEquals((short)-123, eval("(short -123)", env));
+    assertEquals((byte)-123, eval("(byte -123)", env));
+    assertEquals((int)-123, eval("(int -123)", env));
+    assertEquals((long)-123, eval("(long -123)", env));
+    assertEquals((float)-123, eval("(float -123)", env));
+    assertEquals((double)-123, eval("(double -123)", env));
+    assertEquals((char)98, eval("(char 98)", env));
+    assertEquals(new BigInteger("-123"), eval("(bigint -123)", env));
+    assertEquals(new BigDecimal("-123.456"), eval("(bigdec -123.456)", env));
+    assertTrue((Boolean) eval("(boolean 98)", env));
+  }
 }
