@@ -38,7 +38,6 @@ public enum Define implements ISpecialForm {
        */
       /* Construct lambda form */
       Cons<Object> l = Cons.list(Lambda.LAMBDA);
-
       /* Args */
       Cons args = Cons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
       for (Object arg : args) {
@@ -48,12 +47,8 @@ public enum Define implements ISpecialForm {
       }
       args.setIsList(Cons.isList(expression.get(1)));
       l.add(args);
-
       /* Body */
       l.addAll(expression.subList(2, expression.size()));
-
-      Procedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
-
       /* Get procedure's name */
       // TODO (define (((a))) 1)
       // TODO (define ((a n) c) n)
@@ -61,6 +56,7 @@ public enum Define implements ISpecialForm {
       if (!(id instanceof Symbol)) {
         throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier for procedure name: %s", Writer.write(id)));
       }
+      Procedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
       lambda.setName(id.toString());
       env.put(id, lambda);
     } else {
