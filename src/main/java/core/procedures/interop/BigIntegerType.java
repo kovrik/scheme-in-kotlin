@@ -2,6 +2,7 @@ package core.procedures.interop;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.Utils;
 
 import java.math.BigInteger;
 
@@ -23,8 +24,8 @@ public final class BigIntegerType extends AFn {
 
   @Override
   public BigInteger apply1(Object arg) {
-    if (arg instanceof Long) {
-      return BigInteger.valueOf((long)arg);
+    if (arg instanceof Number) {
+      return Utils.toBigInteger((Number) arg);
     }
     return new BigInteger(arg.toString());
   }

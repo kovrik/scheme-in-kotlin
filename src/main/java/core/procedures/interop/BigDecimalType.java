@@ -2,6 +2,7 @@ package core.procedures.interop;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.Utils;
 
 import java.math.BigDecimal;
 
@@ -23,11 +24,8 @@ public final class BigDecimalType extends AFn {
 
   @Override
   public BigDecimal apply1(Object arg) {
-    if (arg instanceof Long) {
-      return BigDecimal.valueOf((long)arg);
-    }
-    if (arg instanceof Double) {
-      return BigDecimal.valueOf((double)arg);
+    if (arg instanceof Number) {
+      return Utils.toBigDecimal((Number) arg);
     }
     return new BigDecimal(arg.toString());
   }
