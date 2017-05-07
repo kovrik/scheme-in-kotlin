@@ -63,15 +63,15 @@ public final class Multiplication extends AFn {
       return ((BigRatio)first).multiply((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (second instanceof Long) {
-        return ((BigRatio) first).multiply(BigRatio.valueOf(second.toString(), "1"));
+      if (Utils.isExact(second)) {
+        return ((BigRatio) first).multiply(Utils.toBigInteger(second));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (first instanceof Long) {
-        return ((BigRatio) second).multiply(BigRatio.valueOf(first.toString(), "1"));
+      if (Utils.isExact(first)) {
+        return ((BigRatio) second).multiply(Utils.toBigInteger(first));
       } else {
         second = second.doubleValue();
       }
@@ -79,14 +79,14 @@ public final class Multiplication extends AFn {
     if (first instanceof Float && second instanceof Float) {
       float result = first.floatValue() * second.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return new BigDecimal(first.toString()).multiply(new BigDecimal(second.toString()));
+        return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
       double result = first.doubleValue() * second.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return new BigDecimal(first.toString()).multiply(new BigDecimal(second.toString()));
+        return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
       }
       return result;
     }

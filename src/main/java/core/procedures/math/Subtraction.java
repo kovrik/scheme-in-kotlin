@@ -93,14 +93,14 @@ public final class Subtraction extends AFn {
     if (first instanceof Float && second instanceof Float) {
       float result = first.floatValue() - second.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+        return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
       double result = first.doubleValue() - second.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return new BigDecimal(first.toString()).subtract(new BigDecimal(second.toString()));
+        return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
       }
       return result;
     }

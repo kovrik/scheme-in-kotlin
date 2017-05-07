@@ -326,6 +326,9 @@ public final class Utils {
     if (clazz == Long.class) {
       return BigDecimal.valueOf((Long)number);
     }
+    if (clazz == BigInteger.class) {
+      return new BigDecimal((BigInteger)number);
+    }
     if (clazz == Double.class) {
       return BigDecimal.valueOf((Double)number);
     }

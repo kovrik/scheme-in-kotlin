@@ -32,18 +32,20 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
   private final BigInteger denominator;
 
   public static BigRatio valueOf(String numerator, String denominator) {
-    BigInteger den = parseBigInteger(denominator);
-    if (BigInteger.ZERO.equals(den)) {
+    return valueOf(parseBigInteger(numerator), parseBigInteger(denominator));
+  }
+
+  public static BigRatio valueOf(BigInteger numerator, BigInteger denominator) {
+    if (BigInteger.ZERO.equals(denominator)) {
       throw new ArithmeticException("/ by zero");
     }
-    BigInteger num = parseBigInteger(numerator);
-    if (BigInteger.ZERO.equals(num)) {
+    if (BigInteger.ZERO.equals(numerator)) {
       return ZERO;
     }
-    if (BigInteger.ONE.equals(num) && BigInteger.ONE.equals(den)) {
+    if (BigInteger.ONE.equals(numerator) && BigInteger.ONE.equals(denominator)) {
       return ONE;
     }
-    return new BigRatio(num, den);
+    return new BigRatio(numerator, denominator);
   }
 
   public BigRatio(BigInteger numerator, BigInteger denominator) {
@@ -156,6 +158,10 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
     return new BigRatio(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator));
   }
 
+  public BigRatio multiply(BigInteger other) {
+    return new BigRatio(this.numerator.multiply(other), this.denominator);
+  }
+
   public BigRatio plus(BigRatio other) {
     BigInteger numerator   = this.numerator.multiply(other.denominator).add(other.numerator.multiply(this.denominator));
     BigInteger denominator = this.denominator.multiply(other.denominator);
@@ -170,12 +176,16 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
     return this.plus(other.negate());
   }
 
-  private BigRatio reciprocal() {
+  public BigRatio reciprocal() {
     return new BigRatio(denominator, numerator);
   }
 
   public BigRatio divide(BigRatio other) {
     return this.multiply(other.reciprocal());
+  }
+
+  public BigRatio divide(BigInteger other) {
+    return new BigRatio(this.numerator, this.denominator.multiply(other));
   }
 
   private BigDecimal quotient() {

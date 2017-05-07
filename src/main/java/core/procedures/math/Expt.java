@@ -215,7 +215,7 @@ public final class Expt extends AFn {
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
-      return new BigDecimal(base.toString()).pow(exponent.intValue());
+      return Utils.toBigDecimal(base).pow(exponent.intValue());
     }
     if (Double.isNaN(result)) {
       return BigComplex.of(base).expt(BigComplex.of(exponent));

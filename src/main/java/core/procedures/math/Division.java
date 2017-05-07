@@ -51,34 +51,32 @@ public final class Division extends AFn {
     }
     if (numerator instanceof BigRatio) {
       if (Utils.isExact(denominator)) {
-        return ((BigRatio) numerator).divide(BigRatio.valueOf(denominator.toString(), "1"));
+        return ((BigRatio) numerator).divide(Utils.toBigInteger(denominator));
       } else {
         numerator = numerator.doubleValue();
       }
     }
     if (denominator instanceof BigRatio) {
       if (Utils.isExact(numerator)) {
-        return (BigRatio.valueOf(numerator.toString(), "1").divide((BigRatio) denominator));
+        return ((BigRatio)denominator).reciprocal().multiply(Utils.toBigInteger(numerator));
       } else {
         denominator = denominator.doubleValue();
       }
     }
-    if (Utils.isExact(numerator) &&
-        Utils.isExact(denominator)) {
-
-      return BigRatio.valueOf(numerator.toString(), denominator.toString());
+    if (Utils.isExact(numerator) && Utils.isExact(denominator)) {
+      return BigRatio.valueOf(Utils.toBigInteger(numerator), Utils.toBigInteger(denominator));
     }
     if (numerator instanceof Float && denominator instanceof Float) {
       float result = numerator.floatValue() / denominator.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), Utils.DEFAULT_CONTEXT);
+        return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
       }
       return result;
     }
     if (numerator instanceof Double || denominator instanceof Double || numerator instanceof Float || denominator instanceof Float) {
       double result = numerator.doubleValue() / denominator.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return new BigDecimal(numerator.toString()).divide(new BigDecimal(denominator.toString()), Utils.DEFAULT_CONTEXT);
+        return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
       }
       return result;
     }
