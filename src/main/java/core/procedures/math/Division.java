@@ -53,14 +53,14 @@ public final class Division extends AFn {
       if (Utils.isExact(denominator)) {
         return ((BigRatio) numerator).divide(BigRatio.valueOf(denominator.toString(), "1"));
       } else {
-        numerator = ((BigRatio) numerator).doubleValue();
+        numerator = numerator.doubleValue();
       }
     }
     if (denominator instanceof BigRatio) {
       if (Utils.isExact(numerator)) {
         return (BigRatio.valueOf(numerator.toString(), "1").divide((BigRatio) denominator));
       } else {
-        denominator = ((BigRatio) denominator).doubleValue();
+        denominator = denominator.doubleValue();
       }
     }
     if (Utils.isExact(numerator) &&
