@@ -64,8 +64,7 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
   }
 
   private static BigInteger parseBigInteger(String number) {
-    BigInteger bigInteger = CONSTANTS.get(number);
-    return bigInteger == null ? new BigInteger(number) : bigInteger;
+    return CONSTANTS.getOrDefault(number, new BigInteger(number));
   }
 
   public BigInteger getNumerator() {
@@ -87,7 +86,7 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
   }
 
   public boolean isDenominatorEqualToOne() {
-    return denominator.compareTo(BigInteger.ONE) == 0;
+    return BigInteger.ONE.compareTo(denominator) == 0;
   }
 
   public boolean isZero() {
