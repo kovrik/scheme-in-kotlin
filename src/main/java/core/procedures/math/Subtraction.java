@@ -72,7 +72,7 @@ public final class Subtraction extends AFn {
     if (second instanceof BigComplex) {
       return new BigComplex(first).minus(second);
     }
-    /* Big Rational numbers */
+    /* Big Ratio numbers */
     if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
       return ((BigRatio)first).minus((BigRatio)second);
     }

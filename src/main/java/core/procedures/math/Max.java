@@ -39,7 +39,7 @@ public final class Max extends AFn {
   }
 
   private Number max(Number first, Number second) {
-    /* Big Rational numbers */
+    /* Big Ratio numbers */
     if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
       return ((BigRatio)first).compareTo((BigRatio)second) > 0 ? first : second;
     }

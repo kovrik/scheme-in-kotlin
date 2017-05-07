@@ -45,7 +45,7 @@ public final class Division extends AFn {
     if (denominator instanceof BigComplex) {
       return new BigComplex(numerator).divide(denominator);
     }
-    /* Big Rational numbers */
+    /* Big Ratio numbers */
     if ((numerator instanceof BigRatio) && (denominator instanceof BigRatio)) {
       return ((BigRatio)numerator).divide((BigRatio)denominator);
     }

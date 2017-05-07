@@ -58,7 +58,7 @@ public final class Multiplication extends AFn {
     if (second instanceof BigComplex) {
       return ((BigComplex) second).multiply(first);
     }
-    /* Big Rational numbers */
+    /* Big Ratio numbers */
     if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
       return ((BigRatio)first).multiply((BigRatio)second);
     }

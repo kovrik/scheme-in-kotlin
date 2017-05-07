@@ -55,7 +55,7 @@ public final class Addition extends AFn {
     if (second instanceof BigComplex) {
       return ((BigComplex) second).plus(first);
     }
-    /* Big Rational numbers */
+    /* Big Ratio numbers */
     if ((first instanceof BigRatio) && (second instanceof BigRatio)) {
       return ((BigRatio)first).plus((BigRatio)second);
     }
