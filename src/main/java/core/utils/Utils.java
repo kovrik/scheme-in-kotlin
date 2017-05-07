@@ -242,7 +242,7 @@ public final class Utils {
     int dotPos = number.indexOf('.');
     if (useBigNum) {
       if (dotPos < 0) {
-        result = r == 10 ? new BigInteger(number) : new BigInteger(number, r);
+        result = new BigInteger(number, r);
       } else {
         /* Remove dot */
         number = number.replace(".", "");
@@ -284,24 +284,23 @@ public final class Utils {
   }
 
   private static Number processExactness(Number number, boolean exact) {
-    if (exact) {
-      /* Racket's Reader does not convert into exact numbers 'properly':
-       * #e2.3 returns 23/10
-       * but (inexact->exact 2.3) returns 2589569785738035/1125899906842624
-       *
-       * Guile returns 2589569785738035/1125899906842624 in both cases.
-       */
-      if (isInexact(number)) {
-        if (number instanceof Double) {
-          BigDecimal bigDecimal = toBigDecimal(number);
-          int scale = bigDecimal.scale();
-          return new BigRatio(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
-        }
-        return ToExact.toExact(number);
-      }
-      return number;
+    if (!exact) {
+      return ToInexact.toInexact(number);
     }
-    return ToInexact.toInexact(number);
+    /* Racket's Reader does not convert into exact numbers 'properly':
+     * #e2.3 returns 23/10
+     * but (inexact->exact 2.3) returns 2589569785738035/1125899906842624
+     * Guile returns 2589569785738035/1125899906842624 in both cases.
+     */
+    if (isInexact(number)) {
+      if (number instanceof Double) {
+        BigDecimal bigDecimal = toBigDecimal(number);
+        int scale = bigDecimal.scale();
+        return new BigRatio(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+      }
+      return ToExact.toExact(number);
+    }
+    return number;
   }
 
   /* Parse string into a rational number */
@@ -609,23 +608,15 @@ public final class Utils {
   private static Number tryToDowncast(BigDecimal number) {
     /* Same checks are performed in longValueExact() method,
      * but we don't want exception to be thrown, just return the number */
-    int d = number.precision() - number.scale();
-    if (d <= 0 || d > 19) {
+    if (!isInteger(number)) {
       return number;
     }
-    if (isInteger(number)) {
-      try {
-        long smaller = number.longValueExact();
-        if (isInexact(number)) {
-          return (double)smaller;
-        }
-        return smaller;
-      } catch (ArithmeticException e) {
-        /* Down-casting has failed, ignore and return the original number */
-         return number.toBigInteger();
-      }
+    try {
+      return number.longValueExact();
+    } catch (ArithmeticException e) {
+      /* Down-casting has failed, ignore and cast to BigInteger then */
+      return number.toBigInteger();
     }
-    return number;
   }
 
   /**
@@ -639,11 +630,7 @@ public final class Utils {
     }
     if (isInteger(number)) {
       try {
-        long smaller = number.longValueExact();
-        if (isInexact(number)) {
-          return (double)smaller;
-        }
-        return smaller;
+        return number.longValueExact();
       } catch (ArithmeticException e) {
         /* Down-casting has failed, ignore and return the original number */
       }
@@ -699,6 +686,6 @@ public final class Utils {
    * Returns TRUE otherwise.
    */
   public static boolean toBoolean(Object value) {
-    return (value instanceof Boolean) ? (boolean)value : value != null;
+    return value instanceof Boolean ? (boolean)value : value != null;
   }
 }

@@ -169,9 +169,9 @@ public final class Expt extends AFn {
           isNegative = true;
           e = Math.abs(e);
         }
-        BigDecimal result = BigDecimal.valueOf(base.longValue()).pow(e).setScale(0, Utils.ROUNDING_MODE);
+        BigInteger result = BigInteger.valueOf(base.longValue()).pow(e);
         if (isNegative) {
-          return new BigRatio(BigInteger.ONE, result.toBigInteger());
+          return new BigRatio(BigInteger.ONE, result);
         }
         return Utils.downcastNumber(result);
       } else {
@@ -235,8 +235,9 @@ public final class Expt extends AFn {
 
   private static Number exptBigDec(BigDecimal n, BigDecimal e) {
     try {
+      int scale = Math.max(n.scale(), n.stripTrailingZeros().scale());
       int i = e.intValueExact();
-      return n.pow(i);
+      return n.pow(i).setScale(scale, Utils.ROUNDING_MODE);
     } catch (ArithmeticException ex) {
       // FIXME NEGATIVE_INFINITY and zero in some cases?
       return Double.POSITIVE_INFINITY;
