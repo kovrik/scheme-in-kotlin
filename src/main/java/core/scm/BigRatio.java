@@ -205,14 +205,6 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
     return quotient().doubleValue();
   }
 
-  public Number doubleOrBigDecimalValue() {
-    double doubleValue = doubleValue();
-    if (!isZero() && Double.compare(doubleValue, 0d) == 0) {
-      return toBigDecimal();
-    }
-    return doubleValue;
-  }
-
   public int signum() {
     return numerator.signum() * denominator.signum();
   }

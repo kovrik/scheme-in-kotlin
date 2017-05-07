@@ -66,14 +66,14 @@ public final class Multiplication extends AFn {
       if (second instanceof Long) {
         return ((BigRatio) first).multiply(BigRatio.valueOf(second.toString(), "1"));
       } else {
-        first = ((BigRatio)first).doubleOrBigDecimalValue();
+        first = ((BigRatio)first).doubleValue();
       }
     }
     if (second instanceof BigRatio) {
       if (first instanceof Long) {
         return ((BigRatio) second).multiply(BigRatio.valueOf(first.toString(), "1"));
       } else {
-        second = ((BigRatio)second).doubleOrBigDecimalValue();
+        second = ((BigRatio)second).doubleValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {

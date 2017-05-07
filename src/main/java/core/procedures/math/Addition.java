@@ -63,14 +63,14 @@ public final class Addition extends AFn {
       if (second instanceof Long || second instanceof BigDecimal) {
         return ((BigRatio) first).plus(BigRatio.valueOf(second.toString(), "1"));
       } else {
-        first = ((BigRatio)first).doubleOrBigDecimalValue();
+        first = ((BigRatio)first).doubleValue();
       }
     }
     if (second instanceof BigRatio) {
       if (first instanceof Long || first instanceof BigDecimal) {
         return BigRatio.valueOf(first.toString(), "1").plus((BigRatio) second);
       } else {
-        second = ((BigRatio)second).doubleOrBigDecimalValue();
+        second = ((BigRatio)second).doubleValue();
       }
     }
     if (first instanceof Float && second instanceof Float) {
