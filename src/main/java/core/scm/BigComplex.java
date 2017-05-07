@@ -21,21 +21,13 @@ public final class BigComplex extends Number implements ITyped {
   private final BigDecimal im;
 
   public BigComplex(BigDecimal tre, BigDecimal tim) {
-    int minScale = (tre.scale() > 0 || tim.scale() > 0) ? 1 : 0;
+    int minScale = tre.scale() > 0 || tim.scale() > 0 ? 1 : 0;
     int reScaleStripped = tre.stripTrailingZeros().scale();
     int imScaleStripped = tim.stripTrailingZeros().scale();
     int reScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped));
     int imScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped));
-    if (reScaleStripped > 0) {
-      this.re = tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros();
-    } else {
-      this.re = tre.setScale(reScale, Utils.ROUNDING_MODE);
-    }
-    if (imScaleStripped > 0) {
-      this.im = tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros();
-    } else {
-      this.im = tim.setScale(imScale, Utils.ROUNDING_MODE);
-    }
+    this.re = reScaleStripped > 0 ? tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros() : tre.setScale(reScale, Utils.ROUNDING_MODE);
+    this.im = imScaleStripped > 0 ? tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros() : tim.setScale(imScale, Utils.ROUNDING_MODE);
   }
 
   public BigComplex(Number re, Number im) {
@@ -64,7 +56,7 @@ public final class BigComplex extends Number implements ITyped {
    * Convert Number to BigComplex
    */
   public static BigComplex of(Number number) {
-    return (number instanceof BigComplex) ? (BigComplex)number : new BigComplex(number);
+    return number instanceof BigComplex ? (BigComplex)number : new BigComplex(number);
   }
 
   /**
@@ -166,11 +158,7 @@ public final class BigComplex extends Number implements ITyped {
       c = ((BigComplex) e).getRe();
       d = ((BigComplex) e).getIm();
     } else {
-      if (e instanceof BigRatio) {
-        c = ((BigRatio) e).toBigDecimal();
-      } else {
-        c = Utils.toBigDecimal(e);
-      }
+      c = Utils.toBigDecimal(e);
       d = BigDecimal.ZERO;
     }
     Number r = magnitude();
