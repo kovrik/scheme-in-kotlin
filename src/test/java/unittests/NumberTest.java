@@ -549,6 +549,17 @@ public class NumberTest extends AbstractTest {
                  eval("(expt -3.1 2+3i)", env));
     assertEquals(new BigComplex(new BigDecimal("-2.4728383E-9"), new BigDecimal("9.0752993E-9")),
                  eval("(expt -2.3-3.4i -4.5-5.6i)", env));
+    assertEquals(244140625L, eval("(expt 5 12)", env));
+    assertEquals(244140625d, eval("(expt 5.0 12)", env));
+    assertEquals(244140625d, eval("(expt (double 5) 12)", env));
+    assertEquals(244140625d, eval("(expt (float 5)  12)", env));
+    assertEquals(244140625L, eval("(expt (short 5)  12)", env));
+    assertEquals(244140625L, eval("(expt (byte 5)   12)", env));
+    assertEquals(244140625L, eval("(expt (int 5)    12)", env));
+    assertEquals(BigInteger.valueOf(244140625L), eval("(expt (bigint 5) 12)", env));
+    assertEquals(BigDecimal.valueOf(244140625L), eval("(expt (bigdec 5) 12)", env));
+    assertEquals(new BigDecimal("244140625.0"), eval("(expt (bigdec 5.0) 12)", env));
+    assertEquals(new BigDecimal("244140625.0"), eval("(expt (bigdec 5.000) 12)", env));
   }
 
   @Test
