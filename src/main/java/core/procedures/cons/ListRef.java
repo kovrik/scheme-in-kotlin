@@ -35,9 +35,8 @@ public final class ListRef extends AFn {
     if ((list instanceof Cons) && !((Cons)list).isList()) {
       if (p == 0) {
         return ((Cons)list).car();
-      } else {
-        throw new IllegalArgumentException(String.format("%s: index (%s) reaches a non-pair", getName(), p));
       }
+      throw new IllegalArgumentException(String.format("%s: index (%s) reaches a non-pair", getName(), p));
     }
     return list.get(p.intValue());
   }

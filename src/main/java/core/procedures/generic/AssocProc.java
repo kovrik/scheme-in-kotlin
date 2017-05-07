@@ -37,7 +37,7 @@ public final class AssocProc extends AFn {
             return pair;
           }
         } else {
-          throw new IllegalArgumentException(
+          throw new WrongTypeException(
               String.format("%s: wrong type argument in position %s (expecting association list): %s", getName(), n, Writer.write(list)));
         }
       }

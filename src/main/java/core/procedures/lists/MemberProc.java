@@ -1,5 +1,6 @@
 package core.procedures.lists;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.cons.Car;
@@ -46,13 +47,13 @@ public final class MemberProc extends AFn {
     /* Not found */
     if (p == list.size()) {
       if (!Cons.isList(list)) {
-        throw new IllegalArgumentException(String.format("%s: wrong type argument in position %s (expecting list): %s",
-                                                         getName(), p, Writer.write(list)));
+        throw new WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
+                                                   getName(), p, Writer.write(list)));
       }
       return Boolean.FALSE;
     }
-    throw new IllegalArgumentException(String.format("%s: wrong type argument in position %s (expecting list): %s",
-                                                     getName(), p + 1, Writer.write(list)));
+    throw new WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
+                                               getName(), p + 1, Writer.write(list)));
   }
 
   @Override
