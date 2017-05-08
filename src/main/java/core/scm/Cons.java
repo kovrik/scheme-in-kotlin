@@ -7,7 +7,7 @@ import java.util.*;
 import static core.writer.Writer.write;
 
 // TODO Separate class for Proper and Improper Lists?
-public class Cons<E> extends LinkedList<E> implements ICons {
+public class Cons<E> extends LinkedList<E> {
 
   /* Empty list constant */
   public static final Cons EMPTY = new EmptyCons();
@@ -40,7 +40,6 @@ public class Cons<E> extends LinkedList<E> implements ICons {
     }
   }
 
-  @Override
   public boolean isList() {
     return isList;
   }
@@ -49,7 +48,6 @@ public class Cons<E> extends LinkedList<E> implements ICons {
     isList = list;
   }
 
-  @Override
   public E car() {
     if (isEmpty()) {
       throw new WrongTypeException("car", Type.PAIR.getName(), EMPTY);
@@ -57,7 +55,6 @@ public class Cons<E> extends LinkedList<E> implements ICons {
     return getFirst();
   }
 
-  @Override
   public Object cdr() {
     return isList ? subList(1, size()) : getLast();
   }
@@ -125,7 +122,7 @@ public class Cons<E> extends LinkedList<E> implements ICons {
 
   /* Return true if o is a List or Cons and a list */
   public static boolean isList(Object o) {
-    return ((o instanceof List) && !(o instanceof ICons)) || ((o instanceof ICons) && ((ICons)o).isList());
+    return ((o instanceof List) && !(o instanceof Cons)) || ((o instanceof Cons) && ((Cons)o).isList());
   }
 
   public static boolean isPair(Object o) {

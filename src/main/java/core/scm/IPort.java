@@ -1,8 +1,7 @@
 package core.scm;
 
-import java.io.IOException;
+import java.io.Closeable;
 
-public interface IPort {
+public interface IPort extends Closeable {
 
-  void close() throws IOException;
 }

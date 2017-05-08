@@ -2,7 +2,7 @@ package core.procedures.cons;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.ICons;
+import core.scm.Cons;
 import core.scm.Type;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class Car extends AFn {
   }
 
   public static Object car(Object o) {
-    if (o instanceof ICons) {
-      return ((ICons)o).car();
+    if (o instanceof Cons) {
+      return ((Cons)o).car();
     }
     return ((List)o).get(0);
   }
