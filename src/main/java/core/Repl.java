@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Repl {
 
   private static final AtomicInteger SYM_COUNTER = new AtomicInteger(0);
-  private static final int SYM_LIMIT = 50;
+  private static final int SYM_LIMIT = 25;
 
   private static final String WELCOME = "Welcome to Scheme in Java!";
   private static final String PROMPT = "> ";
