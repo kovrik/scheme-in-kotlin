@@ -84,7 +84,7 @@ import core.procedures.io.Read;
 import core.procedures.io.ReadChar;
 import core.procedures.io.Write;
 import core.procedures.io.WriteChar;
-import core.procedures.keywords.Keyword;
+import core.procedures.keywords.KeywordProc;
 import core.procedures.lists.ListProc;
 import core.procedures.lists.MemberProc;
 import core.procedures.math.Abs;
@@ -181,10 +181,10 @@ import core.procedures.system.ToString;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.MakeVector;
 import core.procedures.vectors.Vec;
-import core.procedures.vectors.VectorProc;
 import core.procedures.vectors.VectorFill;
 import core.procedures.vectors.VectorImmutable;
 import core.procedures.vectors.VectorLength;
+import core.procedures.vectors.VectorProc;
 import core.procedures.vectors.VectorRef;
 import core.procedures.vectors.VectorSet;
 import core.procedures.vectors.VectorToImmutableVector;
@@ -481,7 +481,7 @@ public final class DefaultEnvironment extends Environment {
       new RandNth(),
 
       /* Keywords */
-      new Keyword(),
+      new KeywordProc(),
 
       /* Meta */
       new MetaProc(),
