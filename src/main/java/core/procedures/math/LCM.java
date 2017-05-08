@@ -62,7 +62,7 @@ public final class LCM extends AFn {
   }
 
   private BigRatio lcm(BigRatio first, BigRatio second) {
-    return new BigRatio(lcm(first.getNumerator(), second.getNumerator()),
+    return BigRatio.valueOf(lcm(first.getNumerator(), second.getNumerator()),
                            gcd(first.getDenominator(), second.getDenominator()));
   }
 

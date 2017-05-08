@@ -95,15 +95,13 @@ public final class ToExact extends AFn {
     if (sign == 1) {
       a *= -1;
     }
-    return new BigRatio(BigInteger.valueOf(a), BigInteger.valueOf(b));
+    return BigRatio.valueOf(BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 
   private static BigRatio bigDecimalToExact(BigDecimal number) {
     int scale = number.scale();
-    if (scale > 0) {
-      return new BigRatio(number.unscaledValue(), BigInteger.TEN.pow(scale));
-    } else {
-      return new BigRatio(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
-    }
+    return scale > 0 ?
+           BigRatio.valueOf(number.unscaledValue(), BigInteger.TEN.pow(scale)) :
+           BigRatio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
   }
 }

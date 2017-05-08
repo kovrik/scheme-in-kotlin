@@ -5,7 +5,6 @@ import core.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +14,8 @@ import java.util.Map;
  */
 public final class BigRatio extends Number implements ITyped, Comparable<BigRatio> {
 
-  public static final BigRatio ZERO = new BigRatio(BigInteger.ZERO, BigInteger.ONE);
-  public static final BigRatio ONE  = new BigRatio(BigInteger.ONE, BigInteger.ONE);
+  public static final BigRatio ZERO = new BigRatio(BigInteger.ZERO);
+  public static final BigRatio ONE  = new BigRatio(BigInteger.ONE);
 
   private static final Map<String, BigInteger> CONSTANTS = new HashMap<>();
   static {
@@ -45,10 +44,18 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
     if (BigInteger.ONE.equals(numerator) && BigInteger.ONE.equals(denominator)) {
       return ONE;
     }
+    if (BigInteger.ONE.equals(denominator)) {
+      return new BigRatio(numerator);
+    }
     return new BigRatio(numerator, denominator);
   }
 
-  public BigRatio(BigInteger numerator, BigInteger denominator) {
+  private BigRatio(BigInteger numerator) {
+    this.numerator = numerator;
+    this.denominator = BigInteger.ONE;
+  }
+
+  private BigRatio(BigInteger numerator, BigInteger denominator) {
     if (BigInteger.ZERO.equals(denominator)) {
       throw new ArithmeticException("/ by zero");
     }
@@ -113,18 +120,18 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
 
   public BigRatio ceiling() {
     int round = isPositive() ? BigDecimal.ROUND_UP : BigDecimal.ROUND_DOWN;
-    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger());
   }
 
   public BigRatio floor() {
     int round = isPositive() ? BigDecimal.ROUND_DOWN : BigDecimal.ROUND_UP;
-    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger(), BigInteger.ONE);
+    return new BigRatio(new BigDecimal(numerator).divide(new BigDecimal(denominator), round).toBigInteger());
   }
 
   public BigRatio round() {
     BigDecimal number = toBigDecimal();
-    BigDecimal round = (number.scale() == 0) ? number.round(MathContext.UNLIMITED) : number.round(Utils.DEFAULT_CONTEXT);
-    return new BigRatio(round.toBigInteger(), BigInteger.ONE);
+    BigDecimal round = number.setScale(0, Utils.ROUNDING_MODE);
+    return new BigRatio(round.toBigInteger());
   }
 
   public BigRatio truncate() {
@@ -140,6 +147,7 @@ public final class BigRatio extends Number implements ITyped, Comparable<BigRati
   public int compareTo(BigRatio other) {
     return this.numerator.multiply(other.denominator).compareTo(this.denominator.multiply(other.numerator));
   }
+
   @Override
   public boolean equals(Object y) {
     if (y == this) return true;

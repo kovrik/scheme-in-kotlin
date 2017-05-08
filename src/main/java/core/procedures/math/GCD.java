@@ -79,7 +79,7 @@ public final class GCD extends AFn {
   }
 
   static BigRatio gcd(BigRatio first, BigRatio second) {
-    return new BigRatio(first.getNumerator().gcd(second.getNumerator()),
+    return BigRatio.valueOf(first.getNumerator().gcd(second.getNumerator()),
                            LCM.lcm(first.getDenominator(), second.getDenominator()));
   }
 

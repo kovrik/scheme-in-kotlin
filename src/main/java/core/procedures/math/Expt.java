@@ -171,7 +171,7 @@ public final class Expt extends AFn {
         }
         BigInteger result = BigInteger.valueOf(base.longValue()).pow(e);
         if (isNegative) {
-          return new BigRatio(BigInteger.ONE, result);
+          return BigRatio.valueOf(BigInteger.ONE, result);
         }
         return Utils.downcastNumber(result);
       } else {

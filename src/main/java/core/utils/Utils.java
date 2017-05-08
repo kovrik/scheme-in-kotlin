@@ -296,7 +296,7 @@ public final class Utils {
       if (number instanceof Double) {
         BigDecimal bigDecimal = toBigDecimal(number);
         int scale = bigDecimal.scale();
-        return new BigRatio(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
+        return BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale));
       }
       return ToExact.toExact(number);
     }
