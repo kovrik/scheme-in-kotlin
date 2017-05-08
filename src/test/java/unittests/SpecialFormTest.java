@@ -782,4 +782,34 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(FALSE, eval("(instance? Number \"\")", env));
     assertEquals(FALSE, eval("(instance? (.getClass {}) #{})", env));
   }
+
+  @Test
+  public void testYCombinator() {
+    String Y = "(define Y" +
+               "  (lambda (h)" +
+               "    ((lambda (x) (x x))" +
+               "     (lambda (g)" +
+               "       (h (lambda args (apply (g g) args)))))))";
+    eval(Y, env);
+
+    String fac = "(define fac" +
+                 "  (Y" +
+                 "    (lambda (f)" +
+                 "      (lambda (x)" +
+                 "        (if (< x 2)" +
+                 "            1" +
+                 "            (* x (f (- x 1))))))))";
+
+    String fib = "(define fib" +
+                 "  (Y" +
+                 "    (lambda (f)" +
+                 "      (lambda (x)" +
+                 "        (if (< x 2)" +
+                 "            x" +
+                 "            (+ (f (- x 1)) (f (- x 2))))))))";
+    eval(fac, env);
+    eval(fib, env);
+    assertEquals(720L, eval("(fac 6)", env));
+    assertEquals(8L,   eval("(fib 6)", env));
+  }
 }
