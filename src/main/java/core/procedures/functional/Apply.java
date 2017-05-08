@@ -4,7 +4,6 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
-import core.procedures.cons.Append;
 import core.scm.Cons;
 import core.scm.Symbol;
 import core.scm.Thunk;
@@ -32,9 +31,7 @@ public final class Apply extends AFn {
   public Object apply(Object... args) {
     Cons sexp = Cons.list(args[0]);
     if (args.length > 2) {
-      Cons<Object> list = Cons.list();
-      list.addAll(Arrays.asList(args).subList(1, args.length - 1));
-      sexp = (Cons) Append.append(sexp, list);
+      sexp.addAll(Arrays.asList(args).subList(1, args.length - 1));
     }
 
     Object last = args[args.length - 1];
