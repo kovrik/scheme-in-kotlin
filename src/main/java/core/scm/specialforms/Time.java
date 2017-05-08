@@ -30,9 +30,9 @@ public enum Time implements ISpecialForm {
       evaluator.eval(expression.get(i), env);
     }
     Object result = evaluator.eval(expression.get(expression.size() - 1), env);
-    long diff = (System.nanoTime() - start) / 1000000;
+    double diff = (double)(System.nanoTime() - start) / 1000000;
     try {
-      Repl.getCurrentOutputPort().writeln(String.format("time: %s ms", diff));
+      Repl.getCurrentOutputPort().writeln(String.format("elapsed time: %s ms", diff));
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
