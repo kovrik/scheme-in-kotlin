@@ -2,6 +2,7 @@ package core.procedures.keywords;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.Keyword;
 
 public final class KeywordProc extends AFn {
 
@@ -15,7 +16,7 @@ public final class KeywordProc extends AFn {
   }
 
   @Override
-  public core.scm.Keyword apply1(Object arg) {
-    return (arg == null) ? null : core.scm.Keyword.intern(arg.toString());
+  public Keyword apply1(Object arg) {
+    return arg == null ? null : Keyword.intern(arg.toString());
   }
 }
