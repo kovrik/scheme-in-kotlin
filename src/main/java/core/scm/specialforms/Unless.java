@@ -4,29 +4,35 @@ import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
 import core.scm.Thunk;
+import core.scm.Void;
 import core.utils.Utils;
 
 import java.util.List;
 
 /* Syntax:
- * (if <test> <consequent> <alternate>)
- * (if <test> <consequent>)
+ * (unless <test> body...)
  */
-public enum If implements ISpecialForm {
-  IF;
+public enum Unless implements ISpecialForm {
+  UNLESS;
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     int size = expression.size();
-    if (size != 4) {
+    if (size < 3) {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
-    return Utils.toBoolean(evaluator.eval(expression.get(1), env)) ?
-           new Thunk(expression.get(2), env) : new Thunk(expression.get(3), env);
+    Object test = expression.get(1);
+    if (!Utils.toBoolean(evaluator.eval(test, env))) {
+      for (int i = 2; i < expression.size() - 1; i++) {
+        evaluator.eval(expression.get(i), env);
+      }
+      return new Thunk(expression.get(expression.size() - 1), env);
+    }
+    return Void.VOID;
   }
 
   @Override
   public String toString() {
-    return "if";
+    return "unless";
   }
 }

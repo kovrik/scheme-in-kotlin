@@ -222,8 +222,10 @@ import core.scm.specialforms.SyntaxRules;
 import core.scm.specialforms.Throw;
 import core.scm.specialforms.Time;
 import core.scm.specialforms.Try;
+import core.scm.specialforms.Unless;
 import core.scm.specialforms.Unquote;
 import core.scm.specialforms.UnquoteSplicing;
+import core.scm.specialforms.When;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -571,6 +573,8 @@ public final class DefaultEnvironment extends Environment {
     Assert.ASSERT,
     /* With TCO */
     If.IF,
+    When.WHEN,
+    Unless.UNLESS,
     Begin.BEGIN,
     And.AND,
     Or.OR,
@@ -612,7 +616,7 @@ public final class DefaultEnvironment extends Environment {
     // TODO Implement in Java?
     LIBRARY_PROCEDURES.add(
       "(define rationalize" +
-          "  (letrec ((check (lambda (x) (if (not (real? x))" +
+          "  (letrec ((check (lambda (x) (when (not (real? x))" +
           "                                (error (string-append \"Wrong argument type. Expected: Real, actual: \"" +
           "                                                      (->string x))))))" +
           "           (find-between " +

@@ -250,7 +250,7 @@ public class SpecialFormTest extends AbstractTest {
     assertEquals(Symbol.intern("yes"), eval("(if (> 3 2) 'yes 'no)", env));
     assertEquals(Symbol.intern("no"), eval("(if (> 2 3) 'yes 'no)", env));
     assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env));
-    assertEquals(Void.VOID, eval("(if #f 5)", env));
+    assertEquals(Void.VOID, eval("(when #f 5)", env));
     try {
       eval("(if)", env);
       fail();

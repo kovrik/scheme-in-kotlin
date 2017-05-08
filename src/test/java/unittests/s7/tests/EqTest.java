@@ -23,7 +23,7 @@ public class EqTest extends AbstractTest {
     assertAllEqual(TRUE, trues, env);
 
     String[] falses = {
-        "(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", "(eq? (if #f 1) 1)",
+        "(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", "(eq? (when #f 1) 1)",
         "(eq? ''#\\a '#\\a)", "(eq? 'car car)", "(eq? ''() '())", "(eq? (string) \"\")",
         "(let ((f (lambda () (cons 1 (string #\\H))))) (eq? (f) (f)))", "(eq? (vector) (vector))",
         "(eq? (vector) #())", "(eq? 'a 3)", "(eq? #t 't)", "(eq? \"abs\" 'abc)", "(eq? \"hi\" '(hi))",
