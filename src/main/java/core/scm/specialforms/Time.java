@@ -20,8 +20,6 @@ import java.util.List;
 public enum Time implements ISpecialForm {
   TIME;
 
-  private static final String LS = System.getProperty("line.separator");
-
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
@@ -34,7 +32,7 @@ public enum Time implements ISpecialForm {
     Object result = evaluator.eval(expression.get(expression.size() - 1), env);
     long diff = (System.nanoTime() - start) / 1000000;
     try {
-      Repl.getCurrentOutputPort().write(String.format("time: %s ms", diff) + LS);
+      Repl.getCurrentOutputPort().writeln(String.format("time: %s ms", diff));
     } catch (IOException e) {
       throw new SCMIOException(e);
     }
