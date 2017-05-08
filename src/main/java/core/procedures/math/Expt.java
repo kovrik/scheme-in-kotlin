@@ -64,7 +64,7 @@ public final class Expt extends AFn {
       return Double.NaN;
     }
     if (Utils.isZero(base) && Utils.isZero(exponent)) {
-      return 1L;
+      return Utils.inexactnessTaint(1L, exponent);
     }
     if (Utils.isZero(base) && (Utils.isFinite(exponent))) {
       if (base.equals(-0d)) {

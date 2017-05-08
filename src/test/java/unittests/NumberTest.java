@@ -513,7 +513,9 @@ public class NumberTest extends AbstractTest {
     } catch (IllegalArgumentException e) {
       assertEquals("expt: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 1)", e.getMessage());
     }
-    assertEquals(1L, eval("(expt 0 0.0)", env));
+    assertEquals(1L, eval("(expt 0 0)", env));
+    assertEquals(1L, eval("(expt 0.0 0)", env));
+    assertEquals(1d, eval("(expt 0 0.0)", env));
     assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.0 -5)", env));
     assertEquals(0d, eval("(expt 0.0 5)", env));
     assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -0.0 -5)", env));
