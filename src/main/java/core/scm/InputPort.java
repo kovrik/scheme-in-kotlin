@@ -3,7 +3,7 @@ package core.scm;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class InputPort implements ITyped, IPort {
+public class InputPort implements IPort {
 
   private final InputStream inputStream;
 
@@ -47,11 +47,6 @@ public class InputPort implements ITyped, IPort {
 
   public int available() throws IOException {
     return inputStream.available();
-  }
-
-  @Override
-  public Type getType() {
-    return Type.INPUT_PORT;
   }
 
   @Override

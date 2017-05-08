@@ -7,7 +7,7 @@ import core.utils.InternPool;
 
 import java.util.Map;
 
-public class Keyword extends AFn implements ITyped, INamed {
+public class Keyword extends AFn implements INamed {
 
   /* Pool of all interned keywords */
   private static final InternPool<Keyword> POOL = new InternPool<>();
@@ -22,11 +22,6 @@ public class Keyword extends AFn implements ITyped, INamed {
   public static Keyword intern(String value) {
     // always intern keywords
     return POOL.intern(new Keyword(value));
-  }
-
-  @Override
-  public Type getType() {
-    return Type.KEYWORD;
   }
 
   @Override

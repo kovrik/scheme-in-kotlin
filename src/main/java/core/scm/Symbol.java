@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * will reference to the same symbol object.
  */
-public final class Symbol extends AFn implements ITyped, INamed, IMeta {
+public final class Symbol extends AFn implements INamed, IMeta {
 
   /* Pool of all interned symbols */
   private static final InternPool<Symbol> POOL = new InternPool<>();
@@ -70,11 +70,6 @@ public final class Symbol extends AFn implements ITyped, INamed, IMeta {
     }
     Object defaultValue = (args.length == 2) ? args[1] : null;
     return ((Map)args[0]).getOrDefault(this, defaultValue);
-  }
-
-  @Override
-  public Type getType() {
-    return Type.SYMBOL;
   }
 
   @Override

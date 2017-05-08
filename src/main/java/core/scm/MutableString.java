@@ -8,7 +8,7 @@ package core.scm;
  * This MutableString class holds a mutable StringBuilder instance
  * and delegates it all string operations.
  */
-public class MutableString implements ITyped, INamed, CharSequence {
+public class MutableString implements INamed, CharSequence {
 
   private final StringBuilder string;
 
@@ -58,11 +58,6 @@ public class MutableString implements ITyped, INamed, CharSequence {
   public MutableString reverse() {
     string.reverse();
     return this;
-  }
-
-  @Override
-  public Type getType() {
-    return Type.MUTABLE_STRING;
   }
 
   @Override

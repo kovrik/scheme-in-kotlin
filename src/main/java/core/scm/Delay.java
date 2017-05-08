@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Delay extends CompletableFuture<Object> implements ITyped, IDeref {
+public class Delay extends CompletableFuture<Object> implements IDeref {
 
   private final AtomicBoolean forced = new AtomicBoolean(false);
 
@@ -55,11 +55,6 @@ public class Delay extends CompletableFuture<Object> implements ITyped, IDeref {
       }
       throw new RuntimeException(e.getMessage());
     }
-  }
-
-  @Override
-  public Type getType() {
-    return Type.DELAY;
   }
 
   @Override

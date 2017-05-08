@@ -32,7 +32,7 @@ public class Writer implements IWriter {
       return ((Symbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
     }
     if (o instanceof Type) {
-      return "#<class:" + ((Type)o).getName() + ">";
+      return o.toString();
     }
     if (o instanceof Class) {
       return "#<class:" + ((Class)o).getName() + ">";

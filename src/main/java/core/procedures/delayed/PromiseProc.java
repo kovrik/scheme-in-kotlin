@@ -2,12 +2,13 @@ package core.procedures.delayed;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.Promise;
 
 import java.util.concurrent.CompletableFuture;
 
-public final class Promise extends AFn {
+public final class PromiseProc extends AFn {
 
-  public Promise() {
+  public PromiseProc() {
     super(new FnArgsBuilder().max(0).build());
   }
 
@@ -18,6 +19,6 @@ public final class Promise extends AFn {
 
   @Override
   public CompletableFuture<Object> apply0() {
-    return new core.scm.Promise();
+    return new Promise();
   }
 }

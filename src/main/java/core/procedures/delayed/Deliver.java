@@ -2,13 +2,14 @@ package core.procedures.delayed;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.Promise;
 
 import java.util.concurrent.CompletableFuture;
 
 public final class Deliver extends AFn {
 
   public Deliver() {
-    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{CompletableFuture.class, Object.class}).build());
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Promise.class, Object.class}).build());
   }
 
   @Override

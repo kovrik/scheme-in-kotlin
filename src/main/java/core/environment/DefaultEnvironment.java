@@ -28,7 +28,7 @@ import core.procedures.delayed.Deliver;
 import core.procedures.delayed.Deref;
 import core.procedures.delayed.Force;
 import core.procedures.delayed.FutureCancel;
-import core.procedures.delayed.Promise;
+import core.procedures.delayed.PromiseProc;
 import core.procedures.equivalence.Eq;
 import core.procedures.equivalence.Equal;
 import core.procedures.equivalence.Eqv;
@@ -38,7 +38,7 @@ import core.procedures.exceptions.ExInfo;
 import core.procedures.functional.Apply;
 import core.procedures.functional.ForEach;
 import core.procedures.functional.MapProc;
-import core.procedures.functional.Void;
+import core.procedures.functional.VoidProc;
 import core.procedures.generic.AssocProc;
 import core.procedures.generic.Conj;
 import core.procedures.generic.Count;
@@ -264,7 +264,7 @@ public final class DefaultEnvironment extends Environment {
 
       /* Delayed */
       new Force(),
-      new Promise(),
+      new PromiseProc(),
       new Deliver(),
       new Deref(),
       new FutureCancel(),
@@ -444,7 +444,7 @@ public final class DefaultEnvironment extends Environment {
       new Apply(),
       new MapProc(),
       new ForEach(),
-      new Void(),
+      new VoidProc(),
 
       /* Hashmaps */
       new Find(),

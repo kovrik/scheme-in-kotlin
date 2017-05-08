@@ -2,7 +2,6 @@ package core.procedures.continuations;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Type;
 
 /*
  * "Upward" one-shot continuation
@@ -36,11 +35,6 @@ public final class Continuation extends AFn {
   @Override
   public Number apply1(Object arg) {
     throw new CalledContinuation(arg, this);
-  }
-
-  @Override
-  public Type getType() {
-    return Type.CONTINUATION;
   }
 
   @Override

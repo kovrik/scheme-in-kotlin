@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
-public class MapEntry extends AFn implements IMapEntry, ITyped {
+public class MapEntry extends AFn implements IMapEntry {
 
   private final Object key;
   private final Object val;
@@ -47,11 +47,6 @@ public class MapEntry extends AFn implements IMapEntry, ITyped {
   @Override
   public Object setValue(Object value) {
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Type getType() {
-    return Type.MAP_ENTRY;
   }
 
   @Override

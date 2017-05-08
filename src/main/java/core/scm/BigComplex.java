@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * TODO Create Complex class for small complex numbers
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
-public final class BigComplex extends Number implements ITyped {
+public final class BigComplex extends Number {
 
   /* Imaginary unit (i) */
   public static final BigComplex I = new BigComplex(BigDecimal.ZERO, BigDecimal.ONE);
@@ -241,11 +241,6 @@ public final class BigComplex extends Number implements ITyped {
   @Override
   public double doubleValue() {
     throw new UnsupportedOperationException("Undefined for complex number!");
-  }
-
-  @Override
-  public Type getType() {
-    return Type.COMPLEX;
   }
 
   /**

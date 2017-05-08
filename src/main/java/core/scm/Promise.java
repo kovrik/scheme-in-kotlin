@@ -5,7 +5,7 @@ import core.writer.Writer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class Promise extends CompletableFuture<Object> implements IDeref, ITyped {
+public class Promise extends CompletableFuture<Object> implements IDeref {
 
   @Override
   public Object deref() {
@@ -17,11 +17,6 @@ public class Promise extends CompletableFuture<Object> implements IDeref, ITyped
       }
       throw new RuntimeException(e.getMessage());
     }
-  }
-
-  @Override
-  public Type getType() {
-    return Type.PROMISE;
   }
 
   @Override

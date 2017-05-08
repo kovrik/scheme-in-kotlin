@@ -23,6 +23,6 @@ public final class ForEach extends AFn {
     /* For-each is the same as Map, but ignores the result */
     Thunk map = MapProc.MAP_PROC.apply(args);
     /* Void (ignore) results: (void <map-results>) */
-    return new Thunk(Cons.list(Void.VOID, map.getExpr()));
+    return new Thunk(Cons.list(VoidProc.VOID, map.getExpr()));
   }
 }

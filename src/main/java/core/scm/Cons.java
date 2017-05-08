@@ -7,14 +7,13 @@ import java.util.*;
 import static core.writer.Writer.write;
 
 // TODO Separate class for Proper and Improper Lists?
-public class Cons<E> extends LinkedList<E> implements ICons, ITyped {
+public class Cons<E> extends LinkedList<E> implements ICons {
 
   /* Empty list constant */
   public static final Cons EMPTY = new EmptyCons();
 
   private static class EmptyCons<E> extends Cons<E> {
     @Override public boolean isList() { return true; }
-    @Override public Type getType() { return Type.LIST; }
   }
 
   private boolean isList;
@@ -76,11 +75,6 @@ public class Cons<E> extends LinkedList<E> implements ICons, ITyped {
       cons = cons(get(n), (E)cons);
     }
     return cons;
-  }
-
-  @Override
-  public Type getType() {
-    return isList ? Type.LIST : Type.PAIR;
   }
 
   @Override

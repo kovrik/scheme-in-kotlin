@@ -2,9 +2,9 @@ package core.procedures.functional;
 
 import core.procedures.AFn;
 
-public final class Void extends AFn {
+public final class VoidProc extends AFn {
 
-  static final Void VOID = new Void();
+  static final VoidProc VOID = new VoidProc();
 
   @Override
   public boolean isPure() {

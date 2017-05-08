@@ -10,18 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public enum Type implements ITyped {
+public enum Type {
   INTEGER("Integer"),
   REAL("Real"),
   RATIONAL("Rational"),
   COMPLEX("Complex"),
   STRING("String"),
   MUTABLE_STRING("MutableString"),
-  IMMUTABLE_STRING("ImmutableString"),
   CHARACTER("Character"),
   BOOLEAN("Boolean"),
-  ENVIRONMENT("Environment"),
-  SPECIAL_FORM("SpecialForm"),
   VOID("Void"),
   LIST("List"),
   PAIR("Pair"),
@@ -33,9 +30,7 @@ public enum Type implements ITyped {
   PROMISE("Promise"),
   FUTURE("Future"),
   PROCEDURE("Procedure"),
-  CONTINUATION("Continuation"),
   ERROR("Error"),
-  CLASS("Class"),
   PORT("Port"),
   INPUT_PORT("InputPort"),
   OUTPUT_PORT("OutputPort"),
@@ -56,7 +51,6 @@ public enum Type implements ITyped {
     TYPE_MAPPINGS.put(Character.class,             CHARACTER);
     TYPE_MAPPINGS.put(String.class,                STRING);
     TYPE_MAPPINGS.put(CharSequence.class,          STRING);
-    TYPE_MAPPINGS.put(ImmutableString.class,       IMMUTABLE_STRING);
     TYPE_MAPPINGS.put(StringBuilder.class,         MUTABLE_STRING);
     TYPE_MAPPINGS.put(MutableString.class,         MUTABLE_STRING);
     TYPE_MAPPINGS.put(Boolean.class,               BOOLEAN);
@@ -132,9 +126,8 @@ public enum Type implements ITyped {
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
-    TYPE_PREDICATES.put(CharSequence.class, o -> ImmutableString.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
-    TYPE_PREDICATES.put(String.class, o -> ImmutableString.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
-    TYPE_PREDICATES.put(ImmutableString.class, o -> String.class.equals(o.getClass()) || ImmutableString.class.equals(o.getClass()));
+    TYPE_PREDICATES.put(CharSequence.class, o -> o instanceof CharSequence);
+    TYPE_PREDICATES.put(String.class, o -> o instanceof CharSequence);
     TYPE_PREDICATES.put(MutableString.class, o -> StringBuilder.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(ProperList.class, Cons::isList);
     TYPE_PREDICATES.put(Pair.class, Cons::isPair);
@@ -162,11 +155,6 @@ public enum Type implements ITyped {
 
   public String getName() {
     return name;
-  }
-
-  @Override
-  public Type getType() {
-    return CLASS;
   }
 
   @Override

@@ -1,12 +1,11 @@
 package core.environment;
 
 import core.exceptions.UndefinedIdentifierException;
-import core.scm.ITyped;
 import core.scm.Type;
 
 import java.util.*;
 
-public class Environment extends HashMap<Object, Object> implements ITyped {
+public class Environment extends HashMap<Object, Object> {
 
   /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
   public static final Object UNDEFINED = new Object();
@@ -40,11 +39,6 @@ public class Environment extends HashMap<Object, Object> implements ITyped {
       return outer.findAndPut(key, value);
     }
     return put(key, value);
-  }
-
-  @Override
-  public Type getType() {
-    return Type.ENVIRONMENT;
   }
 
   @Override

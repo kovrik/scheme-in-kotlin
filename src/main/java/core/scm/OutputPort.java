@@ -3,7 +3,7 @@ package core.scm;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class OutputPort implements ITyped, IPort {
+public class OutputPort implements IPort {
 
   private static final String LS = System.getProperty("line.separator");
 
@@ -36,11 +36,6 @@ public class OutputPort implements ITyped, IPort {
 
   public void flush() throws IOException {
     outputStream.flush();
-  }
-
-  @Override
-  public Type getType() {
-    return Type.OUTPUT_PORT;
   }
 
   @Override

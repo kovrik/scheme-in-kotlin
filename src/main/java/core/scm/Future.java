@@ -7,7 +7,7 @@ import core.writer.Writer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public class Future extends FutureTask implements ITyped, IDeref {
+public class Future extends FutureTask implements IDeref {
 
   public Future(Object expr, Environment env, Evaluator evaluator) {
     super(() -> evaluator.eval(expr, env));
@@ -23,11 +23,6 @@ public class Future extends FutureTask implements ITyped, IDeref {
       }
       throw new RuntimeException(e.getMessage());
     }
-  }
-
-  @Override
-  public Type getType() {
-    return Type.FUTURE;
   }
 
   @Override

@@ -22,10 +22,5 @@ public class MutableVector extends Vector {
   public void set(int index, Object value) {
     getArray()[index] = value;
   }
-
-  @Override
-  public Type getType() {
-    return Type.MUTABLE_VECTOR;
-  }
 }
 

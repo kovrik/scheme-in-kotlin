@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /* Abstract superclass of both Immutable and Mutable Vectors */
-public abstract class Vector extends AFn implements ITyped, Iterable {
+public abstract class Vector extends AFn implements Iterable {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -61,11 +61,6 @@ public abstract class Vector extends AFn implements ITyped, Iterable {
 
   public Object[] getArray() {
     return array;
-  }
-
-  @Override
-  public Type getType() {
-    return Type.VECTOR;
   }
 
   @Override
