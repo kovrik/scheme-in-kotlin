@@ -49,22 +49,27 @@ public abstract class AFn implements IFn<Object[], Object> {
     return apply0();
   }
 
+  @Override
   public Object apply0() {
     throw new ArityException(getName(), minArgs, maxArgs, 1);
   }
 
+  @Override
   public Object apply1(Object arg) {
     throw new ArityException(getName(), minArgs, maxArgs, 1);
   }
 
+  @Override
   public Object apply2(Object arg1, Object arg2) {
     throw new ArityException(getName(), minArgs, maxArgs, 2);
   }
 
+  @Override
   public Object apply3(Object arg1, Object arg2, Object arg3) {
     throw new ArityException(getName(), minArgs, maxArgs, 3);
   }
 
+  @Override
   public Object apply4(Object arg1, Object arg2, Object arg3, Object arg4) {
     throw new ArityException(getName(), minArgs, maxArgs, 4);
   }
