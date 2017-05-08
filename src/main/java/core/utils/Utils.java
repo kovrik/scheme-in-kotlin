@@ -422,142 +422,62 @@ public final class Utils {
   }
 
   public static boolean isZero(Object o) {
-    if (o == null) {
-      return false;
-    }
+    if (o == null) return false;
     Class clazz = o.getClass();
-    if (clazz == Long.class) {
-      return Long.signum((Long)o) == 0;
-    }
-    if (clazz == Double.class) {
-      return Math.signum((Double)o) == 0.0;
-    }
-    if (clazz == BigRatio.class) {
-      return ((BigRatio)o).signum() == 0;
-    }
-    if (clazz == BigDecimal.class) {
-      return ((BigDecimal)o).signum() == 0;
-    }
-    if (clazz == Integer.class) {
-      return Integer.signum((Integer)o) == 0;
-    }
-    if (clazz == Short.class) {
-      return Integer.signum((Short)o) == 0;
-    }
-    if (clazz == Byte.class) {
-      return Integer.signum((Byte)o) == 0;
-    }
-    if (clazz == Float.class) {
-      return Math.signum((Float)o) == 0;
-    }
-    if (clazz == BigInteger.class) {
-      return ((BigInteger)o).signum() == 0;
-    }
+    if (clazz == Long.class) return Long.signum((Long) o) == 0;
+    if (clazz == Double.class) return Math.signum((Double) o) == 0.0;
+    if (clazz == BigRatio.class) return ((BigRatio) o).signum() == 0;
+    if (clazz == BigDecimal.class) return ((BigDecimal) o).signum() == 0;
+    if (clazz == Integer.class) return Integer.signum((Integer) o) == 0;
+    if (clazz == Short.class) return Integer.signum((Short) o) == 0;
+    if (clazz == Byte.class) return Integer.signum((Byte) o) == 0;
+    if (clazz == Float.class) return Math.signum((Float) o) == 0;
+    if (clazz == BigInteger.class) return ((BigInteger) o).signum() == 0;
     return false;
   }
 
   public static boolean isOne(Object o) {
-    if (o == null) {
-      return false;
-    }
+    if (o == null) return false;
     Class clazz = o.getClass();
-    if (clazz == Long.class) {
-      return ((Long)o) == 1;
-    }
-    if (clazz == Double.class) {
-      return Double.compare((Double)o, 1d) == 0;
-    }
-    if (clazz == BigRatio.class) {
-      return ((BigRatio)o).isOne();
-    }
-    if (clazz == BigDecimal.class) {
-      return ((BigDecimal)o).compareTo(BigDecimal.ONE) == 0;
-    }
-    if (clazz == Integer.class) {
-      return ((Integer)o) == 1;
-    }
-    if (clazz == Short.class) {
-      return (Short)o == 1;
-    }
-    if (clazz == Byte.class) {
-      return (Byte)o == 1;
-    }
-    if (clazz == Float.class) {
-      return Float.floatToRawIntBits((Float)o) == 1;
-    }
-    if (clazz == BigInteger.class) {
-      return ((BigInteger)o).compareTo(BigInteger.ONE) == 0;
-    }
+    if (clazz == Long.class) return ((Long) o) == 1;
+    if (clazz == Double.class) return Double.compare((Double) o, 1d) == 0;
+    if (clazz == BigRatio.class) return ((BigRatio) o).isOne();
+    if (clazz == BigDecimal.class) return ((BigDecimal) o).compareTo(BigDecimal.ONE) == 0;
+    if (clazz == Integer.class) return ((Integer) o) == 1;
+    if (clazz == Short.class) return (Short) o == 1;
+    if (clazz == Byte.class) return (Byte) o == 1;
+    if (clazz == Float.class) return Float.floatToRawIntBits((Float) o) == 1;
+    if (clazz == BigInteger.class) return ((BigInteger) o).compareTo(BigInteger.ONE) == 0;
     return false;
   }
 
   public static boolean isPositive(Object o) {
-    if (o == null) {
-      return false;
-    }
+    if (o == null) return false;
     Class clazz = o.getClass();
-    if (clazz == Long.class) {
-      return Long.signum((Long)o) == 1;
-    }
-    if (clazz == Double.class) {
-      return Math.signum((Double)o) == 1.0;
-    }
-    if (clazz == BigRatio.class) {
-      return ((BigRatio)o).signum() == 1;
-    }
-    if (clazz == BigDecimal.class) {
-      return ((BigDecimal)o).signum() == 1;
-    }
-    if (clazz == Integer.class) {
-      return Integer.signum((Integer)o) == 1;
-    }
-    if (clazz == Short.class) {
-      return Integer.signum((Short)o) == 1;
-    }
-    if (clazz == Byte.class) {
-      return Integer.signum((Byte)o) == 1;
-    }
-    if (clazz == Float.class) {
-      return Math.signum((Float)o) == 1;
-    }
-    if (clazz == BigInteger.class) {
-      return ((BigInteger)o).signum() == 1;
-    }
+    if (clazz == Long.class) return Long.signum((Long) o) == 1;
+    if (clazz == Double.class) return Math.signum((Double) o) == 1.0;
+    if (clazz == BigRatio.class) return ((BigRatio) o).signum() == 1;
+    if (clazz == BigDecimal.class) return ((BigDecimal) o).signum() == 1;
+    if (clazz == Integer.class) return Integer.signum((Integer) o) == 1;
+    if (clazz == Short.class) return Integer.signum((Short) o) == 1;
+    if (clazz == Byte.class) return Integer.signum((Byte) o) == 1;
+    if (clazz == Float.class) return Math.signum((Float) o) == 1;
+    if (clazz == BigInteger.class) return ((BigInteger) o).signum() == 1;
     return false;
   }
 
   public static boolean isNegative(Object o) {
-    if (o == null) {
-      return false;
-    }
+    if (o == null) return false;
     Class clazz = o.getClass();
-    if (clazz == Long.class) {
-      return Long.signum((Long)o) == -1;
-    }
-    if (clazz == Double.class) {
-      return Math.signum((Double)o) == -1.0;
-    }
-    if (clazz == BigRatio.class) {
-      return ((BigRatio)o).signum() == -1;
-    }
-    if (clazz == BigDecimal.class) {
-      return ((BigDecimal)o).signum() == -1;
-    }
-    if (clazz == Integer.class) {
-      return Integer.signum((Integer)o) == -1;
-    }
-    if (clazz == Short.class) {
-      return Integer.signum((Short)o) == -1;
-    }
-    if (clazz == Byte.class) {
-      return Integer.signum((Byte)o) == -1;
-    }
-    if (clazz == Float.class) {
-      return Math.signum((Float)o) == -1;
-    }
-    if (clazz == BigInteger.class) {
-      return ((BigInteger)o).signum() == -1;
-    }
+    if (clazz == Long.class) return Long.signum((Long) o) == -1;
+    if (clazz == Double.class) return Math.signum((Double) o) == -1.0;
+    if (clazz == BigRatio.class) return ((BigRatio) o).signum() == -1;
+    if (clazz == BigDecimal.class) return ((BigDecimal) o).signum() == -1;
+    if (clazz == Integer.class) return Integer.signum((Integer) o) == -1;
+    if (clazz == Short.class) return Integer.signum((Short) o) == -1;
+    if (clazz == Byte.class) return Integer.signum((Byte) o) == -1;
+    if (clazz == Float.class) return Math.signum((Float) o) == -1;
+    if (clazz == BigInteger.class) return ((BigInteger) o).signum() == -1;
     return false;
   }
 
