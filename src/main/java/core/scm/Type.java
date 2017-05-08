@@ -80,29 +80,15 @@ public enum Type {
    *   real?                      -> Real.class
    *   rational?                  -> BigRatio + Utils.IsRational()
    *   integer?                   -> Integer.class/Long.class
-   *   exact-integer?             -> ExactInteger.class *
    *   exact-nonnegative-integer? -> ExactNonNegativeInteger.class *
    *   exact-positive-integer?    -> ExactPositiveInteger.class *
-   *   inexact-real?              -> InexactReal.class *
-   *   positive?                  -> Positive.class *
-   *   negative?                  -> Negative.class *
-   *   nonnegative?               -> NonNegative.class *
-   *   exact?                     -> Exact.class *
-   *   inexact?                   -> Inexact.class *
    */
   /* Marker classes for Proper and Improper lists */
   public abstract class ProperList {}
   public abstract class Pair {}
   /* Marker classes for numbers */
   public static final class ExactNonNegativeInteger {}
-  public static final class ExactInteger {}
   public static final class ExactPositiveInteger {}
-  public static final class InexactReal {}
-  public static final class Positive {}
-  public static final class Negative {}
-  public static final class NonNegative {}
-  public static final class Exact {}
-  public static final class Inexact {}
   public static final class Real {}
   public static final class BitOp {}
 
@@ -116,15 +102,8 @@ public enum Type {
     TYPE_PREDICATES.put(BigRatio.class, Utils::isRational);
     TYPE_PREDICATES.put(Long.class, Utils::isInteger);
     TYPE_PREDICATES.put(Integer.class, Utils::isInteger);
-    TYPE_PREDICATES.put(Exact.class, Utils::isExact);
-    TYPE_PREDICATES.put(ExactInteger.class, Utils::isExactInteger);
     TYPE_PREDICATES.put(ExactPositiveInteger.class, Utils::isExactPositiveInteger);
     TYPE_PREDICATES.put(ExactNonNegativeInteger.class, Utils::isExactNonNegativeInteger);
-    TYPE_PREDICATES.put(Inexact.class, Utils::isInexact);
-    TYPE_PREDICATES.put(InexactReal.class, Utils::isInexact);
-    TYPE_PREDICATES.put(Positive.class, Utils::isPositive);
-    TYPE_PREDICATES.put(Negative.class, Utils::isNegative);
-    TYPE_PREDICATES.put(NonNegative.class, Utils::isNonNegative);
     TYPE_PREDICATES.put(Real.class, Utils::isReal);
     TYPE_PREDICATES.put(BitOp.class, Utils::isBitOpSupported);
   }
@@ -141,7 +120,7 @@ public enum Type {
 
   @Override
   public String toString() {
-    return "#<class:" + getName() + ">";
+    return "#<class:" + name + ">";
   }
 
   public static Type valueOf(Class clazz) {
@@ -149,16 +128,13 @@ public enum Type {
   }
 
   public static boolean checkType(Object o, Class<?> expected) {
-    /* Nil is possible value of any data type */
+    /* Nil is possible value for any data type */
     if (o == null) {
       return true;
     }
     Class<?> actual = o.getClass();
     if (expected == actual || expected.isAssignableFrom(actual)) {
       return true;
-    }
-    if (Long.class.equals(expected)) {
-      return Utils.isInteger(o);
     }
     Predicate<Object> check = TYPE_PREDICATES.get(expected);
     return check != null && check.test(o);
