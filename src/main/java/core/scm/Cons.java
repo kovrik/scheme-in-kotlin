@@ -16,16 +16,14 @@ public class Cons<E> extends LinkedList<E> {
     @Override public boolean isList() { return true; }
   }
 
-  private boolean isList;
+  private boolean isList = true;
 
   private Cons() {
     super();
-    isList = true;
   }
 
   private Cons(Collection<? extends E> c) {
     super(c);
-    isList = true;
   }
 
   private Cons(E car, E cdr) {
@@ -80,9 +78,7 @@ public class Cons<E> extends LinkedList<E> {
   }
 
   public static <E> Cons<E> cons(E car, E cdr) {
-    if (car == null && cdr == null) {
-      return EMPTY;
-    }
+    if (car == null && cdr == null) return EMPTY;
     return (cdr == null) ? new Cons(car, EMPTY) : new Cons<>(car, cdr);
   }
 
@@ -112,28 +108,24 @@ public class Cons<E> extends LinkedList<E> {
   }
 
   public static <E> Cons<E> list(E... elements) {
-    return (elements == null || elements.length == 0) ? EMPTY : list(Arrays.asList(elements));
+    return elements == null || elements.length == 0 ? EMPTY : list(Arrays.asList(elements));
   }
 
   public static <E> Cons<E> list(Collection<? extends E> c) {
-    if (c == null || c.isEmpty()) { return EMPTY; }
-    return new Cons<>(c);
+    return c == null || c.isEmpty() ? EMPTY : new Cons<E>(c);
   }
 
   /* Return true if o is a List or Cons and a list */
   public static boolean isList(Object o) {
-    return ((o instanceof List) && !(o instanceof Cons)) || ((o instanceof Cons) && ((Cons)o).isList());
+    return (o instanceof List && !(o instanceof Cons)) || ((o instanceof Cons) && ((Cons)o).isList());
   }
 
   public static boolean isPair(Object o) {
-    return (o instanceof List) && !(((List)o).isEmpty());
+    return o instanceof List && !(((List)o).isEmpty());
   }
 
   public static boolean isNull(Object object) {
-    if (object instanceof List) {
-      return ((List)object).isEmpty();
-    }
-    return object == null;
+    return object instanceof List ? ((List) object).isEmpty() : object == null;
   }
 
   /* Use this method to print all lists */
@@ -157,8 +149,7 @@ public class Cons<E> extends LinkedList<E> {
       /* List */
       for (int i = 0; i < list.size() - 1; i++) {
         Object e = list.get(i);
-        sb.append(e == list ? "(this list)" : write(e));
-        sb.append(' ');
+        sb.append(e == list ? "(this list)" : write(e)).append(' ');
       }
       sb.append(write(list.get(list.size() - 1)));
     }
@@ -172,7 +163,7 @@ public class Cons<E> extends LinkedList<E> {
     while (!queue.isEmpty()) {
       E e = queue.remove();
       if (e instanceof List) {
-        queue.addAll(0, (List)e);
+        queue.addAll((List)e);
       } else {
         result.add(e);
       }
