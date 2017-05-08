@@ -32,20 +32,20 @@ public final class Remainder extends AFn {
   }
 
   private static Number apply(BigDecimal first, BigDecimal second) {
-    if (second.signum() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
-    }
     return first.remainder(second);
   }
 
   private static Number apply(BigInteger first, BigInteger second) {
-    if (second.signum() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
-    }
     return first.remainder(second);
   }
 
   public static Number apply(Number first, Number second) {
+    if (Utils.isZero(second)) {
+      throw new ArithmeticException("remainder: undefined for 0");
+    }
+    if (Utils.isZero(first)) {
+      return Utils.inexactnessTaint(first, second);
+    }
     if (first instanceof BigRatio) {
       first = ((BigRatio) first).toBigDecimal();
     }
@@ -72,19 +72,12 @@ public final class Remainder extends AFn {
       return apply(Utils.toBigInteger(first), (BigInteger)second);
     }
     if ((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) {
-      if (second.intValue() == 0) {
-        throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
-      }
-
       double result = first.doubleValue() % second.doubleValue();
       // Don't want negative zero
       if (result == -0.0) {
         return Math.abs(result);
       }
       return result;
-    }
-    if (second.longValue() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", NAME));
     }
     return first.longValue() % second.longValue();
   }

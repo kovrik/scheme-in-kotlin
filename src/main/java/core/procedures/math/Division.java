@@ -38,6 +38,9 @@ public final class Division extends AFn {
   }
 
   private Number apply(Number numerator, Number denominator) {
+    if (Utils.isZero(numerator)) {
+      return Utils.inexactnessTaint(numerator, denominator);
+    }
     /* Complex numbers*/
     if (numerator instanceof BigComplex) {
       return ((BigComplex) numerator).divide(denominator);

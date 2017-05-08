@@ -52,18 +52,12 @@ public final class Log extends AFn {
       return Math.log(n.doubleValue());
     }
     if (number instanceof BigRatio) {
-      if (((BigRatio) number).isZero()){
-        throw new ArithmeticException("log: undefined for 0");
-      }
       if (number.equals(BigRatio.ONE)) {
         return 0L;
       }
       return logBig(((BigRatio)number).toBigDecimal());
     }
     if (number instanceof BigDecimal) {
-      if (((BigDecimal)number).signum() == 0) {
-        throw new ArithmeticException("log: undefined for 0");
-      }
       return logBig((BigDecimal) number);
     }
     if (number instanceof BigInteger) {

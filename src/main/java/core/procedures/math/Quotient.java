@@ -31,7 +31,7 @@ public class Quotient extends AFn {
       return Utils.inexactnessTaint((Number)arg1, (Number) arg2);
     }
     if (Utils.isZero(arg2)) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
+      throw new ArithmeticException("quotient: undefined for 0");
     }
     return apply((Number) arg1, (Number) arg2);
   }
@@ -51,6 +51,9 @@ public class Quotient extends AFn {
   }
 
   private Number apply(Number first, Number second) {
+    if (Utils.isZero(first)) {
+      return Utils.inexactnessTaint(first, second);
+    }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal)first, (BigDecimal)second);
     }

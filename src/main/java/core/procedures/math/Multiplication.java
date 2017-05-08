@@ -42,8 +42,8 @@ public final class Multiplication extends AFn {
 
   public static Number apply(Number first, Number second) {
     /* Special cases */
-    if (Utils.isZero(first) || Utils.isZero(second)) {
-      return 0L;
+    if (Utils.isZero(first)) {
+      return Utils.inexactnessTaint(first, second);
     }
     if (Utils.isOne(first)) {
       return Utils.inexactnessTaint(second, first);

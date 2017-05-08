@@ -27,13 +27,13 @@ public class Modulo extends AFn {
 
   @Override
   public Number apply2(Object arg1, Object arg2) {
+    if (Utils.isZero(arg2)) {
+      throw new ArithmeticException("modulo: undefined for 0");
+    }
     return apply((Number)arg1, (Number)arg2);
   }
 
   private BigDecimal apply(BigDecimal first, BigDecimal second) {
-    if (second.signum() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
-    }
     BigDecimal remainder = first.remainder(second);
     if (remainder.signum() == 0) {
       return remainder;
@@ -45,9 +45,6 @@ public class Modulo extends AFn {
   }
 
   private BigInteger apply(BigInteger first, BigInteger second) {
-    if (second.signum() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
-    }
     BigInteger remainder = first.remainder(second);
     if (remainder.signum() == 0) {
       return remainder;
@@ -59,6 +56,9 @@ public class Modulo extends AFn {
   }
 
   private Number apply(Number first, Number second) {
+    if (Utils.isZero(first)) {
+      return Utils.inexactnessTaint(first, second);
+    }
     if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
       return apply((BigDecimal) first, (BigDecimal)second);
     }
@@ -76,9 +76,6 @@ public class Modulo extends AFn {
     }
     if (second instanceof BigInteger) {
       return apply(Utils.toBigInteger(first), (BigInteger) second);
-    }
-    if (second.intValue() == 0) {
-      throw new ArithmeticException(String.format("%s: undefined for 0", getName()));
     }
     Number m = REM.apply2(first, second);
     if (m.intValue() == 0) {
