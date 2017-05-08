@@ -4,21 +4,16 @@ import core.procedures.AFn;
 import core.procedures.IFn;
 import core.utils.Utils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public enum Type {
   INTEGER("Integer"),
-  REAL("Real"),
   RATIONAL("Rational"),
   COMPLEX("Complex"),
   STRING("String"),
   MUTABLE_STRING("MutableString"),
-  CHARACTER("Character"),
-  BOOLEAN("Boolean"),
   VOID("Void"),
   LIST("List"),
   PAIR("Pair"),
@@ -30,7 +25,6 @@ public enum Type {
   PROMISE("Promise"),
   FUTURE("Future"),
   PROCEDURE("Procedure"),
-  ERROR("Error"),
   PORT("Port"),
   INPUT_PORT("InputPort"),
   OUTPUT_PORT("OutputPort"),
@@ -38,40 +32,30 @@ public enum Type {
   MAP_ENTRY("MapEntry"),
   ;
 
-  private static final Map<Class, Type> TYPE_MAPPINGS = new HashMap<>();
+  private static final Map<Class, Type> TYPE_NAME_MAPPINGS = new HashMap<>();
   static {
-    TYPE_MAPPINGS.put(Integer.class,               INTEGER);
-    TYPE_MAPPINGS.put(Long.class,                  INTEGER);
-    TYPE_MAPPINGS.put(BigInteger.class,            INTEGER);
-    TYPE_MAPPINGS.put(Double.class,                REAL);
-    TYPE_MAPPINGS.put(Float.class,                 REAL);
-    TYPE_MAPPINGS.put(BigDecimal.class,            REAL);
-    TYPE_MAPPINGS.put(BigRatio.class,              RATIONAL);
-    TYPE_MAPPINGS.put(BigComplex.class,            COMPLEX);
-    TYPE_MAPPINGS.put(Character.class,             CHARACTER);
-    TYPE_MAPPINGS.put(String.class,                STRING);
-    TYPE_MAPPINGS.put(CharSequence.class,          STRING);
-    TYPE_MAPPINGS.put(StringBuilder.class,         MUTABLE_STRING);
-    TYPE_MAPPINGS.put(MutableString.class,         MUTABLE_STRING);
-    TYPE_MAPPINGS.put(Boolean.class,               BOOLEAN);
-    TYPE_MAPPINGS.put(IFn.class,                   PROCEDURE);
-    TYPE_MAPPINGS.put(AFn.class,                   PROCEDURE);
-    TYPE_MAPPINGS.put(Symbol.class,                SYMBOL);
-    TYPE_MAPPINGS.put(Pair.class,                  PAIR);
-    TYPE_MAPPINGS.put(ProperList.class,            LIST);
-    TYPE_MAPPINGS.put(Vector.class,                VECTOR);
-    TYPE_MAPPINGS.put(ImmutableVector.class,       IMMUTABLE_VECTOR);
-    TYPE_MAPPINGS.put(MutableVector.class,         MUTABLE_VECTOR);
-    TYPE_MAPPINGS.put(Delay.class,                 DELAY);
-    TYPE_MAPPINGS.put(Promise.class,               PROMISE);
-    TYPE_MAPPINGS.put(Future.class,                FUTURE);
-    TYPE_MAPPINGS.put(IPort.class,                 PORT);
-    TYPE_MAPPINGS.put(OutputPort.class,            OUTPUT_PORT);
-    TYPE_MAPPINGS.put(InputPort.class,             INPUT_PORT);
-    TYPE_MAPPINGS.put(Error.class,                 ERROR);
-    TYPE_MAPPINGS.put(Keyword.class,               KEYWORD);
-    TYPE_MAPPINGS.put(Void.class,                  VOID);
-    TYPE_MAPPINGS.put(IMapEntry.class,             MAP_ENTRY);
+    TYPE_NAME_MAPPINGS.put(Long.class, INTEGER);
+    TYPE_NAME_MAPPINGS.put(BigRatio.class, RATIONAL);
+    TYPE_NAME_MAPPINGS.put(BigComplex.class, COMPLEX);
+    TYPE_NAME_MAPPINGS.put(CharSequence.class, STRING);
+    TYPE_NAME_MAPPINGS.put(StringBuilder.class, MUTABLE_STRING);
+    TYPE_NAME_MAPPINGS.put(MutableString.class, MUTABLE_STRING);
+    TYPE_NAME_MAPPINGS.put(IFn.class, PROCEDURE);
+    TYPE_NAME_MAPPINGS.put(AFn.class, PROCEDURE);
+    TYPE_NAME_MAPPINGS.put(Symbol.class, SYMBOL);
+    TYPE_NAME_MAPPINGS.put(Pair.class, PAIR);
+    TYPE_NAME_MAPPINGS.put(ProperList.class, LIST);
+    TYPE_NAME_MAPPINGS.put(Vector.class, VECTOR);
+    TYPE_NAME_MAPPINGS.put(ImmutableVector.class, IMMUTABLE_VECTOR);
+    TYPE_NAME_MAPPINGS.put(MutableVector.class, MUTABLE_VECTOR);
+    TYPE_NAME_MAPPINGS.put(Delay.class, DELAY);
+    TYPE_NAME_MAPPINGS.put(Promise.class, PROMISE);
+    TYPE_NAME_MAPPINGS.put(Future.class, FUTURE);
+    TYPE_NAME_MAPPINGS.put(IPort.class, PORT);
+    TYPE_NAME_MAPPINGS.put(OutputPort.class, OUTPUT_PORT);
+    TYPE_NAME_MAPPINGS.put(InputPort.class, INPUT_PORT);
+    TYPE_NAME_MAPPINGS.put(Keyword.class, KEYWORD);
+    TYPE_NAME_MAPPINGS.put(IMapEntry.class, MAP_ENTRY);
   }
 
   /* Marker classes for FnArgs annotation
@@ -163,7 +147,7 @@ public enum Type {
   }
 
   public static Type valueOf(Class clazz) {
-    return TYPE_MAPPINGS.get(clazz);
+    return TYPE_NAME_MAPPINGS.get(clazz);
   }
 
   public static boolean checkType(Object o, Class<?> expected) {
@@ -174,12 +158,11 @@ public enum Type {
     Class<?> actual = o.getClass();
     if (expected == actual || expected.isAssignableFrom(actual)) {
       return true;
-    } else {
-      if (Long.class.equals(expected)) {
-        return Utils.isInteger(o);
-      }
-      Predicate<Object> check = TYPE_PREDICATES.get(expected);
-      return check != null && check.test(o);
     }
+    if (Long.class.equals(expected)) {
+      return Utils.isInteger(o);
+    }
+    Predicate<Object> check = TYPE_PREDICATES.get(expected);
+    return check != null && check.test(o);
   }
 }
