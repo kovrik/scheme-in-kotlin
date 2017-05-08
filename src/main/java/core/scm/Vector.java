@@ -7,8 +7,8 @@ import core.writer.Writer;
 import java.util.Arrays;
 import java.util.Iterator;
 
-/* Abstract superclass of both Immutable and Mutable Vectors */
-public abstract class Vector extends AFn implements Iterable {
+/* Immutable Vector */
+public class Vector extends AFn implements Iterable {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -21,23 +21,23 @@ public abstract class Vector extends AFn implements Iterable {
   /* Contents of Vector: plain Java array */
   private final Object[] array;
 
-  Vector() {
+  public Vector() {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[0];
   }
 
-  Vector(int size, Object init) {
+  public Vector(int size, Object init) {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[size];
     Arrays.fill(getArray(), init);
   }
 
-  Vector(Object... elements) {
+  public Vector(Object... elements) {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = elements;
   }
 
-  Vector(Object e) {
+  public Vector(Object e) {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.array = new Object[] {e};
   }

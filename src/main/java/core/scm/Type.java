@@ -20,7 +20,6 @@ public enum Type {
   SYMBOL("Symbol"),
   VECTOR("Vector"),
   MUTABLE_VECTOR("MutableVector"),
-  IMMUTABLE_VECTOR("ImmutableVector"),
   DELAY("Delay"),
   PROMISE("Promise"),
   FUTURE("Future"),
@@ -46,7 +45,6 @@ public enum Type {
     TYPE_NAME_MAPPINGS.put(Pair.class, PAIR);
     TYPE_NAME_MAPPINGS.put(ProperList.class, LIST);
     TYPE_NAME_MAPPINGS.put(Vector.class, VECTOR);
-    TYPE_NAME_MAPPINGS.put(ImmutableVector.class, IMMUTABLE_VECTOR);
     TYPE_NAME_MAPPINGS.put(MutableVector.class, MUTABLE_VECTOR);
     TYPE_NAME_MAPPINGS.put(Delay.class, DELAY);
     TYPE_NAME_MAPPINGS.put(Promise.class, PROMISE);

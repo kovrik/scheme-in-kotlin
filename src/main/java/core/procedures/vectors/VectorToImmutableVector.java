@@ -2,7 +2,7 @@ package core.procedures.vectors;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.ImmutableVector;
+import core.scm.MutableVector;
 import core.scm.Vector;
 
 public final class VectorToImmutableVector extends AFn {
@@ -17,11 +17,10 @@ public final class VectorToImmutableVector extends AFn {
   }
 
   @Override
-  public Object apply1(Object arg) {
-    if (arg instanceof ImmutableVector) {
-      return arg;
-    } else {
-      return new ImmutableVector(((Vector)arg).getArray());
+  public Vector apply1(Object arg) {
+    if (arg.getClass() == MutableVector.class) {
+      return new Vector(((Vector)arg).getArray());
     }
+    return (Vector) arg;
   }
 }

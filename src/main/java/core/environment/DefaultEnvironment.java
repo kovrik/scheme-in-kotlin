@@ -181,7 +181,7 @@ import core.procedures.system.ToString;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.MakeVector;
 import core.procedures.vectors.Vec;
-import core.procedures.vectors.Vector;
+import core.procedures.vectors.VectorProc;
 import core.procedures.vectors.VectorFill;
 import core.procedures.vectors.VectorImmutable;
 import core.procedures.vectors.VectorLength;
@@ -429,7 +429,7 @@ public final class DefaultEnvironment extends Environment {
 
       /* Vectors */
       new MakeVector(),
-      new Vector(),
+      new VectorProc(),
       new VectorImmutable(),
       new VectorLength(),
       new VectorRef(),
