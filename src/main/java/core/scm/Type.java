@@ -51,7 +51,7 @@ public enum Type implements ITyped {
     TYPE_MAPPINGS.put(Double.class,                REAL);
     TYPE_MAPPINGS.put(Float.class,                 REAL);
     TYPE_MAPPINGS.put(BigDecimal.class,            REAL);
-    TYPE_MAPPINGS.put(BigRatio.class,           RATIONAL);
+    TYPE_MAPPINGS.put(BigRatio.class,              RATIONAL);
     TYPE_MAPPINGS.put(BigComplex.class,            COMPLEX);
     TYPE_MAPPINGS.put(Character.class,             CHARACTER);
     TYPE_MAPPINGS.put(String.class,                STRING);
@@ -63,18 +63,18 @@ public enum Type implements ITyped {
     TYPE_MAPPINGS.put(IFn.class,                   PROCEDURE);
     TYPE_MAPPINGS.put(AFn.class,                   PROCEDURE);
     TYPE_MAPPINGS.put(Symbol.class,                SYMBOL);
-    TYPE_MAPPINGS.put(SCMPair.class,               PAIR);
-    TYPE_MAPPINGS.put(SCMProperList.class,         LIST);
+    TYPE_MAPPINGS.put(Pair.class,                  PAIR);
+    TYPE_MAPPINGS.put(ProperList.class,            LIST);
     TYPE_MAPPINGS.put(Vector.class,                VECTOR);
     TYPE_MAPPINGS.put(ImmutableVector.class,       IMMUTABLE_VECTOR);
     TYPE_MAPPINGS.put(MutableVector.class,         MUTABLE_VECTOR);
     TYPE_MAPPINGS.put(Delay.class,                 DELAY);
     TYPE_MAPPINGS.put(Promise.class,               PROMISE);
-    TYPE_MAPPINGS.put(Future.class, FUTURE);
+    TYPE_MAPPINGS.put(Future.class,                FUTURE);
     TYPE_MAPPINGS.put(IPort.class,                 PORT);
     TYPE_MAPPINGS.put(OutputPort.class,            OUTPUT_PORT);
     TYPE_MAPPINGS.put(InputPort.class,             INPUT_PORT);
-    TYPE_MAPPINGS.put(Error.class, ERROR);
+    TYPE_MAPPINGS.put(Error.class,                 ERROR);
     TYPE_MAPPINGS.put(Keyword.class,               KEYWORD);
     TYPE_MAPPINGS.put(Void.class,                  VOID);
     TYPE_MAPPINGS.put(IMapEntry.class,             MAP_ENTRY);
@@ -97,8 +97,8 @@ public enum Type implements ITyped {
    *
    * Below is the mapping from predicates to the actual/marker classes:
    *
-   *   pair?                      -> SCMPair + Cons.isPair()
-   *   list?                      -> SCMProperList + Cons.isList()
+   *   pair?                      -> Pair + Cons.isPair()
+   *   list?                      -> ProperList + Cons.isList()
    *   number?                    -> Number.class
    *   complex?                   -> BigComplex.class
    *   real?                      -> Real.class
@@ -115,12 +115,8 @@ public enum Type implements ITyped {
    *   inexact?                   -> Inexact.class *
    */
   /* Marker classes for Proper and Improper lists */
-  public abstract class SCMProperList implements ITyped {
-    @Override public Type getType() { return Type.LIST; }
-  }
-  public abstract class SCMPair implements ITyped {
-    @Override public Type getType() { return Type.PAIR; }
-  }
+  public abstract class ProperList {}
+  public abstract class Pair {}
   /* Marker classes for numbers */
   public static final class ExactNonNegativeInteger {}
   public static final class ExactInteger {}
@@ -140,8 +136,8 @@ public enum Type implements ITyped {
     TYPE_PREDICATES.put(String.class, o -> ImmutableString.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(ImmutableString.class, o -> String.class.equals(o.getClass()) || ImmutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(MutableString.class, o -> StringBuilder.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
-    TYPE_PREDICATES.put(SCMProperList.class, Cons::isList);
-    TYPE_PREDICATES.put(SCMPair.class, Cons::isPair);
+    TYPE_PREDICATES.put(ProperList.class, Cons::isList);
+    TYPE_PREDICATES.put(Pair.class, Cons::isPair);
     TYPE_PREDICATES.put(BigRatio.class, Utils::isRational);
     TYPE_PREDICATES.put(Long.class, Utils::isInteger);
     TYPE_PREDICATES.put(Integer.class, Utils::isInteger);

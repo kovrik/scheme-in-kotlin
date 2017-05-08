@@ -11,7 +11,7 @@ public final class ListRef extends AFn {
 
   public ListRef() {
     super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{Type.SCMPair.class, Type.ExactNonNegativeInteger.class}).build());
+                             .mandatory(new Class[]{Type.Pair.class, Type.ExactNonNegativeInteger.class}).build());
   }
 
   @Override

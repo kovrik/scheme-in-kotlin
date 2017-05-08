@@ -28,7 +28,7 @@ public final class AssocProc extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    if (Type.checkType(arg2, Type.SCMProperList.class)) {
+    if (Type.checkType(arg2, Type.ProperList.class)) {
       List list = (List) arg2;
       for (int n = 0; n < list.size(); n++) {
         Object pair = list.get(n);

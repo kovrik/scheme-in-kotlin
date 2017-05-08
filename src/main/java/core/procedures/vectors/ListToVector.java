@@ -10,7 +10,7 @@ import java.util.List;
 public final class ListToVector extends AFn {
 
   public ListToVector() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.SCMProperList.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ProperList.class}).build());
   }
 
   @Override

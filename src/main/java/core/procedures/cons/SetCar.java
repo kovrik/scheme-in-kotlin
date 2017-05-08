@@ -10,8 +10,7 @@ import java.util.List;
 public final class SetCar extends AFn {
 
   public SetCar() {
-    super(new FnArgsBuilder().min(2).max(2)
-                             .mandatory(new Class[]{Type.SCMPair.class, Object.class}).build());
+    super(new FnArgsBuilder().min(2).max(2).mandatory(new Class[]{Type.Pair.class, Object.class}).build());
   }
 
   @Override

@@ -10,7 +10,7 @@ import java.util.List;
 public class Cdr extends AFn {
 
   public Cdr() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.SCMPair.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.Pair.class}).build());
   }
 
   @Override
