@@ -23,10 +23,9 @@ public class Writer implements IWriter {
   static {
     UNESCAPED.put('\t', 't');
     UNESCAPED.put('\b', 'b');
-    UNESCAPED.put('\r', 'n');
-    UNESCAPED.put('\n', 'r');
+    UNESCAPED.put('\r', 'r');
+    UNESCAPED.put('\n', 'n');
     UNESCAPED.put('\f', 'f');
-    UNESCAPED.put( '\'', '\'');
     UNESCAPED.put('\"', '"');
     UNESCAPED.put( '\\', '\\');
   }
@@ -69,7 +68,7 @@ public class Writer implements IWriter {
       return o.toString();
     }
     if (o instanceof CharSequence) {
-      /* Escape Strings */
+      /* Unescape Strings */
       int length = ((CharSequence) o).length();
       StringBuilder sb = new StringBuilder(length + 2);
       sb.append('"');
@@ -79,7 +78,7 @@ public class Writer implements IWriter {
         if (character == null) {
           sb.append(c);
         } else {
-          sb.append('\\').append(c);
+          sb.append('\\').append(character);
         }
       }
       sb.append('"');

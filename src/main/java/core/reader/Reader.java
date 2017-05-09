@@ -32,10 +32,9 @@ public class Reader implements IReader {
   static {
     ESCAPED.put('t', '\t');
     ESCAPED.put('b', '\b');
-    ESCAPED.put('n', '\r');
-    ESCAPED.put('r', '\n');
+    ESCAPED.put('n', '\n');
+    ESCAPED.put('r', '\r');
     ESCAPED.put('f', '\f');
-    ESCAPED.put('\'', '\'');
     ESCAPED.put('"', '\"');
     ESCAPED.put('\\', '\\');
   }

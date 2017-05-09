@@ -28,6 +28,7 @@ public class StringTest extends AbstractTest {
     assertEquals("Lorem \"ipsum\" ", eval("\"Lorem \\\"ipsum\\\" \"", env));
     assertEquals("", eval("\"\"", env));
     assertEquals(1, eval("(count \"\\\"\")", env));
+    assertEquals(6, eval("(count \"\t\b\n\r\f\\\"\")", env));
   }
 
   @Test

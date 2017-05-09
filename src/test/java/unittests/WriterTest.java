@@ -46,4 +46,9 @@ public class WriterTest {
     assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList("test", "string")));
     assertEquals("(nil nil nil)", writer.toString(Arrays.asList(null, null, null)));
   }
+
+  @Test
+  public void testWriteEscape() {
+    assertEquals("\"\\t\\b\\r\\n\\f\\\\\\\"\"", writer.toString("\t\b\r\n\f\\\""));;
+  }
 }
