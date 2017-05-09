@@ -1,7 +1,6 @@
 package unittests;
 
 import core.scm.Cons;
-import core.writer.IWriter;
 import core.writer.Writer;
 import org.junit.Test;
 
@@ -13,42 +12,40 @@ import static org.junit.Assert.assertEquals;
 
 public class WriterTest {
 
-  private final IWriter writer = new Writer();
-
   @Test
   public void testWriteString() {
-    assertEquals("\"test string\"", writer.toString("test string"));
-    assertEquals("\"\"", writer.toString(""));
-    assertEquals("\"(1 2 3)\"", writer.toString("(1 2 3)"));
+    assertEquals("\"test string\"", Writer.write("test string"));
+    assertEquals("\"\"", Writer.write(""));
+    assertEquals("\"(1 2 3)\"", Writer.write("(1 2 3)"));
   }
 
   @Test
   public void testWriteChar() {
-    assertEquals("#\\a", writer.toString('a'));
-    assertEquals("#\\b", writer.toString('b'));
-    assertEquals("#\\Z", writer.toString('Z'));
+    assertEquals("#\\a", Writer.write('a'));
+    assertEquals("#\\b", Writer.write('b'));
+    assertEquals("#\\Z", Writer.write('Z'));
   }
 
   @Test
   public void testWriteNil() {
-    assertEquals("nil", writer.toString(null));
-    assertEquals("()", writer.toString(EMPTY));
-    assertEquals("()", writer.toString(Cons.list()));
-    assertEquals("()", writer.toString(Collections.EMPTY_LIST));
-    assertEquals("()", writer.toString(Arrays.asList(1, 2, 3).subList(3, 3)));
+    assertEquals("nil", Writer.write(null));
+    assertEquals("()", Writer.write(EMPTY));
+    assertEquals("()", Writer.write(Cons.list()));
+    assertEquals("()", Writer.write(Collections.EMPTY_LIST));
+    assertEquals("()", Writer.write(Arrays.asList(1, 2, 3).subList(3, 3)));
   }
 
   @Test
   public void testWriteList() {
-    assertEquals("(1 2 3)", writer.toString(Arrays.asList(1, 2, 3).subList(0, 3)));
-    assertEquals("(1 2 3 4)", writer.toString(Arrays.asList(1, 2, 3, 4)));
-    assertEquals("(#\\a #\\b #\\c)", writer.toString(Arrays.asList('a', 'b', 'c')));
-    assertEquals("(\"test\" \"string\")", writer.toString(Arrays.asList("test", "string")));
-    assertEquals("(nil nil nil)", writer.toString(Arrays.asList(null, null, null)));
+    assertEquals("(1 2 3)", Writer.write(Arrays.asList(1, 2, 3).subList(0, 3)));
+    assertEquals("(1 2 3 4)", Writer.write(Arrays.asList(1, 2, 3, 4)));
+    assertEquals("(#\\a #\\b #\\c)", Writer.write(Arrays.asList('a', 'b', 'c')));
+    assertEquals("(\"test\" \"string\")", Writer.write(Arrays.asList("test", "string")));
+    assertEquals("(nil nil nil)", Writer.write(Arrays.asList(null, null, null)));
   }
 
   @Test
   public void testWriteEscape() {
-    assertEquals("\"\\t\\b\\r\\n\\f\\\\\\\"\"", writer.toString("\t\b\r\n\f\\\""));;
+    assertEquals("\"\\t\\b\\r\\n\\f\\\\\\\"\"", Writer.write("\t\b\r\n\f\\\""));;
   }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class Writer implements IWriter {
+public class Writer {
 
   private static final Map<Character, String> CODEPOINTS = new HashMap<>();
   static {
@@ -28,11 +28,6 @@ public class Writer implements IWriter {
     UNESCAPED.put('\f', 'f');
     UNESCAPED.put('\"', '"');
     UNESCAPED.put( '\\', '\\');
-  }
-
-  @Override
-  public String toString(Object o) {
-    return write(o);
   }
 
   public static String write(Object o) {

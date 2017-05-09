@@ -8,10 +8,11 @@ import core.exceptions.ThrowableWrapper;
 import core.reader.IReader;
 import core.reader.Reader;
 import core.reader.StringReader;
-import core.scm.*;
 import core.scm.Error;
+import core.scm.InputPort;
+import core.scm.OutputPort;
+import core.scm.Symbol;
 import core.scm.Void;
-import core.writer.IWriter;
 import core.writer.Writer;
 
 import java.io.BufferedInputStream;
@@ -33,7 +34,6 @@ public class Repl {
   private static InputPort currentInputPort = new InputPort(new BufferedInputStream(System.in));
   private static OutputPort currentOutputPort = new OutputPort(System.out);
 
-  private static final IWriter writer = new Writer();
   private static final IReader reader = new Reader(currentInputPort.getInputStream());
 
   public static void main(String[] args) throws IOException {
@@ -72,14 +72,14 @@ public class Repl {
           }
           /* nil, on the other hand, is a valid result - print it, but not store it */
           if (result == null) {
-            currentOutputPort.writeln(writer.toString(result));
+            currentOutputPort.writeln(Writer.write(result));
             continue;
           }
           /* Put result into environment */
           Symbol id = getNextID();
           env.put(id, result);
           /* Print */
-          currentOutputPort.writeln(id + " = " + writer.toString(result));
+          currentOutputPort.writeln(id + " = " + Writer.write(result));
         }
       } catch (ThrowableWrapper e) {
         /* Unwrap */
