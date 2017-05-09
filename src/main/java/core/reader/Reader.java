@@ -17,7 +17,7 @@ import static core.utils.Utils.*;
 
 public class Reader implements IReader {
 
-  static final Symbol DOT = Symbol.intern(".");
+  private static final Symbol DOT = Symbol.intern(".");
 
   private static final Symbol DEREF = Symbol.intern("deref");
 
@@ -67,9 +67,6 @@ public class Reader implements IReader {
     try {
       Object token;
       while (((token = nextToken()) != null) || tokens.isEmpty()) {
-        if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("read: illegal use of '.'");
-        }
         if (token != null) {
           tokens.add(token);
         }

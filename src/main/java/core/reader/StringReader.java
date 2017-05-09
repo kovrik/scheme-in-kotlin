@@ -1,7 +1,5 @@
 package core.reader;
 
-import core.exceptions.IllegalSyntaxException;
-
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.util.ArrayList;
@@ -12,11 +10,7 @@ public class StringReader extends Reader {
   public Object readFirst(String string) {
     reader = new PushbackReader(new java.io.StringReader(string), 1);
     try {
-      Object token = nextToken();
-      if (DOT.equals(token)) {
-        throw new IllegalSyntaxException("read: illegal use of '.'");
-      }
-      return token;
+      return nextToken();
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
@@ -34,9 +28,6 @@ public class StringReader extends Reader {
       List<Object> tokens = new ArrayList<>();
       Object token;
       while ((token = nextToken()) != null) {
-        if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("read: illegal use of '.'");
-        }
         tokens.add(token);
       }
       return tokens;

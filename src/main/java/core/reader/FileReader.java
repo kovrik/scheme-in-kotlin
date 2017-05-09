@@ -1,6 +1,5 @@
 package core.reader;
 
-import core.exceptions.IllegalSyntaxException;
 import core.exceptions.SCMFileNotFoundException;
 
 import java.io.BufferedReader;
@@ -25,9 +24,6 @@ public class FileReader extends Reader {
       while ((read = reader.read()) != -1) {
         reader.unread(read);
         Object token = nextToken();
-        if (DOT.equals(token)) {
-          throw new IllegalSyntaxException("read: illegal use of '.'");
-        }
         if (token != null) {
           tokens.add(token);
         }

@@ -1,5 +1,6 @@
 package unittests;
 
+import core.exceptions.IllegalSyntaxException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -11,6 +12,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ReflectorTest extends AbstractTest {
+
+  @Test
+  public void testEvalDot() {
+    try {
+      eval(".", env);
+    } catch (IllegalSyntaxException e) {
+      // expected
+    }
+  }
 
   @Test
   public void testEvalStaticMethods() {

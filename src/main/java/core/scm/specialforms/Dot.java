@@ -29,7 +29,6 @@ public enum Dot implements ISpecialForm {
     } else {
       first = evaluator.eval(first, env);
     }
-    Object result;
     if (first instanceof Class) {
       String statik = expression.get(1) + "/" + expression.get(2);
       if (expression.size() == 3) {
