@@ -14,9 +14,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 import static core.scm.Cons.list;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ReaderTest extends AbstractTest {
 
@@ -338,6 +341,18 @@ public class ReaderTest extends AbstractTest {
     assertTrue(reader.readFirst("  {  1 2,3 4,,,  }  ") instanceof Map);
     assertTrue(reader.readFirst("  {  1 2,3 4,  , , ,,,4 5  }  ") instanceof Map);
     assertEquals(4, ((Map)reader.readFirst("  {  1 2,3 4, 5 6    ,  7     8  }  ")).size());
+  }
+
+  @Test
+  public void testReadSetLiteral() {
+    assertTrue(reader.readFirst("#{}") instanceof Set);
+    assertTrue(reader.readFirst("#{   }") instanceof Set);
+    assertTrue(reader.readFirst("#{ ,, , , ,  }") instanceof Set);
+    assertTrue(reader.readFirst("  #{    }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2  }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2,,,,  }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2,3 4,,,  }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2,3 4,  , , ,,,4 5  }  ") instanceof Set);
   }
 
   @Test

@@ -445,20 +445,13 @@ public class Reader implements IReader {
     int i;
     char c;
     while (isValid(i = reader.read()) && ((c = (char)i) != '}')) {
-      /* Skip whitespaces */
-      while (Character.isWhitespace(c)) {
+      /* Skip whitespaces and commas */
+      while (Character.isWhitespace(c) || c == ',') {
         c = (char)reader.read();
       }
-      if (c == '}') {
-        break;
-      }
+      if (c == '}') break;
       reader.unread(c);
-      /* Skip comma */
-      if (c == ',') {
-        c = (char)reader.read();
-      }
-      Object token = nextToken();
-      set.add(token);
+      set.add(nextToken());
     }
     return set;
   }
