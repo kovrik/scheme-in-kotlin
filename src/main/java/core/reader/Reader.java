@@ -27,7 +27,18 @@ public class Reader implements IReader {
   // <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff";
   /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
-  private static final String ESCAPE_SEQUENCES = "abtnvefr\"\'\\";
+
+  private static final Map<Character, Character> ESCAPED = new HashMap<>();
+  static {
+    ESCAPED.put('t', '\t');
+    ESCAPED.put('b', '\b');
+    ESCAPED.put('n', '\r');
+    ESCAPED.put('r', '\n');
+    ESCAPED.put('f', '\f');
+    ESCAPED.put('\'', '\'');
+    ESCAPED.put('"', '\"');
+    ESCAPED.put('\\', '\\');
+  }
 
   public static final Map<String, Character> NAMED_CHARS = new HashMap<>();
   static {
@@ -285,11 +296,11 @@ public class Reader implements IReader {
           continue;
         }
         /* Check that escape sequence is valid */
-        if (ESCAPE_SEQUENCES.indexOf(next) < 0) {
+        Character character = ESCAPED.get(next);
+        if (character == null) {
           throw new IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next));
         }
-        // FIXME Do not append \ char!
-        string.append(c).append(next);
+        string.append(character);
         continue;
       }
       string.append(c);

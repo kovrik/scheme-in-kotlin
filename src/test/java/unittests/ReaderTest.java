@@ -113,12 +113,12 @@ public class ReaderTest extends AbstractTest {
   public void testReadStrings() {
     assertEquals("1", reader.readFirst("\"1\""));
     assertEquals("Lorem ipsum", reader.readFirst("\"Lorem ipsum\""));
-    assertEquals("Lorem \\\"ipsum\\\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
+    assertEquals("Lorem \"ipsum\" ", reader.readFirst("\"Lorem \\\"ipsum\\\" \""));
     assertEquals("", reader.readFirst("\"\""));
     assertEquals("test \u0123", reader.readFirst("\"test \\u123\""));
-    assertEquals("test \\\\u", reader.readFirst("\"test \\\\u\""));
-    assertEquals("test \\\\U", reader.readFirst("\"test \\\\U\""));
-    assertEquals("test \\\\x", reader.readFirst("\"test \\\\x\""));
+    assertEquals("test \\u", reader.readFirst("\"test \\\\u\""));
+    assertEquals("test \\U", reader.readFirst("\"test \\\\U\""));
+    assertEquals("test \\x", reader.readFirst("\"test \\\\x\""));
     try {
       reader.readFirst("\"test \\u\"");
       fail();
@@ -288,8 +288,8 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testEscapeSequences() {
-    String escape   = "\"\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\\"";
-    String expected = "\\a\\b\\t\\n\\v\\e\\f\\r\\\"\\\'\\\\";
+    String escape   = "\t\b\n\r\f\'\"\\";
+    String expected = "\t\b\n\r\f\'\"\\";
     assertEquals(expected, reader.readFirst(escape));
     try {
       reader.readFirst("\"\\u\"");

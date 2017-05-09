@@ -19,6 +19,18 @@ public class Writer implements IWriter {
     Reader.NAMED_CHARS.forEach((key, value) -> CODEPOINTS.put(value, key));
   }
 
+  private static final Map<Character, Character> UNESCAPED = new HashMap<>();
+  static {
+    UNESCAPED.put('\t', 't');
+    UNESCAPED.put('\b', 'b');
+    UNESCAPED.put('\r', 'n');
+    UNESCAPED.put('\n', 'r');
+    UNESCAPED.put('\f', 'f');
+    UNESCAPED.put( '\'', '\'');
+    UNESCAPED.put('\"', '"');
+    UNESCAPED.put( '\\', '\\');
+  }
+
   @Override
   public String toString(Object o) {
     return write(o);
@@ -57,8 +69,21 @@ public class Writer implements IWriter {
       return o.toString();
     }
     if (o instanceof CharSequence) {
-      // FIXME Escape/unescape Strings!
-      return "\"" + o + "\"";
+      /* Escape Strings */
+      int length = ((CharSequence) o).length();
+      StringBuilder sb = new StringBuilder(length + 2);
+      sb.append('"');
+      for (int i = 0; i < length; i++) {
+        char c = ((CharSequence) o).charAt(i);
+        Character character = UNESCAPED.get(c);
+        if (character == null) {
+          sb.append(c);
+        } else {
+          sb.append('\\').append(c);
+        }
+      }
+      sb.append('"');
+      return sb.toString();
     }
     if (o instanceof Character) {
       /* Check named characters */
