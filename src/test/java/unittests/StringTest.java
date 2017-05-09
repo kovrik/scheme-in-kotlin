@@ -346,4 +346,13 @@ public class StringTest extends AbstractTest {
     assertEquals("The color is blue", eval("(replace \"The color is red\" #\"red\" \"blue\")", env));
     assertEquals("Vegeta", eval("(replace \"Vegeta\" #\"Goku\" \"Gohan\")", env));
   }
+
+  @Test
+  public void testReplaceFirst() {
+    assertEquals("A good night to you, sir.  Good day.", eval("(replace-first \"A good day to you, sir.  Good day.\" #\"day\" \"night\")", env));
+    assertEquals("A good day to you, sir.", eval("(replace-first \"A good day to you, sir.\" #\"madam\" \"master\")", env));
+    assertEquals("night need not be SHOUTED.", eval("(replace-first \"Day need not be SHOUTED.\" #\"(?i)day\" \"night\")", env));
+    assertEquals("name", eval("(replace-first \"/path/to/file/name\" #\"^.*/\" \"\")", env));
+    assertEquals("path/to/file/name", eval("(replace-first \"/path/to/file/name\" #\"^.*?/\" \"\")", env));
+  }
 }
