@@ -2,12 +2,15 @@ package core.writer;
 
 import core.exceptions.ExInfoException;
 import core.reader.Reader;
-import core.scm.*;
+import core.scm.Cons;
+import core.scm.Symbol;
+import core.scm.Type;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Writer implements IWriter {
 
@@ -54,12 +57,16 @@ public class Writer implements IWriter {
       return o.toString();
     }
     if (o instanceof CharSequence) {
+      // FIXME Escape/unescape Strings!
       return "\"" + o + "\"";
     }
     if (o instanceof Character) {
       /* Check named characters */
       String codepoint = CODEPOINTS.get(o);
       return codepoint == null ? "#\\" + o.toString() : "#\\" + codepoint;
+    }
+    if (o instanceof Pattern) {
+      return "#\"" + o + "\"";
     }
     if (o instanceof Throwable) {
       if (o instanceof ExInfoException) {

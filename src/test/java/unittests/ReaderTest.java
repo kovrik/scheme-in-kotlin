@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static core.scm.Cons.list;
 import static org.junit.Assert.assertEquals;
@@ -353,6 +354,14 @@ public class ReaderTest extends AbstractTest {
     assertTrue(reader.readFirst("  #{  1 2,,,,  }  ") instanceof Set);
     assertTrue(reader.readFirst("  #{  1 2,3 4,,,  }  ") instanceof Set);
     assertTrue(reader.readFirst("  #{  1 2,3 4,  , , ,,,4 5  }  ") instanceof Set);
+  }
+
+  @Test
+  public void testReadRegexPattern() {
+    assertTrue(reader.readFirst("#\"\"") instanceof Pattern);
+    assertTrue(reader.readFirst("#\".*\"") instanceof Pattern);
+    assertTrue(reader.readFirst("#\"[abcdef]\"") instanceof Pattern);
+    assertTrue(reader.readFirst("#\"(a|b|c|d)\"") instanceof Pattern);
   }
 
   @Test

@@ -12,6 +12,7 @@ import core.scm.specialforms.UnquoteSplicing;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static core.utils.Utils.*;
 
@@ -163,6 +164,8 @@ public class Reader implements IReader {
       return Boolean.TRUE;
     } else if (c == 'f' || c == 'F') {
       return Boolean.FALSE;
+    } else if (c == '"') {
+      return readRegex();
     } else if (isRadix(c) || isExactness(c)) {
       /* Read identifier, not a number */
       String number = "#" + c + readUntilDelimiter();
@@ -285,6 +288,7 @@ public class Reader implements IReader {
         if (ESCAPE_SEQUENCES.indexOf(next) < 0) {
           throw new IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next));
         }
+        // FIXME Do not append \ char!
         string.append(c).append(next);
         continue;
       }
@@ -292,6 +296,19 @@ public class Reader implements IReader {
     }
     /* Always intern Strings read by Reader */
     return string.toString().intern();
+  }
+
+  private Pattern readRegex() throws IOException {
+    StringBuilder regex = new StringBuilder();
+    int i;
+    char c;
+    while ((isValid(i = reader.read())) && (c = (char)i) != '"') {
+      regex.append(c);
+      if (c == '\\') {
+        regex.append((char)reader.read());
+      }
+    }
+    return Pattern.compile(regex.toString());
   }
 
   /**

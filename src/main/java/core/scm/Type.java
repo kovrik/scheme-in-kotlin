@@ -7,6 +7,7 @@ import core.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public enum Type {
   INTEGER("Integer"),
@@ -29,6 +30,7 @@ public enum Type {
   OUTPUT_PORT("OutputPort"),
   KEYWORD("Keyword"),
   MAP_ENTRY("MapEntry"),
+  PATTERN("Pattern"),
   ;
 
   private static final Map<Class, Type> TYPE_NAME_MAPPINGS = new HashMap<>();
@@ -54,6 +56,7 @@ public enum Type {
     TYPE_NAME_MAPPINGS.put(InputPort.class, INPUT_PORT);
     TYPE_NAME_MAPPINGS.put(Keyword.class, KEYWORD);
     TYPE_NAME_MAPPINGS.put(IMapEntry.class, MAP_ENTRY);
+    TYPE_NAME_MAPPINGS.put(Pattern.class, PATTERN);
   }
 
   /* Marker classes for FnArgs annotation
