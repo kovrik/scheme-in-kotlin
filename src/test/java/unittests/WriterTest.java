@@ -28,11 +28,11 @@ public class WriterTest {
 
   @Test
   public void testWriteNil() {
-    assertEquals("nil", Writer.write(null));
-    assertEquals("()", Writer.write(EMPTY));
-    assertEquals("()", Writer.write(Cons.list()));
-    assertEquals("()", Writer.write(Collections.EMPTY_LIST));
-    assertEquals("()", Writer.write(Arrays.asList(1, 2, 3).subList(3, 3)));
+    assertEquals("nil", Writer.write((Object)null));
+    assertEquals("()",  Writer.write(EMPTY));
+    assertEquals("()",  Writer.write(Cons.list()));
+    assertEquals("()",  Writer.write(Collections.EMPTY_LIST));
+    assertEquals("()",  Writer.write(Arrays.asList(1, 2, 3).subList(3, 3)));
   }
 
   @Test

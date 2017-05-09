@@ -126,8 +126,9 @@ public enum Type {
     return "#<class:" + name + ">";
   }
 
-  public static Type valueOf(Class clazz) {
-    return TYPE_NAME_MAPPINGS.get(clazz);
+  public static String nameOf(Class clazz) {
+    Type type = TYPE_NAME_MAPPINGS.get(clazz);
+    return type != null ? type.getName() : clazz.getSimpleName();
   }
 
   public static boolean checkType(Object o, Class<?> expected) {

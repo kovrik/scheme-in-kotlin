@@ -34,7 +34,7 @@ public class Writer {
     if (o == null)                 return "nil";
     if (o instanceof Boolean)      return (Boolean) o ? "#t" : "#f";
     if (o instanceof Symbol)       return write((Symbol) o);
-    if (o instanceof Class)        return "#<class:" + ((Class) o).getName() + ">";
+    if (o instanceof Class)        return write((Class)o);
     if (o instanceof List)         return write((List) o);
     if (o instanceof Number)       return write((Number) o);
     if (o instanceof CharSequence) return write((CharSequence) o);
@@ -46,9 +46,8 @@ public class Writer {
     return o.toString();
   }
 
-  public static String writeClass(Class clazz) {
-    Type type = Type.valueOf(clazz);
-    return type != null ? type.getName() : clazz.getSimpleName();
+  public static String write(Class clazz) {
+    return "#<class:" + clazz.getName() + ">";
   }
 
   private static String write(Pattern pattern) {
