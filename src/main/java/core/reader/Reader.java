@@ -410,42 +410,24 @@ public class Reader implements IReader {
    * Syntax:
    * <hashmap> -> {<key1> <value1>, ..., <keyN> <valueN>}
    */
-  // TODO Check and simplify
   private Map<Object, Object> readHashmap() throws IOException {
     Map<Object, Object> hashmap = new HashMap<>();
     int i;
     char c;
     while (isValid(i = reader.read()) && ((c = (char)i) != '}')) {
-      /* Skip whitespaces */
-      while (Character.isWhitespace(c)) {
+      /* Skip whitespaces and commas */
+      while (Character.isWhitespace(c) || c == ',') {
         c = (char)reader.read();
       }
-      if (c == '}') {
-        break;
-      }
+      if (c == '}') break;
       reader.unread(c);
-      /* Skip comma */
-      if (c == ',') {
-        c = (char)reader.read();
-      }
-      /* Skip whitespaces */
-      while (Character.isWhitespace(c)) {
-        c = (char)reader.read();
-      }
-      if (c == '}') {
-        break;
-      }
       Object key = nextToken();
 
-      /* Skip whitespaces */
-      while (Character.isWhitespace(c)) {
+      /* Skip whitespaces and commas */
+      while (Character.isWhitespace(c) || c == ',') {
         c = (char)reader.read();
       }
-      if (c == '}') {
-        break;
-      }
-      // TODO Raise 'map must have an even number of forms' error in case hashmap is invalid?
-      // TODO Ignore trailing comma?
+      if (c == '}') break;
       Object value = nextToken();
       hashmap.put(key, value);
     }

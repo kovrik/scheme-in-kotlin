@@ -331,8 +331,12 @@ public class ReaderTest extends AbstractTest {
   public void testReadHashmapLiteral() {
     assertTrue(reader.readFirst("{}") instanceof Map);
     assertTrue(reader.readFirst("{   }") instanceof Map);
+    assertTrue(reader.readFirst("{ ,, , , ,  }") instanceof Map);
     assertTrue(reader.readFirst("  {    }  ") instanceof Map);
     assertTrue(reader.readFirst("  {  1 2  }  ") instanceof Map);
+    assertTrue(reader.readFirst("  {  1 2,,,,  }  ") instanceof Map);
+    assertTrue(reader.readFirst("  {  1 2,3 4,,,  }  ") instanceof Map);
+    assertTrue(reader.readFirst("  {  1 2,3 4,  , , ,,,4 5  }  ") instanceof Map);
     assertEquals(4, ((Map)reader.readFirst("  {  1 2,3 4, 5 6    ,  7     8  }  ")).size());
   }
 
