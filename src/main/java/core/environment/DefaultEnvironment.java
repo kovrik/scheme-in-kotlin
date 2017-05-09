@@ -141,6 +141,7 @@ import core.procedures.sets.Union;
 import core.procedures.strings.EndsWith;
 import core.procedures.strings.Includes;
 import core.procedures.strings.IndexOf;
+import core.procedures.strings.Join;
 import core.procedures.strings.LastIndexOf;
 import core.procedures.strings.ListToString;
 import core.procedures.strings.Lowercase;
@@ -367,6 +368,7 @@ public final class DefaultEnvironment extends Environment {
       new Trim(),
       new Uppercase(),
       new Split(),
+      new Join(),
       new Replace(),
       new ReplaceFirst(),
 

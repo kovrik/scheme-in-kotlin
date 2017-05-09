@@ -341,6 +341,24 @@ public class StringTest extends AbstractTest {
   }
 
   @Test
+  public void testJoin() {
+    assertEquals("",  eval("(join \"\")", env));
+    assertEquals(",", eval("(join \",\")", env));
+    assertEquals("",  eval("(join \",\" [])", env));
+    assertEquals("",  eval("(join \",\" '())", env));
+    assertEquals("",  eval("(join \",\" \"\")", env));
+    assertEquals("test",  eval("(join \"\" [#\\t #\\e #\\s #\\t])", env));
+    assertEquals("test",  eval("(join \"\" '(#\\t #\\e #\\s #\\t))", env));
+    assertEquals("test",  eval("(join \"\" \"test\")", env));
+    assertEquals("t,e,s,t",  eval("(join \",\" [#\\t #\\e #\\s #\\t])", env));
+    assertEquals("t,e,s,t",  eval("(join \",\" '(#\\t #\\e #\\s #\\t))", env));
+    assertEquals("t,e,s,t",  eval("(join \",\" \"test\")", env));
+    assertEquals("t123e123s123t",  eval("(join \"123\" [#\\t #\\e #\\s #\\t])", env));
+    assertEquals("t123e123s123t",  eval("(join \"123\" '(#\\t #\\e #\\s #\\t))", env));
+    assertEquals("t123e123s123t",  eval("(join \"123\" \"test\")", env));
+  }
+
+  @Test
   public void testReplace() {
     assertEquals("fabulous ddero oo doo", eval("(replace \"fabulous fodder foo food\" #\"f(o+)(\\S+)\" \"$2$1\")", env));
     assertEquals("The color is blue", eval("(replace \"The color is red\" #\"red\" \"blue\")", env));
