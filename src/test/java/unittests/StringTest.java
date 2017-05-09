@@ -339,4 +339,11 @@ public class StringTest extends AbstractTest {
     assertEquals(10, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\")", env)).length());
     assertEquals(5, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\" 5)", env)).length());
   }
+
+  @Test
+  public void testReplace() {
+    assertEquals("fabulous ddero oo doo", eval("(replace \"fabulous fodder foo food\" #\"f(o+)(\\S+)\" \"$2$1\")", env));
+    assertEquals("The color is blue", eval("(replace \"The color is red\" #\"red\" \"blue\")", env));
+    assertEquals("Vegeta", eval("(replace \"Vegeta\" #\"Goku\" \"Gohan\")", env));
+  }
 }

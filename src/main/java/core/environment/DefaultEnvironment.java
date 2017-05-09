@@ -146,6 +146,7 @@ import core.procedures.strings.ListToString;
 import core.procedures.strings.Lowercase;
 import core.procedures.strings.MakeString;
 import core.procedures.strings.NumberToString;
+import core.procedures.strings.Replace;
 import core.procedures.strings.Split;
 import core.procedures.strings.StartsWith;
 import core.procedures.strings.StringAppend;
@@ -365,6 +366,7 @@ public final class DefaultEnvironment extends Environment {
       new Trim(),
       new Uppercase(),
       new Split(),
+      new Replace(),
 
       /* Characters */
       new IntegerToChar(),
