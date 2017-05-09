@@ -334,6 +334,7 @@ public final class DefaultEnvironment extends Environment {
       new StringCopy(),
       new StringProc(),
       new Substring(),
+      new Substring() { @Override public String getName() { return "subs"; } },
       new StringAppend(),
       new StringFill(),
       new MakeString(),

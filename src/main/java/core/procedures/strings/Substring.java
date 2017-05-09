@@ -4,7 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.Type;
 
-public final class Substring extends AFn {
+public class Substring extends AFn {
 
   public Substring() {
     super(new FnArgsBuilder().min(2).max(3)
