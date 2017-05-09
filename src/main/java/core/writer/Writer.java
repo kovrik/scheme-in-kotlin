@@ -31,74 +31,18 @@ public class Writer {
   }
 
   public static String write(Object o) {
-    if (o == null) {
-      return "nil";
-    }
-    if (o instanceof Boolean) {
-      return (Boolean) o ? "#t" : "#f";
-    }
-    if (o instanceof Symbol) {
-      return ((Symbol) o).isEscape() ? '|' + o.toString() + '|' : o.toString();
-    }
-    if (o instanceof Type) {
-      return o.toString();
-    }
-    if (o instanceof Class) {
-      return "#<class:" + ((Class)o).getName() + ">";
-    }
-    if (o instanceof List) {
-      return Cons.toString((List) o);
-    }
-    if (o instanceof Double) {
-      if (Double.isNaN(((Number) o).doubleValue())) {
-        return "+nan.0";
-      } else if (o.equals(Double.POSITIVE_INFINITY)) {
-        return "+inf.0";
-      } else if (o.equals(Double.NEGATIVE_INFINITY)) {
-        return "-inf.0";
-      }
-      return o.toString();
-    }
-    if (o instanceof Number) {
-      return o.toString();
-    }
-    if (o instanceof CharSequence) {
-      /* Unescape Strings */
-      int length = ((CharSequence) o).length();
-      StringBuilder sb = new StringBuilder(length + 2);
-      sb.append('"');
-      for (int i = 0; i < length; i++) {
-        char c = ((CharSequence) o).charAt(i);
-        Character character = UNESCAPED.get(c);
-        if (character == null) {
-          sb.append(c);
-        } else {
-          sb.append('\\').append(character);
-        }
-      }
-      sb.append('"');
-      return sb.toString();
-    }
-    if (o instanceof Character) {
-      /* Check named characters */
-      String codepoint = CODEPOINTS.get(o);
-      return codepoint == null ? "#\\" + o.toString() : "#\\" + codepoint;
-    }
-    if (o instanceof Pattern) {
-      return "#\"" + o + "\"";
-    }
-    if (o instanceof Throwable) {
-      if (o instanceof ExInfoException) {
-        return o.toString();
-      }
-      return writeException((Throwable) o);
-    }
-    if (o instanceof Map) {
-      return writeMap((Map)o);
-    }
-    if (o instanceof Set) {
-      return writeSet((Set)o);
-    }
+    if (o == null)                 return "nil";
+    if (o instanceof Boolean)      return (Boolean) o ? "#t" : "#f";
+    if (o instanceof Symbol)       return write((Symbol) o);
+    if (o instanceof Class)        return "#<class:" + ((Class) o).getName() + ">";
+    if (o instanceof List)         return write((List) o);
+    if (o instanceof Number)       return write((Number) o);
+    if (o instanceof CharSequence) return write((CharSequence) o);
+    if (o instanceof Character)    return write((Character) o);
+    if (o instanceof Pattern)      return write((Pattern) o);
+    if (o instanceof Throwable)    return write((Throwable) o);
+    if (o instanceof Map)          return write((Map) o);
+    if (o instanceof Set)          return write((Set) o);
     return o.toString();
   }
 
@@ -107,7 +51,65 @@ public class Writer {
     return type != null ? type.getName() : clazz.getSimpleName();
   }
 
-  private static String writeMap(Map<Object, Object> map) {
+  private static String write(Pattern pattern) {
+    return "#\"" + pattern + "\"";
+  }
+
+  private static String write(List list) {
+    return Cons.toString(list);
+  }
+
+  private static String write(Symbol symbol) {
+    return symbol.isEscape() ? '|' + symbol.toString() + '|' : symbol.toString();
+  }
+
+  private static String write(Number number) {
+    if (number instanceof Double) {
+      if (Double.isNaN(number.doubleValue())) {
+        return "+nan.0";
+      } else if (number.equals(Double.POSITIVE_INFINITY)) {
+        return "+inf.0";
+      } else if (number.equals(Double.NEGATIVE_INFINITY)) {
+        return "-inf.0";
+      }
+    }
+    if (number instanceof Float) {
+      if (Float.isNaN(number.floatValue())) {
+        return "+nan.0";
+      } else if (number.equals(Float.POSITIVE_INFINITY)) {
+        return "+inf.0";
+      } else if (number.equals(Float.NEGATIVE_INFINITY)) {
+        return "-inf.0";
+      }
+    }
+    return number.toString();
+  }
+
+  private static String write(CharSequence cs) {
+    /* Unescape Strings */
+    int length = cs.length();
+    StringBuilder sb = new StringBuilder(length + 2);
+    sb.append('"');
+    for (int i = 0; i < length; i++) {
+      char c = cs.charAt(i);
+      Character character = UNESCAPED.get(c);
+      if (character == null) {
+        sb.append(c);
+      } else {
+        sb.append('\\').append(character);
+      }
+    }
+    sb.append('"');
+    return sb.toString();
+  }
+
+  private static String write(Character ch) {
+    /* Check named characters */
+    String codepoint = CODEPOINTS.get(ch);
+    return codepoint == null ? "#\\" + ch : "#\\" + codepoint;
+  }
+
+  private static String write(Map<Object, Object> map) {
     if (map.isEmpty()) {
       return  "{}";
     }
@@ -128,7 +130,7 @@ public class Writer {
     return sb.append('}').toString();
   }
 
-  private static String writeSet(Set<Object> set) {
+  private static String write(Set<Object> set) {
     if (set.isEmpty()) {
       return  "#{}";
     }
@@ -145,7 +147,10 @@ public class Writer {
     return sb.append('}').toString();
   }
 
-  private static String writeException(Throwable t) {
+  private static String write(Throwable t) {
+    if (t instanceof ExInfoException) {
+      return t.toString();
+    }
     return "#<error:" + t.getClass().getName() + ":" + (t.getMessage() == null ? "" : t.getMessage()) + ">";
   }
 }
