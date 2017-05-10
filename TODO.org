@@ -1,12 +1,11 @@
-* TODO: [35/46]
+* TODO: [38/48]
 
 ** TODO [#A] Macros
-** TODO [#A] Implement Metadata
-** TODO [#A] Generify Lists, Vectors, Strings as Sequences
-** TODO [#A] Math procedures: fix precision loss
+** TODO [#A] Modules
+** TODO [#A] Generify Lists, Vectors, Strings as Lazy Sequences
 ** TODO [#A] Expt for big fractional powers
-** TODO [#A] Inexactness taint
-** TODO [#A] SCMSmallRational and SCMSmallComplex
+** TODO [#B] Expansion Context Levels
+** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** TODO [#A] Tail-call elimination [13/17]
 *** DONE (lambda <formals> <definition>* <expression>* <tail expression>)
 CLOSED: [2016-08-24 Wed 20:45]
@@ -49,8 +48,6 @@ CLOSED: [2016-11-11 Fri 22:32]
 **** DONE eval — tail call to evaluate the form
 CLOSED: [2016-12-05 Mon 20:46]
 **** TODO string-any, string-every — tail call to predicate on the last character (if that point is reached)
-** TODO [#B] Expansion Context Levels
-** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
 ** TODO [#B] Performance [0/6]
 *** TODO Optimize math operations
 *** TODO Smaller numerical types
@@ -59,6 +56,12 @@ CLOSED: [2016-12-05 Mon 20:46]
 *** TODO Reduce number of new objects
 *** TODO Inline procedures
 ** TODO [#B] Compilation
+** DONE [#A] Math procedures: fix precision loss
+CLOSED: [2017-05-10 Wed 22:37]
+** DONE [#A] Inexactness taint
+CLOSED: [2017-05-10 Wed 22:37]
+** DONE [#A] Implement Metadata
+CLOSED: [2017-05-10 Wed 22:37]
 ** DONE [#B] Java interop
 CLOSED: [2017-04-07 Fri 18:00]
 ** DONE [#A] Expt special cases
