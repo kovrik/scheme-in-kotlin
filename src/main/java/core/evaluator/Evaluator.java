@@ -83,17 +83,7 @@ public class Evaluator {
    */
   private Object evalIter(Object sexp, Environment env) {
     if (sexp instanceof Symbol) {
-      /* Check if it is a Special Form */
-      Object o = env.findOrDefault(sexp, Environment.UNDEFINED);
-      if (o instanceof ISpecialForm) {
-        throw IllegalSyntaxException.of(o.toString(), sexp);
-      }
-      if (o == Environment.UNDEFINED) {
-        /* Check if it is a Java class. If not found, then assume it is a static field */
-        Class clazz = reflector._getClass(((Symbol) sexp).getName());
-        return clazz != null ? clazz : reflector.evalJavaStaticField(sexp.toString());
-      }
-      return o;
+      return evalSymbol((Symbol)sexp, env);
     } else if (sexp instanceof List) {
       return evlis((List<Object>)sexp, env);
     } else if (sexp instanceof Map) {
@@ -109,9 +99,22 @@ public class Evaluator {
     }
   }
 
-  /**
-   * Evaluate a list
-   */
+  /* Evaluate Symbol */
+  private Object evalSymbol(Symbol symbol, Environment env) {
+    /* Check if it is a Special Form */
+    Object o = env.findOrDefault(symbol, Environment.UNDEFINED);
+    if (o instanceof ISpecialForm) {
+      throw IllegalSyntaxException.of(o.toString(), symbol);
+    }
+    if (o == Environment.UNDEFINED) {
+      /* Check if it is a Java class. If not found, then assume it is a static field */
+      Class clazz = reflector._getClass(symbol.getName());
+      return clazz != null ? clazz : reflector.evalJavaStaticField(symbol.toString());
+    }
+    return o;
+  }
+
+  /* Evaluate list */
   private Object evlis(List<Object> sexp, Environment env) {
     if (sexp.isEmpty()) {
       throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
