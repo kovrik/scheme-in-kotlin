@@ -97,21 +97,27 @@ public class Repl {
     } else if (e instanceof ExInfoException) {
       errorMessage = e.toString();
     } else {
-      StringBuilder sb = new StringBuilder();
-      if (e.getMessage() == null) {
-        sb.append(e.getClass().getSimpleName());
-      } else {
-        sb.append(e.getClass().getSimpleName()).append(": ").append(e.getMessage());
+      StringBuilder sb = new StringBuilder(e.getClass().getSimpleName());
+      if (e.getMessage() != null) {
+        sb.append(": ").append(e.getMessage());
       }
-      StackTraceElement[] stackTrace = e.getStackTrace();
-      if (stackTrace.length > 0) {
-        // TODO Filter stack frames
-        StackTraceElement frame = stackTrace[0];
+      StackTraceElement frame = filterStackTrace(e.getStackTrace());
+      if (frame != null) {
         sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
       }
       errorMessage = sb.toString();
     }
     currentOutputPort.writeln(errorMessage);
+  }
+
+  private static StackTraceElement filterStackTrace(StackTraceElement[] stackTraceElements) {
+    for (StackTraceElement stackTraceElement : stackTraceElements) {
+      if (stackTraceElement.isNativeMethod()) continue;
+      String name = stackTraceElement.getClassName();
+      if (name.startsWith("sun.reflect") || name.startsWith("java.lang.reflect")) continue;
+      return stackTraceElement;
+    }
+    return null;
   }
 
   public static InputPort getCurrentInputPort() {
