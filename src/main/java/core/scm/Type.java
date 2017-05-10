@@ -56,7 +56,6 @@ public final class Type {
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
-    TYPE_PREDICATES.put(CharSequence.class, o -> o instanceof CharSequence);
     TYPE_PREDICATES.put(String.class, o -> o instanceof CharSequence);
     TYPE_PREDICATES.put(MutableString.class, o -> StringBuilder.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(ProperList.class, Cons::isList);
@@ -68,21 +67,6 @@ public final class Type {
     TYPE_PREDICATES.put(ExactNonNegativeInteger.class, Utils::isExactNonNegativeInteger);
     TYPE_PREDICATES.put(Real.class, Utils::isReal);
     TYPE_PREDICATES.put(BitOp.class, Utils::isBitOpSupported);
-  }
-
-  private final String name;
-
-  Type(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public String toString() {
-    return "#<class:" + name + ">";
   }
 
   public static boolean checkType(Object o, Class<?> expected) {
