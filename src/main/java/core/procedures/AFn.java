@@ -3,7 +3,6 @@ package core.procedures;
 import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.scm.Type;
-import core.writer.Writer;
 
 /* Abstract superclass of all functions */
 public abstract class AFn implements IFn<Object[], Object> {
@@ -106,21 +105,21 @@ public abstract class AFn implements IFn<Object[], Object> {
       /* Mandatory args */
       if (mandatoryArgsTypes.length > 0 && i < mandatoryArgsTypes.length) {
         if (!(Type.checkType(arg, mandatoryArgsTypes[i]))) {
-          throw new WrongTypeException(getName(), Type.nameOf(mandatoryArgsTypes[i]), arg);
+          throw new WrongTypeException(getName(), mandatoryArgsTypes[i], arg);
         }
         continue;
       }
       /* Last argument (optional special case) */
       if (i == argsSize - 1 && (lastArgType != null)) {
         if (!(Type.checkType(arg, lastArgType))) {
-          throw new WrongTypeException(getName(), Type.nameOf(lastArgType), arg);
+          throw new WrongTypeException(getName(), lastArgType, arg);
         }
         continue;
       }
       /* Rest args */
       if (restArgsType != null) {
         if (!(Type.checkType(arg, restArgsType))) {
-          throw new WrongTypeException(getName(), Type.nameOf(restArgsType), arg);
+          throw new WrongTypeException(getName(), restArgsType, arg);
         }
       }
     }

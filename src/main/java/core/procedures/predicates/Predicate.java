@@ -111,7 +111,7 @@ public final class Predicate extends AFn {
     if (Type.checkType(o, c)) {
       return true;
     }
-    throw new WrongTypeException(name, c.getSimpleName(), o);
+    throw new WrongTypeException(name, c, o);
   }
 
   private static boolean isEmpty(Object o) {
