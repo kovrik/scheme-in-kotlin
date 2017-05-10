@@ -148,6 +148,7 @@ import core.procedures.strings.Lowercase;
 import core.procedures.strings.MakeString;
 import core.procedures.strings.NumberToString;
 import core.procedures.strings.ReFind;
+import core.procedures.strings.ReGroups;
 import core.procedures.strings.ReMatcher;
 import core.procedures.strings.RePattern;
 import core.procedures.strings.Replace;
@@ -378,6 +379,7 @@ public final class DefaultEnvironment extends Environment {
       new ReFind(),
       new ReMatcher(),
       new RePattern(),
+      new ReGroups(),
 
       /* Characters */
       new IntegerToChar(),
