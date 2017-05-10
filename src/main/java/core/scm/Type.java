@@ -8,33 +8,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public enum Type {
-  INTEGER("Integer"),
-  RATIONAL("Rational"),
-  COMPLEX("Complex"),
-  STRING("String"),
-  MUTABLE_STRING("MutableString"),
-  VOID("Void"),
-  LIST("List"),
-  PAIR("Pair"),
-  PROCEDURE("Procedure"),
-  PORT("Port"),
-  MAP_ENTRY("MapEntry"),
-  ;
+public final class Type {
 
-  private static final Map<Class, Type> TYPE_NAME_MAPPINGS = new HashMap<>();
+  /* Override type names for some classes */
+  private static final Map<Class, String> TYPE_NAME_MAPPINGS = new HashMap<>();
   static {
-    TYPE_NAME_MAPPINGS.put(Long.class, INTEGER);
-    TYPE_NAME_MAPPINGS.put(BigRatio.class, RATIONAL);
-    TYPE_NAME_MAPPINGS.put(BigComplex.class, COMPLEX);
-    TYPE_NAME_MAPPINGS.put(CharSequence.class, STRING);
-    TYPE_NAME_MAPPINGS.put(StringBuilder.class, MUTABLE_STRING);
-    TYPE_NAME_MAPPINGS.put(MutableString.class, MUTABLE_STRING);
-    TYPE_NAME_MAPPINGS.put(IFn.class, PROCEDURE);
-    TYPE_NAME_MAPPINGS.put(AFn.class, PROCEDURE);
-    TYPE_NAME_MAPPINGS.put(ProperList.class, LIST);
-    TYPE_NAME_MAPPINGS.put(IPort.class, PORT);
-    TYPE_NAME_MAPPINGS.put(IMapEntry.class, MAP_ENTRY);
+    TYPE_NAME_MAPPINGS.put(Long.class, "Integer");
+    TYPE_NAME_MAPPINGS.put(BigRatio.class, "Rational");
+    TYPE_NAME_MAPPINGS.put(BigComplex.class, "Complex");
+    TYPE_NAME_MAPPINGS.put(CharSequence.class, "String");
+    TYPE_NAME_MAPPINGS.put(StringBuilder.class, "MutableString");
+    TYPE_NAME_MAPPINGS.put(MutableString.class, "MutableString");
+    TYPE_NAME_MAPPINGS.put(IFn.class, "Procedure");
+    TYPE_NAME_MAPPINGS.put(AFn.class, "Procedure");
+    TYPE_NAME_MAPPINGS.put(ProperList.class, "List");
+    TYPE_NAME_MAPPINGS.put(IPort.class, "Port");
+    TYPE_NAME_MAPPINGS.put(IMapEntry.class, "MapEntry");
+  }
+
+  public static String nameOf(Class clazz) {
+    return TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.getSimpleName());
   }
 
   /* Marker classes for FnArgs annotation
@@ -49,29 +42,17 @@ public enum Type {
    * - Enum type
    * - Annotation type
    * - Array type whose component type is one of the preceding types
-   *
    * (see https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1)
-   *
-   * Below is the mapping from predicates to the actual/marker classes:
-   *
-   *   pair?                      -> Pair + Cons.isPair()
-   *   list?                      -> ProperList + Cons.isList()
-   *   number?                    -> Number.class
-   *   complex?                   -> BigComplex.class
-   *   real?                      -> Real.class
-   *   rational?                  -> BigRatio + Utils.IsRational()
-   *   integer?                   -> Integer.class/Long.class
-   *   exact-nonnegative-integer? -> ExactNonNegativeInteger.class *
-   *   exact-positive-integer?    -> ExactPositiveInteger.class *
    */
+  // TODO Get rid of them
   /* Marker classes for Proper and Improper lists */
-  public abstract class ProperList {}
-  public abstract class Pair {}
+  public static final class ProperList { private ProperList(){} }
+  public static final class Pair { private Pair(){} }
   /* Marker classes for numbers */
-  public static final class ExactNonNegativeInteger {}
-  public static final class ExactPositiveInteger {}
-  public static final class Real {}
-  public static final class BitOp {}
+  public static final class ExactNonNegativeInteger { private ExactNonNegativeInteger(){} }
+  public static final class ExactPositiveInteger { private ExactPositiveInteger(){} }
+  public static final class Real { private Real(){} }
+  public static final class BitOp { private BitOp(){} }
 
   private static final Map<Class, Predicate<Object>> TYPE_PREDICATES = new HashMap<>();
   static {
@@ -102,11 +83,6 @@ public enum Type {
   @Override
   public String toString() {
     return "#<class:" + name + ">";
-  }
-
-  public static String nameOf(Class clazz) {
-    Type type = TYPE_NAME_MAPPINGS.get(clazz);
-    return type != null ? type.getName() : clazz.getSimpleName();
   }
 
   public static boolean checkType(Object o, Class<?> expected) {

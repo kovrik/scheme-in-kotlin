@@ -48,7 +48,7 @@ public class Cons<E> extends LinkedList<E> {
 
   public E car() {
     if (isEmpty()) {
-      throw new WrongTypeException("car", Type.PAIR.getName(), EMPTY);
+      throw new WrongTypeException("car", Type.Pair.class, EMPTY);
     }
     return getFirst();
   }
