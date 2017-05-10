@@ -7,7 +7,6 @@ import core.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public enum Type {
   INTEGER("Integer"),
@@ -18,19 +17,9 @@ public enum Type {
   VOID("Void"),
   LIST("List"),
   PAIR("Pair"),
-  SYMBOL("Symbol"),
-  VECTOR("Vector"),
-  MUTABLE_VECTOR("MutableVector"),
-  DELAY("Delay"),
-  PROMISE("Promise"),
-  FUTURE("Future"),
   PROCEDURE("Procedure"),
   PORT("Port"),
-  INPUT_PORT("InputPort"),
-  OUTPUT_PORT("OutputPort"),
-  KEYWORD("Keyword"),
   MAP_ENTRY("MapEntry"),
-  PATTERN("Pattern"),
   ;
 
   private static final Map<Class, Type> TYPE_NAME_MAPPINGS = new HashMap<>();
@@ -43,20 +32,9 @@ public enum Type {
     TYPE_NAME_MAPPINGS.put(MutableString.class, MUTABLE_STRING);
     TYPE_NAME_MAPPINGS.put(IFn.class, PROCEDURE);
     TYPE_NAME_MAPPINGS.put(AFn.class, PROCEDURE);
-    TYPE_NAME_MAPPINGS.put(Symbol.class, SYMBOL);
-    TYPE_NAME_MAPPINGS.put(Pair.class, PAIR);
     TYPE_NAME_MAPPINGS.put(ProperList.class, LIST);
-    TYPE_NAME_MAPPINGS.put(Vector.class, VECTOR);
-    TYPE_NAME_MAPPINGS.put(MutableVector.class, MUTABLE_VECTOR);
-    TYPE_NAME_MAPPINGS.put(Delay.class, DELAY);
-    TYPE_NAME_MAPPINGS.put(Promise.class, PROMISE);
-    TYPE_NAME_MAPPINGS.put(Future.class, FUTURE);
     TYPE_NAME_MAPPINGS.put(IPort.class, PORT);
-    TYPE_NAME_MAPPINGS.put(OutputPort.class, OUTPUT_PORT);
-    TYPE_NAME_MAPPINGS.put(InputPort.class, INPUT_PORT);
-    TYPE_NAME_MAPPINGS.put(Keyword.class, KEYWORD);
     TYPE_NAME_MAPPINGS.put(IMapEntry.class, MAP_ENTRY);
-    TYPE_NAME_MAPPINGS.put(Pattern.class, PATTERN);
   }
 
   /* Marker classes for FnArgs annotation
