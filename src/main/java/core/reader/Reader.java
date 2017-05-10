@@ -161,6 +161,7 @@ public class Reader implements IReader {
   private Object readHash() throws IOException {
     char c = (char) reader.read();
     if (c == '(') {
+      /* Read Quoted vector #(...) */
       MutableVector vector = readVector(')');
       if (vector.length() == 0) {
         return vector;
