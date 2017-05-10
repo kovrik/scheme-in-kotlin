@@ -22,7 +22,7 @@ public final class VectorSet extends AFn {
   public Object apply3(Object arg1, Object arg2, Object arg3) {
     MutableVector vec = (MutableVector)arg1;
     Long pos = ((Number)arg2).longValue();
-    if (pos >= vec.length()) {
+    if (pos >= vec.size()) {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), pos));
     }
     vec.set(pos.intValue(), arg3);

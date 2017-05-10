@@ -4,9 +4,8 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.MutableVector;
-import core.scm.Vector;
 
-import java.util.List;
+import java.util.Collection;
 
 public final class Vec extends AFn {
 
@@ -21,11 +20,8 @@ public final class Vec extends AFn {
 
   @Override
   public MutableVector apply1(Object arg) {
-    if (arg instanceof Vector) {
-      return new MutableVector(((Vector)arg).getArray());
-    }
-    if (arg instanceof List) {
-      return new MutableVector(((List)arg).toArray());
+    if (arg instanceof Collection) {
+      return new MutableVector(((Collection)arg).toArray());
     }
     if (arg instanceof CharSequence) {
       int size = ((CharSequence) arg).length();

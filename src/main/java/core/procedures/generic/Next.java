@@ -42,7 +42,7 @@ public class Next extends AFn {
       return next;
     } else if (arg instanceof Vector) {
       Vector vec = (Vector) arg;
-      return vec.length() == 0 ? null : new Vector(Arrays.copyOfRange(vec.getArray(), 1, vec.length()));
+      return vec.size() == 0 ? null : new Vector(Arrays.copyOfRange(vec.getArray(), 1, vec.size()));
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;
       return cs.length() == 0 ? null : cs.subSequence(1, cs.length());

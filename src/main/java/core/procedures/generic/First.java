@@ -38,7 +38,7 @@ public class First extends AFn {
       return set.isEmpty() ? null : set.iterator().next();
     } else if (arg instanceof Vector) {
       Vector vec = (Vector) arg;
-      return vec.length() == 0 ? null : vec.get(0);
+      return vec.size() == 0 ? null : vec.get(0);
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;
       return cs.length() == 0 ? null : cs.charAt(0);

@@ -163,7 +163,7 @@ public class Reader implements IReader {
     if (c == '(') {
       /* Read Quoted vector #(...) */
       MutableVector vector = readVector(')');
-      if (vector.length() == 0) {
+      if (vector.isEmpty()) {
         return vector;
       }
       return Cons.list(Quote.QUOTE_SYMBOL, vector);

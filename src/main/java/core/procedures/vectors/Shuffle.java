@@ -6,10 +6,8 @@ import core.procedures.FnArgsBuilder;
 import core.scm.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public final class Shuffle extends AFn {
 
@@ -31,10 +29,6 @@ public final class Shuffle extends AFn {
   public Vector apply1(Object arg) {
     if (arg instanceof Collection) {
       ArrayList list = new ArrayList((Collection) arg);
-      Collections.shuffle(list);
-      return new Vector(list.toArray());
-    } else if (arg instanceof Vector) {
-      List<Object> list = Arrays.asList(((Vector) arg).getArray());
       Collections.shuffle(list);
       return new Vector(list.toArray());
     }

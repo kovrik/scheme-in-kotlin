@@ -333,11 +333,11 @@ public class StringTest extends AbstractTest {
 
   @Test
   public void testSplit() {
-    assertEquals(3,  ((Vector)eval("(split \"a,b,c,\" #\",\")", env)).length());
-    assertEquals(1,  ((Vector)eval("(split \"a,b,c,\" #\"_\")", env)).length());
-    assertEquals(4,  ((Vector)eval("(split \"a,b,c,\" #\",\" -1)", env)).length());
-    assertEquals(10, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\")", env)).length());
-    assertEquals(5, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\" 5)", env)).length());
+    assertEquals(3,  ((Vector)eval("(split \"a,b,c,\" #\",\")", env)).size());
+    assertEquals(1,  ((Vector)eval("(split \"a,b,c,\" #\"_\")", env)).size());
+    assertEquals(4,  ((Vector)eval("(split \"a,b,c,\" #\",\" -1)", env)).size());
+    assertEquals(10, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\")", env)).size());
+    assertEquals(5, ((Vector)eval("(split \"q1w2e3r4t5y6u7i8o9p0\" #\"\\d+\" 5)", env)).size());
   }
 
   @Test

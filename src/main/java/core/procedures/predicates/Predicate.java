@@ -118,7 +118,7 @@ public final class Predicate extends AFn {
     if (o instanceof Collection) {
       return ((Collection)o).isEmpty();
     } else if (o instanceof Vector) {
-      return ((Vector)o).length() == 0;
+      return ((Vector)o).size() == 0;
     } else if (o instanceof CharSequence) {
       return ((CharSequence)o).length() == 0;
     } else if (o instanceof Map) {

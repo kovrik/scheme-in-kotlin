@@ -20,7 +20,17 @@ public class MutableVector extends Vector {
   }
 
   public void set(int index, Object value) {
-    getArray()[index] = value;
+    array[index] = value;
+  }
+
+  @Override
+  public Object[] getArray() {
+    return array;
+  }
+
+  @Override
+  public Object[] toArray() {
+    return array;
   }
 }
 

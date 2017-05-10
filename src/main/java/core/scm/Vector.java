@@ -5,21 +5,23 @@ import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
+// TODO implement List instead?
 /* Immutable Vector */
-public class Vector extends AFn implements Iterable {
+public class Vector extends AFn implements Collection {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
 //  private static final String CLOSE = ")";
-  /* Alternative (Clojure-like) Vector syntax */
+  /* Alternative Clojure-style Vector syntax */
   private static final String OPEN = "[";
   private static final String CLOSE = "]";
 
-  // TODO Replace with ArrayList?
   /* Contents of Vector: plain Java array */
-  private final Object[] array;
+  final Object[] array;
 
   public Vector() {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
@@ -55,14 +57,6 @@ public class Vector extends AFn implements Iterable {
     return getArray()[index];
   }
 
-  public int length() {
-    return getArray().length;
-  }
-
-  public Object[] getArray() {
-    return array;
-  }
-
   @Override
   public String getName() {
     return "vector";
@@ -77,12 +71,8 @@ public class Vector extends AFn implements Iterable {
     sb.append(OPEN);
     for (int i = 0; i < getArray().length; i++) {
       Object e = getArray()[i];
-      if (e == this) {
-        sb.append("(this vector)");
-      } else {
-        sb.append(Writer.write(e));
-      }
-      if (i == (getArray().length - 1)) {
+      sb.append(e == this ? "(this vector)" : Writer.write(e));
+      if (i == getArray().length - 1) {
         return sb.append(CLOSE).toString();
       }
       sb.append(' ');
@@ -93,6 +83,80 @@ public class Vector extends AFn implements Iterable {
   @Override
   public Iterator<Object> iterator() {
     return Arrays.asList(array).iterator();
+  }
+
+  @Override
+  public int size() {
+    return array.length;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return size() == 0;
+  }
+
+  @Override
+  public boolean contains(Object o) {
+    for (Object e : array) {
+      if (Objects.equals(e, o)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public Object[] getArray() {
+    return Arrays.copyOf(array, size());
+  }
+
+  @Override
+  public Object[] toArray() {
+    return Arrays.copyOf(array, size());
+  }
+
+  @Override
+  public Object[] toArray(Object[] a) {
+    return Arrays.copyOf(array, size());
+  }
+
+  @Override
+  public boolean add(Object o) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean remove(Object o) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean addAll(Collection c) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void clear() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean retainAll(Collection c) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean removeAll(Collection c) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean containsAll(Collection col) {
+    for (Object e : col) {
+      if (!contains(e)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

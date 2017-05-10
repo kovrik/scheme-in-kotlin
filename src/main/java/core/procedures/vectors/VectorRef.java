@@ -26,7 +26,7 @@ public final class VectorRef extends AFn {
   public Object apply2(Object arg1, Object arg2) {
     MutableVector vec = (MutableVector)arg1;
     Long pos = ((Number)arg2).longValue();
-    if (pos >= vec.length()) {
+    if (pos >= vec.size()) {
       throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), pos));
     }
     return vec.get(pos.intValue());

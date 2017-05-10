@@ -3,7 +3,6 @@ package core.procedures.strings;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.procedures.vectors.Vec;
 import core.scm.Vector;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public final class Join extends AFn {
     if (col instanceof Vector) {
       StringBuilder sb = new StringBuilder();
       Vector vec = (Vector) col;
-      int length = vec.length();
+      int length = vec.size();
       if (length == 0) {
         return "";
       }

@@ -201,7 +201,7 @@ public class Evaluator {
 
   /* Evaluate vector */
   private Vector evalVector(Vector vector, Environment env) {
-    for (int i = 0; i < vector.length(); i++) {
+    for (int i = 0; i < vector.size(); i++) {
       vector.getArray()[i] = eval(vector.getArray()[i], env);
     }
     return vector;

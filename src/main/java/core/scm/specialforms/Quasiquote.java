@@ -51,7 +51,7 @@ public enum Quasiquote implements ISpecialForm {
   private Object quasiquote(Object expr, Environment env, Evaluator evaluator) {
     if (expr instanceof MutableVector) {
       MutableVector vector = (MutableVector) expr;
-      if (vector.length() == 0) {
+      if (vector.size() == 0) {
         /* Nothing to process */
         return vector;
       }

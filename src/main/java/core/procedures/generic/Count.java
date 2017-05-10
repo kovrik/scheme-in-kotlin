@@ -30,8 +30,6 @@ public class Count extends AFn {
       return ((Map)arg).size();
     } else if (arg instanceof Collection) {
       return ((Collection)arg).size();
-    } else if (arg instanceof Vector) {
-      return ((Vector)arg).length();
     } else if (arg instanceof CharSequence) {
       return ((CharSequence) arg).length();
     }

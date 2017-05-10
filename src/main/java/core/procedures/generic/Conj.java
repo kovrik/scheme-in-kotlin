@@ -39,10 +39,10 @@ public final class Conj extends AFn {
       return set;
     }
     if (first instanceof Vector) {
-      int size = ((Vector) first).length() + args.length - 1;
+      int size = ((Vector) first).size() + args.length - 1;
       Vector vector = new MutableVector(size, null);
       Vector v = (Vector)first;
-      int length = v.length();
+      int length = v.size();
       for (int i = 0; i < length; i++) {
         vector.getArray()[i] = v.get(i);
       }

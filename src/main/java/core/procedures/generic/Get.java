@@ -48,7 +48,7 @@ public final class Get extends AFn {
         return key;
       }
     } else if (col instanceof Vector) {
-      if (Utils.isInteger(key) && (((Number) key).intValue() < ((Vector) col).length())) {
+      if (Utils.isInteger(key) && (((Number) key).intValue() < ((Vector) col).size())) {
         return ((Vector)col).get(((Number)key).intValue());
       }
     } else if (col instanceof CharSequence) {

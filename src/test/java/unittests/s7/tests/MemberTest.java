@@ -38,7 +38,7 @@ public class MemberTest extends AbstractTest {
     assertEquals(list("hi", 2L), eval("(member \"hi\" '(1 \"hi\" 2))", env));
     assertEquals(list('a', 2L), eval("(member #\\a '(1 #f #\\a 2))", env));
     assertEquals(list(new MutableVector(1L, 2L, 3L), new MutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (member x lst))", env));
-    assertEquals(list(new MutableVector(1L, 2L, 3L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (member x lst))", env));
+    assertEquals(list((Object)new MutableVector(1L, 2L, 3L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (member x lst))", env));
     assertEquals(list(3L), eval("(member 3 . ('(1 2 3)))", env));
     assertEquals(cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env));
     assertEquals(list(3L), eval("(member . (3 '(1 2 3)))", env));

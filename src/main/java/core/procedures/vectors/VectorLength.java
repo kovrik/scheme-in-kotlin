@@ -23,6 +23,6 @@ public final class VectorLength extends AFn {
 
   @Override
   public Long apply1(Object arg) {
-    return ((Integer)((MutableVector)arg).length()).longValue();
+    return ((Integer)((MutableVector)arg).size()).longValue();
   }
 }
