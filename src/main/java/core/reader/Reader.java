@@ -492,9 +492,6 @@ public class Reader implements IReader {
   private Keyword readKeyword() throws IOException {
     String s = readUntilDelimiter();
     if (s.isEmpty()) {
-      /* Skip everything until line break */
-      char c = 0;
-      while (!isLineBreak(c)) { c = (char) reader.read(); }
       throw new IllegalSyntaxException("read: illegal use of :");
     }
     return Keyword.intern(s);
