@@ -221,7 +221,7 @@ public final class Utils {
     if (!r.isEmpty()) {
       re = preProcessNumber(r, exactness, radix);
     }
-    if (!(re instanceof Number)) {
+    if (!isReal(re)) {
       return Symbol.intern(number);
     }
 
@@ -230,7 +230,7 @@ public final class Utils {
       i += "1";
     }
     Object im = preProcessNumber(i, exactness, radix);
-    if (!(im instanceof Number)) {
+    if (!isReal(im)) {
       return Symbol.intern(number);
     }
     return isZero(re) && isZero(im) ? 0L : new BigComplex(toBigDecimal((Number) re), toBigDecimal((Number)im));
