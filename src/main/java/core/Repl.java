@@ -91,12 +91,13 @@ public class Repl {
   }
 
   private static void error(Throwable e) throws IOException {
-    StringBuilder sb = new StringBuilder();
+    String errorMessage;
     if (e instanceof Error) {
-      sb.append("Error: ").append(e.getMessage());
+      errorMessage = "Error: " + e.getMessage();
     } else if (e instanceof ExInfoException) {
-      sb.append(e);
+      errorMessage = e.toString();
     } else {
+      StringBuilder sb = new StringBuilder();
       if (e.getMessage() == null) {
         sb.append(e.getClass().getSimpleName());
       } else {
@@ -104,11 +105,13 @@ public class Repl {
       }
       StackTraceElement[] stackTrace = e.getStackTrace();
       if (stackTrace.length > 0) {
+        // TODO Filter stack frames
         StackTraceElement frame = stackTrace[0];
         sb.append(" (").append(frame.getFileName()).append(':').append(frame.getLineNumber()).append(')');
       }
+      errorMessage = sb.toString();
     }
-    currentOutputPort.writeln(sb.toString());
+    currentOutputPort.writeln(errorMessage);
   }
 
   public static InputPort getCurrentInputPort() {
