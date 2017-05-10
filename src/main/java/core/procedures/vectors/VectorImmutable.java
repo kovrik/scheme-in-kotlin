@@ -11,7 +11,7 @@ public final class VectorImmutable extends AFn {
   }
 
   @Override
-  public Vector apply1(Object arg) {
-    return new Vector(arg);
+  public Vector apply(Object... args) {
+    return new Vector(args);
   }
 }
