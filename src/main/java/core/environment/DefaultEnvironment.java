@@ -184,6 +184,7 @@ import core.procedures.system.Sleep;
 import core.procedures.system.ToString;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.MakeVector;
+import core.procedures.vectors.Shuffle;
 import core.procedures.vectors.Vec;
 import core.procedures.vectors.VectorFill;
 import core.procedures.vectors.VectorImmutable;
@@ -450,6 +451,7 @@ public final class DefaultEnvironment extends Environment {
       new VectorFill(),
       new VectorToImmutableVector(),
       new Vec(),
+      new Shuffle(),
 
       /* Functional */
       new Apply(),
