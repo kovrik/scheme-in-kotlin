@@ -1,5 +1,6 @@
 package unittests;
 
+import core.exceptions.ArityException;
 import core.scm.Cons;
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class HashmapTest extends AbstractTest {
 
@@ -55,6 +57,12 @@ public class HashmapTest extends AbstractTest {
     assertEquals(8L, eval("((hash-map (+ 1 2 3) (* 2 4)) 6)", env));
     assertEquals(10L, eval("(({* *, + +} +) 1 2 3 4)", env));
     assertEquals(10L, eval("(((hash-map * * + +) +) 1 2 3 4)", env));
+    try {
+      eval("({:test true} 1 2 3)", env);
+      fail();
+    } catch (ArityException e) {
+      // success
+    }
   }
 
   @Test

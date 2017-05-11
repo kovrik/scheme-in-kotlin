@@ -12,11 +12,13 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Set;
 
 import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class EvaluatorTest extends AbstractTest {
@@ -203,5 +205,13 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testManyArgs() {
     assertEquals(524794L, eval("(apply + (map inc (range 3 1024)))", env));
+  }
+
+  @Test
+  public void testEvalSet() {
+    assertTrue(eval("#{}", env) instanceof Set);
+    assertEquals(1,   eval("(count #{(+ 1 2)})", env));
+    assertEquals(3L,  eval("(first #{(+ 1 2)})", env));
+    assertEquals(15L, eval("(first #{(apply + [1 2 3 4 5])})", env));
   }
 }

@@ -1,6 +1,7 @@
 package unittests;
 
 import core.exceptions.IllegalSyntaxException;
+import core.exceptions.UndefinedIdentifierException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -28,7 +29,30 @@ public class ReflectorTest extends AbstractTest {
     assertTrue(((List)eval("(. java.util.Collections emptyList)", env)).isEmpty());
     assertEquals(-15L, eval("(Long/valueOf -15)", env));
     assertEquals(-15L, eval("(. Long valueOf -15)", env));
-    // TODO
+    try {
+      eval("(Longzz/valueOf -15)", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
+    try {
+      eval("(. Longzzz valueOf -15)", env);
+      fail();
+    } catch (UndefinedIdentifierException e) {
+      // expected
+    }
+    try {
+      eval("(Long/ 1)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // expected
+    }
+    try {
+      eval("(. Class getName)", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
   }
 
   @Test
@@ -38,13 +62,37 @@ public class ReflectorTest extends AbstractTest {
     assertEquals(BigInteger.ONE, eval("BigInteger/ONE", env));
     assertEquals(Math.PI, eval("Math/PI", env));
     assertEquals(Math.PI, eval("(. java.lang.Math PI)", env));
-    // TODO
+    try {
+      eval("Math/", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // expected
+    }
+    try {
+      eval("Math/BOOM", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
+    try {
+      eval("java.awt.Point/x", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
   }
 
   @Test
   public void testEvalMemberFields() {
-    // TODO getting instance fields directly (.-field instance)
-    // TODO
+    eval("(def point (new java.awt.Point 15 4))", env);
+    assertEquals(15, eval("(.-x point)", env));
+    assertEquals(4,  eval("(.-y point)", env));
+    try {
+      eval("(.-z point)", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
   }
 
   @Test
@@ -55,7 +103,7 @@ public class ReflectorTest extends AbstractTest {
     assertEquals(Long.class, eval("(. 1 getClass)", env));
     assertEquals(Long.class, eval("(. (+ 2 3 4) getClass)", env));
     assertEquals("123", eval("(.toString 123)", env));
-    assertEquals(1L, eval("(. (+ 1 2 3) compareTo (+ 1 2))", env));
+    assertEquals(1, eval("(. (+ 1 2 3) compareTo (+ 1 2))", env));
     try {
       eval("(.getClass nil)", env);
       fail();
@@ -68,7 +116,24 @@ public class ReflectorTest extends AbstractTest {
     } catch (NullPointerException e) {
       // expected
     }
-    // TODO
+    try {
+      eval("(.toStringz 123)", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
+    try {
+      eval("(.-toString)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // expected
+    }
+    try {
+      eval("(.toString)", env);
+      fail();
+    } catch (IllegalSyntaxException e) {
+      // expected
+    }
   }
 
   @Test
@@ -77,7 +142,12 @@ public class ReflectorTest extends AbstractTest {
     assertTrue(eval("(Object.)", env) != null);
     assertEquals("123", eval("(new String \"123\")", env));
     assertEquals("123", eval("(String. \"123\")", env));
-    // TODO
+    try {
+      eval("(String. (new Object))", env);
+      fail();
+    } catch (RuntimeException e) {
+      // expected
+    }
   }
 
   @Test

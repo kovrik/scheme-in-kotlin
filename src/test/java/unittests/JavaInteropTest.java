@@ -23,7 +23,7 @@ public class JavaInteropTest extends AbstractTest {
   public void testJavaStaticMethods() {
     System.setProperty("TESTKEY", "TESTVALUE");
     assertEquals("TESTVALUE", eval("(System/getProperty \"TESTKEY\")", env));
-    assertEquals(5L, eval("(Short/parseShort \"12\" 3)", env));
+    assertEquals(Short.valueOf("5"), eval("(Short/parseShort \"12\" 3)", env));
 //    assertEquals(3L, eval("(Short/valueOf 3)", env));
   }
 
@@ -37,7 +37,7 @@ public class JavaInteropTest extends AbstractTest {
     eval(map, env);
     eval("(.put h \"KEY\" \"VALUE\")", env);
     assertEquals("VALUE", eval("(.get h \"KEY\")", env));
-    assertEquals(5L, eval("(.length (.get h \"KEY\"))", env));
+    assertEquals(5, eval("(.length (.get h \"KEY\"))", env));
     eval("(.put h 1 1)", env);
     assertEquals(1L, eval("(.get h 1)", env));
   }
@@ -55,7 +55,7 @@ public class JavaInteropTest extends AbstractTest {
     assertEquals("zesz", eval("(.replace \"test\" #\\t #\\z)", env));
     assertEquals(TRUE, eval("(.isEmpty \"\")", env));
     assertEquals('e', eval("(.charAt \"test\" 1)", env));
-    assertEquals(4L, eval("(.length \"test\")", env));
+    assertEquals(4, eval("(.length \"test\")", env));
   }
 
   @Test

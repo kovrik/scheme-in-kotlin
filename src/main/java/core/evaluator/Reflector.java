@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,19 +107,6 @@ public class Reflector {
     return UNBOXED.getOrDefault(clazz, clazz);
   }
 
-  private Object upcastIfPossible(Object value) {
-    if (value == null) {
-      return null;
-    }
-    Class<?> clazz = value.getClass();
-    if (clazz == Integer.class || clazz == Short.class || clazz == Byte.class) {
-      return ((Number)value).longValue();
-    } else if (clazz == Float.class) {
-      return ((Number)value).doubleValue();
-    }
-    return value;
-  }
-
   public Class getClazz(String name) {
     Class clazz = _getClass(name);
     if (clazz == null) {
@@ -161,14 +149,19 @@ public class Reflector {
         throw new IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)");
       }
       String className = classAndField[0];
-      String field = classAndField[1];
+      String fieldName = classAndField[1];
       Class c = getClazz(className);
       try {
-        return c.getField(field).get(c);
+        Field field = c.getField(fieldName);
+        if (!Modifier.isStatic(field.getModifiers())) {
+          throw new RuntimeException(
+            String.format("reflector: unable to find static field %s of %s", fieldName, className));
+        }
+        return field.get(c);
       } catch (NoSuchFieldException e) {
-        throw new RuntimeException(String.format("reflector: unable to find static field %s in class %s", field, className), e);
+        throw new RuntimeException(String.format("reflector: unable to find static field %s in class %s", fieldName, className), e);
       } catch (IllegalAccessException e) {
-        throw new RuntimeException(String.format("reflector: unable to access static field %s in class %s", field, className));
+        throw new RuntimeException(String.format("reflector: unable to access static field %s in class %s", fieldName, className));
       }
     }
     throw new UndefinedIdentifierException(s);
@@ -201,20 +194,13 @@ public class Reflector {
   private Object evalJavaInstanceMethod(String m, Object instance, Object[] args) {
     String methodName = m.substring(1);
     Class<?> clazz = instance.getClass();
-    boolean isClass = false;
-    if (clazz == Symbol.class) {
-      clazz = getClazz(instance.toString());
-      isClass = true;
-    } else {
-      clazz = instance.getClass();
-    }
     Class[] argTypes = new Class[args.length];
     for (int i = 0; i < args.length; i++) {
       argTypes[i] = unboxIfPossible(args[i].getClass());
     }
-    Method method = getMethod(isClass ? Class.class : clazz, methodName, args, argTypes);
+    Method method = getMethod(clazz, methodName, args, argTypes);
     try {
-      return upcastIfPossible(method.invoke(isClass ? clazz : instance, args));
+      return method.invoke(instance, args);
     } catch (IllegalAccessException e) {
       throw new RuntimeException(String.format("reflector: unable to access method %s of %s", methodName, instance));
     } catch (InvocationTargetException e) {
@@ -225,18 +211,10 @@ public class Reflector {
   /* Java Interop: instance field */
   private Object evalJavaInstanceField(String f, Object instance) {
     Class<?> clazz = instance.getClass();
-    boolean isClass = false;
-    if (clazz == Symbol.class) {
-      clazz = getClazz(instance.toString());
-      isClass = true;
-    } else {
-      clazz = instance.getClass();
-    }
-    Class c = isClass ? Class.class : clazz;
     String fieldName = f.substring(2);
     try {
-      Field field = c.getField(fieldName);
-      return upcastIfPossible(field.get(isClass ? clazz : instance));
+      Field field = clazz.getField(fieldName);
+      return field.get(instance);
     } catch (NoSuchFieldException e) {
       throw new RuntimeException(String.format("reflector: unable to find field %s of %s", fieldName, instance));
     } catch (IllegalAccessException e) {
@@ -258,8 +236,11 @@ public class Reflector {
       argTypes[i] = unboxIfPossible(args[i].getClass());
     }
     Method method = getMethod(clazz, methodName, args, argTypes);
+    if (!Modifier.isStatic(method.getModifiers())) {
+      throw new RuntimeException(String.format("reflector: unable to find static method %s of %s", methodName, clazz.getName()));
+    }
     try {
-      return upcastIfPossible(method.invoke(null, args));
+      return method.invoke(null, args);
     } catch (IllegalAccessException e) {
       throw new RuntimeException(String.format("reflector: unable to access static method %s of %s", methodName, clazz.getName()));
     } catch (InvocationTargetException e) {
