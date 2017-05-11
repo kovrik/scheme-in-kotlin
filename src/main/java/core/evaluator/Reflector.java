@@ -2,7 +2,6 @@ package core.evaluator;
 
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.UndefinedIdentifierException;
-import core.scm.Symbol;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -13,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO get instance fields? (.-instanceField instance)
 public class Reflector {
 
   private static final Map<Class, Class> UNBOXED = new HashMap<>();
