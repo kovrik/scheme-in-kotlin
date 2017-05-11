@@ -10,10 +10,15 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class NumberTest extends AbstractTest {
 
@@ -724,14 +729,24 @@ public class NumberTest extends AbstractTest {
 
   @Test
   public void testThresholds() {
-    String chars = "123456789abcdef";
-    for (int r = 2; r <= 16; r++) {
-      StringBuilder sb = new StringBuilder();
-      char ch = chars.charAt(r - 2);
-      for (int c = 1; c <= 70; c++) {
-        sb.append(ch);
-        assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", sb.toString(), r), env));
-      }
+    Map<Integer, String> numbers  = new HashMap<>();
+    numbers.put(2,  "1111111111111111111111111111111111111111111111111111111111111111");
+    numbers.put(3,  "2222222222222222222222222222222222222222");
+    numbers.put(4,  "33333333333333333333333333333333");
+    numbers.put(5,  "4444444444444444444444444444");
+    numbers.put(6,  "5555555555555555555555555");
+    numbers.put(7,  "66666666666666666666666");
+    numbers.put(8,  "7777777777777777777777");
+    numbers.put(9,  "88888888888888888888");
+    numbers.put(10, "9999999999999999999");
+    numbers.put(11, "aaaaaaaaaaaaaaaaaaa");
+    numbers.put(12, "bbbbbbbbbbbbbbbbbb");
+    numbers.put(13, "cccccccccccccccccc");
+    numbers.put(14, "ddddddddddddddddd");
+    numbers.put(15, "eeeeeeeeeeeeeeeee");
+    numbers.put(16, "ffffffffffffffff");
+    for (Map.Entry<Integer, String> entry : numbers.entrySet()) {
+      assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", entry.getValue(), entry.getKey()), env));
     }
   }
 
