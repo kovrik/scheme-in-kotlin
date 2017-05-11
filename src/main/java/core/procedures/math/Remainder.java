@@ -46,30 +46,14 @@ public final class Remainder extends AFn {
     if (Utils.isZero(first)) {
       return Utils.inexactnessTaint(first, second);
     }
-    if (first instanceof BigRatio) {
-      first = ((BigRatio) first).toBigDecimal();
+    if (first instanceof BigRatio || second instanceof BigRatio) {
+      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
-    if (second instanceof BigRatio) {
-      second = ((BigRatio) second).toBigDecimal();
+    if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
-
-    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return apply((BigDecimal)first, (BigDecimal)second);
-    }
-    if (first instanceof BigDecimal) {
-      return apply((BigDecimal)first, Utils.toBigDecimal(second));
-    }
-    if (second instanceof BigDecimal) {
-      return apply(Utils.toBigDecimal(first), (BigDecimal)second);
-    }
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return apply((BigInteger) first, (BigInteger)second);
-    }
-    if (first instanceof BigInteger) {
-      return apply((BigInteger)first, Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return apply(Utils.toBigInteger(first), (BigInteger)second);
+    if ((first instanceof BigInteger) || (second instanceof BigInteger)) {
+      return apply(Utils.toBigInteger(first), Utils.toBigInteger(second));
     }
     if ((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) {
       double result = first.doubleValue() % second.doubleValue();

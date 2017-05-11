@@ -83,17 +83,11 @@ public final class Division extends AFn {
       }
       return result;
     }
-    if (numerator instanceof BigDecimal) {
-      return ((BigDecimal)numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
+    if (numerator instanceof BigDecimal || denominator instanceof BigDecimal) {
+      return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
     }
-    if (denominator instanceof BigDecimal) {
-      return ((BigDecimal) denominator).divide(Utils.toBigDecimal(numerator), Utils.DEFAULT_CONTEXT);
-    }
-    if (numerator instanceof BigInteger) {
-      return ((BigInteger)numerator).divide(Utils.toBigInteger(denominator));
-    }
-    if (denominator instanceof BigInteger) {
-      return (Utils.toBigInteger(numerator)).divide((BigInteger)denominator);
+    if (numerator instanceof BigInteger || denominator instanceof BigInteger) {
+      return Utils.toBigInteger(numerator).divide(Utils.toBigInteger(denominator));
     }
     double f = numerator.doubleValue();
     double s = denominator.doubleValue();

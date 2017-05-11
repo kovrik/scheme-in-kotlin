@@ -77,14 +77,14 @@ public final class Subtraction extends AFn {
       return ((BigRatio)first).minus((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (second instanceof Long) {
+      if (Utils.isExact(second)) {
         return ((BigRatio) first).minus(BigRatio.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (first instanceof Long) {
+      if (Utils.isExact(first)) {
         return BigRatio.valueOf(first.toString(), "1").minus((BigRatio) second);
       } else {
         second = second.doubleValue();
@@ -104,17 +104,11 @@ public final class Subtraction extends AFn {
       }
       return result;
     }
-    if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).subtract(Utils.toBigDecimal(second));
+    if (first instanceof BigDecimal || second instanceof BigDecimal) {
+      return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
     }
-    if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).subtract(Utils.toBigDecimal(first));
-    }
-    if (first instanceof BigInteger) {
-      return ((BigInteger)first).subtract(Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return Utils.toBigInteger(first).subtract((BigInteger) second);
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return Utils.toBigInteger(first).subtract(Utils.toBigInteger(second));
     }
     long f = first.longValue();
     long s = second.longValue();

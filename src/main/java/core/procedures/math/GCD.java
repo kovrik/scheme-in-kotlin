@@ -98,23 +98,11 @@ public final class GCD extends AFn {
     if (second instanceof BigRatio) {
       return gcd(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
-    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return gcd((BigDecimal) first, (BigDecimal) second);
+    if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      return gcd(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
-    if (first instanceof BigDecimal) {
-      return gcd((BigDecimal) first, Utils.toBigDecimal(second));
-    }
-    if (second instanceof BigDecimal) {
-      return gcd(Utils.toBigDecimal(first), (BigDecimal) second);
-    }
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return gcd((BigInteger) first, (BigInteger) second);
-    }
-    if (first instanceof BigInteger) {
-      return gcd((BigInteger) first, Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return gcd(Utils.toBigInteger(first), (BigInteger) second);
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return gcd(Utils.toBigInteger(first), Utils.toBigInteger(second));
     }
     return gcd(first.doubleValue(), second.doubleValue());
   }

@@ -128,6 +128,10 @@ public class NumberTest extends AbstractTest {
     assertTrue(Double.isNaN((Double)eval("(sqrt -5)", env)));
 
     assertEquals(BigRatio.valueOf("1", "100"), eval("(/ 1 10 10)", env));
+    assertEquals(BigRatio.valueOf("26", "5"), eval("(+ 1/5 (short 5))", env));
+    assertEquals(BigRatio.valueOf("-71", "12"), eval("(- 1/12 (short 6))", env));
+    assertEquals(BigRatio.valueOf("5", "23"), eval("(* 1/23 (short 5))", env));
+    assertEquals(BigRatio.valueOf("1", "115"), eval("(/ 1/23 (short 5))", env));
   }
 
   @Test

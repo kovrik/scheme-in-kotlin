@@ -60,14 +60,14 @@ public final class Addition extends AFn {
       return ((BigRatio)first).plus((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (second instanceof Long || second instanceof BigInteger) {
+      if (Utils.isExact(second)) {
         return ((BigRatio) first).plus(BigRatio.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (first instanceof Long || first instanceof BigInteger) {
+      if (Utils.isExact(first)) {
         return BigRatio.valueOf(first.toString(), "1").plus((BigRatio) second);
       } else {
         second = second.doubleValue();

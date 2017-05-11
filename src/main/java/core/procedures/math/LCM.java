@@ -93,23 +93,11 @@ public final class LCM extends AFn {
     if (second instanceof BigRatio) {
       return lcm(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
-    if ((first instanceof BigDecimal) && (second instanceof BigDecimal)) {
-      return lcm((BigDecimal)first, (BigDecimal)second);
+    if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
+      return lcm(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
     }
-    if (first instanceof BigDecimal) {
-      return lcm((BigDecimal)first, Utils.toBigDecimal(second));
-    }
-    if (second instanceof BigDecimal) {
-      return lcm(Utils.toBigDecimal(first), (BigDecimal)second);
-    }
-    if ((first instanceof BigInteger) && (second instanceof BigInteger)) {
-      return lcm((BigInteger)first, (BigInteger)second);
-    }
-    if (first instanceof BigInteger) {
-      return lcm((BigInteger)first, Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return lcm(Utils.toBigInteger(first), (BigInteger)second);
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return lcm(Utils.toBigInteger(first), Utils.toBigInteger(second));
     }
     return lcm(first.doubleValue(), second.doubleValue());
   }

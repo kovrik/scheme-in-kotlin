@@ -90,17 +90,11 @@ public final class Multiplication extends AFn {
       }
       return result;
     }
-    if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).multiply(Utils.toBigDecimal(second));
+    if (first instanceof BigDecimal || second instanceof BigDecimal) {
+      return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
     }
-    if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).multiply(Utils.toBigDecimal(first));
-    }
-    if (first instanceof BigInteger) {
-      return ((BigInteger)first).multiply(Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return Utils.toBigInteger(first).multiply((BigInteger)second);
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return Utils.toBigInteger(first).multiply(Utils.toBigInteger(second));
     }
     long f = first.longValue();
     long s = second.longValue();
