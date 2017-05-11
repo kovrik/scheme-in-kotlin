@@ -110,7 +110,7 @@ public abstract class AFn implements IFn<Object[], Object> {
         continue;
       }
       /* Last argument (optional special case) */
-      if (i == argsSize - 1 && (lastArgType != null)) {
+      if (i == argsSize - 1 && lastArgType != null) {
         if (!(Type.checkType(arg, lastArgType))) {
           throw new WrongTypeException(getName(), lastArgType, arg);
         }
@@ -135,7 +135,7 @@ public abstract class AFn implements IFn<Object[], Object> {
     /* Check args */
     checkArgs(args);
     /* if min == max, then function is not variadic, hence get arity */
-    int arity = (minArgs == maxArgs) ? minArgs : -1;
+    int arity = minArgs == maxArgs ? minArgs : -1;
     switch (arity) {
       case 0:  return apply0();
       case 1:  return apply1(args[0]);
