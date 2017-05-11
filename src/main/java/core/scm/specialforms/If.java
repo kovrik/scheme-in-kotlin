@@ -22,7 +22,8 @@ public enum If implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     return Utils.toBoolean(evaluator.eval(expression.get(1), env)) ?
-           new Thunk(expression.get(2), env) : new Thunk(expression.get(3), env);
+           new Thunk(expression.get(2), env) :
+           new Thunk(expression.get(3), env);
   }
 
   @Override
