@@ -44,26 +44,22 @@ public final class NumericalComparison extends AFn {
     for (int i = 0; i < args.length - 1; i++) {
       Number f = (Number)args[i];
       Number s = (Number)args[i + 1];
-      if (f instanceof BigRatio) {
-        f = ((BigRatio)f).toBigDecimal();
-      }
-      if (s instanceof BigRatio) {
-        s = ((BigRatio)s).toBigDecimal();
-      }
       if ((f instanceof Double) || (s instanceof Double)) {
         f = f.doubleValue();
         s = s.doubleValue();
       } else if ((f instanceof Float) || (s instanceof Float)) {
         f = f.floatValue();
         s = s.floatValue();
-      } else if ((f instanceof BigDecimal) && !(s instanceof BigDecimal)) {
-        s = Utils.toBigDecimal(s);
-      } else if ((s instanceof BigDecimal) && !(f instanceof BigDecimal)) {
+      } else if ((f instanceof BigRatio) || (s instanceof BigRatio)) {
+        /* Coerce BigRatio to BigDecimal */
         f = Utils.toBigDecimal(f);
-      } else if ((f instanceof BigInteger) && !(s instanceof BigInteger)) {
-        s = Utils.toBigInteger(s);
-      } else if ((s instanceof BigInteger) && !(f instanceof BigInteger)) {
+        s = Utils.toBigDecimal(s);
+      } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
+        f = Utils.toBigDecimal(f);
+        s = Utils.toBigDecimal(s);
+      } else if ((s instanceof BigInteger) || (f instanceof BigInteger)) {
         f = Utils.toBigInteger(f);
+        s = Utils.toBigInteger(s);
       } else {
         f = f.longValue();
         s = s.longValue();
