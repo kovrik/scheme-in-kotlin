@@ -60,14 +60,14 @@ public final class Addition extends AFn {
       return ((BigRatio)first).plus((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (second instanceof Long || second instanceof BigDecimal) {
+      if (second instanceof Long || second instanceof BigInteger) {
         return ((BigRatio) first).plus(BigRatio.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (first instanceof Long || first instanceof BigDecimal) {
+      if (first instanceof Long || first instanceof BigInteger) {
         return BigRatio.valueOf(first.toString(), "1").plus((BigRatio) second);
       } else {
         second = second.doubleValue();
@@ -87,17 +87,11 @@ public final class Addition extends AFn {
       }
       return result;
     }
-    if (first instanceof BigDecimal) {
-      return ((BigDecimal)first).add(Utils.toBigDecimal(second));
+    if (first instanceof BigDecimal || second instanceof BigDecimal) {
+      return Utils.toBigDecimal(first).add(Utils.toBigDecimal(second));
     }
-    if (second instanceof BigDecimal) {
-      return ((BigDecimal) second).add(Utils.toBigDecimal(first));
-    }
-    if (first instanceof BigInteger) {
-      return ((BigInteger)first).add(Utils.toBigInteger(second));
-    }
-    if (second instanceof BigInteger) {
-      return Utils.toBigInteger(first).add((BigInteger) second);
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return Utils.toBigInteger(first).add(Utils.toBigInteger(second));
     }
     long f = first.longValue();
     long s = second.longValue();
