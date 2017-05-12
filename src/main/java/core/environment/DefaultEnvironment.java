@@ -50,6 +50,7 @@ import core.procedures.generic.Nth;
 import core.procedures.generic.RandNth;
 import core.procedures.generic.Range;
 import core.procedures.generic.Reverse;
+import core.procedures.generic.Second;
 import core.procedures.generic.Sort;
 import core.procedures.hashmaps.Find;
 import core.procedures.hashmaps.HashMapProc;
@@ -497,6 +498,7 @@ public final class DefaultEnvironment extends Environment {
       new Empty(),
       new Range(),
       new First(),
+      new Second(),
       new Next(),
       new Next() { @Override public String getName() { return "rest"; } },
       new RandNth(),
