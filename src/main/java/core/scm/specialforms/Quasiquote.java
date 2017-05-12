@@ -52,18 +52,8 @@ public enum Quasiquote implements ISpecialForm {
   // TODO Simplify
   private Object quasiquote(Object expr, Environment env, Evaluator evaluator) {
     if (expr instanceof MutableVector) {
-      MutableVector vector = (MutableVector) expr;
-      if (vector.size() == 0) {
-        /* Nothing to process */
-        return vector;
-      }
-      /* `#(unquote 1)  syntax is not valid */
-      /* `,@#(list 1 2) syntax is not valid */
-      if (UNQUOTE_SYMBOL.equals(vector.get(0)) || UNQUOTE_SPLICING_SYMBOL.equals(vector.get(0))) {
-        throw IllegalSyntaxException.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
-      }
       /* Vector quasiquotation */
-      return quasiquoteVector(0, expr, env, evaluator);
+      return quasiquoteVector(expr, env, evaluator);
     } else if (expr instanceof List) {
       List list = (List) expr;
       if (list.isEmpty()) {
@@ -160,9 +150,19 @@ public enum Quasiquote implements ISpecialForm {
   }
 
   // TODO Optimize vector->list and list-<vector conversions
-  private Object quasiquoteVector(int depth, Object expr, Environment env, Evaluator evaluator) {
+  private Object quasiquoteVector(Object expr, Environment env, Evaluator evaluator) {
+    MutableVector vector = (MutableVector) expr;
+    if (vector.size() == 0) {
+      /* Nothing to process */
+      return vector;
+    }
+    /* `#(unquote 1)  syntax is not valid */
+    /* `,@#(list 1 2) syntax is not valid */
+    if (UNQUOTE_SYMBOL.equals(vector.get(0)) || UNQUOTE_SPLICING_SYMBOL.equals(vector.get(0))) {
+      throw IllegalSyntaxException.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
+    }
     Cons list = VectorToList.vectorToList((MutableVector) expr);
-    Object result = quasiquoteList(depth, list, env, evaluator);
+    Object result = quasiquoteList(0, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
     if (!isList(result)) {
       throw new IllegalSyntaxException("read: illegal use of '.'");
