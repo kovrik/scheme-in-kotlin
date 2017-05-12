@@ -18,6 +18,8 @@ public class HashmapTest extends AbstractTest {
     assertTrue(eval("{}", env) instanceof Map);
     assertTrue(eval("{1 2}", env) instanceof Map);
     assertTrue(eval("{1 2, 3 4}", env) instanceof Map);
+    assertTrue(eval("{1,2,3,4}", env) instanceof Map);
+    assertTrue(eval("{1,2,,3,4}", env) instanceof Map);
     assertTrue(eval("{1 2, 3 4 ,   5   8 }", env) instanceof Map);
     assertTrue(eval("(hash-map 1 2 3 4    5   8 )", env) instanceof Map);
   }

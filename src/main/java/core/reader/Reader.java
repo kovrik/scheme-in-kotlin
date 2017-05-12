@@ -452,11 +452,14 @@ public class Reader implements IReader {
       Object key = nextToken();
 
       /* Skip whitespaces and commas */
+      c = (char)reader.read();
       while (Character.isWhitespace(c) || c == ',') {
         c = (char)reader.read();
       }
       if (c == '}') break;
+      reader.unread(c);
       Object value = nextToken();
+
       hashmap.put(key, value);
     }
     return hashmap;
