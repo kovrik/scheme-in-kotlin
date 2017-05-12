@@ -54,6 +54,8 @@ public class QuasiquoteTest extends AbstractTest {
     assertEquals(list(1L, 1L), eval("(quasiquote (,1 ,(quasiquote ,1)))", env));
     assertEquals(list(1L, 1L), eval("(quasiquote (,1 ,(quasiquote ,(quasiquote ,1))))", env));
     assertEquals(list(s("+")), eval("(let ((x '())) `(+ ,@x)) '(+)", env));
+    assertEquals(1L, eval("`(,@1)", env));
+    assertEquals("String", eval("`(,@\"String\")", env));
     try {
       eval("`(1 , %(list 2 3))", env);
       fail();
