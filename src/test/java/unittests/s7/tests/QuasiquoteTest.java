@@ -1,5 +1,6 @@
 package unittests.s7.tests;
 
+import core.exceptions.IllegalSyntaxException;
 import core.exceptions.UndefinedIdentifierException;
 import core.procedures.cons.ConsProc;
 import org.junit.Test;
@@ -58,6 +59,16 @@ public class QuasiquoteTest extends AbstractTest {
       fail();
     } catch (UndefinedIdentifierException e) {
       // expected
+    }
+    // FIXME `#(unquote 1)
+    String[] illegals = {"`,@#(list 1 2)", ",(1 (unquote 1 2 3))", "`((unquote (+ 1 2) (+3 4)))",};
+    for (String s : illegals) {
+      try {
+        eval(s, env);
+        fail(s);
+      } catch (IllegalSyntaxException e) {
+        // expected
+      }
     }
   }
 }

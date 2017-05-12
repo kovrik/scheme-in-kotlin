@@ -99,12 +99,11 @@ public enum Quasiquote implements ISpecialForm {
         /* Check special cases: `(1 unquote 2) => `(1 . 2) */
         if (n > 0 && UNQUOTE_SYMBOL.equals(o)) {
           /* if UNQUOTE is just before the last element a */
-          if (n == list.size() - 2) {
-            /* Evaluate and append last element */
-            return append(result, evaluator.eval(list.get(n + 1), env));
-          } else {
+          if (n != list.size() - 2) {
             throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
+          /* Evaluate and append last element */
+          return append(result, evaluator.eval(list.get(n + 1), env));
         }
         if (Cons.isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
           throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
@@ -124,11 +123,15 @@ public enum Quasiquote implements ISpecialForm {
           if (depth == 0) {
             /* Level of quasiquotation is 0 - evaluate! */
             Object eval = evaluator.eval(el.get(1), env);
-            if (UNQUOTE_SYMBOL.equals(op)) {
-              /* Unquote: wrap result into a list */
-              eval = Cons.list(eval);
+            if (UNQUOTE_SPLICING_SYMBOL.equals(op)) {
+              /* Unquote Splicing: splice and append elements into resulting list */
+              /* `(,@(list 1 2 3)) => `(1 2 3) */
+              result = (Cons) append(result, eval);
+            } else {
+              /* Unquote: append list with results */
+              /* `(,(list 1 2 3)) => `((1 2 3)) */
+              result = (Cons) append(result, Cons.list(eval));
             }
-            result = (Cons) append(result, eval);
           } else {
             /* Decrease depth of quasiquotation */
             result = (Cons) append(result, Cons.list(quasiquoteList(depth - 1, o, env, evaluator)));
