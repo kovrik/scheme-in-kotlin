@@ -3,8 +3,6 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Cons;
-import core.scm.Vector;
 
 import java.util.*;
 
@@ -28,17 +26,8 @@ public final class Sort extends AFn {
   @Override
   public Object apply1(Object arg) {
     try {
-      if (arg instanceof List) {
+      if (arg instanceof Collection) {
         Collections.sort((List) arg);
-        return arg;
-      }
-      if (arg instanceof Set) {
-        Cons list = Cons.list((Set) arg);
-        Collections.sort(list);
-        return list;
-      }
-      if (arg instanceof Vector) {
-        Arrays.sort(((Vector) arg).getArray());
         return arg;
       }
       if (arg instanceof Map) {

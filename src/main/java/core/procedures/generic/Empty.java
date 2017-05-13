@@ -28,14 +28,11 @@ public final class Empty extends AFn {
   public Object apply1(Object arg) {
     if (arg instanceof List) {
       return Cons.list();
-    }
-    if (arg instanceof Set) {
+    } else if (arg instanceof Set) {
       return new HashSet<>();
-    }
-    if (arg instanceof Vector) {
+    } else if (arg instanceof Vector) {
       return new MutableVector();
-    }
-    if (arg instanceof Map) {
+    } else if (arg instanceof Map) {
       return new HashMap<>();
     }
     return null;

@@ -7,14 +7,11 @@ import core.procedures.IFn;
 import core.scm.Cons;
 import core.scm.Symbol;
 import core.scm.Thunk;
-import core.scm.Vector;
 import core.scm.specialforms.Quote;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public final class Apply extends AFn {
 
@@ -35,19 +32,10 @@ public final class Apply extends AFn {
     }
 
     Object last = args[args.length - 1];
-    if (!(last instanceof Vector) && !(last instanceof Collection)) {
+    if (!(last instanceof Collection)) {
       throw new WrongTypeException(getName(), "List or Vector or Set", last);
     }
-    Iterator iter = null;
-    if (last instanceof List) {
-      iter = ((List) last).iterator();
-    } else if (last instanceof Vector) {
-      iter = ((Vector)last).iterator();
-    } else if (last instanceof Set) {
-      iter = ((Set)last).iterator();
-    }
-    while (iter.hasNext()) {
-      Object o = iter.next();
+    for (Object o : ((Collection) last)) {
       if ((o instanceof List) || (o instanceof Symbol)) {
         sexp.add(Quote.quote(o));
       } else {

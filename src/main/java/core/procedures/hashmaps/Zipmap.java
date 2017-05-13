@@ -5,10 +5,9 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.generic.Count;
 import core.procedures.generic.Nth;
-import core.scm.Vector;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class Zipmap extends AFn {
@@ -32,10 +31,10 @@ public final class Zipmap extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    if (!(arg1 instanceof Vector) && !(arg1 instanceof List)) {
+    if (!(arg1 instanceof Collection)) {
       throw new WrongTypeException(getName(), "List or Vector", arg1);
     }
-    if (!(arg2 instanceof Vector) && !(arg2 instanceof List)) {
+    if (!(arg2 instanceof Collection)) {
       throw new WrongTypeException(getName(), "List or Vector", arg2);
     }
     int size = Math.min(count.apply1(arg1), count.apply1(arg2));

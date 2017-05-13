@@ -3,10 +3,9 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Vector;
 import core.utils.Utils;
 
-import java.util.List;
+import java.util.Collection;
 
 public final class Nth extends AFn {
 
@@ -30,7 +29,7 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
-    if (!(col instanceof Vector) && !(col instanceof List) && !(col instanceof CharSequence)) {
+    if (!(col instanceof Collection) && !(col instanceof CharSequence)) {
       throw new WrongTypeException(getName(), "List or Vector or String", col);
     }
 

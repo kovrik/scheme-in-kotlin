@@ -4,9 +4,9 @@ import core.environment.Environment;
 import core.procedures.AFn;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /* Lambda */
 public class Procedure extends AFn {
@@ -47,8 +47,7 @@ public class Procedure extends AFn {
   }
 
   private static boolean isConst(Object obj) {
-    return !((obj instanceof Symbol) || (obj instanceof List) || (obj instanceof Map) ||
-             (obj instanceof Vector) || (obj instanceof Set));
+    return !((obj instanceof Symbol) || (obj instanceof Collection) || (obj instanceof Map));
   }
 
   private Symbol[] getArgs() {

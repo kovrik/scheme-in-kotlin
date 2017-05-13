@@ -3,9 +3,7 @@ package core.procedures.sets;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Vector;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,9 +26,6 @@ public final class SetProc extends AFn {
 
   @Override
   public Set<Object> apply1(Object arg) {
-    if (arg instanceof Set) {
-      return (Set<Object>) arg;
-    }
     if (arg instanceof Collection) {
       return new HashSet<>((Collection)arg);
     }
@@ -41,9 +36,6 @@ public final class SetProc extends AFn {
         set.add(cs.charAt(i));
       }
       return set;
-    }
-    if (arg instanceof Vector) {
-      return new HashSet<>(Arrays.asList(((Vector)arg).getArray()));
     }
     throw new WrongTypeException(getName(), "List or Vector or Set or String", arg);
   }

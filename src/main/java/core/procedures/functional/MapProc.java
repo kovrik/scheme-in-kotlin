@@ -9,7 +9,6 @@ import core.procedures.generic.Get;
 import core.scm.Cons;
 import core.scm.Symbol;
 import core.scm.Thunk;
-import core.scm.Vector;
 import core.scm.specialforms.Quote;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public final class MapProc extends AFn {
     final int size = count.apply1(args[1]);
     for (int i = 1; i < args.length; i++) {
       /* Check type */
-      if (!(args[i] instanceof Vector) && !(args[i] instanceof Collection) && !(args[i] instanceof CharSequence)) {
+      if (!(args[i] instanceof Collection) && !(args[i] instanceof CharSequence)) {
         throw new WrongTypeException(getName(), "List or Vector or Set", args[i]);
       }
       /* Check size */

@@ -3,10 +3,8 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Vector;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 public class First extends AFn {
 
@@ -30,15 +28,8 @@ public class First extends AFn {
   }
 
   public static Object first(Object arg) {
-    if (arg instanceof List) {
-      List list = (List) arg;
-      return list.isEmpty() ? null : list.get(0);
-    } else if (arg instanceof Set) {
-      Set set = (Set) arg;
-      return set.isEmpty() ? null : set.iterator().next();
-    } else if (arg instanceof Vector) {
-      Vector vec = (Vector) arg;
-      return vec.size() == 0 ? null : vec.get(0);
+    if (arg instanceof Collection) {
+      return ((Collection)arg).isEmpty() ? null : ((Collection) arg).iterator().next();
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;
       return cs.length() == 0 ? null : cs.charAt(0);

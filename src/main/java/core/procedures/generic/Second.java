@@ -3,11 +3,9 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Vector;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 public class Second extends AFn {
 
@@ -31,17 +29,13 @@ public class Second extends AFn {
   }
 
   public static Object second(Object arg) {
-    if (arg instanceof List) {
-      List list = (List) arg;
-      return list.size() < 2 ? null : list.get(1);
-    } else if (arg instanceof Set) {
-      Set set = (Set) arg;
-      Iterator iterator = set.iterator();
+    if (arg instanceof Collection) {
+      if (((Collection)arg).size() < 2) {
+        return null;
+      }
+      Iterator iterator = ((Collection)arg).iterator();
       iterator.next();
-      return set.size() < 2 ? null : iterator.next();
-    } else if (arg instanceof Vector) {
-      Vector vec = (Vector) arg;
-      return vec.size() < 2 ? null : vec.get(1);
+      return iterator.next();
     } else if (arg instanceof CharSequence) {
       CharSequence cs = (CharSequence) arg;
       return cs.length() < 2 ? null : cs.charAt(1);
