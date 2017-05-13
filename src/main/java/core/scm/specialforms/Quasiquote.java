@@ -3,6 +3,8 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.procedures.generic.First;
+import core.procedures.sets.SetProc;
 import core.procedures.vectors.ListToVector;
 import core.procedures.vectors.VectorToList;
 import core.scm.Cons;
@@ -11,6 +13,7 @@ import core.scm.Symbol;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static core.procedures.cons.Append.append;
 import static core.procedures.cons.Car.car;
@@ -29,6 +32,8 @@ public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
   public static final Symbol QUASIQUOTE_SYMBOL = Symbol.intern(QUASIQUOTE.toString());
+
+  private final SetProc setProc = new SetProc();
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
@@ -54,6 +59,9 @@ public enum Quasiquote implements ISpecialForm {
     if (expr instanceof MutableVector) {
       /* Vector quasiquotation */
       return quasiquoteVector(expr, env, evaluator);
+    } else if (expr instanceof Set) {
+      /* Set quasiquotation */
+      return quasiquoteSet(expr, env, evaluator);
     } else if (expr instanceof List) {
       List list = (List) expr;
       if (list.isEmpty()) {
@@ -168,6 +176,27 @@ public enum Quasiquote implements ISpecialForm {
       throw new IllegalSyntaxException("read: illegal use of '.'");
     }
     return ListToVector.listToVector(result);
+  }
+
+  private Object quasiquoteSet(Object expr, Environment env, Evaluator evaluator) {
+    Set set = (Set) expr;
+    if (set.size() == 0) {
+      /* Nothing to process */
+      return set;
+    }
+    /* `#(unquote 1)  syntax is not valid */
+    /* `,@#(list 1 2) syntax is not valid */
+    Object first = First.first(set);
+    if (UNQUOTE_SYMBOL.equals(first) || UNQUOTE_SPLICING_SYMBOL.equals(first)) {
+      throw IllegalSyntaxException.of(first.toString(), expr, "invalid context within quasiquote");
+    }
+    Cons list = Cons.list(set);
+    Object result = quasiquoteList(0, list, env, evaluator);
+    // FIXME throw "illegal use of '.'" in Reader instead
+    if (!isList(result)) {
+      throw new IllegalSyntaxException("read: illegal use of '.'");
+    }
+    return setProc.apply1(result);
   }
 
   @Override
