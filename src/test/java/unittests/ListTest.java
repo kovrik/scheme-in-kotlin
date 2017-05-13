@@ -460,6 +460,28 @@ public class ListTest extends AbstractTest {
     assertEquals(1L, eval("(first '(1))", env));
     assertEquals(2L, eval("(first '(2 3 4))", env));
     assertEquals(Cons.EMPTY, eval("(first '(() 3 4))", env));
+    assertEquals(null, eval("(first [])", env));
+    assertEquals(1L, eval("(first [1])", env));
+    assertEquals(2L, eval("(first [2 3 4])", env));
+    assertEquals(Cons.EMPTY, eval("(first ['() 3 4])", env));
+    assertEquals(null, eval("(first #{})", env));
+    assertEquals(1L, eval("(first #{1})", env));
+    assertEquals(null, eval("(first \"\")", env));
+    assertEquals('t', eval("(first \"test\")", env));
+  }
+
+  @Test
+  public void testEvalSecond() {
+    assertEquals(null, eval("(second '())", env));
+    assertEquals(null, eval("(second '(1))", env));
+    assertEquals(3L, eval("(second '(2 3 4))", env));
+    assertEquals(Cons.EMPTY, eval("(second '(3 () 3 4))", env));
+    assertEquals(null, eval("(second [])", env));
+    assertEquals(null, eval("(second [1])", env));
+    assertEquals(3L, eval("(second [2 3 4])", env));
+    assertEquals(Cons.EMPTY, eval("(second [3 '() 3 4])", env));
+    assertEquals(null, eval("(second \"\")", env));
+    assertEquals('e', eval("(second \"test\")", env));
   }
 
   @Test
