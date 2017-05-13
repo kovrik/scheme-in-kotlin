@@ -11,12 +11,12 @@ public class TCOTest extends AbstractTest {
 
   @Test
   public void testIfTCO() {
-    String recursive = "(define (recursive n)" +
-                       "  (if (zero? n)" +
-                       "      \"DONE\"" +
-                       "      (recursive (- n 1))))";
-    eval(recursive, env);
-    assertEquals("DONE", eval("(recursive " + ITERS + ")", env));
+    String recur = "(define (recur n)" +
+                   "  (if (zero? n)" +
+                   "      \"DONE\"" +
+                   "      (recur (- n 1))))";
+    eval(recur, env);
+    assertEquals("DONE", eval("(recur " + ITERS + ")", env));
   }
 
   @Test
