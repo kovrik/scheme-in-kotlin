@@ -1,21 +1,14 @@
 package core.procedures.hashmaps;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.procedures.generic.Count;
-import core.procedures.generic.Nth;
 import core.utils.Utils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public final class Zipmap extends AFn {
-
-  private final Count count = new Count();
-  private final Nth nth = new Nth();
 
   public Zipmap() {
     super(new FnArgsBuilder().min(2).max(2).build());
@@ -35,9 +28,8 @@ public final class Zipmap extends AFn {
   public Object apply2(Object arg1, Object arg2) {
     Iterator iterator1 = Utils.toIterator(arg1);
     Iterator iterator2 = Utils.toIterator(arg2);
-    int size = Math.min(count.apply1(arg1), count.apply1(arg2));
     Map<Object, Object> map = new HashMap<>();
-    for (int i = 0; i < size; i++) {
+    while (iterator1.hasNext() && iterator2.hasNext()) {
       map.put(iterator1.next(), iterator2.next());
     }
     return map;

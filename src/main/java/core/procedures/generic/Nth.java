@@ -5,8 +5,6 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.utils.Utils;
 
-import java.util.Collection;
-
 public final class Nth extends AFn {
 
   private final Count count = new Count();

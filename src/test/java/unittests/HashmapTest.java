@@ -4,6 +4,7 @@ import core.exceptions.ArityException;
 import core.scm.Cons;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +74,8 @@ public class HashmapTest extends AbstractTest {
     assertEquals(Cons.EMPTY, eval("(keys {})", env));
     assertEquals(6L, eval("(apply + (vals (zipmap '[+ - /] '(1 2 3))))", env));
     assertEquals(Cons.EMPTY, eval("(vals {})", env));
-    assertEquals(new HashMap<>(), eval("(zipmap [] '())", env));
+    assertEquals(Collections.EMPTY_MAP, eval("(zipmap [] '())", env));
+    assertEquals(Collections.EMPTY_MAP, eval("(zipmap nil nil)", env));
+    assertEquals(3L, eval("(get (zipmap \"test\" [1 2 3 4]) #\\s)", env));
   }
 }

@@ -1,6 +1,5 @@
 package core.procedures.functional;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.IFn;
@@ -11,7 +10,6 @@ import core.scm.specialforms.Quote;
 import core.utils.Utils;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 

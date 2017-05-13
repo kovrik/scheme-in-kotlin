@@ -1,11 +1,9 @@
 package core.procedures.generic;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.utils.Utils;
 
-import java.util.Collection;
 import java.util.Random;
 
 public final class RandNth extends AFn {
