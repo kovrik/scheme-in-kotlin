@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -592,16 +593,22 @@ public final class Utils {
     return value instanceof Boolean ? (boolean)value : value != null;
   }
 
+  public static boolean isSeqable(Object obj) {
+    return obj == null || obj instanceof Iterable || obj instanceof CharSequence;
+  }
+
   // TODO Return custom Sequence object instead of Iterator
   // TODO iterator for Maps (MapEntries)?
   public static Iterator toIterator(Object obj) {
-    if (obj instanceof Collection) {
-      return ((Collection) obj).iterator();
+    if (!isSeqable(obj)) {
+      throw new RuntimeException("Don't know how to create Sequence from " + obj.getClass());
     }
-    if (obj instanceof CharSequence) {
+    if (obj instanceof Iterable) {
+      return ((Iterable) obj).iterator();
+    } else if (obj instanceof CharSequence) {
       return stringIterator((CharSequence) obj);
     }
-    throw new RuntimeException("Don't know how to create Sequence from " + obj.getClass());
+    return Collections.EMPTY_LIST.iterator();
   }
 
   /* Returns String Iterator */

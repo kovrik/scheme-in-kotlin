@@ -8,9 +8,11 @@ import core.scm.Cons;
 import core.scm.Symbol;
 import core.scm.Thunk;
 import core.scm.specialforms.Quote;
+import core.utils.Utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public final class Apply extends AFn {
@@ -30,12 +32,10 @@ public final class Apply extends AFn {
     if (args.length > 2) {
       sexp.addAll(Arrays.asList(args).subList(1, args.length - 1));
     }
-
     Object last = args[args.length - 1];
-    if (!(last instanceof Collection)) {
-      throw new WrongTypeException(getName(), "List or Vector or Set", last);
-    }
-    for (Object o : ((Collection) last)) {
+    Iterator iterator = Utils.toIterator(last);
+    while (iterator.hasNext()) {
+      Object o = iterator.next();
       if ((o instanceof List) || (o instanceof Symbol)) {
         sexp.add(Quote.quote(o));
       } else {

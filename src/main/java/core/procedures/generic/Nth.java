@@ -29,10 +29,9 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
-    if (!(col instanceof Collection) && !(col instanceof CharSequence)) {
-      throw new WrongTypeException(getName(), "List or Vector or String", col);
+    if (!Utils.isSeqable(col)) {
+      throw new RuntimeException("Don't know how to create Sequence from " + col.getClass());
     }
-
     Object index = args[1];
     if (!Utils.isReal(index)) {
       throw new WrongTypeException(getName(), "Real", index);

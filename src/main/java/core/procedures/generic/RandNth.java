@@ -3,6 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.Utils;
 
 import java.util.Collection;
 import java.util.Random;
@@ -28,8 +29,8 @@ public final class RandNth extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    if (!(arg instanceof Collection) && !(arg instanceof CharSequence)) {
-      throw new WrongTypeException(getName(), "List or Vector or String", arg);
+    if (!Utils.isSeqable(arg)) {
+      throw new RuntimeException("Don't know how to create Sequence from " + arg.getClass());
     }
     int bound = count.apply1(arg);
     if (bound == 0) {

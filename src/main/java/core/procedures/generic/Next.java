@@ -4,6 +4,7 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.Vector;
+import core.utils.Utils;
 
 import java.util.*;
 
@@ -25,6 +26,9 @@ public class Next extends AFn {
 
   @Override
   public Object apply1(Object arg) {
+    if (!Utils.isSeqable(arg)) {
+      throw new RuntimeException("Don't know how to create Sequence from " + arg.getClass());
+    }
     if (arg instanceof List) {
       List list = (List) arg;
       return list.isEmpty() ? null : list.subList(1, list.size());
