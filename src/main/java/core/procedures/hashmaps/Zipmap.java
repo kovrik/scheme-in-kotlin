@@ -5,9 +5,11 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.procedures.generic.Count;
 import core.procedures.generic.Nth;
+import core.utils.Utils;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public final class Zipmap extends AFn {
@@ -31,16 +33,12 @@ public final class Zipmap extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    if (!(arg1 instanceof Collection)) {
-      throw new WrongTypeException(getName(), "List or Vector", arg1);
-    }
-    if (!(arg2 instanceof Collection)) {
-      throw new WrongTypeException(getName(), "List or Vector", arg2);
-    }
+    Iterator iterator1 = Utils.toIterator(arg1);
+    Iterator iterator2 = Utils.toIterator(arg2);
     int size = Math.min(count.apply1(arg1), count.apply1(arg2));
     Map<Object, Object> map = new HashMap<>();
     for (int i = 0; i < size; i++) {
-      map.put(nth.apply(arg1, i), nth.apply(arg2, i));
+      map.put(iterator1.next(), iterator2.next());
     }
     return map;
   }

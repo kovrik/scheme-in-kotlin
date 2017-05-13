@@ -16,8 +16,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -587,5 +590,46 @@ public final class Utils {
    */
   public static boolean toBoolean(Object value) {
     return value instanceof Boolean ? (boolean)value : value != null;
+  }
+
+  // TODO Return custom Sequence object instead of Iterator
+  // TODO iterator for Maps (MapEntries)?
+  public static Iterator toIterator(Object obj) {
+    if (obj instanceof Collection) {
+      return ((Collection) obj).iterator();
+    }
+    if (obj instanceof CharSequence) {
+      return stringIterator((CharSequence) obj);
+    }
+    throw new RuntimeException("Don't know how to create Sequence from " + obj.getClass());
+  }
+
+  /* Returns String Iterator */
+  private static Iterator<Character> stringIterator(final CharSequence string) {
+    // Ensure the error is found as soon as possible.
+    if (string == null) {
+      throw new NullPointerException();
+    }
+    return new Iterator<Character>() {
+
+      private int index = 0;
+
+      @Override
+      public boolean hasNext() {
+        return index < string.length();
+      }
+
+      @Override
+      public Character next() {
+        if (!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        return string.charAt(index++);
+      }
+
+      public void remove() {
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 }

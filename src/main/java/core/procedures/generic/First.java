@@ -1,10 +1,10 @@
 package core.procedures.generic;
 
-import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.Utils;
 
-import java.util.Collection;
+import java.util.Iterator;
 
 public class First extends AFn {
 
@@ -28,12 +28,10 @@ public class First extends AFn {
   }
 
   public static Object first(Object arg) {
-    if (arg instanceof Collection) {
-      return ((Collection)arg).isEmpty() ? null : ((Collection) arg).iterator().next();
-    } else if (arg instanceof CharSequence) {
-      CharSequence cs = (CharSequence) arg;
-      return cs.length() == 0 ? null : cs.charAt(0);
+    if (arg == null) {
+      return null;
     }
-    throw new WrongTypeException("first", "List or Vector or Set or String", arg);
+    Iterator iterator = Utils.toIterator(arg);
+    return iterator.hasNext() ? iterator.next() : null;
   }
 }
