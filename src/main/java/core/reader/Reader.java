@@ -144,7 +144,7 @@ public class Reader implements IReader {
       case '"':  return readString();
       case ':':  return readKeyword();
       case ')':  throw new IllegalSyntaxException("read: unexpected list terminator: " + c);
-      case '}':  throw new IllegalSyntaxException("read: unexpected hashmap terminator: " + c);
+      case '}':  throw new IllegalSyntaxException("read: unexpected terminator: " + c);
       case ']':  throw new IllegalSyntaxException("read: unexpected vector terminator: " + c);
       default:   {
         String s = c + readUntilDelimiter();
@@ -477,7 +477,7 @@ public class Reader implements IReader {
     char c;
     while (isValid(i = reader.read()) && ((c = (char)i) != '}')) {
       /* Skip whitespaces and commas */
-      while (Character.isWhitespace(c) || c == ',') {
+      while (Character.isWhitespace(c)) {
         c = (char)reader.read();
       }
       if (c == '}') break;

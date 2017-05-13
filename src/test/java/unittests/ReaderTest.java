@@ -348,12 +348,12 @@ public class ReaderTest extends AbstractTest {
   public void testReadSetLiteral() {
     assertTrue(reader.readFirst("#{}") instanceof Set);
     assertTrue(reader.readFirst("#{   }") instanceof Set);
-    assertTrue(reader.readFirst("#{ ,, , , ,  }") instanceof Set);
+    assertTrue(reader.readFirst("#{      }") instanceof Set);
     assertTrue(reader.readFirst("  #{    }  ") instanceof Set);
     assertTrue(reader.readFirst("  #{  1 2  }  ") instanceof Set);
-    assertTrue(reader.readFirst("  #{  1 2,,,,  }  ") instanceof Set);
-    assertTrue(reader.readFirst("  #{  1 2,3 4,,,  }  ") instanceof Set);
-    assertTrue(reader.readFirst("  #{  1 2,3 4,  , , ,,,4 5  }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2  }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2 3 4     }  ") instanceof Set);
+    assertTrue(reader.readFirst("  #{  1 2 3 4         4 5  }  ") instanceof Set);
   }
 
   @Test
