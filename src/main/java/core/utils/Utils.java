@@ -549,11 +549,9 @@ public final class Utils {
   public static boolean isFinite(Number number) {
     if (number == null) {
       return true;
-    }
-    if (number.getClass() == Double.class) {
+    } else if (number.getClass() == Double.class) {
       return Double.isFinite((Double) number);
-    }
-    if (number.getClass() == Float.class) {
+    } else if (number.getClass() == Float.class) {
       return Float.isFinite((Float) number);
     }
     return true;
@@ -566,7 +564,7 @@ public final class Utils {
   /* Upcast number if required */
   public static Number upcast(Number number) {
     if (number == null) {
-      return number;
+      return null;
     }
     Class clazz = number.getClass();
     if ((clazz == Byte.class) || (clazz == Short.class) || (clazz == Integer.class)) {
@@ -601,7 +599,7 @@ public final class Utils {
   // TODO iterator for Maps (MapEntries)?
   public static Iterator toIterator(Object obj) {
     if (!isSeqable(obj)) {
-      throw new RuntimeException("Don't know how to create Sequence from " + obj.getClass());
+      throw new RuntimeException("don't know how to create Sequence from " + obj.getClass());
     }
     if (obj instanceof Iterable) {
       return ((Iterable) obj).iterator();
@@ -613,10 +611,7 @@ public final class Utils {
 
   /* Returns String Iterator */
   private static Iterator<Character> stringIterator(final CharSequence string) {
-    // Ensure the error is found as soon as possible.
-    if (string == null) {
-      throw new NullPointerException();
-    }
+    if (string == null) throw new NullPointerException();
     return new Iterator<Character>() {
 
       private int index = 0;
