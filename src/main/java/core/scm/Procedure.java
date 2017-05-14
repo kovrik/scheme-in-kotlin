@@ -58,7 +58,6 @@ public class Procedure extends AFn {
     this.name = name;
   }
 
-  // TODO Optimize
   private Environment bindArgs(Object... values) {
     /* Evaluate mandatory params and put values into new local environment */
     Environment env = new Environment(values.length, this.localEnvironment);
