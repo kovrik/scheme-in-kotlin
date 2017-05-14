@@ -40,6 +40,6 @@ public class Environment extends HashMap<Object, Object> {
 
   @Override
   public String toString() {
-    return "#<environment:" + ((outer == null) ? "GLOBAL" : super.toString()) + ">";
+    return "#<environment:" + (outer == null ? "root" : super.toString()) + ">";
   }
 }
