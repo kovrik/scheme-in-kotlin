@@ -1,7 +1,6 @@
 package core.environment;
 
 import core.exceptions.UndefinedIdentifierException;
-import core.scm.Type;
 
 import java.util.*;
 
@@ -22,23 +21,21 @@ public class Environment extends HashMap<Object, Object> {
   }
 
   public Object findOrDefault(Object key, Object defaultValue) {
-    if (!containsKey(key)) {
-      if (outer == null) {
-        return defaultValue;
-      }
-      return outer.findOrDefault(key, defaultValue);
+    Environment current = this;
+    while (true) {
+      if (current.containsKey(key)) return current.get(key);
+      if (current.outer == null)    return defaultValue;
+      current = current.outer;
     }
-    return get(key);
   }
 
   public Object findAndPut(Object key, Object value) {
-    if (!containsKey(key)) {
-      if (outer == null) {
-        throw new UndefinedIdentifierException(key.toString());
-      }
-      return outer.findAndPut(key, value);
+    Environment current = this;
+    while (true) {
+      if (current.containsKey(key)) return current.put(key, value);
+      if (current.outer == null)    throw new UndefinedIdentifierException(key.toString());
+      current = current.outer;
     }
-    return put(key, value);
   }
 
   @Override
