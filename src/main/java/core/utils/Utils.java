@@ -493,22 +493,18 @@ public final class Utils {
   public static Number downcastNumber(Number number) {
     /* Try to downcast Rationals with denominator = 1 */
     if ((number instanceof BigRatio) && (((BigRatio) number).isDenominatorEqualToOne())) {
-      return tryToDowncast((BigRatio) number);
+      return tryDowncast((BigRatio) number);
     }
     /* Try to downcast Big Numbers */
-    if (number instanceof BigDecimal) {
-      return tryToDowncast((BigDecimal) number);
-    }
-    if (number instanceof BigInteger) {
-      return tryToDowncast((BigInteger) number);
-    }
+    if (number instanceof BigDecimal) return tryDowncast((BigDecimal) number);
+    if (number instanceof BigInteger) return tryDowncast((BigInteger) number);
     return number;
   }
 
   /**
    * Tries to downcast big number to a smaller type (if possible)
    **/
-  private static Number tryToDowncast(BigDecimal number) {
+  private static Number tryDowncast(BigDecimal number) {
     /* Same checks are performed in longValueExact() method,
      * but we don't want exception to be thrown, just return the number */
     if (!isInteger(number)) {
@@ -525,7 +521,7 @@ public final class Utils {
   /**
    * Tries to downcast big number to a smaller type (if possible)
    **/
-  private static Number tryToDowncast(BigInteger number) {
+  private static Number tryDowncast(BigInteger number) {
     /* Same checks are performed in longValueExact() method,
      * but we don't want exception to be thrown, just return the number */
     if (number.bitLength() <= 63) {
@@ -541,8 +537,8 @@ public final class Utils {
     return number;
   }
 
-  private static Number tryToDowncast(BigRatio bigRatio) {
-    return tryToDowncast(bigRatio.getNumerator());
+  private static Number tryDowncast(BigRatio bigRatio) {
+    return tryDowncast(bigRatio.getNumerator());
   }
 
   public static boolean isFinite(Number number) {
