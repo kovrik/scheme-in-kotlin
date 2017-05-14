@@ -127,12 +127,15 @@ public class Evaluator {
       /* Lookup symbol */
       op = env.findOrDefault(sym, Environment.UNDEFINED);
       /* Inline Special Forms and Pure functions */
-      if (op instanceof ISpecialForm || ((op instanceof AFn) && (((AFn) op).isPure()))) {
+      if (op instanceof ISpecialForm) {
         sexp.set(0, op);
-      }
-      // TODO Check if op starts with '.' instead?
-      javaMethod = op == Environment.UNDEFINED;
-      if (javaMethod) {
+      } else if (op instanceof AFn) {
+        if (((AFn) op).isPure()) {
+          sexp.set(0, op);
+        }
+      } else if (op == Environment.UNDEFINED) {
+        // TODO Check if op starts with '.' instead?
+        javaMethod = true;
         /* Special case: constructor call If Symbol ends with . */
         if (sym.getName().charAt(sym.getName().length() - 1) == '.') {
           // TODO Optimize and cleanup
@@ -155,22 +158,17 @@ public class Evaluator {
 
     /* Maps are functions of their keys */
     if (op instanceof Map) {
-      if (sexp.size() > 3) {
-        throw new ArityException("hashmap", 1, 2, sexp.size() - 1);
-      }
+      if (sexp.size() > 3) throw new ArityException("hashmap", 1, 2, sexp.size() - 1);
       Map map = evalMap((Map)op, env);
       /* Evaluate key */
       Object key = eval(sexp.get(1), env);
-      Object defaultValue = null;
-      if (sexp.size() == 3) {
-        defaultValue = eval(sexp.get(2), env);
-      }
+      Object defaultValue = sexp.size() == 3 ? eval(sexp.get(2), env) : null;
       return map.getOrDefault(key, defaultValue);
     }
 
     /* If result is not a function, then raise an error */
     if (!(op instanceof AFn) && !javaMethod) {
-      throw new IllegalArgumentException("Wrong type to apply: " + Writer.write(op));
+      throw new IllegalArgumentException("wrong type to apply: " + Writer.write(op));
     }
 
     /* Scheme has applicative order, so evaluate all arguments first */

@@ -21,7 +21,7 @@ public class DelayedTest extends AbstractTest {
       eval("((delay (* (+ 2 3) 4))))", env);
       fail();
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage().startsWith("Wrong type to apply"));
+      assertTrue(e.getMessage().startsWith("wrong type to apply"));
     }
   }
 
