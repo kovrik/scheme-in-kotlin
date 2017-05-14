@@ -259,7 +259,9 @@ public final class Utils {
         result = bigDecimal;
       }
     } else {
-      if (dotPos > -1) {
+      if (dotPos < 0) {
+        result = Long.parseLong(number, r);
+      } else {
         if (r == 10) {
           result = Double.parseDouble(number);
         } else {
@@ -267,8 +269,6 @@ public final class Utils {
           number = number.replace(".", "");
           result = parseLong(number, r) / Math.pow(r.doubleValue(), number.length() - dotPos);
         }
-      } else {
-        result = Long.parseLong(number, r);
       }
     }
     if (exp != null && !isZero(exp)) {
