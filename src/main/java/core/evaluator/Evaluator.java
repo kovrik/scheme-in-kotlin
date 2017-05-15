@@ -4,6 +4,7 @@ import core.environment.Environment;
 import core.exceptions.ArityException;
 import core.exceptions.IllegalSyntaxException;
 import core.exceptions.ReentrantContinuationException;
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.continuations.CalledContinuation;
 import core.scm.BigRatio;
@@ -156,8 +157,22 @@ public class Evaluator {
       op = eval(op, env);
     }
 
-    /* Maps are functions of their keys */
-    if (op instanceof Map) {
+    /* Vectors are functions of index */
+    if (op instanceof Vector) {
+      if (sexp.size() > 2) throw new ArityException("vector", 1, 1, sexp.size() - 1);
+      Vector vector = evalVector((Vector)op, env);
+      /* Evaluate key */
+      Object key = eval(sexp.get(1), env);
+      if (!Utils.isInteger(key)) {
+        throw new WrongTypeException("vector", Long.class, key);
+      }
+      int i = ((Number) key).intValue();
+      if (vector.size() <= i || i < 0) {
+        throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", vector, i));
+      }
+      return vector.get(i);
+    } else if (op instanceof Map) {
+      /* Maps are functions of their keys */
       if (sexp.size() > 3) throw new ArityException("hashmap", 1, 2, sexp.size() - 1);
       Map map = evalMap((Map)op, env);
       /* Evaluate key */
