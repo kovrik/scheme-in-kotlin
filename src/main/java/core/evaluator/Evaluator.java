@@ -157,7 +157,12 @@ public class Evaluator {
       op = eval(op, env);
     }
 
-    /* Vectors are functions of index */
+    /* Vectors and Map Entries are functions of index */
+    if (op instanceof Map.Entry) {
+      // FIXME implement common interface for Vectors and MapEntries instead
+      /* Convert Map Entry into a Vector */
+      op = new Vector(((Map.Entry) op).getKey(), ((Map.Entry) op).getValue());
+    }
     if (op instanceof Vector) {
       if (sexp.size() > 2) throw new ArityException("vector", 1, 1, sexp.size() - 1);
       Vector vector = evalVector((Vector)op, env);
