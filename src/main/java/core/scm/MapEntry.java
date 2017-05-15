@@ -1,29 +1,19 @@
 package core.scm;
 
-import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
 import java.util.Map;
 
-public class MapEntry extends AFn implements Map.Entry {
+public class MapEntry extends Vector implements Map.Entry {
 
   private final Object key;
-  private final Object val;
+  private final Object value;
 
-  public MapEntry(Object key, Object val) {
+  public MapEntry(Object key, Object value) {
     super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
     this.key = key;
-    this.val = val;
-  }
-
-  @Override
-  public Object apply1(Object arg) {
-    int index = ((Number)arg).intValue();
-    if (index > 2) {
-      throw new IndexOutOfBoundsException(getName() + ": value out of range: " + index);
-    }
-    return index == 0 ? key : val;
+    this.value = value;
   }
 
   @Override
@@ -33,7 +23,7 @@ public class MapEntry extends AFn implements Map.Entry {
 
   @Override
   public Object getValue() {
-    return val;
+    return value;
   }
 
   @Override
@@ -48,7 +38,7 @@ public class MapEntry extends AFn implements Map.Entry {
 
   @Override
   public String toString() {
-    return "[" + Writer.write(key) + " " + Writer.write(val) + "]";
+    return "[" + Writer.write(key) + " " + Writer.write(value) + "]";
   }
 
   @Override
@@ -57,13 +47,13 @@ public class MapEntry extends AFn implements Map.Entry {
     if (o == null || getClass() != o.getClass()) return false;
     MapEntry that = (MapEntry) o;
     if (key != null ? !key.equals(that.key) : that.key != null) return false;
-    return val != null ? val.equals(that.val) : that.val == null;
+    return value != null ? value.equals(that.value) : that.value == null;
   }
 
   @Override
   public int hashCode() {
     int result = key != null ? key.hashCode() : 0;
-    result = 31 * result + (val != null ? val.hashCode() : 0);
+    result = 31 * result + (value != null ? value.hashCode() : 0);
     return result;
   }
 }
