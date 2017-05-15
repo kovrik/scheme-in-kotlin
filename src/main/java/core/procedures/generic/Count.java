@@ -3,7 +3,6 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.Vector;
 
 import java.util.Collection;
 import java.util.Map;
