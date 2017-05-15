@@ -4,7 +4,6 @@ import core.exceptions.ExInfoException;
 import core.reader.Reader;
 import core.scm.Cons;
 import core.scm.Symbol;
-import core.scm.Type;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +41,7 @@ public class Writer {
     if (o instanceof Pattern)      return write((Pattern) o);
     if (o instanceof Throwable)    return write((Throwable) o);
     if (o instanceof Map)          return write((Map) o);
+    if (o instanceof Map.Entry)    return write((Map.Entry) o);
     if (o instanceof Set)          return write((Set) o);
     return o.toString();
   }
@@ -106,6 +106,10 @@ public class Writer {
     /* Check named characters */
     String codepoint = CODEPOINTS.get(ch);
     return codepoint == null ? "#\\" + ch : "#\\" + codepoint;
+  }
+
+  private static String write(Map.Entry entry) {
+    return "[" + write(entry.getKey()) + " " + write(entry.getValue()) + "]";
   }
 
   private static String write(Map<Object, Object> map) {

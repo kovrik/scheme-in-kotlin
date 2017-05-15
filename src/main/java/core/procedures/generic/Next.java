@@ -27,23 +27,15 @@ public class Next extends AFn {
   @Override
   public Object apply1(Object arg) {
     if (!Utils.isSeqable(arg)) {
-      throw new RuntimeException("Don't know how to create Sequence from " + arg.getClass());
+      throw new IllegalArgumentException("don't know how to create Sequence from " + arg.getClass());
     }
     if (arg instanceof List) {
       List list = (List) arg;
       return list.isEmpty() ? null : list.subList(1, list.size());
     } else if (arg instanceof Set) {
-      Set set = (Set) arg;
-      if (set.isEmpty()) {
-        return null;
-      }
-      Set<Object> next = new HashSet<>();
-      Iterator iter = set.iterator();
-      iter.next();
-      while (iter.hasNext()) {
-        next.add(iter.next());
-      }
-      return next;
+      return next((Set) arg);
+    } else if (arg instanceof Map) {
+      return next(((Map) arg).entrySet());
     } else if (arg instanceof Vector) {
       Vector vec = (Vector) arg;
       return vec.size() == 0 ? null : new Vector(Arrays.copyOfRange(vec.getArray(), 1, vec.size()));
@@ -51,6 +43,19 @@ public class Next extends AFn {
       CharSequence cs = (CharSequence) arg;
       return cs.length() == 0 ? null : cs.subSequence(1, cs.length());
     }
-    throw new WrongTypeException("next", "List or Vector or Set or String", arg);
+    throw new WrongTypeException("next", "List or Vector or Set or String or Map", arg);
+  }
+
+  private Object next(Set set) {
+    if (set.isEmpty()) {
+      return null;
+    }
+    Set<Object> next = new HashSet<>();
+    Iterator iter = set.iterator();
+    iter.next();
+    while (iter.hasNext()) {
+      next.add(iter.next());
+    }
+    return next;
   }
 }

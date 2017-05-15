@@ -5,6 +5,8 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.utils.Utils;
 
+import java.util.Map;
+
 public final class Nth extends AFn {
 
   private final Count count = new Count();
@@ -27,8 +29,11 @@ public final class Nth extends AFn {
   @Override
   public Object apply(Object... args) {
     Object col = args[0];
+    if (col instanceof Map) {
+      throw new UnsupportedOperationException("nth not supported on this type: " + col.getClass());
+    }
     if (!Utils.isSeqable(col)) {
-      throw new RuntimeException("Don't know how to create Sequence from " + col.getClass());
+      throw new IllegalArgumentException("don't know how to create Sequence from " + col.getClass());
     }
     Object index = args[1];
     if (!Utils.isReal(index)) {

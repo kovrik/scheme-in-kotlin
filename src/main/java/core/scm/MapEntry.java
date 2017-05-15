@@ -4,7 +4,9 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
-public class MapEntry extends AFn implements IMapEntry {
+import java.util.Map;
+
+public class MapEntry extends AFn implements Map.Entry {
 
   private final Object key;
   private final Object val;
@@ -22,16 +24,6 @@ public class MapEntry extends AFn implements IMapEntry {
       throw new IndexOutOfBoundsException(getName() + ": value out of range: " + index);
     }
     return index == 0 ? key : val;
-  }
-
-  @Override
-  public Object key() {
-    return key;
-  }
-
-  @Override
-  public Object val() {
-    return val;
   }
 
   @Override

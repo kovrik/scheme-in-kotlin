@@ -23,7 +23,7 @@ public final class Type {
     TYPE_NAME_MAPPINGS.put(AFn.class, "Procedure");
     TYPE_NAME_MAPPINGS.put(ProperList.class, "List");
     TYPE_NAME_MAPPINGS.put(IPort.class, "Port");
-    TYPE_NAME_MAPPINGS.put(IMapEntry.class, "MapEntry");
+    TYPE_NAME_MAPPINGS.put(Map.Entry.class, "MapEntry");
   }
 
   public static String nameOf(Class clazz) {

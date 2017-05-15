@@ -2,12 +2,13 @@ package core.procedures.hashmaps;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.IMapEntry;
+
+import java.util.Map;
 
 public final class Val extends AFn {
 
   public Val() {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{IMapEntry.class}).build());
+    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Map.Entry.class}).build());
   }
 
   @Override
@@ -22,6 +23,6 @@ public final class Val extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    return ((IMapEntry)arg).val();
+    return ((Map.Entry)arg).getValue();
   }
 }

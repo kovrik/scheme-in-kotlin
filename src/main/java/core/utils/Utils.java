@@ -587,19 +587,20 @@ public final class Utils {
   }
 
   public static boolean isSeqable(Object obj) {
-    return obj == null || obj instanceof Iterable || obj instanceof CharSequence;
+    return obj == null || obj instanceof Iterable || obj instanceof CharSequence || obj instanceof Map;
   }
 
   // TODO Return custom Sequence object instead of Iterator
-  // TODO iterator for Maps (MapEntries)?
   public static Iterator toIterator(Object obj) {
     if (!isSeqable(obj)) {
-      throw new RuntimeException("don't know how to create Sequence from " + obj.getClass());
+      throw new IllegalArgumentException("don't know how to create Sequence from " + obj.getClass());
     }
     if (obj instanceof Iterable) {
       return ((Iterable) obj).iterator();
     } else if (obj instanceof CharSequence) {
       return stringIterator((CharSequence) obj);
+    } else if (obj instanceof Map) {
+      return ((Map)obj).entrySet().iterator();
     }
     return Collections.EMPTY_LIST.iterator();
   }

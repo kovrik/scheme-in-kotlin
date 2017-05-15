@@ -4,6 +4,7 @@ import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.utils.Utils;
 
+import java.util.Map;
 import java.util.Random;
 
 public final class RandNth extends AFn {
@@ -27,8 +28,11 @@ public final class RandNth extends AFn {
 
   @Override
   public Object apply1(Object arg) {
+    if (arg instanceof Map) {
+      throw new UnsupportedOperationException("nth not supported on this type: " + arg.getClass());
+    }
     if (!Utils.isSeqable(arg)) {
-      throw new RuntimeException("Don't know how to create Sequence from " + arg.getClass());
+      throw new IllegalArgumentException("don't know how to create Sequence from " + arg.getClass());
     }
     int bound = count.apply1(arg);
     if (bound == 0) {
