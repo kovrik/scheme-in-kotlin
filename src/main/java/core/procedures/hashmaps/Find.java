@@ -2,14 +2,16 @@ package core.procedures.hashmaps;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.IAssoc;
 import core.scm.MapEntry;
+import core.utils.Utils;
 
 import java.util.Map;
 
 public final class Find extends AFn {
 
   public Find() {
-    super(new FnArgsBuilder().max(2).min(2).mandatory(new Class[]{Map.class, Object.class}).build());
+    super(new FnArgsBuilder().max(2).min(2).mandatory(new Class[]{IAssoc.class, Object.class}).build());
   }
 
   @Override
@@ -23,10 +25,10 @@ public final class Find extends AFn {
   }
 
   @Override
-  public Map.Entry apply2(Object map, Object key) {
-    Map<Object, Object> hashMap = (Map)map;
-    if (hashMap.containsKey(key)) {
-      return new MapEntry(key, hashMap.get(key));
+  public MapEntry apply2(Object map, Object key) {
+    IAssoc assoc = Utils.toAssoc(map);
+    if (assoc.containsKey(key)) {
+      return assoc.getEntry(key);
     }
     return null;
   }

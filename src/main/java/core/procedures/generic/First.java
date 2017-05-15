@@ -31,7 +31,7 @@ public class First extends AFn {
     if (arg == null) {
       return null;
     }
-    Iterator iterator = Utils.toIterator(arg);
+    Iterator iterator = Utils.toSequence(arg);
     return iterator.hasNext() ? iterator.next() : null;
   }
 }

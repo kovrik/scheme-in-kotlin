@@ -26,8 +26,8 @@ public final class Zipmap extends AFn {
 
   @Override
   public Object apply2(Object arg1, Object arg2) {
-    Iterator iterator1 = Utils.toIterator(arg1);
-    Iterator iterator2 = Utils.toIterator(arg2);
+    Iterator iterator1 = Utils.toSequence(arg1);
+    Iterator iterator2 = Utils.toSequence(arg2);
     Map<Object, Object> map = new HashMap<>();
     while (iterator1.hasNext() && iterator2.hasNext()) {
       map.put(iterator1.next(), iterator2.next());

@@ -9,6 +9,8 @@ import core.procedures.math.ToInexact;
 import core.reader.Reader;
 import core.scm.BigComplex;
 import core.scm.BigRatio;
+import core.scm.IAssoc;
+import core.scm.MapEntry;
 import core.scm.Symbol;
 import core.writer.Writer;
 
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -587,11 +590,15 @@ public final class Utils {
   }
 
   public static boolean isSeqable(Object obj) {
-    return obj == null || obj instanceof Iterable || obj instanceof CharSequence || obj instanceof Map;
+    return obj == null || obj instanceof Iterable || obj instanceof CharSequence || obj instanceof Map || obj instanceof Map.Entry;
   }
 
-  // TODO Return custom Sequence object instead of Iterator
-  public static Iterator toIterator(Object obj) {
+  public static boolean isAssoc(Object obj) {
+    return obj == null || obj instanceof Map || obj instanceof Map.Entry || obj instanceof IAssoc;
+  }
+
+  // TODO return custom Sequence object instead of Iterator
+  public static Iterator toSequence(Object obj) {
     if (!isSeqable(obj)) {
       throw new IllegalArgumentException("don't know how to create Sequence from " + obj.getClass());
     }
@@ -601,8 +608,47 @@ public final class Utils {
       return stringIterator((CharSequence) obj);
     } else if (obj instanceof Map) {
       return ((Map)obj).entrySet().iterator();
+    } else if (obj instanceof Map.Entry) {
+      return new MapEntry(((Map.Entry) obj).getKey(), ((Map.Entry) obj).getValue()).iterator();
     }
     return Collections.EMPTY_LIST.iterator();
+  }
+
+  public static IAssoc toAssoc(Object obj) {
+    if (!isAssoc(obj)) {
+      throw new IllegalArgumentException("don't know how to create Map from " + obj.getClass());
+    }
+    if (obj instanceof IAssoc) {
+      return (IAssoc)obj;
+    } else if (obj instanceof Map) {
+      return mapToAssoc((Map) obj);
+    } else if (obj instanceof Map.Entry) {
+      return new MapEntry(((Map.Entry) obj).getKey(), ((Map.Entry) obj).getValue());
+    }
+    return mapToAssoc(Collections.emptyMap());
+  }
+
+  private static IAssoc mapToAssoc(Map map) {
+    if (map == null) throw new NullPointerException();
+    return new IAssoc() {
+      @Override
+      public boolean containsKey(Object key) {
+        return map.containsKey(key);
+      }
+
+      @Override
+      public MapEntry getEntry(Object key) {
+        if (map.containsKey(key)) {
+          return new MapEntry(key, map.get(key));
+        }
+        return null;
+      }
+
+      @Override
+      public Object assoc(Object key, Object value) {
+        return map.put(key, value);
+      }
+    };
   }
 
   /* Returns String Iterator */

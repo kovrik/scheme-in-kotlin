@@ -3,6 +3,7 @@ package core.procedures.generic;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.Cons;
 import core.scm.Vector;
 import core.utils.Utils;
 
@@ -36,6 +37,8 @@ public class Next extends AFn {
       return next((Set) arg);
     } else if (arg instanceof Map) {
       return next(((Map) arg).entrySet());
+    } else if (arg instanceof Map.Entry) {
+      return Cons.list(((Map.Entry) arg).getValue());
     } else if (arg instanceof Vector) {
       Vector vec = (Vector) arg;
       return vec.size() == 0 ? null : new Vector(Arrays.copyOfRange(vec.getArray(), 1, vec.size()));

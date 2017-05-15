@@ -17,7 +17,7 @@ public class IsProcedureTest extends AbstractTest {
     assertEquals(TRUE, eval("(procedure? car)", env));
     assertEquals(TRUE, eval("(procedure? procedure?)", env));
     assertEquals(TRUE, eval("(procedure? (lambda (x) x))", env));
-    assertEquals(TRUE, eval("(let ((a (lambda (x) x)))	(procedure? a))", env));
+    assertEquals(TRUE, eval("(let ((a (lambda (x) x))) (procedure? a))", env));
     assertEquals(TRUE, eval("(letrec ((a (lambda () (procedure? a)))) (a))", env));
     assertEquals(TRUE, eval("(let () (define (hi) 1) (procedure? hi))", env));
     String[] falses = {"(procedure? 'car)", "(procedure? '(lambda (x) x))",

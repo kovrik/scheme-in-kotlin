@@ -24,6 +24,7 @@ public final class Type {
     TYPE_NAME_MAPPINGS.put(ProperList.class, "List");
     TYPE_NAME_MAPPINGS.put(IPort.class, "Port");
     TYPE_NAME_MAPPINGS.put(Map.Entry.class, "MapEntry");
+    TYPE_NAME_MAPPINGS.put(IAssoc.class, "Associative");
   }
 
   public static String nameOf(Class clazz) {
@@ -67,6 +68,7 @@ public final class Type {
     TYPE_PREDICATES.put(ExactNonNegativeInteger.class, Utils::isExactNonNegativeInteger);
     TYPE_PREDICATES.put(Real.class, Utils::isReal);
     TYPE_PREDICATES.put(BitOp.class, Utils::isBitOpSupported);
+    TYPE_PREDICATES.put(IAssoc.class, Utils::isAssoc);
   }
 
   public static boolean checkType(Object o, Class<?> expected) {

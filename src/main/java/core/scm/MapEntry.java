@@ -1,34 +1,20 @@
 package core.scm;
 
-import core.procedures.FnArgsBuilder;
 import core.writer.Writer;
 
-import java.util.Map;
-
-public class MapEntry extends Vector implements Map.Entry {
-
-  private final Object key;
-  private final Object value;
+// TODO implement proper interfaces, refactor
+public class MapEntry extends MutableVector {
 
   public MapEntry(Object key, Object value) {
-    super(new FnArgsBuilder().min(1).max(1).mandatory(new Class[]{Type.ExactNonNegativeInteger.class}).build());
-    this.key = key;
-    this.value = value;
+    super(key, value);
   }
 
-  @Override
   public Object getKey() {
-    return key;
+    return get(0);
   }
 
-  @Override
   public Object getValue() {
-    return value;
-  }
-
-  @Override
-  public Object setValue(Object value) {
-    throw new UnsupportedOperationException();
+    return get(1);
   }
 
   @Override
@@ -38,7 +24,7 @@ public class MapEntry extends Vector implements Map.Entry {
 
   @Override
   public String toString() {
-    return "[" + Writer.write(key) + " " + Writer.write(value) + "]";
+    return "[" + Writer.write(getKey()) + " " + Writer.write(getValue()) + "]";
   }
 
   @Override
@@ -46,14 +32,14 @@ public class MapEntry extends Vector implements Map.Entry {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     MapEntry that = (MapEntry) o;
-    if (key != null ? !key.equals(that.key) : that.key != null) return false;
-    return value != null ? value.equals(that.value) : that.value == null;
+    if (getKey() != null ? !getKey().equals(that.getKey()) : that.getKey() != null) return false;
+    return getValue() != null ? getValue().equals(that.getValue()) : that.getValue() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = key != null ? key.hashCode() : 0;
-    result = 31 * result + (value != null ? value.hashCode() : 0);
+    int result = getKey() != null ? getKey().hashCode() : 0;
+    result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
     return result;
   }
 }

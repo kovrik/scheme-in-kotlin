@@ -26,7 +26,9 @@ public class Count extends AFn {
   @Override
   public Integer apply1(Object arg) {
     if (arg instanceof Map) {
-      return ((Map)arg).size();
+      return ((Map) arg).size();
+    } else if (arg instanceof Map.Entry) {
+      return 2;
     } else if (arg instanceof Collection) {
       return ((Collection)arg).size();
     } else if (arg instanceof CharSequence) {

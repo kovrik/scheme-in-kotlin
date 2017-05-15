@@ -31,6 +31,9 @@ public final class Reverse extends AFn {
     if (arg instanceof Set) {
       return Cons.list((Set)arg);
     }
+    if (arg instanceof Map.Entry) {
+      return new MapEntry(((Map.Entry) arg).getValue(), ((Map.Entry) arg).getKey());
+    }
     if (arg instanceof Vector) {
       Object[] array = ((Vector) arg).getArray();
       MutableVector reversed = new MutableVector(Arrays.copyOf(array, array.length));

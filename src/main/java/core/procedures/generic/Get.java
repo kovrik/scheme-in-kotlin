@@ -2,6 +2,8 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.scm.IAssoc;
+import core.scm.Type;
 import core.scm.Vector;
 import core.utils.Utils;
 
@@ -37,8 +39,15 @@ public final class Get extends AFn {
   private Object get(Object col, Object key, Object defaultValue) {
     if (col instanceof Map) {
       return ((Map) col).getOrDefault(key, defaultValue);
-    } else if ((col instanceof Map.Entry) && (((Map.Entry) col).getKey().equals(key))) {
-      return ((Map.Entry)col).getValue();
+    } else if ((col instanceof Map.Entry)) {
+      if (Utils.isInteger(key)) {
+        int i = ((Number)key).intValue();
+        if (i == 0) {
+          return ((Map.Entry) col).getKey();
+        } else if (i == 1) {
+          return ((Map.Entry) col).getValue();
+        }
+      }
     } else if (col instanceof List) {
       if (Utils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
         return ((List)col).get(((Number)key).intValue());

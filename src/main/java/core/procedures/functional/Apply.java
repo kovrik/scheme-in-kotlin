@@ -31,7 +31,7 @@ public final class Apply extends AFn {
       sexp.addAll(Arrays.asList(args).subList(1, args.length - 1));
     }
     Object last = args[args.length - 1];
-    Iterator iterator = Utils.toIterator(last);
+    Iterator iterator = Utils.toSequence(last);
     while (iterator.hasNext()) {
       Object o = iterator.next();
       if ((o instanceof List) || (o instanceof Symbol)) {

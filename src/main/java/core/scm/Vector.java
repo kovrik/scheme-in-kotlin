@@ -1,7 +1,9 @@
 package core.scm;
 
+import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.utils.Utils;
 import core.writer.Writer;
 
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import java.util.Objects;
 // TODO implement List instead?
 // TODO make associative (like Map)
 /* Immutable Vector */
-public class Vector extends AFn implements Collection {
+public class Vector extends AFn implements Collection, IAssoc {
 
   /* Scheme Vector syntax */
 //  private static final String OPEN = "#(";
@@ -168,5 +170,28 @@ public class Vector extends AFn implements Collection {
   @Override
   public boolean equals(Object obj) {
     return obj instanceof Vector && Arrays.equals(getArray(), ((Vector) obj).getArray());
+  }
+
+  @Override
+  public boolean containsKey(Object key) {
+    if (!Utils.isInteger(key)) {
+      throw new WrongTypeException(getName(), Integer.class, key);
+    }
+    int i = ((Number) key).intValue();
+    return size() > i;
+  }
+
+  @Override
+  public MapEntry getEntry(Object key) {
+    if (!Utils.isInteger(key)) {
+      throw new WrongTypeException(getName(), Integer.class, key);
+    }
+    int i = ((Number) key).intValue();
+    return new MapEntry(i, get(i));
+  }
+
+  @Override
+  public Object assoc(Object key, Object value) {
+    throw new UnsupportedOperationException("assoc is not supported for immutable vector");
   }
 }

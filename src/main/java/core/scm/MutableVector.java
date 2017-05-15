@@ -1,5 +1,8 @@
 package core.scm;
 
+import core.exceptions.WrongTypeException;
+import core.utils.Utils;
+
 /* Mutable Vector */
 public class MutableVector extends Vector {
 
@@ -31,6 +34,16 @@ public class MutableVector extends Vector {
   @Override
   public Object[] toArray() {
     return array;
+  }
+
+  @Override
+  public Object assoc(Object key, Object value) {
+    if (!Utils.isInteger(key)) {
+      throw new WrongTypeException(getName(), Integer.class, key);
+    }
+    int i = ((Number) key).intValue();
+    set(i, value);
+    return this;
   }
 }
 
