@@ -1,7 +1,6 @@
 package unittests;
 
 import core.exceptions.ArityException;
-import core.procedures.hashmaps.Key;
 import core.scm.Cons;
 import core.scm.Keyword;
 import core.scm.MapEntry;
@@ -93,5 +92,13 @@ public class HashmapTest extends AbstractTest {
     assertEquals(1L, eval("(get (first {:a 1 :b 2 :c 3}) 1)", env));
     assertEquals(1L, eval("(nth (first {:a 1 :b 2 :c 3}) 1)", env));
     assertEquals(new MapEntry(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env));
+  }
+
+  @Test
+  public void testFind() {
+    assertEquals(null, eval("(find {:a 1 :b 2 :c 3} :d)", env));
+    assertEquals(new MapEntry(Keyword.intern("a"), 1L), eval("(find {:a 1 :b 2 :c 3} :a)", env));
+    assertEquals(new MapEntry(0, Keyword.intern("a")), eval("(find (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(new MapEntry(1, 1L), eval("(find (first {:a 1 :b 2 :c 3}) 1)", env));
   }
 }

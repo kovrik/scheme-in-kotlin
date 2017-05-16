@@ -6,8 +6,6 @@ import core.scm.IAssoc;
 import core.scm.MapEntry;
 import core.utils.Utils;
 
-import java.util.Map;
-
 public final class Find extends AFn {
 
   public Find() {

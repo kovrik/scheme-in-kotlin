@@ -2,8 +2,6 @@ package core.procedures.generic;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
-import core.scm.IAssoc;
-import core.scm.Type;
 import core.scm.Vector;
 import core.utils.Utils;
 
