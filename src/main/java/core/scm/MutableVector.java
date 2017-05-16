@@ -23,6 +23,7 @@ public class MutableVector extends Vector {
   }
 
   public void set(int index, Object value) {
+    if (size() <= index) throw new IndexOutOfBoundsException(String.format("%s: value out of range: %s", getName(), index));
     array[index] = value;
   }
 

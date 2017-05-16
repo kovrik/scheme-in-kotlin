@@ -608,7 +608,7 @@ public final class Utils {
     } else if (obj instanceof Map) {
       return ((Map)obj).entrySet().iterator();
     } else if (obj instanceof Map.Entry) {
-      return new MapEntry(((Map.Entry) obj).getKey(), ((Map.Entry) obj).getValue()).iterator();
+      return new MapEntry((Map.Entry) obj).iterator();
     }
     return Collections.EMPTY_LIST.iterator();
   }
@@ -622,7 +622,7 @@ public final class Utils {
     } else if (obj instanceof Map) {
       return mapToAssoc((Map) obj);
     } else if (obj instanceof Map.Entry) {
-      return new MapEntry(((Map.Entry) obj).getKey(), ((Map.Entry) obj).getValue());
+      return new MapEntry((Map.Entry) obj);
     }
     return mapToAssoc(Collections.emptyMap());
   }

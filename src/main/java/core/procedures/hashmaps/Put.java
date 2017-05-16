@@ -1,9 +1,12 @@
 package core.procedures.hashmaps;
 
+import core.exceptions.ArityException;
 import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.MapEntry;
+import core.scm.MutableVector;
+import core.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +41,19 @@ public final class Put extends AFn {
       }
       return map;
     }
-    if (m instanceof Map.Entry) {
-      if (args.length > 3) {
-        throw new IndexOutOfBoundsException(String.format("%s: value out of range", getName()));
-      }
-      return new MapEntry(args[1], args[2]);
+    if (args.length > 3) {
+      throw new ArityException(getName(), 2, 2, args.length);
     }
-    throw new WrongTypeException(getName(), "Map or MapEntry", m);
+    if (m instanceof Map.Entry) {
+      m = new MapEntry((Map.Entry) m);
+    }
+    if (m instanceof MutableVector) {
+      if (!Utils.isInteger(args[1])) {
+        throw new WrongTypeException("vector", Integer.class, args[1]);
+      }
+      ((MutableVector) m).set(((Number)args[1]).intValue(), args[2]);
+      return m;
+    }
+    throw new WrongTypeException(getName(), "MutableVector or Map or MapEntry", m);
   }
 }

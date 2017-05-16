@@ -2,11 +2,17 @@ package core.scm;
 
 import core.writer.Writer;
 
+import java.util.Map;
+
 // TODO implement proper interfaces, refactor
 public class MapEntry extends MutableVector {
 
   public MapEntry(Object key, Object value) {
     super(key, value);
+  }
+
+  public MapEntry(Map.Entry entry) {
+    this(entry.getKey(), entry.getValue());
   }
 
   public Object getKey() {

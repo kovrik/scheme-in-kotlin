@@ -169,7 +169,7 @@ public class Evaluator {
       /* Evaluate key */
       Object key = eval(sexp.get(1), env);
       if (!Utils.isInteger(key)) {
-        throw new WrongTypeException("vector", Long.class, key);
+        throw new WrongTypeException("vector", Integer.class, key);
       }
       int i = ((Number) key).intValue();
       if (vector.size() <= i || i < 0) {

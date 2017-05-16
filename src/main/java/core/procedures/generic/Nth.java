@@ -36,8 +36,8 @@ public final class Nth extends AFn {
       throw new IllegalArgumentException("don't know how to create Sequence from " + col.getClass());
     }
     Object index = args[1];
-    if (!Utils.isReal(index)) {
-      throw new WrongTypeException(getName(), "Real", index);
+    if (!Utils.isInteger(index)) {
+      throw new WrongTypeException(getName(), Integer.class, index);
     }
     int i = ((Number)args[1]).intValue();
 
