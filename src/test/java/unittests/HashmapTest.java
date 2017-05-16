@@ -100,5 +100,8 @@ public class HashmapTest extends AbstractTest {
     assertEquals(new MapEntry(Keyword.intern("a"), 1L), eval("(find {:a 1 :b 2 :c 3} :a)", env));
     assertEquals(new MapEntry(0, Keyword.intern("a")), eval("(find (first {:a 1 :b 2 :c 3}) 0)", env));
     assertEquals(new MapEntry(1, 1L), eval("(find (first {:a 1 :b 2 :c 3}) 1)", env));
+    assertEquals(new MapEntry(0, Keyword.intern("a")), eval("(find [:a :b :c :d] 0)", env));
+    assertEquals(new MapEntry(2, Keyword.intern("c")), eval("(find [:a :b :c :d] 2)", env));
+    assertEquals(null, eval("(find [:a :b :c :d] 5)", env));
   }
 }
