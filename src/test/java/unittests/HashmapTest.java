@@ -1,11 +1,13 @@
 package unittests;
 
 import core.exceptions.ArityException;
+import core.procedures.hashmaps.Key;
 import core.scm.Cons;
+import core.scm.Keyword;
+import core.scm.MapEntry;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -77,5 +79,19 @@ public class HashmapTest extends AbstractTest {
     assertEquals(Collections.EMPTY_MAP, eval("(zipmap [] '())", env));
     assertEquals(Collections.EMPTY_MAP, eval("(zipmap nil nil)", env));
     assertEquals(3L, eval("(get (zipmap \"test\" [1 2 3 4]) #\\s)", env));
+  }
+
+  @Test
+  public void testHashmapEntries() {
+    assertEquals(2,  eval("(count  (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(1L, eval("(second (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(Keyword.intern("a"), eval("(key   (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(Keyword.intern("a"), eval("(first (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(Keyword.intern("a"), eval("(get   (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(Keyword.intern("a"), eval("(nth   (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(1L, eval("(val (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(1L, eval("(get (first {:a 1 :b 2 :c 3}) 1)", env));
+    assertEquals(1L, eval("(nth (first {:a 1 :b 2 :c 3}) 1)", env));
+    assertEquals(new MapEntry(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env));
   }
 }
