@@ -633,8 +633,6 @@ public final class DefaultEnvironment extends Environment {
     LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))");
     LIBRARY_PROCEDURES.add("(define (inc  n) (+ n 1))");
     LIBRARY_PROCEDURES.add("(define (dec  n) (- n 1))");
-
-    // TODO Implement in Java?
     LIBRARY_PROCEDURES.add(
       "(define rationalize" +
           "  (letrec ((check (lambda (x) (when (not (real? x))" +

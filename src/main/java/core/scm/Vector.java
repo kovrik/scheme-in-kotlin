@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Objects;
 
 // TODO implement List instead?
-// TODO make associative (like Map)
 /* Immutable Vector */
 public class Vector extends AFn implements Collection, IAssoc {
 

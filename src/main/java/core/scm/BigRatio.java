@@ -9,9 +9,6 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * TODO Create Ratio class for small ratios (with longs for num and den)
- */
 public final class BigRatio extends Number implements Comparable<BigRatio> {
 
   public static final BigRatio ZERO = new BigRatio(BigInteger.ZERO);

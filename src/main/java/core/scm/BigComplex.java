@@ -9,7 +9,6 @@ import core.utils.Utils;
 import java.math.BigDecimal;
 
 /**
- * TODO Create Complex class for small complex numbers
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
 public final class BigComplex extends Number {

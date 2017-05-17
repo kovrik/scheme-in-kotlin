@@ -65,8 +65,6 @@ public class JavaInteropTest extends AbstractTest {
     assertEquals(31L, eval("(new Long (.substring \"123123\" 2 4))", env));
     assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env));
     assertEquals(123, eval("(new Integer 123)", env));
-    // FIXME
-//    assertEquals(123, eval("(new Short 123)", env));
-//    (.signum (new java.math.BigDecimal 10))
+    assertEquals(1, eval("(.signum (new java.math.BigDecimal 10))", env));
   }
 }

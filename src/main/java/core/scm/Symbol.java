@@ -41,7 +41,6 @@ public final class Symbol extends AFn implements INamed, IMeta {
 
   /* Create Symbol with Metadata attached.
    * Note that symbols with metadata are not interned!
-   * TODO check if should actually intern syms with meta?
    */
   public Symbol(String name, Map meta) {
     this.name = name;

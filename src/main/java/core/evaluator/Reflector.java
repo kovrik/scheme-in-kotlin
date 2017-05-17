@@ -57,7 +57,6 @@ public class Reflector {
           // restore saved state
           System.arraycopy(argsOld, 0, args, 0, argsOld.length);
           System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.length);
-          // TODO Check if implemented properly
           castToObject(parameterTypes);
           return clazz.getMethod(name, parameterTypes);
         } catch (NoSuchMethodException ex2) {
@@ -83,7 +82,6 @@ public class Reflector {
     }
   }
 
-  // TODO Other types: short, byte etc.?
   private void downcastArgs(Object[] args, Class<?>[] parameterTypes) {
     for (int i = 0; i < parameterTypes.length; i++) {
       Class<?> parameterType = parameterTypes[i];
