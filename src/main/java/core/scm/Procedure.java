@@ -39,10 +39,10 @@ public class Procedure extends AFn {
     this.localEnvironment = localEnvironment;
     if (isVariadic) {
       /* Do not count rest arg */
-      this.minArgs = this.args.length - 1;
+      this.setMinArgs(this.args.length - 1);
     } else {
-      this.minArgs = this.args.length;
-      this.maxArgs = this.args.length;
+      this.setMinArgs(this.args.length);
+      this.setMaxArgs(this.args.length);
     }
   }
 
@@ -62,11 +62,11 @@ public class Procedure extends AFn {
     /* Evaluate mandatory params and put values into new local environment */
     Environment env = new Environment(values.length, this.localEnvironment);
     Symbol[] args = getArgs();
-    for (int i = 0; i < minArgs; i++) {
+    for (int i = 0; i < getMinArgs(); i++) {
       env.put(args[i], values[i]);
     }
     /* If it is a variadic function, then evaluate rest param */
-    if (minArgs != maxArgs) {
+    if (getMinArgs() != getMaxArgs()) {
       /* Optional params: pass them as a list bound to the last param.
        * Everything AFTER mandatory params goes to that list. */
       env.put(args[minArgs()], Arrays.asList(Arrays.copyOfRange(values, minArgs(), values.length)));
