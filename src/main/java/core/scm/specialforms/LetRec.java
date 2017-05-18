@@ -32,7 +32,7 @@ public enum LetRec implements ISpecialForm {
     /* Bind variables to fresh locations holding undefined values */
     for (List binding : bindings) {
       Object var = binding.get(0);
-      localEnv.put(var, Environment.UNDEFINED);
+      localEnv.put(var, Environment.Companion.getUNDEFINED());
     }
     /* Evaluate inits */
     for (List binding : bindings) {

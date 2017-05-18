@@ -104,11 +104,11 @@ public class Evaluator {
   /* Evaluate Symbol */
   private Object evalSymbol(Symbol symbol, Environment env) {
     /* Check if it is a Special Form */
-    Object o = env.findOrDefault(symbol, Environment.UNDEFINED);
+    Object o = env.findOrDefault(symbol, Environment.Companion.getUNDEFINED());
     if (o instanceof ISpecialForm) {
       throw IllegalSyntaxException.of(o.toString(), symbol);
     }
-    if (o == Environment.UNDEFINED) {
+    if (o == Environment.Companion.getUNDEFINED()) {
       /* Check if it is a Java class. If not found, then assume it is a static field */
       Class clazz = reflector._getClass(symbol.getName());
       return clazz != null ? clazz : reflector.evalJavaStaticField(symbol.toString());
@@ -127,7 +127,7 @@ public class Evaluator {
     if (op instanceof Symbol) {
       Symbol sym = (Symbol) op;
       /* Lookup symbol */
-      op = env.findOrDefault(sym, Environment.UNDEFINED);
+      op = env.findOrDefault(sym, Environment.Companion.getUNDEFINED());
       /* Inline Special Forms and Pure functions */
       if (op instanceof ISpecialForm) {
         sexp.set(0, op);
@@ -135,7 +135,7 @@ public class Evaluator {
         if (((AFn) op).isPure()) {
           sexp.set(0, op);
         }
-      } else if (op == Environment.UNDEFINED) {
+      } else if (op == Environment.Companion.getUNDEFINED()) {
         // TODO Check if op starts with '.' instead?
         javaMethod = true;
         /* Special case: constructor call If Symbol ends with . */

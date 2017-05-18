@@ -30,13 +30,13 @@ public enum Let implements ISpecialForm {
       /* Bind variables to fresh locations holding undefined values */
       for (List binding : bindings) {
         Object var = binding.get(0);
-        localEnv.put(var, Environment.UNDEFINED);
+        localEnv.put(var, Environment.Companion.getUNDEFINED());
       }
       /* Evaluate inits */
       for (Object binding : bindings) {
         Object var  = ((List)binding).get(0);
         Object init = ((List)binding).get(1);
-        if (localEnv.get(var) != Environment.UNDEFINED) {
+        if (localEnv.get(var) != Environment.Companion.getUNDEFINED()) {
           throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", var));
         }
         localEnv.put(var, evaluator.eval(init, env));

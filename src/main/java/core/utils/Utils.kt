@@ -314,22 +314,20 @@ object Utils {
     }
 
     fun toBigDecimal(number: Number): BigDecimal {
-        val clazz = number.javaClass
-        if (clazz == BigDecimal::class.java) return number as BigDecimal
-        if (clazz == Long::class.java) return BigDecimal.valueOf(number as Long)
-        if (clazz == BigInteger::class.java) return BigDecimal(number as BigInteger)
-        if (clazz == Double::class.java) return BigDecimal.valueOf(number as Double)
-        if (clazz == BigRatio::class.java) return (number as BigRatio).toBigDecimal()
-        if (clazz == BigComplex::class.java) throw UnsupportedOperationException("undefined for complex!")
+        if (number is BigDecimal) return number
+        if (number is Long) return BigDecimal.valueOf(number)
+        if (number is BigInteger) return BigDecimal(number)
+        if (number is Double) return BigDecimal.valueOf(number)
+        if (number is BigRatio) return number.toBigDecimal()
+        if (number is BigComplex) throw UnsupportedOperationException("undefined for complex!")
         return BigDecimal(number.toString())
     }
 
     fun toBigInteger(number: Number): BigInteger {
-        val clazz = number.javaClass
-        if (clazz == BigInteger::class.java) return number as BigInteger
-        if (clazz == Long::class.java) return BigInteger.valueOf(number as Long)
-        if (clazz == Double::class.java) return BigInteger.valueOf(number.toLong())
-        if (clazz == BigComplex::class.java) throw UnsupportedOperationException("undefined for complex!")
+        if (number is BigInteger) return number
+        if (number is Long) return BigInteger.valueOf(number)
+        if (number is Double) return BigInteger.valueOf(number.toLong())
+        if (number is BigComplex) throw UnsupportedOperationException("undefined for complex!")
         return BigInteger(number.toString())
     }
 
@@ -337,14 +335,13 @@ object Utils {
         if (o !is Number) {
             return false
         }
-        val clazz = o.javaClass
-        if (clazz == BigComplex::class.java) {
+        if (o is BigComplex) {
             return false
         }
-        if (clazz == Double::class.java) {
-            return !java.lang.Double.isInfinite(o as Double) && !java.lang.Double.isNaN(o)
-        } else if (clazz == Float::class.java) {
-            return !java.lang.Float.isInfinite(o as Float) && !java.lang.Float.isNaN(o)
+        if (o is Double) {
+            return !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
+        } else if (o is Float) {
+            return !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
         }
         return true
     }
@@ -353,22 +350,19 @@ object Utils {
         if (o == null) {
             return false
         }
-        val clazz = o.javaClass
-        if (clazz == Long::class.java || clazz == BigRatio::class.java || clazz == Int::class.java ||
-                clazz == BigInteger::class.java || clazz == Short::class.java || clazz == Byte::class.java) {
-
+        if (o is Long|| o is BigRatio || o is Int || o is BigInteger || o is Short || o is Byte) {
             return true
         }
-        if (clazz == BigDecimal::class.java) {
-            return (o as BigDecimal).scale() == 0
+        if (o is BigDecimal) {
+            return o.scale() == 0
         }
-        if (clazz == BigComplex::class.java) {
-            return isExact((o as BigComplex).re) && isExact(o.im)
+        if (o is BigComplex) {
+            return isExact(o.re) && isExact(o.im)
         }
         return false
     }
 
-    fun isInexact(o: Any): Boolean {
+    fun isInexact(o: Any?): Boolean {
         return !isExact(o)
     }
 
@@ -376,19 +370,17 @@ object Utils {
         if (o == null) {
             return false
         }
-        val clazz = o.javaClass
-        if (clazz == Long::class.java || clazz == Int::class.java || clazz == BigInteger::class.java || clazz == Short::class.java || clazz == Byte::class.java) {
+        if (o is Long || o is Int || o is BigInteger || o is Short || o is Byte) {
             return true
         }
-        if (clazz == BigDecimal::class.java) {
-            val bd = o as BigDecimal?
-            return bd!!.signum() == 0 || bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0
+        if (o is BigDecimal) {
+            return o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
         }
-        if (clazz == BigRatio::class.java) {
-            return (o as BigRatio).isDenominatorEqualToOne
+        if (o is BigRatio) {
+            return o.isDenominatorEqualToOne
         }
-        if (clazz == Double::class.java) {
-            return o as Double? == Math.floor((o as Double?)!!) && !java.lang.Double.isInfinite((o as Double))
+        if (o is Double) {
+            return o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
         }
         return false
     }
@@ -399,61 +391,57 @@ object Utils {
 
     fun isZero(o: Any?): Boolean {
         if (o == null) return false
-        val clazz = o.javaClass
-        if (clazz == Long::class.java) return ((o as Long?)!!).compareTo(0L) == 0
-        if (clazz == Double::class.java) return Math.signum((o as Double?)!!) == 0.0
-        if (clazz == BigRatio::class.java) return (o as BigRatio).signum() == 0
-        if (clazz == BigDecimal::class.java) return (o as BigDecimal).signum() == 0
-        if (clazz == Int::class.java) return Integer.signum((o as Int?)!!) == 0
-        if (clazz == Short::class.java) return Integer.signum((o as Short?)!!.toInt()) == 0
-        if (clazz == Byte::class.java) return Integer.signum((o as Byte?)!!.toInt()) == 0
-        if (clazz == Float::class.java) return Math.signum((o as Float?)!!) == 0f
-        if (clazz == BigInteger::class.java) return (o as BigInteger).signum() == 0
+        if (o is Long) return ((o as Long?)!!).compareTo(0L) == 0
+        if (o is Double) return Math.signum((o as Double?)!!) == 0.0
+        if (o is BigRatio) return o.signum() == 0
+        if (o is BigDecimal) return o.signum() == 0
+        if (o is Int) return Integer.signum((o as Int?)!!) == 0
+        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == 0
+        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == 0
+        if (o is Float) return Math.signum((o as Float?)!!) == 0f
+        if (o is BigInteger) return o.signum() == 0
         return false
     }
 
     fun isOne(o: Any?): Boolean {
         if (o == null) return false
-        val clazz = o.javaClass
-        if (clazz == Long::class.java) return (o as Long?)!!.toInt() == 1
-        if (clazz == Double::class.java) return java.lang.Double.compare((o as Double?)!!, 1.0) == 0
-        if (clazz == BigRatio::class.java) return (o as BigRatio).isOne
-        if (clazz == BigDecimal::class.java) return (o as BigDecimal).compareTo(BigDecimal.ONE) == 0
-        if (clazz == Int::class.java) return o as Int? == 1
-        if (clazz == Short::class.java) return (o as Short?)!!.toInt() == 1
-        if (clazz == Byte::class.java) return (o as Byte?)!!.toInt() == 1
-        if (clazz == Float::class.java) return java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
-        if (clazz == BigInteger::class.java) return (o as BigInteger).compareTo(BigInteger.ONE) == 0
+        if (o is Long) return (o as Long?)!!.toInt() == 1
+        if (o is Double) return java.lang.Double.compare((o as Double?)!!, 1.0) == 0
+        if (o is BigRatio) return o.isOne
+        if (o is BigDecimal) return o.compareTo(BigDecimal.ONE) == 0
+        if (o is Int) return o as Int? == 1
+        if (o is Short) return (o as Short?)!!.toInt() == 1
+        if (o is Byte) return (o as Byte?)!!.toInt() == 1
+        if (o is Float) return java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
+        if (o is BigInteger) return o.compareTo(BigInteger.ONE) == 0
         return false
     }
 
     fun isPositive(o: Any?): Boolean {
         if (o == null) return false
-        val clazz = o.javaClass
-        if (clazz == Long::class.java) return ((o as Long?)!!) > 0
-        if (clazz == Double::class.java) return Math.signum((o as Double?)!!) == 1.0
-        if (clazz == BigRatio::class.java) return (o as BigRatio).signum() == 1
-        if (clazz == BigDecimal::class.java) return (o as BigDecimal).signum() == 1
-        if (clazz == Int::class.java) return Integer.signum((o as Int?)!!) == 1
-        if (clazz == Short::class.java) return Integer.signum((o as Short?)!!.toInt()) == 1
-        if (clazz == Byte::class.java) return Integer.signum((o as Byte?)!!.toInt()) == 1
-        if (clazz == Float::class.java) return Math.signum((o as Float?)!!) == 1f
-        if (clazz == BigInteger::class.java) return (o as BigInteger).signum() == 1
+        if (o is Long) return (o as Long?)!! > 0
+        if (o is Double) return Math.signum((o as Double?)!!) == 1.0
+        if (o is BigRatio) return o.signum() == 1
+        if (o is BigDecimal) return o.signum() == 1
+        if (o is Int) return Integer.signum((o as Int?)!!) == 1
+        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == 1
+        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == 1
+        if (o is Float) return Math.signum((o as Float?)!!) == 1f
+        if (o is BigInteger) return o.signum() == 1
         return false
     }
 
     fun isNegative(o: Any?): Boolean {
         if (o == null) return false
-        val clazz = o.javaClass
-        if (clazz == Long::class.java) return ((o as Long?)!!) < 0
-        if (clazz == Double::class.java) return Math.signum((o as Double?)!!) == -1.0
-        if (clazz == BigRatio::class.java) return (o as BigRatio).signum() == -1
-        if (clazz == BigDecimal::class.java) return (o as BigDecimal).signum() == -1
-        if (clazz == Int::class.java) return Integer.signum((o as Int?)!!) == -1
-        if (clazz == Short::class.java) return Integer.signum((o as Short?)!!.toInt()) == -1
-        if (clazz == Byte::class.java) return Integer.signum((o as Byte?)!!.toInt()) == -1
-        if (clazz == Float::class.java) return Math.signum((o as Float?)!!) == -1f
-        if (clazz == BigInteger::class.java) return (o as BigInteger).signum() == -1
+        if (o is Long) return ((o as Long?)!!) < 0
+        if (o is Double) return Math.signum((o as Double?)!!) == -1.0
+        if (o is BigRatio) return o.signum() == -1
+        if (o is BigDecimal) return o.signum() == -1
+        if (o is Int) return Integer.signum((o as Int?)!!) == -1
+        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == -1
+        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == -1
+        if (o is Float) return Math.signum((o as Float?)!!) == -1f
+        if (o is BigInteger) return o.signum() == -1
         return false
     }
 
@@ -479,7 +467,7 @@ object Utils {
      * so that inexactness acts as a kind of taint on numbers.
      * See https://docs.racket-lang.org/guide/numbers.html
      */
-    fun inexactnessTaint(result: Number, other: Number): Number {
+    fun inexactnessTaint(result: Number?, other: Number?): Number? {
         return if (isInexact(other) && isExact(result)) ToInexact.toInexact(result) else result
     }
 
@@ -499,7 +487,7 @@ object Utils {
      */
     private fun tryDowncast(number: BigDecimal): Number {
         /* Same checks are performed in longValueExact() method,
-     * but we don't want exception to be thrown, just return the number */
+         * but we don't want exception to be thrown, just return the number */
         if (!isInteger(number)) {
             return number
         }
@@ -517,7 +505,7 @@ object Utils {
      */
     private fun tryDowncast(number: BigInteger): Number {
         /* Same checks are performed in longValueExact() method,
-     * but we don't want exception to be thrown, just return the number */
+         * but we don't want exception to be thrown, just return the number */
         if (number.bitLength() <= 63) {
             return number.toLong()
         }
@@ -539,16 +527,16 @@ object Utils {
     fun isFinite(number: Number?): Boolean {
         if (number == null) {
             return true
-        } else if (number.javaClass == Double::class.java) {
+        } else if (number is Double) {
             return java.lang.Double.isFinite((number as Double?)!!)
-        } else if (number.javaClass == Float::class.java) {
+        } else if (number is Float) {
             return java.lang.Float.isFinite((number as Float?)!!)
         }
         return true
     }
 
     fun isNaN(number: Number?): Boolean {
-        return number != null && number.javaClass == Double::class.java && java.lang.Double.isNaN((number as Double?)!!)
+        return number != null && number is Double && java.lang.Double.isNaN((number as Double?)!!)
     }
 
     /* Upcast number if required */
@@ -556,10 +544,9 @@ object Utils {
         if (number == null) {
             return null
         }
-        val clazz = number.javaClass
-        if (clazz == Byte::class.java || clazz == Short::class.java || clazz == Int::class.java) {
+        if (number is Byte || number is Short || number is Int) {
             return number.toLong()
-        } else if (clazz == Float::class.java) {
+        } else if (number is Float) {
             return number.toDouble()
         }
         return number
@@ -590,9 +577,9 @@ object Utils {
     }
 
     // TODO return custom Sequence object instead of Iterator
-    fun toSequence(obj: Any): Iterator<*> {
+    fun toSequence(obj: Any?): Iterator<*> {
         if (!isSeqable(obj)) {
-            throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
+            throw IllegalArgumentException("don't know how to create Sequence from " + obj?.javaClass)
         }
         if (obj is Iterable<*>) {
             return obj.iterator()
@@ -606,9 +593,9 @@ object Utils {
         return Collections.EMPTY_LIST.iterator()
     }
 
-    fun toAssoc(obj: Any): IAssoc {
+    fun toAssoc(obj: Any?): IAssoc {
         if (!isAssoc(obj)) {
-            throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
+            throw IllegalArgumentException("don't know how to create Map from " + obj?.javaClass)
         }
         if (obj is IAssoc) {
             return obj
