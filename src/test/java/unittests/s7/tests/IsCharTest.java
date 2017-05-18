@@ -23,7 +23,7 @@ public class IsCharTest extends AbstractTest {
         "(char? #\\uff)", "(char=? #\\u6a #\\j)", "(char=? #\\return #\\ud)", "(char=? #\\null #\\u0)",
         "(char? #\\return)", "(char? #\\null)", "(char? #\\nul)", "(char? #\\linefeed)", "(char? #\\tab)",
         "(char? #\\space)", "(char=? #\\null #\\nul)", "(char=? #\\newline #\\linefeed)", "(char? #\\backspace)",
-        "(char? #\\page)", "(char? #\\escape)", "(char? #\\alarm)", "(char? #\\delete)", };
+        "(char? #\\escape)", "(char? #\\alarm)", "(char? #\\delete)", };
     assertAllEqual(TRUE, trues, env);
 
     String[] falses = {"(char=? #\\delete #\\backspace)", "(char? '1e311)", "(char? #e1)", "(char? #b101)",

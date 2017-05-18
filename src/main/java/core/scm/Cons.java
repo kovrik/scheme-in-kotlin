@@ -1,10 +1,14 @@
 package core.scm;
 
 import core.exceptions.WrongTypeException;
+import core.writer.Writer;
 
-import java.util.*;
-
-import static core.writer.Writer.write;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 // TODO Separate class for Proper and Improper Lists?
 public class Cons<E> extends LinkedList<E> {
@@ -137,21 +141,21 @@ public class Cons<E> extends LinkedList<E> {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     if (!isList(list)) {
-      sb.append(write(list.get(0)));
+      sb.append(Writer.write(list.get(0)));
       Object cdr = list.get(list.size() - 1);
       while (cdr instanceof Cons) {
-        sb.append(" ").append(write(((Cons) cdr).getFirst()));
+        sb.append(" ").append(Writer.write(((Cons) cdr).getFirst()));
         cdr = ((Cons)cdr).getLast();
       }
       /* Dotted notation */
-      sb.append(" . ").append(write(cdr));
+      sb.append(" . ").append(Writer.write(cdr));
     } else {
       /* List */
       for (int i = 0; i < list.size() - 1; i++) {
         Object e = list.get(i);
-        sb.append(e == list ? "(this list)" : write(e)).append(' ');
+        sb.append(e == list ? "(this list)" : Writer.write(e)).append(' ');
       }
-      sb.append(write(list.get(list.size() - 1)));
+      sb.append(Writer.write(list.get(list.size() - 1)));
     }
     return sb.append(')').toString();
   }

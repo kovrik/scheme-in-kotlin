@@ -31,6 +31,6 @@ public class ExInfoException extends RuntimeException {
   public String toString() {
     return "#<ex-info:{message:" + getMessage() +
            ", cause: " + Writer.write(getCause()) +
-           ", data: " + Writer .write(info) + "}>";
+           ", data: " + Writer.write(info) + "}>";
   }
 }

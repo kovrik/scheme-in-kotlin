@@ -60,7 +60,6 @@ public class CharacterTest extends AbstractTest {
     assertEquals(TRUE, eval("(char-whitespace? #\\vtab)", env));
     assertEquals(TRUE, eval("(char-whitespace? #\\return)", env));
     assertEquals(TRUE, eval("(char-whitespace? #\\space)", env));
-    assertEquals(TRUE, eval("(char-whitespace? #\\page)", env));
     assertEquals(TRUE, eval("(char-whitespace? #\\linefeed)", env));
     try {
       eval("(char-whitespace? 1)", env);
@@ -82,7 +81,6 @@ public class CharacterTest extends AbstractTest {
     assertEquals(FALSE, eval("(char-alphabetic? #\\vtab)", env));
     assertEquals(FALSE, eval("(char-alphabetic? #\\return)", env));
     assertEquals(FALSE, eval("(char-alphabetic? #\\space)", env));
-    assertEquals(FALSE, eval("(char-alphabetic? #\\page)", env));
     assertEquals(FALSE, eval("(char-alphabetic? #\\linefeed)", env));
 
     assertEquals(TRUE, eval("(char-alphabetic? #\\b)", env));

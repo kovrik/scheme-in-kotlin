@@ -2,11 +2,9 @@ package core.procedures.strings;
 
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
+import core.reader.Reader;
 import core.scm.Type;
 import core.utils.Utils;
-
-import static core.reader.Reader.isExactness;
-import static core.reader.Reader.isRadix;
 
 public final class StringToNumber extends AFn {
 
@@ -32,7 +30,7 @@ public final class StringToNumber extends AFn {
     String restNumber = number;
     while (restNumber.length() > 1 && restNumber.charAt(0) == '#') {
       char ch = restNumber.charAt(1);
-      if (isExactness(ch)) {
+      if (Reader.isExactness(ch)) {
         if (exactness != null) {
           return Boolean.FALSE;
         }
@@ -40,7 +38,7 @@ public final class StringToNumber extends AFn {
         restNumber = restNumber.substring(2);
         continue;
       }
-      if (isRadix(ch)) {
+      if (Reader.isRadix(ch)) {
         if (radixChar != null) {
           return Boolean.FALSE;
         }

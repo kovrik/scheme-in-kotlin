@@ -204,7 +204,7 @@ public final class Utils {
 
     /* Rational and Integral numbers are exact by default */
     boolean isIntegral = n.indexOf('.') < 0;
-    boolean exact = exactness != null ? Reader.isExact(exactness) : slashIndex > -1 || isIntegral;
+    boolean exact = exactness != null ? Reader.Companion.isExact(exactness) : slashIndex > -1 || isIntegral;
 
     Integer threshold = RADIX_THRESHOLDS.get(radix);
     int hasSign = (n.charAt(0) == '-' || n.charAt(0) == '+') ? 1 : 0;

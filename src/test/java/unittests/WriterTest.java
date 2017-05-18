@@ -46,6 +46,6 @@ public class WriterTest {
 
   @Test
   public void testWriteEscape() {
-    assertEquals("\"\\t\\b\\r\\n\\f\\\\\\\"\"", Writer.write("\t\b\r\n\f\\\""));;
+    assertEquals("\"\\t\\b\\r\\n\\\\\\\"\"", Writer.write("\t\b\r\n\\\""));;
   }
 }
