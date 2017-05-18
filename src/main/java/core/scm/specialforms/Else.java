@@ -14,7 +14,7 @@ public enum Else implements ISpecialForm {
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
-    throw IllegalSyntaxException.of(toString(), expression, "not allowed as an expression");
+    throw IllegalSyntaxException.Companion.of(toString(), expression, "not allowed as an expression");
   }
 
   @Override

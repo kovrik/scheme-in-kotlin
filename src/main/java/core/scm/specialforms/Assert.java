@@ -16,14 +16,14 @@ public enum Assert implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2 || expression.size() > 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Object result = evaluator.eval(expression.get(1), env);
     if (!Utils.INSTANCE.toBoolean(result)) {
       String message = "";
       if (expression.size() == 3) {
         if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof MutableString)) {
-          throw IllegalSyntaxException.of(toString(), expression);
+          throw IllegalSyntaxException.Companion.of(toString(), expression);
         }
         message = ": " + expression.get(2).toString();
       }

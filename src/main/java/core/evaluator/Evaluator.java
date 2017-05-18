@@ -106,7 +106,7 @@ public class Evaluator {
     /* Check if it is a Special Form */
     Object o = env.findOrDefault(symbol, Environment.Companion.getUNDEFINED());
     if (o instanceof ISpecialForm) {
-      throw IllegalSyntaxException.of(o.toString(), symbol);
+      throw IllegalSyntaxException.Companion.of(o.toString(), symbol);
     }
     if (o == Environment.Companion.getUNDEFINED()) {
       /* Check if it is a Java class. If not found, then assume it is a static field */
@@ -119,7 +119,7 @@ public class Evaluator {
   /* Evaluate list */
   private Object evlis(List<Object> sexp, Environment env) {
     if (sexp.isEmpty()) {
-      throw IllegalSyntaxException.of("eval", sexp, "illegal empty application");
+      throw IllegalSyntaxException.Companion.of("eval", sexp, "illegal empty application");
     }
 
     boolean javaMethod = false;

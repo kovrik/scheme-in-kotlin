@@ -16,7 +16,7 @@ public enum Delay implements ISpecialForm {
   @Override
   public core.scm.Delay eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Object expr;
     if (expression.size() > 2) {

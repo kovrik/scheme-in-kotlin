@@ -15,7 +15,7 @@ public enum UnquoteSplicing implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     // Implemented in quasiquote
-    throw IllegalSyntaxException.of(toString(), expression, "not in quasiquote");
+    throw IllegalSyntaxException.Companion.of(toString(), expression, "not in quasiquote");
   }
 
   @Override

@@ -15,7 +15,7 @@ public enum New implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     String clazz = expression.get(1).toString();
 

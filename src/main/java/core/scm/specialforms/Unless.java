@@ -19,7 +19,8 @@ public enum Unless implements ISpecialForm {
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     int size = expression.size();
     if (size < 3) {
-      throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
+      throw IllegalSyntaxException.Companion
+        .of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
     if (!Utils.INSTANCE.toBoolean(evaluator.eval(test, env))) {

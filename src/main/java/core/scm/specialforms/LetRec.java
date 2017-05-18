@@ -25,7 +25,7 @@ public enum LetRec implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Environment localEnv = new Environment(env);
     List<List> bindings = (List<List>)expression.get(1);

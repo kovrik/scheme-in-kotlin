@@ -621,7 +621,7 @@ object Utils {
                 return null
             }
 
-            override fun assoc(key: Any?, value: Any?): Any? {
+            override fun assoc(key: Any, value: Any): Any {
                 throw UnsupportedOperationException()
 //                return map.put(key, value)
             }

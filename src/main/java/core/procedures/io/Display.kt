@@ -13,7 +13,7 @@ import java.io.IOException
 open class Display : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any::class.java))
         .rest(OutputPort::class.java).build()) {
 
-    override val name: String?
+    override val name: String
         get() = "display"
 
     override fun apply(args: Array<Any>): Any {

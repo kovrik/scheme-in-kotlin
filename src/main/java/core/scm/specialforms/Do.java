@@ -22,24 +22,24 @@ public enum Do implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     // TODO Replace with call to LET
     /* Init bindings */
     Object bs = expression.get(1);
     if (!(bs instanceof List)) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Environment tempEnv = new Environment(env);
     List<Cons> steps = Cons.list();
     for (Object b : (List)bs) {
       if (!(b instanceof List)) {
-        throw IllegalSyntaxException.of(toString(), expression);
+        throw IllegalSyntaxException.Companion.of(toString(), expression);
       }
       List binding = (List)b;
       /* Check that init value exists */
       if ((binding).size() < 2) {
-        throw IllegalSyntaxException.of(toString(), expression);
+        throw IllegalSyntaxException.Companion.of(toString(), expression);
       }
       Object var  = binding.get(0);
       Object init = binding.get(1);
@@ -50,18 +50,19 @@ public enum Do implements ISpecialForm {
       }
       /* Check that we have no duplicates among variables */
       if (tempEnv.containsKey(var)) {
-        throw IllegalSyntaxException.of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", var));
+        throw IllegalSyntaxException.Companion
+          .of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", var));
       }
       tempEnv.put(var, evaluator.eval(init, tempEnv));
     }
 
     Object cl = expression.get(2);
     if (!(cl instanceof List)) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     List<Object> clause = (List<Object>)cl;
     if (clause.isEmpty()) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Object test = clause.get(0);
     List body = expression.subList(3, expression.size());

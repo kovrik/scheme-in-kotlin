@@ -23,7 +23,7 @@ public enum Time implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 2) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     long start = System.nanoTime();
     for (int i = 1; i < expression.size() - 1; i++) {

@@ -24,13 +24,13 @@ public enum Cond implements ISpecialForm {
     for (int i = 1; i < expression.size(); i++) {
       Object node = expression.get(i);
       if (!(node instanceof List)) {
-        throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform");
+        throw IllegalSyntaxException.Companion.of(toString(), expression, "invalid clause in subform");
       }
       List<Object> subform = (List)node;
       Object clause = subform.get(0);
       if (Else.ELSE_SYMBOL.equals(clause)) {
         if (i != expression.size() - 1) {
-          throw IllegalSyntaxException.of(toString(), expression, "else must be the last clause in subform");
+          throw IllegalSyntaxException.Companion.of(toString(), expression, "else must be the last clause in subform");
         }
         return Begin.BEGIN.eval(subform, env, evaluator);
       }

@@ -38,7 +38,7 @@ public enum Quasiquote implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() != 2) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     return quasiquote(expression.get(1), env, evaluator);
   }
@@ -71,13 +71,13 @@ public enum Quasiquote implements ISpecialForm {
       /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
       if (isList(list) && (UNQUOTE_SYMBOL.equals(list.get(0)))) {
         if (list.size() != 2) {
-          throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
+          throw IllegalSyntaxException.Companion.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression");
         }
         return evaluator.eval(list.get(1), env);
       }
       /* `,@(list 1 2) syntax is not valid */
       if (isList(list) && list.size() > 0 && (UNQUOTE_SPLICING_SYMBOL.equals(list.get(0)))) {
-        throw IllegalSyntaxException.of(list.get(0).toString(), expr, "invalid context within quasiquote");
+        throw IllegalSyntaxException.Companion.of(list.get(0).toString(), expr, "invalid context within quasiquote");
       }
       /* List quasiquotation */
       return quasiquoteList(0, expr, env, evaluator);
@@ -99,13 +99,14 @@ public enum Quasiquote implements ISpecialForm {
         if (n > 0 && UNQUOTE_SYMBOL.equals(o)) {
           /* if UNQUOTE is just before the last element a */
           if (n != list.size() - 2) {
-            throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression");
+            throw IllegalSyntaxException.Companion.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
           /* Evaluate and append last element */
           return append(result, evaluator.eval(list.get(n + 1), env));
         }
         if (isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
-          throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
+          throw IllegalSyntaxException.Companion
+            .of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
         result = append(result, list(o));
@@ -117,7 +118,7 @@ public enum Quasiquote implements ISpecialForm {
           result = append(result, list(quasiquoteList(depth + 1, o, env, evaluator)));
         } else if (UNQUOTE_SYMBOL.equals(op) || (UNQUOTE_SPLICING_SYMBOL.equals(op))) {
           if (el.size() != 2) {
-            throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression");
+            throw IllegalSyntaxException.Companion.of(op.toString(), expr, "expects exactly one expression");
           }
           if (depth == 0) {
             /* Level of quasiquotation is 0 - evaluate! */
@@ -167,7 +168,7 @@ public enum Quasiquote implements ISpecialForm {
     /* `#(unquote 1)  syntax is not valid */
     /* `,@#(list 1 2) syntax is not valid */
     if (UNQUOTE_SYMBOL.equals(vector.get(0)) || UNQUOTE_SPLICING_SYMBOL.equals(vector.get(0))) {
-      throw IllegalSyntaxException.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
+      throw IllegalSyntaxException.Companion.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
     }
     Cons list = VectorToList.vectorToList((MutableVector) expr);
     Object result = quasiquoteList(0, list, env, evaluator);
@@ -188,7 +189,7 @@ public enum Quasiquote implements ISpecialForm {
     /* `,@#(list 1 2) syntax is not valid */
     Object first = First.first(set);
     if (UNQUOTE_SYMBOL.equals(first) || UNQUOTE_SPLICING_SYMBOL.equals(first)) {
-      throw IllegalSyntaxException.of(first.toString(), expr, "invalid context within quasiquote");
+      throw IllegalSyntaxException.Companion.of(first.toString(), expr, "invalid context within quasiquote");
     }
     Cons list = Cons.list(set);
     Object result = quasiquoteList(0, list, env, evaluator);

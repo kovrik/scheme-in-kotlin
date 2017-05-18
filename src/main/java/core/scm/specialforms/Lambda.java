@@ -24,7 +24,7 @@ public enum Lambda implements ISpecialForm {
   @Override
   public Procedure eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
 
     List<Symbol> params;
@@ -37,10 +37,11 @@ public enum Lambda implements ISpecialForm {
         HashSet<Object> temp = new HashSet<>(((List) args).size());
         for (Object o : ((List) args)) {
           if (!(o instanceof Symbol) && !(Cons.isPair(o))) {
-            throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", o));
+            throw IllegalSyntaxException.Companion.of(toString(), expression, String.format("not an identifier: %s", o));
           }
           if (temp.contains(o)) {
-            throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument name: %s", o));
+            throw IllegalSyntaxException.Companion
+              .of(toString(), expression, String.format("duplicate argument name: %s", o));
           }
           temp.add(o);
         }

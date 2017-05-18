@@ -17,7 +17,8 @@ public enum Dot implements ISpecialForm {
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     int size = expression.size();
     if (size < 3) {
-      throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
+      throw IllegalSyntaxException.Companion
+        .of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     // FIXME Optimize and cleanup
     Object first = expression.get(1);

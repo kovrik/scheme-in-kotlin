@@ -74,15 +74,15 @@ abstract class AFn : IFn<Array<Any>, Any> {
         throw ArityException(name, minArgs, maxArgs, args.size)
     }
 
-    open val name: String?
+    open val name: String
         get() = javaClass.simpleName
 
     override fun toString(): String {
         val name = name
-        if (name == null || name.isEmpty()) {
-            return "#<procedure>"
+        when {
+            name.isEmpty() -> return "#<procedure>"
+            else -> return "#<procedure:$name>"
         }
-        return "#<procedure:$name>"
     }
 
     /**

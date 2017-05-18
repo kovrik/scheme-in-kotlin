@@ -21,13 +21,13 @@ public enum Define implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     Object id = expression.get(1);
     /* Variable definition: (define <id> <value>) */
     if (id instanceof Symbol) {
       if (expression.size() > 3) {
-        throw IllegalSyntaxException.of(toString(), expression, "multiple expressions after identifier");
+        throw IllegalSyntaxException.Companion.of(toString(), expression, "multiple expressions after identifier");
       }
       env.put(id, evaluator.eval(expression.get(2), env));
     } else if (id instanceof Cons) {
@@ -42,7 +42,8 @@ public enum Define implements ISpecialForm {
       Cons args = Cons.list(((List) expression.get(1)).subList(1, ((List) expression.get(1)).size()));
       for (Object arg : args) {
         if (!(arg instanceof Symbol) && !(Cons.isPair(arg))) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", Writer.write(arg)));
+          throw IllegalSyntaxException.Companion
+            .of(toString(), expression, String.format("not an identifier: %s", Writer.write(arg)));
         }
       }
       args.setIsList(Cons.isList(expression.get(1)));
@@ -54,13 +55,14 @@ public enum Define implements ISpecialForm {
       // TODO (define ((a n) c) n)
       id = ((Cons) id).get(0);
       if (!(id instanceof Symbol)) {
-        throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier for procedure name: %s", Writer.write(id)));
+        throw IllegalSyntaxException.Companion
+          .of(toString(), expression, String.format("not an identifier for procedure name: %s", Writer.write(id)));
       }
       Procedure lambda = Lambda.LAMBDA.eval(l, env, evaluator);
       lambda.setName(id.toString());
       env.put(id, lambda);
     } else {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     return id;
   }

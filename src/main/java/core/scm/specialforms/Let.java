@@ -20,7 +20,7 @@ public enum Let implements ISpecialForm {
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {
     if (expression.size() < 3) {
-      throw IllegalSyntaxException.of(toString(), expression);
+      throw IllegalSyntaxException.Companion.of(toString(), expression);
     }
     /* Normal let:
      * (let ((id expr) ...) body ...+) */
@@ -37,7 +37,8 @@ public enum Let implements ISpecialForm {
         Object var  = ((List)binding).get(0);
         Object init = ((List)binding).get(1);
         if (localEnv.get(var) != Environment.Companion.getUNDEFINED()) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", var));
+          throw IllegalSyntaxException.Companion
+            .of(toString(), expression, String.format("duplicate identifier: %s", var));
         }
         localEnv.put(var, evaluator.eval(init, env));
       }
@@ -54,7 +55,7 @@ public enum Let implements ISpecialForm {
        * (let proc-id ((arg-id init-expr) ...) body ...+) */
       Object o = expression.get(1);
       if (!(o instanceof Symbol)) {
-        throw IllegalSyntaxException.of(toString(), expression);
+        throw IllegalSyntaxException.Companion.of(toString(), expression);
       }
       /* Construct lambda */
       Cons<Object> lambdaArgs = Cons.list();
@@ -63,7 +64,8 @@ public enum Let implements ISpecialForm {
       for (Object binding : bindings) {
         Object arg = ((List)binding).get(0);
         if (lambdaArgs.contains(arg)) {
-          throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate identifier: %s", arg));
+          throw IllegalSyntaxException.Companion
+            .of(toString(), expression, String.format("duplicate identifier: %s", arg));
         }
         lambdaArgs.add(arg);
         initValues.add(((List)binding).get(1));
@@ -82,7 +84,7 @@ public enum Let implements ISpecialForm {
       /* Letrec has TCO */
       return LetRec.LETREC.eval(letrec, new Environment(env), evaluator);
     }
-    throw IllegalSyntaxException.of(toString(), expression);
+    throw IllegalSyntaxException.Companion.of(toString(), expression);
   }
 
   @Override
