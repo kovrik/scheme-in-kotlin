@@ -23,14 +23,14 @@ public final class BigComplex extends Number {
     int minScale = tre.scale() > 0 || tim.scale() > 0 ? 1 : 0;
     int reScaleStripped = tre.stripTrailingZeros().scale();
     int imScaleStripped = tim.stripTrailingZeros().scale();
-    int reScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped));
-    int imScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped));
-    this.re = reScaleStripped > 0 ? tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros() : tre.setScale(reScale, Utils.ROUNDING_MODE);
-    this.im = imScaleStripped > 0 ? tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros() : tim.setScale(imScale, Utils.ROUNDING_MODE);
+    int reScale = Math.min(Utils.INSTANCE.getDEFAULT_SCALE(), Math.max(minScale, reScaleStripped));
+    int imScale = Math.min(Utils.INSTANCE.getDEFAULT_SCALE(), Math.max(minScale, imScaleStripped));
+    this.re = reScaleStripped > 0 ? tre.setScale(reScale, Utils.INSTANCE.getROUNDING_MODE()).stripTrailingZeros() : tre.setScale(reScale, Utils.INSTANCE.getROUNDING_MODE());
+    this.im = imScaleStripped > 0 ? tim.setScale(imScale, Utils.INSTANCE.getROUNDING_MODE()).stripTrailingZeros() : tim.setScale(imScale, Utils.INSTANCE.getROUNDING_MODE());
   }
 
   public BigComplex(Number re, Number im) {
-    this(Utils.toBigDecimal(re), Utils.toBigDecimal(im));
+    this(Utils.INSTANCE.toBigDecimal(re), Utils.INSTANCE.toBigDecimal(im));
   }
 
   public BigComplex(Number re) {
@@ -65,7 +65,7 @@ public final class BigComplex extends Number {
     if (other instanceof BigComplex) {
       return new BigComplex(re.add(((BigComplex) other).getRe()), im.add(((BigComplex) other).getIm()));
     } else {
-      return new BigComplex(re.add(Utils.toBigDecimal(other)), im);
+      return new BigComplex(re.add(Utils.INSTANCE.toBigDecimal(other)), im);
     }
   }
 
@@ -76,7 +76,7 @@ public final class BigComplex extends Number {
     if (other instanceof BigComplex) {
       return new BigComplex(re.subtract(((BigComplex) other).getRe()), im.subtract(((BigComplex) other).getIm()));
     } else {
-      return new BigComplex(re.subtract(Utils.toBigDecimal(other)), im);
+      return new BigComplex(re.subtract(Utils.INSTANCE.toBigDecimal(other)), im);
     }
   }
 
@@ -129,8 +129,8 @@ public final class BigComplex extends Number {
     BigDecimal real = a.multiply(c).add(b.multiply(d));
     BigDecimal imag = b.multiply(c).subtract(a.multiply(d));
     BigDecimal denom = c.multiply(c).add(d.multiply(d));
-    return new BigComplex(real.divide(denom, Utils.DEFAULT_CONTEXT),
-                          imag.divide(denom, Utils.DEFAULT_CONTEXT));
+    return new BigComplex(real.divide(denom, Utils.INSTANCE.getDEFAULT_CONTEXT()),
+                          imag.divide(denom, Utils.INSTANCE.getDEFAULT_CONTEXT()));
   }
 
   /**
@@ -157,7 +157,7 @@ public final class BigComplex extends Number {
       c = ((BigComplex) e).getRe();
       d = ((BigComplex) e).getIm();
     } else {
-      c = Utils.toBigDecimal(e);
+      c = Utils.INSTANCE.toBigDecimal(e);
       d = BigDecimal.ZERO;
     }
     Number r = magnitude();
@@ -215,10 +215,10 @@ public final class BigComplex extends Number {
         throw new ArithmeticException("Undefined for 0+0i");
       }
     } else if (re.signum() < 0) {
-      double atan = Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT));
+      double atan = Atan.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
       return (im.signum() >= 0) ? atan + Math.PI : atan - Math.PI;
     } else {
-      return Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT));
+      return Atan.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
     }
   }
 

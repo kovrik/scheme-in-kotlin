@@ -41,7 +41,7 @@ public final class Log extends AFn {
     if (number instanceof Double) {
       return Math.log(number.doubleValue());
     }
-    Number n = Utils.upcast(number);
+    Number n = Utils.INSTANCE.upcast(number);
     if (n instanceof Long) {
       if (n.longValue() == 0) {
         throw new ArithmeticException("log: undefined for 0");
@@ -64,7 +64,7 @@ public final class Log extends AFn {
       if (((BigInteger)number).signum() == 0) {
         throw new ArithmeticException("log: undefined for 0");
       }
-      return logBig(Utils.toBigDecimal(number));
+      return logBig(Utils.INSTANCE.toBigDecimal(number));
     }
     return Math.log(number.doubleValue());
   }

@@ -19,7 +19,7 @@ public enum Assert implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression);
     }
     Object result = evaluator.eval(expression.get(1), env);
-    if (!Utils.toBoolean(result)) {
+    if (!Utils.INSTANCE.toBoolean(result)) {
       String message = "";
       if (expression.size() == 3) {
         if (!(expression.get(2) instanceof String) && !(expression.get(2) instanceof MutableString)) {

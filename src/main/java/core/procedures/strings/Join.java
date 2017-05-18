@@ -23,7 +23,7 @@ public final class Join extends AFn {
       return args[0].toString();
     }
     String separator = args[0].toString();
-    Iterator iterator = Utils.toSequence(args[1]);
+    Iterator iterator = Utils.INSTANCE.toSequence(args[1]);
     if (!iterator.hasNext()) {
       return "";
     }

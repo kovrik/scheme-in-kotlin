@@ -25,7 +25,7 @@ public final class BigIntegerType extends AFn {
   @Override
   public BigInteger apply1(Object arg) {
     if (arg instanceof Number) {
-      return Utils.toBigInteger((Number) arg);
+      return Utils.INSTANCE.toBigInteger((Number) arg);
     }
     return new BigInteger(arg.toString());
   }

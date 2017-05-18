@@ -25,7 +25,7 @@ public final class BigDecimalType extends AFn {
   @Override
   public BigDecimal apply1(Object arg) {
     if (arg instanceof Number) {
-      return Utils.toBigDecimal((Number) arg);
+      return Utils.INSTANCE.toBigDecimal((Number) arg);
     }
     return new BigDecimal(arg.toString());
   }

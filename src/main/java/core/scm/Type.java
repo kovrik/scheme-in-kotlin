@@ -61,14 +61,14 @@ public final class Type {
     TYPE_PREDICATES.put(MutableString.class, o -> StringBuilder.class.equals(o.getClass()) || MutableString.class.equals(o.getClass()));
     TYPE_PREDICATES.put(ProperList.class, Cons::isList);
     TYPE_PREDICATES.put(Pair.class, Cons::isPair);
-    TYPE_PREDICATES.put(BigRatio.class, Utils::isRational);
-    TYPE_PREDICATES.put(Long.class, Utils::isInteger);
-    TYPE_PREDICATES.put(Integer.class, Utils::isInteger);
-    TYPE_PREDICATES.put(ExactPositiveInteger.class, Utils::isExactPositiveInteger);
-    TYPE_PREDICATES.put(ExactNonNegativeInteger.class, Utils::isExactNonNegativeInteger);
-    TYPE_PREDICATES.put(Real.class, Utils::isReal);
-    TYPE_PREDICATES.put(BitOp.class, Utils::isBitOpSupported);
-    TYPE_PREDICATES.put(IAssoc.class, Utils::isAssoc);
+    TYPE_PREDICATES.put(BigRatio.class, Utils.INSTANCE::isRational);
+    TYPE_PREDICATES.put(Long.class, Utils.INSTANCE::isInteger);
+    TYPE_PREDICATES.put(Integer.class, Utils.INSTANCE::isInteger);
+    TYPE_PREDICATES.put(ExactPositiveInteger.class, Utils.INSTANCE::isExactPositiveInteger);
+    TYPE_PREDICATES.put(ExactNonNegativeInteger.class, Utils.INSTANCE::isExactNonNegativeInteger);
+    TYPE_PREDICATES.put(Real.class, Utils.INSTANCE::isReal);
+    TYPE_PREDICATES.put(BitOp.class, Utils.INSTANCE::isBitOpSupported);
+    TYPE_PREDICATES.put(IAssoc.class, Utils.INSTANCE::isAssoc);
   }
 
   public static boolean checkType(Object o, Class<?> expected) {

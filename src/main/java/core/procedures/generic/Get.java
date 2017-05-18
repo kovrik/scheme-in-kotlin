@@ -38,7 +38,7 @@ public final class Get extends AFn {
     if (col instanceof Map) {
       return ((Map) col).getOrDefault(key, defaultValue);
     } else if ((col instanceof Map.Entry)) {
-      if (Utils.isInteger(key)) {
+      if (Utils.INSTANCE.isInteger(key)) {
         int i = ((Number)key).intValue();
         if (i == 0) {
           return ((Map.Entry) col).getKey();
@@ -47,7 +47,7 @@ public final class Get extends AFn {
         }
       }
     } else if (col instanceof List) {
-      if (Utils.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
+      if (Utils.INSTANCE.isInteger(key) && (((Number) key).intValue() < ((List) col).size())) {
         return ((List)col).get(((Number)key).intValue());
       }
     } else if (col instanceof Set) {
@@ -55,11 +55,11 @@ public final class Get extends AFn {
         return key;
       }
     } else if (col instanceof Vector) {
-      if (Utils.isInteger(key) && (((Number) key).intValue() < ((Vector) col).size())) {
+      if (Utils.INSTANCE.isInteger(key) && (((Number) key).intValue() < ((Vector) col).size())) {
         return ((Vector)col).get(((Number)key).intValue());
       }
     } else if (col instanceof CharSequence) {
-      if (Utils.isInteger(key) && (((Number) key).intValue() < ((CharSequence) col).length())) {
+      if (Utils.INSTANCE.isInteger(key) && (((Number) key).intValue() < ((CharSequence) col).length())) {
         return ((CharSequence) col).charAt(((Number) key).intValue());
       }
     }

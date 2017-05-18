@@ -36,7 +36,7 @@ public final class Round extends AFn {
       return number;
     } else if (number instanceof BigDecimal) {
       BigDecimal bd = (BigDecimal) number;
-      return bd.scale() == 0 ? bd.round(MathContext.UNLIMITED) : bd.round(Utils.DEFAULT_CONTEXT);
+      return bd.scale() == 0 ? bd.round(MathContext.UNLIMITED) : bd.round(Utils.INSTANCE.getDEFAULT_CONTEXT());
     } else if (number instanceof BigRatio) {
       return ((BigRatio) number).round();
     }

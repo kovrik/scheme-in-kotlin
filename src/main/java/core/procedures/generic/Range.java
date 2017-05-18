@@ -48,9 +48,9 @@ public class Range extends AFn {
       return range(args);
     }
 
-    boolean exact = Utils.isExactInteger(args[0]);
+    boolean exact = Utils.INSTANCE.isExactInteger(args[0]);
     if (args.length == 3) {
-      exact = exact && Utils.isExactInteger(args[2]);
+      exact = exact && Utils.INSTANCE.isExactInteger(args[2]);
     }
     Cons<Number> result = Cons.list();
     if (exact) {
@@ -120,7 +120,7 @@ public class Range extends AFn {
     }
     Number cur = start;
     NumericalComparison pred = NumericalComparison.LESS;
-    if (Utils.isNegative(step)) {
+    if (Utils.INSTANCE.isNegative(step)) {
       pred = NumericalComparison.GREATER;
     }
     while (pred.apply(cur, end)) {

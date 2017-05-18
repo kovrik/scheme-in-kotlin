@@ -39,11 +39,11 @@ public final class ToInexact extends AFn {
       return ((BigRatio)o).toBigDecimalInexact();
     }
     if (o instanceof BigInteger) {
-      return new BigDecimal(o.toString()).setScale(1, Utils.ROUNDING_MODE);
+      return new BigDecimal(o.toString()).setScale(1, Utils.INSTANCE.getROUNDING_MODE());
     }
     if (o instanceof BigDecimal) {
       int scale = Math.max(1, ((BigDecimal)o).scale());
-      return ((BigDecimal)o).setScale(scale, Utils.ROUNDING_MODE);
+      return ((BigDecimal)o).setScale(scale, Utils.INSTANCE.getROUNDING_MODE());
     }
     return ((Number)o).doubleValue();
   }

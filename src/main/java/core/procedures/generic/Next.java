@@ -27,7 +27,7 @@ public class Next extends AFn {
 
   @Override
   public Object apply1(Object arg) {
-    if (!Utils.isSeqable(arg)) {
+    if (!Utils.INSTANCE.isSeqable(arg)) {
       throw new IllegalArgumentException("don't know how to create Sequence from " + arg.getClass());
     }
     if (arg instanceof List) {

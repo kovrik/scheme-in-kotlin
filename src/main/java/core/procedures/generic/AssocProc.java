@@ -33,7 +33,7 @@ public final class AssocProc extends AFn {
       for (int n = 0; n < list.size(); n++) {
         Object pair = list.get(n);
         if (Cons.isPair(pair)) {
-          if ((Utils.toBoolean(predicate.apply2(arg1, ((Cons) pair).car())))) {
+          if ((Utils.INSTANCE.toBoolean(predicate.apply2(arg1, ((Cons) pair).car())))) {
             return pair;
           }
         } else {

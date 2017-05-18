@@ -30,7 +30,7 @@ public final class Denominator extends AFn {
   }
 
   private Number denominator(Object o) {
-    boolean isExact = Utils.isExact(o);
+    boolean isExact = Utils.INSTANCE.isExact(o);
     Number exact;
     if (isExact) {
       exact = (Number)o;
@@ -40,7 +40,7 @@ public final class Denominator extends AFn {
     if (exact instanceof BigRatio) {
       if (!isExact) {
         BigDecimal result = new BigDecimal(((BigRatio) exact).getDenominator());
-        return result.setScale(1, Utils.ROUNDING_MODE);
+        return result.setScale(1, Utils.INSTANCE.getROUNDING_MODE());
       }
       return ((BigRatio) exact).getDenominator();
     }
@@ -57,7 +57,7 @@ public final class Denominator extends AFn {
       if (((BigDecimal) exact).scale() == 0) {
         return BigDecimal.ONE;
       } else {
-        return BigDecimal.ONE.setScale(1, Utils.ROUNDING_MODE);
+        return BigDecimal.ONE.setScale(1, Utils.INSTANCE.getROUNDING_MODE());
       }
     }
     return 1L;

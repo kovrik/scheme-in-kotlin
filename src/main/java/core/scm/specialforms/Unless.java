@@ -22,7 +22,7 @@ public enum Unless implements ISpecialForm {
       throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1));
     }
     Object test = expression.get(1);
-    if (!Utils.toBoolean(evaluator.eval(test, env))) {
+    if (!Utils.INSTANCE.toBoolean(evaluator.eval(test, env))) {
       for (int i = 2; i < expression.size() - 1; i++) {
         evaluator.eval(expression.get(i), env);
       }

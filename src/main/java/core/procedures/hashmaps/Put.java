@@ -48,7 +48,7 @@ public final class Put extends AFn {
       m = new MapEntry((Map.Entry) m);
     }
     if (m instanceof MutableVector) {
-      if (!Utils.isInteger(args[1])) {
+      if (!Utils.INSTANCE.isInteger(args[1])) {
         throw new WrongTypeException("vector", Integer.class, args[1]);
       }
       ((MutableVector) m).set(((Number)args[1]).intValue(), args[2]);

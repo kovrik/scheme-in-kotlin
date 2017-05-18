@@ -40,20 +40,20 @@ public final class Remainder extends AFn {
   }
 
   public static Number apply(Number first, Number second) {
-    if (Utils.isZero(second)) {
+    if (Utils.INSTANCE.isZero(second)) {
       throw new ArithmeticException("remainder: undefined for 0");
     }
-    if (Utils.isZero(first)) {
-      return Utils.inexactnessTaint(first, second);
+    if (Utils.INSTANCE.isZero(first)) {
+      return Utils.INSTANCE.inexactnessTaint(first, second);
     }
     if (first instanceof BigRatio || second instanceof BigRatio) {
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     if ((first instanceof BigInteger) || (second instanceof BigInteger)) {
-      return apply(Utils.toBigInteger(first), Utils.toBigInteger(second));
+      return apply(Utils.INSTANCE.toBigInteger(first), Utils.INSTANCE.toBigInteger(second));
     }
     if ((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) {
       double result = first.doubleValue() % second.doubleValue();

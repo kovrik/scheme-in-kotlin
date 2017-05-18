@@ -62,8 +62,8 @@ public final class Subtraction extends AFn {
 
   private Number subtract(Number first, Number second) {
     /* Special cases */
-    if (Utils.isZero(second)) {
-      return Utils.inexactnessTaint(first, second);
+    if (Utils.INSTANCE.isZero(second)) {
+      return Utils.INSTANCE.inexactnessTaint(first, second);
     }
     /* Complex numbers*/
     if (first instanceof BigComplex) {
@@ -77,14 +77,14 @@ public final class Subtraction extends AFn {
       return ((BigRatio)first).minus((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (Utils.isExact(second)) {
+      if (Utils.INSTANCE.isExact(second)) {
         return ((BigRatio) first).minus(BigRatio.valueOf(second.toString(), "1"));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (Utils.isExact(first)) {
+      if (Utils.INSTANCE.isExact(first)) {
         return BigRatio.valueOf(first.toString(), "1").minus((BigRatio) second);
       } else {
         second = second.doubleValue();
@@ -93,22 +93,22 @@ public final class Subtraction extends AFn {
     if (first instanceof Float && second instanceof Float) {
       float result = first.floatValue() - second.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
+        return Utils.INSTANCE.toBigDecimal(first).subtract(Utils.INSTANCE.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
       double result = first.doubleValue() - second.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
+        return Utils.INSTANCE.toBigDecimal(first).subtract(Utils.INSTANCE.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof BigDecimal || second instanceof BigDecimal) {
-      return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second));
+      return Utils.INSTANCE.toBigDecimal(first).subtract(Utils.INSTANCE.toBigDecimal(second));
     }
     if (first instanceof BigInteger || second instanceof BigInteger) {
-      return Utils.toBigInteger(first).subtract(Utils.toBigInteger(second));
+      return Utils.INSTANCE.toBigInteger(first).subtract(Utils.INSTANCE.toBigInteger(second));
     }
     long f = first.longValue();
     long s = second.longValue();

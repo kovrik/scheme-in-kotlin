@@ -23,7 +23,7 @@ public final class BooleanType extends AFn {
   @Override
   public Boolean apply1(Object arg) {
     /* Have to box it */
-    if (Utils.toBoolean(arg)) {
+    if (Utils.INSTANCE.toBoolean(arg)) {
       return Boolean.TRUE;
     } else {
       return Boolean.FALSE;

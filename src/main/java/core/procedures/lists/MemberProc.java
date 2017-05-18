@@ -39,7 +39,7 @@ public final class MemberProc extends AFn {
     while ((cons instanceof List) && (!((List) cons).isEmpty())) {
       p += 1;
       Object car = Car.car(cons);
-      if ((Utils.toBoolean(predicate.apply2(arg1, car)))) {
+      if ((Utils.INSTANCE.toBoolean(predicate.apply2(arg1, car)))) {
         return cons;
       }
       cons = Cdr.cdr(cons);

@@ -24,7 +24,7 @@ public final class Find extends AFn {
 
   @Override
   public MapEntry apply2(Object map, Object key) {
-    IAssoc assoc = Utils.toAssoc(map);
+    IAssoc assoc = Utils.INSTANCE.toAssoc(map);
     if (assoc.containsKey(key)) {
       return assoc.getEntry(key);
     }

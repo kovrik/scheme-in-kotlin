@@ -31,7 +31,7 @@ public final class RandNth extends AFn {
     if (arg instanceof Map) {
       throw new UnsupportedOperationException("nth not supported on this type: " + arg.getClass());
     }
-    if (!Utils.isSeqable(arg)) {
+    if (!Utils.INSTANCE.isSeqable(arg)) {
       throw new IllegalArgumentException("don't know how to create Sequence from " + arg.getClass());
     }
     int bound = count.apply1(arg);

@@ -19,7 +19,7 @@ public enum And implements ISpecialForm {
     if (expression.size() > 1) {
       for (int i = 1; i < expression.size() - 1; i++) {
         result = evaluator.eval(expression.get(i), env);
-        if (!Utils.toBoolean(result)) {
+        if (!Utils.INSTANCE.toBoolean(result)) {
           return result;
         }
       }

@@ -52,14 +52,14 @@ public final class NumericalComparison extends AFn {
         s = s.floatValue();
       } else if ((f instanceof BigRatio) || (s instanceof BigRatio)) {
         /* Coerce BigRatio to BigDecimal */
-        f = Utils.toBigDecimal(f);
-        s = Utils.toBigDecimal(s);
+        f = Utils.INSTANCE.toBigDecimal(f);
+        s = Utils.INSTANCE.toBigDecimal(s);
       } else if ((f instanceof BigDecimal) || (s instanceof BigDecimal)) {
-        f = Utils.toBigDecimal(f);
-        s = Utils.toBigDecimal(s);
+        f = Utils.INSTANCE.toBigDecimal(f);
+        s = Utils.INSTANCE.toBigDecimal(s);
       } else if ((s instanceof BigInteger) || (f instanceof BigInteger)) {
-        f = Utils.toBigInteger(f);
-        s = Utils.toBigInteger(s);
+        f = Utils.INSTANCE.toBigInteger(f);
+        s = Utils.INSTANCE.toBigInteger(s);
       } else {
         f = f.longValue();
         s = s.longValue();

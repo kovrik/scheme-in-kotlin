@@ -29,7 +29,7 @@ public final class Numerator extends AFn {
   }
 
   private Number numerator(Object o) {
-    boolean isExact = Utils.isExact(o);
+    boolean isExact = Utils.INSTANCE.isExact(o);
     Number exact;
     if (isExact) {
       exact = (Number)o;
@@ -39,7 +39,7 @@ public final class Numerator extends AFn {
     if (exact instanceof BigRatio) {
       if (!isExact) {
         BigDecimal result = new BigDecimal(((BigRatio) exact).getNumerator());
-        return result.setScale(1, Utils.ROUNDING_MODE);
+        return result.setScale(1, Utils.INSTANCE.getROUNDING_MODE());
       }
       return ((BigRatio) exact).getNumerator();
     }

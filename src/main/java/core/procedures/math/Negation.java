@@ -22,6 +22,6 @@ public final class Negation extends AFn {
 
   @Override
   public Boolean apply1(Object arg) {
-    return !Utils.toBoolean(arg);
+    return !Utils.INSTANCE.toBoolean(arg);
   }
 }

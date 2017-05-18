@@ -47,7 +47,7 @@ public final class NumberToString extends AFn {
         return bigDecimal.toString();
       }
       /* Check if it is integral */
-      if (Utils.isInteger(bigDecimal)) {
+      if (Utils.INSTANCE.isInteger(bigDecimal)) {
         return bigDecimal.toBigInteger().toString(radix);
       }
       throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");
@@ -58,7 +58,7 @@ public final class NumberToString extends AFn {
         return bigInteger.toString();
       }
       /* Check if it is integral */
-      if (Utils.isInteger(bigInteger)) {
+      if (Utils.INSTANCE.isInteger(bigInteger)) {
         return bigInteger.toString(radix);
       }
       throw new IllegalArgumentException(getName() + ": inexact numbers can only be printed in base 10");

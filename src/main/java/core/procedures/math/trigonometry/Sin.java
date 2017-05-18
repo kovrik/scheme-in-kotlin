@@ -33,7 +33,7 @@ public final class Sin extends AFn {
 
   public static Number sin(Number number) {
     /* Special cases */
-    if (Utils.isZero(number)) {
+    if (Utils.INSTANCE.isZero(number)) {
       return 0L;
     }
     if (number instanceof BigDecimal) {

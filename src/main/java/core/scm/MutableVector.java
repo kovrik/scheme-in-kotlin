@@ -39,7 +39,7 @@ public class MutableVector extends Vector {
 
   @Override
   public Object assoc(Object key, Object value) {
-    if (!Utils.isInteger(key)) {
+    if (!Utils.INSTANCE.isInteger(key)) {
       throw new WrongTypeException(getName(), Integer.class, key);
     }
     int i = ((Number) key).intValue();

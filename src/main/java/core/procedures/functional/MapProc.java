@@ -40,7 +40,7 @@ public final class MapProc extends AFn {
     Map<Integer, Iterator> iterators = new HashMap<>(args.length - 1);
     for (int i = 1; i < args.length; i++) {
       /* Check type */
-      iterators.put(i, Utils.toSequence(args[i]));
+      iterators.put(i, Utils.INSTANCE.toSequence(args[i]));
       /* Check size */
       if (count.apply1(args[i]) != size) {
         throw new IllegalArgumentException(String.format("%s: all collections must be of the same size", getName()));

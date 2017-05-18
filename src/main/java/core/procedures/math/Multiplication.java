@@ -42,14 +42,14 @@ public final class Multiplication extends AFn {
 
   public static Number apply(Number first, Number second) {
     /* Special cases */
-    if (Utils.isZero(first)) {
-      return Utils.inexactnessTaint(first, second);
+    if (Utils.INSTANCE.isZero(first)) {
+      return Utils.INSTANCE.inexactnessTaint(first, second);
     }
-    if (Utils.isOne(first)) {
-      return Utils.inexactnessTaint(second, first);
+    if (Utils.INSTANCE.isOne(first)) {
+      return Utils.INSTANCE.inexactnessTaint(second, first);
     }
-    if (Utils.isOne(second)) {
-      return Utils.inexactnessTaint(first, second);
+    if (Utils.INSTANCE.isOne(second)) {
+      return Utils.INSTANCE.inexactnessTaint(first, second);
     }
     /* Complex numbers*/
     if (first instanceof BigComplex) {
@@ -63,15 +63,15 @@ public final class Multiplication extends AFn {
       return ((BigRatio)first).multiply((BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      if (Utils.isExact(second)) {
-        return ((BigRatio) first).multiply(Utils.toBigInteger(second));
+      if (Utils.INSTANCE.isExact(second)) {
+        return ((BigRatio) first).multiply(Utils.INSTANCE.toBigInteger(second));
       } else {
         first = first.doubleValue();
       }
     }
     if (second instanceof BigRatio) {
-      if (Utils.isExact(first)) {
-        return ((BigRatio) second).multiply(Utils.toBigInteger(first));
+      if (Utils.INSTANCE.isExact(first)) {
+        return ((BigRatio) second).multiply(Utils.INSTANCE.toBigInteger(first));
       } else {
         second = second.doubleValue();
       }
@@ -79,22 +79,22 @@ public final class Multiplication extends AFn {
     if (first instanceof Float && second instanceof Float) {
       float result = first.floatValue() * second.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
+        return Utils.INSTANCE.toBigDecimal(first).multiply(Utils.INSTANCE.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof Double || second instanceof Double || first instanceof Float || second instanceof Float) {
       double result = first.doubleValue() * second.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
+        return Utils.INSTANCE.toBigDecimal(first).multiply(Utils.INSTANCE.toBigDecimal(second));
       }
       return result;
     }
     if (first instanceof BigDecimal || second instanceof BigDecimal) {
-      return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second));
+      return Utils.INSTANCE.toBigDecimal(first).multiply(Utils.INSTANCE.toBigDecimal(second));
     }
     if (first instanceof BigInteger || second instanceof BigInteger) {
-      return Utils.toBigInteger(first).multiply(Utils.toBigInteger(second));
+      return Utils.INSTANCE.toBigInteger(first).multiply(Utils.INSTANCE.toBigInteger(second));
     }
     long f = first.longValue();
     long s = second.longValue();

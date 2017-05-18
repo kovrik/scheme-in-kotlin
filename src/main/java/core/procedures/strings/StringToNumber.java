@@ -52,7 +52,7 @@ public final class StringToNumber extends AFn {
     if (restNumber.isEmpty()) {
       return Boolean.FALSE;
     }
-    int radix = Utils.getRadixByChar(radixChar);
+    int radix = Utils.INSTANCE.getRadixByChar(radixChar);
     /* Get default (optional) radix if present */
     if (args.length == 2) {
       int optRadix = ((Long)args[1]).intValue();
@@ -65,7 +65,7 @@ public final class StringToNumber extends AFn {
     }
 
     /* Read number */
-    Object result = Utils.preProcessNumber(restNumber, exactness, radix);
+    Object result = Utils.INSTANCE.preProcessNumber(restNumber, exactness, radix);
     if (result instanceof Number) {
       return result;
     }

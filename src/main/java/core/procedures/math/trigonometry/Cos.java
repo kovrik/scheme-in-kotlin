@@ -33,7 +33,7 @@ public final class Cos extends AFn {
 
   public static Number cos(Number number) {
     /* Special cases */
-    if (Utils.isZero(number)) {
+    if (Utils.INSTANCE.isZero(number)) {
       return 1L;
     }
     if (number instanceof BigDecimal) {

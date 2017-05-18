@@ -66,7 +66,7 @@ public enum Do implements ISpecialForm {
     Object test = clause.get(0);
     List body = expression.subList(3, expression.size());
     /* While test evaluates to #f */
-    while (!Utils.toBoolean(evaluator.eval(test, tempEnv))) {
+    while (!Utils.INSTANCE.toBoolean(evaluator.eval(test, tempEnv))) {
       /* Evaluate command expressions */
       for (Object e : body) {
         /* Each iteration establishes bindings to fresh locations

@@ -3,8 +3,7 @@ package core.procedures.math;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 import core.scm.BigRatio;
-
-import static core.utils.Utils.E;
+import core.utils.Utils;
 
 public final class Exp extends AFn {
 
@@ -61,6 +60,6 @@ public final class Exp extends AFn {
         return Math.exp(1d);
       }
     }
-    return Expt.expt(E, number);
+    return Expt.expt(Utils.getE(), number);
   }
 }

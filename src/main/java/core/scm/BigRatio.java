@@ -88,7 +88,7 @@ public final class BigRatio extends Number implements Comparable<BigRatio> {
   public BigDecimal toBigDecimalInexact() {
     BigDecimal bigDecimal = Division.safeBigDecimalDivision(new BigDecimal(numerator), new BigDecimal(denominator));
     int scale = Math.max(1, bigDecimal.scale());
-    return bigDecimal.setScale(scale, Utils.ROUNDING_MODE);
+    return bigDecimal.setScale(scale, Utils.INSTANCE.getROUNDING_MODE());
   }
 
   public boolean isDenominatorEqualToOne() {
@@ -127,7 +127,7 @@ public final class BigRatio extends Number implements Comparable<BigRatio> {
 
   public BigRatio round() {
     BigDecimal number = toBigDecimal();
-    BigDecimal round = number.setScale(0, Utils.ROUNDING_MODE);
+    BigDecimal round = number.setScale(0, Utils.INSTANCE.getROUNDING_MODE());
     return new BigRatio(round.toBigInteger());
   }
 

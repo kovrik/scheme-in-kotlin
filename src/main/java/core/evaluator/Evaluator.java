@@ -73,7 +73,7 @@ public class Evaluator {
       throw cc;
     }
     if (result instanceof BigRatio) {
-      return Utils.downcastNumber((Number)result);
+      return Utils.INSTANCE.downcastNumber((Number)result);
     }
     return result;
   }
@@ -168,7 +168,7 @@ public class Evaluator {
       Vector vector = evalVector((Vector)op, env);
       /* Evaluate key */
       Object key = eval(sexp.get(1), env);
-      if (!Utils.isInteger(key)) {
+      if (!Utils.INSTANCE.isInteger(key)) {
         throw new WrongTypeException("vector", Integer.class, key);
       }
       int i = ((Number) key).intValue();

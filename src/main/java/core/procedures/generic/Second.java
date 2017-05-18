@@ -31,7 +31,7 @@ public class Second extends AFn {
     if (arg == null) {
       return null;
     }
-    Iterator iterator = Utils.toSequence(arg);
+    Iterator iterator = Utils.INSTANCE.toSequence(arg);
     if (iterator.hasNext()) {
       iterator.next();
       return iterator.hasNext() ? iterator.next() : null;

@@ -65,18 +65,18 @@ object Writer {
         if (this is Double) {
             if (java.lang.Double.isNaN(toDouble())) {
                 return "+nan.0"
-            } else if (this == java.lang.Double.POSITIVE_INFINITY) {
+            } else if (this.toDouble() == java.lang.Double.POSITIVE_INFINITY) {
                 return "+inf.0"
-            } else if (this == java.lang.Double.NEGATIVE_INFINITY) {
+            } else if (this.toDouble() == java.lang.Double.NEGATIVE_INFINITY) {
                 return "-inf.0"
             }
         }
         if (this is Float) {
             if (java.lang.Float.isNaN(toFloat())) {
                 return "+nan.0"
-            } else if (this == java.lang.Float.POSITIVE_INFINITY) {
+            } else if (this.toFloat() == java.lang.Float.POSITIVE_INFINITY) {
                 return "+inf.0"
-            } else if (this == java.lang.Float.NEGATIVE_INFINITY) {
+            } else if (this.toFloat() == java.lang.Float.NEGATIVE_INFINITY) {
                 return "-inf.0"
             }
         }

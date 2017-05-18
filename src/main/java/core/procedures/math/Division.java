@@ -38,8 +38,8 @@ public final class Division extends AFn {
   }
 
   private Number apply(Number numerator, Number denominator) {
-    if (Utils.isZero(numerator)) {
-      return Utils.inexactnessTaint(numerator, denominator);
+    if (Utils.INSTANCE.isZero(numerator)) {
+      return Utils.INSTANCE.inexactnessTaint(numerator, denominator);
     }
     /* Complex numbers*/
     if (numerator instanceof BigComplex) {
@@ -53,41 +53,41 @@ public final class Division extends AFn {
       return ((BigRatio)numerator).divide((BigRatio)denominator);
     }
     if (numerator instanceof BigRatio) {
-      if (Utils.isExact(denominator)) {
-        return ((BigRatio) numerator).divide(Utils.toBigInteger(denominator));
+      if (Utils.INSTANCE.isExact(denominator)) {
+        return ((BigRatio) numerator).divide(Utils.INSTANCE.toBigInteger(denominator));
       } else {
         numerator = numerator.doubleValue();
       }
     }
     if (denominator instanceof BigRatio) {
-      if (Utils.isExact(numerator)) {
-        return ((BigRatio)denominator).reciprocal().multiply(Utils.toBigInteger(numerator));
+      if (Utils.INSTANCE.isExact(numerator)) {
+        return ((BigRatio)denominator).reciprocal().multiply(Utils.INSTANCE.toBigInteger(numerator));
       } else {
         denominator = denominator.doubleValue();
       }
     }
-    if (Utils.isExact(numerator) && Utils.isExact(denominator)) {
-      return BigRatio.valueOf(Utils.toBigInteger(numerator), Utils.toBigInteger(denominator));
+    if (Utils.INSTANCE.isExact(numerator) && Utils.INSTANCE.isExact(denominator)) {
+      return BigRatio.valueOf(Utils.INSTANCE.toBigInteger(numerator), Utils.INSTANCE.toBigInteger(denominator));
     }
     if (numerator instanceof Float && denominator instanceof Float) {
       float result = numerator.floatValue() / denominator.floatValue();
       if (Float.isNaN(result) || Float.isInfinite(result)) {
-        return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
+        return Utils.INSTANCE.toBigDecimal(numerator).divide(Utils.INSTANCE.toBigDecimal(denominator), Utils.INSTANCE.getDEFAULT_CONTEXT());
       }
       return result;
     }
     if (numerator instanceof Double || denominator instanceof Double || numerator instanceof Float || denominator instanceof Float) {
       double result = numerator.doubleValue() / denominator.doubleValue();
       if (Double.isNaN(result) || Double.isInfinite(result)) {
-        return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
+        return Utils.INSTANCE.toBigDecimal(numerator).divide(Utils.INSTANCE.toBigDecimal(denominator), Utils.INSTANCE.getDEFAULT_CONTEXT());
       }
       return result;
     }
     if (numerator instanceof BigDecimal || denominator instanceof BigDecimal) {
-      return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT);
+      return Utils.INSTANCE.toBigDecimal(numerator).divide(Utils.INSTANCE.toBigDecimal(denominator), Utils.INSTANCE.getDEFAULT_CONTEXT());
     }
     if (numerator instanceof BigInteger || denominator instanceof BigInteger) {
-      return Utils.toBigInteger(numerator).divide(Utils.toBigInteger(denominator));
+      return Utils.INSTANCE.toBigInteger(numerator).divide(Utils.INSTANCE.toBigInteger(denominator));
     }
     double f = numerator.doubleValue();
     double s = denominator.doubleValue();
@@ -99,9 +99,9 @@ public final class Division extends AFn {
    */
   public static BigDecimal safeBigDecimalDivision(BigDecimal num, BigDecimal den) {
     try {
-      return num.divide(den, Utils.getMathContext(num, den));
+      return num.divide(den, Utils.INSTANCE.getMathContext(num, den));
     } catch (ArithmeticException e) {
-      return num.divide(den, Utils.DEFAULT_CONTEXT);
+      return num.divide(den, Utils.INSTANCE.getDEFAULT_CONTEXT());
     }
   }
 }

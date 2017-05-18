@@ -173,7 +173,7 @@ public class Vector extends AFn implements Collection, IAssoc {
 
   @Override
   public boolean containsKey(Object key) {
-    if (!Utils.isInteger(key)) {
+    if (!Utils.INSTANCE.isInteger(key)) {
       throw new WrongTypeException(getName(), Integer.class, key);
     }
     int i = ((Number) key).intValue();
@@ -182,7 +182,7 @@ public class Vector extends AFn implements Collection, IAssoc {
 
   @Override
   public MapEntry getEntry(Object key) {
-    if (!Utils.isInteger(key)) {
+    if (!Utils.INSTANCE.isInteger(key)) {
       throw new WrongTypeException(getName(), Integer.class, key);
     }
     int i = ((Number) key).intValue();

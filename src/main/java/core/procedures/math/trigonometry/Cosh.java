@@ -28,7 +28,7 @@ public final class Cosh extends AFn {
   @Override
   public Number apply1(Object arg) {
     /* Special cases */
-    if (Utils.isZero(arg)) {
+    if (Utils.INSTANCE.isZero(arg)) {
       return 1L;
     }
     if (arg instanceof BigDecimal) {

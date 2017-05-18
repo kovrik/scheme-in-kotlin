@@ -32,11 +32,11 @@ public final class Nth extends AFn {
     if (col instanceof Map) {
       throw new UnsupportedOperationException("nth not supported on this type: " + col.getClass());
     }
-    if (!Utils.isSeqable(col)) {
+    if (!Utils.INSTANCE.isSeqable(col)) {
       throw new IllegalArgumentException("don't know how to create Sequence from " + col.getClass());
     }
     Object index = args[1];
-    if (!Utils.isInteger(index)) {
+    if (!Utils.INSTANCE.isInteger(index)) {
       throw new WrongTypeException(getName(), Integer.class, index);
     }
     int i = ((Number)args[1]).intValue();

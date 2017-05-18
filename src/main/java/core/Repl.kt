@@ -36,7 +36,7 @@ object Repl {
                 /* Eval lib procedures */
                 val stringReader = StringReader()
                 for (proc in defaultEnvironment.libraryProcedures) {
-                    for (s in stringReader.read(proc)) {
+                    for (s in stringReader.read(proc)!!) {
                         evaluator.macroexpandAndEvaluate(s, defaultEnvironment)
                     }
                 }

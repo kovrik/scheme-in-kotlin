@@ -84,8 +84,8 @@ public final class GCD extends AFn {
   }
 
   private static Number gcd(Number first, Number second) {
-    Number f = Utils.upcast(first);
-    Number s = Utils.upcast(second);
+    Number f = Utils.INSTANCE.upcast(first);
+    Number s = Utils.INSTANCE.upcast(second);
     if ((f instanceof Long) && (s instanceof Long)) {
       return gcd((Long)f, (Long)s);
     }
@@ -93,16 +93,16 @@ public final class GCD extends AFn {
       return gcd((BigRatio) first, (BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      return gcd(((BigRatio) first).toBigDecimal(), Utils.toBigDecimal(second));
+      return gcd(((BigRatio) first).toBigDecimal(), Utils.INSTANCE.toBigDecimal(second));
     }
     if (second instanceof BigRatio) {
-      return gcd(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
+      return gcd(Utils.INSTANCE.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
-      return gcd(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return gcd(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     if (first instanceof BigInteger || second instanceof BigInteger) {
-      return gcd(Utils.toBigInteger(first), Utils.toBigInteger(second));
+      return gcd(Utils.INSTANCE.toBigInteger(first), Utils.INSTANCE.toBigInteger(second));
     }
     return gcd(first.doubleValue(), second.doubleValue());
   }

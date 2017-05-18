@@ -23,7 +23,7 @@ public final class LastIndexOf extends AFn {
     }
     if (args.length == 3) {
       Object index = args[2];
-      if (!Utils.isReal(index)) {
+      if (!Utils.INSTANCE.isReal(index)) {
         throw new WrongTypeException(getName(), "Real", index);
       }
       if (args[1] instanceof Character) {

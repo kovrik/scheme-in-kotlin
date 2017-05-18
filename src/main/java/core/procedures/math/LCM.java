@@ -79,8 +79,8 @@ public final class LCM extends AFn {
   }
 
   private Number lcm(Number first, Number second) {
-    Number f = Utils.upcast(first);
-    Number s = Utils.upcast(second);
+    Number f = Utils.INSTANCE.upcast(first);
+    Number s = Utils.INSTANCE.upcast(second);
     if ((f instanceof Long) && (s instanceof Long)) {
       return lcm((Long)first, (Long)second);
     }
@@ -88,16 +88,16 @@ public final class LCM extends AFn {
       return lcm((BigRatio) first, (BigRatio)second);
     }
     if (first instanceof BigRatio) {
-      return lcm(((BigRatio) first).toBigDecimal(), Utils.toBigDecimal(second));
+      return lcm(((BigRatio) first).toBigDecimal(), Utils.INSTANCE.toBigDecimal(second));
     }
     if (second instanceof BigRatio) {
-      return lcm(Utils.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
+      return lcm(Utils.INSTANCE.toBigDecimal(first), ((BigRatio) second).toBigDecimal());
     }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
-      return lcm(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return lcm(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     if (first instanceof BigInteger || second instanceof BigInteger) {
-      return lcm(Utils.toBigInteger(first), Utils.toBigInteger(second));
+      return lcm(Utils.INSTANCE.toBigInteger(first), Utils.INSTANCE.toBigInteger(second));
     }
     return lcm(first.doubleValue(), second.doubleValue());
   }

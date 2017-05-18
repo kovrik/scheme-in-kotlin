@@ -27,7 +27,7 @@ public final class Angle extends AFn {
   }
 
   private Number angle(Number number) {
-    if (Utils.isZero(number)) {
+    if (Utils.INSTANCE.isZero(number)) {
       throw new ArithmeticException(getName() + ": undefined for 0");
     }
     return BigComplex.of(number).angle();

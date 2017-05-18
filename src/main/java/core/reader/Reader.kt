@@ -10,7 +10,9 @@ import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
 import core.scm.specialforms.Unquote
 import core.scm.specialforms.UnquoteSplicing
-import core.utils.Utils.*
+import core.utils.Utils.getRadixByChar
+import core.utils.Utils.isValidForRadix
+import core.utils.Utils.preProcessNumber
 import java.io.*
 import java.util.*
 import java.util.regex.Pattern
@@ -177,9 +179,9 @@ open class Reader : IReader {
                 val s = c + readUntilDelimiter()
                 /* Read true and false as #t and #f */
                 when (s) {
-                    "true" -> return true
+                    "true"  -> return true
                     "false" -> return false
-                    else -> return Symbol.intern(s)
+                    else    -> return Symbol.intern(s)
                 }
             }
         }

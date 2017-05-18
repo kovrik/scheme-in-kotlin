@@ -27,10 +27,10 @@ public class Quotient extends AFn {
   @Override
   public Number apply2(Object arg1, Object arg2) {
     /* Special cases */
-    if (Utils.isOne(arg2)) {
-      return Utils.inexactnessTaint((Number)arg1, (Number) arg2);
+    if (Utils.INSTANCE.isOne(arg2)) {
+      return Utils.INSTANCE.inexactnessTaint((Number)arg1, (Number) arg2);
     }
-    if (Utils.isZero(arg2)) {
+    if (Utils.INSTANCE.isZero(arg2)) {
       throw new ArithmeticException("quotient: undefined for 0");
     }
     return apply((Number) arg1, (Number) arg2);
@@ -39,10 +39,10 @@ public class Quotient extends AFn {
   private Number apply(BigDecimal first, BigDecimal second) {
     int scale = Math.max(first.scale(), second.scale());
     if (scale > 0) {
-      return first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE)
-                  .setScale(1, Utils.ROUNDING_MODE);
+      return first.divide(second, Utils.INSTANCE.getDEFAULT_CONTEXT()).setScale(0, Utils.INSTANCE.getROUNDING_MODE())
+                  .setScale(1, Utils.INSTANCE.getROUNDING_MODE());
     } else {
-      return first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE);
+      return first.divideToIntegralValue(second).setScale(scale, Utils.INSTANCE.getROUNDING_MODE());
     }
   }
 
@@ -51,24 +51,24 @@ public class Quotient extends AFn {
   }
 
   private Number apply(Number first, Number second) {
-    if (Utils.isZero(first)) {
-      return Utils.inexactnessTaint(first, second);
+    if (Utils.INSTANCE.isZero(first)) {
+      return Utils.INSTANCE.inexactnessTaint(first, second);
     }
     if ((first instanceof BigDecimal) || (second instanceof BigDecimal)) {
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     if ((first instanceof BigInteger) || (second instanceof BigInteger)) {
-      return apply(Utils.toBigInteger(first), Utils.toBigInteger(second));
+      return apply(Utils.INSTANCE.toBigInteger(first), Utils.INSTANCE.toBigInteger(second));
     }
     if (((first instanceof Double) || (second instanceof Double) || (first instanceof Float) || (second instanceof Float)) &&
-        (Utils.isInteger(first)) && Utils.isInteger(second)) {
+        (Utils.INSTANCE.isInteger(first)) && Utils.INSTANCE.isInteger(second)) {
 
       return Long.valueOf(first.longValue() / second.longValue()).doubleValue();
     }
     if ((first instanceof Double) || (second instanceof Double) ||
         (first instanceof BigRatio) || (second instanceof BigRatio)) {
 
-      return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second));
+      return apply(Utils.INSTANCE.toBigDecimal(first), Utils.INSTANCE.toBigDecimal(second));
     }
     return first.longValue() / second.longValue();
   }

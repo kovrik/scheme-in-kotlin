@@ -68,11 +68,11 @@ public final class Max extends AFn {
       return ((BigDecimal)first).max((BigDecimal) second);
     }
     if (first instanceof BigDecimal) {
-      int i = ((BigDecimal) first).compareTo(Utils.toBigDecimal(second));
+      int i = ((BigDecimal) first).compareTo(Utils.INSTANCE.toBigDecimal(second));
       return (i < 0) ? second : first;
     }
     if (second instanceof BigDecimal) {
-      int i = ((BigDecimal) second).compareTo(Utils.toBigDecimal(first));
+      int i = ((BigDecimal) second).compareTo(Utils.INSTANCE.toBigDecimal(first));
       return (i < 0) ? first : second;
     }
     if (first.doubleValue() == second.doubleValue()) {

@@ -35,7 +35,7 @@ public final class ToExact extends AFn {
 
   public static Number toExact(Object o) {
     /* Special cases */
-    if (Utils.isZero(o)) {
+    if (Utils.INSTANCE.isZero(o)) {
       if (o instanceof Double) {
         return 0d;
       } else if (o instanceof Float) {

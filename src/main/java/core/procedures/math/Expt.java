@@ -60,33 +60,33 @@ public final class Expt extends AFn {
      *
      *  w otherwise rational — 0.0
      */
-    if (Utils.isNaN(base) || Utils.isNaN(exponent)) {
+    if (Utils.INSTANCE.isNaN(base) || Utils.INSTANCE.isNaN(exponent)) {
       return Double.NaN;
     }
-    if (Utils.isZero(base) && Utils.isZero(exponent)) {
-      return Utils.inexactnessTaint(1L, exponent);
+    if (Utils.INSTANCE.isZero(base) && Utils.INSTANCE.isZero(exponent)) {
+      return Utils.INSTANCE.inexactnessTaint(1L, exponent);
     }
-    if (Utils.isZero(base) && (Utils.isFinite(exponent))) {
+    if (Utils.INSTANCE.isZero(base) && (Utils.INSTANCE.isFinite(exponent))) {
       if (base.equals(-0d)) {
-        if (Utils.isNegative(exponent)) {
-          return Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ?
+        if (Utils.INSTANCE.isNegative(exponent)) {
+          return Utils.INSTANCE.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ?
                  Double.NEGATIVE_INFINITY :
                  Double.POSITIVE_INFINITY;
         } else {
-          return Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Utils.INSTANCE.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         }
       }
-      return Utils.isNegative(exponent) ?
+      return Utils.INSTANCE.isNegative(exponent) ?
              Double.valueOf(Double.POSITIVE_INFINITY) :
-             Utils.inexactnessTaint(0L, base);
+             Utils.INSTANCE.inexactnessTaint(0L, base);
     }
-    if (Utils.isOne(base)) {
-      return Utils.inexactnessTaint(base, exponent);
+    if (Utils.INSTANCE.isOne(base)) {
+      return Utils.INSTANCE.inexactnessTaint(base, exponent);
     }
-    if (Utils.isZero(exponent)) {
+    if (Utils.INSTANCE.isZero(exponent)) {
       return 1L;
     }
-    if (Utils.isOne(exponent)) {
+    if (Utils.INSTANCE.isOne(exponent)) {
       return base;
     }
     /* Special cases for Real numbers */
@@ -101,8 +101,8 @@ public final class Expt extends AFn {
      *   w is even — +inf.0
      */
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
-      if (Utils.isInteger(exponent)) {
-        if (Utils.isNegative(exponent)) {
+      if (Utils.INSTANCE.isInteger(exponent)) {
+        if (Utils.INSTANCE.isNegative(exponent)) {
           return Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
         } else {
           return Predicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
@@ -115,7 +115,7 @@ public final class Expt extends AFn {
      *  w is positive — +inf.0
      */
     if ((base instanceof Double) && Double.POSITIVE_INFINITY == (Double)base) {
-      return Utils.isPositive(exponent) ? Double.POSITIVE_INFINITY : 0d;
+      return Utils.INSTANCE.isPositive(exponent) ? Double.POSITIVE_INFINITY : 0d;
     }
 
     /* (expt z -inf.0) for positive z:
@@ -132,7 +132,7 @@ public final class Expt extends AFn {
       if (base instanceof BigComplex) {
         return Double.NaN;
       }
-      if (Utils.isZero(base)) {
+      if (Utils.INSTANCE.isZero(base)) {
         if ((Double) exponent == Double.NEGATIVE_INFINITY) {
           throw new ArithmeticException(String.format("%s: undefined for %s and %s", "expt", base, Writer.write(exponent)));
         } else {
@@ -159,8 +159,8 @@ public final class Expt extends AFn {
       return BigComplex.of(base).expt(BigComplex.of(exponent));
     }
     /* Long, Integer, Short, Byte */
-    Number b = Utils.upcast(base);
-    Number ex = Utils.upcast(exponent);
+    Number b = Utils.INSTANCE.upcast(base);
+    Number ex = Utils.INSTANCE.upcast(exponent);
     if ((b instanceof Long) && (ex instanceof Long)) {
       boolean isNegative = false;
       if (exponent.longValue() < Integer.MAX_VALUE) {
@@ -173,7 +173,7 @@ public final class Expt extends AFn {
         if (isNegative) {
           return BigRatio.valueOf(BigInteger.ONE, result);
         }
-        return Utils.downcastNumber(result);
+        return Utils.INSTANCE.downcastNumber(result);
       } else {
         /* If we came here, then exponent is greater than Integer.MAX_VALUE */
         if (Math.abs(base.longValue()) < 1) {
@@ -187,8 +187,8 @@ public final class Expt extends AFn {
       }
     }
     /* BigIntegers */
-    if (base instanceof BigInteger && Utils.isInteger(exponent)) {
-      if (Utils.isInteger(base)) {
+    if (base instanceof BigInteger && Utils.INSTANCE.isInteger(exponent)) {
+      if (Utils.INSTANCE.isInteger(base)) {
         if (exponent instanceof BigInteger) {
           try {
             return ((BigInteger) base).pow(((BigInteger) exponent).intValueExact());
@@ -197,11 +197,11 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent));
+      return exptBigInt(Utils.INSTANCE.toBigInteger(base), Utils.INSTANCE.toBigInteger(exponent));
     }
     /* BigDecimals */
-    if (base instanceof BigDecimal && Utils.isInteger(exponent)) {
-      if (Utils.isInteger(base)) {
+    if (base instanceof BigDecimal && Utils.INSTANCE.isInteger(exponent)) {
+      if (Utils.INSTANCE.isInteger(base)) {
         if (exponent instanceof BigDecimal) {
           try {
             return ((BigDecimal) base).pow(((BigDecimal) exponent).intValueExact());
@@ -210,12 +210,12 @@ public final class Expt extends AFn {
           }
         }
       }
-      return exptBigDec((BigDecimal) base, Utils.toBigDecimal(exponent));
+      return exptBigDec((BigDecimal) base, Utils.INSTANCE.toBigDecimal(exponent));
     }
     /* Double */
     double result = Math.pow(base.doubleValue(), exponent.doubleValue());
     if (Double.isInfinite(result)) {
-      return Utils.toBigDecimal(base).pow(exponent.intValue());
+      return Utils.INSTANCE.toBigDecimal(base).pow(exponent.intValue());
     }
     if (Double.isNaN(result)) {
       return BigComplex.of(base).expt(BigComplex.of(exponent));
@@ -237,7 +237,7 @@ public final class Expt extends AFn {
     try {
       int scale = Math.max(n.scale(), n.stripTrailingZeros().scale());
       int i = e.intValueExact();
-      return n.pow(i).setScale(scale, Utils.ROUNDING_MODE);
+      return n.pow(i).setScale(scale, Utils.INSTANCE.getROUNDING_MODE());
     } catch (ArithmeticException ex) {
       // FIXME NEGATIVE_INFINITY and zero in some cases?
       return Double.POSITIVE_INFINITY;
