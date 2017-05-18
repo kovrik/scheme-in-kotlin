@@ -26,8 +26,8 @@ public class Reader implements IReader {
   private static final String WHITESPACES = LINE_BREAKS + "\u000B \t";
   // <delimiter> --> <whitespace> | ( | ) | " | ;
   private static final String DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff";
-  /* Allowed escape sequences. See: https://docs.racket-lang.org/reference/reader.html#(part._parse-string) */
 
+  /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
   private static final Map<Character, Character> ESCAPED = new HashMap<>();
   static {
     ESCAPED.put('t', '\t');
