@@ -11,7 +11,7 @@ open class ClassProc : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "class"
 
-    override fun apply1(arg: Any): Class<*> {
-        return arg.javaClass
+    override fun apply1(arg: Any?): Class<*>? {
+        return arg?.javaClass
     }
 }

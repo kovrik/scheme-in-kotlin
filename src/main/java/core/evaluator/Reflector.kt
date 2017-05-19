@@ -11,9 +11,9 @@ import java.util.Arrays
 
 class Reflector {
 
-    private fun getMethod(clazz: Class<*>, name: String, args: Array<Any>, parameterTypes: Array<Class<*>?>): Method {
+    private fun getMethod(clazz: Class<*>?, name: String, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Method {
         try {
-            return clazz.getMethod(name, *parameterTypes)
+            return clazz!!.getMethod(name, *parameterTypes)
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
@@ -21,7 +21,7 @@ class Reflector {
             val paramsOld = Arrays.copyOf(parameterTypes, parameterTypes.size)
             downcastArgs(args, parameterTypes)
             try {
-                return clazz.getMethod(name, *parameterTypes)
+                return clazz!!.getMethod(name, *parameterTypes)
             } catch (ex: NoSuchMethodException) {
                 try {
                     // FIXME Workaround: restore previous state
@@ -29,16 +29,16 @@ class Reflector {
                     System.arraycopy(argsOld, 0, args, 0, argsOld.size)
                     System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.size)
                     castToObject(parameterTypes)
-                    return clazz.getMethod(name, *parameterTypes)
+                    return clazz!!.getMethod(name, *parameterTypes)
                 } catch (ex2: NoSuchMethodException) {
                     throw RuntimeException(String.format("reflector: unable to find matching method %s in class %s",
-                            name, clazz.name))
+                            name, clazz!!.name))
                 }
             }
         }
     }
 
-    private fun getConstructor(clazz: Class<*>, args: Array<Any>, parameterTypes: Array<Class<*>?>): Constructor<*> {
+    private fun getConstructor(clazz: Class<*>, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Constructor<*> {
         try {
             return clazz.getConstructor(*parameterTypes)
         } catch (e: NoSuchMethodException) {
@@ -53,7 +53,7 @@ class Reflector {
         }
     }
 
-    private fun downcastArgs(args: Array<Any>, parameterTypes: Array<Class<*>?>) {
+    private fun downcastArgs(args: Array<Any?>, parameterTypes: Array<Class<*>?>) {
         for (i in parameterTypes.indices) {
             val parameterType = parameterTypes[i]
             if (Number::class.java.isAssignableFrom((BOXED as Map<Class<*>?, Class<*>?>).getOrDefault(parameterType, parameterType))) {
@@ -70,8 +70,8 @@ class Reflector {
         }
     }
 
-    private fun unboxIfPossible(clazz: Class<*>): Class<*> {
-        return (UNBOXED as Map<Class<*>, Class<*>>).getOrDefault(clazz, clazz)
+    private fun unboxIfPossible(clazz: Class<*>?): Class<*> {
+        return (UNBOXED as Map<Class<*>, Class<*>>).getOrDefault(clazz!!, clazz)
     }
 
     fun getClazz(name: String): Class<*> {
@@ -90,11 +90,11 @@ class Reflector {
         }
     }
 
-    fun newInstance(clazz: String, args: Array<Any>): Any {
+    fun newInstance(clazz: String, args: Array<Any?>): Any {
         val c = getClazz(clazz)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i].javaClass)
+            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
         }
         try {
             return getConstructor(c, args, argTypes).newInstance(*args)
@@ -133,7 +133,7 @@ class Reflector {
         throw UndefinedIdentifierException(s)
     }
 
-    fun evalJavaMethod(method: String, args: Array<Any>): Any? {
+    fun evalJavaMethod(method: String, args: Array<Any?>): Any? {
         val result: Any?
         if (method.startsWith(".-")) {
             if (args.isEmpty()) {
@@ -157,12 +157,12 @@ class Reflector {
     }
 
     /* Java Interop: instance method call */
-    private fun evalJavaInstanceMethod(m: String, instance: Any, args: Array<Any>): Any? {
+    private fun evalJavaInstanceMethod(m: String, instance: Any?, args: Array<Any?>): Any? {
         val methodName = m.substring(1)
-        val clazz = instance.javaClass
+        val clazz = instance?.javaClass
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i].javaClass)
+            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         try {
@@ -175,12 +175,12 @@ class Reflector {
     }
 
     /* Java Interop: instance field */
-    private fun evalJavaInstanceField(f: String, instance: Any): Any? {
-        val clazz = instance.javaClass
+    private fun evalJavaInstanceField(f: String, instance: Any?): Any? {
+        val clazz = instance?.javaClass
         val fieldName = f.substring(2)
         try {
-            val field = clazz.getField(fieldName)
-            return field.get(instance)
+            val field = clazz?.getField(fieldName)
+            return field?.get(instance)
         } catch (e: NoSuchFieldException) {
             throw RuntimeException(String.format("reflector: unable to find field %s of %s", fieldName, instance))
         } catch (e: IllegalAccessException) {
@@ -189,7 +189,7 @@ class Reflector {
     }
 
     /* Java Interop: static method call */
-    private fun evalJavaStaticMethod(m: String, args: Array<Any>): Any? {
+    private fun evalJavaStaticMethod(m: String, args: Array<Any?>): Any? {
         val classAndMethod = m.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
@@ -199,7 +199,7 @@ class Reflector {
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i].javaClass)
+            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {

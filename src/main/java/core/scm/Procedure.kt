@@ -44,7 +44,7 @@ class Procedure(override var name: String,
         }
     }
 
-    private fun bindArgs(vararg values: Any): Environment {
+    private fun bindArgs(vararg values: Any?): Environment {
         /* Evaluate mandatory params and put values into new local environment */
         val env = Environment(values.size, this.localEnvironment)
         val args = args
@@ -67,7 +67,7 @@ class Procedure(override var name: String,
         return Thunk(body, Environment(0, this.localEnvironment))
     }
 
-    override fun apply1(arg: Any): Any {
+    override fun apply1(arg: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -76,7 +76,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply2(arg1: Any, arg2: Any): Any {
+    override fun apply2(arg1: Any?, arg2: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -86,7 +86,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply3(arg1: Any, arg2: Any, arg3: Any): Any {
+    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -97,7 +97,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply4(arg1: Any, arg2: Any, arg3: Any, arg4: Any): Any {
+    override fun apply4(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -109,7 +109,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply(args: Array<Any>): Any {
+    override fun apply(args: Array<Any?>): Any? {
         return if (isBodyConst) body else Thunk(body, bindArgs(*args))
     }
 }

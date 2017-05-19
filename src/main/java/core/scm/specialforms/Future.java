@@ -26,7 +26,7 @@ public enum Future implements ISpecialForm {
     } else {
       future = new core.scm.Future(expression.get(1), env, evaluator);
     }
-    Evaluator.executor.submit(future);
+    Evaluator.Companion.getExecutor().submit(future);
     return future;
   }
 

@@ -5,7 +5,7 @@ import core.exceptions.WrongTypeException
 import core.scm.Type
 
 /* Abstract superclass of all functions */
-abstract class AFn : IFn<Array<Any>, Any> {
+abstract class AFn : IFn<Array<Any?>, Any?> {
 
     protected var minArgs: Int = 0
     protected var maxArgs: Int = 0
@@ -50,19 +50,19 @@ abstract class AFn : IFn<Array<Any>, Any> {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
 
-    override fun apply1(arg: Any): Any {
+    override fun apply1(arg: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
 
-    override fun apply2(arg1: Any, arg2: Any): Any {
+    override fun apply2(arg1: Any?, arg2: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 2)
     }
 
-    override fun apply3(arg1: Any, arg2: Any, arg3: Any): Any {
+    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 3)
     }
 
-    override fun apply4(arg1: Any, arg2: Any, arg3: Any, arg4: Any): Any {
+    override fun apply4(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 4)
     }
 
@@ -70,7 +70,7 @@ abstract class AFn : IFn<Array<Any>, Any> {
 //        throw ArityException(name, minArgs, maxArgs, args.size)
 //    }
 
-    override fun apply(args: Array<Any>): Any {
+    override fun apply(args: Array<Any?>): Any? {
         throw ArityException(name, minArgs, maxArgs, args.size)
     }
 
@@ -88,7 +88,7 @@ abstract class AFn : IFn<Array<Any>, Any> {
     /**
      * Checks the number of arguments and their types
      */
-    private fun checkArgs(args: Array<Any>) {
+    private fun checkArgs(args: Array<Any?>) {
         /* Check arg count */
         val argsSize = args.size
         if (argsSize < minArgs || argsSize > maxArgs) {
@@ -125,7 +125,7 @@ abstract class AFn : IFn<Array<Any>, Any> {
      * then calls applyN() methods (where N is arity).
      * Calls variadic apply() otherwise.
      */
-    fun applyN(args: Array<Any>): Any {
+    fun applyN(args: Array<Any?>): Any? {
         /* Check args */
         checkArgs(args)
         /* if min == max, then function is not variadic, hence get arity */
