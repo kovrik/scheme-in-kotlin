@@ -66,7 +66,7 @@ class Reflector {
 
     private fun castToObject(parameterTypes: Array<Class<*>?>) {
         for (i in parameterTypes.indices) {
-            parameterTypes[i] = Any::class.java
+            parameterTypes[i] = Object::class.java
         }
     }
 
@@ -108,7 +108,7 @@ class Reflector {
     }
 
     /* Java Interop: static fields */
-    fun evalJavaStaticField(s: String): Any {
+    fun evalJavaStaticField(s: String): Any? {
         if (s.indexOf('/') > -1) {
             val classAndField = s.split("/".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
             if (classAndField.size < 2) {
@@ -133,8 +133,8 @@ class Reflector {
         throw UndefinedIdentifierException(s)
     }
 
-    fun evalJavaMethod(method: String, args: Array<Any>): Any {
-        val result: Any
+    fun evalJavaMethod(method: String, args: Array<Any>): Any? {
+        val result: Any?
         if (method.startsWith(".-")) {
             if (args.isEmpty()) {
                 throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
@@ -157,7 +157,7 @@ class Reflector {
     }
 
     /* Java Interop: instance method call */
-    private fun evalJavaInstanceMethod(m: String, instance: Any, args: Array<Any>): Any {
+    private fun evalJavaInstanceMethod(m: String, instance: Any, args: Array<Any>): Any? {
         val methodName = m.substring(1)
         val clazz = instance.javaClass
         val argTypes = arrayOfNulls<Class<*>>(args.size)
@@ -175,7 +175,7 @@ class Reflector {
     }
 
     /* Java Interop: instance field */
-    private fun evalJavaInstanceField(f: String, instance: Any): Any {
+    private fun evalJavaInstanceField(f: String, instance: Any): Any? {
         val clazz = instance.javaClass
         val fieldName = f.substring(2)
         try {
@@ -189,7 +189,7 @@ class Reflector {
     }
 
     /* Java Interop: static method call */
-    private fun evalJavaStaticMethod(m: String, args: Array<Any>): Any {
+    private fun evalJavaStaticMethod(m: String, args: Array<Any>): Any? {
         val classAndMethod = m.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
@@ -219,14 +219,14 @@ class Reflector {
         private val UNBOXED = HashMap<Class<*>, Class<*>>()
 
         init {
-            UNBOXED.put(Byte::class.java,    Byte::class.java)
-            UNBOXED.put(Short::class.java,   Short::class.java)
-            UNBOXED.put(Int::class.java,     Int::class.java)
-            UNBOXED.put(Long::class.java,    Long::class.java)
-            UNBOXED.put(Float::class.java,   Float::class.java)
-            UNBOXED.put(Double::class.java,  Double::class.java)
-            UNBOXED.put(Char::class.java,    Char::class.java)
-            UNBOXED.put(Boolean::class.java, Boolean::class.java)
+            UNBOXED.put(Byte::class.javaObjectType,    Byte::class.java)
+            UNBOXED.put(Short::class.javaObjectType,   Short::class.java)
+            UNBOXED.put(Int::class.javaObjectType,     Int::class.java)
+            UNBOXED.put(Long::class.javaObjectType,    Long::class.java)
+            UNBOXED.put(Float::class.javaObjectType,   Float::class.java)
+            UNBOXED.put(Double::class.javaObjectType,  Double::class.java)
+            UNBOXED.put(Char::class.javaObjectType,    Char::class.java)
+            UNBOXED.put(Boolean::class.javaObjectType, Boolean::class.java)
         }
 
         /* Some common classes that are not in java.lang. package could be resolved without package name */
