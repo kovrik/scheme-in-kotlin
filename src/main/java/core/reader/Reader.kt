@@ -256,13 +256,12 @@ open class Reader : IReader {
 
     /**
      * Read a quoted form abbreviation
-
      * Syntax:
      * <quote>            -> '<form>
      * <quasiquote>       -> `<form>
      * <unquote>          -> ,<form>
      * <unquote-splicing> -> ,@<form>
-    </form></unquote-splicing></form></unquote></form></quasiquote></form></quote> */
+     */
     @Throws(IOException::class)
     private fun readQuote(c: Char): List<*> {
         var symbol: Symbol? = null
@@ -284,10 +283,9 @@ open class Reader : IReader {
 
     /**
      * Read a comment
-
      * Syntax:
      * <comment> --> ;  <all subsequent characters up to a line break>
-    </all></comment> */
+     */
     @Throws(IOException::class)
     private fun readComment(): String? {
         var i = reader.read()
@@ -302,11 +300,10 @@ open class Reader : IReader {
     /**
      * Read a String
      * Always returns immutable String
-
      * Syntax:
      * <string> --> "<string element>*"
      * <string element> --> <any character other than></any>" or \> | \" | \\
-    </string></string></string> */
+     */
     @Throws(IOException::class)
     private fun readString(): String {
         val string = StringBuilder()
@@ -357,11 +354,10 @@ open class Reader : IReader {
 
     /**
      * Read a Character
-
      * Syntax:
      * <character> --> #\ <any character> | #\ <character name>
      * <character name> --> space | newline
-    </character></character></any></character> */
+     */
     @Throws(IOException::class)
     private fun readCharacter(): Char {
         val first = reader.read()
@@ -395,10 +391,9 @@ open class Reader : IReader {
 
     /**
      * Read list
-
      * Syntax:
      * <list> -> (<list_contents>)
-    </list_contents></list> */
+     */
     @Throws(IOException::class)
     private fun readList(allowImproperList: Boolean, terminator: Char): Cons<Any> {
         var list: Cons<Any> = Cons.EMPTY
@@ -454,10 +449,9 @@ open class Reader : IReader {
 
     /**
      * Read vector
-
      * Syntax:
      * <vector> -> #(<vector_contents>)
-    </vector_contents></vector> */
+     */
     @Throws(IOException::class)
     private fun readVector(terminator: Char): MutableVector {
         /* Improper lists are not allowed */
@@ -466,10 +460,9 @@ open class Reader : IReader {
 
     /**
      * Read hashmap
-
      * Syntax:
      * <hashmap> -> {<key1> <value1>, ..., <keyN> <valueN>}
-    </valueN></keyN></value1></key1></hashmap> */
+     */
     @Throws(IOException::class)
     private fun readHashmap(): Map<Any?, Any?> {
         val hashmap= HashMap<Any?, Any?>()
@@ -502,10 +495,9 @@ open class Reader : IReader {
 
     /**
      * Read set
-
      * Syntax:
      * <set> -> #{<value1>, ..., <valueN>}
-    </valueN></value1></set> */
+     */
     @Throws(IOException::class)
     private fun readSet(): Set<Any?> {
         val set = HashSet<Any?>()
@@ -527,10 +519,9 @@ open class Reader : IReader {
 
     /**
      * Read keyword
-
      * Syntax:
      * <keyword> -> :<token>
-    </token></keyword> */
+     */
     @Throws(IOException::class)
     private fun readKeyword(): Keyword {
         val s = readUntilDelimiter()
@@ -542,7 +533,6 @@ open class Reader : IReader {
 
     /**
      * Deref shortcut
-
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
