@@ -461,7 +461,7 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun readVector(terminator: Char): MutableVector {
         /* Improper lists are not allowed */
-        return MutableVector(*readList(false, terminator).toTypedArray())
+        return MutableVector(readList(false, terminator).toTypedArray())
     }
 
     /**
