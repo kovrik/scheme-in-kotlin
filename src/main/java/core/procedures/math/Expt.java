@@ -69,11 +69,11 @@ public final class Expt extends AFn {
     if (Utils.INSTANCE.isZero(base) && (Utils.INSTANCE.isFinite(exponent))) {
       if (base.equals(-0d)) {
         if (Utils.INSTANCE.isNegative(exponent)) {
-          return Utils.INSTANCE.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ?
+          return Utils.INSTANCE.isInteger(exponent) && Predicate.Companion.getIS_ODD().apply1(exponent) ?
                  Double.NEGATIVE_INFINITY :
                  Double.POSITIVE_INFINITY;
         } else {
-          return Utils.INSTANCE.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Utils.INSTANCE.isInteger(exponent) && Predicate.Companion.getIS_ODD().apply1(exponent) ? -0d : 0d;
         }
       }
       return Utils.INSTANCE.isNegative(exponent) ?
@@ -103,9 +103,9 @@ public final class Expt extends AFn {
     if ((base instanceof Double) && Double.NEGATIVE_INFINITY == (Double)base) {
       if (Utils.INSTANCE.isInteger(exponent)) {
         if (Utils.INSTANCE.isNegative(exponent)) {
-          return Predicate.IS_ODD.apply1(exponent) ? -0d : 0d;
+          return Predicate.Companion.getIS_ODD().apply1(exponent) ? -0d : 0d;
         } else {
-          return Predicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+          return Predicate.Companion.getIS_ODD().apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }
@@ -182,7 +182,7 @@ public final class Expt extends AFn {
         if (base.longValue() > 0) {
           return Double.POSITIVE_INFINITY;
         } else {
-          return Predicate.IS_ODD.apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+          return Predicate.Companion.getIS_ODD().apply1(exponent) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         }
       }
     }

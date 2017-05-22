@@ -331,7 +331,7 @@ object Utils {
         return BigInteger(number.toString())
     }
 
-    fun isRational(o: Any): Boolean {
+    fun isRational(o: Any?): Boolean {
         if (o !is Number) {
             return false
         }
@@ -457,7 +457,7 @@ object Utils {
         return isExact(o) && isInteger(o) && isNonNegative(o)
     }
 
-    fun isReal(o: Any): Boolean {
+    fun isReal(o: Any?): Boolean {
         return o !is BigComplex && o is Number
     }
 
