@@ -20,8 +20,8 @@ public final class OpenInputFile extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    String filename = args[0].toString();
+  public Object apply1(Object arg) {
+    String filename = arg.toString();
     try {
       return new InputPort(new FileInputStream(filename));
     } catch (FileNotFoundException e) {

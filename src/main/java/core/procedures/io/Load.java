@@ -24,8 +24,8 @@ public final class Load extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    File file = new File(args[0].toString());
+  public Object apply1(Object arg) {
+    File file = new File(arg.toString());
     List<Object> sexps = Cons.list(Begin.BEGIN);
     sexps.addAll(reader.read(file));
     return new Thunk(sexps);

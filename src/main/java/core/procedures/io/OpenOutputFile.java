@@ -20,8 +20,8 @@ public final class OpenOutputFile extends AFn {
   }
 
   @Override
-  public Object apply(Object... args) {
-    String filename = args[0].toString();
+  public Object apply1(Object arg) {
+    String filename = arg.toString();
     try {
       return new OutputPort(new FileOutputStream(filename));
     } catch (FileNotFoundException e) {
