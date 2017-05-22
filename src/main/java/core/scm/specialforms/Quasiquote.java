@@ -32,7 +32,7 @@ import static core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL;
 public enum Quasiquote implements ISpecialForm {
   QUASIQUOTE;
 
-  public static final Symbol QUASIQUOTE_SYMBOL = Symbol.intern(QUASIQUOTE.toString());
+  public static final Symbol QUASIQUOTE_SYMBOL = Symbol.Companion.intern(QUASIQUOTE.toString());
 
   private final SetProc setProc = new SetProc();
 

@@ -15,8 +15,8 @@ public enum Try implements ISpecialForm {
 
   private static final Reflector REFLECTOR = new Reflector();
 
-  private static final Symbol CATCH   = Symbol.intern("catch");
-  private static final Symbol FINALLY = Symbol.intern("finally");
+  private static final Symbol CATCH   = Symbol.Companion.intern("catch");
+  private static final Symbol FINALLY = Symbol.Companion.intern("finally");
 
   @Override
   public String toString() {

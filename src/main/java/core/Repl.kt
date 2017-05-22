@@ -45,7 +45,7 @@ object Repl {
         }
     }
 
-    private val nextID: Symbol
+    private val nextID: Symbol?
         get() {
             val i = SYM_COUNTER.incrementAndGet()
             if (i == SYM_LIMIT) {

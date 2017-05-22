@@ -29,7 +29,7 @@ public abstract class AbstractTest {
   }
 
   protected Symbol s(String str) {
-    return Symbol.intern(str);
+    return Symbol.Companion.intern(str);
   }
 
   protected void assertAllEqual(Object expected, String[] forms, Environment env) {

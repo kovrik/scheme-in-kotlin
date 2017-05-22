@@ -87,7 +87,7 @@ class Evaluator {
         if (sexp is Symbol) {
             return evalSymbol(sexp, env)
         } else if (sexp is MutableList<*>) {
-            return evlis(sexp as MutableList<Any>, env)
+            return evlis(sexp as MutableList<Any?>, env)
         } else if (sexp is MutableMap<*, *>) {
             return evalMap(sexp as MutableMap<Any, Any>, env)
         } else if (sexp is Vector) {
@@ -117,7 +117,7 @@ class Evaluator {
     }
 
     /* Evaluate list */
-    private fun evlis(sexp: MutableList<Any>, env: Environment): Any? {
+    private fun evlis(sexp: MutableList<Any?>, env: Environment): Any? {
         if (sexp.isEmpty()) {
             throw IllegalSyntaxException.of("eval", sexp, "illegal empty application")
         }

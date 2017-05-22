@@ -54,18 +54,18 @@ open class Reader : IReader {
         val NAMED_CHARS: MutableMap<String, Char> = HashMap()
 
         init {
-            NAMED_CHARS.put("newline", '\n')
-            NAMED_CHARS.put("space", ' ')
-            NAMED_CHARS.put("tab", '\t')
-            NAMED_CHARS.put("return", '\r')
+            NAMED_CHARS.put("newline",   '\n')
+            NAMED_CHARS.put("space",     ' ')
+            NAMED_CHARS.put("tab",       '\t')
+            NAMED_CHARS.put("return",    '\r')
             NAMED_CHARS.put("backspace", '\b')
-            NAMED_CHARS.put("alarm", '\u0007')
-            NAMED_CHARS.put("vtab", '\u000B')
-            NAMED_CHARS.put("esc", '\u001B')
-            NAMED_CHARS.put("escape", '\u001B')
-            NAMED_CHARS.put("delete", '\u007F')
-            NAMED_CHARS.put("null", Character.MIN_VALUE)
-            NAMED_CHARS.put("nul", Character.MIN_VALUE)
+            NAMED_CHARS.put("alarm",     '\u0007')
+            NAMED_CHARS.put("vtab",      '\u000B')
+            NAMED_CHARS.put("esc",       '\u001B')
+            NAMED_CHARS.put("escape",    '\u001B')
+            NAMED_CHARS.put("delete",    '\u007F')
+            NAMED_CHARS.put("null",       Character.MIN_VALUE)
+            NAMED_CHARS.put("nul",        Character.MIN_VALUE)
         }
 
         private fun isValid(i: Int): Boolean {
@@ -536,8 +536,7 @@ open class Reader : IReader {
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
-    private fun readDeref(): List<Any> {
+    private fun readDeref(): List<Any?> {
         return Cons.list(DEREF, nextNonNullToken())
     }
-
 }

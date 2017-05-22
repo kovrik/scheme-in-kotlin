@@ -10,7 +10,7 @@ import java.util.List;
 public enum Else implements ISpecialForm {
   ELSE;
 
-  public static final Symbol ELSE_SYMBOL = Symbol.intern("else");
+  public static final Symbol ELSE_SYMBOL = Symbol.Companion.intern("else");
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

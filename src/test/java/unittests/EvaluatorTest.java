@@ -138,7 +138,7 @@ public class EvaluatorTest extends AbstractTest {
     for (String proc : tempEnv.getLibraryProcedures()) {
       eval(proc, tempEnv);
     }
-    tempEnv.put(Symbol.intern("display"), new Display());
+    tempEnv.put(Symbol.Companion.intern("display"), new Display());
 
     eval("(display 123)", tempEnv);
     assertEquals("123", baos.toString().trim());
@@ -190,7 +190,8 @@ public class EvaluatorTest extends AbstractTest {
   @Test
   public void testEvalApply() {
     assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env));
-    assertEquals(list(list(Symbol.intern("a"), 1L), list(Symbol.intern("b"), 2L), list(Symbol.intern("c"), 3L)),
+    assertEquals(list(list(Symbol.Companion.intern("a"), 1L), list(Symbol.Companion.intern("b"), 2L), list(
+      Symbol.Companion.intern("c"), 3L)),
                  eval("(apply map list '((a b c) (1 2 3)))", env));
 
     eval("(define (sqr x) (* x x))", env);

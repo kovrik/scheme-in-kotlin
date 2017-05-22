@@ -224,7 +224,7 @@ public class ListTest extends AbstractTest {
   public void testListTail() {
     assertEquals(list(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env));
     assertEquals(2L, eval("(list-tail (cons 1 2) 1)", env));
-    assertEquals(Symbol.intern("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env));
+    assertEquals(Symbol.Companion.intern("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env));
 
     eval("(define a '(1 2 3 4))", env);
     eval("(define b (list-tail (cdr a) 2))", env);
@@ -244,7 +244,7 @@ public class ListTest extends AbstractTest {
     assertEquals(1L, eval("(list-ref '(1) 0)", env));
     assertEquals(3L, eval("(list-ref '(1 2 3) 2)", env));
     assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env));
-    assertEquals(Symbol.intern("c"), eval("(list-ref (list 'a 'b 'c) 2)", env));
+    assertEquals(Symbol.Companion.intern("c"), eval("(list-ref (list 'a 'b 'c) 2)", env));
     assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env));
     assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env));
     try {
@@ -308,7 +308,7 @@ public class ListTest extends AbstractTest {
     assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env));
     assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env));
     assertEquals(list(3L), eval("(member 3 '(1 2 3))", env));
-    assertEquals(list(list(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env));
+    assertEquals(list(list(Symbol.Companion.intern("a")), Symbol.Companion.intern("c")), eval("(member (list 'a) '(b (a) c))", env));
     try {
       eval("(member)", env);
       fail();
@@ -334,8 +334,8 @@ public class ListTest extends AbstractTest {
     assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env));
     assertEquals(FALSE, eval("(memq (list 'a) '(b (a) c))", env));
 
-    assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env));
-    assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env));
+    assertEquals(list(Symbol.Companion.intern("a"), Symbol.Companion.intern("b"), Symbol.Companion.intern("c")), eval("(memq 'a '(a b c))", env));
+    assertEquals(list(Symbol.Companion.intern("b"), Symbol.Companion.intern("c")), eval("(memq 'b '(a b c))", env));
     assertEquals(FALSE, eval("(memq 'a '(b c d))", env));
     try {
       eval("(memq)", env);
@@ -362,8 +362,8 @@ public class ListTest extends AbstractTest {
     assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env));
     assertEquals(FALSE, eval("(memv (list 'a) '(b (a) c))", env));
 
-    assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env));
-    assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env));
+    assertEquals(list(Symbol.Companion.intern("a"), Symbol.Companion.intern("b"), Symbol.Companion.intern("c")), eval("(memv 'a '(a b c))", env));
+    assertEquals(list(Symbol.Companion.intern("b"), Symbol.Companion.intern("c")), eval("(memv 'b '(a b c))", env));
     assertEquals(FALSE, eval("(memv 'a '(b c d))", env));
 
     assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env));
@@ -384,7 +384,7 @@ public class ListTest extends AbstractTest {
   @Test
   public void testEvalAssoc() {
     eval("(define e '((a 1) (b 2) (c 3)))", env);
-    assertEquals(list((Object)list(Symbol.intern("a"))), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env));
+    assertEquals(list((Object)list(Symbol.Companion.intern("a"))), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env));
     try {
       eval("(assoc)", env);
       fail();
@@ -408,8 +408,8 @@ public class ListTest extends AbstractTest {
   @Test
   public void testEvalAssq() {
     eval("(define e '((a 1) (b 2) (c 3)))", env);
-    assertEquals(list(Symbol.intern("a"), 1L), eval("(assq 'a e)", env));
-    assertEquals(list(Symbol.intern("b"), 2L), eval("(assq 'b e)", env));
+    assertEquals(list(Symbol.Companion.intern("a"), 1L), eval("(assq 'a e)", env));
+    assertEquals(list(Symbol.Companion.intern("b"), 2L), eval("(assq 'b e)", env));
     assertEquals(FALSE, eval("(assq 'd e)", env));
     try {
       eval("(assq)", env);

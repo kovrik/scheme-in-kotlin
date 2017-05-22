@@ -10,7 +10,7 @@ import java.util.List;
 public enum Unquote implements ISpecialForm {
   UNQUOTE;
 
-  public static final Symbol UNQUOTE_SYMBOL = Symbol.intern(UNQUOTE.toString());
+  public static final Symbol UNQUOTE_SYMBOL = Symbol.Companion.intern(UNQUOTE.toString());
 
   @Override
   public Object eval(List<Object> expression, Environment env, Evaluator evaluator) {

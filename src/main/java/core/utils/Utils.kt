@@ -117,7 +117,7 @@ object Utils {
 
     // FIXME Simplify and cleanup!
     /* Check if string represents a valid number and process it */
-    fun preProcessNumber(number: String, exactness: Char?, radix: Int): Any {
+    fun preProcessNumber(number: String, exactness: Char?, radix: Int): Any? {
         var exactness = exactness
         /* First check if it is a special number */
         val special = SPECIAL_NUMBERS[number]
@@ -208,11 +208,11 @@ object Utils {
         return processNumber(n, radix, exact, useBigNum, exp)
     }
 
-    private fun processComplexNumber(number: String, exactness: Char?, radix: Int): Any {
+    private fun processComplexNumber(number: String, exactness: Char?, radix: Int): Any? {
         /* Assume that we have a complex number and try to parse it */
         val p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'))
         val r = number.substring(0, p)
-        var re: Any = 0L
+        var re: Any? = 0L
         if (!r.isEmpty()) {
             re = preProcessNumber(r, exactness, radix)
         }
