@@ -19,9 +19,9 @@ public final class CloseOutputPort extends AFn {
   }
 
   @Override
-  public Void apply(Object... args) {
+  public Void apply1(Object arg) {
     try {
-      ((OutputPort)args[0]).close();
+      ((OutputPort)arg).close();
     } catch (IOException e) {
       e.printStackTrace();
     }
