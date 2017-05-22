@@ -366,8 +366,8 @@ public class ReaderTest extends AbstractTest {
 
   @Test
   public void testReadKeywords() {
-    assertEquals(Keyword.intern("a"), reader.readFirst(":a"));
-    assertEquals(Keyword.intern("test"), reader.readFirst(":test"));
-    assertEquals(Keyword.intern("_"), reader.readFirst(":_"));
+    assertEquals(Keyword.Companion.intern("a"), reader.readFirst(":a"));
+    assertEquals(Keyword.Companion.intern("test"), reader.readFirst(":test"));
+    assertEquals(Keyword.Companion.intern("_"), reader.readFirst(":_"));
   }
 }

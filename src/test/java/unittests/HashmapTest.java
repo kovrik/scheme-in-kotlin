@@ -54,10 +54,10 @@ public class HashmapTest extends AbstractTest {
     assertEquals("B", eval("((put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
     assertEquals("B", eval("(get (put {} 3 5 \"A\" \"B\") \"A\" 5)", env));
     assertEquals("B", eval("(get (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env));
-    assertEquals(new MutableVector(Keyword.intern("a"), 2L, 3L), eval("(put [1 2 3] 0 :a)", env));
-    assertEquals(new MutableVector(1L, Keyword.intern("a"), 3L), eval("(put [1 2 3] 1 :a)", env));
-    assertEquals(new MapEntry(Keyword.intern("c"), 1L), eval("(put (first {:a 1}) 0 :c)", env));
-    assertEquals(new MapEntry(Keyword.intern("a"), Keyword.intern("c")), eval("(put (first {:a 1}) 1 :c)", env));
+    assertEquals(new MutableVector(Keyword.Companion.intern("a"), 2L, 3L), eval("(put [1 2 3] 0 :a)", env));
+    assertEquals(new MutableVector(1L, Keyword.Companion.intern("a"), 3L), eval("(put [1 2 3] 1 :a)", env));
+    assertEquals(new MapEntry(Keyword.Companion.intern("c"), 1L), eval("(put (first {:a 1}) 0 :c)", env));
+    assertEquals(new MapEntry(Keyword.Companion.intern("a"), Keyword.Companion.intern("c")), eval("(put (first {:a 1}) 1 :c)", env));
   }
 
   @Test
@@ -89,25 +89,25 @@ public class HashmapTest extends AbstractTest {
   public void testHashmapEntries() {
     assertEquals(2,  eval("(count  (first {:a 1 :b 2 :c 3}))", env));
     assertEquals(1L, eval("(second (first {:a 1 :b 2 :c 3}))", env));
-    assertEquals(Keyword.intern("a"), eval("(key   (first {:a 1 :b 2 :c 3}))", env));
-    assertEquals(Keyword.intern("a"), eval("(first (first {:a 1 :b 2 :c 3}))", env));
-    assertEquals(Keyword.intern("a"), eval("(get   (first {:a 1 :b 2 :c 3}) 0)", env));
-    assertEquals(Keyword.intern("a"), eval("(nth   (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(Keyword.Companion.intern("a"), eval("(key   (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(Keyword.Companion.intern("a"), eval("(first (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(Keyword.Companion.intern("a"), eval("(get   (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(Keyword.Companion.intern("a"), eval("(nth   (first {:a 1 :b 2 :c 3}) 0)", env));
     assertEquals(1L, eval("(val (first {:a 1 :b 2 :c 3}))", env));
     assertEquals(1L, eval("(get (first {:a 1 :b 2 :c 3}) 1)", env));
     assertEquals(1L, eval("(nth (first {:a 1 :b 2 :c 3}) 1)", env));
-    assertEquals(new MapEntry(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env));
-    assertEquals(new MutableVector(Keyword.intern("a"), 1L), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env));
+    assertEquals(new MapEntry(1L, Keyword.Companion.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env));
+    assertEquals(new MutableVector(Keyword.Companion.intern("a"), 1L), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env));
   }
 
   @Test
   public void testFind() {
     assertEquals(null, eval("(find {:a 1 :b 2 :c 3} :d)", env));
-    assertEquals(new MapEntry(Keyword.intern("a"), 1L), eval("(find {:a 1 :b 2 :c 3} :a)", env));
-    assertEquals(new MapEntry(0, Keyword.intern("a")), eval("(find (first {:a 1 :b 2 :c 3}) 0)", env));
+    assertEquals(new MapEntry(Keyword.Companion.intern("a"), 1L), eval("(find {:a 1 :b 2 :c 3} :a)", env));
+    assertEquals(new MapEntry(0, Keyword.Companion.intern("a")), eval("(find (first {:a 1 :b 2 :c 3}) 0)", env));
     assertEquals(new MapEntry(1, 1L), eval("(find (first {:a 1 :b 2 :c 3}) 1)", env));
-    assertEquals(new MapEntry(0, Keyword.intern("a")), eval("(find [:a :b :c :d] 0)", env));
-    assertEquals(new MapEntry(2, Keyword.intern("c")), eval("(find [:a :b :c :d] 2)", env));
+    assertEquals(new MapEntry(0, Keyword.Companion.intern("a")), eval("(find [:a :b :c :d] 0)", env));
+    assertEquals(new MapEntry(2, Keyword.Companion.intern("c")), eval("(find [:a :b :c :d] 2)", env));
     assertEquals(null, eval("(find [:a :b :c :d] 5)", env));
   }
 }

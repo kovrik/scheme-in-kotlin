@@ -26,9 +26,9 @@ public class KeywordTest extends AbstractTest {
 
   @Test
   public void testEvalKeywords() {
-    assertEquals(Keyword.intern("a"), eval(":a", env));
-    assertEquals(Keyword.intern("test"), eval(":test", env));
-    assertEquals(Keyword.intern("_"), eval(":_", env));
+    assertEquals(Keyword.Companion.intern("a"), eval(":a", env));
+    assertEquals(Keyword.Companion.intern("test"), eval(":test", env));
+    assertEquals(Keyword.Companion.intern("_"), eval(":_", env));
   }
 
   @Test
