@@ -44,7 +44,7 @@ public enum Case implements ISpecialForm {
         throw IllegalSyntaxException.Companion.of(toString(), exprString, "invalid clause in subform");
       }
       for (Object n : ((List) datum)) {
-        if (Eqv.eqv(key, n)) {
+        if (Eqv.Companion.eqv(key, n)) {
           return Begin.BEGIN.eval(subform, env, evaluator);
         }
       }
