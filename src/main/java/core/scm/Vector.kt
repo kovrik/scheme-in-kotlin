@@ -12,7 +12,6 @@ import java.util.*
 open class Vector : AFn, Collection<Any?>, IAssoc {
 
     companion object {
-
         /* Scheme Vector syntax */
         //  private static final String OPEN = "#(";
         //  private static final String CLOSE = ")";
@@ -30,15 +29,11 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
 
     constructor(size: Int, init: Any?) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
         this.array = arrayOfNulls<Any>(size)
-        Arrays.fill(getArray(), init)
+        Arrays.fill(array, init)
     }
 
-    constructor(elements: Array<Any?>) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
-        this.array = elements
-    }
-
-    constructor(e: Any?) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
-        this.array = arrayOf(e)
+    constructor(vararg elements: Any?) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
+        this.array = elements as Array<Any?>
     }
 
     override val size: Int

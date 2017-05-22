@@ -10,11 +10,11 @@ open class MutableVector : Vector {
 
     constructor(size: Int, init: Any?) : super(size, init)
 
-    constructor(elements: Array<Any?>) : super(elements)
-
     constructor(e: Any?) : super(e)
 
-    operator fun set(index: Int, value: Any) {
+    constructor(vararg elements: Any?) : super(*elements)
+
+    operator fun set(index: Int, value: Any?) {
         if (size <= index) throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, index))
         array[index] = value
     }
