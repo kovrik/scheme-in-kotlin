@@ -4,7 +4,7 @@ import core.scm.MutableVector;
 import org.junit.Test;
 import unittests.AbstractTest;
 
-import static core.procedures.cons.ConsProc.cons;
+import static core.procedures.cons.ConsProc.Companion;
 import static core.scm.Cons.list;
 import static java.lang.Boolean.FALSE;
 import static org.junit.Assert.assertEquals;
@@ -23,13 +23,13 @@ public class MemberTest extends AbstractTest {
     assertEquals(list(s("c"), s("d")), eval("(member 'c '(a b c d))", env));
     assertEquals(list(s("d")), eval("(member 'd '(a b c d))", env));
     assertEquals(FALSE, eval("(member 'e '(a b c d))", env));
-    assertEquals(cons(1L, 2L), eval("(member 1 (cons 1 2))", env));
-    assertEquals(cons(1L, cons(2L, 3L)), eval("(member 1 '(1 2 . 3))", env));
-    assertEquals(cons(2L, 3L), eval("(member 2 '(1 2 . 3))", env));
+    assertEquals(Companion.cons(1L, 2L), eval("(member 1 (cons 1 2))", env));
+    assertEquals(Companion.cons(1L, Companion.cons(2L, 3L)), eval("(member 1 '(1 2 . 3))", env));
+    assertEquals(Companion.cons(2L, 3L), eval("(member 2 '(1 2 . 3))", env));
     assertEquals(FALSE, eval("(member '() '(1 2 3))", env));
     assertEquals(list((Object)list()), eval("(member '() '(1 2 ()))", env));
     assertEquals(list(new MutableVector(), 3L), eval("(member #() '(1 () 2 #() 3))", env));
-    assertEquals(list(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (member x (list (cons 1 2) (cons 3 4))))", env));
+    assertEquals(list(Companion.cons(1L, 2L), Companion.cons(3L, 4L)), eval("(let ((x (cons 1 2))) (member x (list (cons 1 2) (cons 3 4))))", env));
     assertEquals(list((Object)list(1L, 2L)), eval("(let ((x (list 1 2))) (member x (list (cons 1 2) (list 1 2))))", env));
     assertEquals(list(list(s("quote"), s("a")), s("b"), s("c")), eval("(member ''a '('a b c))", env));
     assertEquals(list(s("a"), s("a"), s("a")), eval("(member 'a '(a a a)))", env));
@@ -40,11 +40,11 @@ public class MemberTest extends AbstractTest {
     assertEquals(list(new MutableVector(1L, 2L, 3L), new MutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (member x lst))", env));
     assertEquals(list((Object)new MutableVector(1L, 2L, 3L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (member x lst))", env));
     assertEquals(list(3L), eval("(member 3 . ('(1 2 3)))", env));
-    assertEquals(cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env));
+    assertEquals(Companion.cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env));
     assertEquals(list(3L), eval("(member . (3 '(1 2 3)))", env));
     assertEquals(FALSE, eval("(member '(1 2) '(1 2))", env));
     assertEquals(list((Object)list(1L, 2L)), eval("(member '(1 2) '((1 2)))", env));
-    assertEquals(cons(4L, 5L), eval("(member 4 '(1 2 3 4 . 5))", env));
+    assertEquals(Companion.cons(4L, 5L), eval("(member 4 '(1 2 3 4 . 5))", env));
     try {
       eval("(member 3 '(1 2 . 3))", env);
       fail();

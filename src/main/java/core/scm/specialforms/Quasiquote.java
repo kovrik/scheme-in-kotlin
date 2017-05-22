@@ -3,6 +3,9 @@ package core.scm.specialforms;
 import core.environment.Environment;
 import core.evaluator.Evaluator;
 import core.exceptions.IllegalSyntaxException;
+import core.procedures.cons.Append;
+import core.procedures.cons.Car;
+import core.procedures.cons.Cdr;
 import core.procedures.generic.First;
 import core.procedures.sets.SetProc;
 import core.procedures.vectors.ListToVector;
@@ -15,9 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import static core.procedures.cons.Append.append;
-import static core.procedures.cons.Car.car;
-import static core.procedures.cons.Cdr.cdr;
+import static core.procedures.cons.Append.Companion;
 import static core.scm.Cons.*;
 import static core.scm.specialforms.Unquote.UNQUOTE;
 import static core.scm.specialforms.Unquote.UNQUOTE_SYMBOL;
@@ -102,20 +103,20 @@ public enum Quasiquote implements ISpecialForm {
             throw IllegalSyntaxException.Companion.of(UNQUOTE.toString(), list, "expects exactly one expression");
           }
           /* Evaluate and append last element */
-          return append(result, evaluator.eval(list.get(n + 1), env));
+          return Append.Companion.append(result, evaluator.eval(list.get(n + 1), env));
         }
         if (isList(expr) && UNQUOTE_SPLICING_SYMBOL.equals(o)) {
           throw IllegalSyntaxException.Companion
             .of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote");
         }
         /* Otherwise, just append the element wrapped with LIST */
-        result = append(result, list(o));
+        result = Companion.append(result, list(o));
       } else {
         List el = (List) o;
         Object op = el.get(0);
         if (QUASIQUOTE_SYMBOL.equals(op)) {
           /* Increase depth of quasiquotation */
-          result = append(result, list(quasiquoteList(depth + 1, o, env, evaluator)));
+          result = Companion.append(result, list(quasiquoteList(depth + 1, o, env, evaluator)));
         } else if (UNQUOTE_SYMBOL.equals(op) || (UNQUOTE_SPLICING_SYMBOL.equals(op))) {
           if (el.size() != 2) {
             throw IllegalSyntaxException.Companion.of(op.toString(), expr, "expects exactly one expression");
@@ -134,25 +135,25 @@ public enum Quasiquote implements ISpecialForm {
             } else {
               /* Unquote: append list with results */
               /* `(,(list 1 2 3)) => `((1 2 3)) */
-              result = append(result, list(eval));
+              result = Companion.append(result, list(eval));
             }
           } else {
             /* Decrease depth of quasiquotation */
-            result = append(result, list(quasiquoteList(depth - 1, o, env, evaluator)));
+            result = Companion.append(result, list(quasiquoteList(depth - 1, o, env, evaluator)));
           }
         } else {
-          result = append(result, list(quasiquoteList(depth, o, env, evaluator)));
+          result = Companion.append(result, list(quasiquoteList(depth, o, env, evaluator)));
         }
       }
     }
     if (!isList) {
       /* In the case of a pair, if the cdr of the relevant quoted pair is empty,
        * then expr need not produce a list, and its result is used directly in place of the quoted pair */
-      if ((isNull(cdr(result)))) {
+      if ((isNull(Cdr.Companion.cdr(result)))) {
         return ((List)result).get(0);
       } else {
         // TODO Is car(cdr(result)) correct?
-        return cons(car(result), car(cdr(result)));
+        return cons(Car.Companion.car(result), Car.Companion.car(Cdr.Companion.cdr(result)));
       }
     }
     return result;
