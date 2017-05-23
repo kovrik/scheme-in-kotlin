@@ -171,13 +171,13 @@ public enum Quasiquote implements ISpecialForm {
     if (UNQUOTE_SYMBOL.equals(vector.get(0)) || UNQUOTE_SPLICING_SYMBOL.equals(vector.get(0))) {
       throw IllegalSyntaxException.Companion.of(vector.get(0).toString(), expr, "invalid context within quasiquote");
     }
-    Cons list = VectorToList.vectorToList((MutableVector) expr);
+    Cons list = VectorToList.Companion.vectorToList((MutableVector) expr);
     Object result = quasiquoteList(0, list, env, evaluator);
     // FIXME throw "illegal use of '.'" in Reader instead
     if (!isList(result)) {
       throw new IllegalSyntaxException("read: illegal use of '.'");
     }
-    return ListToVector.listToVector(result);
+    return ListToVector.Companion.listToVector(result);
   }
 
   private Object quasiquoteSet(Object expr, Environment env, Evaluator evaluator) {
