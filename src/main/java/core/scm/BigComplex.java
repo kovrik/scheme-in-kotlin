@@ -165,8 +165,8 @@ public final class BigComplex extends Number {
     Number A = Multiplication.Companion.apply(Expt.Companion.expt(r, c), Exp.Companion.exp(Multiplication.Companion.apply(t, d.negate())));
     Number B = Addition.Companion.add(Multiplication.Companion.apply(c, t), Multiplication.Companion.apply(d, Log.Companion
       .log(r)));
-    Number re = Multiplication.Companion.apply(A, Cos.cos(B));
-    Number im = Multiplication.Companion.apply(A, Sin.sin(B));
+    Number re = Multiplication.Companion.apply(A, Cos.Companion.cos(B));
+    Number im = Multiplication.Companion.apply(A, Sin.Companion.sin(B));
     return new BigComplex(re, im);
   }
 
@@ -216,10 +216,10 @@ public final class BigComplex extends Number {
         throw new ArithmeticException("Undefined for 0+0i");
       }
     } else if (re.signum() < 0) {
-      double atan = Atan.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
+      double atan = Atan.Companion.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
       return (im.signum() >= 0) ? atan + Math.PI : atan - Math.PI;
     } else {
-      return Atan.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
+      return Atan.Companion.atan(im.divide(re, Utils.INSTANCE.getDEFAULT_CONTEXT()));
     }
   }
 

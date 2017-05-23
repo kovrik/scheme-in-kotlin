@@ -5,6 +5,7 @@ import core.procedures.FnArgsBuilder
 import core.scm.BigRatio
 import core.utils.Utils
 
+import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -23,8 +24,10 @@ class LCM : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
         if (args.size == 1) {
             return ABS.apply1(args[0])
         }
+        if (args[0] == null) throw NullPointerException()
         var result = args[0] as Number
         for (i in 1..args.size - 1) {
+            if (args[i] == null) throw NullPointerException()
             result = lcm(result, args[i] as Number)
         }
         return result

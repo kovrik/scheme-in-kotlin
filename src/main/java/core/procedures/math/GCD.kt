@@ -5,8 +5,8 @@ import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.NullPointerException
 
+import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 

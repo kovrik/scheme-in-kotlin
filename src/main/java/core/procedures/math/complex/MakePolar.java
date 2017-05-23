@@ -30,6 +30,6 @@ public final class MakePolar extends AFn {
     /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
     Number m = (Number) arg1;
     Number a = (Number) arg2;
-    return Addition.Companion.add(Multiplication.Companion.apply(m, Cos.cos(a)), BigComplex.I.multiply(Sin.sin(a)).multiply(m));
+    return Addition.Companion.add(Multiplication.Companion.apply(m, Cos.Companion.cos(a)), BigComplex.I.multiply(Sin.Companion.sin(a)).multiply(m));
   }
 }
