@@ -60,7 +60,7 @@ public final class GCD extends AFn {
       throw new WrongTypeException(NAME, "Integer", b);
     }
     if (a.longValue() != a || b.longValue() != b) {
-      return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));
+      return ToInexact.Companion.toInexact(gcd(ToExact.Companion.toExact(a), ToExact.Companion.toExact(b)));
     }
     return (double)gcd(a.longValue(), b.longValue());
   }
@@ -70,7 +70,7 @@ public final class GCD extends AFn {
     if (scale == 0) {
       return new BigDecimal(a.toBigInteger().gcd(b.toBigInteger()));
     } else {
-      return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)));
+      return ToInexact.Companion.toInexact(gcd(ToExact.Companion.toExact(a), ToExact.Companion.toExact(b)));
     }
   }
 

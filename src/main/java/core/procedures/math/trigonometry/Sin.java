@@ -69,7 +69,7 @@ public final class Sin extends AFn {
   public static BigComplex sin(BigComplex c) {
     BigDecimal re = c.getRe();
     BigDecimal im = c.getIm();
-    return new BigComplex(Multiplication.apply(Sin.sin(re), Cosh.cosh(im)),
-                          Multiplication.apply(Cos.cos(re), Sinh.sinh(im)));
+    return new BigComplex(Multiplication.Companion.apply(Sin.sin(re), Cosh.cosh(im)),
+                          Multiplication.Companion.apply(Cos.cos(re), Sinh.sinh(im)));
   }
 }

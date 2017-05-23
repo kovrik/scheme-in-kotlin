@@ -162,10 +162,11 @@ public final class BigComplex extends Number {
     }
     Number r = magnitude();
     Number t = angle();
-    Number A = Multiplication.apply(Expt.expt(r, c), Exp.exp(Multiplication.apply(t, d.negate())));
-    Number B = Addition.add(Multiplication.apply(c, t), Multiplication.apply(d, Log.log(r)));
-    Number re = Multiplication.apply(A, Cos.cos(B));
-    Number im = Multiplication.apply(A, Sin.sin(B));
+    Number A = Multiplication.Companion.apply(Expt.Companion.expt(r, c), Exp.Companion.exp(Multiplication.Companion.apply(t, d.negate())));
+    Number B = Addition.Companion.add(Multiplication.Companion.apply(c, t), Multiplication.Companion.apply(d, Log.Companion
+      .log(r)));
+    Number re = Multiplication.Companion.apply(A, Cos.cos(B));
+    Number im = Multiplication.Companion.apply(A, Sin.sin(B));
     return new BigComplex(re, im);
   }
 
@@ -175,7 +176,7 @@ public final class BigComplex extends Number {
    * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
    **/
   public BigComplex log() {
-    Number re = Log.log(magnitude());
+    Number re = Log.Companion.log(magnitude());
     Number im = angle();
     return new BigComplex(re, im);
   }
@@ -188,7 +189,7 @@ public final class BigComplex extends Number {
   public Number magnitude() {
     BigDecimal re = getRe();
     BigDecimal im = getIm();
-    return Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)));
+    return Sqrt.Companion.sqrt(Addition.Companion.add(re.multiply(re), im.multiply(im)));
   }
 
   /**

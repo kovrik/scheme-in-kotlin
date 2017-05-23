@@ -47,23 +47,23 @@ public final class LCM extends AFn {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0L;
     }
-    return (a / gcd(a, b)) * b;
+    return (a / GCD.gcd(a, b)) * b;
   }
 
   private static Double lcm(Double a, Double b) {
     if ((a.intValue() == 0) && (b.intValue() == 0)) {
       return 0d;
     }
-    return (a / gcd(a, b).doubleValue()) * b;
+    return (a / GCD.gcd(a, b).doubleValue()) * b;
   }
 
   static BigInteger lcm(BigInteger first, BigInteger second) {
-    return first.multiply(second.divide(gcd(first, second)));
+    return first.multiply(second.divide(GCD.gcd(first, second)));
   }
 
   private BigRatio lcm(BigRatio first, BigRatio second) {
     return BigRatio.valueOf(lcm(first.getNumerator(), second.getNumerator()),
-                           gcd(first.getDenominator(), second.getDenominator()));
+                             GCD.gcd(first.getDenominator(), second.getDenominator()));
   }
 
   private Number lcm(BigDecimal a, BigDecimal b) {
@@ -74,7 +74,8 @@ public final class LCM extends AFn {
     if (scale == 0) {
       return new BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()));
     } else {
-      return ToInexact.toInexact(lcm((BigDecimal)ToExact.toExact(a), (BigDecimal) ToExact.toExact(b)));
+      return ToInexact.Companion.toInexact(lcm((BigDecimal) ToExact.Companion.toExact(a), (BigDecimal) ToExact.Companion
+        .toExact(b)));
     }
   }
 

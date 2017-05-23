@@ -232,9 +232,9 @@ object Utils {
     }
 
     /* Parse string into a number */
-    private fun processNumber(number: String, r: Int?, exact: Boolean, useBigNum: Boolean, exp: Long?): Number {
+    private fun processNumber(number: String, r: Int?, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
         var number = number
-        var result: Number
+        var result: Number?
         val dotPos = number.indexOf('.')
         if (useBigNum) {
             if (dotPos < 0) {
@@ -273,13 +273,13 @@ object Utils {
             if (r == 10 && !exact) {
                 return (result.toString() + "E" + exp).toDouble()
             } else {
-                result = Multiplication.apply(result, Expt.expt(r.toLong(), exp))
+                result = Multiplication.Companion.apply(result, Expt.expt(r.toLong(), exp))
             }
         }
         return processExactness(result, exact)
     }
 
-    private fun processExactness(number: Number, exact: Boolean): Number {
+    private fun processExactness(number: Number?, exact: Boolean): Number? {
         if (!exact) {
             return ToInexact.toInexact(number)
         }
@@ -301,14 +301,14 @@ object Utils {
 
     /* Parse string into a rational number */
     private fun processRationalNumber(numerator: String, denominator: String, r: Int?, exact: Boolean,
-                                      useBigNum: Boolean, exp: Long?): Number {
+                                      useBigNum: Boolean, exp: Long?): Number? {
 
         val num = processNumber(numerator, r, true, useBigNum, null)
         val den = processNumber(denominator, r, true, useBigNum, null)
         val number = BigRatio.valueOf(num.toString(), den.toString())
         if (!exact) {
             val result = ToInexact.toInexact(number)
-            return if (exp == null) result else Multiplication.apply(result, Expt.expt(r, exp))
+            return if (exp == null) result else Multiplication.Companion.apply(result, Expt.expt(r, exp))
         }
         return number
     }

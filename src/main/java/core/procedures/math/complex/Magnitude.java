@@ -26,6 +26,6 @@ public final class Magnitude extends AFn {
     if (arg instanceof BigComplex) {
       return ((BigComplex)arg).magnitude();
     }
-    return Abs.abs((Number) arg);
+    return Abs.Companion.abs((Number) arg);
   }
 }

@@ -116,7 +116,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
             end = args[1] as Number
             step = args[2] as Number
         }
-        var cur = start
+        var cur: Number? = start
         var pred = NumericalComparison.LESS
         if (Utils.isNegative(step)) {
             pred = NumericalComparison.GREATER

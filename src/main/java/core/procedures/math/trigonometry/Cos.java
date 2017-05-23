@@ -69,7 +69,7 @@ public final class Cos extends AFn {
   public static BigComplex cos(BigComplex c) {
     BigDecimal re = c.getRe();
     BigDecimal im = c.getIm();
-    return new BigComplex(Multiplication.apply(Cos.cos(re), Cosh.cosh(im)),
-                          Multiplication.apply(-1d, Multiplication.apply(Sin.sin(re), Sinh.sinh(im))));
+    return new BigComplex(Multiplication.Companion.apply(Cos.cos(re), Cosh.cosh(im)),
+                          Multiplication.Companion.apply(-1d, Multiplication.Companion.apply(Sin.sin(re), Sinh.sinh(im))));
   }
 }

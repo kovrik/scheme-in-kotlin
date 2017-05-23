@@ -40,6 +40,11 @@ public final class NumericalComparison extends AFn {
   }
 
   @Override
+  public Boolean apply2(Object arg1, Object arg2) {
+    return apply(arg1, arg2);
+  }
+
+  @Override
   public Boolean apply(Object... args) {
     for (int i = 0; i < args.length - 1; i++) {
       Number f = (Number)args[i];
