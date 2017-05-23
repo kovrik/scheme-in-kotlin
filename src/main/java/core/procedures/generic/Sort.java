@@ -4,7 +4,13 @@ import core.exceptions.WrongTypeException;
 import core.procedures.AFn;
 import core.procedures.FnArgsBuilder;
 
-import java.util.*;
+import core.scm.Vector;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public final class Sort extends AFn {
 
@@ -26,8 +32,12 @@ public final class Sort extends AFn {
   @Override
   public Object apply1(Object arg) {
     try {
-      if (arg instanceof Collection) {
+      if (arg instanceof List) {
         Collections.sort((List) arg);
+        return arg;
+      }
+      if (arg instanceof Vector) {
+        Arrays.sort(((Vector)arg).getArray());
         return arg;
       }
       if (arg instanceof Map) {
