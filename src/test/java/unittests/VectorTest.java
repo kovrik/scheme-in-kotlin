@@ -25,6 +25,10 @@ public class VectorTest extends AbstractTest {
     assertEquals(new MutableVector(), eval("(vector)", env));
     assertEquals(new MutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env));
     assertEquals(new MutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env));
+    assertEquals(new MutableVector(3L, 2L, 1L), eval("(reverse (vector 1 2 3))", env));
+    assertEquals(new MutableVector(2L, 1L), eval("(reverse (vector 1 2))", env));
+    assertEquals(new MutableVector(1L), eval("(reverse (vector 1))", env));
+    assertEquals(new MutableVector(), eval("(reverse (vector))", env));
   }
 
   @Test

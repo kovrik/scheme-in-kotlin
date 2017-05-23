@@ -188,7 +188,7 @@ public enum Quasiquote implements ISpecialForm {
     }
     /* `#(unquote 1)  syntax is not valid */
     /* `,@#(list 1 2) syntax is not valid */
-    Object first = First.first(set);
+    Object first = First.Companion.first(set);
     if (UNQUOTE_SYMBOL.equals(first) || UNQUOTE_SPLICING_SYMBOL.equals(first)) {
       throw IllegalSyntaxException.Companion.of(first.toString(), expr, "invalid context within quasiquote");
     }

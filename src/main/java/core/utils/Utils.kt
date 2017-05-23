@@ -385,7 +385,7 @@ object Utils {
         return false
     }
 
-    fun isExactInteger(o: Any): Boolean {
+    fun isExactInteger(o: Any?): Boolean {
         return isExact(o) && isInteger(o)
     }
 
