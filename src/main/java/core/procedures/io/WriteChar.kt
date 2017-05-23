@@ -9,7 +9,7 @@ import core.scm.Void
 
 import java.io.IOException
 
-class WriteChar : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Char::class.java))
+class WriteChar : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Char::class.javaObjectType))
         .rest(OutputPort::class.java).build()) {
 
     override val name: String

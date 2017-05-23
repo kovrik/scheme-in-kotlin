@@ -27,7 +27,7 @@ class MutableString : INamed, CharSequence {
         this.string = StringBuilder(length)
     }
 
-    fun append(c: Any): MutableString {
+    fun append(c: Any?): MutableString {
         this.string.append(c)
         return this
     }
