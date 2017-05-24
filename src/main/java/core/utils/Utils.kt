@@ -27,8 +27,8 @@ object Utils {
 
     private val HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$")
 
-    private val EXPONENT_MARKS_PATTERN   = "[sldefSLDEF]"
-    private val EXPONENT16_MARKS_PATTERN = "[slSL]"
+    private const val EXPONENT_MARKS_PATTERN   = "[sldefSLDEF]"
+    private const val EXPONENT16_MARKS_PATTERN = "[slSL]"
     private val EXPONENT_PATTERN   = Pattern.compile(".+$EXPONENT_MARKS_PATTERN[+-]?\\d+(\\.\\d*)?$")
     private val EXPONENT16_PATTERN = Pattern.compile(".+$EXPONENT16_MARKS_PATTERN[+-]?\\w+$")
 

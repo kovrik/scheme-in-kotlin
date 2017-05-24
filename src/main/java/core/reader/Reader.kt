@@ -34,10 +34,10 @@ open class Reader : IReader {
 
         private val DEREF = Symbol.intern("deref")
 
-        private val LINE_BREAKS = "\n\r"
-        private val WHITESPACES = LINE_BREAKS + "\u000B \t"
+        private const val LINE_BREAKS = "\n\r"
+        private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
         // <delimiter> --> <whitespace> | ( | ) | " | ;
-        private val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
+        private const val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
 
         /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
         private val ESCAPED = HashMap<Char, Char>()

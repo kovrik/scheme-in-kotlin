@@ -90,7 +90,7 @@ class Evaluator {
             return evalSet(sexp as MutableSet<Any>, env)
         } else {
             /* Everything else evaluates to itself:
-       * Numbers, Strings, Chars, Keywords etc. */
+             * Numbers, Strings, Chars, Keywords etc. */
             return sexp
         }
     }
