@@ -2,11 +2,10 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.writer.Writer
-import java.lang.NullPointerException
 import java.util.*
 
 // TODO Separate class for Proper and Improper Lists?
-open class Cons<E> : LinkedList<E> {
+open class Cons<E> : LinkedList<E?> {
 
     private class EmptyCons<E> : Cons<E>() {
         override var isList: Boolean
@@ -23,8 +22,6 @@ open class Cons<E> : LinkedList<E> {
     private constructor(c: Collection<E>) : super(c)
 
     private constructor(car: E?, cdr: E?) : super() {
-        // FIXME treat null as normal element
-        if (car == null) throw NullPointerException()
         add(car)
         isList = isList(cdr as Any)
         if (isList) {
@@ -35,7 +32,7 @@ open class Cons<E> : LinkedList<E> {
         }
     }
 
-    fun car(): E {
+    fun car(): E? {
         if (isEmpty()) {
             throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
         }
@@ -96,42 +93,41 @@ open class Cons<E> : LinkedList<E> {
         val EMPTY: Cons<Any?> = EmptyCons()
 
         fun <E> cons(car: E?, cdr: E?): Cons<E> {
-            if (car == null && cdr == null) return EMPTY as Cons<E>
             if (cdr == null) return Cons(car, EMPTY) as Cons<E>
             return Cons(car, cdr)
         }
 
-        fun <E> list(): Cons<E> {
+        fun <E> list(): Cons<E?> {
             return Cons()
         }
 
-        fun <E> list(e: E): Cons<E> {
-            val list = Cons<E>()
+        fun <E> list(e: E?): Cons<E?> {
+            val list = Cons<E?>()
             list.add(e)
             return list
         }
 
-        fun <E> list(e1: E, e2: E): Cons<E> {
-            val list = Cons<E>()
+        fun <E> list(e1: E?, e2: E?): Cons<E?> {
+            val list = Cons<E?>()
             list.add(e1)
             list.add(e2)
             return list
         }
 
-        fun <E> list(e1: E, e2: E, e3: E): Cons<E> {
-            val list = Cons<E>()
+        fun <E> list(e1: E?, e2: E?, e3: E?): Cons<E?> {
+            val list = Cons<E?>()
             list.add(e1)
             list.add(e2)
             list.add(e3)
             return list
         }
 
-        fun <E> list(vararg elements: E): Cons<E> {
-            return if (elements.isEmpty()) EMPTY as Cons<E> else list(Arrays.asList(*elements))
+        fun <E> list(vararg elements: E?): Cons<E?> {
+            return if (elements.isEmpty()) EMPTY as Cons<E?> else list(Arrays.asList(*elements))
         }
 
-        fun <E> list(c: Collection<E>): Cons<E> {
-            return if (c.isEmpty()) EMPTY as Cons<E> else Cons(c)
+        fun <E> list(c: Collection<E?>): Cons<E?> {
+            return if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
         }
 
         /* Return true if o is a List or Cons and a list */

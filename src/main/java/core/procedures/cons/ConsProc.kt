@@ -7,11 +7,7 @@ import core.scm.Cons
 class ConsProc : AFn(FnArgsBuilder().min(2).max(2).build()) {
 
     companion object {
-
         fun cons(car: Any?, cdr: Any?): Cons<*> {
-            if (car == null && cdr == null) {
-                return Cons.EMPTY
-            }
             return Cons.cons(car, cdr)
         }
     }

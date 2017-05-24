@@ -23,7 +23,7 @@ enum class Lambda : ISpecialForm {
             throw IllegalSyntaxException.of(toString(), expression)
         }
 
-        val params: List<Symbol>
+        val params: List<Symbol?>
         var variadic = false
         /* Check if args is a List or not */
         val args = expression[1]

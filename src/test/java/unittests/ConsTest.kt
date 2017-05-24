@@ -17,9 +17,6 @@ class ConsTest {
 
     @Test
     fun testEquality() {
-        assertTrue(EMPTY === ConsProc.cons(null, null))
-        assertTrue(ConsProc.cons(null, null) === ConsProc.cons(null, null))
-        assertEquals(EMPTY, ConsProc.cons(null, null))
         assertEquals(ConsProc.cons(null, null), ConsProc.cons(null, null))
         assertEquals(ConsProc.cons(1, 2), ConsProc.cons(1, 2))
         assertFalse(ConsProc.cons(1, 2) === ConsProc.cons(1, 2))
@@ -28,7 +25,6 @@ class ConsTest {
     @Test
     fun testToString() {
         assertEquals("()", EMPTY.toString())
-        assertEquals("()", ConsProc.cons(null, null).toString())
         assertEquals("(1 . 2)", ConsProc.cons(1, 2).toString())
         assertEquals("(1 2 . 3)", ConsProc.cons(1, ConsProc.cons(2, 3)).toString())
         assertEquals("(1 2 3 . 4)", ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4))).toString())
@@ -128,18 +124,18 @@ class ConsTest {
     @Test
     fun testIsPair() {
         assertEquals(FALSE, Companion.IS_PAIR.apply1(EMPTY))
-        assertEquals(FALSE, Companion.IS_PAIR.apply1(ConsProc.cons(null, null)))
         assertEquals(FALSE, Companion.IS_PAIR.apply1(1))
         assertEquals(FALSE, Companion.IS_PAIR.apply1("test"))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(ConsProc.cons(1, 2)))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(ConsProc.cons(1, EMPTY)))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(ConsProc.cons(EMPTY, EMPTY)))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(ConsProc.cons(1, ConsProc.cons(2, 3))))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
         assertEquals(FALSE, Companion.IS_PAIR.apply1(list<Any>()))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(list(1)))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(list(1, 2)))
-        assertEquals(TRUE, Companion.IS_PAIR.apply1(list(1, 2, 3)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(null, null)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(1, 2)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(1, EMPTY)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(EMPTY, EMPTY)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(1, ConsProc.cons(2, 3))))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(list(1)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(list(1, 2)))
+        assertEquals(TRUE,  Companion.IS_PAIR.apply1(list(1, 2, 3)))
     }
 
     @Test
