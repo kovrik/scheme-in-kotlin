@@ -1,7 +1,6 @@
 package core.reader
 
 import core.exceptions.IllegalSyntaxException
-import core.procedures.AFn
 import core.scm.Cons
 import core.scm.Keyword
 import core.scm.MutableVector
@@ -196,7 +195,7 @@ open class Reader : IReader {
             if (vector.isEmpty()) {
                 return vector
             }
-            return Cons.list<AFn>(Quote.QUOTE_SYMBOL, vector)
+            return Cons.list(Quote.QUOTE_SYMBOL, vector)
         } else if (c == '{') {
             return readSet()
         } else if (c == '\\') {
