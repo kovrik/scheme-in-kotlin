@@ -23,10 +23,10 @@ open class Cons<E> : LinkedList<E?> {
 
     private constructor(car: E?, cdr: E?) : super() {
         add(car)
-        isList = isList(cdr as Any)
+        isList = isList(cdr)
         if (isList) {
             /* cons becomes a list */
-            addAll(cdr as MutableList<E>)
+            addAll(cdr as List<E>)
         } else {
             add(cdr)
         }
@@ -139,8 +139,8 @@ open class Cons<E> : LinkedList<E?> {
             return o is List<*> && !o.isEmpty()
         }
 
-        fun isNull(`object`: Any?): Boolean {
-            return (`object` as? List<*>)?.isEmpty() ?: (`object` == null)
+        fun isNull(obj: Any?): Boolean {
+            return (obj as? List<*>)?.isEmpty() ?: (obj == null)
         }
 
         /* Use this method to print all lists */
@@ -178,7 +178,7 @@ open class Cons<E> : LinkedList<E?> {
             while (!queue.isEmpty()) {
                 val e = queue.remove()
                 if (e is List<*>) {
-                    queue.addAll(e as MutableList<E>)
+                    queue.addAll(e as List<E>)
                 } else {
                     result.add(e)
                 }
