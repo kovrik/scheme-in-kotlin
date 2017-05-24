@@ -34,7 +34,7 @@ class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
 
     companion object {
 
-        fun apply(first: Number?, second: Number?): Number? {
+        fun apply(first: Number?, second: Number?): Number {
             if (first  == null) throw NullPointerException()
             if (second == null) throw NullPointerException()
             var first = first

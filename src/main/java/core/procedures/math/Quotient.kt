@@ -21,7 +21,7 @@ open class Quotient : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<
         if (arg2 == null) throw NullPointerException()
         /* Special cases */
         if (Utils.isOne(arg2)) {
-            return Utils.inexactnessTaint(arg1 as Number?, arg2 as Number?)
+            return Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
         }
         if (Utils.isZero(arg2)) {
             throw ArithmeticException("quotient: undefined for 0")

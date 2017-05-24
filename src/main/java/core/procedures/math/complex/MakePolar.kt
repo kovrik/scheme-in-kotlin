@@ -22,8 +22,8 @@ class MakePolar : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
         if (arg1 == null) throw NullPointerException()
         if (arg2 == null) throw NullPointerException()
         /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
-        val m = arg1 as Number?
-        val a = arg2 as Number?
-        return Addition.add(Multiplication.apply(m, Cos.cos(a!!)), BigComplex.I.multiply(Sin.sin(a)).multiply(m))
+        val m = arg1 as Number
+        val a = arg2 as Number
+        return Addition.add(Multiplication.apply(m, Cos.cos(a)), BigComplex.I.multiply(Sin.sin(a)).multiply(m))
     }
 }

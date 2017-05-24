@@ -467,7 +467,7 @@ object Utils {
      * so that inexactness acts as a kind of taint on numbers.
      * See https://docs.racket-lang.org/guide/numbers.html
      */
-    fun inexactnessTaint(result: Number?, other: Number?): Number? {
+    fun inexactnessTaint(result: Number, other: Number?): Number {
         return if (isInexact(other) && isExact(result)) ToInexact.toInexact(result) else result
     }
 
