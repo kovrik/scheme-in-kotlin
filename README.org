@@ -1,4 +1,4 @@
-*Scheme R5RS Interpreter in Java*
+*Scheme R5RS Interpreter in Kotlin*
 
 *Disclaimer*
 
@@ -6,7 +6,7 @@ This is a hobby project and work is still in progress.
 
 *Description*
 
-This is my attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) interpreter in Java.
+This is my attempt to implement Scheme R5RS (http://www.schemers.org/Documents/Standards/R5RS/) interpreter in Kotlin.
 The goal is to have +some fun+ Scheme implementation which is as close to R5RS as possible.
 
 On the other hand, this is a sandbox project where I'm trying different techniques and doing some experiments (for learning purposes mostly).
