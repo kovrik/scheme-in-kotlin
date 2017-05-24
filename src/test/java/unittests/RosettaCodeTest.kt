@@ -4,16 +4,14 @@ import core.Repl
 import core.environment.DefaultEnvironment
 import core.procedures.io.Display
 import core.procedures.io.Newline
+import core.scm.Cons.Companion.list
 import core.scm.OutputPort
 import core.scm.Symbol
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
-import java.util.Calendar
-
-import core.scm.Cons.list
-import org.junit.Assert.assertEquals
+import java.util.*
 
 class RosettaCodeTest : AbstractTest() {
 

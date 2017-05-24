@@ -7,7 +7,7 @@ import org.junit.Test
 import java.util.Arrays
 import java.util.Collections
 
-import core.scm.Cons.EMPTY
+import core.scm.Cons.Companion.EMPTY
 import org.junit.Assert.assertEquals
 
 class WriterTest {

@@ -7,19 +7,13 @@ import core.exceptions.ReentrantContinuationException
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.continuations.CalledContinuation
-import core.scm.BigRatio
-import core.scm.Cons
-import core.scm.MapEntry
-import core.scm.Symbol
-import core.scm.Thunk
+import core.scm.*
 import core.scm.Vector
 import core.scm.specialforms.ISpecialForm
 import core.scm.specialforms.New
 import core.utils.Utils
 import core.writer.Writer
-
-import java.util.HashMap
-import java.util.HashSet
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicLong
@@ -139,7 +133,7 @@ class Evaluator {
                 // TODO Check if op starts with '.' instead?
                 javaMethod = true
                 /* Special case: constructor call If Symbol ends with . */
-                if (sym.name.get(sym.name.length - 1) == '.') {
+                if (sym.name[sym.name.length - 1] == '.') {
                     // TODO Optimize and cleanup
                     sexp[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
                     op = New.NEW
@@ -175,7 +169,7 @@ class Evaluator {
             if (vector.size <= i || i < 0) {
                 throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", vector, i))
             }
-            return vector.get(i)
+            return vector[i]
         } else if (op is Map<*, *>) {
             /* Maps are functions of their keys */
             if (sexp.size > 3) throw ArityException("hashmap", 1, 2, sexp.size - 1)

@@ -19,7 +19,7 @@ class Conj : AFn(FnArgsBuilder().min(1).build()) {
         when {
             args.size == 1 -> return first
             first is List<*> -> {
-                val list = Cons.list<Any>()
+                val list = Cons.list<Any?>()
                 list.addAll(first)
                 list.addAll(Arrays.asList(*args).subList(1, args.size))
                 return list

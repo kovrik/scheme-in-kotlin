@@ -4,21 +4,16 @@ import core.Repl
 import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.io.Display
-import core.scm.Cons
+import core.scm.Cons.Companion.list
 import core.scm.OutputPort
 import core.scm.Symbol
 import core.scm.Void
+import org.junit.Assert.*
 import org.junit.Test
-
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
-
-import core.scm.Cons.list
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 
 class EvaluatorTest : AbstractTest() {
 
@@ -189,7 +184,7 @@ class EvaluatorTest : AbstractTest() {
     @Test
     fun testEvalApply() {
         assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env))
-        assertEquals(list<Cons<Any>>(list<Any>(Symbol.intern("a"), 1L), list<Any>(Symbol.intern("b"), 2L), list<Any>(
+        assertEquals(list(list(Symbol.intern("a"), 1L), list(Symbol.intern("b"), 2L), list(
                 Symbol.intern("c"), 3L)),
                 eval("(apply map list '((a b c) (1 2 3)))", env))
 

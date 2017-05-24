@@ -50,7 +50,7 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
                 }
             }
         }
-        val result = Cons.list<Any>(Symbol.intern("list"))
+        val result = Cons.list<Any>(Symbol.intern("list")!!)
         result.addAll(lists)
         /* Return Thunk that will be evaluated and produce results */
         return Thunk(result)

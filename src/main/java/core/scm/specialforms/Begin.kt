@@ -26,7 +26,7 @@ import core.scm.Void
 enum class Begin : ISpecialForm {
     BEGIN;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size <= 1) {
             return Void.VOID
         }

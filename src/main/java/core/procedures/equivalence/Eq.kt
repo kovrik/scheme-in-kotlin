@@ -2,7 +2,7 @@ package core.procedures.equivalence
 
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
-import core.scm.Cons.EMPTY
+import core.scm.Cons.Companion.EMPTY
 import core.scm.Symbol
 
 class Eq : AFn(FnArgsBuilder().min(2).build()) {

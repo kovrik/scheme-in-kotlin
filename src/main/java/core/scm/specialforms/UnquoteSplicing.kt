@@ -9,10 +9,10 @@ enum class UnquoteSplicing : ISpecialForm {
     UNQUOTE_SPLICING;
 
     companion object {
-        val UNQUOTE_SPLICING_SYMBOL: Symbol = Symbol.intern(UNQUOTE_SPLICING.toString())!!
+        val UNQUOTE_SPLICING_SYMBOL: Symbol = Symbol.intern(UNQUOTE_SPLICING.toString())
     }
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         // Implemented in quasiquote
         throw IllegalSyntaxException.of(toString(), expression, "not in quasiquote")
     }

@@ -3,7 +3,9 @@ package core.procedures.generic
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
-import core.scm.*
+import core.scm.Cons
+import core.scm.MapEntry
+import core.scm.MutableVector
 import core.scm.Vector
 
 class Reverse : AFn(FnArgsBuilder().min(1).max(1).build()) {
@@ -20,13 +22,13 @@ class Reverse : AFn(FnArgsBuilder().min(1).max(1).build()) {
                 }
                 return result
             }
-            is Set<*> -> return Cons.list<Any>(arg as Set<*>?)
+            is Set<*> -> return Cons.list(arg as Collection<Any?>)
             is Map.Entry<*, *> -> return MapEntry(arg.value, arg.key)
             is Vector -> {
                 val array = arg.getArray()
                 val reversed = MutableVector(array.size, null)
                 for (i in array.indices) {
-                    reversed.array.set(i, array[array.size - i - 1])
+                    reversed.array[i] = array[array.size - i - 1]
                 }
                 return reversed
             }

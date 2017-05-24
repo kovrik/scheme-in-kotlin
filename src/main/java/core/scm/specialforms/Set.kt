@@ -12,7 +12,7 @@ import core.scm.Void
 enum class Set : ISpecialForm {
     SET;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Void? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Void? {
         if (expression.size != 3) {
             throw IllegalSyntaxException
                     .of(toString(), expression, String.format("has %s parts after keyword", expression.size - 1))

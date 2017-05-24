@@ -11,7 +11,7 @@ import core.utils.Utils
 enum class And : ISpecialForm {
     AND;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         var result: Any? = java.lang.Boolean.TRUE
         if (expression.size > 1) {
             for (i in 1..expression.size - 1 - 1) {

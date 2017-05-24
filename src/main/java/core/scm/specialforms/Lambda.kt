@@ -18,7 +18,7 @@ import core.scm.Symbol
 enum class Lambda : ISpecialForm {
     LAMBDA;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Procedure {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

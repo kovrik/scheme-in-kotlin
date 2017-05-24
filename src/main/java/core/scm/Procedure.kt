@@ -2,13 +2,12 @@ package core.scm
 
 import core.environment.Environment
 import core.procedures.AFn
-
-import java.util.Arrays
+import java.util.*
 
 /* Lambda */
 class Procedure(override var name: String,
                 /* Array of arguments the procedure expects */
-                private val args: Array<Symbol?>,
+                private val args: Array<Symbol>,
                 /* Body form of the procedure */
                 private val body: Any?,
                 localEnvironment: Environment,
@@ -27,7 +26,7 @@ class Procedure(override var name: String,
     private var localEnvironment: Environment? = null
 
     constructor(name: String,
-                args: List<Symbol?>,
+                args: List<Symbol>,
                 body: Any?,
                 localEnvironment: Environment,
                 isVariadic: Boolean) : this(name, args.toTypedArray(), body, localEnvironment, isVariadic)

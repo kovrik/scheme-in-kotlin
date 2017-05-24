@@ -13,7 +13,7 @@ import core.scm.Thunk
 enum class LetSeq : ISpecialForm {
     LETSEQ;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

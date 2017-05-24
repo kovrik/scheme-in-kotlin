@@ -11,9 +11,9 @@ class Keyword private constructor(override val name: String) : AFn(FnArgsBuilder
         /* Pool of all interned keywords */
         private val POOL = InternPool<Keyword>()
 
-        fun intern(value: String): Keyword? {
+        fun intern(value: String): Keyword {
             // always intern keywords
-            return POOL.intern(Keyword(value))
+            return POOL.intern(Keyword(value))!!
         }
     }
 

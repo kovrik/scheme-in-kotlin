@@ -13,6 +13,6 @@ class Vals : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Map::
         get() = "vals"
 
     override fun apply1(arg: Any?): Any? {
-        return Cons.list<Any>((arg as Map<*, *>).values)
+        return Cons.list((arg as Map<Any?, Any?>).values)
     }
 }

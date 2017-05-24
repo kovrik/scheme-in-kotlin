@@ -17,7 +17,7 @@ import java.io.IOException
 enum class Time : ISpecialForm {
     TIME;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size < 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

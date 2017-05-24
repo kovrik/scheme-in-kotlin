@@ -12,7 +12,7 @@ class ConsProc : AFn(FnArgsBuilder().min(2).max(2).build()) {
             if (car == null && cdr == null) {
                 return Cons.EMPTY
             }
-            return Cons.cons<Any>(car, cdr)
+            return Cons.cons(car, cdr)
         }
     }
 

@@ -10,7 +10,7 @@ class VectorToList : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
 
     companion object {
         fun vectorToList(v: MutableVector): Cons<*> {
-            return Cons.list<Any>(*v.getArray())
+            return Cons.list(*v.getArray())
         }
     }
 

@@ -5,14 +5,12 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.reader.StringReader
 import core.scm.Symbol
-
-import java.util.Arrays
-
 import org.junit.Assert.assertEquals
+import java.util.*
 
 abstract class AbstractTest {
 
-    private val reader = StringReader()
+    private   val reader = StringReader()
     protected val eval = Evaluator()
     protected val env = DefaultEnvironment()
 
@@ -31,7 +29,7 @@ abstract class AbstractTest {
     }
 
     protected fun s(str: String): Symbol {
-        return Symbol.intern(str)!!
+        return Symbol.intern(str)
     }
 
     protected fun assertAllEqual(expected: Any, forms: Array<String>, env: Environment) {

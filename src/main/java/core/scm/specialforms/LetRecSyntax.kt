@@ -7,7 +7,7 @@ import core.evaluator.Evaluator
 enum class LetRecSyntax : ISpecialForm {
     LETREC_SYNTAX;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 

@@ -1,14 +1,17 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.scm.*
+import core.scm.Cons
+import core.scm.Cons.Companion.EMPTY
+import core.scm.Cons.Companion.cons
+import core.scm.Cons.Companion.list
+import core.scm.MutableVector
+import core.scm.Symbol
 import core.scm.Void
+import org.junit.Assert.*
 import org.junit.Test
-
-import core.scm.Cons.*
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
-import org.junit.Assert.*
 
 class ListTest : AbstractTest() {
 
@@ -73,6 +76,9 @@ class ListTest : AbstractTest() {
         eval("(define conslist '(3))", env)
         eval("(cons 1 conslist)", env)
         assertEquals(TRUE, eval("(equal? '(3) conslist))", env))
+        // TODO
+//        assertEquals("(nil)",     eval("(cons nil nil)",env))
+//        assertEquals("(nil . 1)", eval("(cons nil 1)", env))
     }
 
     @Test
@@ -318,7 +324,7 @@ class ListTest : AbstractTest() {
         assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env))
         assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env))
         assertEquals(list(3L), eval("(member 3 '(1 2 3))", env))
-        assertEquals(list<Any>(list<Symbol>(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env))
+        assertEquals(list(list(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env))
         try {
             eval("(member)", env)
             fail()
@@ -345,8 +351,8 @@ class ListTest : AbstractTest() {
         assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env))
         assertEquals(FALSE, eval("(memq (list 'a) '(b (a) c))", env))
 
-        assertEquals(list<Symbol>(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
-        assertEquals(list<Symbol>(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
+        assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
+        assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
         assertEquals(FALSE, eval("(memq 'a '(b c d))", env))
         try {
             eval("(memq)", env)
@@ -374,8 +380,8 @@ class ListTest : AbstractTest() {
         assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env))
         assertEquals(FALSE, eval("(memv (list 'a) '(b (a) c))", env))
 
-        assertEquals(list<Symbol>(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
-        assertEquals(list<Symbol>(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
+        assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
+        assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
         assertEquals(FALSE, eval("(memv 'a '(b c d))", env))
 
         assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env))
@@ -397,7 +403,7 @@ class ListTest : AbstractTest() {
     @Test
     fun testEvalAssoc() {
         eval("(define e '((a 1) (b 2) (c 3)))", env)
-        assertEquals(list(list<Symbol>(Symbol.intern("a")) as Any), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env))
+        assertEquals(list(list(Symbol.intern("a")) as Any), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env))
         try {
             eval("(assoc)", env)
             fail()
@@ -423,8 +429,8 @@ class ListTest : AbstractTest() {
     @Test
     fun testEvalAssq() {
         eval("(define e '((a 1) (b 2) (c 3)))", env)
-        assertEquals(list<Any>(Symbol.intern("a"), 1L), eval("(assq 'a e)", env))
-        assertEquals(list<Any>(Symbol.intern("b"), 2L), eval("(assq 'b e)", env))
+        assertEquals(list(Symbol.intern("a"), 1L), eval("(assq 'a e)", env))
+        assertEquals(list(Symbol.intern("b"), 2L), eval("(assq 'b e)", env))
         assertEquals(FALSE, eval("(assq 'd e)", env))
         try {
             eval("(assq)", env)

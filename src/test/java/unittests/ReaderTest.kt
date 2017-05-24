@@ -4,21 +4,17 @@ import core.exceptions.IllegalSyntaxException
 import core.reader.StringReader
 import core.scm.BigComplex
 import core.scm.BigRatio
+import core.scm.Cons.Companion.list
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
+import org.junit.Assert.*
 import org.junit.Test
-
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.Arrays
+import java.util.*
 import java.util.regex.Pattern
-
-import core.scm.Cons.list
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 
 class ReaderTest : AbstractTest() {
 

@@ -16,14 +16,14 @@ enum class Quote : ISpecialForm {
 
     companion object {
 
-        val QUOTE_SYMBOL: Symbol = Symbol.intern(QUOTE.toString())!!
+        val QUOTE_SYMBOL: Symbol = Symbol.intern(QUOTE.toString())
 
         fun quote(obj: Any): List<*> {
             return Cons.list(QUOTE, obj)
         }
     }
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         return expression[1]
     }
 

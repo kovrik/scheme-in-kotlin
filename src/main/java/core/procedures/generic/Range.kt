@@ -5,10 +5,9 @@ import core.procedures.FnArgsBuilder
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
 import core.scm.BigRatio
-import core.scm.Type
 import core.scm.Cons
+import core.scm.Type
 import core.utils.Utils
-
 import java.math.BigDecimal
 
 class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).build()) {
@@ -122,7 +121,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
             pred = NumericalComparison.GREATER
         }
         while (pred.apply(arrayOf(cur, end))) {
-            result.add(cur)
+            result.add(cur!!)
             cur = Addition.add(cur, step)
         }
         return result

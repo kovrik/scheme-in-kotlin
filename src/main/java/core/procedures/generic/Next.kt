@@ -28,7 +28,7 @@ open class Next : AFn(FnArgsBuilder().min(1).max(1).build()) {
             }
             is Set<*> -> return next(arg)
             is Map<*, *> -> return next(arg.entries)
-            is Map.Entry<*, *> -> return Cons.list<Any>(arg.value)
+            is Map.Entry<*, *> -> return Cons.list(arg.value!!)
             is Vector -> {
                 val vec = arg
                 return if (vec.size == 0) null else Vector(*Arrays.copyOfRange<Any>(vec.getArray(), 1, vec.size))

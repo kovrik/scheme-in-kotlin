@@ -264,7 +264,7 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readQuote(c: Char): List<*> {
-        var symbol: Symbol? = null
+        val symbol: Symbol
         if (c == '\'') {
             symbol = Quote.QUOTE_SYMBOL
         } else if (c == '`') {
@@ -277,8 +277,10 @@ open class Reader : IReader {
                 reader.unread(next.toInt())
                 symbol = Unquote.UNQUOTE_SYMBOL
             }
+        } else {
+            throw IllegalSyntaxException("read: unknown quotation type: " + c)
         }
-        return Cons.list<Any>(symbol, nextNonNullToken())
+        return Cons.list(symbol, nextNonNullToken())
     }
 
     /**
@@ -395,8 +397,8 @@ open class Reader : IReader {
      * <list> -> (<list_contents>)
      */
     @Throws(IOException::class)
-    private fun readList(allowImproperList: Boolean, terminator: Char): Cons<Any> {
-        var list: Cons<Any> = Cons.EMPTY
+    private fun readList(allowImproperList: Boolean, terminator: Char): Cons<Any?> {
+        var list: Cons<Any?> = Cons.EMPTY
         /* Remember position of a dot (if we meet it) */
         var dotPos = -1
         var i = reader.read()
@@ -420,7 +422,7 @@ open class Reader : IReader {
                 dotPos = list.size
                 /* Dot Special Form is allowed as the first element of a list */
                 if (dotPos == 0) {
-                    list = Cons.list<Any>(DOT)
+                    list = Cons.list<Any?>(DOT)
                 }
             } else if (token != null) {
                 /* List is empty so far */

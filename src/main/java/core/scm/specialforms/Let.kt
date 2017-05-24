@@ -15,7 +15,7 @@ import core.scm.Thunk
 enum class Let : ISpecialForm {
     LET;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
@@ -52,8 +52,8 @@ enum class Let : ISpecialForm {
        * (let proc-id ((arg-id init-expr) ...) body ...+) */
             val o = expression[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), expression)
             /* Construct lambda */
-            val lambdaArgs = Cons.list<Any>()
-            val initValues = Cons.list<Any>()
+            val lambdaArgs = Cons.list<Any?>()
+            val initValues = Cons.list<Any?>()
             val bindings = expression[2] as List<*>
             for (binding in bindings) {
                 val arg = (binding as List<*>)[0]
@@ -65,12 +65,12 @@ enum class Let : ISpecialForm {
                 initValues.add(binding[1])
             }
             val lambdaBody = expression[3]
-            val lambda = Cons.list<Any>(Lambda.LAMBDA, lambdaArgs, lambdaBody)
+            val lambda = Cons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody)
             val name = o
             val l = Cons.list<Cons<*>>()
             l.add(Cons.list(name, lambda))
 
-            val body = Cons.list<Any>(name)
+            val body = Cons.list<Any?>(name)
             body.addAll(initValues)
 
             /* Named let is implemented via letrec */

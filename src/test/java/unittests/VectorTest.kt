@@ -3,7 +3,7 @@ package unittests
 import core.scm.MutableVector
 import org.junit.Test
 
-import core.scm.Cons.list
+import core.scm.Cons.Companion.list
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals

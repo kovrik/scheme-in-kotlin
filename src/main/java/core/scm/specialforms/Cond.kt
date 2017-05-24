@@ -17,7 +17,7 @@ import core.utils.Utils
 enum class Cond : ISpecialForm {
     COND;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         for (i in 1..expression.size - 1) {
             val node = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform")
             val subform = node

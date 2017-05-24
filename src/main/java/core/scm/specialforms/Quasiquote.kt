@@ -6,14 +6,18 @@ import core.exceptions.IllegalSyntaxException
 import core.procedures.cons.Append
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
+import core.procedures.cons.ConsProc.Companion.cons
 import core.procedures.generic.First
 import core.procedures.sets.SetProc
 import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Cons
+import core.scm.Cons.Companion.EMPTY
+import core.scm.Cons.Companion.isList
+import core.scm.Cons.Companion.isNull
+import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 
-import core.scm.Cons.*
 import core.scm.Symbol
 import core.scm.specialforms.Unquote.UNQUOTE
 import core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING
@@ -29,12 +33,12 @@ enum class Quasiquote : ISpecialForm {
     QUASIQUOTE;
 
     companion object {
-        val QUASIQUOTE_SYMBOL: Symbol = Symbol.intern(QUASIQUOTE.toString())!!
+        val QUASIQUOTE_SYMBOL: Symbol = Symbol.intern(QUASIQUOTE.toString())
     }
 
     private val setProc = SetProc()
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size != 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
@@ -108,7 +112,7 @@ enum class Quasiquote : ISpecialForm {
                             .of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
-                result = Append.Companion.append(result, list<Any>(o))
+                result = Append.Companion.append(result, list(o))
             } else {
                 val el = o
                 val op = el[0]
@@ -133,7 +137,7 @@ enum class Quasiquote : ISpecialForm {
                         } else {
                             /* Unquote: append list with results */
                             /* `(,(list 1 2 3)) => `((1 2 3)) */
-                            result = Append.Companion.append(result, list<Any>(eval))
+                            result = Append.Companion.append(result, list(eval))
                         }
                     } else {
                         /* Decrease depth of quasiquotation */
@@ -151,7 +155,7 @@ enum class Quasiquote : ISpecialForm {
                 return (result as List<*>)[0]
             } else {
                 // TODO Is car(cdr(result)) correct?
-                return cons<Any>(Car.car(result), Car.car(Cdr.cdr(result)))
+                return cons(Car.car(result), Car.car(Cdr.cdr(result)))
             }
         }
         return result

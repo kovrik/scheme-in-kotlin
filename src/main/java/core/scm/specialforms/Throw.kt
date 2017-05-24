@@ -9,7 +9,7 @@ import core.exceptions.WrongTypeException
 enum class Throw : ISpecialForm {
     THROW;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size < 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

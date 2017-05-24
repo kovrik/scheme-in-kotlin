@@ -13,7 +13,7 @@ import core.utils.Utils
 enum class Unless : ISpecialForm {
     UNLESS;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = expression.size
         if (size < 3) {
             throw IllegalSyntaxException.of(toString(), expression, String.format("has %s parts after keyword", size - 1))

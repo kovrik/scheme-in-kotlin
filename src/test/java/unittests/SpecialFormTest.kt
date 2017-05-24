@@ -8,31 +8,20 @@ import core.exceptions.ThrowableWrapper
 import core.exceptions.UndefinedIdentifierException
 import core.procedures.io.Display
 import core.procedures.math.Addition
-import core.scm.BigRatio
-import core.scm.Cons
-import core.scm.Delay
-import core.scm.Error
-import core.scm.MutableString
-import core.scm.MutableVector
-import core.scm.OutputPort
-import core.scm.Procedure
-import core.scm.Symbol
-import core.scm.Void
+import core.scm.*
+import core.scm.Cons.Companion.EMPTY
+import core.scm.Cons.Companion.cons
+import core.scm.Cons.Companion.list
 import core.scm.specialforms.Quote
-import org.junit.Test
-
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import java.math.BigDecimal
-import java.math.BigInteger
-
-import core.scm.Cons.EMPTY
-import core.scm.Cons.cons
-import core.scm.Cons.list
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Test
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
+import java.math.BigDecimal
+import java.math.BigInteger
 
 class SpecialFormTest : AbstractTest() {
 
@@ -286,8 +275,8 @@ class SpecialFormTest : AbstractTest() {
     fun testEvalQuote() {
         assertEquals(0L, eval("'0", env))
         assertEquals("test", eval("'\"test\"", env))
-        assertEquals(Cons.list<Any>(Symbol.intern(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env))
-        assertEquals(list<Any>(Symbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env))
+        assertEquals(Cons.list(Symbol.intern(Quote.QUOTE.toString()), "test"), eval("''\"test\"", env))
+        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env))
         assertEquals(Symbol.intern("0eab"), eval("'0eab", env))
         assertEquals(Symbol.intern("000eab"), eval("'000eab", env))
     }
@@ -639,30 +628,30 @@ class SpecialFormTest : AbstractTest() {
         assertEquals("test", eval("(quasiquote \"test\")", env))
         assertEquals("test", eval("`\"test\"", env))
         assertEquals(Symbol.intern("quote"), eval("(quasiquote quote)", env))
-        assertEquals(list<Any>(Symbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env))
+        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env))
         assertEquals(3L, eval("`,(+ 1 2)", env))
         assertEquals(13L, eval("`,(+ 1 (* 3 4))", env))
         assertEquals(13L, eval("(quasiquote ,(+ 1 (* 3 4)))", env))
         assertEquals(13L, eval("(quasiquote (unquote (+ 1 (* 3 4))))", env))
         assertEquals(list(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env))
-        assertEquals(list(1L, list<Any>(Symbol.intern("quasiquote"), list<Any>(Symbol.intern("unquote"), list<Any>(
+        assertEquals(list(1L, list(Symbol.intern("quasiquote"), list(Symbol.intern("unquote"), list(
                 Symbol.intern("+"), 1L, 5L))), 4L),
                 eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env))
 
-        assertEquals(list(1L, list<Any>(Symbol.intern("quasiquote"), list<Any>(Symbol.intern("unquote"), list<Any>(
+        assertEquals(list(1L, list(Symbol.intern("quasiquote"), list(Symbol.intern("unquote"), list(
                 Symbol.intern("+"), 1L, MutableVector(
                 Symbol.intern("+"), 2L, 3L)))), 4L),
                 eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env))
 
-        assertEquals(list<Any>(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
-        assertEquals(list<Any>(Symbol.intern("list"), Symbol.intern("a"), list<Symbol>(
+        assertEquals(list(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
+        assertEquals(list(Symbol.intern("list"), Symbol.intern("a"), list(
                 Symbol.intern("quote"), Symbol.intern("a"))),
                 eval("(let ((name 'a)) `(list ,name ',name))", env))
 
-        assertEquals(list<Any>(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
+        assertEquals(list(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
                 eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
 
-        assertEquals(cons<Any>(list<Any>(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
+        assertEquals(cons(list(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
         assertEquals(5L, eval("`,(+ 2 3)", env))
 
         assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env))
@@ -670,21 +659,21 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(1L, eval("`,`,`,`,`,1", env))
         assertEquals(1L, eval("`,`,`,`,`,`1", env))
         assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env))
-        assertEquals(list<Any>(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
+        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
 
         assertEquals(MutableVector(1L, 5L), eval("`[1 ,(+ 2 3)]", env))
-        assertEquals(MutableVector(1L, list<Any>(Symbol.intern("quasiquote"), list<Any>(
+        assertEquals(MutableVector(1L, list(Symbol.intern("quasiquote"), list(
                 Symbol.intern("unquote"), list(1L, 5L)))),
                 eval("`[1 `,(1 ,(+ 2 3))]", env))
 
         assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env))
-        assertEquals(cons<Symbol>(Symbol.intern("unquote-splicing"), Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
-        assertEquals(cons<Any>(Symbol.intern("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
+        assertEquals(cons(Symbol.intern("unquote-splicing"), Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
+        assertEquals(cons(Symbol.intern("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
 
         assertEquals(EMPTY, eval("`()", env))
         assertEquals(MutableVector(), eval("`#()", env))
         assertEquals(list(1L, 2L, list(EMPTY)), eval("`(1 2 ())", env))
-        assertEquals(list(1L, 2L, list<Any>(Symbol.intern("quote"), EMPTY)), eval("`(1 2 '())", env))
+        assertEquals(list(1L, 2L, list(Symbol.intern("quote"), EMPTY)), eval("`(1 2 '())", env))
 
         try {
             eval("unquote", env)
@@ -715,11 +704,11 @@ class SpecialFormTest : AbstractTest() {
         val baos = ByteArrayOutputStream()
         Repl.currentOutputPort = OutputPort(PrintStream(baos))
         val form = "(time" +
-                " (define (perf n)" +
-                "   (if (zero? n)" +
-                "       \"DONE\"" +
-                "     (perf (- n 1))))" +
-                " (perf 10000))"
+                   " (define (perf n)" +
+                   "   (if (zero? n)" +
+                   "       \"DONE\"" +
+                   "     (perf (- n 1))))" +
+                   " (perf 10000))"
         assertEquals("DONE", eval(form, env))
         Repl.currentOutputPort = old
     }

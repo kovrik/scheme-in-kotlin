@@ -21,7 +21,7 @@ class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::cl
         } else {
             list.add(arg2)
             if (list is Cons<*>) {
-                list.setIsList(false)
+                list.isList = false
             }
         }
         return Void.VOID

@@ -15,7 +15,7 @@ import core.writer.Writer
 enum class Define : ISpecialForm {
     DEFINE;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
@@ -33,16 +33,16 @@ enum class Define : ISpecialForm {
              *              |   0   | 1 definition           | 3 body      |
              */
             /* Construct lambda form */
-            val l = Cons.list<Any>(Lambda.LAMBDA)
+            val l = Cons.list<Any?>(Lambda.LAMBDA)
             /* Args */
-            val args = Cons.list<Any>((expression[1] as List<*>).subList(1, (expression[1] as List<*>).size))
+            val args = Cons.list((expression[1] as List<Any>).subList(1, (expression[1] as List<Any>).size) as Collection<Any>)
             for (arg in args) {
                 if (arg !is Symbol && !Cons.isPair(arg)) {
                     throw IllegalSyntaxException
                             .of(toString(), expression, String.format("not an identifier: %s", Writer.write(arg)))
                 }
             }
-            args.setIsList(Cons.isList(expression[1]))
+            args.isList = Cons.isList(expression[1])
             l.add(args)
             /* Body */
             l.addAll(expression.subList(2, expression.size))

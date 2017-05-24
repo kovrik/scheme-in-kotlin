@@ -3,10 +3,9 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.*
+import core.scm.Cons
 import core.utils.Utils
-
-import java.util.HashMap
+import java.util.*
 
 /* Syntax:
  * (do <bindings> <clause> <body>)
@@ -17,7 +16,7 @@ import java.util.HashMap
 enum class Do : ISpecialForm {
     DO;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
@@ -73,7 +72,7 @@ enum class Do : ISpecialForm {
             /* Evaluate steps */
             val freshLocations = HashMap<Any?, Any?>(steps.size)
             for (step in steps) {
-                val variable = step.car()
+                val variable = step!!.car()
                 val s = step.cdr()
                 freshLocations.put(variable, evaluator.eval(s, tempEnv))
             }

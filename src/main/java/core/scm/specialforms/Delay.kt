@@ -11,7 +11,7 @@ import core.scm.Cons
 enum class Delay : ISpecialForm {
     DELAY;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): core.scm.Delay {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): core.scm.Delay {
         if (expression.size < 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

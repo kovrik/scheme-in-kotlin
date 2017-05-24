@@ -17,7 +17,7 @@ import core.scm.Void
 enum class Case : ISpecialForm {
     CASE;
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         /* Save string representation of expression before evaluation */
         val exprString = expression.toString()
         if (expression.size <= 1) {

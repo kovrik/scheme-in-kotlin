@@ -14,7 +14,7 @@ enum class DynamicWind : ISpecialForm {
         return "dynamic-wind"
     }
 
-    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = expression.size
         if (size != 4) {
             throw IllegalSyntaxException

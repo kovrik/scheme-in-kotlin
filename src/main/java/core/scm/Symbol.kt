@@ -23,9 +23,9 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
 
         private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
 
-        fun intern(name: String?): Symbol? {
+        fun intern(name: String?): Symbol {
             // always intern symbols
-            return POOL.intern(Symbol(name!!))
+            return POOL.intern(Symbol(name!!))!!
         }
 
         /* Check if Symbol has Special Characters and needs to be escaped */

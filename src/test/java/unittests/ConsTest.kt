@@ -3,20 +3,15 @@ package unittests
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.cons.ConsProc
-import org.junit.Test
-
-import java.util.Collections
-
 import core.procedures.predicates.Predicate.Companion
 import core.scm.Cons
-import core.scm.Cons.EMPTY
-import core.scm.Cons.list
+import core.scm.Cons.Companion.EMPTY
+import core.scm.Cons.Companion.list
+import org.junit.Assert.*
+import org.junit.Test
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
+import java.util.*
 
 class ConsTest {
 
@@ -60,7 +55,7 @@ class ConsTest {
         assertEquals(list(1, 2, 3), list(1, 2, 3))
         assertEquals(ConsProc.cons(1, EMPTY), list(1))
         assertEquals(EMPTY, list<Any>())
-        assertEquals(ConsProc.cons(EMPTY, ConsProc.cons(EMPTY, ConsProc.cons(EMPTY, EMPTY))), list<Cons<Any?>>(EMPTY, EMPTY, EMPTY))
+        assertEquals(ConsProc.cons(EMPTY, ConsProc.cons(EMPTY, ConsProc.cons(EMPTY, EMPTY))), list(EMPTY, EMPTY, EMPTY))
     }
 
     @Test
@@ -117,12 +112,11 @@ class ConsTest {
         assertEquals(TRUE, Companion.IS_NULL.apply1(null))
         assertEquals(FALSE, Companion.IS_NULL.apply1(EMPTY))
         assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(1, null)))
-        assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(null, 2)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(EMPTY, 2)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(EMPTY, EMPTY)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(1, EMPTY)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(ConsProc.cons(1, ConsProc.cons(2, 3))))
-        assertEquals(FALSE, Companion.IS_NULL.apply1(list<Any>(null as Any?)))
+        assertEquals(FALSE, Companion.IS_NULL.apply1(list<Any?>(null)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(list(EMPTY as Any)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(list(1)))
         assertEquals(FALSE, Companion.IS_NULL.apply1(list(1, 2)))
@@ -159,7 +153,6 @@ class ConsTest {
         assertEquals(TRUE, Companion.IS_LIST.apply1(list(1, 2, EMPTY)))
         assertEquals(TRUE, Companion.IS_LIST.apply1(ConsProc.cons(null, null)))
         assertEquals(TRUE, Companion.IS_LIST.apply1(ConsProc.cons(1, null)))
-        assertEquals(FALSE, Companion.IS_LIST.apply1(ConsProc.cons(null, 1)))
         assertEquals(FALSE, Companion.IS_LIST.apply1(ConsProc.cons(1, 2)))
         assertEquals(FALSE, Companion.IS_LIST.apply1(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
         assertEquals(TRUE, Companion.IS_LIST.apply1(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, EMPTY)))))
