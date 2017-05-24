@@ -23,7 +23,7 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
         get() = "map"
 
     // TODO Very naive implementation. Re-implement and optimize
-    override fun apply(args: Array<Any?>): Thunk {
+    override fun apply(vararg args: Any?): Thunk {
         /* Check that all lists/vectors are of the same size */
         val size = count.apply1(args[1])!!
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
@@ -50,7 +50,7 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
                 }
             }
         }
-        val result = Cons.list<Any>(Symbol.intern("list")!!)
+        val result = Cons.list<Any>(Symbol.intern("list"))
         result.addAll(lists)
         /* Return Thunk that will be evaluated and produce results */
         return Thunk(result)

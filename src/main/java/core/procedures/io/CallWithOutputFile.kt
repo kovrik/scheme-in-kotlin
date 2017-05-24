@@ -15,7 +15,7 @@ class CallWithOutputFile : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(C
     override val name: String
         get() = "call-with-output-file"
 
-    override fun apply(args: Array<Any?>): Any {
+    override fun apply(vararg args: Any?): Any {
         val filename = args[0].toString()
         val outputPort: OutputPort
         try {

@@ -16,7 +16,7 @@ open class Display : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*
     override val name: String
         get() = "display"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         val outputPort: OutputPort
         when {
             args.size == 1 -> outputPort = Repl.currentOutputPort

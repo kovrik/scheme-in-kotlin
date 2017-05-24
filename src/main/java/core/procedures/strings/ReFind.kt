@@ -14,7 +14,7 @@ class ReFind : AFn(FnArgsBuilder().min(1).max(2).build()) {
     override val name: String
         get() = "re-find"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         if (args.size == 1) {
             if (args[0] !is Matcher) {
                 throw WrongTypeException(name, Matcher::class.java, args[0])

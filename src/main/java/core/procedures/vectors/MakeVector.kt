@@ -10,7 +10,7 @@ class MakeVector : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>
     override val name: String
         get() = "make-vector"
 
-    override fun apply(args: Array<Any?>): Any {
+    override fun apply(vararg args: Any?): Any {
         val s = (args[0] as Number).toLong()
         var init: Any? = null
         if (args.size == 2) {

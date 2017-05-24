@@ -15,9 +15,9 @@ class NumericalComparison private constructor(override val name: String, private
         .rest(Type.Real::class.java).build()) {
 
     companion object {
-        val EQUAL         = NumericalComparison("=", BiPredicate { f, s -> f.compareTo(s) == 0 })
-        val LESS          = NumericalComparison("<", BiPredicate { f, s -> f < s })
-        val GREATER       = NumericalComparison(">", BiPredicate { f, s -> f > s })
+        val EQUAL         = NumericalComparison("=",  BiPredicate { f, s -> f.compareTo(s) == 0 })
+        val LESS          = NumericalComparison("<",  BiPredicate { f, s -> f < s })
+        val GREATER       = NumericalComparison(">",  BiPredicate { f, s -> f > s })
         val LESS_EQUAL    = NumericalComparison("<=", BiPredicate { f, s -> f <= s })
         val GREATER_EQUAL = NumericalComparison(">=", BiPredicate { f, s -> f >= s })
     }
@@ -26,10 +26,10 @@ class NumericalComparison private constructor(override val name: String, private
         get() = true
 
     override fun apply2(arg1: Any?, arg2: Any?): Boolean? {
-        return apply(arrayOf(arg1, arg2))
+        return apply(arg1, arg2)
     }
 
-    override fun apply(args: Array<Any?>): Boolean {
+    override fun apply(vararg args: Any?): Boolean {
         for (i in 0..args.size - 1 - 1) {
             var f = args[i] as Number
             var s = args[i + 1] as Number

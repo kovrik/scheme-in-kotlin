@@ -108,7 +108,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         return if (isBodyConst) body else Thunk(body, bindArgs(*args))
     }
 }

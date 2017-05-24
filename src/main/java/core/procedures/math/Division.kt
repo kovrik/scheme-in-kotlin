@@ -28,7 +28,7 @@ class Division : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build()) {
     override val name: String
         get() = "/"
 
-    override fun apply(args: Array<Any?>): Number? {
+    override fun apply(vararg args: Any?): Number? {
         if (args.size == 1) {
             return apply(1L, args[0] as Number)
         }

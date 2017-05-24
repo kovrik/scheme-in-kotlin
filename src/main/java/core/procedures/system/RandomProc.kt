@@ -14,7 +14,7 @@ class RandomProc : AFn(FnArgsBuilder().max(2).rest(Long::class.java).build()) {
     override val name: String
         get() = "random"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         if (args.isEmpty()) {
             return Math.random()
         }

@@ -18,7 +18,7 @@ class Addition : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
     override val name: String
         get() = "+"
 
-    override fun apply(args: Array<Any?>): Number? {
+    override fun apply(vararg args: Any?): Number? {
         when (args.size) {
             0 -> return 0L
             1 -> {

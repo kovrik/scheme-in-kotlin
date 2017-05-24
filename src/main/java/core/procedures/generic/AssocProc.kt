@@ -41,7 +41,7 @@ class AssocProc(override val name: String,
         throw WrongTypeException(name, "List", arg2)
     }
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         return apply2(args[0], args[1])
     }
 }

@@ -15,6 +15,5 @@ interface IFn<T, R> : Function<T, R>, Callable<Any?>, Runnable {
 
     fun apply4(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any?
 
-//    fun apply(vararg args: Any): Any?
-    fun apply(args: Array<Any?>): Any?
+    fun apply(vararg args: Any?): Any?
 }

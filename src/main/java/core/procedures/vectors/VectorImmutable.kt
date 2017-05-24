@@ -8,7 +8,7 @@ class VectorImmutable : AFn() {
     override val name: String
         get() = "vector-immutable"
 
-    override fun apply(args: Array<Any?>): Vector {
+    override fun apply(vararg args: Any?): Vector {
         return Vector(*args)
     }
 }

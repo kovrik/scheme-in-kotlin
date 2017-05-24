@@ -15,7 +15,7 @@ class Apply : AFn(FnArgsBuilder().min(2).mandatory(arrayOf(IFn::class.java, Any:
     override val name: String
         get() = "apply"
 
-    override fun apply(args: Array<Any?>): Any {
+    override fun apply(vararg args: Any?): Any {
         val sexp = Cons.list(args[0])
         if (args.size > 2) {
             sexp.addAll(Arrays.asList(*args).subList(1, args.size - 1))

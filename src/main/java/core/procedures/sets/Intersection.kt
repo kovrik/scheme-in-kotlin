@@ -13,7 +13,7 @@ class Intersection : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set:
     override val name: String
         get() = "intersection"
 
-    override fun apply(args: Array<Any?>): Set<Any?> {
+    override fun apply(vararg args: Any?): Set<Any?> {
         if (args.size == 1) {
             return args[0] as Set<*>
         }

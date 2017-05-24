@@ -9,7 +9,7 @@ class Join : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(CharS
     override val name: String
         get() = "join"
 
-    override fun apply(args: Array<Any?>): String? {
+    override fun apply(vararg args: Any?): String? {
         if (args.size == 1) {
             return args[0].toString()
         }

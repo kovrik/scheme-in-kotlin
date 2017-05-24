@@ -9,7 +9,7 @@ class StringProc : AFn(FnArgsBuilder().rest(Char::class.javaObjectType).build())
     override val name: String
         get() = "string"
 
-    override fun apply(args: Array<Any?>): MutableString? {
+    override fun apply(vararg args: Any?): MutableString? {
         if (args.isEmpty()) {
             return MutableString()
         }

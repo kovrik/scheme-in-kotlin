@@ -17,7 +17,7 @@ class LCM : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
     override val name: String
         get() = "lcm"
 
-    override fun apply(args: Array<Any?>): Number? {
+    override fun apply(vararg args: Any?): Number? {
         if (args.isEmpty()) {
             return 1L
         }

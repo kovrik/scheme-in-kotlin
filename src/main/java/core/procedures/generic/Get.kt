@@ -13,7 +13,7 @@ class Get : AFn(FnArgsBuilder().min(2).max(3).build()) {
     override val name: String
         get() = "get"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         var defaultValue: Any? = null
         if (args.size == 3) {
             defaultValue = args[2]

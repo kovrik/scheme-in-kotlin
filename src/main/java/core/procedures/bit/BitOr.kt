@@ -12,7 +12,7 @@ class BitOr : AFn(FnArgsBuilder().min(2).rest(Type.BitOp::class.java).build()) {
     override val name: String
         get() = "bit-or"
 
-    override fun apply(args: Array<Any?>): Long? {
+    override fun apply(vararg args: Any?): Long? {
         var result = (args[0] as Number).toLong()
         for (i in 1..args.size - 1) {
             result = result or (args[i] as Number).toLong()

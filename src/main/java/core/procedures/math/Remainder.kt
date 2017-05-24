@@ -23,7 +23,7 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
             return first.remainder(second)
         }
 
-        fun apply(first: Number, second: Number): Number? {
+        fun remainder(first: Number, second: Number): Number? {
             if (Utils.isZero(second)) {
                 throw ArithmeticException("remainder: undefined for 0")
             }
@@ -60,6 +60,6 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
     override fun apply2(arg1: Any?, arg2: Any?): Number? {
         if (arg1 == null) throw NullPointerException()
         if (arg2 == null) throw NullPointerException()
-        return apply(arg1 as Number, arg2 as Number)
+        return remainder(arg1 as Number, arg2 as Number)
     }
 }

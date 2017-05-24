@@ -13,7 +13,7 @@ class PeekChar : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build())
     override val name: String
         get() = "peek-char"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         val inputPort: InputPort
         if (args.isEmpty()) {
             inputPort = Repl.currentInputPort

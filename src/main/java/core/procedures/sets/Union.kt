@@ -11,7 +11,7 @@ class Union : AFn(FnArgsBuilder().min(0).rest(Set::class.java).build()) {
     override val name: String
         get() = "union"
 
-    override fun apply(args: Array<Any?>): Set<Any?> {
+    override fun apply(vararg args: Any?): Set<Any?> {
         if (args.isEmpty()) {
             return HashSet()
         }

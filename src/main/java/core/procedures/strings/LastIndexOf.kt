@@ -10,7 +10,7 @@ class LastIndexOf : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf<Class<*>
     override val name: String
         get() = "last-index-of"
 
-    override fun apply(args: Array<Any?>): Int {
+    override fun apply(vararg args: Any?): Int {
         if (args[1] !is CharSequence && args[1] !is Char) {
             throw WrongTypeException(name, "String or Character", args[1])
         }

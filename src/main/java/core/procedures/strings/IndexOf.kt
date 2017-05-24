@@ -10,7 +10,7 @@ class IndexOf : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf<Class<*>>(Ch
     override val name: String
         get() = "index-of"
 
-    override fun apply(args: Array<Any?>): Int {
+    override fun apply(vararg args: Any?): Int {
         if (args[1] !is CharSequence && args[1] !is Char) {
             throw WrongTypeException(name, "String or Character", args[1])
         }

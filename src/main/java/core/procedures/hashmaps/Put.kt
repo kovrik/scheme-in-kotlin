@@ -19,7 +19,7 @@ class Put : AFn(FnArgsBuilder().min(3).mandatory(arrayOf<Class<*>>(Any::class.ja
     override val name: String
         get() = "put"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         var m = args[0]
         if (m is Map<*, *>) {
             if (args.size % 2 != 1) {

@@ -13,7 +13,7 @@ class IsCharReady : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build
     override val name: String
         get() = "char-ready?"
 
-    override fun apply(args: Array<Any?>): Boolean {
+    override fun apply(vararg args: Any?): Boolean {
         val inputPort: InputPort
         if (args.isEmpty()) {
             inputPort = Repl.currentInputPort

@@ -197,7 +197,7 @@ class Evaluator {
             return reflector.evalJavaMethod(method, args)
         }
         /* Call AFn via helper method */
-        return (op as AFn).applyN(args)
+        return (op as AFn).applyN(*args)
     }
 
     /* Evaluate hash map */

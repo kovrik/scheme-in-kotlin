@@ -23,7 +23,7 @@ class StringComparison private constructor(override val name: String, private va
     override val isPure: Boolean
         get() = true
 
-    override fun apply(args: Array<Any?>): Boolean? {
+    override fun apply(vararg args: Any?): Boolean? {
         if (args.size < 2) {
             return java.lang.Boolean.TRUE
         }

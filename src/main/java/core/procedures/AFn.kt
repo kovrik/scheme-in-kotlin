@@ -5,7 +5,7 @@ import core.exceptions.WrongTypeException
 import core.scm.Type
 
 /* Abstract superclass of all functions */
-abstract class AFn : IFn<Array<Any?>, Any?> {
+abstract class AFn : IFn<Any?, Any?> {
 
     protected var minArgs: Int = 0
     protected var maxArgs: Int = 0
@@ -46,6 +46,10 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
         return apply0()
     }
 
+    override fun apply(arg: Any?): Any? {
+        throw ArityException(name, minArgs, maxArgs, 1)
+    }
+
     override fun apply0(): Any? {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
@@ -66,11 +70,7 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
         throw ArityException(name, minArgs, maxArgs, 4)
     }
 
-//    override fun apply(vararg args: Any): Any {
-//        throw ArityException(name, minArgs, maxArgs, args.size)
-//    }
-
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, args.size)
     }
 
@@ -88,7 +88,7 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
     /**
      * Checks the number of arguments and their types
      */
-    private fun checkArgs(args: Array<Any?>) {
+    private fun checkArgs(vararg args: Any?) {
         /* Check arg count */
         val argsSize = args.size
         if (argsSize < minArgs || argsSize > maxArgs) {
@@ -125,9 +125,9 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
      * then calls applyN() methods (where N is arity).
      * Calls variadic apply() otherwise.
      */
-    fun applyN(args: Array<Any?>): Any? {
+    fun applyN(vararg args: Any?): Any? {
         /* Check args */
-        checkArgs(args)
+        checkArgs(*args)
         /* if min == max, then function is not variadic, hence get arity */
         val arity = if (minArgs == maxArgs) minArgs else -1
         when (arity) {
@@ -136,7 +136,7 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
             2 -> return apply2(args[0], args[1])
             3 -> return apply3(args[0], args[1], args[2])
             4 -> return apply4(args[0], args[1], args[2], args[3])
-            else -> return apply(args)
+            else -> return apply(*args)
         }
     }
 }

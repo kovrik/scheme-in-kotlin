@@ -12,7 +12,7 @@ class MakeString : AFn(FnArgsBuilder().min(1).max(2)
     override val name: String
         get() = "make-string"
 
-    override fun apply(args: Array<Any?>): MutableString? {
+    override fun apply(vararg args: Any?): MutableString? {
         val s = (args[0] as Number).toLong()
         val c = if (args.size == 1) Character.MIN_VALUE else args[1]
         val string = MutableString()

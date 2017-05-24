@@ -13,7 +13,7 @@ class Eq : AFn(FnArgsBuilder().min(2).build()) {
     override val name: String
         get() = "eq?"
 
-    override fun apply(args: Array<Any?>): Boolean? {
+    override fun apply(vararg args: Any?): Boolean? {
         var result = java.lang.Boolean.TRUE
         for (i in 0..args.size - 2) {
             result = result!! && eq(args[i], args[i + 1])

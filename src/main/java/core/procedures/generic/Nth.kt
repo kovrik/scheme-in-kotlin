@@ -16,7 +16,7 @@ class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
     override val name: String
         get() = "nth"
 
-    override fun apply(args: Array<Any?>): Any? {
+    override fun apply(vararg args: Any?): Any? {
         val col = args[0]
         if (col is Map<*, *>) {
             throw UnsupportedOperationException("nth not supported on this type: " + col.javaClass)
@@ -33,6 +33,6 @@ class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
         if (size <= i && args.size < 3) {
             throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, i))
         }
-        return get.apply(args)
+        return get.apply(*args)
     }
 }

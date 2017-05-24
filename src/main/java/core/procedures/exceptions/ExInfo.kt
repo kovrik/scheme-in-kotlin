@@ -12,7 +12,7 @@ class ExInfo : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf(String::class
     override val name: String
         get() = "ex-info"
 
-    override fun apply(args: Array<Any?>): ExInfoException? {
+    override fun apply(vararg args: Any?): ExInfoException? {
         if (args.size == 2) {
             return ExInfoException(args[0] as String, args[1] as Map<*, *>)
         }
