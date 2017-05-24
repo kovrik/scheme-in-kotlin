@@ -10,12 +10,12 @@ class Procedure(override var name: String,
                 /* Array of arguments the procedure expects */
                 private val args: Array<Symbol?>,
                 /* Body form of the procedure */
-                private val body: Any,
+                private val body: Any?,
                 localEnvironment: Environment,
                 isVariadic: Boolean) : AFn() {
 
     companion object {
-        private fun isConst(obj: Any): Boolean {
+        private fun isConst(obj: Any?): Boolean {
             return !(obj is Symbol || obj is Collection<*> || obj is Map<*, *>)
         }
     }
@@ -28,7 +28,7 @@ class Procedure(override var name: String,
 
     constructor(name: String,
                 args: List<Symbol?>,
-                body: Any,
+                body: Any?,
                 localEnvironment: Environment,
                 isVariadic: Boolean) : this(name, args.toTypedArray(), body, localEnvironment, isVariadic)
 
@@ -60,7 +60,7 @@ class Procedure(override var name: String,
         return env
     }
 
-    override fun apply0(): Any {
+    override fun apply0(): Any? {
         if (isBodyConst) {
             return body
         }

@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.atomic.AtomicBoolean
 
-class Delay(private val expr: Any, private val env: Environment, private val evaluator: Evaluator) : CompletableFuture<Any>(), IDeref {
+class Delay(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) : CompletableFuture<Any>(), IDeref {
 
     private val forced = AtomicBoolean(false)
 

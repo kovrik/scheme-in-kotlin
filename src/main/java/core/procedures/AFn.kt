@@ -42,11 +42,11 @@ abstract class AFn : IFn<Array<Any?>, Any?> {
     }
 
     @Throws(Exception::class)
-    override fun call(): Any {
+    override fun call(): Any? {
         return apply0()
     }
 
-    override fun apply0(): Any {
+    override fun apply0(): Any? {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
 

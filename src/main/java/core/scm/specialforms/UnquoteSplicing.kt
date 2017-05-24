@@ -1,0 +1,23 @@
+package core.scm.specialforms
+
+import core.environment.Environment
+import core.evaluator.Evaluator
+import core.exceptions.IllegalSyntaxException
+import core.scm.Symbol
+
+enum class UnquoteSplicing : ISpecialForm {
+    UNQUOTE_SPLICING;
+
+    companion object {
+        val UNQUOTE_SPLICING_SYMBOL: Symbol = Symbol.intern(UNQUOTE_SPLICING.toString())!!
+    }
+
+    override fun eval(expression: List<*>, env: Environment, evaluator: Evaluator): Any? {
+        // Implemented in quasiquote
+        throw IllegalSyntaxException.of(toString(), expression, "not in quasiquote")
+    }
+
+    override fun toString(): String {
+        return "unquote-splicing"
+    }
+}
