@@ -88,7 +88,7 @@ public class ComplexTest extends AbstractTest {
     assertEquals(BigDecimal.valueOf(0L), eval("(real-part 0+1i)", env));
     assertEquals(1L, eval("(real-part 1)", env));
     assertEquals(-2.5, eval("(real-part -2.5)", env));
-    assertEquals(BigRatio.valueOf("3", "4"), eval("(real-part 3/4)", env));
+    assertEquals(BigRatio.Companion.valueOf("3", "4"), eval("(real-part 3/4)", env));
   }
 
   @Test
