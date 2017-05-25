@@ -48,17 +48,10 @@ class DefaultEnvironment : Environment(null) {
         get() = LIBRARY_PROCEDURES
 
     init {
-
         /* Special Forms */
-        for (specialForm in SPECIAL_FORMS) {
-            put(Symbol.intern(specialForm.toString()), specialForm)
-        }
-
+        SPECIAL_FORMS.forEach { specialForm -> put(Symbol.intern(specialForm.toString()), specialForm) }
         /* Standard Procedures */
-        for (proc in STANDARD_PROCEDURES) {
-            put(Symbol.intern(proc.name), proc)
-        }
-
+        STANDARD_PROCEDURES.forEach { proc -> put(Symbol.intern(proc.name), proc) }
         /* Constants and special cases, synonyms*/
         put(Symbol.intern("pi"), Math.PI)
         put(Symbol.intern("nil"), null)
