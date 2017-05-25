@@ -14,7 +14,7 @@ class ForEach : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
 
     override operator fun invoke(vararg args: Any?): Thunk {
         /* For-each is the same as Map, but ignores the result */
-        val result = MapProc.MAP_PROC.invoke(*args)
+        val result = MapProc.MAP_PROC(*args)
         /* Void (ignore) results: (void <map-results>) */
         return Thunk(Cons.list(VoidProc.Companion.VOID, result))
     }

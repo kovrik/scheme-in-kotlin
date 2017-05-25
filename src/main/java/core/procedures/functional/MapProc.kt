@@ -25,13 +25,13 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
     // TODO Very naive implementation. Re-implement and optimize
     override operator fun invoke(vararg args: Any?): Thunk {
         /* Check that all lists/vectors are of the same size */
-        val size = count.invoke(args[1])!!
+        val size = count(args[1])!!
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
         for (i in 1..args.size - 1) {
             /* Check type */
             iterators.put(i, Utils.toSequence(args[i]))
             /* Check size */
-            if (count.invoke(args[i]) != size) {
+            if (count(args[i]) != size) {
                 throw IllegalArgumentException(String.format("%s: all collections must be of the same size", name))
             }
         }

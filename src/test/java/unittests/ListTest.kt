@@ -76,8 +76,8 @@ class ListTest : AbstractTest() {
         eval("(define conslist '(3))", env)
         eval("(cons 1 conslist)", env)
         assertEquals(TRUE, eval("(equal? '(3) conslist))", env))
-        assertEquals(Cons.Companion.cons(null, 1L),   eval("(cons nil 1)",   env))
-        assertEquals(Cons.Companion.cons(null, null), eval("(cons nil nil)", env))
+        assertEquals(Cons.cons(null, 1L),   eval("(cons nil 1)",   env))
+        assertEquals(Cons.cons(null, null), eval("(cons nil nil)", env))
     }
 
     @Test

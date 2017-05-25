@@ -2,12 +2,15 @@ package core.evaluator
 
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
-
 import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.util.Arrays
+import kotlin.collections.HashMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.text.isEmpty
 
 class Reflector {
 
@@ -198,7 +201,7 @@ class Reflector {
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         try {
-            return method.invoke(instance, *args)
+            return method(instance, *args)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(String.format("reflector: unable to access method %s of %s", methodName, instance))
         } catch (e: InvocationTargetException) {
@@ -238,7 +241,7 @@ class Reflector {
             throw RuntimeException(String.format("reflector: unable to find static method %s of %s", methodName, clazz.name))
         }
         try {
-            return method.invoke(null, *args)
+            return method(null, *args)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(String.format("reflector: unable to access static method %s of %s", methodName, clazz.name))
         } catch (e: InvocationTargetException) {

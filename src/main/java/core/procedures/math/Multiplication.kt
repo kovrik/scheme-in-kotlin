@@ -25,7 +25,7 @@ class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
                 var result: Any? = 1L
                 for (arg in args) {
                     if (arg == null) throw NullPointerException()
-                    result = Companion.invoke(result as Number?, arg as Number?)
+                    result = Companion(result as Number?, arg as Number?)
                 }
                 return result as Number
             }

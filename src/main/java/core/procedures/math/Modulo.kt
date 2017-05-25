@@ -61,7 +61,7 @@ open class Modulo : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>
         if (first is BigInteger || second is BigInteger) {
             return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
         }
-        val m = REM.invoke(first, second)
+        val m = REM(first, second)
         if (m!!.toInt() == 0) {
             return m
         }

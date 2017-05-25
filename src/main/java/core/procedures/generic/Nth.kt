@@ -29,10 +29,10 @@ class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
             throw WrongTypeException(name, Int::class.java, index)
         }
         val i = (args[1] as Number).toInt()
-        val size = count.invoke(col)!!
+        val size = count(col)!!
         if (size <= i && args.size < 3) {
             throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, i))
         }
-        return get.invoke(*args)
+        return get(*args)
     }
 }

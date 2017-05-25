@@ -23,7 +23,7 @@ class GCD : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
             return 0L
         }
         if (args.size == 1) {
-            return ABS.invoke(args[0])
+            return ABS(args[0])
         }
         if (args[0] == null) throw NullPointerException()
         var result = args[0] as Number

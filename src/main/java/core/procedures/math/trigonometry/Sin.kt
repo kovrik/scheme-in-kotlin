@@ -57,8 +57,7 @@ class Sin : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
         fun sin(c: BigComplex): BigComplex {
             val re = c.re
             val im = c.im
-            return BigComplex(Multiplication.invoke(Sin.sin(re), Cosh.cosh(im)),
-                    Multiplication.invoke(Cos.cos(re), Sinh.sinh(im)))
+            return BigComplex(Multiplication(Sin.sin(re), Cosh.cosh(im)), Multiplication(Cos.cos(re), Sinh.sinh(im)))
         }
     }
 }

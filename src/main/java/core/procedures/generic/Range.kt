@@ -120,7 +120,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
         if (Utils.isNegative(step)) {
             pred = NumericalComparison.GREATER
         }
-        while (pred.invoke(cur, end)) {
+        while (pred(cur, end)) {
             result.add(cur!!)
             cur = Addition.add(cur, step)
         }

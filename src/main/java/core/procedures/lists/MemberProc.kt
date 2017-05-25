@@ -25,7 +25,7 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
         while (cons is List<*> && !cons.isEmpty()) {
             p += 1
             val car = Car.car(cons)
-            if (Utils.toBoolean(predicate.invoke(arg1, car))) {
+            if (Utils.toBoolean(predicate(arg1, car))) {
                 return cons
             }
             cons = Cdr.cdr(cons)

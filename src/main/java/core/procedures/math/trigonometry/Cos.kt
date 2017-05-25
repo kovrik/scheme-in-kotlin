@@ -57,8 +57,8 @@ class Cos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
         fun cos(c: BigComplex): BigComplex {
             val re = c.re
             val im = c.im
-            return BigComplex(Multiplication.invoke(Cos.cos(re), Cosh.cosh(im)),
-                    Multiplication.invoke(-1.0, Multiplication.invoke(Sin.sin(re), Sinh.sinh(im))))
+            return BigComplex(Multiplication(Cos.cos(re), Cosh.cosh(im)),
+                    Multiplication(-1.0, Multiplication(Sin.sin(re), Sinh.sinh(im))))
         }
     }
 }

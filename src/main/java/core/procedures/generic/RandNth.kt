@@ -3,7 +3,7 @@ package core.procedures.generic
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.utils.Utils
-import java.util.Random
+import java.util.*
 
 class RandNth : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
@@ -23,11 +23,11 @@ class RandNth : AFn(FnArgsBuilder().min(1).max(1).build()) {
         if (!Utils.isSeqable(arg)) {
             throw IllegalArgumentException("don't know how to create Sequence from " + arg?.javaClass)
         }
-        val bound = count.invoke(arg)!!
+        val bound = count(arg)!!
         if (bound == 0) {
             throw IndexOutOfBoundsException()
         }
         val index = Random().nextInt(bound)
-        return get.invoke(arg, index, null)
+        return get(arg, index, null)
     }
 }

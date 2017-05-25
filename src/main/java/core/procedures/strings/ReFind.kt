@@ -20,7 +20,7 @@ class ReFind : AFn(FnArgsBuilder().min(1).max(2).build()) {
                 throw WrongTypeException(name, Matcher::class.java, args[0])
             }
             val m = args[0] as Matcher
-            return if (m.find()) reGroups.invoke(args[0]) else null
+            return if (m.find()) reGroups(args[0]) else null
         }
         if (args[0] !is Pattern) {
             throw WrongTypeException(name, Pattern::class.java, args[0])

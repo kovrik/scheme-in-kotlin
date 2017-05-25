@@ -105,20 +105,20 @@ enum class Quasiquote : ISpecialForm {
                         throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression")
                     }
                     /* Evaluate and append last element */
-                    return Append.Companion.append(result, evaluator.eval(list[n + 1], env))
+                    return Append.append(result, evaluator.eval(list[n + 1], env))
                 }
                 if (isList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
                     throw IllegalSyntaxException
                             .of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
-                result = Append.Companion.append(result, list(o))
+                result = Append.append(result, list(o))
             } else {
                 val el = o
                 val op = el[0]
                 if (QUASIQUOTE_SYMBOL == op) {
                     /* Increase depth of quasiquotation */
-                    result = Append.Companion.append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
+                    result = Append.append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
                 } else if (Unquote.UNQUOTE_SYMBOL == op || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == op) {
                     if (el.size != 2) {
                         throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression")
@@ -137,14 +137,14 @@ enum class Quasiquote : ISpecialForm {
                         } else {
                             /* Unquote: append list with results */
                             /* `(,(list 1 2 3)) => `((1 2 3)) */
-                            result = Append.Companion.append(result, list(eval))
+                            result = Append.append(result, list(eval))
                         }
                     } else {
                         /* Decrease depth of quasiquotation */
-                        result = Append.Companion.append(result, list(quasiquoteList(depth - 1, o, env, evaluator)))
+                        result = Append.append(result, list(quasiquoteList(depth - 1, o, env, evaluator)))
                     }
                 } else {
-                    result = Append.Companion.append(result, list(quasiquoteList(depth, o, env, evaluator)))
+                    result = Append.append(result, list(quasiquoteList(depth, o, env, evaluator)))
                 }
             }
         }
@@ -194,13 +194,13 @@ enum class Quasiquote : ISpecialForm {
         if (Unquote.UNQUOTE_SYMBOL == first || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == first) {
             throw IllegalSyntaxException.of(first.toString(), expr, "invalid context within quasiquote")
         }
-        val list = Cons.list<Any>(set)
+        val list = Cons.list(set)
         val result = quasiquoteList(0, list, env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
         if (!isList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
-        return setProc.invoke(result)
+        return setProc(result)
     }
 
     override fun toString(): String {

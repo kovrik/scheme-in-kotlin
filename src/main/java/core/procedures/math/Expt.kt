@@ -7,8 +7,10 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import core.writer.Writer
+import java.lang.ArithmeticException
+import java.lang.Class
+import java.lang.Math
 import java.lang.NullPointerException
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -64,12 +66,12 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
             if (Utils.isZero(base) && Utils.isFinite(exponent)) {
                 if (base == -0.0) {
                     if (Utils.isNegative(exponent)) {
-                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.invoke(exponent))
+                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD(exponent))
                             java.lang.Double.NEGATIVE_INFINITY
                         else
                             java.lang.Double.POSITIVE_INFINITY
                     } else {
-                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.invoke(exponent)) -0.0 else 0.0
+                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD(exponent)) -0.0 else 0.0
                     }
                 }
                 return if (Utils.isNegative(exponent))
@@ -100,9 +102,9 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
             if (base is Double && java.lang.Double.NEGATIVE_INFINITY == base) {
                 if (Utils.isInteger(exponent)) {
                     if (Utils.isNegative(exponent)) {
-                        return if (Predicate.IS_ODD.invoke(exponent)) -0.0 else 0.0
+                        return if (Predicate.IS_ODD(exponent)) -0.0 else 0.0
                     } else {
-                        return if (Predicate.IS_ODD.invoke(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
                     }
                 }
             }
@@ -135,15 +137,15 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
                     }
                 }
                 if (exponent == java.lang.Double.NEGATIVE_INFINITY) {
-                    if (NumericalComparison.LESS.invoke(base, 1L)!!) {
+                    if (NumericalComparison.LESS(base, 1L)) {
                         return java.lang.Double.POSITIVE_INFINITY
-                    } else if (NumericalComparison.GREATER.invoke(base, 1L)!!) {
+                    } else if (NumericalComparison.GREATER(base, 1L)) {
                         return 0.0
                     }
                 } else if (exponent == java.lang.Double.POSITIVE_INFINITY) {
-                    if (NumericalComparison.LESS.invoke(base, 1L)!!) {
+                    if (NumericalComparison.LESS(base, 1L)) {
                         return 0.0
-                    } else if (NumericalComparison.GREATER.invoke(base, 1L)!!) {
+                    } else if (NumericalComparison.GREATER(base, 1L)) {
                         return java.lang.Double.POSITIVE_INFINITY
                     }
                 }
@@ -177,7 +179,7 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
                     if (base.toLong() > 0) {
                         return java.lang.Double.POSITIVE_INFINITY
                     } else {
-                        return if (Predicate.IS_ODD.invoke(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
                     }
                 }
             }

@@ -22,7 +22,7 @@ class AssocProc(override val name: String,
             for (n in list!!.indices) {
                 val pair = list[n]
                 if (Cons.isPair(pair)) {
-                    if (Utils.toBoolean(predicate.invoke(arg1, (pair as Cons<*>).car()))) {
+                    if (Utils.toBoolean(predicate(arg1, (pair as Cons<*>).car()))) {
                         return pair
                     }
                 } else {
@@ -34,7 +34,7 @@ class AssocProc(override val name: String,
         }
         if (predicate is Equal) {
             if (arg2 is Map<*, *>) {
-                return get.invoke(arg2, arg1, null)
+                return get(arg2, arg1, null)
             }
             throw WrongTypeException(name, "List or Map", arg2)
         }

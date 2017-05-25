@@ -273,7 +273,7 @@ object Utils {
             if (r == 10 && !exact) {
                 return (result.toString() + "E" + exp).toDouble()
             } else {
-                result = Multiplication.Companion.invoke(result, Expt.expt(r.toLong(), exp))
+                result = Multiplication(result, Expt.expt(r.toLong(), exp))
             }
         }
         return processExactness(result, exact)
@@ -308,7 +308,7 @@ object Utils {
         val number = BigRatio.valueOf(num.toString(), den.toString())
         if (!exact) {
             val result = ToInexact.toInexact(number)
-            return if (exp == null) result else Multiplication.Companion.invoke(result, Expt.expt(r, exp))
+            return if (exp == null) result else Multiplication(result, Expt.expt(r, exp))
         }
         return number
     }
