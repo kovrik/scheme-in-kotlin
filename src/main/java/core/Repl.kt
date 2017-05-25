@@ -47,7 +47,7 @@ object Repl {
             if (i == SYM_LIMIT) {
                 SYM_COUNTER.set(0)
             }
-            return Symbol.intern("$" + i)
+            return Symbol.intern("$$i")
         }
 
     @Throws(IOException::class)
@@ -75,7 +75,7 @@ object Repl {
                     val id = nextID
                     env.put(id, result)
                     /* Print */
-                    currentOutputPort.writeln(id.toString() + " = " + Writer.write(result))
+                    currentOutputPort.writeln("$id = ${Writer.write(result)}")
                 }
             } catch (e: ThrowableWrapper) {
                 /* Unwrap */
@@ -90,7 +90,7 @@ object Repl {
     private fun error(e: Throwable) {
         val errorMessage: String
         if (e is Error) {
-            errorMessage = "Error: " + e.message
+            errorMessage = "Error: ${e.message}"
         } else if (e is ExInfoException) {
             errorMessage = e.toString()
         } else {

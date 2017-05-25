@@ -171,9 +171,9 @@ open class Reader : IReader {
             ';'  -> return readComment()
             '"'  -> return readString()
             ':'  -> return readKeyword()
-            ')'  -> throw IllegalSyntaxException("read: unexpected list terminator: " + c)
-            '}'  -> throw IllegalSyntaxException("read: unexpected terminator: " + c)
-            ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: " + c)
+            ')'  -> throw IllegalSyntaxException("read: unexpected list terminator: $c")
+            '}'  -> throw IllegalSyntaxException("read: unexpected terminator: $c")
+            ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
             else -> {
                 val s = c + readUntilDelimiter()
                 /* Read true and false as #t and #f */
@@ -217,7 +217,7 @@ open class Reader : IReader {
                 val ch = restNumber[1]
                 if (isExactness(ch)) {
                     if (exactness != null) {
-                        throw IllegalSyntaxException("read: bad number: " + number)
+                        throw IllegalSyntaxException("read: bad number: $number")
                     }
                     exactness = ch
                     restNumber = restNumber.substring(2)
@@ -225,7 +225,7 @@ open class Reader : IReader {
                 }
                 if (isRadix(ch)) {
                     if (radix != null) {
-                        throw IllegalSyntaxException("read: bad number: " + number)
+                        throw IllegalSyntaxException("read: bad number: $number")
                     }
                     radix = ch
                     restNumber = restNumber.substring(2)
@@ -235,11 +235,11 @@ open class Reader : IReader {
             }
 
             if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
-                throw IllegalSyntaxException("read: bad number: " + number)
+                throw IllegalSyntaxException("read: bad number: $number")
             }
 
             /* Check if this is a proper number */
-            val result = preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: " + number)
+            val result = preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
             return result
         }
         /* Bad hash syntax: read token and throw exception */
@@ -250,7 +250,7 @@ open class Reader : IReader {
         if (!Character.isWhitespace(c)) {
             token.append(readUntilDelimiter())
         }
-        throw IllegalSyntaxException("read: bad syntax: " + token.toString())
+        throw IllegalSyntaxException("read: bad syntax: $token")
     }
 
     /**
@@ -277,7 +277,7 @@ open class Reader : IReader {
                 symbol = Unquote.UNQUOTE_SYMBOL
             }
         } else {
-            throw IllegalSyntaxException("read: unknown quotation type: " + c)
+            throw IllegalSyntaxException("read: unknown quotation type: $c")
         }
         return Cons.list(symbol, nextNonNullToken())
     }
@@ -386,7 +386,7 @@ open class Reader : IReader {
         if ("linefeed" == character) {
             return NAMED_CHARS["newline"]!!
         }
-        val namedChar = NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\" + character)
+        val namedChar = NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
         return namedChar
     }
 

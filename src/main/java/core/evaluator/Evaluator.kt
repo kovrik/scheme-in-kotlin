@@ -30,7 +30,7 @@ class Evaluator {
         private fun createThreadFactory(threadCounter: AtomicLong): ThreadFactory {
             return ThreadFactory { r ->
                 val t = Thread(r)
-                t.name = "executor-thread-" + threadCounter.getAndIncrement()
+                t.name = "executor-thread-${threadCounter.getAndIncrement()}"
                 t
             }
         }
@@ -167,7 +167,7 @@ class Evaluator {
             }
             val i = (key as Number).toInt()
             if (vector.size <= i || i < 0) {
-                throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", vector, i))
+                throw IndexOutOfBoundsException("vector: value out of range: $i")
             }
             return vector[i]
         } else if (op is Map<*, *>) {
@@ -182,7 +182,7 @@ class Evaluator {
 
         /* If result is not a function, then raise an error */
         if (op !is AFn && !javaMethod) {
-            throw IllegalArgumentException("wrong type to apply: " + Writer.write(op))
+            throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
         }
 
         /* Scheme has applicative order, so evaluate all arguments first */
