@@ -29,20 +29,16 @@ object Repl {
 
     private val reader = Reader(currentInputPort.inputStream)
 
-    class Main {
-        companion object {
-            @Throws(IOException::class)
-            @JvmStatic fun main(args: Array<String>) {
-                /* Eval lib procedures */
-                val stringReader = StringReader()
-                for (proc in defaultEnvironment.libraryProcedures) {
-                    for (s in stringReader.read(proc)!!) {
-                        evaluator.macroexpandAndEvaluate(s, defaultEnvironment)
-                    }
-                }
-                repl(WELCOME, PROMPT, defaultEnvironment)
+    @Throws(IOException::class)
+    @JvmStatic fun main(args: Array<String>) {
+        val stringReader = StringReader()
+        /* Eval lib procedures */
+        for (proc in defaultEnvironment.libraryProcedures) {
+            for (s in stringReader.read(proc)!!) {
+                evaluator.macroexpandAndEvaluate(s, defaultEnvironment)
             }
         }
+        repl(WELCOME, PROMPT, defaultEnvironment)
     }
 
     private val nextID: Symbol?
