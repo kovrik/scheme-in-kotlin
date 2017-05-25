@@ -59,7 +59,7 @@ class Evaluator {
         } catch (cc: CalledContinuation) {
             if (cc.continuation.isInvoked) {
                 /* We have one-shot continuations only, not full continuations.
-         * It means that we can't use the same continuation multiple times. */
+                 * It means that we can't use the same continuation multiple times. */
                 throw ReentrantContinuationException()
             }
             /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
@@ -78,56 +78,50 @@ class Evaluator {
      * If Thunk is returned, then eval() method (trampoline) continues evaluation.
      */
     private fun evalIter(sexp: Any?, env: Environment): Any? {
-        if (sexp is Symbol) {
-            return evalSymbol(sexp, env)
-        } else if (sexp is MutableList<*>) {
-            return evlis(sexp as MutableList<Any?>, env)
-        } else if (sexp is MutableMap<*, *>) {
-            return evalMap(sexp as MutableMap<Any, Any>, env)
-        } else if (sexp is Vector) {
-            return evalVector(sexp, env)
-        } else if (sexp is MutableSet<*>) {
-            return evalSet(sexp as MutableSet<Any>, env)
-        } else {
-            /* Everything else evaluates to itself:
-             * Numbers, Strings, Chars, Keywords etc. */
-            return sexp
+        when (sexp) {
+            is Symbol           -> return sexp.eval(env)
+            is MutableList<*>   -> return (sexp as MutableList<Any?>).eval(env)
+            is MutableMap<*, *> -> return (sexp as Map<Any?, Any?>).eval(env)
+            is Vector           -> return sexp.eval(env)
+            is MutableSet<*>    -> return sexp.eval(env)
+            /* Everything else evaluates to itself: Numbers, Strings, Chars, Keywords etc. */
+            else -> return sexp
         }
     }
 
     /* Evaluate Symbol */
-    private fun evalSymbol(symbol: Symbol, env: Environment): Any? {
+    private fun Symbol.eval(env: Environment): Any? {
         /* Check if it is a Special Form */
-        val o = env.findOrDefault(symbol, Environment.UNDEFINED)
+        val o = env.findOrDefault(this, Environment.UNDEFINED)
         if (o is ISpecialForm) {
-            throw IllegalSyntaxException.of(o.toString(), symbol)
+            throw IllegalSyntaxException.of(o.toString(), this)
         }
         if (o === Environment.UNDEFINED) {
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            val clazz = reflector._getClass(symbol.name)
-            return clazz ?: reflector.evalJavaStaticField(symbol.toString())
+            val clazz = reflector._getClass(name)
+            return clazz ?: reflector.evalJavaStaticField(toString())
         }
         return o
     }
 
     /* Evaluate list */
-    private fun evlis(sexp: MutableList<Any?>, env: Environment): Any? {
-        if (sexp.isEmpty()) {
-            throw IllegalSyntaxException.of("eval", sexp, "illegal empty application")
+    private fun MutableList<Any?>.eval(env: Environment): Any? {
+        if (isEmpty()) {
+            throw IllegalSyntaxException.of("eval", this, "illegal empty application")
         }
 
         var javaMethod = false
-        var op: Any? = sexp[0]
+        var op: Any? = this[0]
         if (op is Symbol) {
             val sym = op
             /* Lookup symbol */
             op = env.findOrDefault(sym, Environment.UNDEFINED)
             /* Inline Special Forms and Pure functions */
             if (op is ISpecialForm) {
-                sexp[0] = op
+                this[0] = op
             } else if (op is AFn) {
                 if (op.isPure) {
-                    sexp[0] = op
+                    this[0] = op
                 }
             } else if (op === Environment.UNDEFINED) {
                 // TODO Check if op starts with '.' instead?
@@ -135,16 +129,16 @@ class Evaluator {
                 /* Special case: constructor call If Symbol ends with . */
                 if (sym.name[sym.name.length - 1] == '.') {
                     // TODO Optimize and cleanup
-                    sexp[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
+                    this[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
                     op = New.NEW
-                    (sexp as Cons<Any>).push(op)
+                    (this as Cons<Any>).push(op)
                 }
             }
         }
 
         /* If it is a Special Form, then evaluate it */
         if (op is ISpecialForm) {
-            return op.eval(sexp, env, this)
+            return op.eval(this, env, this@Evaluator)
         }
 
         /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
@@ -158,10 +152,10 @@ class Evaluator {
             op = MapEntry(op)
         }
         if (op is Vector) {
-            if (sexp.size > 2) throw ArityException("vector", 1, 1, sexp.size - 1)
-            val vector = evalVector(op, env)
+            if (size > 2) throw ArityException("vector", 1, 1, size - 1)
+            val vector = op.eval(env)
             /* Evaluate key */
-            val key = eval(sexp[1], env)
+            val key = eval(this[1], env)
             if (!Utils.isInteger(key)) {
                 throw WrongTypeException("vector", Int::class.java, key)
             }
@@ -172,11 +166,11 @@ class Evaluator {
             return vector[i]
         } else if (op is Map<*, *>) {
             /* Maps are functions of their keys */
-            if (sexp.size > 3) throw ArityException("hashmap", 1, 2, sexp.size - 1)
-            val map = evalMap(op as Map<Any, Any>, env)
+            if (size > 3) throw ArityException("hashmap", 1, 2, size - 1)
+            val map = (op as Map<Any?, Any?>).eval(env)
             /* Evaluate key */
-            val key = eval(sexp[1], env)
-            val defaultValue = if (sexp.size == 3) eval(sexp[2], env) else null
+            val key = eval(this[1], env)
+            val defaultValue = if (size == 3) eval(this[2], env) else null
             return map.getOrDefault(key, defaultValue)
         }
 
@@ -186,14 +180,14 @@ class Evaluator {
         }
 
         /* Scheme has applicative order, so evaluate all arguments first */
-        val args = arrayOfNulls<Any>(sexp.size - 1)
-        for (i in 1..sexp.size - 1) {
-            args[i - 1] = eval(sexp[i], env)
+        val args = arrayOfNulls<Any>(size - 1)
+        for (i in 1..size - 1) {
+            args[i - 1] = eval(this[i], env)
         }
 
         /* Call Java method */
         if (javaMethod) {
-            val method = sexp[0].toString()
+            val method = this[0].toString()
             return reflector.evalJavaMethod(method, args)
         }
         /* Call AFn via helper method */
@@ -201,9 +195,9 @@ class Evaluator {
     }
 
     /* Evaluate hash map */
-    private fun evalMap(map: Map<Any, Any>, env: Environment): Map<Any?, Any?> {
-        val result = HashMap<Any?, Any?>(map.size)
-        for ((key1, value1) in map) {
+    private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
+        val result = HashMap<Any?, Any?>(size)
+        for ((key1, value1) in this) {
             val key = eval(key1, env)
             val value = eval(value1, env)
             result.put(key, value)
@@ -212,17 +206,17 @@ class Evaluator {
     }
 
     /* Evaluate vector */
-    private fun evalVector(vector: Vector, env: Environment): Vector {
-        for (i in vector.indices) {
-            vector.array[i] = eval(vector.array[i], env)
+    private fun Vector.eval(env: Environment): Vector {
+        for (i in indices) {
+            array[i] = eval(array[i], env)
         }
-        return vector
+        return this
     }
 
     /* Evaluate set */
-    private fun evalSet(set: Set<Any>, env: Environment): Set<Any?> {
-        val result = HashSet<Any?>(set.size)
-        for (e in set) {
+    private fun Set<Any?>.eval(env: Environment): Set<Any?> {
+        val result = HashSet<Any?>(size)
+        for (e in this) {
             result.add(eval(e, env))
         }
         return result
