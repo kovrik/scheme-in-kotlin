@@ -17,7 +17,7 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
     override val name: String
         get() = "acos"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
         when (arg) {
             is BigDecimal -> return acos(arg)

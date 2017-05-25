@@ -18,7 +18,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
     override val name: String
         get() = "range"
 
-    override fun apply(vararg args: Any?): List<Any?>? {
+    override operator fun invoke(vararg args: Any?): List<Any?>? {
         if (args.isEmpty()) {
             return Cons.EMPTY
         }
@@ -120,7 +120,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
         if (Utils.isNegative(step)) {
             pred = NumericalComparison.GREATER
         }
-        while (pred.apply(cur, end)) {
+        while (pred.invoke(cur, end)) {
             result.add(cur!!)
             cur = Addition.add(cur, step)
         }

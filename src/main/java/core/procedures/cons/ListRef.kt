@@ -14,7 +14,7 @@ class ListRef : AFn(FnArgsBuilder().min(2).max(2)
     override val name: String
         get() = "list-ref"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg1 as List<*>?
         val p = (arg2 as Number).toLong()
         if (p >= list!!.size) {

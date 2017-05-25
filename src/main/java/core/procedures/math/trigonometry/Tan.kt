@@ -18,7 +18,7 @@ class Tan : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
     override val name: String
         get() = "tan"
 
-    override fun apply1(arg: Any?): Number {
+    override operator fun invoke(arg: Any?): Number {
         if (arg == null) throw NullPointerException()
         /* Special cases */
         when {

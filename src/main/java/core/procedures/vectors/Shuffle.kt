@@ -16,7 +16,7 @@ class Shuffle : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "shuffle"
 
-    override fun apply1(arg: Any?): Vector {
+    override operator fun invoke(arg: Any?): Vector {
         if (arg is Collection<*>) {
             val list = ArrayList((arg as Collection<*>?)!!)
             Collections.shuffle(list)

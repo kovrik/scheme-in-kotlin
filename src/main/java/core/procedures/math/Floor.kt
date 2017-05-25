@@ -16,7 +16,7 @@ class Floor : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type
     override val name: String
         get() = "floor"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
         when (arg) {
             is Long, is Int, is Short, is Byte, is BigInteger -> return arg as Number?

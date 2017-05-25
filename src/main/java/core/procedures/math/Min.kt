@@ -18,7 +18,7 @@ class Min : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::cl
     override val name: String
         get() = "min"
 
-    override fun apply(vararg args: Any?): Number? {
+    override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
             return args[0] as Number
         }

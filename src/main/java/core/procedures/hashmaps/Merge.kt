@@ -14,7 +14,7 @@ class Merge : AFn(FnArgsBuilder().min(0).rest(Map::class.java).build()) {
     override val name: String
         get() = "merge"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {
             return Void.VOID
         }

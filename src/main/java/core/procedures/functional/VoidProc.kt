@@ -14,7 +14,7 @@ class VoidProc : AFn() {
     override val name: String
         get() = "void"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         return core.scm.Void.VOID
     }
 }

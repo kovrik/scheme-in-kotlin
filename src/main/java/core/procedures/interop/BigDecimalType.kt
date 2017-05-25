@@ -14,7 +14,7 @@ class BigDecimalType : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "bigdec"
 
-    override fun apply1(arg: Any?): BigDecimal {
+    override operator fun invoke(arg: Any?): BigDecimal {
         if (arg is Number) {
             return Utils.toBigDecimal((arg as Number?)!!)
         }

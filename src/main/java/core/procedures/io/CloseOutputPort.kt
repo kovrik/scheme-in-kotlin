@@ -12,7 +12,7 @@ class CloseOutputPort : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Clas
     override val name: String
         get() = "close-output-port"
 
-    override fun apply1(arg: Any?): Void {
+    override operator fun invoke(arg: Any?): Void {
         try {
             (arg as OutputPort).close()
         } catch (e: IOException) {

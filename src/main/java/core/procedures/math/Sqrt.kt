@@ -24,7 +24,7 @@ class Sqrt : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
     override val name: String
         get() = "sqrt"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         return sqrt(arg as Number?)
     }
 }

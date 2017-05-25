@@ -10,7 +10,7 @@ class RePattern : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(
     override val name: String
         get() = "re-pattern"
 
-    override fun apply1(arg: Any?): Pattern {
+    override operator fun invoke(arg: Any?): Pattern {
         return Pattern.compile(arg!!.toString())
     }
 }

@@ -10,7 +10,7 @@ class VectorToImmutableVector : AFn(FnArgsBuilder().min(1).max(1).mandatory(arra
     override val name: String
         get() = "vector->immutable-vector"
 
-    override fun apply1(arg: Any?): Vector? {
+    override operator fun invoke(arg: Any?): Vector? {
         if (arg is MutableVector) {
             return Vector(*(arg as Vector).getArray())
         }

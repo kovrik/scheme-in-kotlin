@@ -8,7 +8,7 @@ class StartsWith : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>
     override val name: String
         get() = "starts-with?"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Boolean {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
         return arg1!!.toString().startsWith(arg2!!.toString())
     }
 }

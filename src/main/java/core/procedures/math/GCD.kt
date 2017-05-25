@@ -18,12 +18,12 @@ class GCD : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
     override val name: String
         get() = NAME
 
-    override fun apply(vararg args: Any?): Number? {
+    override operator fun invoke(vararg args: Any?): Number? {
         if (args.isEmpty()) {
             return 0L
         }
         if (args.size == 1) {
-            return ABS.apply1(args[0])
+            return ABS.invoke(args[0])
         }
         if (args[0] == null) throw NullPointerException()
         var result = args[0] as Number

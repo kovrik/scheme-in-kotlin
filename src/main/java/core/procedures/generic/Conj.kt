@@ -14,7 +14,7 @@ class Conj : AFn(FnArgsBuilder().min(1).build()) {
     override val name: String
         get() = "conj"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         val first = args[0]
         when {
             args.size == 1 -> return first

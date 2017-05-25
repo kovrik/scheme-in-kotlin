@@ -59,14 +59,14 @@ class Procedure(override var name: String,
         return env
     }
 
-    override fun apply0(): Any? {
+    override operator fun invoke(): Any? {
         if (isBodyConst) {
             return body
         }
         return Thunk(body, Environment(0, this.localEnvironment))
     }
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -75,7 +75,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -85,7 +85,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -96,7 +96,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply4(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
         if (isBodyConst) {
             return body
         }
@@ -108,7 +108,7 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         return if (isBodyConst) body else Thunk(body, bindArgs(*args))
     }
 }

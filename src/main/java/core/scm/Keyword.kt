@@ -24,7 +24,7 @@ class Keyword private constructor(override val name: String) : AFn(FnArgsBuilder
     override val isPure: Boolean
         get() = true
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty() || args.size > 2) {
             throw ArityException(toString() + " Keyword", 1, 2, args.size)
         }

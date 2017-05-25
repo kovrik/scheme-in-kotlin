@@ -28,18 +28,18 @@ class Division : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build()) {
     override val name: String
         get() = "/"
 
-    override fun apply(vararg args: Any?): Number? {
+    override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
-            return apply(1L, args[0] as Number)
+            return invoke(1L, args[0] as Number)
         }
         var result = args[0] as Number?
         for (d in 1..args.size - 1) {
-            result = apply(result, args[d] as Number)
+            result = invoke(result, args[d] as Number)
         }
         return result
     }
 
-    private fun apply(numerator: Number?, denominator: Number?): Number? {
+    private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
         if (numerator   == null) throw NullPointerException()
         if (denominator == null) throw NullPointerException()
         var numerator = numerator

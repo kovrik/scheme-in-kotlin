@@ -16,7 +16,7 @@ class Empty : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "empty"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         when (arg) {
             is List<*> -> return Cons.list<Any>()
             is Set<*> -> return HashSet<Any>()

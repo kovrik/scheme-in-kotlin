@@ -14,7 +14,7 @@ class Find : AFn(FnArgsBuilder().max(2).min(2).mandatory(arrayOf(IAssoc::class.j
     override val name: String
         get() = "find"
 
-    override fun apply2(arg1: Any?, arg2: Any?): MapEntry? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): MapEntry? {
         val assoc = Utils.toAssoc(arg1)
         if (assoc.containsKey(arg2!!)) {
             return assoc.getEntry(arg2)

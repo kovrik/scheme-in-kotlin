@@ -13,7 +13,7 @@ class OpenOutputFile : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class
     override val name: String
         get() = "open-output-file"
 
-    override fun apply1(arg: Any?): Any {
+    override operator fun invoke(arg: Any?): Any {
         val filename = arg.toString()
         try {
             return OutputPort(FileOutputStream(filename))

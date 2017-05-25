@@ -16,18 +16,18 @@ class RandNth : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "rand-nth"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         if (arg is Map<*, *>) {
             throw UnsupportedOperationException("nth not supported on this type: " + arg.javaClass)
         }
         if (!Utils.isSeqable(arg)) {
             throw IllegalArgumentException("don't know how to create Sequence from " + arg?.javaClass)
         }
-        val bound = count.apply1(arg)!!
+        val bound = count.invoke(arg)!!
         if (bound == 0) {
             throw IndexOutOfBoundsException()
         }
         val index = Random().nextInt(bound)
-        return get.apply3(arg, index, null)
+        return get.invoke(arg, index, null)
     }
 }

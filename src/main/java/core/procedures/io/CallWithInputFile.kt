@@ -16,7 +16,7 @@ class CallWithInputFile : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Ch
     override val name: String
         get() = "call-with-input-file"
 
-    override fun apply(vararg args: Any?): Any {
+    override operator fun invoke(vararg args: Any?): Any {
         val filename = args[0].toString()
         val inputPort: InputPort
         try {

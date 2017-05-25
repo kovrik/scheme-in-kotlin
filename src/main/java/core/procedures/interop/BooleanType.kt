@@ -12,7 +12,7 @@ class BooleanType : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "boolean"
 
-    override fun apply1(arg: Any?): Boolean? {
+    override operator fun invoke(arg: Any?): Boolean? {
         /* Have to box it */
         when {
             Utils.toBoolean(arg) -> return java.lang.Boolean.TRUE

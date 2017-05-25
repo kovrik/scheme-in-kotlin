@@ -14,7 +14,7 @@ class Exp : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
     override val name: String
         get() = "exp"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         return exp(arg as Number?)
     }
 

@@ -108,7 +108,7 @@ class Predicate private constructor(override val name: String, private val predi
     override val isPure: Boolean
         get() = true
 
-    override fun apply1(arg: Any?): Boolean {
+    override operator fun invoke(arg: Any?): Boolean {
         return predicate.test(arg)
     }
 }

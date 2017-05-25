@@ -12,7 +12,7 @@ open class ToString : AFn(FnArgsBuilder().min(0).build()) {
     override val name: String
         get() = "->string"
 
-    override fun apply(vararg args: Any?): CharSequence? {
+    override operator fun invoke(vararg args: Any?): CharSequence? {
         when {
             args.isEmpty() -> return ""
             args.size == 1 -> return str(args[0])

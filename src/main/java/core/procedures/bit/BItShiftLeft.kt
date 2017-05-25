@@ -12,7 +12,7 @@ class BItShiftLeft : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Bi
     override val name: String
         get() = "bit-shift-left"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Long {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Long {
         return (arg1 as Number).toLong() shl (arg2 as Number).toInt()
     }
 }

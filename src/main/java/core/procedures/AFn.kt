@@ -38,39 +38,39 @@ abstract class AFn : IFn<Any?, Any?> {
         get() = false
 
     override fun run() {
-        apply0()
+        invoke()
     }
 
     @Throws(Exception::class)
     override fun call(): Any? {
-        return apply0()
+        return invoke()
     }
 
     override fun apply(arg: Any?): Any? {
+        return invoke(arg)
+    }
+
+    override operator fun invoke(): Any? {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
 
-    override fun apply0(): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 1)
     }
 
-    override fun apply1(arg: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, 1)
-    }
-
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 2)
     }
 
-    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 3)
     }
 
-    override fun apply4(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, 4)
     }
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         throw ArityException(name, minArgs, maxArgs, args.size)
     }
 
@@ -122,21 +122,21 @@ abstract class AFn : IFn<Any?, Any?> {
     /**
      * Helper method that checks if FnArgs annotation is present,
      * if function is a fixed-arity function and if it is,
-     * then calls applyN() methods (where N is arity).
-     * Calls variadic apply() otherwise.
+     * then calls invokeN() methods (where N is arity).
+     * Calls variadic invoke() otherwise.
      */
-    fun applyN(vararg args: Any?): Any? {
+    fun invokeN(vararg args: Any?): Any? {
         /* Check args */
         checkArgs(*args)
         /* if min == max, then function is not variadic, hence get arity */
         val arity = if (minArgs == maxArgs) minArgs else -1
         when (arity) {
-            0 -> return apply0()
-            1 -> return apply1(args[0])
-            2 -> return apply2(args[0], args[1])
-            3 -> return apply3(args[0], args[1], args[2])
-            4 -> return apply4(args[0], args[1], args[2], args[3])
-            else -> return apply(*args)
+            0    -> return invoke()
+            1    -> return invoke(args[0])
+            2    -> return invoke(args[0], args[1])
+            3    -> return invoke(args[0], args[1], args[2])
+            4    -> return invoke(args[0], args[1], args[2], args[3])
+            else -> return invoke(*args)
         }
     }
 }

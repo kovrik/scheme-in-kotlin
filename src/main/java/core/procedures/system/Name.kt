@@ -13,7 +13,7 @@ class Name : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "name"
 
-    override fun apply1(arg: Any?): CharSequence? {
+    override operator fun invoke(arg: Any?): CharSequence? {
         when (arg) {
             is INamed -> return arg.name
             is CharSequence -> return arg

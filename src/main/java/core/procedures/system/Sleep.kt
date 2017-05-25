@@ -10,7 +10,7 @@ class Sleep : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Long
     override val name: String
         get() = "sleep"
 
-    override fun apply1(arg: Any?): Void? {
+    override operator fun invoke(arg: Any?): Void? {
         try {
             Thread.sleep((arg as Number).toLong())
         } catch (e: InterruptedException) {

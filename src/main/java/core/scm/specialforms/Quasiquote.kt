@@ -200,7 +200,7 @@ enum class Quasiquote : ISpecialForm {
         if (!isList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
-        return setProc.apply1(result)
+        return setProc.invoke(result)
     }
 
     override fun toString(): String {

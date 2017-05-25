@@ -15,11 +15,11 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
 
         private val NAME = "remainder"
 
-        private fun apply(first: BigDecimal, second: BigDecimal): Number {
+        private operator fun invoke(first: BigDecimal, second: BigDecimal): Number {
             return first.remainder(second)
         }
 
-        private fun apply(first: BigInteger, second: BigInteger): Number {
+        private operator fun invoke(first: BigInteger, second: BigInteger): Number {
             return first.remainder(second)
         }
 
@@ -31,13 +31,13 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
                 return Utils.inexactnessTaint(first, second)
             }
             if (first is BigRatio || second is BigRatio) {
-                return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
+                return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
             }
             if (first is BigDecimal || second is BigDecimal) {
-                return apply(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
+                return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
             }
             if (first is BigInteger || second is BigInteger) {
-                return apply(Utils.toBigInteger(first), Utils.toBigInteger(second))
+                return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
             }
             if (first is Double || second is Double || first is Float || second is Float) {
                 val result = first.toDouble() % second.toDouble()
@@ -57,7 +57,7 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
     override val name: String
         get() = NAME
 
-    override fun apply2(arg1: Any?, arg2: Any?): Number? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         if (arg1 == null) throw NullPointerException()
         if (arg2 == null) throw NullPointerException()
         return remainder(arg1 as Number, arg2 as Number)

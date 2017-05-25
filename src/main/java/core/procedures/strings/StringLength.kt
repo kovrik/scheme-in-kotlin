@@ -11,7 +11,7 @@ class StringLength : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
     override val name: String
         get() = "string-length"
 
-    override fun apply1(arg: Any?): Long {
+    override operator fun invoke(arg: Any?): Long {
         return arg!!.toString().length.toLong()
     }
 }

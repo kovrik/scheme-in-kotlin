@@ -20,16 +20,16 @@ open class Modulo : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>
     override val name: String
         get() = "modulo"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Number? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         if (arg1 == null) throw NullPointerException()
         if (arg2 == null) throw NullPointerException()
         if (Utils.isZero(arg2)) {
             throw ArithmeticException("modulo: undefined for 0")
         }
-        return apply(arg1 as Number, arg2 as Number)
+        return invoke(arg1 as Number, arg2 as Number)
     }
 
-    private fun apply(first: BigDecimal, second: BigDecimal): BigDecimal {
+    private operator fun invoke(first: BigDecimal, second: BigDecimal): BigDecimal {
         val remainder = first.remainder(second)
         if (remainder.signum() == 0) {
             return remainder
@@ -40,7 +40,7 @@ open class Modulo : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>
         return second.add(remainder)
     }
 
-    private fun apply(first: BigInteger, second: BigInteger): BigInteger {
+    private operator fun invoke(first: BigInteger, second: BigInteger): BigInteger {
         val remainder = first.remainder(second)
         if (remainder.signum() == 0) {
             return remainder
@@ -51,17 +51,17 @@ open class Modulo : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>
         return second.add(remainder)
     }
 
-    private fun apply(first: Number, second: Number): Number? {
+    private operator fun invoke(first: Number, second: Number): Number? {
         if (Utils.isZero(first)) {
             return Utils.inexactnessTaint(first, second)
         }
         if (first is BigDecimal || second is BigDecimal) {
-            return apply(Utils.toBigDecimal(first), second as BigDecimal)
+            return invoke(Utils.toBigDecimal(first), second as BigDecimal)
         }
         if (first is BigInteger || second is BigInteger) {
-            return apply(Utils.toBigInteger(first), Utils.toBigInteger(second))
+            return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
         }
-        val m = REM.apply2(first, second)
+        val m = REM.invoke(first, second)
         if (m!!.toInt() == 0) {
             return m
         }

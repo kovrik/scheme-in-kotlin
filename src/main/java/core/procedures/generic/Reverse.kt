@@ -13,7 +13,7 @@ class Reverse : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "reverse"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         when (arg) {
             is List<*> -> {
                 val result = Cons.list<Any>()

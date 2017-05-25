@@ -10,7 +10,7 @@ class FutureCancel : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
     override val name: String
         get() = "future-cancel"
 
-    override fun apply1(arg: Any?): Boolean {
+    override operator fun invoke(arg: Any?): Boolean {
         return (arg as Future<*>).cancel(true)
     }
 }

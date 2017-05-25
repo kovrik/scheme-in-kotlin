@@ -16,7 +16,7 @@ class Println : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(An
     override val name: String
         get() = "println"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         val outputPort: OutputPort
         if (args.size == 1) {
             outputPort = Repl.currentOutputPort

@@ -19,7 +19,7 @@ class Cos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
     override val name: String
         get() = "cos"
 
-    override fun apply1(arg: Any?): Number {
+    override operator fun invoke(arg: Any?): Number {
         if (arg == null) throw NullPointerException()
         return cos(arg as Number)
     }
@@ -57,8 +57,8 @@ class Cos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
         fun cos(c: BigComplex): BigComplex {
             val re = c.re
             val im = c.im
-            return BigComplex(Multiplication.apply(Cos.cos(re), Cosh.cosh(im)),
-                    Multiplication.apply(-1.0, Multiplication.apply(Sin.sin(re), Sinh.sinh(im))))
+            return BigComplex(Multiplication.invoke(Cos.cos(re), Cosh.cosh(im)),
+                    Multiplication.invoke(-1.0, Multiplication.invoke(Sin.sin(re), Sinh.sinh(im))))
         }
     }
 }

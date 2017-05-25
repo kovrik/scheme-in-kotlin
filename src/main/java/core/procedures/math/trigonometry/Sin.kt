@@ -19,7 +19,7 @@ class Sin : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
     override val name: String
         get() = "sin"
 
-    override fun apply1(arg: Any?): Number {
+    override operator fun invoke(arg: Any?): Number {
         if (arg == null) throw NullPointerException()
         return sin(arg as Number)
     }
@@ -57,8 +57,8 @@ class Sin : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
         fun sin(c: BigComplex): BigComplex {
             val re = c.re
             val im = c.im
-            return BigComplex(Multiplication.apply(Sin.sin(re), Cosh.cosh(im)),
-                    Multiplication.apply(Cos.cos(re), Sinh.sinh(im)))
+            return BigComplex(Multiplication.invoke(Sin.sin(re), Cosh.cosh(im)),
+                    Multiplication.invoke(Cos.cos(re), Sinh.sinh(im)))
         }
     }
 }

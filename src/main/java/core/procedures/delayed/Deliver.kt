@@ -11,7 +11,7 @@ class Deliver : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Promise::cla
     override val name: String
         get() = "deliver"
 
-    override fun apply2(arg1: Any?, arg2: Any?): CompletableFuture<Any>? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): CompletableFuture<Any>? {
         val p = arg1 as Promise?
         if (p!!.isDone || p.isCompletedExceptionally) {
             return null

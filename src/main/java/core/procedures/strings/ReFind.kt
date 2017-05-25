@@ -14,13 +14,13 @@ class ReFind : AFn(FnArgsBuilder().min(1).max(2).build()) {
     override val name: String
         get() = "re-find"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {
             if (args[0] !is Matcher) {
                 throw WrongTypeException(name, Matcher::class.java, args[0])
             }
             val m = args[0] as Matcher
-            return if (m.find()) reGroups.apply1(args[0]) else null
+            return if (m.find()) reGroups.invoke(args[0]) else null
         }
         if (args[0] !is Pattern) {
             throw WrongTypeException(name, Pattern::class.java, args[0])

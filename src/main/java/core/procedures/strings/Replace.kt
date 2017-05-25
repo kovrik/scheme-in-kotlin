@@ -11,7 +11,7 @@ class Replace : AFn(FnArgsBuilder().min(3).max(3).build()) {
     override val name: String
         get() = "replace"
 
-    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): String? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String? {
         if (arg1 !is CharSequence) {
             throw WrongTypeException(name, "String", arg1)
         }

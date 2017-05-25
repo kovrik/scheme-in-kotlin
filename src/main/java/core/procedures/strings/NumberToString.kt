@@ -15,7 +15,7 @@ class NumberToString : AFn(FnArgsBuilder().min(1).max(2)
     override val name: String
         get() = "number->string"
 
-    override fun apply(vararg args: Any?): String? {
+    override operator fun invoke(vararg args: Any?): String? {
         val o = args[0] as Number
         var o1: Any? = null
         if (args.size == 2) {

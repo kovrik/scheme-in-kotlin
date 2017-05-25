@@ -17,7 +17,7 @@ open class Next : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "next"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         if (!Utils.isSeqable(arg)) {
             throw IllegalArgumentException("don't know how to create Sequence from " + arg!!.javaClass)
         }

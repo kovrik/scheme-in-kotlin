@@ -11,7 +11,7 @@ class Key : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Map.En
     override val name: String
         get() = "key"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         return (arg as Map.Entry<*, *>).key
     }
 }

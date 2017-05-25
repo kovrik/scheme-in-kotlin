@@ -8,7 +8,7 @@ class Lowercase : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(
     override val name: String
         get() = "lower-case"
 
-    override fun apply1(arg: Any?): String {
+    override operator fun invoke(arg: Any?): String {
         return arg!!.toString().toLowerCase()
     }
 }

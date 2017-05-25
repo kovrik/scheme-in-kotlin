@@ -12,7 +12,7 @@ class Keys : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Map::
     override val name: String
         get() = "keys"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         return Cons.list((arg as Map<Any?, Any?>).keys)
     }
 }

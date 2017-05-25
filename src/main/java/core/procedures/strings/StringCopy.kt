@@ -9,7 +9,7 @@ class StringCopy : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>
     override val name: String
         get() = "string-copy"
 
-    override fun apply1(arg: Any?): MutableString {
+    override operator fun invoke(arg: Any?): MutableString {
         return MutableString(arg!!.toString())
     }
 }

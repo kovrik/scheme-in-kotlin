@@ -11,7 +11,7 @@ class Cast : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Class::class.ja
     override val name: String
         get() = "cast"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         return (arg1 as Class<*>).cast(arg2)
     }
 }

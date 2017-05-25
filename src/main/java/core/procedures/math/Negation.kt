@@ -12,7 +12,7 @@ class Negation : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "not"
 
-    override fun apply1(arg: Any?): Boolean? {
+    override operator fun invoke(arg: Any?): Boolean? {
         return !Utils.toBoolean(arg)
     }
 }

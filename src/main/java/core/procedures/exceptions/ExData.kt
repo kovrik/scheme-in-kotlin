@@ -12,7 +12,7 @@ class ExData : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "ex-data"
 
-    override fun apply1(arg: Any?): Map<*, *>? {
+    override operator fun invoke(arg: Any?): Map<*, *>? {
         if (arg is ExInfoException) {
             return arg.info
         }

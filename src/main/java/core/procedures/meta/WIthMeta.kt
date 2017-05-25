@@ -14,7 +14,7 @@ class WIthMeta : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(IMeta::clas
     override val name: String
         get() = "with-meta"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         if (arg1 is Symbol) {
             return Symbol(arg1.name, arg2 as Map<*, *>?)
         }

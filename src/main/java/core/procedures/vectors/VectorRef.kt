@@ -14,7 +14,7 @@ class VectorRef : AFn(FnArgsBuilder().min(2).max(2)
     override val name: String
         get() = "vector-ref"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val vec = arg1 as MutableVector?
         val pos = (arg2 as Number).toLong()
         if (pos >= vec!!.size) {

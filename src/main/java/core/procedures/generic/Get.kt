@@ -13,15 +13,15 @@ class Get : AFn(FnArgsBuilder().min(2).max(3).build()) {
     override val name: String
         get() = "get"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         var defaultValue: Any? = null
         if (args.size == 3) {
             defaultValue = args[2]
         }
-        return apply3(args[0], args[1], defaultValue)
+        return invoke(args[0], args[1], defaultValue)
     }
 
-    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         if (arg1 is Map<*, *>) {
             return (arg1 as Map<Any?, Any?>).getOrDefault(arg2, arg3)
         } else if (arg1 is Map.Entry<*, *>) {

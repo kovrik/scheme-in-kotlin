@@ -10,7 +10,7 @@ class ListToString : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
     override val name: String
         get() = "list->string"
 
-    override fun apply1(arg: Any?): Any {
+    override operator fun invoke(arg: Any?): Any {
         val cs = arg as List<*>?
         if (cs!!.isEmpty()) {
             return ""

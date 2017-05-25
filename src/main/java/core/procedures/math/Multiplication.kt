@@ -17,7 +17,7 @@ class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
     override val name: String
         get() = "*"
 
-    override fun apply(vararg args: Any?): Number? {
+    override operator fun invoke(vararg args: Any?): Number? {
         when (args.size) {
             0 -> return 1L
             1 -> return args[0] as Number
@@ -25,7 +25,7 @@ class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
                 var result: Any? = 1L
                 for (arg in args) {
                     if (arg == null) throw NullPointerException()
-                    result = Companion.apply(result as Number?, arg as Number?)
+                    result = Companion.invoke(result as Number?, arg as Number?)
                 }
                 return result as Number
             }
@@ -34,7 +34,7 @@ class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
 
     companion object {
 
-        fun apply(first: Number?, second: Number?): Number {
+        operator fun invoke(first: Number?, second: Number?): Number {
             if (first  == null) throw NullPointerException()
             if (second == null) throw NullPointerException()
             var first = first

@@ -15,7 +15,7 @@ class WriteChar : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(
     override val name: String
         get() = "write-char"
 
-    override fun apply(vararg args: Any?): Void {
+    override operator fun invoke(vararg args: Any?): Void {
         val ch = args[0] as Char
         val outputPort: OutputPort
         if (args.size == 1) {

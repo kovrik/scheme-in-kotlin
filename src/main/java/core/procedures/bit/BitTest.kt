@@ -12,7 +12,7 @@ class BitTest : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.BitOp::
     override val name: String
         get() = "bit-test"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Boolean {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
         val n = (arg2 as Number).toInt()
         return ((arg1 as Number).toInt() shr n and 1) == 1
     }

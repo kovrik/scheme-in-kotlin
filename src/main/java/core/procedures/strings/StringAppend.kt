@@ -8,7 +8,7 @@ class StringAppend : AFn(FnArgsBuilder().rest(CharSequence::class.java).build())
     override val name: String
         get() = "string-append"
 
-    override fun apply(vararg args: Any?): String? {
+    override operator fun invoke(vararg args: Any?): String? {
         if (args.isEmpty()) {
             return ""
         }

@@ -93,7 +93,7 @@ class ToExact : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Nu
     override val name: String
         get() = NAME
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         return toExact(arg)
     }
 }

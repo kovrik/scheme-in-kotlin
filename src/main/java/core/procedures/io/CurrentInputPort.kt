@@ -9,7 +9,7 @@ class CurrentInputPort : AFn(FnArgsBuilder().max(0).build()) {
     override val name: String
         get() = "current-input-port"
 
-    override fun apply0(): Any {
+    override operator fun invoke(): Any {
         return Repl.currentInputPort
     }
 }

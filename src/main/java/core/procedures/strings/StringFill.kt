@@ -13,7 +13,7 @@ class StringFill : AFn(FnArgsBuilder().min(2).max(2)
     override val isPure: Boolean
         get() = false
 
-    override fun apply2(arg1: Any?, arg2: Any?): MutableString? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): MutableString? {
         val s = arg1 as MutableString?
         val oldLength = s!!.length
         s.clear()

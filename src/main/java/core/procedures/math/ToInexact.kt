@@ -34,7 +34,7 @@ class ToInexact : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(
     override val name: String
         get() = "exact->inexact"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         return toInexact(arg)
     }
 }

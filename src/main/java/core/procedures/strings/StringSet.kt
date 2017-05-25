@@ -14,7 +14,7 @@ class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableStr
     override val isPure: Boolean
         get() = false
 
-    override fun apply3(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         val str = arg1 as MutableString?
         val pos = (arg2 as Number).toLong()
         if (pos >= str!!.length) {

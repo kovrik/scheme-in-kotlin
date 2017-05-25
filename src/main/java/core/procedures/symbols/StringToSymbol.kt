@@ -12,7 +12,7 @@ open class StringToSymbol : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<
     override val name: String
         get() = "string->symbol"
 
-    override fun apply1(arg: Any?): Symbol? {
+    override operator fun invoke(arg: Any?): Symbol? {
         return Symbol.intern(arg!!.toString())
     }
 }

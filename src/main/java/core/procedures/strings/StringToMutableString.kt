@@ -9,7 +9,7 @@ class StringToMutableString : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayO
     override val name: String
         get() = "string->mutable-string"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         when (arg) {
             is MutableString, is StringBuilder -> return arg
             else -> return MutableString(arg!!.toString())

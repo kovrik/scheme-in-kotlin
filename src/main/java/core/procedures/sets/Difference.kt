@@ -11,7 +11,7 @@ class Difference : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set::c
     override val name: String
         get() = "difference"
 
-    override fun apply(vararg args: Any?): Set<Any?> {
+    override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.size == 1) {
             return args[0] as Set<*>
         }

@@ -11,7 +11,7 @@ class IsInstance : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Class::cl
     override val name: String
         get() = "instance?"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Boolean? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean? {
         return (arg1 as Class<*>).isAssignableFrom(arg2!!.javaClass)
     }
 }

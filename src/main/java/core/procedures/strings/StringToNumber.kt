@@ -13,7 +13,7 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
     override val name: String
         get() = "string->number"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         val number = args[0].toString()
         /* Check if we should override optional radix */
         /* Read radix and/or exactness and a number */

@@ -11,7 +11,7 @@ open class Substring : AFn(FnArgsBuilder().min(2).max(3)
     override val name: String
         get() = "substring"
 
-    override fun apply(vararg args: Any?): String? {
+    override operator fun invoke(vararg args: Any?): String? {
         val s = args[0].toString()
         val start = (args[1] as Number).toLong()
         if (start > s.length) {

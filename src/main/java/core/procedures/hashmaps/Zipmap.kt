@@ -14,7 +14,7 @@ class Zipmap : AFn(FnArgsBuilder().min(2).max(2).build()) {
     override val name: String
         get() = "zipmap"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val iterator1 = Utils.toSequence(arg1)
         val iterator2 = Utils.toSequence(arg2)
         val map = HashMap<Any?, Any?>()

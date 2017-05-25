@@ -12,7 +12,7 @@ class MetaProc : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(I
     override val name: String
         get() = "meta"
 
-    override fun apply1(arg: Any?): Map<*, *>? {
+    override operator fun invoke(arg: Any?): Map<*, *>? {
         return (arg as IMeta).meta()
     }
 }

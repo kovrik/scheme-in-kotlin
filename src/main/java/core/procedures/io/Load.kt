@@ -15,7 +15,7 @@ class Load : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(CharS
     override val name: String
         get() = "load"
 
-    override fun apply1(arg: Any?): Any {
+    override operator fun invoke(arg: Any?): Any {
         val file = File(arg.toString())
         val sexps = Cons.list<Any>(Begin.BEGIN)
         sexps.addAll(reader.read(file))

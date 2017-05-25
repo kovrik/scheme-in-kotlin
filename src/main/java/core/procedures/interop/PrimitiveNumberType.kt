@@ -20,7 +20,7 @@ class PrimitiveNumberType private constructor(private val clazz: Class<*>) : AFn
         get() = true
 
     /* FIXME Have to box it */
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         val number = arg as Number?
         when (clazz) {
             Byte::class.javaPrimitiveType -> return number!!.toByte()

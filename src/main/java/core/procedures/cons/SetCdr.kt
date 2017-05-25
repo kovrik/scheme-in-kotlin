@@ -11,7 +11,7 @@ class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::cl
     override val name: String
         get() = "set-cdr!"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg1 as MutableList<Any?>?
         /* Remove tail */
         list!!.subList(1, list.size).clear()

@@ -11,7 +11,7 @@ open class HashCode : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "hashcode"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         return arg!!.hashCode()
     }
 }

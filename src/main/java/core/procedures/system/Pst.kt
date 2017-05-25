@@ -9,7 +9,7 @@ class Pst : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Throwa
     override val name: String
         get() = "pst"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         (arg as Throwable).printStackTrace()
         return Void.VOID
     }

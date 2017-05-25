@@ -11,7 +11,7 @@ class ListProc : AFn() {
     override val name: String
         get() = "list"
 
-    override fun apply(vararg args: Any?): List<Any?>? {
+    override operator fun invoke(vararg args: Any?): List<Any?>? {
         return Cons.list(*args)
     }
 }

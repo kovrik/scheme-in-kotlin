@@ -13,7 +13,7 @@ class CharProc private constructor(override val name: String, private val functi
         val CHAR_DOWNCASE   = CharProc("char-downcase", Function<Char?, Any> { Character.toLowerCase(it as Char) })
     }
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         return function.apply(arg as Char?)
     }
 }

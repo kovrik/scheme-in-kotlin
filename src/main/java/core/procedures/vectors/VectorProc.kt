@@ -8,7 +8,7 @@ class VectorProc : AFn() {
     override val name: String
         get() = "vector"
 
-    override fun apply(vararg args: Any?): MutableVector {
+    override operator fun invoke(vararg args: Any?): MutableVector {
         return MutableVector(*args)
     }
 }

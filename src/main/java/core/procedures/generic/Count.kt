@@ -12,7 +12,7 @@ open class Count : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "count"
 
-    override fun apply1(arg: Any?): Int? {
+    override operator fun invoke(arg: Any?): Int? {
         when (arg) {
             is Map<*, *> -> return arg.size
             is Map.Entry<*, *> -> return 2

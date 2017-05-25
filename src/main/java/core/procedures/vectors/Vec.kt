@@ -10,7 +10,7 @@ class Vec : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "vec"
 
-    override fun apply1(arg: Any?): MutableVector? {
+    override operator fun invoke(arg: Any?): MutableVector? {
         if (arg is Collection<*>) {
             return MutableVector(*arg.toTypedArray())
         }

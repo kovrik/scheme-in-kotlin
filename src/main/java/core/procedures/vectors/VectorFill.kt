@@ -12,7 +12,7 @@ class VectorFill : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableVe
     override val name: String
         get() = "vector-fill!"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val vector = arg1 as MutableVector?
         Arrays.fill(vector!!.getArray(), arg2)
         return Void.VOID

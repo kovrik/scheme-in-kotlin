@@ -12,7 +12,7 @@ class CharType : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "char"
 
-    override fun apply1(arg: Any?): Char? {
+    override operator fun invoke(arg: Any?): Char? {
         /* Have to box it */
         when (arg) {
             is Number -> return arg.toInt().toChar()

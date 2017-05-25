@@ -14,7 +14,7 @@ class Read : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build()) {
     override val name: String
         get() = "read"
 
-    override fun apply(vararg args: Any?): Any {
+    override operator fun invoke(vararg args: Any?): Any {
         val inputPort: InputPort
         if (args.isEmpty()) {
             inputPort = Repl.currentInputPort

@@ -9,7 +9,7 @@ class StringToList : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
     override val name: String
         get() = "string->list"
 
-    override fun apply1(arg: Any?): Cons<Char?>? {
+    override operator fun invoke(arg: Any?): Cons<Char?>? {
         val list = Cons.list<Char>()
         for (c in arg!!.toString().toCharArray()) {
             list.add(c)

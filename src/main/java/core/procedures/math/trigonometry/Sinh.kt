@@ -18,7 +18,7 @@ class Sinh : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
     override val name: String
         get() = "sinh"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
         /* Special cases */
         when {

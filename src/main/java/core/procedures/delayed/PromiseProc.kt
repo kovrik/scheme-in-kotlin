@@ -11,7 +11,7 @@ class PromiseProc : AFn(FnArgsBuilder().max(0).build()) {
     override val name: String
         get() = "promise"
 
-    override fun apply0(): CompletableFuture<Any> {
+    override operator fun invoke(): CompletableFuture<Any> {
         return Promise()
     }
 }

@@ -12,7 +12,7 @@ class HashMapProc : AFn() {
     override val name: String
         get() = "hash-map"
 
-    override fun apply(vararg args: Any?): Map<Any?, Any?> {
+    override operator fun invoke(vararg args: Any?): Map<Any?, Any?> {
         if (args.size % 2 != 0) {
             throw IllegalArgumentException("hash-map: no value supplied for key: " + args[args.size - 1])
         }

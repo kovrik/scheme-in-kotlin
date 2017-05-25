@@ -12,7 +12,7 @@ class SetProc : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name: String
         get() = "set"
 
-    override fun apply1(arg: Any?): Set<Any?> {
+    override operator fun invoke(arg: Any?): Set<Any?> {
         if (arg is Collection<*>) {
             return HashSet(arg)
         }

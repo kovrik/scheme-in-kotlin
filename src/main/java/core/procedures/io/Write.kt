@@ -16,7 +16,7 @@ class Write : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any:
     override val name: String
         get() = "write"
 
-    override fun apply(vararg args: Any?): Void {
+    override operator fun invoke(vararg args: Any?): Void {
         val outputPort: OutputPort
         if (args.size == 1) {
             outputPort = Repl.currentOutputPort

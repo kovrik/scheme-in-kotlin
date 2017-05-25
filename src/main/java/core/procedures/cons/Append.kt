@@ -20,7 +20,7 @@ class Append : AFn(FnArgsBuilder().rest(Type.ProperList::class.java).last(Any::c
     override val name: String
         get() = "append"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         var result: Any? = Cons.EMPTY
         for (arg in args) {
             result = append(result, arg)

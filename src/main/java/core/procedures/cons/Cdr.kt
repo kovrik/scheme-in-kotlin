@@ -24,7 +24,7 @@ class Cdr : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.P
     override val name: String
         get() = "cdr"
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         return cdr(arg)
     }
 }

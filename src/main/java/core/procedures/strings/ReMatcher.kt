@@ -11,7 +11,7 @@ class ReMatcher : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Pattern::c
     override val name: String
         get() = "re-matcher"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Matcher {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Matcher {
         return (arg1 as Pattern).matcher((arg2 as CharSequence?)!!)
     }
 }

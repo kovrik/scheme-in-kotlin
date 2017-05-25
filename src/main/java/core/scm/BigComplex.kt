@@ -135,10 +135,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         }
         val r = magnitude()
         val t = angle()
-        val A = Multiplication.apply(Expt.expt(r, c), Exp.exp(Multiplication.apply(t, d.negate())))
-        val B = Addition.add(Multiplication.apply(c, t), Multiplication.apply(d, Log.log(r)))
-        val re = Multiplication.apply(A, Cos.cos(B!!))
-        val im = Multiplication.apply(A, Sin.sin(B))
+        val A = Multiplication.invoke(Expt.expt(r, c), Exp.exp(Multiplication.invoke(t, d.negate())))
+        val B = Addition.add(Multiplication.invoke(c, t), Multiplication.invoke(d, Log.log(r)))
+        val re = Multiplication.invoke(A, Cos.cos(B!!))
+        val im = Multiplication.invoke(A, Sin.sin(B))
         return BigComplex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
     }
 

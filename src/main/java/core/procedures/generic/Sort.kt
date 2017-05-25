@@ -16,7 +16,7 @@ class Sort : AFn(FnArgsBuilder().min(1).max(1).build()) {
         get() = "sort"
 
     // TODO accept comparator as optional first argument
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         try {
             if (arg is List<*>) {
                 Collections.sort<Comparable<Any?>>((arg as List<Comparable<Any?>>?)!!)

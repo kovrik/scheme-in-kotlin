@@ -43,7 +43,7 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
         return array.contains(element)
     }
 
-    override fun apply1(arg: Any?): Any? {
+    override operator fun invoke(arg: Any?): Any? {
         val index = (arg as Number).toInt()
         if (index >= array.size) {
             throw IndexOutOfBoundsException(name + ": value out of range: " + index)

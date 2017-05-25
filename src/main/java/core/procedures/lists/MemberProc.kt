@@ -15,7 +15,7 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
     override val isPure: Boolean
         get() = true
 
-    override fun apply2(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg2 as List<*>?
         if (list!!.isEmpty()) {
             return java.lang.Boolean.FALSE
@@ -25,7 +25,7 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
         while (cons is List<*> && !cons.isEmpty()) {
             p += 1
             val car = Car.car(cons)
-            if (Utils.toBoolean(predicate.apply2(arg1, car))) {
+            if (Utils.toBoolean(predicate.invoke(arg1, car))) {
                 return cons
             }
             cons = Cdr.cdr(cons)

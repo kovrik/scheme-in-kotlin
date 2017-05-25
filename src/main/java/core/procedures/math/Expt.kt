@@ -20,7 +20,7 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
     override val name: String
         get() = "expt"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Number? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         return expt(arg1 as Number?, arg2 as Number?)
     }
 
@@ -64,12 +64,12 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
             if (Utils.isZero(base) && Utils.isFinite(exponent)) {
                 if (base == -0.0) {
                     if (Utils.isNegative(exponent)) {
-                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent))
+                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.invoke(exponent))
                             java.lang.Double.NEGATIVE_INFINITY
                         else
                             java.lang.Double.POSITIVE_INFINITY
                     } else {
-                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.apply1(exponent)) -0.0 else 0.0
+                        return if (Utils.isInteger(exponent) && Predicate.IS_ODD.invoke(exponent)) -0.0 else 0.0
                     }
                 }
                 return if (Utils.isNegative(exponent))
@@ -100,9 +100,9 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
             if (base is Double && java.lang.Double.NEGATIVE_INFINITY == base) {
                 if (Utils.isInteger(exponent)) {
                     if (Utils.isNegative(exponent)) {
-                        return if (Predicate.IS_ODD.apply1(exponent)) -0.0 else 0.0
+                        return if (Predicate.IS_ODD.invoke(exponent)) -0.0 else 0.0
                     } else {
-                        return if (Predicate.IS_ODD.apply1(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD.invoke(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
                     }
                 }
             }
@@ -135,15 +135,15 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
                     }
                 }
                 if (exponent == java.lang.Double.NEGATIVE_INFINITY) {
-                    if (NumericalComparison.LESS.apply2(base, 1L)!!) {
+                    if (NumericalComparison.LESS.invoke(base, 1L)!!) {
                         return java.lang.Double.POSITIVE_INFINITY
-                    } else if (NumericalComparison.GREATER.apply2(base, 1L)!!) {
+                    } else if (NumericalComparison.GREATER.invoke(base, 1L)!!) {
                         return 0.0
                     }
                 } else if (exponent == java.lang.Double.POSITIVE_INFINITY) {
-                    if (NumericalComparison.LESS.apply2(base, 1L)!!) {
+                    if (NumericalComparison.LESS.invoke(base, 1L)!!) {
                         return 0.0
-                    } else if (NumericalComparison.GREATER.apply2(base, 1L)!!) {
+                    } else if (NumericalComparison.GREATER.invoke(base, 1L)!!) {
                         return java.lang.Double.POSITIVE_INFINITY
                     }
                 }
@@ -177,7 +177,7 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
                     if (base.toLong() > 0) {
                         return java.lang.Double.POSITIVE_INFINITY
                     } else {
-                        return if (Predicate.IS_ODD.apply1(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD.invoke(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
                     }
                 }
             }

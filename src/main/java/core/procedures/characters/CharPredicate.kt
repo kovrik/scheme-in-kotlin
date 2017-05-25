@@ -15,7 +15,7 @@ class CharPredicate private constructor(override val name: String, private val p
         val IS_CHAR_NUMERIC    = CharPredicate("char-numeric?",    Predicate<Char> { Character.isDigit(it) })
     }
 
-    override fun apply1(arg: Any?): Boolean {
+    override operator fun invoke(arg: Any?): Boolean {
         return predicate.test(arg as Char)
     }
 }

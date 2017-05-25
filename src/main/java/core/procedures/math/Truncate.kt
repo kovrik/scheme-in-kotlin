@@ -15,7 +15,7 @@ class Truncate : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(T
     override val name: String
         get() = "truncate"
 
-    override fun apply1(arg: Any?): Number? {
+    override operator fun invoke(arg: Any?): Number? {
         if (arg is Double || arg is Float) {
             if ((arg as Number).toDouble() < 0) {
                 return Math.ceil(arg.toDouble())

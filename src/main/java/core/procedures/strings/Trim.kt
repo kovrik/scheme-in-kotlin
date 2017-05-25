@@ -8,7 +8,7 @@ class Trim : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(CharS
     override val name: String
         get() = "trim"
 
-    override fun apply1(arg: Any?): String {
+    override operator fun invoke(arg: Any?): String {
         return arg!!.toString().trim { it <= ' ' }
     }
 }

@@ -17,7 +17,7 @@ class Subtraction : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build())
     override val name: String
         get() = "-"
 
-    override fun apply(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {
             when {
                 args[0] is BigDecimal -> return (args[0] as BigDecimal).negate()

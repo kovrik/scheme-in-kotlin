@@ -14,7 +14,7 @@ class MakeRectangular : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Clas
     override val name: String
         get() = "make-rectangular"
 
-    override fun apply2(arg1: Any?, arg2: Any?): Number {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Number {
         if (arg1 == null) throw NullPointerException()
         if (arg2 == null) throw NullPointerException()
         /* (+ x (* y 0+1i)) */
