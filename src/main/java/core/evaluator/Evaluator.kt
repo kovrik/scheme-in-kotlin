@@ -25,7 +25,7 @@ class Evaluator {
         /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)
         @Volatile var executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors(),
-                createThreadFactory(threadCounter))
+                createThreadFactory(threadCounter))!!
 
         private fun createThreadFactory(threadCounter: AtomicLong): ThreadFactory {
             return ThreadFactory { r ->
@@ -109,7 +109,6 @@ class Evaluator {
         if (isEmpty()) {
             throw IllegalSyntaxException.of("eval", this, "illegal empty application")
         }
-
         var javaMethod = false
         var op: Any? = this[0]
         if (op is Symbol) {

@@ -11,6 +11,38 @@ import java.util.Arrays
 
 class Reflector {
 
+    companion object {
+
+        private val UNBOXED = HashMap<Class<*>, Class<*>>()
+
+        init {
+            UNBOXED.put(Byte::class.javaObjectType,    Byte::class.java)
+            UNBOXED.put(Short::class.javaObjectType,   Short::class.java)
+            UNBOXED.put(Int::class.javaObjectType,     Int::class.java)
+            UNBOXED.put(Long::class.javaObjectType,    Long::class.java)
+            UNBOXED.put(Float::class.javaObjectType,   Float::class.java)
+            UNBOXED.put(Double::class.javaObjectType,  Double::class.java)
+            UNBOXED.put(Char::class.javaObjectType,    Char::class.java)
+            UNBOXED.put(Boolean::class.javaObjectType, Boolean::class.java)
+        }
+
+        /* Some common classes that are not in java.lang. package could be resolved without package name */
+        private val CLASS_PACKAGE_MAPPING = HashMap<String, String>()
+
+        init {
+            CLASS_PACKAGE_MAPPING.put("BigInteger", "java.math.BigInteger")
+            CLASS_PACKAGE_MAPPING.put("BigDecimal", "java.math.BigDecimal")
+        }
+
+        private val BOXED = HashMap<Class<*>?, Class<*>?>()
+
+        init {
+            for ((key, value) in UNBOXED) {
+                BOXED.put(value, key)
+            }
+        }
+    }
+
     private fun getMethod(clazz: Class<*>?, name: String, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Method {
         try {
             return clazz!!.getMethod(name, *parameterTypes)
@@ -56,7 +88,7 @@ class Reflector {
     private fun downcastArgs(args: Array<Any?>, parameterTypes: Array<Class<*>?>) {
         for (i in parameterTypes.indices) {
             val parameterType = parameterTypes[i]
-            if (Number::class.java.isAssignableFrom((BOXED as Map<Class<*>?, Class<*>?>).getOrDefault(parameterType, parameterType))) {
+            if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(parameterType, parameterType))) {
                 // cast to int
                 parameterTypes[i] = Int::class.java
                 args[i] = (args[i] as Number).toInt()
@@ -211,38 +243,6 @@ class Reflector {
             throw RuntimeException(String.format("reflector: unable to access static method %s of %s", methodName, clazz.name))
         } catch (e: InvocationTargetException) {
             throw RuntimeException("reflector: reflection exception")
-        }
-    }
-
-    companion object {
-
-        private val UNBOXED = HashMap<Class<*>, Class<*>>()
-
-        init {
-            UNBOXED.put(Byte::class.javaObjectType,    Byte::class.java)
-            UNBOXED.put(Short::class.javaObjectType,   Short::class.java)
-            UNBOXED.put(Int::class.javaObjectType,     Int::class.java)
-            UNBOXED.put(Long::class.javaObjectType,    Long::class.java)
-            UNBOXED.put(Float::class.javaObjectType,   Float::class.java)
-            UNBOXED.put(Double::class.javaObjectType,  Double::class.java)
-            UNBOXED.put(Char::class.javaObjectType,    Char::class.java)
-            UNBOXED.put(Boolean::class.javaObjectType, Boolean::class.java)
-        }
-
-        /* Some common classes that are not in java.lang. package could be resolved without package name */
-        private val CLASS_PACKAGE_MAPPING = HashMap<String, String>()
-
-        init {
-            CLASS_PACKAGE_MAPPING.put("BigInteger", "java.math.BigInteger")
-            CLASS_PACKAGE_MAPPING.put("BigDecimal", "java.math.BigDecimal")
-        }
-
-        private val BOXED = HashMap<Class<*>, Class<*>>()
-
-        init {
-            for ((key, value) in UNBOXED) {
-                BOXED.put(value, key)
-            }
         }
     }
 }
