@@ -106,9 +106,7 @@ class Evaluator {
 
     /* Evaluate list */
     private fun MutableList<Any?>.eval(env: Environment): Any? {
-        if (isEmpty()) {
-            throw IllegalSyntaxException.of("eval", this, "illegal empty application")
-        }
+        if (isEmpty()) throw IllegalSyntaxException.of("eval", this, "illegal empty application")
         var javaMethod = false
         var op: Any? = this[0]
         if (op is Symbol) {

@@ -32,27 +32,15 @@ object Utils {
     private val EXPONENT_PATTERN   = Pattern.compile(".+$EXPONENT_MARKS_PATTERN[+-]?\\d+(\\.\\d*)?$")
     private val EXPONENT16_PATTERN = Pattern.compile(".+$EXPONENT16_MARKS_PATTERN[+-]?\\w+$")
 
-    private val SPECIAL_NUMBERS = HashMap<String, Number>()
+    private val SPECIAL_NUMBERS = hashMapOf("+nan.0" to Double.NaN,
+                                            "-nan.0" to Double.NaN,
+                                            "+inf.0" to Double.POSITIVE_INFINITY,
+                                            "-inf.0" to Double.NEGATIVE_INFINITY)
 
-    init {
-        SPECIAL_NUMBERS.put("+nan.0", Double.NaN)
-        SPECIAL_NUMBERS.put("-nan.0", Double.NaN)
-        SPECIAL_NUMBERS.put("+inf.0", Double.POSITIVE_INFINITY)
-        SPECIAL_NUMBERS.put("-inf.0", Double.NEGATIVE_INFINITY)
-    }
-
-    private val NAMED_RADICES = HashMap<Char, Int>()
-
-    init {
-        NAMED_RADICES.put('b', 2)
-        NAMED_RADICES.put('B', 2)
-        NAMED_RADICES.put('o', 8)
-        NAMED_RADICES.put('O', 8)
-        NAMED_RADICES.put('d', 10)
-        NAMED_RADICES.put('D', 10)
-        NAMED_RADICES.put('x', 16)
-        NAMED_RADICES.put('X', 16)
-    }
+    private val NAMED_RADICES = hashMapOf('b' to 2,  'B' to 2,
+                                          'o' to 8,  'O' to 8,
+                                          'd' to 10, 'D' to 10,
+                                          'x' to 16, 'X' to 16)
 
     private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>()
 
@@ -65,25 +53,9 @@ object Utils {
     }
 
     /* Threshold after which we switch to BigDecimals */
-    private val RADIX_THRESHOLDS = HashMap<Int, Int>()
-
-    init {
-        RADIX_THRESHOLDS.put(2, 63)
-        RADIX_THRESHOLDS.put(3, 39)
-        RADIX_THRESHOLDS.put(4, 31)
-        RADIX_THRESHOLDS.put(5, 27)
-        RADIX_THRESHOLDS.put(6, 24)
-        RADIX_THRESHOLDS.put(7, 22)
-        RADIX_THRESHOLDS.put(8, 21)
-        RADIX_THRESHOLDS.put(9, 19)
-        RADIX_THRESHOLDS.put(10, 18)
-        RADIX_THRESHOLDS.put(11, 18)
-        RADIX_THRESHOLDS.put(12, 17)
-        RADIX_THRESHOLDS.put(13, 17)
-        RADIX_THRESHOLDS.put(14, 16)
-        RADIX_THRESHOLDS.put(15, 16)
-        RADIX_THRESHOLDS.put(16, 15)
-    }
+    private val RADIX_THRESHOLDS = hashMapOf(2  to 63, 3  to 39, 4  to 31, 5  to 27, 6  to 24, 7  to 22, 8  to 21,
+                                             9  to 19, 10 to 18, 11 to 18, 12 to 17, 13 to 17, 14 to 16, 15 to 16,
+                                             16 to 15)
 
     private val RADIX_CHARS = HashMap<Int, String>()
 
@@ -153,7 +125,6 @@ object Utils {
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: " + number)
             }
-
             exactness = if (exactness == null) 'i' else exactness
         }
         /* Validate sign */
@@ -233,19 +204,19 @@ object Utils {
 
     /* Parse string into a number */
     private fun processNumber(number: String, r: Int?, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
-        var number = number
+        var num = number
         var result: Number?
-        val dotPos = number.indexOf('.')
+        val dotPos = num.indexOf('.')
         if (useBigNum) {
             if (dotPos < 0) {
-                result = BigInteger(number, r!!)
+                result = BigInteger(num, r!!)
             } else {
                 /* Remove dot */
-                number = number.replace(".", "")
+                num = num.replace(".", "")
                 /* Process radix */
-                var bigDecimal = if (r == 10) BigDecimal(number) else BigDecimal(BigInteger(number, r!!))
+                var bigDecimal = if (r == 10) BigDecimal(num) else BigDecimal(BigInteger(num, r!!))
                 /* Process radix for a number with decimal point */
-                bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES[r]!!.pow(number.length - dotPos), MathContext.UNLIMITED)
+                bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 if (bigDecimal.stripTrailingZeros().scale() == 0) {
                     bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE)
                 }
@@ -253,14 +224,14 @@ object Utils {
             }
         } else {
             if (dotPos < 0) {
-                result = number.toLong(r!!)
+                result = num.toLong(r!!)
             } else {
                 if (r == 10) {
-                    result = number.toDouble()
+                    result = num.toDouble()
                 } else {
                     /* Remove dot */
-                    number = number.replace(".", "")
-                    result = number.toLong(r!!) / Math.pow(r.toDouble(), (number.length - dotPos).toDouble())
+                    num = num.replace(".", "")
+                    result = num.toLong(r!!) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
                 }
             }
         }
@@ -314,52 +285,45 @@ object Utils {
     }
 
     fun toBigDecimal(number: Number): BigDecimal {
-        if (number is BigDecimal) return number
-        if (number is Long) return BigDecimal.valueOf(number)
-        if (number is BigInteger) return BigDecimal(number)
-        if (number is Double) return BigDecimal.valueOf(number)
-        if (number is BigRatio) return number.toBigDecimal()
-        if (number is BigComplex) throw UnsupportedOperationException("undefined for complex!")
-        return BigDecimal(number.toString())
+        when (number) {
+            is BigDecimal -> return number
+            is Long       -> return BigDecimal.valueOf(number)
+            is BigInteger -> return BigDecimal(number)
+            is Double     -> return BigDecimal.valueOf(number)
+            is BigRatio   -> return number.toBigDecimal()
+            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+            else          -> return BigDecimal(number.toString())
+        }
     }
 
     fun toBigInteger(number: Number): BigInteger {
-        if (number is BigInteger) return number
-        if (number is Long) return BigInteger.valueOf(number)
-        if (number is Double) return BigInteger.valueOf(number.toLong())
-        if (number is BigComplex) throw UnsupportedOperationException("undefined for complex!")
-        return BigInteger(number.toString())
+        when (number) {
+            is BigInteger -> return number
+            is Long       -> return BigInteger.valueOf(number)
+            is Double     -> return BigInteger.valueOf(number.toLong())
+            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+            else          -> return BigInteger(number.toString())
+        }
     }
 
     fun isRational(o: Any?): Boolean {
-        if (o !is Number) {
-            return false
+        when (o) {
+            !is Number     -> return false
+            is BigComplex  -> return false
+            is Double      -> return !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
+            is Float       -> return !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
+            else           -> return true
         }
-        if (o is BigComplex) {
-            return false
-        }
-        if (o is Double) {
-            return !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
-        } else if (o is Float) {
-            return !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
-        }
-        return true
     }
 
     fun isExact(o: Any?): Boolean {
-        if (o == null) {
-            return false
+        when (o) {
+            null          -> return false
+            is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> return true
+            is BigDecimal -> return o.scale() == 0
+            is BigComplex -> return isExact(o.re) && isExact(o.im)
+            else          -> return false
         }
-        if (o is Long|| o is BigRatio || o is Int || o is BigInteger || o is Short || o is Byte) {
-            return true
-        }
-        if (o is BigDecimal) {
-            return o.scale() == 0
-        }
-        if (o is BigComplex) {
-            return isExact(o.re) && isExact(o.im)
-        }
-        return false
     }
 
     fun isInexact(o: Any?): Boolean {
@@ -367,22 +331,14 @@ object Utils {
     }
 
     fun isInteger(o: Any?): Boolean {
-        if (o == null) {
-            return false
+        when (o) {
+            null           -> return false
+            is Long, is Int, is BigInteger, is Short, is Byte -> return true
+            is BigDecimal  -> return o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
+            is BigRatio    -> return o.isDenominatorEqualToOne
+            is Double      -> return o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
+            else           -> return false
         }
-        if (o is Long || o is Int || o is BigInteger || o is Short || o is Byte) {
-            return true
-        }
-        if (o is BigDecimal) {
-            return o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
-        }
-        if (o is BigRatio) {
-            return o.isDenominatorEqualToOne
-        }
-        if (o is Double) {
-            return o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
-        }
-        return false
     }
 
     fun isExactInteger(o: Any?): Boolean {
@@ -390,59 +346,67 @@ object Utils {
     }
 
     fun isZero(o: Any?): Boolean {
-        if (o == null) return false
-        if (o is Long) return ((o as Long?)!!).compareTo(0L) == 0
-        if (o is Double) return Math.signum((o as Double?)!!) == 0.0
-        if (o is BigRatio) return o.signum() == 0
-        if (o is BigDecimal) return o.signum() == 0
-        if (o is Int) return Integer.signum((o as Int?)!!) == 0
-        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == 0
-        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == 0
-        if (o is Float) return Math.signum((o as Float?)!!) == 0f
-        if (o is BigInteger) return o.signum() == 0
-        return false
+        when (o) {
+            null          -> return false
+            is Long       -> return ((o as Long?)!!).compareTo(0L) == 0
+            is Double     -> return Math.signum((o as Double?)!!) == 0.0
+            is BigRatio   -> return o.signum() == 0
+            is BigDecimal -> return o.signum() == 0
+            is Int        -> return Integer.signum((o as Int?)!!) == 0
+            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == 0
+            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == 0
+            is Float      -> return Math.signum((o as Float?)!!) == 0f
+            is BigInteger -> return o.signum() == 0
+            else          -> return false
+        }
     }
 
     fun isOne(o: Any?): Boolean {
-        if (o == null) return false
-        if (o is Long) return (o as Long?)!!.toInt() == 1
-        if (o is Double) return java.lang.Double.compare((o as Double?)!!, 1.0) == 0
-        if (o is BigRatio) return o.isOne
-        if (o is BigDecimal) return o.compareTo(BigDecimal.ONE) == 0
-        if (o is Int) return o as Int? == 1
-        if (o is Short) return (o as Short?)!!.toInt() == 1
-        if (o is Byte) return (o as Byte?)!!.toInt() == 1
-        if (o is Float) return java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
-        if (o is BigInteger) return o.compareTo(BigInteger.ONE) == 0
-        return false
+        when (o) {
+            null          -> return false
+            is Long       -> return (o as Long?)!!.toInt() == 1
+            is Double     -> return java.lang.Double.compare((o as Double?)!!, 1.0) == 0
+            is BigRatio   -> return o.isOne
+            is BigDecimal -> return o.compareTo(BigDecimal.ONE) == 0
+            is Int        -> return o as Int? == 1
+            is Short      -> return (o as Short?)!!.toInt() == 1
+            is Byte       -> return (o as Byte?)!!.toInt() == 1
+            is Float      -> return java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
+            is BigInteger -> return o.compareTo(BigInteger.ONE) == 0
+            else          -> return false
+        }
     }
 
     fun isPositive(o: Any?): Boolean {
-        if (o == null) return false
-        if (o is Long) return (o as Long?)!! > 0
-        if (o is Double) return Math.signum((o as Double?)!!) == 1.0
-        if (o is BigRatio) return o.signum() == 1
-        if (o is BigDecimal) return o.signum() == 1
-        if (o is Int) return Integer.signum((o as Int?)!!) == 1
-        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == 1
-        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == 1
-        if (o is Float) return Math.signum((o as Float?)!!) == 1f
-        if (o is BigInteger) return o.signum() == 1
-        return false
+        when (o) {
+            null          -> return false
+            is Long       -> return (o as Long?)!! > 0
+            is Double     -> return Math.signum((o as Double?)!!) == 1.0
+            is BigRatio   -> return o.signum() == 1
+            is BigDecimal -> return o.signum() == 1
+            is Int        -> return Integer.signum((o as Int?)!!) == 1
+            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == 1
+            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == 1
+            is Float      -> return Math.signum((o as Float?)!!) == 1f
+            is BigInteger -> return o.signum() == 1
+            else          -> return false
+        }
     }
 
     fun isNegative(o: Any?): Boolean {
-        if (o == null) return false
-        if (o is Long) return ((o as Long?)!!) < 0
-        if (o is Double) return Math.signum((o as Double?)!!) == -1.0
-        if (o is BigRatio) return o.signum() == -1
-        if (o is BigDecimal) return o.signum() == -1
-        if (o is Int) return Integer.signum((o as Int?)!!) == -1
-        if (o is Short) return Integer.signum((o as Short?)!!.toInt()) == -1
-        if (o is Byte) return Integer.signum((o as Byte?)!!.toInt()) == -1
-        if (o is Float) return Math.signum((o as Float?)!!) == -1f
-        if (o is BigInteger) return o.signum() == -1
-        return false
+        when (o) {
+            null          -> return false
+            is Long       -> return ((o as Long?)!!) < 0
+            is Double     -> return Math.signum((o as Double?)!!) == -1.0
+            is BigRatio   -> return o.signum() == -1
+            is BigDecimal -> return o.signum() == -1
+            is Int        -> return Integer.signum((o as Int?)!!) == -1
+            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == -1
+            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == -1
+            is Float      -> return Math.signum((o as Float?)!!) == -1f
+            is BigInteger -> return o.signum() == -1
+            else          -> return false
+        }
     }
 
     fun isNonNegative(o: Any): Boolean {
@@ -461,6 +425,19 @@ object Utils {
         return o !is BigComplex && o is Number
     }
 
+    fun isFinite(number: Number?): Boolean {
+        when (number) {
+            null      -> return true
+            is Double -> return java.lang.Double.isFinite((number as Double?)!!)
+            is Float  -> return java.lang.Float.isFinite((number as Float?)!!)
+            else      -> return true
+        }
+    }
+
+    fun isNaN(number: Number?): Boolean {
+        return number != null && number is Double && java.lang.Double.isNaN((number as Double?)!!)
+    }
+
     /**
      * Inexactness 'taint'
      * Computations that involve an inexact number produce inexact results,
@@ -472,14 +449,12 @@ object Utils {
     }
 
     fun downcastNumber(number: Number): Number {
-        /* Try to downcast Rationals with denominator = 1 */
-        if (number is BigRatio && number.isDenominatorEqualToOne) {
-            return tryDowncast(number)
+        when {
+            number is BigRatio && number.isDenominatorEqualToOne -> return tryDowncast(number)
+            number is BigDecimal -> return tryDowncast(number)
+            number is BigInteger -> return tryDowncast(number)
+            else                 -> return number
         }
-        /* Try to downcast Big Numbers */
-        if (number is BigDecimal) return tryDowncast(number)
-        if (number is BigInteger) return tryDowncast(number)
-        return number
     }
 
     /**
@@ -524,32 +499,14 @@ object Utils {
         return tryDowncast(bigRatio.numerator)
     }
 
-    fun isFinite(number: Number?): Boolean {
-        if (number == null) {
-            return true
-        } else if (number is Double) {
-            return java.lang.Double.isFinite((number as Double?)!!)
-        } else if (number is Float) {
-            return java.lang.Float.isFinite((number as Float?)!!)
-        }
-        return true
-    }
-
-    fun isNaN(number: Number?): Boolean {
-        return number != null && number is Double && java.lang.Double.isNaN((number as Double?)!!)
-    }
-
     /* Upcast number if required */
     fun upcast(number: Number?): Number? {
-        if (number == null) {
-            return null
+        when (number) {
+            null     -> return null
+            is Byte, is Short, is Int -> return number.toLong()
+            is Float -> return number.toDouble()
+            else     -> return number
         }
-        if (number is Byte || number is Short || number is Int) {
-            return number.toLong()
-        } else if (number is Float) {
-            return number.toDouble()
-        }
-        return number
     }
 
     fun isBitOpSupported(obj: Any): Boolean {
@@ -576,39 +533,32 @@ object Utils {
         return obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
     }
 
+    // TODO do not perform isSeqable() check!
     // TODO return custom Sequence object instead of Iterator
     fun toSequence(obj: Any?): Iterator<*> {
-        if (!isSeqable(obj)) {
-            throw IllegalArgumentException("don't know how to create Sequence from " + obj?.javaClass)
+        if (!isSeqable(obj)) throw IllegalArgumentException("don't know how to create Sequence from " + obj?.javaClass)
+        when (obj) {
+            is Iterable<*>     -> return obj.iterator()
+            is CharSequence    -> return stringIterator(obj)
+            is Map<*, *>       -> return obj.entries.iterator()
+            is Map.Entry<*, *> -> return MapEntry(obj).iterator()
+            else               -> return Collections.EMPTY_LIST.iterator()
         }
-        if (obj is Iterable<*>) {
-            return obj.iterator()
-        } else if (obj is CharSequence) {
-            return stringIterator(obj)
-        } else if (obj is Map<*, *>) {
-            return obj.entries.iterator()
-        } else if (obj is Map.Entry<*, *>) {
-            return MapEntry(obj).iterator()
-        }
-        return Collections.EMPTY_LIST.iterator()
     }
 
+    // TODO do not perform isAssoc() check!
     fun toAssoc(obj: Any?): IAssoc {
-        if (!isAssoc(obj)) {
-            throw IllegalArgumentException("don't know how to create Map from " + obj?.javaClass)
+        if (!isAssoc(obj)) throw IllegalArgumentException("don't know how to create Map from " + obj?.javaClass)
+        when (obj) {
+            null                -> throw NullPointerException()
+            is IAssoc           -> return obj
+            is MutableMap<*, *> -> return mapToAssoc(obj)
+            is Map.Entry<*, *>  -> return MapEntry(obj)
+            else                -> return mapToAssoc(mutableMapOf<Any?, Any?>())
         }
-        if (obj is IAssoc) {
-            return obj
-        } else if (obj is MutableMap<*, *>) {
-            return mapToAssoc(obj)
-        } else if (obj is Map.Entry<*, *>) {
-            return MapEntry(obj)
-        }
-        return mapToAssoc(mutableMapOf<Any?, Any?>())
     }
 
-    private fun mapToAssoc(map: MutableMap<*, *>?): IAssoc {
-        if (map == null) throw NullPointerException()
+    private fun mapToAssoc(map: MutableMap<*, *>): IAssoc {
         return object : IAssoc {
             override fun containsKey(key: Any): Boolean {
                 return map.containsKey(key)
