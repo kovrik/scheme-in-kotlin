@@ -132,14 +132,10 @@ class Evaluator {
         }
 
         /* If it is a Special Form, then evaluate it */
-        if (op is ISpecialForm) {
-            return op.eval(this, env, this@Evaluator)
-        }
+        if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
 
         /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
-        if (op !is AFn) {
-            op = eval(op, env)
-        }
+        if (op !is AFn) op = eval(op, env)
 
         /* Vectors and Map Entries are functions of index */
         if (op is Map.Entry<Any?, Any?>) {
@@ -159,7 +155,8 @@ class Evaluator {
                 throw IndexOutOfBoundsException("vector: value out of range: $i")
             }
             return vector[i]
-        } else if (op is Map<*, *>) {
+        }
+        if (op is Map<*, *>) {
             /* Maps are functions of their keys */
             if (size > 3) throw ArityException("hashmap", 1, 2, size - 1)
             val map = (op as Map<Any?, Any?>).eval(env)

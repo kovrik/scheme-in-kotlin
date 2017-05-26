@@ -28,11 +28,8 @@ open class MutableVector : Vector {
     }
 
     override fun assoc(key: Any, value: Any): Any {
-        if (!Utils.isInteger(key)) {
-            throw WrongTypeException(name, Int::class.java, key)
-        }
-        val i = (key as Number).toInt()
-        set(i, value)
+        if (!Utils.isInteger(key)) throw WrongTypeException(name, Int::class.java, key)
+        set((key as Number).toInt(), value)
         return this
     }
 }
