@@ -34,5 +34,4 @@ class TCOTest : AbstractTest() {
         eval(recursive, env)
         assertEquals(ITERS, eval("(foo 5)", env))
     }
-    // TODO Tests for other Special Forms
 }

@@ -13,7 +13,6 @@ class JavaInteropTest : AbstractTest() {
     fun testJavaStaticFields() {
         assertEquals(Math.PI, eval("Math/PI", env))
         assertTrue(Collections.EMPTY_LIST === eval("java.util.Collections/EMPTY_LIST", env))
-        // FIXME assertTrue(Cons.EMPTY === eval(Cons::class.java.name + "/EMPTY", env))
     }
 
     @Test
@@ -21,7 +20,6 @@ class JavaInteropTest : AbstractTest() {
         System.setProperty("TESTKEY", "TESTVALUE")
         assertEquals("TESTVALUE", eval("(System/getProperty \"TESTKEY\")", env))
         assertEquals(java.lang.Short.valueOf("5"), eval("(Short/parseShort \"12\" 3)", env))
-        //    assertEquals(3L, eval("(Short/valueOf 3)", env));
     }
 
     @Test

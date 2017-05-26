@@ -211,9 +211,7 @@ class SpecialFormTest : AbstractTest() {
                 "  (+ 1 (test2)))"
         eval(d2, env)
         assertEquals(9L, eval("(test-internal-define2)", env))
-
         assertEquals(list(3L, 4L, 5L), eval("((lambda (a b c . d) d) 0 1 2 3 4 5)", env))
-
         // TODO Check Definition context
     }
 

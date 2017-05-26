@@ -54,7 +54,7 @@ class ComplexTest : AbstractTest() {
         assertEquals(TRUE, eval("(inexact? 0+2.0i)", env))
         assertEquals(TRUE, eval("(inexact? 0.0+1i)", env))
         assertEquals(FALSE, eval("(exact? (exact->inexact 1+2i))", env))
-        // FIXME Rationals
+        // FIXME Complex Ratios
         //    assertEquals(TRUE,  eval("(exact? (inexact->exact 1.3+2.4i))", env));
     }
 
