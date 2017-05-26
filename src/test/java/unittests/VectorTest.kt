@@ -14,14 +14,13 @@ class VectorTest : AbstractTest() {
     @Test
     fun testEvalIsVector() {
         assertEquals(FALSE, eval("(vector? #\\A)", env))
-        assertEquals(TRUE, eval("(vector? #(1 2 3 ))", env))
+        assertEquals(TRUE,  eval("(vector? #(1 2 3 ))", env))
     }
 
     @Test
     fun testEvalVector() {
         assertEquals(MutableVector(), eval("#()", env))
         assertEquals(MutableVector(1L, 2L, 3L), eval("#(1 2 3 )", env))
-
         assertEquals(MutableVector(), eval("(vector)", env))
         assertEquals(MutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env))
         assertEquals(MutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env))

@@ -3,9 +3,10 @@ package core.procedures
 import core.exceptions.ArityException
 import core.exceptions.WrongTypeException
 import core.scm.Type
+import core.utils.Utils
 
 /* Abstract superclass of all functions */
-abstract class AFn : IFn<Any?, Any?> {
+abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
 
     protected var minArgs: Int = 0
     protected var maxArgs: Int = 0
@@ -36,6 +37,16 @@ abstract class AFn : IFn<Any?, Any?> {
     /* Return true if function is pure (referentially transparent) */
     open val isPure: Boolean
         get() = false
+
+    override fun compare(o1: Any?, o2: Any?): Int {
+        val result = invokeN(o1, o2)
+        if (result is Boolean) {
+            if (Utils.toBoolean(result)) return -1
+            if (Utils.toBoolean(invokeN(o2, o1))) return 1
+            return 0
+        }
+        return (result as Number).toInt()
+    }
 
     override fun run() {
         invoke()

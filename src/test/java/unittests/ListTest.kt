@@ -1,17 +1,16 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.scm.Cons
+import core.scm.*
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
 import core.scm.Cons.Companion.list
-import core.scm.MutableVector
-import core.scm.Symbol
-import core.scm.Void
+import core.scm.Vector
 import org.junit.Assert.*
 import org.junit.Test
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
+import java.util.*
 
 class ListTest : AbstractTest() {
 
@@ -512,9 +511,22 @@ class ListTest : AbstractTest() {
     fun testEvalNext() {
         assertEquals(null, eval("(next '())", env))
         assertEquals(Cons.EMPTY, eval("(next '(1))", env))
-        assertEquals(Cons.list(3L, 4L), eval("(next '(2 3 4))", env))
+        assertEquals(list(3L, 4L), eval("(next '(2 3 4))", env))
         assertEquals(null, eval("(rest '())", env))
         assertEquals(Cons.EMPTY, eval("(rest '(1))", env))
-        assertEquals(Cons.list(3L, 4L), eval("(rest '(2 3 4))", env))
+        assertEquals(list(3L, 4L), eval("(rest '(2 3 4))", env))
+    }
+
+    @Test
+    fun testEvalSort() {
+        assertEquals(list(1L, 2L, 3L, 4L, 5L), eval("(sort   '(5 4 3 2 1))", env))
+        assertEquals(list(5L, 4L, 3L, 2L, 1L), eval("(sort > '(5 4 3 2 1))", env))
+        assertEquals(list(5L, 4L, 3L, 2L, 1L), eval("(sort > '(5 4 3 2 1))", env))
+        assertEquals(Cons.EMPTY, eval("(sort '())", env))
+        assertEquals(Vector(1L, 2L, 3L, 4L, 5L), eval("(sort   [5 4 3 2 1])", env))
+        assertEquals(Vector(5L, 4L, 3L, 2L, 1L), eval("(sort > [5 4 3 2 1])", env))
+        assertEquals(Vector(), eval("(sort [])", env))
+        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l '(1 2 3 4 5))) (map + l (sort > l)))", env))
+        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l  [1 2 3 4 5])) (map + l (sort > l)))", env))
     }
 }
