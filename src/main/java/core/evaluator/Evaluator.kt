@@ -213,9 +213,7 @@ class Evaluator {
     /* Evaluate set */
     private fun Set<Any?>.eval(env: Environment): Set<Any?> {
         val result = HashSet<Any?>(size)
-        for (e in this) {
-            result.add(eval(e, env))
-        }
+        this.mapTo(result) { eval(it, env) }
         return result
     }
 }
