@@ -16,8 +16,8 @@ class Sort : AFn(FnArgsBuilder().min(1).max(2).build()) {
         get() = "sort"
 
     override operator fun invoke(vararg args: Any?): Any? {
-        if (args.size == 1) {
-            val arg = args[0]
+        if (args.size == 1 || args[0] == null) {
+            val arg = args[0] ?: args[1]
             try {
                 when (arg) {
                     is List<*> -> {
