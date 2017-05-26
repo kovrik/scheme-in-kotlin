@@ -121,11 +121,9 @@ class Evaluator {
                     this[0] = op
                 }
             } else if (op === Environment.UNDEFINED) {
-                // TODO Check if op starts with '.' instead?
                 javaMethod = true
                 /* Special case: constructor call If Symbol ends with . */
                 if (sym.name[sym.name.length - 1] == '.') {
-                    // TODO Optimize and cleanup
                     this[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
                     op = New.NEW
                     (this as Cons<Any>).push(op)
