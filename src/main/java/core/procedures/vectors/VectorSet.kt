@@ -19,6 +19,6 @@ class VectorSet : AFn(FnArgsBuilder().min(3).max(3)
             throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, pos))
         }
         vec[pos.toInt()] = arg3
-        return Void.VOID
+        return Void
     }
 }

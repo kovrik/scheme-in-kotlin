@@ -21,6 +21,6 @@ class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableStr
             throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, pos))
         }
         str.setCharAt(pos.toInt(), (arg3 as Char?)!!)
-        return Void.VOID
+        return Void
     }
 }

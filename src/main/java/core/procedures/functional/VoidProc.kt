@@ -1,6 +1,7 @@
 package core.procedures.functional
 
 import core.procedures.AFn
+import core.scm.Void
 
 class VoidProc : AFn() {
 
@@ -15,6 +16,6 @@ class VoidProc : AFn() {
         get() = "void"
 
     override operator fun invoke(vararg args: Any?): Any? {
-        return core.scm.Void.VOID
+        return Void
     }
 }

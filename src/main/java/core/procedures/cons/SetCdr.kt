@@ -2,8 +2,8 @@ package core.procedures.cons
 
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
-import core.scm.Type
 import core.scm.Cons
+import core.scm.Type
 import core.scm.Void
 
 class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::class.java, Any::class.java)).build()) {
@@ -24,6 +24,6 @@ class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::cl
                 list.isList = false
             }
         }
-        return Void.VOID
+        return Void
     }
 }

@@ -14,6 +14,6 @@ class Exit : AFn(FnArgsBuilder().max(1).rest(Long::class.java).build()) {
             args.isEmpty() -> System.exit(0)
             else -> System.exit((args[0] as Long).toInt())
         }
-        return Void.VOID
+        return Void
     }
 }

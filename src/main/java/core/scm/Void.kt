@@ -1,14 +1,12 @@
 package core.scm
 
 /**
- * Void class
+ * Void singleton
  * Nil result (null) is a valid result,
  * so we need this VOID class to represent actual void result
  * (same as #<unspecified> in Scheme) */
-enum class Void {
-    VOID {
-        override fun toString(): String {
-            return "#<void>"
-        }
+object Void {
+    override fun toString(): String {
+        return "#<void>"
     }
 }

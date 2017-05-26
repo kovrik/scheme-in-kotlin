@@ -25,7 +25,7 @@ enum class Unless : ISpecialForm {
             }
             return Thunk(expression[expression.size - 1], env)
         }
-        return Void.VOID
+        return Void
     }
 
     override fun toString(): String {

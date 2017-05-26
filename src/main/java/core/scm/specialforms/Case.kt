@@ -43,7 +43,7 @@ enum class Case : ISpecialForm {
                 }
             }
         }
-        return Void.VOID
+        return Void
     }
 
     override fun toString(): String {

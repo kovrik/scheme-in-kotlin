@@ -14,7 +14,7 @@ enum class Comment : ISpecialForm {
     COMMENT;
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Void? {
-        return Void.VOID
+        return Void
     }
 
     override fun toString(): String {

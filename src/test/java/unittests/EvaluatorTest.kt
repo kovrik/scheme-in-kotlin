@@ -194,7 +194,7 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testForEach() {
-        assertEquals(Void.VOID, eval("(for-each length '(() (a) (a b)))", env))
+        assertEquals(Void, eval("(for-each length '(() (a) (a b)))", env))
     }
 
     @Test

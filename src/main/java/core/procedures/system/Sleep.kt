@@ -16,6 +16,6 @@ class Sleep : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Long
         } catch (e: InterruptedException) {
             throw ThrowableWrapper(e)
         }
-        return Void.VOID
+        return Void
     }
 }

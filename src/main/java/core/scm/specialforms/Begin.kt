@@ -28,7 +28,7 @@ enum class Begin : ISpecialForm {
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size <= 1) {
-            return Void.VOID
+            return Void
         }
         for (i in 1..expression.size - 1 - 1) {
             evaluator.eval(expression[i], env)

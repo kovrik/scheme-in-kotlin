@@ -142,7 +142,7 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testSetCar() {
-        assertEquals(Void.VOID, eval("(set-car! '(1) 2)", env))
+        assertEquals(Void, eval("(set-car! '(1) 2)", env))
         assertEquals(3L, eval("(let ((a '(1))) (set-car! a 3) (car a)))", env))
         assertEquals("test", eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env))
         assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env))
@@ -163,7 +163,7 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testSetCdr() {
-        assertEquals(Void.VOID, eval("(set-cdr! '(1) 2)", env))
+        assertEquals(Void, eval("(set-cdr! '(1) 2)", env))
         assertEquals(3L, eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env))
         assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env))
         assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env))

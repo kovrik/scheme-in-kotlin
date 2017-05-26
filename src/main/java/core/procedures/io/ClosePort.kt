@@ -18,6 +18,6 @@ class ClosePort : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return Void.VOID
+        return Void
     }
 }

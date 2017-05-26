@@ -247,7 +247,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Symbol.intern("yes"), eval("(if (> 3 2) 'yes 'no)", env))
         assertEquals(Symbol.intern("no"), eval("(if (> 2 3) 'yes 'no)", env))
         assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env))
-        assertEquals(Void.VOID, eval("(when #f 5)", env))
+        assertEquals(Void, eval("(when #f 5)", env))
         try {
             eval("(if)", env)
             fail()
@@ -335,7 +335,7 @@ class SpecialFormTest : AbstractTest() {
         val doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))"
         assertEquals("DONE", eval(doTest3, env))
 
-        assertEquals(Void.VOID, eval("(do ((i 1 (add1 i))) ((> i 4)) (void i))", env))
+        assertEquals(Void, eval("(do ((i 1 (add1 i))) ((> i 4)) (void i))", env))
         assertEquals("DONE", eval("(do ((i 1 (add1 i))) ((> i 4) \"DONE\") (void i))", env))
 
         try {
@@ -461,7 +461,7 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalCond() {
-        assertEquals(Void.VOID, eval("(cond)", env))
+        assertEquals(Void, eval("(cond)", env))
         // "Invalid clause in subform "
         try {
             eval("(cond 1)", env)
@@ -514,7 +514,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Symbol.intern("composite"), eval(caseform, env))
 
         caseform = "(case (* 2 3) ((2 3 5 7) 'prime) ((1 4 8 9) 'composite))"
-        assertEquals(Void.VOID, eval(caseform, env))
+        assertEquals(Void, eval(caseform, env))
 
         caseform = "(case (* 2 3) ((2 3 5 7) 'prime) (else 'composite))"
         assertEquals(Symbol.intern("composite"), eval(caseform, env))
@@ -542,8 +542,8 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalBegin() {
-        assertEquals(Void.VOID, eval("(begin)", env))
-        assertEquals(Void.VOID, eval("(begin (begin))", env))
+        assertEquals(Void, eval("(begin)", env))
+        assertEquals(Void, eval("(begin (begin))", env))
         assertEquals(1L, eval("(begin 1)", env))
         assertEquals(3L, eval("(begin 1 2 3)", env))
         try {
@@ -562,7 +562,7 @@ class SpecialFormTest : AbstractTest() {
             eval(proc, tempEnv)
         }
         tempEnv.put(Symbol.intern("display"), Display())
-        assertEquals(Void.VOID, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv))
+        assertEquals(Void, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv))
         Repl.currentOutputPort = old
     }
 

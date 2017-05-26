@@ -28,6 +28,6 @@ class WriteChar : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(
         } catch (e: IOException) {
             throw SCMIOException(e)
         }
-        return Void.VOID
+        return Void
     }
 }

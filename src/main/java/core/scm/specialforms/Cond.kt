@@ -32,7 +32,7 @@ enum class Cond : ISpecialForm {
                 return Begin.BEGIN.eval(subform, env, evaluator)
             }
         }
-        return Void.VOID
+        return Void
     }
 
     override fun toString(): String {

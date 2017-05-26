@@ -30,6 +30,6 @@ class Newline : AFn(FnArgsBuilder().max(1).rest(OutputPort::class.java).build())
         } catch (e: IOException) {
             throw SCMIOException(e)
         }
-        return Void.VOID
+        return Void
     }
 }

@@ -23,7 +23,7 @@ enum class Set : ISpecialForm {
                     .of(toString(), expression, String.format("not an identifier: `%s`", identifier))
         }
         env.findAndPut(identifier, evaluator.eval(expression[2], env))
-        return Void.VOID
+        return Void
     }
 
     override fun toString(): String {

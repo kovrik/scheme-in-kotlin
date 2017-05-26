@@ -12,6 +12,6 @@ class SetCar : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::cl
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         (arg1 as MutableList<Any?>).set(0, arg2)
-        return Void.VOID
+        return Void
     }
 }
