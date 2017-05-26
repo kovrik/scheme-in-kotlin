@@ -533,28 +533,25 @@ object Utils {
         return obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
     }
 
-    // TODO do not perform isSeqable() check!
-    // TODO return custom Sequence object instead of Iterator
+    // TODO return Lazy Sequence object, not Iterator
     fun toSequence(obj: Any?): Iterator<*> {
-        if (!isSeqable(obj)) throw IllegalArgumentException("don't know how to create Sequence from " + obj?.javaClass)
         when (obj) {
             is Iterable<*>     -> return obj.iterator()
             is CharSequence    -> return stringIterator(obj)
             is Map<*, *>       -> return obj.entries.iterator()
             is Map.Entry<*, *> -> return MapEntry(obj).iterator()
-            else               -> return Collections.EMPTY_LIST.iterator()
+            null               -> return Collections.EMPTY_LIST.iterator()
+            else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
         }
     }
 
-    // TODO do not perform isAssoc() check!
     fun toAssoc(obj: Any?): IAssoc {
-        if (!isAssoc(obj)) throw IllegalArgumentException("don't know how to create Map from " + obj?.javaClass)
         when (obj) {
-            null                -> throw NullPointerException()
             is IAssoc           -> return obj
             is MutableMap<*, *> -> return mapToAssoc(obj)
             is Map.Entry<*, *>  -> return MapEntry(obj)
-            else                -> return mapToAssoc(mutableMapOf<Any?, Any?>())
+            null                -> throw NullPointerException()
+            else                -> throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
         }
     }
 
