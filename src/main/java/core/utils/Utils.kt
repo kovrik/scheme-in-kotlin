@@ -472,7 +472,6 @@ object Utils {
             /* Down-casting has failed, ignore and cast to BigInteger then */
             return number.toBigInteger()
         }
-
     }
 
     /**
@@ -490,7 +489,6 @@ object Utils {
             } catch (e: ArithmeticException) {
                 /* Down-casting has failed, ignore and return the original number */
             }
-
         }
         return number
     }
