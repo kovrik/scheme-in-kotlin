@@ -107,12 +107,8 @@ object Utils {
         }
 
         /* Read exponent mark if present */
-        var exponentPattern = EXPONENT_PATTERN
-        var exponentMarksPattern = EXPONENT_MARKS_PATTERN
-        if (radix == 16) {
-            exponentPattern = EXPONENT16_PATTERN
-            exponentMarksPattern = EXPONENT16_MARKS_PATTERN
-        }
+        val exponentPattern      = if (radix == 16) EXPONENT16_PATTERN else EXPONENT_PATTERN
+        val exponentMarksPattern = if (radix == 16) EXPONENT16_MARKS_PATTERN else EXPONENT_MARKS_PATTERN
         var exp: Long? = null
         var n = number
         if (exponentPattern.matcher(number).matches()) {
@@ -125,7 +121,7 @@ object Utils {
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: " + number)
             }
-            exactness = if (exactness == null) 'i' else exactness
+            exactness = exactness ?: 'i'
         }
         /* Validate sign */
         if (n.lastIndexOf('+') > 0 || n.lastIndexOf('-') > 0) {
@@ -151,7 +147,7 @@ object Utils {
         if (n.indexOf('#') > -1) {
             if (HASH_PATTERN.matcher(n).matches()) {
                 n = n.replace('#', '0')
-                exactness = if (exactness == null) 'i' else exactness
+                exactness = exactness ?: 'i'
             } else {
                 return Symbol.intern(number)
             }
