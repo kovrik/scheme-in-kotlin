@@ -15,6 +15,7 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
     override val isPure = true
     override val name = "range"
 
+    // TODO Write Unit tests!!!
     override operator fun invoke(vararg args: Any?): List<Any?>? {
         if (args.isEmpty()) {
             return Cons.EMPTY
@@ -40,18 +41,22 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
         }
         val result = Cons.list<Number>()
         if (exact) {
-            var start: Long = 0
-            var end: Long = 0
-            var step: Long = 1
+            var start = 0L
+            var end   = 0L
+            var step  = 1L
             if (args.size == 1) {
-                end = if (args[0] is Double) Math.round(args[0] as Double) else (args[0] as Number).toLong()
+                end = if (args[0] is Double) Math.ceil(args[0] as Double).toLong() else (args[0] as Number).toLong()
             } else if (args.size == 2) {
                 start = (args[0] as Number).toLong()
-                end = if (args[1] is Double) Math.round(args[1] as Double) else (args[1] as Number).toLong()
+                end   = if (args[1] is Double) Math.ceil(args[1] as Double).toLong() else (args[1] as Number).toLong()
             } else if (args.size == 3) {
                 start = (args[0] as Number).toLong()
-                end = if (args[1] is Double) Math.round(args[1] as Double) else (args[1] as Number).toLong()
-                step = (args[2] as Number).toLong()
+                step  = (args[2] as Number).toLong()
+                if (step > 0) {
+                    end = if (args[1] is Double) Math.ceil(args[1] as Double).toLong() else (args[1] as Number).toLong()
+                } else {
+                    end = if (args[1] is Double) Math.floor(args[1] as Double).toLong() else (args[1] as Number).toLong()
+                }
             }
             if (step >= 0) {
                 var n = start
@@ -68,17 +73,17 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
             }
         } else {
             var start = 0.0
-            var end = 0.0
-            var step = 1.0
+            var end   = 0.0
+            var step  = 1.0
             if (args.size == 1) {
-                end = (args[0] as Number).toDouble()
+                end   = (args[0] as Number).toDouble()
             } else if (args.size == 2) {
                 start = (args[0] as Number).toDouble()
-                end = (args[1] as Number).toDouble()
+                end   = (args[1] as Number).toDouble()
             } else if (args.size == 3) {
                 start = (args[0] as Number).toDouble()
-                end = (args[1] as Number).toDouble()
-                step = (args[2] as Number).toDouble()
+                end   = (args[1] as Number).toDouble()
+                step  = (args[2] as Number).toDouble()
             }
             if (step >= 0) {
                 var n = start
@@ -100,17 +105,17 @@ class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).buil
     private fun range(vararg args: Any?): List<Any?> {
         val result = Cons.list<Number>()
         var start: Number = 0L
-        var end: Number = 0L
-        var step: Number = 1L
+        var end:   Number = 0L
+        var step:  Number = 1L
         if (args.size == 1) {
-            end = args[0] as Number
+            end   = args[0] as Number
         } else if (args.size == 2) {
             start = args[0] as Number
-            end = args[1] as Number
+            end   = args[1] as Number
         } else if (args.size == 3) {
             start = args[0] as Number
-            end = args[1] as Number
-            step = args[2] as Number
+            end   = args[1] as Number
+            step  = args[2] as Number
         }
         var cur: Number? = start
         var pred = NumericalComparison.LESS
