@@ -3,22 +3,21 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.BigRatio
-import core.utils.Utils
 import java.lang.NullPointerException
+import java.math.BigDecimal
 
 class Exp : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "exp"
+    override val isPure = true
+    override val name = "exp"
 
     override operator fun invoke(arg: Any?): Number? {
         return exp(arg as Number?)
     }
 
     companion object {
+
+        val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
         fun exp(number: Number?): Number? {
             if (number == null) throw NullPointerException()
@@ -48,14 +47,12 @@ class Exp : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number
             }
             if (number is BigRatio) {
                 /* Special cases */
-                if (number.isZero) {
-                    return 1L
-                }
-                if (number.isOne) {
-                    return Math.exp(1.0)
+                when {
+                    number.isZero -> return 1L
+                    number.isOne  -> return Math.exp(1.0)
                 }
             }
-            return Expt.expt(Utils.E, number)
+            return Expt.expt(E, number)
         }
     }
 }

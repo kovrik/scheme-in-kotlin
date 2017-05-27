@@ -19,11 +19,9 @@ import java.util.stream.IntStream
 
 object Utils {
 
-    val DEFAULT_SCALE = 16
+    const val DEFAULT_SCALE = 16
     val ROUNDING_MODE = RoundingMode.HALF_EVEN
     val DEFAULT_CONTEXT = MathContext(DEFAULT_SCALE, ROUNDING_MODE)
-
-    @JvmStatic val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
     private val HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$")
 
@@ -43,7 +41,6 @@ object Utils {
                                           'x' to 16, 'X' to 16)
 
     private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>()
-
     init {
         IntStream.rangeClosed(2, 16).forEach { r -> BIG_DECIMAL_RADICES.put(r, BigDecimal(r)) }
     }
@@ -58,7 +55,6 @@ object Utils {
                                              16 to 15)
 
     private val RADIX_CHARS = HashMap<Int, String>()
-
     init {
         RADIX_CHARS.put(2,  "#+-.01")
         RADIX_CHARS.put(3,  RADIX_CHARS[2] + "2")
