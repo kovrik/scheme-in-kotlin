@@ -5,17 +5,9 @@ import core.writer.Writer
 import java.util.*
 
 // TODO Separate class for Proper and Improper Lists?
-open class Cons<E> : LinkedList<E?> {
+class Cons<E> : LinkedList<E?> {
 
-    private class EmptyCons<E> : Cons<E>() {
-        override var isList: Boolean
-            get() = true
-            set(value) {
-                super.isList = value
-            }
-    }
-
-    open var isList = true
+    var isList = true
 
     private constructor() : super()
 
@@ -33,9 +25,7 @@ open class Cons<E> : LinkedList<E?> {
     }
 
     fun car(): E? {
-        if (isEmpty()) {
-            throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
-        }
+        if (isEmpty()) throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
         return first
     }
 
@@ -90,7 +80,7 @@ open class Cons<E> : LinkedList<E?> {
     companion object {
 
         /* Empty list constant */
-        val EMPTY: Cons<Any?> = EmptyCons()
+        val EMPTY: Cons<Any?> = Cons()
 
         fun <E> cons(car: E?, cdr: E?): Cons<E> {
             if (cdr == null) return Cons(car, EMPTY) as Cons<E>
