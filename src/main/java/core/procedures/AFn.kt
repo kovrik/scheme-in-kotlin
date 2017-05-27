@@ -10,9 +10,9 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
 
     protected var minArgs: Int = 0
     protected var maxArgs: Int = 0
-    private val mandatoryArgsTypes: Array<Class<*>>
-    private val restArgsType: Class<*>?
-    private val lastArgType: Class<*>?
+    private   val mandatoryArgsTypes: Array<Class<*>>
+    private   val restArgsType: Class<*>?
+    private   val lastArgType: Class<*>?
 
     constructor() {
         minArgs = 0
@@ -136,7 +136,6 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
      * Calls variadic invoke() otherwise.
      */
     fun invokeN(vararg args: Any?): Any? {
-        /* Check args */
         checkArgs(*args)
         /* if min == max, then function is not variadic, hence get arity */
         val arity = if (minArgs == maxArgs) minArgs else -1
