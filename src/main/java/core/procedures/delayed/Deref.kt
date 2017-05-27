@@ -7,8 +7,7 @@ import core.scm.IDeref
 
 class Deref : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val name: String
-        get() = "deref"
+    override val name = "deref"
 
     override operator fun invoke(arg: Any?): Any? {
         if (arg !is IDeref) {

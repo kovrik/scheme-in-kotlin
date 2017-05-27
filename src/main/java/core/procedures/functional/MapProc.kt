@@ -19,8 +19,7 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
 
     private val count = Count()
 
-    override val name: String
-        get() = "map"
+    override val name = "map"
 
     // TODO Very naive implementation. Re-implement and optimize
     override operator fun invoke(vararg args: Any?): Thunk {

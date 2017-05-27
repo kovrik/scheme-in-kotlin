@@ -7,14 +7,13 @@ class MapEntry(key: Any?, value: Any?) : MutableVector(key, value) {
 
     constructor(entry: Map.Entry<Any?, Any?>) : this(entry.key, entry.value)
 
+    override val name = "map entry"
+
     val key: Any?
         get() = get(0)
 
     val value: Any?
         get() = get(1)
-
-    override val name: String
-        get() = "map entry"
 
     override fun toString(): String {
         return "[" + Writer.write(key) + " " + Writer.write(value) + "]"

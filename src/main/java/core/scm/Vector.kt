@@ -55,8 +55,7 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
         return getArray()[index]
     }
 
-    override val name: String
-        get() = "vector"
+    override val name = "vector"
 
     override fun toString(): String {
         if (getArray().isEmpty()) {

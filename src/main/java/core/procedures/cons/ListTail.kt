@@ -9,8 +9,7 @@ import core.scm.Type
 class ListTail : AFn(FnArgsBuilder().min(2).max(2)
         .mandatory(arrayOf(Any::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
 
-    override val name: String
-        get() = "list-tail"
+    override val name = "list-tail"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val p = (arg2 as Number).toLong()

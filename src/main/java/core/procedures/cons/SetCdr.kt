@@ -8,8 +8,7 @@ import core.scm.Void
 
 class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::class.java, Any::class.java)).build()) {
 
-    override val name: String
-        get() = "set-cdr!"
+    override val name = "set-cdr!"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg1 as MutableList<Any?>?

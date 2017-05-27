@@ -8,8 +8,7 @@ open class Substring : AFn(FnArgsBuilder().min(2).max(3)
         .mandatory(arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java))
         .rest(Type.ExactNonNegativeInteger::class.java).build()) {
 
-    override val name: String
-        get() = "substring"
+    override val name = "substring"
 
     override operator fun invoke(vararg args: Any?): String? {
         val s = args[0].toString()

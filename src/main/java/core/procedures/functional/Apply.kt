@@ -12,8 +12,7 @@ import java.util.*
 
 class Apply : AFn(FnArgsBuilder().min(2).mandatory(arrayOf(IFn::class.java, Any::class.java)).build()) {
 
-    override val name: String
-        get() = "apply"
+    override val name = "apply"
 
     override operator fun invoke(vararg args: Any?): Any {
         val sexp = Cons.list(args[0])

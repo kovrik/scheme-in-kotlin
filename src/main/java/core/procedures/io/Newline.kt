@@ -1,7 +1,7 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.SCMIOException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.OutputPort
@@ -15,8 +15,7 @@ class Newline : AFn(FnArgsBuilder().max(1).rest(OutputPort::class.java).build())
         private val LS = System.getProperty("line.separator")
     }
 
-    override val name: String
-        get() = "newline"
+    override val name = "newline"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val outputPort: OutputPort
@@ -28,7 +27,7 @@ class Newline : AFn(FnArgsBuilder().max(1).rest(OutputPort::class.java).build())
         try {
             outputPort.write(LS)
         } catch (e: IOException) {
-            throw SCMIOException(e)
+            throw ThrowableWrapper(e)
         }
         return Void
     }

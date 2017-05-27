@@ -11,8 +11,7 @@ import java.util.*
 
 class Conj : AFn(FnArgsBuilder().min(1).build()) {
 
-    override val name: String
-        get() = "conj"
+    override val name = "conj"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val first = args[0]

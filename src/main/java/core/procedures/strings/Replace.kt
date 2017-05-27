@@ -8,8 +8,7 @@ import java.util.regex.Pattern
 
 class Replace : AFn(FnArgsBuilder().min(3).max(3).build()) {
 
-    override val name: String
-        get() = "replace"
+    override val name = "replace"
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String? {
         if (arg1 !is CharSequence) {

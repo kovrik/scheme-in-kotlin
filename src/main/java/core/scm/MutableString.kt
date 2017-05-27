@@ -44,20 +44,11 @@ class MutableString : INamed, CharSequence {
         this.string.setCharAt(index, ch)
     }
 
-    fun setLength(n: Int) {
-        string.setLength(n)
-    }
-
     fun clear() {
         string.setLength(0)
     }
 
-    fun reverse(): MutableString {
-        string.reverse()
-        return this
-    }
-
-    override val name: String
+    override val name
         get() = string.toString()
 
     override fun toString(): String {

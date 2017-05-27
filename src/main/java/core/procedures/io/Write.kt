@@ -1,7 +1,7 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.SCMIOException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.OutputPort
@@ -13,8 +13,7 @@ import java.io.IOException
 class Write : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any::class.java))
         .rest(OutputPort::class.java).build()) {
 
-    override val name: String
-        get() = "write"
+    override val name = "write"
 
     override operator fun invoke(vararg args: Any?): Void {
         val outputPort: OutputPort
@@ -26,7 +25,7 @@ class Write : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any:
         try {
             outputPort.write(Writer.write(args[0]))
         } catch (e: IOException) {
-            throw SCMIOException(e)
+            throw ThrowableWrapper(e)
         }
         return Void
     }

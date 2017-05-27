@@ -9,17 +9,14 @@ import core.scm.Promise
 
 class Force : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val name: String
-        get() = "force"
+    override val name = "force"
 
     override operator fun invoke(arg: Any?): Any? {
-        if (arg is Future || arg is Promise) {
-            return arg
+        when (arg) {
+            is Future, is Promise -> return arg
+            /* Force derefs delays */
+            is Delay -> return arg.deref()
+            else -> throw WrongTypeException(name, "Delay or Promise or Future", arg)
         }
-        /* Force derefs delays */
-        if (arg is Delay) {
-            return arg.deref()
-        }
-        throw WrongTypeException(name, "Delay or Promise or Future", arg)
     }
 }

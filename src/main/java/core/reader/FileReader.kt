@@ -1,6 +1,7 @@
 package core.reader
 
 import core.exceptions.SCMFileNotFoundException
+import core.exceptions.ThrowableWrapper
 import java.io.*
 import java.util.*
 
@@ -25,7 +26,7 @@ class FileReader : Reader() {
                 i = reader.read()
             }
         } catch (e: IOException) {
-            e.printStackTrace()
+            throw ThrowableWrapper(e)
         } finally {
             try {
                 reader.close()

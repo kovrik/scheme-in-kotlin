@@ -7,8 +7,7 @@ import core.scm.Void
 
 class Sleep : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Long::class.java)).build()) {
 
-    override val name: String
-        get() = "sleep"
+    override val name = "sleep"
 
     override operator fun invoke(arg: Any?): Void? {
         try {

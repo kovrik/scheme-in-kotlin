@@ -12,8 +12,7 @@ class Load : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(CharS
 
     private val reader = FileReader()
 
-    override val name: String
-        get() = "load"
+    override val name = "load"
 
     override operator fun invoke(arg: Any?): Any {
         val file = File(arg.toString())

@@ -8,8 +8,7 @@ import java.util.regex.Pattern
 
 class Split : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf(CharSequence::class.java, Pattern::class.java)).rest(Long::class.java).build()) {
 
-    override val name: String
-        get() = "split"
+    override val name = "split"
 
     override operator fun invoke(vararg args: Any?): Vector {
         when {

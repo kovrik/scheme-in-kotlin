@@ -8,12 +8,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class NumberToString : AFn(FnArgsBuilder().min(1).max(2)
-        .mandatory(arrayOf<Class<*>>(Number::class.java))
-        .rest(Type.ExactPositiveInteger::class.java).build()) {
+class NumberToString : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Number::class.java)).rest(Type.ExactPositiveInteger::class.java).build()) {
 
-    override val name: String
-        get() = "number->string"
+    override val name = "number->string"
 
     override operator fun invoke(vararg args: Any?): String? {
         val o = args[0] as Number

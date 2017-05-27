@@ -4,7 +4,7 @@ import core.Repl
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.SCMIOException
+import core.exceptions.ThrowableWrapper
 
 import java.io.IOException
 
@@ -30,7 +30,7 @@ enum class Time : ISpecialForm {
         try {
             Repl.currentOutputPort.writeln(String.format("elapsed time: %s ms", diff))
         } catch (e: IOException) {
-            throw SCMIOException(e)
+            throw ThrowableWrapper(e)
         }
         return result
     }

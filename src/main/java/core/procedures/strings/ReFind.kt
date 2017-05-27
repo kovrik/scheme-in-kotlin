@@ -11,8 +11,7 @@ class ReFind : AFn(FnArgsBuilder().min(1).max(2).build()) {
 
     private val reGroups = ReGroups()
 
-    override val name: String
-        get() = "re-find"
+    override val name = "re-find"
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {

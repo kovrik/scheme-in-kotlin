@@ -7,8 +7,7 @@ import core.scm.Type
 
 class ListToString : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ProperList::class.java)).build()) {
 
-    override val name: String
-        get() = "list->string"
+    override val name = "list->string"
 
     override operator fun invoke(arg: Any?): Any {
         val cs = arg as List<*>?

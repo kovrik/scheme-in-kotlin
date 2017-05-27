@@ -8,8 +8,7 @@ import java.util.concurrent.CompletableFuture
 
 class PromiseProc : AFn(FnArgsBuilder().max(0).build()) {
 
-    override val name: String
-        get() = "promise"
+    override val name = "promise"
 
     override operator fun invoke(): CompletableFuture<Any> {
         return Promise()

@@ -5,8 +5,7 @@ import core.procedures.FnArgsBuilder
 
 class StringAppend : AFn(FnArgsBuilder().rest(CharSequence::class.java).build()) {
 
-    override val name: String
-        get() = "string-append"
+    override val name = "string-append"
 
     override operator fun invoke(vararg args: Any?): String? {
         if (args.isEmpty()) {

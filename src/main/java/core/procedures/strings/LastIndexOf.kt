@@ -7,8 +7,7 @@ import core.utils.Utils
 
 class LastIndexOf : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf<Class<*>>(CharSequence::class.java)).build()) {
 
-    override val name: String
-        get() = "last-index-of"
+    override val name = "last-index-of"
 
     override operator fun invoke(vararg args: Any?): Int {
         if (args[1] !is CharSequence && args[1] !is Char) {

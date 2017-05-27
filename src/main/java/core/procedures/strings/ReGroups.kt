@@ -8,8 +8,7 @@ import java.util.regex.Matcher
 
 class ReGroups : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Matcher::class.java)).build()) {
 
-    override val name: String
-        get() = "re-groups"
+    override val name = "re-groups"
 
     override operator fun invoke(arg: Any?): Any? {
         val m = arg as Matcher?

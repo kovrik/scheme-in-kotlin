@@ -12,8 +12,7 @@ import java.io.FileOutputStream
 
 class CallWithOutputFile : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(CharSequence::class.java, IFn::class.java)).build()) {
 
-    override val name: String
-        get() = "call-with-output-file"
+    override val name = "call-with-output-file"
 
     override operator fun invoke(vararg args: Any?): Any {
         val filename = args[0].toString()

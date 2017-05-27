@@ -1,7 +1,7 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.SCMIOException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.OutputPort
@@ -13,8 +13,7 @@ import java.io.IOException
 open class Display : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any::class.java))
         .rest(OutputPort::class.java).build()) {
 
-    override val name: String
-        get() = "display"
+    override val name = "display"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val outputPort: OutputPort
@@ -29,7 +28,7 @@ open class Display : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*
                 else -> outputPort.write(Writer.write(arg))
             }
         } catch (e: IOException) {
-            throw SCMIOException(e)
+            throw ThrowableWrapper(e)
         }
         return Void
     }

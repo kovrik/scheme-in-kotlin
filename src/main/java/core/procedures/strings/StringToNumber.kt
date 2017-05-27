@@ -10,8 +10,7 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
         .mandatory(arrayOf<Class<*>>(CharSequence::class.java))
         .rest(Type.ExactPositiveInteger::class.java).build()) {
 
-    override val name: String
-        get() = "string->number"
+    override val name = "string->number"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val number = args[0].toString()

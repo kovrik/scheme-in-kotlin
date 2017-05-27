@@ -1,7 +1,7 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.SCMIOException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.InputPort
@@ -10,8 +10,7 @@ import java.io.IOException
 
 class IsCharReady : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build()) {
 
-    override val name: String
-        get() = "char-ready?"
+    override val name = "char-ready?"
 
     override operator fun invoke(vararg args: Any?): Boolean {
         val inputPort: InputPort
@@ -24,7 +23,7 @@ class IsCharReady : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build
         try {
             bytesAvailable = inputPort.available()
         } catch (e: IOException) {
-            throw SCMIOException(e)
+            throw ThrowableWrapper(e)
         }
         return bytesAvailable > 0
     }

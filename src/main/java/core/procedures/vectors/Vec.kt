@@ -7,8 +7,7 @@ import core.scm.MutableVector
 
 class Vec : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val name: String
-        get() = "vec"
+    override val name = "vec"
 
     override operator fun invoke(arg: Any?): MutableVector? {
         if (arg is Collection<*>) {

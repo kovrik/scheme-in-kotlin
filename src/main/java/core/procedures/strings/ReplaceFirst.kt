@@ -8,8 +8,7 @@ import java.util.regex.Pattern
 
 class ReplaceFirst : AFn(FnArgsBuilder().min(3).max(3).build()) {
 
-    override val name: String
-        get() = "replace-first"
+    override val name = "replace-first"
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String? {
         if (arg1 !is CharSequence) {

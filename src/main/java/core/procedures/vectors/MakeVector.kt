@@ -7,8 +7,7 @@ import core.scm.MutableVector
 
 class MakeVector : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
 
-    override val name: String
-        get() = "make-vector"
+    override val name = "make-vector"
 
     override operator fun invoke(vararg args: Any?): Any {
         val s = (args[0] as Number).toLong()

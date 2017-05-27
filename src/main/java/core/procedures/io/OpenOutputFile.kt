@@ -10,8 +10,7 @@ import java.io.FileOutputStream
 
 class OpenOutputFile : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(CharSequence::class.java)).build()) {
 
-    override val name: String
-        get() = "open-output-file"
+    override val name = "open-output-file"
 
     override operator fun invoke(arg: Any?): Any {
         val filename = arg.toString()

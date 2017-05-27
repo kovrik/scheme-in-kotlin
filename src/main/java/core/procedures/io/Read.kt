@@ -11,8 +11,7 @@ import core.scm.Thunk
 
 class Read : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build()) {
 
-    override val name: String
-        get() = "read"
+    override val name = "read"
 
     override operator fun invoke(vararg args: Any?): Any {
         val inputPort: InputPort

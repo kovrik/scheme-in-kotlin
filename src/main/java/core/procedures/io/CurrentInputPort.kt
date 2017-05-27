@@ -6,8 +6,7 @@ import core.procedures.FnArgsBuilder
 
 class CurrentInputPort : AFn(FnArgsBuilder().max(0).build()) {
 
-    override val name: String
-        get() = "current-input-port"
+    override val name = "current-input-port"
 
     override operator fun invoke(): Any {
         return Repl.currentInputPort

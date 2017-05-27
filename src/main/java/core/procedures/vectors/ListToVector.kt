@@ -13,8 +13,7 @@ class ListToVector : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
         }
     }
 
-    override val name: String
-        get() = "list->vector"
+    override val name = "list->vector"
 
     override operator fun invoke(arg: Any?): MutableVector {
         return listToVector(arg)

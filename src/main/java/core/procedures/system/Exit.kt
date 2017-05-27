@@ -6,8 +6,7 @@ import core.scm.Void
 
 class Exit : AFn(FnArgsBuilder().max(1).rest(Long::class.java).build()) {
 
-    override val name: String
-        get() = "exit"
+    override val name = "exit"
 
     override operator fun invoke(vararg args: Any?): Void? {
         when {

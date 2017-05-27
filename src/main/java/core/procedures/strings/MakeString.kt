@@ -9,8 +9,7 @@ class MakeString : AFn(FnArgsBuilder().min(1).max(2)
         .mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))
         .rest(Char::class.javaObjectType).build()) {
 
-    override val name: String
-        get() = "make-string"
+    override val name = "make-string"
 
     override operator fun invoke(vararg args: Any?): MutableString? {
         val s = (args[0] as Number).toLong()

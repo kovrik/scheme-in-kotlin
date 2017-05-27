@@ -9,8 +9,7 @@ import core.scm.Type
 
 class ForEach : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::class.java)).rest(Type.ProperList::class.java).build()) {
 
-    override val name: String
-        get() = "for-each"
+    override val name = "for-each"
 
     override operator fun invoke(vararg args: Any?): Thunk {
         /* For-each is the same as Map, but ignores the result */

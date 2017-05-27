@@ -105,7 +105,6 @@ open class Reader : IReader {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
         return tokens
     }
 

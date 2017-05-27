@@ -6,8 +6,7 @@ import core.scm.MutableString
 
 class StringProc : AFn(FnArgsBuilder().rest(Char::class.javaObjectType).build()) {
 
-    override val name: String
-        get() = "string"
+    override val name = "string"
 
     override operator fun invoke(vararg args: Any?): MutableString? {
         if (args.isEmpty()) {

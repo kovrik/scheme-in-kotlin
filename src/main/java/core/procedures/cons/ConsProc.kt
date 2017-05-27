@@ -12,8 +12,7 @@ class ConsProc : AFn(FnArgsBuilder().min(2).max(2).build()) {
         }
     }
 
-    override val name: String
-        get() = "cons"
+    override val name = "cons"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Cons<*>? {
         return cons(arg1, arg2)

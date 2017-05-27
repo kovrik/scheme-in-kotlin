@@ -5,8 +5,7 @@ import core.scm.MutableVector
 
 class VectorProc : AFn() {
 
-    override val name: String
-        get() = "vector"
+    override val name = "vector"
 
     override operator fun invoke(vararg args: Any?): MutableVector {
         return MutableVector(*args)

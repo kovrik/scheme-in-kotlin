@@ -6,8 +6,7 @@ import core.utils.Utils
 
 class Join : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(CharSequence::class.java)).build()) {
 
-    override val name: String
-        get() = "join"
+    override val name = "join"
 
     override operator fun invoke(vararg args: Any?): String? {
         if (args.size == 1) {

@@ -6,8 +6,7 @@ import core.scm.Error
 
 class ErrorProc : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val name: String
-        get() = "error"
+    override val name = "error"
 
     override operator fun invoke(arg: Any?): Any? {
         throw Error(arg!!.toString())

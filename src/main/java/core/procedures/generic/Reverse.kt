@@ -10,8 +10,7 @@ import core.scm.Vector
 
 class Reverse : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val name: String
-        get() = "reverse"
+    override val name = "reverse"
 
     override operator fun invoke(arg: Any?): Any? {
         when (arg) {
