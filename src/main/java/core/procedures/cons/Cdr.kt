@@ -18,11 +18,8 @@ class Cdr : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.P
         }
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "cdr"
+    override val isPure = true
+    override val name = "cdr"
 
     override operator fun invoke(arg: Any?): Any? {
         return cdr(arg)

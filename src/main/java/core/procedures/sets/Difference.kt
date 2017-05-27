@@ -5,11 +5,8 @@ import core.procedures.FnArgsBuilder
 
 class Difference : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set::class.java)).rest(Set::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "difference"
+    override val isPure = true
+    override val name = "difference"
 
     override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.size == 1) {

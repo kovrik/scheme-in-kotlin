@@ -8,11 +8,8 @@ import java.math.BigInteger
 
 class BigIntegerType : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "bigint"
+    override val isPure = true
+    override val name = "bigint"
 
     override operator fun invoke(arg: Any?): BigInteger {
         if (arg is Number) {

@@ -6,11 +6,8 @@ import core.scm.Type
 
 class BItShiftLeft : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.BitOp::class.java, Long::class.javaObjectType)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "bit-shift-left"
+    override val isPure = true
+    override val name = "bit-shift-left"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Long {
         return (arg1 as Number).toLong() shl (arg2 as Number).toInt()

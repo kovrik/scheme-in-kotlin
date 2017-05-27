@@ -51,11 +51,8 @@ class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(
         }
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = NAME
+    override val isPure = true
+    override val name = NAME
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         if (arg1 == null) throw NullPointerException()

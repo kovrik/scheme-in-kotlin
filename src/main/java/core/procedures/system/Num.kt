@@ -5,11 +5,8 @@ import core.procedures.FnArgsBuilder
 
 class Num : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "num"
+    override val isPure = true
+    override val name = "num"
 
     override operator fun invoke(arg: Any?): Number? {
         return arg as Number?

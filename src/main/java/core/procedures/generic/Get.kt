@@ -7,11 +7,8 @@ import core.utils.Utils
 
 class Get : AFn(FnArgsBuilder().min(2).max(3).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "get"
+    override val isPure = true
+    override val name = "get"
 
     override operator fun invoke(vararg args: Any?): Any? {
         var defaultValue: Any? = null

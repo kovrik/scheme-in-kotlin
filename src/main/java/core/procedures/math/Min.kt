@@ -9,14 +9,10 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Min : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::class.java))
-        .rest(Type.Real::class.java).build()) {
+class Min : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::class.java)).rest(Type.Real::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "min"
+    override val isPure = true
+    override val name = "min"
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
@@ -35,7 +31,7 @@ class Min : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::cl
         var first = first
         var second = second
         if (first is BigRatio && second is BigRatio) {
-            return if (first.compareTo(second) < 0) first else second
+            return if (first < second) first else second
         }
         if (first is BigRatio) {
             first = first.toDouble()

@@ -5,11 +5,8 @@ import core.procedures.FnArgsBuilder
 
 class Union : AFn(FnArgsBuilder().min(0).rest(Set::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "union"
+    override val isPure = true
+    override val name = "union"
 
     override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.isEmpty()) {

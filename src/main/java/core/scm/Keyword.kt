@@ -21,8 +21,7 @@ class Keyword private constructor(override val name: String) : AFn(FnArgsBuilder
         return ':' + name
     }
 
-    override val isPure: Boolean
-        get() = true
+    override val isPure = true
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty() || args.size > 2) {

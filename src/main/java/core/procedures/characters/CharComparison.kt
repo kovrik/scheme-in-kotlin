@@ -22,8 +22,7 @@ class CharComparison private constructor(override val name: String, private val 
         val CHAR_GR_OR_EQ_CI = CharComparison("char-ci>=?", BiPredicate<Char?, Char?>{ arg1, arg2 -> Character.toLowerCase(arg1!!) >= Character.toLowerCase(arg2!!) })
     }
 
-    override val isPure: Boolean
-        get() = true
+    override val isPure = true
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         for (i in 0..args.size - 1 - 1) {

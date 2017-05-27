@@ -10,11 +10,8 @@ class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
     private val count = Count()
     private val get = Get()
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "nth"
+    override val isPure = true
+    override val name = "nth"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val col = args[0]

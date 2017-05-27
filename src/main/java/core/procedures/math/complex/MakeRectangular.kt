@@ -8,11 +8,8 @@ import java.lang.NullPointerException
 
 class MakeRectangular : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "make-rectangular"
+    override val isPure = true
+    override val name = "make-rectangular"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number {
         if (arg1 == null) throw NullPointerException()

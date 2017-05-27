@@ -16,20 +16,15 @@ import java.math.BigInteger
 
 class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Number::class.java, Number::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "expt"
+    override val isPure = true
+    override val name = "expt"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         return expt(arg1 as Number?, arg2 as Number?)
     }
 
     companion object {
-        /**
-         * TODO: Optimize Special Cases!
-         */
+        /* TODO: Optimize Special Cases! */
         fun expt(base: Number?, exponent: Number?): Number? {
             if (base     == null) throw NullPointerException()
             if (exponent == null) throw NullPointerException()

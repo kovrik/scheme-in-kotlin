@@ -7,11 +7,8 @@ import core.scm.INamed
 
 class Name : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "name"
+    override val isPure = true
+    override val name = "name"
 
     override operator fun invoke(arg: Any?): CharSequence? {
         when (arg) {

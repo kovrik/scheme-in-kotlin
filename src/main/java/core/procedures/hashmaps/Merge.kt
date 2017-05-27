@@ -7,11 +7,8 @@ import java.util.*
 
 class Merge : AFn(FnArgsBuilder().min(0).rest(Map::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "merge"
+    override val isPure = true
+    override val name = "merge"
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {

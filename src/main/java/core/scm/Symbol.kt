@@ -51,20 +51,15 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
         }
     }
 
-    val isEscape: Boolean
+    val isEscape: Boolean = hasSpecialChars(name)
+
+    override val isPure = true
 
     private constructor(name: String) : this(name, null)
-
-    init {
-        this.isEscape = hasSpecialChars(name)
-    }
 
     override fun meta(): Map<*, *>? {
         return meta
     }
-
-    override val isPure: Boolean
-        get() = true
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty() || args.size > 2) {

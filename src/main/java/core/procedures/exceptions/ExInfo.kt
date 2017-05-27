@@ -6,11 +6,8 @@ import core.procedures.FnArgsBuilder
 
 class ExInfo : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf(String::class.java, Map::class.java)).rest(Throwable::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "ex-info"
+    override val isPure = true
+    override val name = "ex-info"
 
     override operator fun invoke(vararg args: Any?): ExInfoException? {
         if (args.size == 2) {

@@ -6,11 +6,8 @@ import core.procedures.FnArgsBuilder
 
 class ExData : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "ex-data"
+    override val isPure = true
+    override val name = "ex-data"
 
     override operator fun invoke(arg: Any?): Map<*, *>? {
         if (arg is ExInfoException) {

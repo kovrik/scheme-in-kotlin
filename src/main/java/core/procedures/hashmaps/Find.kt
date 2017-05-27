@@ -8,11 +8,8 @@ import core.utils.Utils
 
 class Find : AFn(FnArgsBuilder().max(2).min(2).mandatory(arrayOf(IAssoc::class.java, Any::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "find"
+    override val isPure = true
+    override val name = "find"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): MapEntry? {
         val assoc = Utils.toAssoc(arg1)

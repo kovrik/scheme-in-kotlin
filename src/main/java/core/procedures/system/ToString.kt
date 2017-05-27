@@ -6,11 +6,8 @@ import core.writer.Writer
 
 open class ToString : AFn(FnArgsBuilder().min(0).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "->string"
+    override val isPure = true
+    override val name = "->string"
 
     override operator fun invoke(vararg args: Any?): CharSequence? {
         when {

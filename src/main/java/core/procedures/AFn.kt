@@ -35,8 +35,11 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     }
 
     /* Return true if function is pure (referentially transparent) */
-    open val isPure: Boolean
+    open val isPure
         get() = false
+
+    open val name
+        get() = javaClass.simpleName
 
     override fun compare(o1: Any?, o2: Any?): Int {
         val result = invokeN(o1, o2)
@@ -85,14 +88,10 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
         throw ArityException(name, minArgs, maxArgs, args.size)
     }
 
-    open val name: String
-        get() = javaClass.simpleName
-
     override fun toString(): String {
-        val name = name
-        when {
-            name.isEmpty() -> return "#<procedure>"
-            else -> return "#<procedure:$name>"
+        when (name.isEmpty()) {
+            true  -> return "#<procedure>"
+            false -> return "#<procedure:$name>"
         }
     }
 

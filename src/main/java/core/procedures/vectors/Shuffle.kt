@@ -10,11 +10,8 @@ import java.util.Collections
 
 class Shuffle : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "shuffle"
+    override val isPure = true
+    override val name = "shuffle"
 
     override operator fun invoke(arg: Any?): Vector {
         if (arg is Collection<*>) {

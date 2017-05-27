@@ -8,11 +8,7 @@ import core.scm.Symbol
 
 class WIthMeta : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(IMeta::class.java, Map::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = false
-
-    override val name: String
-        get() = "with-meta"
+    override val name = "with-meta"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         if (arg1 is Symbol) {

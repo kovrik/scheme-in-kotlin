@@ -9,11 +9,8 @@ import java.util.*
 
 class Sort : AFn(FnArgsBuilder().min(1).max(2).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "sort"
+    override val isPure = true
+    override val name = "sort"
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1 || args[0] == null) {

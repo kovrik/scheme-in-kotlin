@@ -12,11 +12,8 @@ import java.math.BigDecimal
 
 class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "range"
+    override val isPure = true
+    override val name = "range"
 
     override operator fun invoke(vararg args: Any?): List<Any?>? {
         if (args.isEmpty()) {

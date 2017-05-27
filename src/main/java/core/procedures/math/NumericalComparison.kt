@@ -22,8 +22,7 @@ class NumericalComparison private constructor(override val name: String, private
         val GREATER_EQUAL = NumericalComparison(">=", BiPredicate { f, s -> f >= s })
     }
 
-    override val isPure: Boolean
-        get() = true
+    override val isPure = true
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
         var f = arg1 as Number

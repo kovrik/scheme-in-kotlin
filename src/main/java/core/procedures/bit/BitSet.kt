@@ -6,11 +6,8 @@ import core.scm.Type
 
 class BitSet : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.BitOp::class.java, Long::class.javaObjectType)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "bit-set"
+    override val isPure = true
+    override val name = "bit-set"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Long {
         val number = (arg1 as Number).toLong()

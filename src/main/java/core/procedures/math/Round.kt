@@ -12,11 +12,8 @@ import java.math.MathContext
 
 class Round : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.Real::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "round"
+    override val isPure = true
+    override val name = "round"
 
     override operator fun invoke(arg: Any?): Number {
         return round(arg as Number?)

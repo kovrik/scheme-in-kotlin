@@ -5,14 +5,10 @@ import core.procedures.FnArgsBuilder
 import core.scm.Type
 import core.scm.MutableVector
 
-class VectorRef : AFn(FnArgsBuilder().min(2).max(2)
-        .mandatory(arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class VectorRef : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "vector-ref"
+    override val isPure = true
+    override val name = "vector-ref"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val vec = arg1 as MutableVector?

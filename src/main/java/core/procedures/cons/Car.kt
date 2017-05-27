@@ -17,11 +17,8 @@ class Car : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.P
         }
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "car"
+    override val isPure = true
+    override val name = "car"
 
     override operator fun invoke(arg: Any?): Any? {
         return car(arg)

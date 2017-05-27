@@ -6,11 +6,8 @@ import core.scm.Type
 
 class BitAnd : AFn(FnArgsBuilder().min(2).rest(Type.BitOp::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "bit-and"
+    override val isPure = true
+    override val name = "bit-and"
 
     override operator fun invoke(vararg args: Any?): Long? {
         var result = (args[0] as Number).toLong()

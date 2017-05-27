@@ -5,11 +5,8 @@ import core.scm.Cons
 
 class ListProc : AFn() {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "list"
+    override val isPure = true
+    override val name = "list"
 
     override operator fun invoke(vararg args: Any?): List<Any?>? {
         return Cons.list(*args)

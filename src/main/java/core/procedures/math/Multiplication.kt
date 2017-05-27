@@ -11,11 +11,8 @@ import java.math.BigInteger
 
 class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "*"
+    override val isPure = true
+    override val name = "*"
 
     override operator fun invoke(vararg args: Any?): Number? {
         when (args.size) {

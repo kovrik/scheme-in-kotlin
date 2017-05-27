@@ -6,11 +6,8 @@ import java.util.HashMap
 
 class HashMapProc : AFn() {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "hash-map"
+    override val isPure = true
+    override val name = "hash-map"
 
     override operator fun invoke(vararg args: Any?): Map<Any?, Any?> {
         if (args.size % 2 != 0) {

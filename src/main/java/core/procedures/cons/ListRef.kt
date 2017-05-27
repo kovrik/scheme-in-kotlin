@@ -8,11 +8,8 @@ import core.scm.Type
 class ListRef : AFn(FnArgsBuilder().min(2).max(2)
         .mandatory(arrayOf(Type.Pair::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "list-ref"
+    override val isPure = true
+    override val name = "list-ref"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg1 as List<*>?

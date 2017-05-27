@@ -20,18 +20,17 @@ class StringComparison private constructor(override val name: String, private va
         val STRING_GR_OR_EQ_CI = StringComparison("string-ci>=?", BiPredicate<String, String> { arg1, arg2 -> arg1.toLowerCase() >= arg2.toLowerCase() })
     }
 
-    override val isPure: Boolean
-        get() = true
+    override val isPure = true
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         if (args.size < 2) {
-            return java.lang.Boolean.TRUE
+            return true
         }
         for (i in 0..args.size - 1 - 1) {
             if (!predicate.test(args[i].toString(), args[i + 1].toString())) {
-                return java.lang.Boolean.FALSE
+                return false
             }
         }
-        return java.lang.Boolean.TRUE
+        return true
     }
 }

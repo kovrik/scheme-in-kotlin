@@ -6,11 +6,8 @@ import core.utils.Utils
 
 class BooleanType : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "boolean"
+    override val isPure = true
+    override val name = "boolean"
 
     override operator fun invoke(arg: Any?): Boolean? {
         /* Have to box it */

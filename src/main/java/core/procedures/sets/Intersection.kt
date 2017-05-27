@@ -7,11 +7,8 @@ import java.util.HashSet
 
 class Intersection : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set::class.java)).rest(Set::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "intersection"
+    override val isPure = true
+    override val name = "intersection"
 
     override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.size == 1) {

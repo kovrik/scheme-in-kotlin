@@ -13,11 +13,8 @@ import java.util.HashMap
 // TODO Rename to Assoc?
 class Put : AFn(FnArgsBuilder().min(3).mandatory(arrayOf<Class<*>>(Any::class.java, Any::class.java, Any::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "put"
+    override val isPure = true
+    override val name = "put"
 
     override operator fun invoke(vararg args: Any?): Any? {
         var m = args[0]

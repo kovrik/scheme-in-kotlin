@@ -10,11 +10,8 @@ class RandNth : AFn(FnArgsBuilder().min(1).max(1).build()) {
     private val count = Count()
     private val get = Get()
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "rand-nth"
+    override val isPure = true
+    override val name = "rand-nth"
 
     override operator fun invoke(arg: Any?): Any? {
         if (arg is Map<*, *>) {

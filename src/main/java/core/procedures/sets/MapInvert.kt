@@ -5,11 +5,8 @@ import core.procedures.FnArgsBuilder
 
 class MapInvert : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Map::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "map-invert"
+    override val isPure = true
+    override val name = "map-invert"
 
     override operator fun invoke(vararg args: Any?): Map<Any?, Any?>? {
         val result = HashMap<Any?, Any?>()

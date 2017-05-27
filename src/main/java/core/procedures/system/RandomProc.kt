@@ -8,11 +8,8 @@ import java.util.concurrent.ThreadLocalRandom
 
 class RandomProc : AFn(FnArgsBuilder().max(2).rest(Long::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "random"
+    override val isPure = true
+    override val name = "random"
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {

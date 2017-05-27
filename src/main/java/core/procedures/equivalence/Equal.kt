@@ -6,11 +6,8 @@ import core.scm.MutableString
 
 class Equal : AFn(FnArgsBuilder().min(2).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "equal?"
+    override val isPure = true
+    override val name = "equal?"
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = java.lang.Boolean.TRUE

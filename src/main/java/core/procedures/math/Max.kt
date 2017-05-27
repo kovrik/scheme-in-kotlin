@@ -9,14 +9,10 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Max : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::class.java))
-        .rest(Type.Real::class.java).build()) {
+class Max : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::class.java)).rest(Type.Real::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "max"
+    override val isPure = true
+    override val name = "max"
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
@@ -36,7 +32,7 @@ class Max : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Type.Real::cl
         var second = second
         /* Big Ratio numbers */
         if (first is BigRatio && second is BigRatio) {
-            return if (first.compareTo(second) > 0) first else second
+            return if (first > second) first else second
         }
         if (first is BigRatio) {
             first = first.toDouble()

@@ -12,11 +12,8 @@ import java.math.BigInteger
 
 class GCD : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = NAME
+    override val isPure = true
+    override val name = NAME
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.isEmpty()) {

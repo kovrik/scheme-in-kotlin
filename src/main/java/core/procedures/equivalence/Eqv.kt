@@ -20,11 +20,8 @@ class Eqv : AFn(FnArgsBuilder().min(2).build()) {
         }
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "eqv?"
+    override val isPure = true
+    override val name = "eqv?"
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = java.lang.Boolean.TRUE

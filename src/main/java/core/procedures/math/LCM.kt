@@ -11,11 +11,8 @@ import java.math.BigInteger
 
 class LCM : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "lcm"
+    override val isPure = true
+    override val name = "lcm"
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.isEmpty()) {

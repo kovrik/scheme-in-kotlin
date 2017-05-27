@@ -15,11 +15,7 @@ class Continuation : AFn(FnArgsBuilder().min(1).max(1).build()) {
         this.isInvoked = true
     }
 
-    override val isPure: Boolean
-        get() = false
-
-    override val name: String
-        get() = "continuation"
+    override val name = "continuation"
 
     override operator fun invoke(arg: Any?): Number? {
         throw CalledContinuation(arg!!, this)

@@ -12,8 +12,7 @@ import core.writer.Writer
 class MemberProc(override val name: String, /* Procedure used to compare objects for equality */
                  private val predicate: AFn) : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Any::class.java, List::class.java)).build()) {
 
-    override val isPure: Boolean
-        get() = true
+    override val isPure = true
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg2 as List<*>?

@@ -8,11 +8,8 @@ import java.math.BigDecimal
 
 class BigDecimalType : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "bigdec"
+    override val isPure = true
+    override val name = "bigdec"
 
     override operator fun invoke(arg: Any?): BigDecimal {
         if (arg is Number) {

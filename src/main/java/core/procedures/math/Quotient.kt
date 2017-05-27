@@ -10,11 +10,8 @@ import java.math.BigInteger
 
 open class Quotient : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "quotient"
+    override val isPure = true
+    override val name = "quotient"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         if (arg1 == null) throw NullPointerException()

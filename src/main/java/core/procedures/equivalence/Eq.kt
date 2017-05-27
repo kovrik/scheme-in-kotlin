@@ -7,11 +7,8 @@ import core.scm.Symbol
 
 class Eq : AFn(FnArgsBuilder().min(2).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "eq?"
+    override val isPure = true
+    override val name = "eq?"
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = java.lang.Boolean.TRUE

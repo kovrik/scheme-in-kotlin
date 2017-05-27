@@ -6,11 +6,8 @@ import core.procedures.FnArgsBuilder
 
 class SetProc : AFn(FnArgsBuilder().min(1).max(1).build()) {
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "set"
+    override val isPure = true
+    override val name = "set"
 
     override operator fun invoke(arg: Any?): Set<Any?> {
         if (arg is Collection<*>) {

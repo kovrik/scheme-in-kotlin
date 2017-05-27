@@ -8,11 +8,7 @@ import core.scm.Void
 
 class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableString::class.java, Type.ExactNonNegativeInteger::class.java, Char::class.javaObjectType)).build()) {
 
-    override val name: String
-        get() = "string-set!"
-
-    override val isPure: Boolean
-        get() = false
+    override val name = "string-set!"
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         val str = arg1 as MutableString?

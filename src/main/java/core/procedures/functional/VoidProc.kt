@@ -9,11 +9,8 @@ class VoidProc : AFn() {
         internal val VOID = VoidProc()
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "void"
+    override val isPure = true
+    override val name = "void"
 
     override operator fun invoke(vararg args: Any?): Any? {
         return Void

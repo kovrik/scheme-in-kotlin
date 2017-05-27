@@ -16,11 +16,8 @@ class First : AFn(FnArgsBuilder().min(1).max(1).build()) {
         }
     }
 
-    override val isPure: Boolean
-        get() = true
-
-    override val name: String
-        get() = "first"
+    override val isPure = true
+    override val name = "first"
 
     override operator fun invoke(arg: Any?): Any? {
         return first(arg)
