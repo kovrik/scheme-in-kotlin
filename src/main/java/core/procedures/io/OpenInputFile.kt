@@ -1,6 +1,6 @@
 package core.procedures.io
 
-import core.exceptions.SCMFileNotFoundException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.scm.InputPort
@@ -13,12 +13,10 @@ class OpenInputFile : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<
     override val name = "open-input-file"
 
     override operator fun invoke(arg: Any?): Any {
-        val filename = arg.toString()
         try {
-            return InputPort(FileInputStream(filename))
+            return InputPort(FileInputStream(arg.toString()))
         } catch (e: FileNotFoundException) {
-            throw SCMFileNotFoundException(filename)
+            throw ThrowableWrapper(e)
         }
-
     }
 }

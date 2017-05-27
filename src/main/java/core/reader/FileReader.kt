@@ -1,6 +1,5 @@
 package core.reader
 
-import core.exceptions.SCMFileNotFoundException
 import core.exceptions.ThrowableWrapper
 import java.io.*
 import java.util.*
@@ -11,9 +10,8 @@ class FileReader : Reader() {
         try {
             reader = PushbackReader(BufferedReader(java.io.FileReader(file)), 1)
         } catch (e: FileNotFoundException) {
-            throw SCMFileNotFoundException(file.path)
+            throw ThrowableWrapper(e)
         }
-
         val tokens = ArrayList<Any>()
         try {
             var i = reader.read()

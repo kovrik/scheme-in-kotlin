@@ -1,6 +1,6 @@
 package core.procedures.io
 
-import core.exceptions.SCMFileNotFoundException
+import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgsBuilder
 import core.procedures.IFn
@@ -15,14 +15,12 @@ class CallWithOutputFile : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(C
     override val name = "call-with-output-file"
 
     override operator fun invoke(vararg args: Any?): Any {
-        val filename = args[0].toString()
         val outputPort: OutputPort
         try {
-            outputPort = OutputPort(FileOutputStream(filename))
+            outputPort = OutputPort(FileOutputStream(args[0].toString()))
         } catch (e: FileNotFoundException) {
-            throw SCMFileNotFoundException(filename)
+            throw ThrowableWrapper(e)
         }
-
         val proc = args[1] as IFn<*, *>
         val sexp = Cons.list(proc, outputPort)
         return Thunk(sexp)
