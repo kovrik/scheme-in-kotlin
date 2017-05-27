@@ -12,8 +12,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.HashMap
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -27,8 +25,8 @@ class NumberTest : AbstractTest() {
         assertEquals(1L, eval("(*)", env))
         assertEquals(1L, eval("(lcm)", env))
         assertEquals(0L, eval("(gcd)", env))
-        assertEquals(TRUE, eval("(and)", env))
-        assertEquals(FALSE, eval("(or)", env))
+        assertEquals(true, eval("(and)", env))
+        assertEquals(false, eval("(or)", env))
     }
 
     @Test
@@ -143,22 +141,22 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalNumericalComparison() {
-        assertEquals(TRUE, eval("(= 1 1 1)", env))
-        assertEquals(FALSE, eval("(= 1 0 1)", env))
-        assertEquals(TRUE, eval("(= 0 0.0)", env))
-        assertEquals(TRUE, eval("(= 0.57 0.5700)", env))
-        assertEquals(TRUE, eval("(= 7 7.00)", env))
-        assertEquals(TRUE, eval("(= -234234/234 -234234/234 )", env))
-        assertEquals(FALSE, eval("(= -134234/234 -234234/234 )", env))
-        assertEquals(TRUE, eval("(= 2000/3000 2/3)", env))
-        assertEquals(TRUE, eval("(= -9999999999999999999999999999999.0 -9999999999999999999999999999999.0)", env))
+        assertEquals(true, eval("(= 1 1 1)", env))
+        assertEquals(false, eval("(= 1 0 1)", env))
+        assertEquals(true, eval("(= 0 0.0)", env))
+        assertEquals(true, eval("(= 0.57 0.5700)", env))
+        assertEquals(true, eval("(= 7 7.00)", env))
+        assertEquals(true, eval("(= -234234/234 -234234/234 )", env))
+        assertEquals(false, eval("(= -134234/234 -234234/234 )", env))
+        assertEquals(true, eval("(= 2000/3000 2/3)", env))
+        assertEquals(true, eval("(= -9999999999999999999999999999999.0 -9999999999999999999999999999999.0)", env))
 
-        assertEquals(TRUE, eval("(> 2 1)", env))
-        assertEquals(TRUE, eval("(> 2 1.123)", env))
-        assertEquals(TRUE, eval("(>= 2 1.123)", env))
-        assertEquals(TRUE, eval("(>= 2.5 1.123)", env))
-        assertEquals(TRUE, eval("(<= -2.5 1.123)", env))
-        assertEquals(TRUE, eval("(< -2.5 1.123)", env))
+        assertEquals(true, eval("(> 2 1)", env))
+        assertEquals(true, eval("(> 2 1.123)", env))
+        assertEquals(true, eval("(>= 2 1.123)", env))
+        assertEquals(true, eval("(>= 2.5 1.123)", env))
+        assertEquals(true, eval("(<= -2.5 1.123)", env))
+        assertEquals(true, eval("(< -2.5 1.123)", env))
     }
 
     @Test
@@ -232,13 +230,13 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalIsZero() {
-        assertEquals(TRUE, eval("(zero? 0)", env))
-        assertEquals(TRUE, eval("(zero? 0.0)", env))
-        assertEquals(TRUE, eval("(zero? 0000000000000000000000000000.00000000000000000000000)", env))
-        assertEquals(TRUE, eval("(zero? 0/999999)", env))
-        assertEquals(TRUE, eval("(zero? -0/999999)", env))
-        assertEquals(FALSE, eval("(zero? 1)", env))
-        assertEquals(FALSE, eval("(zero? -5)", env))
+        assertEquals(true, eval("(zero? 0)", env))
+        assertEquals(true, eval("(zero? 0.0)", env))
+        assertEquals(true, eval("(zero? 0000000000000000000000000000.00000000000000000000000)", env))
+        assertEquals(true, eval("(zero? 0/999999)", env))
+        assertEquals(true, eval("(zero? -0/999999)", env))
+        assertEquals(false, eval("(zero? 1)", env))
+        assertEquals(false, eval("(zero? -5)", env))
 
         try {
             eval("(zero? \"test\")", env)
@@ -250,15 +248,15 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalNegative() {
-        assertEquals(FALSE, eval("(negative? 0)", env))
-        assertEquals(FALSE, eval("(negative? 0.0)", env))
-        assertEquals(FALSE, eval("(negative? 3/4)", env))
-        assertEquals(TRUE, eval("(negative? -3/4)", env))
-        assertEquals(FALSE, eval("(negative? 9999999999999999999999999999999999.0)", env))
-        assertEquals(TRUE, eval("(negative? -9999999999999999999999999999999999.0)", env))
-        assertEquals(FALSE, eval("(negative? 1)", env))
-        assertEquals(FALSE, eval("(negative? (* -5 -6))", env))
-        assertEquals(TRUE, eval("(negative? -5)", env))
+        assertEquals(false, eval("(negative? 0)", env))
+        assertEquals(false, eval("(negative? 0.0)", env))
+        assertEquals(false, eval("(negative? 3/4)", env))
+        assertEquals(true, eval("(negative? -3/4)", env))
+        assertEquals(false, eval("(negative? 9999999999999999999999999999999999.0)", env))
+        assertEquals(true, eval("(negative? -9999999999999999999999999999999999.0)", env))
+        assertEquals(false, eval("(negative? 1)", env))
+        assertEquals(false, eval("(negative? (* -5 -6))", env))
+        assertEquals(true, eval("(negative? -5)", env))
         try {
             eval("(negative? \"test\")", env)
             fail()
@@ -269,15 +267,15 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalPositive() {
-        assertEquals(FALSE, eval("(positive? 0)", env))
-        assertEquals(FALSE, eval("(positive? 0.0)", env))
-        assertEquals(TRUE, eval("(positive? 3/4)", env))
-        assertEquals(FALSE, eval("(positive? -3/4)", env))
-        assertEquals(TRUE, eval("(positive? 9999999999999999999999999999999999.0)", env))
-        assertEquals(FALSE, eval("(positive? -9999999999999999999999999999999999.0)", env))
-        assertEquals(TRUE, eval("(positive? 1)", env))
-        assertEquals(TRUE, eval("(positive? (* -5 -6))", env))
-        assertEquals(FALSE, eval("(positive? -5)", env))
+        assertEquals(false, eval("(positive? 0)", env))
+        assertEquals(false, eval("(positive? 0.0)", env))
+        assertEquals(true, eval("(positive? 3/4)", env))
+        assertEquals(false, eval("(positive? -3/4)", env))
+        assertEquals(true, eval("(positive? 9999999999999999999999999999999999.0)", env))
+        assertEquals(false, eval("(positive? -9999999999999999999999999999999999.0)", env))
+        assertEquals(true, eval("(positive? 1)", env))
+        assertEquals(true, eval("(positive? (* -5 -6))", env))
+        assertEquals(false, eval("(positive? -5)", env))
         try {
             eval("(positive? \"test\")", env)
             fail()
@@ -288,13 +286,13 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalEven() {
-        assertEquals(TRUE, eval("(even? 0)", env))
-        assertEquals(TRUE, eval("(even? 0.0)", env))
-        assertEquals(TRUE, eval("(even? 4)", env))
-        assertEquals(TRUE, eval("(even? 100)", env))
-        assertEquals(FALSE, eval("(even? 1)", env))
-        assertEquals(TRUE, eval("(even? (* -5 -6))", env))
-        assertEquals(FALSE, eval("(even? -5)", env))
+        assertEquals(true, eval("(even? 0)", env))
+        assertEquals(true, eval("(even? 0.0)", env))
+        assertEquals(true, eval("(even? 4)", env))
+        assertEquals(true, eval("(even? 100)", env))
+        assertEquals(false, eval("(even? 1)", env))
+        assertEquals(true, eval("(even? (* -5 -6))", env))
+        assertEquals(false, eval("(even? -5)", env))
         try {
             eval("(even? \"test\")", env)
             fail()
@@ -305,14 +303,14 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalOdd() {
-        assertEquals(FALSE, eval("(odd? 0)", env))
-        assertEquals(FALSE, eval("(odd? 0.0)", env))
-        assertEquals(FALSE, eval("(odd? 4)", env))
-        assertEquals(FALSE, eval("(odd? 100)", env))
-        assertEquals(TRUE, eval("(odd? 1)", env))
-        assertEquals(FALSE, eval("(odd? 4)", env))
-        assertEquals(FALSE, eval("(odd? (* -5 -6))", env))
-        assertEquals(TRUE, eval("(odd? -5)", env))
+        assertEquals(false, eval("(odd? 0)", env))
+        assertEquals(false, eval("(odd? 0.0)", env))
+        assertEquals(false, eval("(odd? 4)", env))
+        assertEquals(false, eval("(odd? 100)", env))
+        assertEquals(true, eval("(odd? 1)", env))
+        assertEquals(false, eval("(odd? 4)", env))
+        assertEquals(false, eval("(odd? (* -5 -6))", env))
+        assertEquals(true, eval("(odd? -5)", env))
         try {
             eval("(odd? \"test\")", env)
             fail()
@@ -596,8 +594,8 @@ class NumberTest : AbstractTest() {
                 "84132513")
 
         assertEquals(big1, eval("(expt 33 333)", env))
-        assertEquals(TRUE, eval(String.format("(number? %s)", big0), env))
-        assertEquals(TRUE, eval(String.format("(complex? %s)", big0), env))
+        assertEquals(true, eval(String.format("(number? %s)", big0), env))
+        assertEquals(true, eval(String.format("(complex? %s)", big0), env))
 
         assertEquals(BigInteger(big0), eval(String.format("(* (/ %s 10) 10)", big0), env))
         assertEquals(BigInteger(big0).multiply(BigInteger("2")), eval(String.format("(+ %s %s)", big0, big0), env))
@@ -628,11 +626,11 @@ class NumberTest : AbstractTest() {
         assertEquals(BigInteger(quotientResult1), eval(String.format("(quotient %s 2)", big2), env))
         assertEquals(BigInteger.valueOf(2L), eval(String.format("(quotient %s (quotient %s 2))", big2, big2), env))
 
-        assertEquals(TRUE, eval(String.format("(eqv? %s %s)", big2, big2), env))
-        assertEquals(TRUE, eval(String.format("(<= %s %s)", big2, big2), env))
-        assertEquals(FALSE, eval(String.format("(< %s %s)", big2, big2), env))
-        assertEquals(TRUE, eval(String.format("(> (+ 1 %s) %s)", big2, big2), env))
-        assertEquals(TRUE, eval(String.format("(< (+ 1 2) %s)", big2), env))
+        assertEquals(true, eval(String.format("(eqv? %s %s)", big2, big2), env))
+        assertEquals(true, eval(String.format("(<= %s %s)", big2, big2), env))
+        assertEquals(false, eval(String.format("(< %s %s)", big2, big2), env))
+        assertEquals(true, eval(String.format("(> (+ 1 %s) %s)", big2, big2), env))
+        assertEquals(true, eval(String.format("(< (+ 1 2) %s)", big2), env))
 
         assertEquals(java.lang.Double.POSITIVE_INFINITY, eval(String.format("(sqrt %s)", big2), env))
         assertEquals(BigInteger("-99999999999999999999999999999999999999999999999999"),
@@ -642,17 +640,17 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalIsInteger() {
-        assertEquals(TRUE, eval("(integer? 0)", env))
-        assertEquals(TRUE, eval("(integer? 0.0)", env))
-        assertEquals(TRUE, eval("(integer? 4)", env))
-        assertEquals(TRUE, eval("(integer? 100)", env))
-        assertEquals(TRUE, eval("(integer? 1)", env))
-        assertEquals(TRUE, eval("(integer? (* -5 -6))", env))
-        assertEquals(TRUE, eval("(integer? -5)", env))
-        assertEquals(FALSE, eval("(integer? -5.4)", env))
-        assertEquals(FALSE, eval("(integer? 3.14)", env))
-        assertEquals(FALSE, eval("(integer? .123)", env))
-        assertEquals(FALSE, eval("(integer? \"test\")", env))
+        assertEquals(true, eval("(integer? 0)", env))
+        assertEquals(true, eval("(integer? 0.0)", env))
+        assertEquals(true, eval("(integer? 4)", env))
+        assertEquals(true, eval("(integer? 100)", env))
+        assertEquals(true, eval("(integer? 1)", env))
+        assertEquals(true, eval("(integer? (* -5 -6))", env))
+        assertEquals(true, eval("(integer? -5)", env))
+        assertEquals(false, eval("(integer? -5.4)", env))
+        assertEquals(false, eval("(integer? 3.14)", env))
+        assertEquals(false, eval("(integer? .123)", env))
+        assertEquals(false, eval("(integer? \"test\")", env))
     }
 
     @Test
@@ -689,36 +687,36 @@ class NumberTest : AbstractTest() {
     fun testStringToNumber() {
         assertEquals(100L, eval("(string->number \"100\")", env))
         assertEquals(256L, eval("(string->number \"100\" 16)", env))
-        assertEquals(FALSE, eval("(string->number \"hello\")", env))
+        assertEquals(false, eval("(string->number \"hello\")", env))
         assertEquals(57L, eval("(string->number \"111\" 7)", env))
         assertEquals(7L, eval("(string->number \"#b111\" 7)", env))
         assertEquals(BigInteger("26623333280885243903"), eval("(string->number \"bbbbbbbbbbbbbbbbbb\" 12)", env))
         assertEquals(BigInteger("26623333280885243903"), eval("(string->number \"BBBBBBBBBBBBBBBBBB\" 12)", env))
         assertEquals(BigInteger("110573323209400121422731899656355381011962890624"), eval("(string->number \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\" 15)", env))
         assertEquals(BigDecimal("110573323209400121422731899656355381011962890624.0"), eval("(string->number \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.0\" 15)", env))
-        assertEquals(FALSE, eval("(string->number \"eeef\" 15)", env))
+        assertEquals(false, eval("(string->number \"eeef\" 15)", env))
         assertEquals(85L, eval("(string->number \"1010101\" 2)", env))
         assertEquals(BigInteger("289264344747772786367397236066475587972918828808734345141483382767615"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff\")", env))
         assertEquals(BigDecimal("289264344747772786367397236066475587972918828808734345141483382767615.0"), eval("(string->number \"#xababaabababababababababababababafffffffffffffffffffffffff.0\")", env))
         assertEquals(1500.0, eval("(string->number \"15##\")", env))
-        assertEquals(FALSE, eval("(string->number \"1234#d\")", env))
+        assertEquals(false, eval("(string->number \"1234#d\")", env))
         assertEquals(100.0, eval("(string->number \"1e2\")", env))
         assertEquals(BigDecimal("0.5"), eval("(string->number \"#b1e-1\")", env))
         assertEquals(BigDecimal("6161212520618990239744.0"), eval("(string->number \"#o1234e+25\")", env))
-        assertEquals(FALSE, eval("(string->number \"#\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e\")", env))
-        assertEquals(FALSE, eval("(string->number \"##\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e#\")", env))
-        assertEquals(FALSE, eval("(string->number \"##e\")", env))
-        assertEquals(FALSE, eval("(string->number \"###\")", env))
-        assertEquals(FALSE, eval("(string->number \"###e\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e##\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e#e\")", env))
-        assertEquals(FALSE, eval("(string->number \"eeef\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e#i1\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e#b#\")", env))
-        assertEquals(FALSE, eval("(string->number \"#e#i#e\")", env))
-        assertEquals(FALSE, eval("(string->number \"1.1.1\")", env))
+        assertEquals(false, eval("(string->number \"#\")", env))
+        assertEquals(false, eval("(string->number \"#e\")", env))
+        assertEquals(false, eval("(string->number \"##\")", env))
+        assertEquals(false, eval("(string->number \"#e#\")", env))
+        assertEquals(false, eval("(string->number \"##e\")", env))
+        assertEquals(false, eval("(string->number \"###\")", env))
+        assertEquals(false, eval("(string->number \"###e\")", env))
+        assertEquals(false, eval("(string->number \"#e##\")", env))
+        assertEquals(false, eval("(string->number \"#e#e\")", env))
+        assertEquals(false, eval("(string->number \"eeef\")", env))
+        assertEquals(false, eval("(string->number \"#e#i1\")", env))
+        assertEquals(false, eval("(string->number \"#e#b#\")", env))
+        assertEquals(false, eval("(string->number \"#e#i#e\")", env))
+        assertEquals(false, eval("(string->number \"1.1.1\")", env))
         try {
             eval("(string->number \"#b1e5\")", env)
             fail()
@@ -755,7 +753,7 @@ class NumberTest : AbstractTest() {
         numbers.put(15, "eeeeeeeeeeeeeeeee")
         numbers.put(16, "ffffffffffffffff")
         for ((key, value) in numbers) {
-            assertNotEquals(FALSE, eval(String.format("(string->number \"%s\" %s)", value, key), env))
+            assertNotEquals(false, eval(String.format("(string->number \"%s\" %s)", value, key), env))
         }
     }
 
@@ -763,79 +761,79 @@ class NumberTest : AbstractTest() {
     fun testQuotientViaTruncate() {
         // quotient = (truncate (/ n m))
         eval("(define // (lambda (n m) (truncate (/ n m))))", env)
-        assertEquals(TRUE, eval("(= (quotient 5 4) (// 5 4))", env))
-        assertEquals(TRUE, eval("(= (quotient 5 4.0) (// 5 4.0))", env))
-        assertEquals(TRUE, eval("(= (quotient -5 4.0) (// -5 4.0))", env))
-        assertEquals(TRUE, eval("(= (quotient -5999999999999999999999999999999999999 4.0) (// -5999999999999999999999999999999999999 4.0))", env))
+        assertEquals(true, eval("(= (quotient 5 4) (// 5 4))", env))
+        assertEquals(true, eval("(= (quotient 5 4.0) (// 5 4.0))", env))
+        assertEquals(true, eval("(= (quotient -5 4.0) (// -5 4.0))", env))
+        assertEquals(true, eval("(= (quotient -5999999999999999999999999999999999999 4.0) (// -5999999999999999999999999999999999999 4.0))", env))
     }
 
     @Test
     fun testIsRational() {
-        assertEquals(TRUE, eval("(rational? 0)", env))
-        assertEquals(TRUE, eval("(rational? 1.0)", env))
-        assertEquals(TRUE, eval("(rational? -234234/234234)", env))
-        assertEquals(TRUE, eval("(rational? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
+        assertEquals(true, eval("(rational? 0)", env))
+        assertEquals(true, eval("(rational? 1.0)", env))
+        assertEquals(true, eval("(rational? -234234/234234)", env))
+        assertEquals(true, eval("(rational? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
 
-        assertEquals(FALSE, eval("(rational? +inf.0)", env))
-        assertEquals(FALSE, eval("(rational? -inf.0)", env))
-        assertEquals(FALSE, eval("(rational? +nan.0)", env))
-        assertEquals(FALSE, eval("(rational? -nan.0)", env))
-        assertEquals(FALSE, eval("(rational? \"test\")", env))
-        assertEquals(FALSE, eval("(rational? 12-4i)", env))
+        assertEquals(false, eval("(rational? +inf.0)", env))
+        assertEquals(false, eval("(rational? -inf.0)", env))
+        assertEquals(false, eval("(rational? +nan.0)", env))
+        assertEquals(false, eval("(rational? -nan.0)", env))
+        assertEquals(false, eval("(rational? \"test\")", env))
+        assertEquals(false, eval("(rational? 12-4i)", env))
     }
 
     @Test
     fun testIsReal() {
-        assertEquals(TRUE, eval("(real? 0)", env))
-        assertEquals(TRUE, eval("(real? 1.0)", env))
-        assertEquals(TRUE, eval("(real? -234234/234234)", env))
-        assertEquals(TRUE, eval("(real? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
-        assertEquals(TRUE, eval("(real? +inf.0)", env))
-        assertEquals(TRUE, eval("(real? -inf.0)", env))
-        assertEquals(TRUE, eval("(real? +nan.0)", env))
-        assertEquals(TRUE, eval("(real? -nan.0)", env))
-        assertEquals(FALSE, eval("(real? \"test\")", env))
+        assertEquals(true, eval("(real? 0)", env))
+        assertEquals(true, eval("(real? 1.0)", env))
+        assertEquals(true, eval("(real? -234234/234234)", env))
+        assertEquals(true, eval("(real? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
+        assertEquals(true, eval("(real? +inf.0)", env))
+        assertEquals(true, eval("(real? -inf.0)", env))
+        assertEquals(true, eval("(real? +nan.0)", env))
+        assertEquals(true, eval("(real? -nan.0)", env))
+        assertEquals(false, eval("(real? \"test\")", env))
     }
 
     @Test
     fun testIsNumber() {
-        assertEquals(TRUE, eval("(number? 0)", env))
-        assertEquals(TRUE, eval("(number? 1.0)", env))
-        assertEquals(TRUE, eval("(number? -234234/234234)", env))
-        assertEquals(TRUE, eval("(number? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
-        assertEquals(TRUE, eval("(number? +inf.0)", env))
-        assertEquals(TRUE, eval("(number? -inf.0)", env))
-        assertEquals(TRUE, eval("(number? +nan.0)", env))
-        assertEquals(TRUE, eval("(number? -nan.0)", env))
-        assertEquals(TRUE, eval("(number? -1/3)", env))
-        assertEquals(FALSE, eval("(number? \"test\")", env))
+        assertEquals(true, eval("(number? 0)", env))
+        assertEquals(true, eval("(number? 1.0)", env))
+        assertEquals(true, eval("(number? -234234/234234)", env))
+        assertEquals(true, eval("(number? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
+        assertEquals(true, eval("(number? +inf.0)", env))
+        assertEquals(true, eval("(number? -inf.0)", env))
+        assertEquals(true, eval("(number? +nan.0)", env))
+        assertEquals(true, eval("(number? -nan.0)", env))
+        assertEquals(true, eval("(number? -1/3)", env))
+        assertEquals(false, eval("(number? \"test\")", env))
     }
 
     @Test
     fun testIsComplex() {
-        assertEquals(TRUE, eval("(complex? 0)", env))
-        assertEquals(TRUE, eval("(complex? 1.0)", env))
-        assertEquals(TRUE, eval("(complex? -234234/234234)", env))
-        assertEquals(TRUE, eval("(complex? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
-        assertEquals(TRUE, eval("(complex? +inf.0)", env))
-        assertEquals(TRUE, eval("(complex? -inf.0)", env))
-        assertEquals(TRUE, eval("(complex? +nan.0)", env))
-        assertEquals(TRUE, eval("(complex? -nan.0)", env))
-        assertEquals(TRUE, eval("(complex? -1/3)", env))
-        assertEquals(FALSE, eval("(complex? \"test\")", env))
+        assertEquals(true, eval("(complex? 0)", env))
+        assertEquals(true, eval("(complex? 1.0)", env))
+        assertEquals(true, eval("(complex? -234234/234234)", env))
+        assertEquals(true, eval("(complex? -83457348957348573498573489573489573489583457389457349534.3489534895)", env))
+        assertEquals(true, eval("(complex? +inf.0)", env))
+        assertEquals(true, eval("(complex? -inf.0)", env))
+        assertEquals(true, eval("(complex? +nan.0)", env))
+        assertEquals(true, eval("(complex? -nan.0)", env))
+        assertEquals(true, eval("(complex? -1/3)", env))
+        assertEquals(false, eval("(complex? \"test\")", env))
     }
 
     @Test
     fun testIsExact() {
-        assertEquals(TRUE, eval("(exact? 0)", env))
-        assertEquals(TRUE, eval("(exact? -3/5)", env))
-        assertEquals(TRUE, eval("(exact? 99999999999999999999999999999999999999999999999999999999999999999999)", env))
+        assertEquals(true, eval("(exact? 0)", env))
+        assertEquals(true, eval("(exact? -3/5)", env))
+        assertEquals(true, eval("(exact? 99999999999999999999999999999999999999999999999999999999999999999999)", env))
 
-        assertEquals(FALSE, eval("(exact? -2.5)", env))
-        assertEquals(FALSE, eval("(exact? +inf.0)", env))
-        assertEquals(FALSE, eval("(exact? -inf.0)", env))
-        assertEquals(FALSE, eval("(exact? +nan.0)", env))
-        assertEquals(FALSE, eval("(exact? -nan.0)", env))
+        assertEquals(false, eval("(exact? -2.5)", env))
+        assertEquals(false, eval("(exact? +inf.0)", env))
+        assertEquals(false, eval("(exact? -inf.0)", env))
+        assertEquals(false, eval("(exact? +nan.0)", env))
+        assertEquals(false, eval("(exact? -nan.0)", env))
 
         try {
             eval("(exact? \"test\")", env)
@@ -847,12 +845,12 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testIsInexact() {
-        assertEquals(FALSE, eval("(inexact? 0)", env))
-        assertEquals(FALSE, eval("(inexact? -3/5)", env))
-        assertEquals(FALSE, eval("(inexact? 99999999999999999999999999999999999999999999999999999999999999999999)", env))
+        assertEquals(false, eval("(inexact? 0)", env))
+        assertEquals(false, eval("(inexact? -3/5)", env))
+        assertEquals(false, eval("(inexact? 99999999999999999999999999999999999999999999999999999999999999999999)", env))
 
         val trues = arrayOf("(inexact? -2.5)", "(inexact? +inf.0)", "(inexact? -inf.0)", "(inexact? +nan.0)", "(inexact? -nan.0)")
-        assertAllEqual(TRUE, trues, env)
+        assertAllEqual(true, trues, env)
         try {
             eval("(inexact? \"test\")", env)
             fail()

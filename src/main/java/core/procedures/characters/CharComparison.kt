@@ -27,9 +27,9 @@ class CharComparison private constructor(override val name: String, private val 
     override operator fun invoke(vararg args: Any?): Boolean? {
         for (i in 0..args.size - 1 - 1) {
             if (!predicate.test(args[i] as Char, args[i + 1] as Char)) {
-                return java.lang.Boolean.FALSE
+                return false
             }
         }
-        return java.lang.Boolean.TRUE
+        return true
     }
 }

@@ -29,7 +29,7 @@ enum class Assert : ISpecialForm {
             assertionError.stackTrace = EMPTY
             throw assertionError
         }
-        return java.lang.Boolean.TRUE
+        return true
     }
 
     override fun toString(): String {

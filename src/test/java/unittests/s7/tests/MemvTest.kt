@@ -3,7 +3,6 @@ package unittests.s7.tests
 import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
 import core.procedures.cons.ConsProc.Companion.cons
-import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
@@ -11,7 +10,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
 import unittests.AbstractTest
-import java.lang.Boolean.FALSE
 
 class MemvTest : AbstractTest() {
 
@@ -20,22 +18,22 @@ class MemvTest : AbstractTest() {
         assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env))
         assertEquals(list(101L, 102L), eval("(memv 101 (list 100 101 102))", env))
         assertEquals(list(3.4, 4.5), eval("(memv 3.4 '(1.2 2.3 3.4 4.5))", env))
-        assertEquals(FALSE, eval("(memv 3.4 '(1.3 2.5 3.7 4.9))", env))
-        assertEquals(FALSE, eval("(memv 1.0 '(1 2 3))", env))
+        assertEquals(false, eval("(memv 3.4 '(1.3 2.5 3.7 4.9))", env))
+        assertEquals(false, eval("(memv 1.0 '(1 2 3))", env))
         assertEquals(cons(1L, 2L), eval("(memv 1 (cons 1 2))", env))
         assertEquals(cons(s("a"), cons(s("b"), s("c"))), eval("(memv 'a '(a b . c))", env))
         assertEquals(list(s("c")), eval("(memv 'c '(a b c))", env))
-        assertEquals(FALSE, eval("(memv ''a '('a b c))", env))
-        assertEquals(FALSE, eval("(let ((x (cons 1 2))) (memv x (list (cons 1 2) (cons 3 4))))", env))
-        assertEquals(list<Cons<*>>(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (memv x (list x (cons 3 4))))", env))
+        assertEquals(false, eval("(memv ''a '('a b c))", env))
+        assertEquals(false, eval("(let ((x (cons 1 2))) (memv x (list (cons 1 2) (cons 3 4))))", env))
+        assertEquals(list(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (memv x (list x (cons 3 4))))", env))
         assertEquals(list(s("a"), s("a"), s("a")), eval("(memv 'a '(a a a))", env))
         assertEquals(list(s("a"), s("a")), eval("(memv 'a '(b a a))", env))
         assertEquals(list<Any?>("hi", 2L), eval("(memv \"hi\" '(1 \"hi\" 2))", env))
         assertEquals(list<Any?>('a', 2L), eval("(memv #\\a '(1 #f #\\a 2))", env))
-        assertEquals(FALSE, eval("(memv #(1) '(1 #(1) 2))", env))
+        assertEquals(false, eval("(memv #(1) '(1 #(1) 2))", env))
         assertEquals(list(EMPTY, 2L), eval("(memv '() '(1 () 2))", env))
         assertEquals(list(MutableVector(1L, 2L, 3L), MutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env))
-        assertEquals(FALSE, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env))
+        assertEquals(false, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env))
         try {
             eval("(memv 'asdf '(a b . c))", env)
             fail()

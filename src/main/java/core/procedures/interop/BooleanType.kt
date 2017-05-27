@@ -10,10 +10,9 @@ class BooleanType : AFn(FnArgsBuilder().min(1).max(1).build()) {
     override val name = "boolean"
 
     override operator fun invoke(arg: Any?): Boolean? {
-        /* Have to box it */
         when {
-            Utils.toBoolean(arg) -> return java.lang.Boolean.TRUE
-            else -> return java.lang.Boolean.FALSE
+            Utils.toBoolean(arg) -> return true
+            else -> return false
         }
     }
 }

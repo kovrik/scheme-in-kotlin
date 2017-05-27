@@ -10,9 +10,9 @@ class Equal : AFn(FnArgsBuilder().min(2).build()) {
     override val name = "equal?"
 
     override operator fun invoke(vararg args: Any?): Boolean? {
-        var result = java.lang.Boolean.TRUE
+        var result = true
         for (i in 0..args.size - 2) {
-            result = result!! && equal(args[i], args[i + 1])
+            result = result && equal(args[i], args[i + 1])
         }
         return result
     }

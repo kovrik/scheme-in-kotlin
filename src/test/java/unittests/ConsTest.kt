@@ -9,8 +9,6 @@ import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.list
 import org.junit.Assert.*
 import org.junit.Test
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import java.util.*
 
 class ConsTest {
@@ -105,53 +103,53 @@ class ConsTest {
 
     @Test
     fun testIsNil() {
-        assertEquals(TRUE,  Companion.IS_NULL(null))
-        assertEquals(FALSE, Companion.IS_NULL(EMPTY))
-        assertEquals(FALSE, Companion.IS_NULL(ConsProc.cons(1, null)))
-        assertEquals(FALSE, Companion.IS_NULL(ConsProc.cons(EMPTY, 2)))
-        assertEquals(FALSE, Companion.IS_NULL(ConsProc.cons(EMPTY, EMPTY)))
-        assertEquals(FALSE, Companion.IS_NULL(ConsProc.cons(1, EMPTY)))
-        assertEquals(FALSE, Companion.IS_NULL(ConsProc.cons(1, ConsProc.cons(2, 3))))
-        assertEquals(FALSE, Companion.IS_NULL(list<Any?>(null)))
-        assertEquals(FALSE, Companion.IS_NULL(list(EMPTY as Any)))
-        assertEquals(FALSE, Companion.IS_NULL(list(1)))
-        assertEquals(FALSE, Companion.IS_NULL(list(1, 2)))
-        assertEquals(FALSE, Companion.IS_NULL(list(1, 2, 3)))
-        assertEquals(FALSE, Companion.IS_NULL(1))
-        assertEquals(FALSE, Companion.IS_NULL("test"))
+        assertEquals(true,  Companion.IS_NULL(null))
+        assertEquals(false, Companion.IS_NULL(EMPTY))
+        assertEquals(false, Companion.IS_NULL(ConsProc.cons(1, null)))
+        assertEquals(false, Companion.IS_NULL(ConsProc.cons(EMPTY, 2)))
+        assertEquals(false, Companion.IS_NULL(ConsProc.cons(EMPTY, EMPTY)))
+        assertEquals(false, Companion.IS_NULL(ConsProc.cons(1, EMPTY)))
+        assertEquals(false, Companion.IS_NULL(ConsProc.cons(1, ConsProc.cons(2, 3))))
+        assertEquals(false, Companion.IS_NULL(list<Any?>(null)))
+        assertEquals(false, Companion.IS_NULL(list(EMPTY as Any)))
+        assertEquals(false, Companion.IS_NULL(list(1)))
+        assertEquals(false, Companion.IS_NULL(list(1, 2)))
+        assertEquals(false, Companion.IS_NULL(list(1, 2, 3)))
+        assertEquals(false, Companion.IS_NULL(1))
+        assertEquals(false, Companion.IS_NULL("test"))
     }
 
     @Test
     fun testIsPair() {
-        assertEquals(FALSE, Companion.IS_PAIR(EMPTY))
-        assertEquals(FALSE, Companion.IS_PAIR(1))
-        assertEquals(FALSE, Companion.IS_PAIR("test"))
-        assertEquals(FALSE, Companion.IS_PAIR(list<Any>()))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(null, null)))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(1, 2)))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(1, EMPTY)))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(EMPTY, EMPTY)))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(1, ConsProc.cons(2, 3))))
-        assertEquals(TRUE,  Companion.IS_PAIR(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
-        assertEquals(TRUE,  Companion.IS_PAIR(list(1)))
-        assertEquals(TRUE,  Companion.IS_PAIR(list(1, 2)))
-        assertEquals(TRUE,  Companion.IS_PAIR(list(1, 2, 3)))
+        assertEquals(false, Companion.IS_PAIR(EMPTY))
+        assertEquals(false, Companion.IS_PAIR(1))
+        assertEquals(false, Companion.IS_PAIR("test"))
+        assertEquals(false, Companion.IS_PAIR(list<Any>()))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(null, null)))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(1, 2)))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(1, EMPTY)))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(EMPTY, EMPTY)))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(1, ConsProc.cons(2, 3))))
+        assertEquals(true,  Companion.IS_PAIR(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
+        assertEquals(true,  Companion.IS_PAIR(list(1)))
+        assertEquals(true,  Companion.IS_PAIR(list(1, 2)))
+        assertEquals(true,  Companion.IS_PAIR(list(1, 2, 3)))
     }
 
     @Test
     fun testIsList() {
-        assertEquals(TRUE,  Companion.IS_LIST(EMPTY))
-        assertEquals(TRUE,  Companion.IS_LIST(list<Any>()))
-        assertEquals(TRUE,  Companion.IS_LIST(list(1)))
-        assertEquals(TRUE,  Companion.IS_LIST(list(1, 2)))
-        assertEquals(TRUE,  Companion.IS_LIST(list(1, 2, 3)))
-        assertEquals(TRUE,  Companion.IS_LIST(list(1, 2, 3, 4)))
-        assertEquals(TRUE,  Companion.IS_LIST(list(1, 2, EMPTY)))
-        assertEquals(TRUE,  Companion.IS_LIST(ConsProc.cons(null, null)))
-        assertEquals(TRUE,  Companion.IS_LIST(ConsProc.cons(1, null)))
-        assertEquals(FALSE, Companion.IS_LIST(ConsProc.cons(1, 2)))
-        assertEquals(FALSE, Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
-        assertEquals(TRUE,  Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, EMPTY)))))
-        assertEquals(TRUE,  Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, list(1, 2, 3))))))
+        assertEquals(true,  Companion.IS_LIST(EMPTY))
+        assertEquals(true,  Companion.IS_LIST(list<Any>()))
+        assertEquals(true,  Companion.IS_LIST(list(1)))
+        assertEquals(true,  Companion.IS_LIST(list(1, 2)))
+        assertEquals(true,  Companion.IS_LIST(list(1, 2, 3)))
+        assertEquals(true,  Companion.IS_LIST(list(1, 2, 3, 4)))
+        assertEquals(true,  Companion.IS_LIST(list(1, 2, EMPTY)))
+        assertEquals(true,  Companion.IS_LIST(ConsProc.cons(null, null)))
+        assertEquals(true,  Companion.IS_LIST(ConsProc.cons(1, null)))
+        assertEquals(false, Companion.IS_LIST(ConsProc.cons(1, 2)))
+        assertEquals(false, Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, 4)))))
+        assertEquals(true,  Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, EMPTY)))))
+        assertEquals(true,  Companion.IS_LIST(ConsProc.cons(1, ConsProc.cons(2, ConsProc.cons(3, list(1, 2, 3))))))
     }
 }

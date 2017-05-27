@@ -4,8 +4,6 @@ import core.scm.MutableVector
 import org.junit.Test
 
 import core.scm.Cons.Companion.list
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -13,8 +11,8 @@ class VectorTest : AbstractTest() {
 
     @Test
     fun testEvalIsVector() {
-        assertEquals(FALSE, eval("(vector? #\\A)", env))
-        assertEquals(TRUE,  eval("(vector? #(1 2 3 ))", env))
+        assertEquals(false, eval("(vector? #\\A)", env))
+        assertEquals(true,  eval("(vector? #(1 2 3 ))", env))
     }
 
     @Test
@@ -200,9 +198,9 @@ class VectorTest : AbstractTest() {
 
     @Test
     fun testMutability() {
-        assertEquals(TRUE, eval("(mutable? (vector 1 2 3))", env))
-        assertEquals(FALSE, eval("(immutable? (vector 1 2 3))", env))
-        assertEquals(TRUE, eval("(immutable? (vector->immutable-vector (vector 1 2 3)))", env))
+        assertEquals(true, eval("(mutable? (vector 1 2 3))", env))
+        assertEquals(false, eval("(immutable? (vector 1 2 3))", env))
+        assertEquals(true, eval("(immutable? (vector->immutable-vector (vector 1 2 3)))", env))
     }
 
     @Test

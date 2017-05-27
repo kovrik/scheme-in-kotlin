@@ -6,8 +6,6 @@ import org.junit.Test
 
 import java.math.BigDecimal
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -44,18 +42,18 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testExactness() {
-        assertEquals(TRUE, eval("(exact? 1+2i)", env))
-        assertEquals(TRUE, eval("(exact? 0+2i)", env))
-        assertEquals(FALSE, eval("(exact? 0+2.0i)", env))
-        assertEquals(FALSE, eval("(exact? 2.3+2.4i)", env))
-        assertEquals(FALSE, eval("(exact? 0.0+1i)", env))
-        assertEquals(FALSE, eval("(inexact? 1+2i)", env))
-        assertEquals(FALSE, eval("(inexact? 0+2i)", env))
-        assertEquals(TRUE, eval("(inexact? 0+2.0i)", env))
-        assertEquals(TRUE, eval("(inexact? 0.0+1i)", env))
-        assertEquals(FALSE, eval("(exact? (exact->inexact 1+2i))", env))
+        assertEquals(true, eval("(exact? 1+2i)", env))
+        assertEquals(true, eval("(exact? 0+2i)", env))
+        assertEquals(false, eval("(exact? 0+2.0i)", env))
+        assertEquals(false, eval("(exact? 2.3+2.4i)", env))
+        assertEquals(false, eval("(exact? 0.0+1i)", env))
+        assertEquals(false, eval("(inexact? 1+2i)", env))
+        assertEquals(false, eval("(inexact? 0+2i)", env))
+        assertEquals(true, eval("(inexact? 0+2.0i)", env))
+        assertEquals(true, eval("(inexact? 0.0+1i)", env))
+        assertEquals(false, eval("(exact? (exact->inexact 1+2i))", env))
         // FIXME Complex Ratios
-        //    assertEquals(TRUE,  eval("(exact? (inexact->exact 1.3+2.4i))", env));
+        //    assertEquals(true,  eval("(exact? (inexact->exact 1.3+2.4i))", env));
     }
 
     @Test

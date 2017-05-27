@@ -18,8 +18,6 @@ import org.junit.Assert.fail
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -64,10 +62,10 @@ class SpecialFormTest : AbstractTest() {
         assertEquals("test", eval("(force (delay \"test\"))", env))
         assertEquals(10L, eval("(force (delay (+ 5 2 (* 1 3))))", env))
         assertEquals(Delay::class.java, eval("(delay 1.0)", env)!!.javaClass)
-        assertEquals(TRUE, eval("(promise? (delay 1.0))", env))
-        assertEquals(FALSE, eval("(promise? (future 1.0))", env))
-        assertEquals(FALSE, eval("(future?  (delay 1.0))", env))
-        assertEquals(TRUE, eval("(future?  (future 1.0))", env))
+        assertEquals(true, eval("(promise? (delay 1.0))", env))
+        assertEquals(false, eval("(promise? (future 1.0))", env))
+        assertEquals(false, eval("(future?  (delay 1.0))", env))
+        assertEquals(true, eval("(future?  (future 1.0))", env))
         assertEquals(3L, eval("(force (delay (+ 1 2)))", env))
         assertEquals(list(3L, 3L), eval("(let ((p (delay (+ 1 2))))(list (force p) (force p)))", env))
 
@@ -119,7 +117,7 @@ class SpecialFormTest : AbstractTest() {
     @Test
     fun testEvalProcedure() {
         assertEquals(Procedure::class.java, eval("(lambda () #t)", env)!!.javaClass)
-        assertEquals(TRUE, eval("((lambda () #t))", env))
+        assertEquals(true, eval("((lambda () #t))", env))
         assertEquals(6L, eval("((lambda (n) (+ n 1)) 5)", env))
 
         eval("(define (fib n) (if (< n 2) 1 (+ (fib (- n 1)) (fib (- n 2)))))", env)
@@ -432,7 +430,7 @@ class SpecialFormTest : AbstractTest() {
         val letrec1 = "(letrec ((is-even? (lambda (n) (or (= n 0) (is-odd? (- n 1))))) " +
                 "         (is-odd?  (lambda (n) (and (not (= n 0)) (is-even? (- n 1))))))" +
                 "  (is-odd? 11))"
-        assertEquals(TRUE, eval(letrec1, env))
+        assertEquals(true, eval(letrec1, env))
         assertEquals(1L, eval("(letrec ((a 1) (b a) (c b)) c)", env))
         try {
             eval("(letrec ((a a)) a)", env)
@@ -520,20 +518,20 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalAnd() {
-        assertEquals(TRUE, eval("(and)", env))
+        assertEquals(true, eval("(and)", env))
         assertEquals(1L, eval("(and 1)", env))
-        assertEquals(TRUE, eval("(and (= 2 2) (> 2 1))", env))
-        assertEquals(FALSE, eval("(and (= 2 2) (< 2 1))", env))
+        assertEquals(true, eval("(and (= 2 2) (> 2 1))", env))
+        assertEquals(false, eval("(and (= 2 2) (< 2 1))", env))
         assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")),
                 eval("(and 1 2 'c '(f g)) ", env))
     }
 
     @Test
     fun testEvalOr() {
-        assertEquals(FALSE, eval("(or)", env))
-        assertEquals(TRUE, eval("(or (= 2 2) (> 2 1)) ", env))
-        assertEquals(TRUE, eval("(or (= 2 2) (< 2 1))", env))
-        assertEquals(FALSE, eval("(or #f #f #f)", env))
+        assertEquals(false, eval("(or)", env))
+        assertEquals(true, eval("(or (= 2 2) (> 2 1)) ", env))
+        assertEquals(true, eval("(or (= 2 2) (< 2 1))", env))
+        assertEquals(false, eval("(or #f #f #f)", env))
         assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")),
                 eval("(or '(f g) 1 2)", env))
     }
@@ -614,7 +612,7 @@ class SpecialFormTest : AbstractTest() {
         eval("(define lambda 1)", tempEnv)
         assertEquals(15L, eval("(+ begin if quote let lambda)", tempEnv))
         assertEquals(3L, eval("(and 1 2 3)", env))
-        assertEquals(FALSE, eval("(and 1 2 3 4)", tempEnv))
+        assertEquals(false, eval("(and 1 2 3 4)", tempEnv))
     }
 
     @Test
@@ -797,17 +795,17 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testInstanceOf() {
-        assertEquals(TRUE, eval("(instance? String \"str\")", env))
-        assertEquals(TRUE, eval("(instance? Object \"str\")", env))
-        assertEquals(TRUE, eval("(instance? Object (new NullPointerException))", env))
-        assertEquals(TRUE, eval("(instance? Class (.getClass 1))", env))
-        assertEquals(TRUE, eval("(instance? (.getClass []) [])", env))
-        assertEquals(TRUE, eval("(instance? java.math.BigDecimal (new java.math.BigDecimal 10))", env))
-        assertEquals(FALSE, eval("(instance? String 1)", env))
-        assertEquals(FALSE, eval("(instance? String [])", env))
-        assertEquals(FALSE, eval("(instance? String (new Object))", env))
-        assertEquals(FALSE, eval("(instance? Number \"\")", env))
-        assertEquals(FALSE, eval("(instance? (.getClass {}) #{})", env))
+        assertEquals(true, eval("(instance? String \"str\")", env))
+        assertEquals(true, eval("(instance? Object \"str\")", env))
+        assertEquals(true, eval("(instance? Object (new NullPointerException))", env))
+        assertEquals(true, eval("(instance? Class (.getClass 1))", env))
+        assertEquals(true, eval("(instance? (.getClass []) [])", env))
+        assertEquals(true, eval("(instance? java.math.BigDecimal (new java.math.BigDecimal 10))", env))
+        assertEquals(false, eval("(instance? String 1)", env))
+        assertEquals(false, eval("(instance? String [])", env))
+        assertEquals(false, eval("(instance? String (new Object))", env))
+        assertEquals(false, eval("(instance? Number \"\")", env))
+        assertEquals(false, eval("(instance? (.getClass {}) #{})", env))
     }
 
     @Test

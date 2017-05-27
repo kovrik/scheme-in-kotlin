@@ -3,25 +3,23 @@ package unittests
 import core.scm.Keyword
 import org.junit.Test
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 
 class KeywordTest : AbstractTest() {
 
     @Test
     fun testEvalIsKeyword() {
-        assertEquals(TRUE, eval("(keyword? :test)", env))
-        assertEquals(TRUE, eval("(keyword? :a)", env))
-        assertEquals(TRUE, eval("(keyword? :_)", env))
-        assertEquals(TRUE, eval("(keyword? (keyword \"test\")", env))
-        assertEquals(TRUE, eval("(keyword? (keyword \"a\"))", env))
-        assertEquals(TRUE, eval("(keyword? (keyword \"_\"))", env))
-        assertEquals(FALSE, eval("(keyword? \"test\")", env))
-        assertEquals(FALSE, eval("(keyword? #\\a)", env))
-        assertEquals(FALSE, eval("(keyword? '())", env))
-        assertEquals(FALSE, eval("(keyword? [])", env))
-        assertEquals(FALSE, eval("(keyword? {})", env))
+        assertEquals(true, eval("(keyword? :test)", env))
+        assertEquals(true, eval("(keyword? :a)", env))
+        assertEquals(true, eval("(keyword? :_)", env))
+        assertEquals(true, eval("(keyword? (keyword \"test\")", env))
+        assertEquals(true, eval("(keyword? (keyword \"a\"))", env))
+        assertEquals(true, eval("(keyword? (keyword \"_\"))", env))
+        assertEquals(false, eval("(keyword? \"test\")", env))
+        assertEquals(false, eval("(keyword? #\\a)", env))
+        assertEquals(false, eval("(keyword? '())", env))
+        assertEquals(false, eval("(keyword? [])", env))
+        assertEquals(false, eval("(keyword? {})", env))
     }
 
     @Test

@@ -3,8 +3,6 @@ package unittests.s7.tests
 import org.junit.Test
 import unittests.AbstractTest
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 
 class EqTest : AbstractTest() {
@@ -20,7 +18,7 @@ class EqTest : AbstractTest() {
                 "(eq? '() (list))", "(eq? '#f #f)", "(eq? '#f '#f)", "(eq? #f '  #f)", "(eq? '()'())", "(eq? 'if 'if)",
                 "(eq? (list) (list))", "(eq? (list) '())", "(eq? :test :test)", "(eq? :test (keyword \"test\"))",
                 "(eq? '+ '+)", "(eq? 'test (symbol \"test\"))")
-        assertAllEqual(TRUE, trues, env)
+        assertAllEqual(true, trues, env)
 
         val falses = arrayOf(
                 "(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", "(eq? (when #f 1) 1)", "(eq? ''#\\a '#\\a)",
@@ -30,7 +28,7 @@ class EqTest : AbstractTest() {
                 "(eq? '(1) '(1))", "(eq? '(#f) '(#f))", "(eq? #\\a #\\b)", "(eq? #f #t)", "(eq? 'a 'b)", "(eq? (cons 'a 'b) (cons 'a 'b))",
                 "(eq? \"abc\" \"cba\")", "(eq? (string #\\h #\\i) (string #\\h #\\i))", "(eq? '#(a) '#(b))",
                 "(eq? (vector 'a) (vector 'a))", "(eq? car cdr)")
-        assertAllEqual(FALSE, falses, env)
+        assertAllEqual(false, falses, env)
 
         eval("(define (counter count)" +
                 "  (lambda ()" +
@@ -38,14 +36,14 @@ class EqTest : AbstractTest() {
                 "    count))", env)
         eval("(define c1 (counter 0))", env)
         eval("(define c2 (counter 0))", env)
-        assertEquals(FALSE, eval("(eq? c1 c2)", env))
-        assertEquals(TRUE, eval("(eq? c1 c1)", env))
-        assertEquals(TRUE, eval("(eq? c2 c2)", env))
+        assertEquals(false, eval("(eq? c1 c2)", env))
+        assertEquals(true, eval("(eq? c1 c1)", env))
+        assertEquals(true, eval("(eq? c2 c2)", env))
 
         eval("(define sym1 'test", env)
         eval("(define sym2 'test", env)
         eval("(define sym3 (with-meta sym2 {:test #t}))", env)
-        assertEquals(TRUE, eval("(eq? sym1 sym2 sym3)", env))
-        assertEquals(FALSE, eval("(identical? sym1 sym2 sym3)", env))
+        assertEquals(true, eval("(eq? sym1 sym2 sym3)", env))
+        assertEquals(false, eval("(identical? sym1 sym2 sym3)", env))
     }
 }

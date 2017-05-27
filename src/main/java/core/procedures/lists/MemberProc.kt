@@ -17,7 +17,7 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg2 as List<*>?
         if (list!!.isEmpty()) {
-            return java.lang.Boolean.FALSE
+            return false
         }
         var p = 0
         var cons: Any? = list
@@ -35,7 +35,7 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
                 throw WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
                         name, p, Writer.write(list)))
             }
-            return java.lang.Boolean.FALSE
+            return false
         }
         throw WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
                 name, p + 1, Writer.write(list)))

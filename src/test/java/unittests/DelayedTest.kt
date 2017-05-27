@@ -3,16 +3,14 @@ package unittests
 import core.exceptions.ReentrantDelayException
 import org.junit.Test
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.*
 
 class DelayedTest : AbstractTest() {
 
     @Test
     fun testEvalDelay() {
-        assertEquals(TRUE, eval("(promise?   (delay (* (+ 2 3) 4))))", env))
-        assertEquals(FALSE, eval("(procedure? (delay (* (+ 2 3) 4))))", env))
+        assertEquals(true, eval("(promise?   (delay (* (+ 2 3) 4))))", env))
+        assertEquals(false, eval("(procedure? (delay (* (+ 2 3) 4))))", env))
     }
 
     @Test
@@ -27,7 +25,7 @@ class DelayedTest : AbstractTest() {
 
     @Test
     fun testEvalForce() {
-        assertEquals(TRUE, eval("(force (delay (= (+ 1 2) 3)))", env))
+        assertEquals(true, eval("(force (delay (= (+ 1 2) 3)))", env))
     }
 
     @Test

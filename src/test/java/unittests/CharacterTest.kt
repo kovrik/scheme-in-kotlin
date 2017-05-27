@@ -3,8 +3,6 @@ package unittests
 import core.exceptions.WrongTypeException
 import org.junit.Test
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -12,32 +10,32 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testEvalIsChar() {
-        assertEquals(TRUE,  eval("(char? #\\A)", env))
-        assertEquals(TRUE,  eval("(char? #\\u0000)", env))
-        assertEquals(TRUE,  eval("(char? #\\u0300)", env))
-        assertEquals(FALSE, eval("(char? \"A\")", env))
+        assertEquals(true,  eval("(char? #\\A)", env))
+        assertEquals(true,  eval("(char? #\\u0000)", env))
+        assertEquals(true,  eval("(char? #\\u0300)", env))
+        assertEquals(false, eval("(char? \"A\")", env))
     }
 
     @Test
     fun testEvalCharEq() {
-        assertEquals(TRUE,  eval("(char=? #\\A #\\A)", env))
-        assertEquals(FALSE, eval("(char=? #\\B #\\A)", env))
-        assertEquals(TRUE,  eval("(char=? #\\newline #\\newline)", env))
+        assertEquals(true,  eval("(char=? #\\A #\\A)", env))
+        assertEquals(false, eval("(char=? #\\B #\\A)", env))
+        assertEquals(true,  eval("(char=? #\\newline #\\newline)", env))
     }
 
     @Test
     fun testEvalCharEqCi() {
-        assertEquals(TRUE,  eval("(char-ci=? #\\Z #\\z)", env))
-        assertEquals(FALSE, eval("(char-ci=? #\\b #\\A)", env))
+        assertEquals(true,  eval("(char-ci=? #\\Z #\\z)", env))
+        assertEquals(false, eval("(char-ci=? #\\b #\\A)", env))
     }
 
     @Test
     fun testEvalCharNumeric() {
-        assertEquals(FALSE, eval("(char-numeric? #\\u0001)", env))
-        assertEquals(FALSE, eval("(char-numeric? #\\u0000)", env))
-        assertEquals(TRUE,  eval("(char-numeric? #\\9)", env))
-        assertEquals(FALSE, eval("(char-numeric? #\\b)", env))
-        assertEquals(FALSE, eval("(char-numeric? #\\.)", env))
+        assertEquals(false, eval("(char-numeric? #\\u0001)", env))
+        assertEquals(false, eval("(char-numeric? #\\u0000)", env))
+        assertEquals(true,  eval("(char-numeric? #\\9)", env))
+        assertEquals(false, eval("(char-numeric? #\\b)", env))
+        assertEquals(false, eval("(char-numeric? #\\.)", env))
         try {
             eval("(char-numeric? 1)", env)
             fail()
@@ -48,18 +46,18 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testEvalCharWhitespace() {
-        assertEquals(FALSE, eval("(char-whitespace? #\\u0001)", env))
-        assertEquals(FALSE, eval("(char-whitespace? #\\u0000)", env))
-        assertEquals(FALSE, eval("(char-whitespace? #\\9)", env))
-        assertEquals(FALSE, eval("(char-whitespace? #\\b)", env))
-        assertEquals(FALSE, eval("(char-whitespace? #\\.)", env))
-        assertEquals(FALSE, eval("(char-whitespace? #\\backspace)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\newline)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\tab)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\vtab)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\return)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\space)", env))
-        assertEquals(TRUE,  eval("(char-whitespace? #\\linefeed)", env))
+        assertEquals(false, eval("(char-whitespace? #\\u0001)", env))
+        assertEquals(false, eval("(char-whitespace? #\\u0000)", env))
+        assertEquals(false, eval("(char-whitespace? #\\9)", env))
+        assertEquals(false, eval("(char-whitespace? #\\b)", env))
+        assertEquals(false, eval("(char-whitespace? #\\.)", env))
+        assertEquals(false, eval("(char-whitespace? #\\backspace)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\newline)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\tab)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\vtab)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\return)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\space)", env))
+        assertEquals(true,  eval("(char-whitespace? #\\linefeed)", env))
         try {
             eval("(char-whitespace? 1)", env)
             fail()
@@ -70,22 +68,22 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testEvalCharAlphabetic() {
-        assertEquals(FALSE, eval("(char-alphabetic? #\\u0001)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\u0000)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\9)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\.)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\backspace)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\newline)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\tab)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\vtab)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\return)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\space)", env))
-        assertEquals(FALSE, eval("(char-alphabetic? #\\linefeed)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\u0001)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\u0000)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\9)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\.)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\backspace)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\newline)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\tab)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\vtab)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\return)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\space)", env))
+        assertEquals(false, eval("(char-alphabetic? #\\linefeed)", env))
 
-        assertEquals(TRUE, eval("(char-alphabetic? #\\b)", env))
-        assertEquals(TRUE, eval("(char-alphabetic? #\\Z)", env))
-        assertEquals(TRUE, eval("(char-alphabetic? #\\g)", env))
-        assertEquals(TRUE, eval("(char-alphabetic? #\\I)", env))
+        assertEquals(true, eval("(char-alphabetic? #\\b)", env))
+        assertEquals(true, eval("(char-alphabetic? #\\Z)", env))
+        assertEquals(true, eval("(char-alphabetic? #\\g)", env))
+        assertEquals(true, eval("(char-alphabetic? #\\I)", env))
         try {
             eval("(char-alphabetic? 1)", env)
             fail()
@@ -96,20 +94,20 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testEvalCharUpperCase() {
-        assertEquals(FALSE, eval("(char-upper-case? #\\u0001)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\u0000)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\9)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\b)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\.)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\a)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\z)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\i)", env))
-        assertEquals(FALSE, eval("(char-upper-case? #\\h)", env))
+        assertEquals(false, eval("(char-upper-case? #\\u0001)", env))
+        assertEquals(false, eval("(char-upper-case? #\\u0000)", env))
+        assertEquals(false, eval("(char-upper-case? #\\9)", env))
+        assertEquals(false, eval("(char-upper-case? #\\b)", env))
+        assertEquals(false, eval("(char-upper-case? #\\.)", env))
+        assertEquals(false, eval("(char-upper-case? #\\a)", env))
+        assertEquals(false, eval("(char-upper-case? #\\z)", env))
+        assertEquals(false, eval("(char-upper-case? #\\i)", env))
+        assertEquals(false, eval("(char-upper-case? #\\h)", env))
 
-        assertEquals(TRUE, eval("(char-upper-case? #\\A)", env))
-        assertEquals(TRUE, eval("(char-upper-case? #\\Z)", env))
-        assertEquals(TRUE, eval("(char-upper-case? #\\I)", env))
-        assertEquals(TRUE, eval("(char-upper-case? #\\H)", env))
+        assertEquals(true, eval("(char-upper-case? #\\A)", env))
+        assertEquals(true, eval("(char-upper-case? #\\Z)", env))
+        assertEquals(true, eval("(char-upper-case? #\\I)", env))
+        assertEquals(true, eval("(char-upper-case? #\\H)", env))
         try {
             eval("(char-upper-case? 1)", env)
             fail()
@@ -120,20 +118,20 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testEvalCharLowerCase() {
-        assertEquals(TRUE, eval("(char-lower-case? #\\b)", env))
-        assertEquals(TRUE, eval("(char-lower-case? #\\a)", env))
-        assertEquals(TRUE, eval("(char-lower-case? #\\z)", env))
-        assertEquals(TRUE, eval("(char-lower-case? #\\i)", env))
-        assertEquals(TRUE, eval("(char-lower-case? #\\h)", env))
+        assertEquals(true, eval("(char-lower-case? #\\b)", env))
+        assertEquals(true, eval("(char-lower-case? #\\a)", env))
+        assertEquals(true, eval("(char-lower-case? #\\z)", env))
+        assertEquals(true, eval("(char-lower-case? #\\i)", env))
+        assertEquals(true, eval("(char-lower-case? #\\h)", env))
 
-        assertEquals(FALSE, eval("(char-lower-case? #\\A)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\Z)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\I)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\H)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\u0001)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\u0000)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\9)", env))
-        assertEquals(FALSE, eval("(char-lower-case? #\\.)", env))
+        assertEquals(false, eval("(char-lower-case? #\\A)", env))
+        assertEquals(false, eval("(char-lower-case? #\\Z)", env))
+        assertEquals(false, eval("(char-lower-case? #\\I)", env))
+        assertEquals(false, eval("(char-lower-case? #\\H)", env))
+        assertEquals(false, eval("(char-lower-case? #\\u0001)", env))
+        assertEquals(false, eval("(char-lower-case? #\\u0000)", env))
+        assertEquals(false, eval("(char-lower-case? #\\9)", env))
+        assertEquals(false, eval("(char-lower-case? #\\.)", env))
         try {
             eval("(char-lower-case? 1)", env)
             fail()
@@ -206,10 +204,10 @@ class CharacterTest : AbstractTest() {
 
     @Test
     fun testCharComparison() {
-        assertEquals(TRUE, eval("(char<? #\\a #\\b)", env))
-        assertEquals(TRUE, eval("(char<=? #\\a #\\a #\\b)", env))
-        assertEquals(FALSE, eval("(char<=? #\\a #\\A #\\b)", env))
-        assertEquals(FALSE, eval("(char>? #\\z #\\A #\\H #\\a #\\X)", env))
-        assertEquals(TRUE, eval("(char>=? #\\z #\\z #\\x)", env))
+        assertEquals(true, eval("(char<? #\\a #\\b)", env))
+        assertEquals(true, eval("(char<=? #\\a #\\a #\\b)", env))
+        assertEquals(false, eval("(char<=? #\\a #\\A #\\b)", env))
+        assertEquals(false, eval("(char>? #\\z #\\A #\\H #\\a #\\X)", env))
+        assertEquals(true, eval("(char>=? #\\z #\\z #\\x)", env))
     }
 }

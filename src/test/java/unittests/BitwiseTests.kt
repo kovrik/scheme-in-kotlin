@@ -2,8 +2,6 @@ package unittests
 
 import org.junit.Test
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 
 class BitwiseTests : AbstractTest() {
@@ -73,11 +71,11 @@ class BitwiseTests : AbstractTest() {
 
     @Test
     fun testBitTest() {
-        assertEquals(TRUE, eval("(bit-test #b1001 0)", env))
-        assertEquals(FALSE, eval("(bit-test #b1001 1)", env))
-        assertEquals(FALSE, eval("(bit-test #b1001 2)", env))
-        assertEquals(TRUE, eval("(bit-test #b1001 3)", env))
-        assertEquals(FALSE, eval("(bit-test #b1001 7)", env))
+        assertEquals(true, eval("(bit-test #b1001 0)", env))
+        assertEquals(true, eval("(bit-test #b1001 3)", env))
+        assertEquals(false, eval("(bit-test #b1001 1)", env))
+        assertEquals(false, eval("(bit-test #b1001 2)", env))
+        assertEquals(false, eval("(bit-test #b1001 7)", env))
     }
 
     @Test

@@ -3,7 +3,6 @@ package unittests
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.lang.Boolean.TRUE
 import java.math.BigDecimal
 import java.util.*
 
@@ -48,7 +47,7 @@ class JavaInteropTest : AbstractTest() {
     fun testJavaDowncast() {
         assertEquals("es", eval("(.substring \"test\" 1 3)", env))
         assertEquals("zesz", eval("(.replace \"test\" #\\t #\\z)", env))
-        assertEquals(TRUE, eval("(.isEmpty \"\")", env))
+        assertEquals(true, eval("(.isEmpty \"\")", env))
         assertEquals('e', eval("(.charAt \"test\" 1)", env))
         assertEquals(4, eval("(.length \"test\")", env))
     }

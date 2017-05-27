@@ -200,9 +200,9 @@ open class Reader : IReader {
         } else if (c == '\\') {
             return readCharacter()
         } else if (c == 't' || c == 'T') {
-            return java.lang.Boolean.TRUE
+            return true
         } else if (c == 'f' || c == 'F') {
-            return java.lang.Boolean.FALSE
+            return false
         } else if (c == '"') {
             return readRegex()
         } else if (isRadix(c) || isExactness(c)) {

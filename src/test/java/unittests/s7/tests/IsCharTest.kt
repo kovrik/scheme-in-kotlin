@@ -4,8 +4,6 @@ import core.exceptions.ArityException
 import org.junit.Test
 import unittests.AbstractTest
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -25,12 +23,12 @@ class IsCharTest : AbstractTest() {
                 "(char? #\\nul)", "(char? #\\linefeed)", "(char? #\\tab)", "(char? #\\space)", "(char=? #\\null #\\nul)",
                 "(char=? #\\newline #\\linefeed)", "(char? #\\backspace)", "(char? #\\escape)", "(char? #\\alarm)",
                 "(char? #\\delete)")
-        assertAllEqual(TRUE, trues, env)
+        assertAllEqual(true, trues, env)
 
         val falses = arrayOf(
                 "(char=? #\\delete #\\backspace)", "(char? '1e311)", "(char? #e1)", "(char? #b101)", "(char? #o73)",
                 "(char? #x73)", "(char? 'a)", "(char? 97)", "(char? \"a\")", "(char? 'begin)")
-        assertAllEqual(FALSE, falses, env)
+        assertAllEqual(false, falses, env)
 
         try {
             eval("(char?) 'error)", env)

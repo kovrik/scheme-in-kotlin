@@ -243,12 +243,12 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadBoolean() {
-        assertEquals(java.lang.Boolean.TRUE, reader.readFirst("#t"))
-        assertEquals(java.lang.Boolean.FALSE, reader.readFirst("#f"))
-        assertEquals(java.lang.Boolean.TRUE, reader.readFirst("#T"))
-        assertEquals(java.lang.Boolean.FALSE, reader.readFirst("#F"))
-        assertEquals(java.lang.Boolean.TRUE, reader.readFirst("true"))
-        assertEquals(java.lang.Boolean.FALSE, reader.readFirst("false"))
+        assertEquals(true, reader.readFirst("#t"))
+        assertEquals(false, reader.readFirst("#f"))
+        assertEquals(true, reader.readFirst("#T"))
+        assertEquals(false, reader.readFirst("#F"))
+        assertEquals(true, reader.readFirst("true"))
+        assertEquals(false, reader.readFirst("false"))
     }
 
     @Test

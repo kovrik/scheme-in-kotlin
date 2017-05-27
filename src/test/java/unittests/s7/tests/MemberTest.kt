@@ -2,14 +2,12 @@ package unittests.s7.tests
 
 import core.procedures.cons.ConsProc.Companion
 import core.procedures.cons.ConsProc.Companion.cons
-import core.scm.Cons
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
 import unittests.AbstractTest
-import java.lang.Boolean.FALSE
 
 class MemberTest : AbstractTest() {
 
@@ -23,14 +21,14 @@ class MemberTest : AbstractTest() {
         assertEquals(list(s("b"), s("c"), s("d")), eval("(member 'b '(a b c d))", env))
         assertEquals(list(s("c"), s("d")), eval("(member 'c '(a b c d))", env))
         assertEquals(list(s("d")), eval("(member 'd '(a b c d))", env))
-        assertEquals(FALSE, eval("(member 'e '(a b c d))", env))
+        assertEquals(false, eval("(member 'e '(a b c d))", env))
         assertEquals(cons(1L, 2L), eval("(member 1 (cons 1 2))", env))
         assertEquals(cons(1L, cons(2L, 3L)), eval("(member 1 '(1 2 . 3))", env))
         assertEquals(cons(2L, 3L), eval("(member 2 '(1 2 . 3))", env))
-        assertEquals(FALSE, eval("(member '() '(1 2 3))", env))
+        assertEquals(false, eval("(member '() '(1 2 3))", env))
         assertEquals(list(list<Any>() as Any), eval("(member '() '(1 2 ()))", env))
         assertEquals(list(MutableVector(), 3L), eval("(member #() '(1 () 2 #() 3))", env))
-        assertEquals(list<Cons<*>>(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (member x (list (cons 1 2) (cons 3 4))))", env))
+        assertEquals(list(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (member x (list (cons 1 2) (cons 3 4))))", env))
         assertEquals(list(list(1L, 2L) as Any), eval("(let ((x (list 1 2))) (member x (list (cons 1 2) (list 1 2))))", env))
         assertEquals(list(list(s("quote"), s("a")), s("b"), s("c")), eval("(member ''a '('a b c))", env))
         assertEquals(list(s("a"), s("a"), s("a")), eval("(member 'a '(a a a)))", env))
@@ -43,7 +41,7 @@ class MemberTest : AbstractTest() {
         assertEquals(list(3L), eval("(member 3 . ('(1 2 3)))", env))
         assertEquals(Companion.cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env))
         assertEquals(list(3L), eval("(member . (3 '(1 2 3)))", env))
-        assertEquals(FALSE, eval("(member '(1 2) '(1 2))", env))
+        assertEquals(false, eval("(member '(1 2) '(1 2))", env))
         assertEquals(list(list(1L, 2L) as Any), eval("(member '(1 2) '((1 2)))", env))
         assertEquals(Companion.cons(4L, 5L), eval("(member 4 '(1 2 3 4 . 5))", env))
         try {

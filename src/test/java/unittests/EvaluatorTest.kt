@@ -12,8 +12,6 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 
 class EvaluatorTest : AbstractTest() {
 
@@ -62,62 +60,62 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalBooleanPredicates() {
-        assertEquals(TRUE, eval("(boolean? #f)", env))
-        assertEquals(TRUE, eval("(boolean? #t)", env))
-        assertEquals(TRUE, eval("(boolean? (= 1 1))", env))
-        assertEquals(FALSE, eval("(boolean? #\\f)", env))
-        assertEquals(FALSE, eval("(boolean? 1)", env))
-        assertEquals(TRUE, eval("(true? #t)", env))
-        assertEquals(FALSE, eval("(true? #f)", env))
-        assertEquals(FALSE, eval("(true? 1)", env))
-        assertEquals(TRUE, eval("(true? (= 1 1))", env))
-        assertEquals(FALSE, eval("(false? #t)", env))
-        assertEquals(TRUE, eval("(false? #f)", env))
-        assertEquals(FALSE, eval("(false? 1)", env))
-        assertEquals(FALSE, eval("(false? (= 1 1))", env))
-        assertEquals(TRUE, eval("(false? (= 1 2))", env))
+        assertEquals(true, eval("(boolean? #f)", env))
+        assertEquals(true, eval("(boolean? #t)", env))
+        assertEquals(true, eval("(boolean? (= 1 1))", env))
+        assertEquals(false, eval("(boolean? #\\f)", env))
+        assertEquals(false, eval("(boolean? 1)", env))
+        assertEquals(true, eval("(true? #t)", env))
+        assertEquals(false, eval("(true? #f)", env))
+        assertEquals(false, eval("(true? 1)", env))
+        assertEquals(true, eval("(true? (= 1 1))", env))
+        assertEquals(false, eval("(false? #t)", env))
+        assertEquals(true, eval("(false? #f)", env))
+        assertEquals(false, eval("(false? 1)", env))
+        assertEquals(false, eval("(false? (= 1 1))", env))
+        assertEquals(true, eval("(false? (= 1 2))", env))
     }
 
     @Test
     fun testEvalNegation() {
-        assertEquals(FALSE, eval("(not #t)", env))
-        assertEquals(TRUE, eval("(not #f)", env))
-        assertEquals(TRUE, eval("(not (= 1 2 1))", env))
-        assertEquals(FALSE, eval("(not (= 1 1 1))", env))
+        assertEquals(false, eval("(not #t)", env))
+        assertEquals(true, eval("(not #f)", env))
+        assertEquals(true, eval("(not (= 1 2 1))", env))
+        assertEquals(false, eval("(not (= 1 1 1))", env))
     }
 
     // Equivalence
     @Test
     fun testEvalEq() {
-        assertEquals(TRUE, eval("(eq? '() '())", env))
-        assertEquals(TRUE, eval("(eq? 1 1)", env))
-        assertEquals(FALSE, eval("(eq? 1 2)", env))
+        assertEquals(true, eval("(eq? '() '())", env))
+        assertEquals(true, eval("(eq? 1 1)", env))
+        assertEquals(false, eval("(eq? 1 2)", env))
         // interned immutable strings are the same objects
-        assertEquals(TRUE, eval("(eq? \"1\" \"1\")", env))
+        assertEquals(true, eval("(eq? \"1\" \"1\")", env))
         // mutable strings are not interned
-        assertEquals(FALSE, eval("(eq? (string #\\a) (string #\\a))", env))
+        assertEquals(false, eval("(eq? (string #\\a) (string #\\a))", env))
     }
 
     @Test
     fun testEvalEqv() {
-        assertEquals(TRUE, eval("(eqv? '() '())", env))
-        assertEquals(TRUE, eval("(eqv? 1 1)", env))
-        assertEquals(FALSE, eval("(eqv? 1 2)", env))
+        assertEquals(true, eval("(eqv? '() '())", env))
+        assertEquals(true, eval("(eqv? 1 1)", env))
+        assertEquals(false, eval("(eqv? 1 2)", env))
         // interned immutable strings are the same objects
-        assertEquals(TRUE, eval("(eqv? \"1\" \"1\")", env))
-        assertEquals(TRUE, eval("(eqv? \"a\" \"a\")", env))
+        assertEquals(true, eval("(eqv? \"1\" \"1\")", env))
+        assertEquals(true, eval("(eqv? \"a\" \"a\")", env))
         // mutable strings are not interned
-        assertEquals(FALSE, eval("(eqv? (string #\\a) (string #\\a))", env))
+        assertEquals(false, eval("(eqv? (string #\\a) (string #\\a))", env))
     }
 
     @Test
     fun testEvalEqual() {
-        assertEquals(TRUE, eval("(equal? '() '())", env))
-        assertEquals(TRUE, eval("(equal? '(1 2 3) '( 1 2 3))", env))
-        assertEquals(FALSE, eval("(equal? '(1 2 3 5) '( 1 2 3))", env))
-        assertEquals(TRUE, eval("(equal? 1 1)", env))
-        assertEquals(FALSE, eval("(equal? 1 2)", env))
-        assertEquals(TRUE, eval("(equal? \"1fe\" \"1fe\")", env))
+        assertEquals(true, eval("(equal? '() '())", env))
+        assertEquals(true, eval("(equal? '(1 2 3) '( 1 2 3))", env))
+        assertEquals(false, eval("(equal? '(1 2 3 5) '( 1 2 3))", env))
+        assertEquals(true, eval("(equal? 1 1)", env))
+        assertEquals(false, eval("(equal? 1 2)", env))
+        assertEquals(true, eval("(equal? \"1fe\" \"1fe\")", env))
     }
 
     @Test

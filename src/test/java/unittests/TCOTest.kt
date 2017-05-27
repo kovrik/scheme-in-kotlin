@@ -2,7 +2,6 @@ package unittests
 
 import org.junit.Test
 
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 
 class TCOTest : AbstractTest() {
@@ -25,7 +24,7 @@ class TCOTest : AbstractTest() {
     fun testOrTCO() {
         val recursive = "(define (recOr n) (or (zero? n) (recOr (- n 1))))"
         eval(recursive, env)
-        assertEquals(TRUE, eval("(recOr $ITERS)", env))
+        assertEquals(true, eval("(recOr $ITERS)", env))
     }
 
     @Test

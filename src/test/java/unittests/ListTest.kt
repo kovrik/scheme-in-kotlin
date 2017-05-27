@@ -8,9 +8,6 @@ import core.scm.Cons.Companion.list
 import core.scm.Vector
 import org.junit.Assert.*
 import org.junit.Test
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
-import java.util.*
 
 class ListTest : AbstractTest() {
 
@@ -22,31 +19,31 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalIsList() {
-        assertEquals(TRUE, eval("(list? '())", env))
-        assertEquals(TRUE, eval("(list? '(1 2 3))", env))
-        assertEquals(FALSE, eval("(list? #(1 2 3))", env))
-        assertEquals(FALSE, eval("(list? (cons 1 2))", env))
-        assertEquals(FALSE, eval("(list? 2)", env))
-        assertEquals(TRUE, eval("(list? (car '((1 2 3))))", env))
-        assertEquals(TRUE, eval("(list? (cdr '((1 2 3))))", env))
-        assertEquals(FALSE, eval("(list? (car '((1 . 2))))", env))
-        assertEquals(FALSE, eval("(list? (vector-ref #((1 2 3 . 4)) 0))", env))
-        assertEquals(FALSE, eval("(list? (vector-ref #((1 . 2)) 0))", env))
+        assertEquals(true, eval("(list? '())", env))
+        assertEquals(true, eval("(list? '(1 2 3))", env))
+        assertEquals(false, eval("(list? #(1 2 3))", env))
+        assertEquals(false, eval("(list? (cons 1 2))", env))
+        assertEquals(false, eval("(list? 2)", env))
+        assertEquals(true, eval("(list? (car '((1 2 3))))", env))
+        assertEquals(true, eval("(list? (cdr '((1 2 3))))", env))
+        assertEquals(false, eval("(list? (car '((1 . 2))))", env))
+        assertEquals(false, eval("(list? (vector-ref #((1 2 3 . 4)) 0))", env))
+        assertEquals(false, eval("(list? (vector-ref #((1 . 2)) 0))", env))
     }
 
     @Test
     fun testEvalEmpty() {
-        assertEquals(TRUE, eval("(nil?   null)", env))
-        assertEquals(TRUE, eval("(nil?   nil)", env))
-        assertEquals(TRUE, eval("(null?  nil)", env))
-        assertEquals(TRUE, eval("(null?  null)", env))
-        assertEquals(FALSE, eval("(null?  '())", env))
-        assertEquals(TRUE, eval("(empty? '())", env))
-        assertEquals(FALSE, eval("(null?  '(1 2 3))", env))
-        assertEquals(FALSE, eval("(empty? '(1 2 3))", env))
-        assertEquals(FALSE, eval("(null?  1)", env))
-        assertEquals(FALSE, eval("(empty? 1)", env))
-        assertEquals(TRUE, eval("(empty? (cdr '(1)))", env))
+        assertEquals(true, eval("(nil?   null)", env))
+        assertEquals(true, eval("(nil?   nil)", env))
+        assertEquals(true, eval("(null?  nil)", env))
+        assertEquals(true, eval("(null?  null)", env))
+        assertEquals(false, eval("(null?  '())", env))
+        assertEquals(true, eval("(empty? '())", env))
+        assertEquals(false, eval("(null?  '(1 2 3))", env))
+        assertEquals(false, eval("(empty? '(1 2 3))", env))
+        assertEquals(false, eval("(null?  1)", env))
+        assertEquals(false, eval("(empty? 1)", env))
+        assertEquals(true, eval("(empty? (cdr '(1)))", env))
     }
 
     @Test
@@ -63,33 +60,33 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testCons() {
-        assertEquals(TRUE, eval("(equal? '(1 2)   (cons 1 (cons 2 '())))", env))
-        assertEquals(TRUE, eval("(equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '()))))", env))
-        assertEquals(TRUE, eval("(equal? '(1 2 3) (cons 1 '(2 3))))", env))
-        assertEquals(TRUE, eval("(equal? '(1)     (cons 1 '())))", env))
-        assertEquals(TRUE, eval("(equal? (cons 1 2) (cons 1 2)))", env))
+        assertEquals(true, eval("(equal? '(1 2)   (cons 1 (cons 2 '())))", env))
+        assertEquals(true, eval("(equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '()))))", env))
+        assertEquals(true, eval("(equal? '(1 2 3) (cons 1 '(2 3))))", env))
+        assertEquals(true, eval("(equal? '(1)     (cons 1 '())))", env))
+        assertEquals(true, eval("(equal? (cons 1 2) (cons 1 2)))", env))
         // check that we do not modify the original list/cons, but return new instead
         eval("(define conslist '())", env)
         eval("(cons 1 conslist)", env)
-        assertEquals(TRUE, eval("(equal? '() conslist))", env))
+        assertEquals(true, eval("(equal? '() conslist))", env))
         eval("(define conslist '(3))", env)
         eval("(cons 1 conslist)", env)
-        assertEquals(TRUE, eval("(equal? '(3) conslist))", env))
+        assertEquals(true, eval("(equal? '(3) conslist))", env))
         assertEquals(Cons.cons(null, 1L),   eval("(cons nil 1)",   env))
         assertEquals(Cons.cons(null, null), eval("(cons nil nil)", env))
     }
 
     @Test
     fun testIsPair() {
-        assertEquals(FALSE, eval("(pair? '())", env))
-        assertEquals(FALSE, eval("(pair? 1)", env))
-        assertEquals(FALSE, eval("(pair? #(1 2))", env))
-        assertEquals(TRUE, eval("(pair? '(1))", env))
-        assertEquals(TRUE, eval("(pair? '(1 2))", env))
-        assertEquals(TRUE, eval("(pair? '(1 2 3))", env))
-        assertEquals(TRUE, eval("(pair? (cons 1 2))", env))
-        assertEquals(TRUE, eval("(pair? (cons 1 '()))", env))
-        assertEquals(TRUE, eval("(pair? (cons 1 (cons 2 3))))", env))
+        assertEquals(false, eval("(pair? '())", env))
+        assertEquals(false, eval("(pair? 1)", env))
+        assertEquals(false, eval("(pair? #(1 2))", env))
+        assertEquals(true, eval("(pair? '(1))", env))
+        assertEquals(true, eval("(pair? '(1 2))", env))
+        assertEquals(true, eval("(pair? '(1 2 3))", env))
+        assertEquals(true, eval("(pair? (cons 1 2))", env))
+        assertEquals(true, eval("(pair? (cons 1 '()))", env))
+        assertEquals(true, eval("(pair? (cons 1 (cons 2 3))))", env))
     }
 
     @Test
@@ -315,9 +312,9 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalMember() {
-        assertEquals(FALSE, eval("(member 0 '())", env))
-        assertEquals(FALSE, eval("(member 0 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(member \"test\" '(1 2 3))", env))
+        assertEquals(false, eval("(member 0 '())", env))
+        assertEquals(false, eval("(member 0 '(1 2 3))", env))
+        assertEquals(false, eval("(member \"test\" '(1 2 3))", env))
 
         assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env))
         assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env))
@@ -340,18 +337,18 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalMemq() {
-        assertEquals(FALSE, eval("(memq 0 '())", env))
-        assertEquals(FALSE, eval("(memq 0 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(memq \"test\" '(1 2 3))", env))
+        assertEquals(false, eval("(memq 0 '())", env))
+        assertEquals(false, eval("(memq 0 '(1 2 3))", env))
+        assertEquals(false, eval("(memq \"test\" '(1 2 3))", env))
 
         assertEquals(list(1L, 2L, 3L), eval("(memq 1 '(1 2 3))", env))
         assertEquals(list(2L, 3L), eval("(memq 2 '(1 2 3))", env))
         assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(memq (list 'a) '(b (a) c))", env))
+        assertEquals(false, eval("(memq (list 'a) '(b (a) c))", env))
 
         assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
         assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
-        assertEquals(FALSE, eval("(memq 'a '(b c d))", env))
+        assertEquals(false, eval("(memq 'a '(b c d))", env))
         try {
             eval("(memq)", env)
             fail()
@@ -369,18 +366,18 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalMemv() {
-        assertEquals(FALSE, eval("(memv 0 '())", env))
-        assertEquals(FALSE, eval("(memv 0 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(memv \"test\" '(1 2 3))", env))
+        assertEquals(false, eval("(memv 0 '())", env))
+        assertEquals(false, eval("(memv 0 '(1 2 3))", env))
+        assertEquals(false, eval("(memv \"test\" '(1 2 3))", env))
 
         assertEquals(list(1L, 2L, 3L), eval("(memv 1 '(1 2 3))", env))
         assertEquals(list(2L, 3L), eval("(memv 2 '(1 2 3))", env))
         assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(memv (list 'a) '(b (a) c))", env))
+        assertEquals(false, eval("(memv (list 'a) '(b (a) c))", env))
 
         assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
         assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
-        assertEquals(FALSE, eval("(memv 'a '(b c d))", env))
+        assertEquals(false, eval("(memv 'a '(b c d))", env))
 
         assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env))
         try {
@@ -429,7 +426,7 @@ class ListTest : AbstractTest() {
         eval("(define e '((a 1) (b 2) (c 3)))", env)
         assertEquals(list(Symbol.intern("a"), 1L), eval("(assq 'a e)", env))
         assertEquals(list(Symbol.intern("b"), 2L), eval("(assq 'b e)", env))
-        assertEquals(FALSE, eval("(assq 'd e)", env))
+        assertEquals(false, eval("(assq 'd e)", env))
         try {
             eval("(assq)", env)
             fail()

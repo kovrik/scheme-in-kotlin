@@ -12,7 +12,7 @@ enum class Or : ISpecialForm {
     OR;
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        var result: Any? = java.lang.Boolean.FALSE
+        var result: Any? = false
         if (expression.size > 1) {
             for (i in 1..expression.size - 1 - 1) {
                 result = evaluator.eval(expression[i], env)

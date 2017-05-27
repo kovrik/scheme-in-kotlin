@@ -7,8 +7,6 @@ import org.junit.Test
 
 import java.io.*
 
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 
 class IOTest : AbstractTest() {
@@ -33,21 +31,21 @@ class IOTest : AbstractTest() {
 
     @Test
     fun testEofObject() {
-        assertEquals(TRUE, eval("(eof-object? eof)", env))
-        assertEquals(FALSE, eval("(eof-object? 0)", env))
-        assertEquals(FALSE, eval("(eof-object? \"test\")", env))
+        assertEquals(true, eval("(eof-object? eof)", env))
+        assertEquals(false, eval("(eof-object? 0)", env))
+        assertEquals(false, eval("(eof-object? \"test\")", env))
     }
 
     @Test
     fun testPortPredicates() {
-        assertEquals(TRUE, eval("(port? (current-input-port))", env))
-        assertEquals(TRUE, eval("(port? (current-output-port))", env))
-        assertEquals(TRUE, eval("(input-port? (current-input-port))", env))
-        assertEquals(TRUE, eval("(output-port? (current-output-port))", env))
+        assertEquals(true, eval("(port? (current-input-port))", env))
+        assertEquals(true, eval("(port? (current-output-port))", env))
+        assertEquals(true, eval("(input-port? (current-input-port))", env))
+        assertEquals(true, eval("(output-port? (current-output-port))", env))
 
-        assertEquals(FALSE, eval("(port? 1)", env))
-        assertEquals(FALSE, eval("(output-port? (current-input-port))", env))
-        assertEquals(FALSE, eval("(input-port? (current-output-port))", env))
+        assertEquals(false, eval("(port? 1)", env))
+        assertEquals(false, eval("(output-port? (current-input-port))", env))
+        assertEquals(false, eval("(input-port? (current-output-port))", env))
     }
 
     // TODO close-*-port, write-char, peek-char, read-char, read, write

@@ -48,18 +48,18 @@ class NumericalComparison private constructor(override val name: String, private
             s = s.toLong()
         }
         if (!predicate.test(f as Comparable<Number>, s)) {
-            return java.lang.Boolean.FALSE
+            return false
         }
-        return java.lang.Boolean.TRUE
+        return true
     }
 
     override operator fun invoke(vararg args: Any?): Boolean {
         for (i in 0..args.size - 1 - 1) {
             val result = invoke(args[i], args[i + 1])
             if (!result) {
-                return java.lang.Boolean.FALSE
+                return false
             }
         }
-        return java.lang.Boolean.TRUE
+        return true
     }
 }

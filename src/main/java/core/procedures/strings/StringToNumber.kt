@@ -24,7 +24,7 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
             val ch = restNumber[1]
             if (Reader.isExactness(ch)) {
                 if (exactness != null) {
-                    return java.lang.Boolean.FALSE
+                    return false
                 }
                 exactness = ch
                 restNumber = restNumber.substring(2)
@@ -32,7 +32,7 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
             }
             if (Reader.isRadix(ch)) {
                 if (radixChar != null) {
-                    return java.lang.Boolean.FALSE
+                    return false
                 }
                 radixChar = ch
                 restNumber = restNumber.substring(2)
@@ -42,7 +42,7 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
             break
         }
         if (restNumber.isEmpty()) {
-            return java.lang.Boolean.FALSE
+            return false
         }
         var radix = Utils.getRadixByChar(radixChar)
         /* Get default (optional) radix if present */
@@ -61,6 +61,6 @@ class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
         if (result is Number) {
             return result
         }
-        return java.lang.Boolean.FALSE
+        return false
     }
 }

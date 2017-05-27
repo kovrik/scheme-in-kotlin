@@ -30,7 +30,7 @@ class AssocProc(override val name: String,
                             String.format("%s: wrong type argument in position %s (expecting association list): %s", name, n, Writer.write(list)))
                 }
             }
-            return java.lang.Boolean.FALSE
+            return false
         }
         if (predicate is Equal) {
             if (arg2 is Map<*, *>) {

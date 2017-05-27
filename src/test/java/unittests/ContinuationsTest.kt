@@ -11,7 +11,6 @@ import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
-import java.lang.Boolean.FALSE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -27,7 +26,7 @@ class ContinuationsTest : AbstractTest() {
                 "             (else (exit #f)))))))"
         eval(listadd, env)
         assertEquals(Cons.list(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env))
-        assertEquals(FALSE, eval("(lstadd1 '(1 2 . 3))", env))
+        assertEquals(false, eval("(lstadd1 '(1 2 . 3))", env))
     }
 
     @Test

@@ -8,8 +8,6 @@ import core.writer.Writer
 import org.junit.Test
 
 import core.scm.Cons.Companion.list
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
@@ -17,8 +15,8 @@ class StringTest : AbstractTest() {
 
     @Test
     fun testEvalIsString() {
-        assertEquals(FALSE, eval("(string? #\\A)", env))
-        assertEquals(TRUE, eval("(string? \"A\")", env))
+        assertEquals(false, eval("(string? #\\A)", env))
+        assertEquals(true, eval("(string? \"A\")", env))
     }
 
     @Test
@@ -33,19 +31,19 @@ class StringTest : AbstractTest() {
 
     @Test
     fun testEvalStringEq() {
-        assertEquals(TRUE, eval("(string=? \"test\" \"test\")", env))
-        assertEquals(FALSE, eval("(string=? \"test\" \"test123\")", env))
-        assertEquals(TRUE, eval("(string=? \"\" \"\")", env))
-        assertEquals(FALSE, eval("(string=? \"test\" \"Test\")", env))
+        assertEquals(true, eval("(string=? \"test\" \"test\")", env))
+        assertEquals(false, eval("(string=? \"test\" \"test123\")", env))
+        assertEquals(true, eval("(string=? \"\" \"\")", env))
+        assertEquals(false, eval("(string=? \"test\" \"Test\")", env))
     }
 
     @Test
     fun testEvalStringEqCi() {
-        assertEquals(TRUE, eval("(string-ci=? \"test\" \"test\")", env))
-        assertEquals(FALSE, eval("(string-ci=? \"test\" \"test123\")", env))
-        assertEquals(TRUE, eval("(string-ci=? \"\" \"\")", env))
-        assertEquals(TRUE, eval("(string-ci=? \"test\" \"Test\")", env))
-        assertEquals(TRUE, eval("(string-ci=? \"tESt\" \"TesT\")", env))
+        assertEquals(true, eval("(string-ci=? \"test\" \"test\")", env))
+        assertEquals(false, eval("(string-ci=? \"test\" \"test123\")", env))
+        assertEquals(true, eval("(string-ci=? \"\" \"\")", env))
+        assertEquals(true, eval("(string-ci=? \"test\" \"Test\")", env))
+        assertEquals(true, eval("(string-ci=? \"tESt\" \"TesT\")", env))
     }
 
     @Test
@@ -318,33 +316,33 @@ class StringTest : AbstractTest() {
     @Test
     fun testStringInterning() {
         // immutable interned strings must have the same hashcode
-        assertEquals(TRUE, eval("(apply = (map hashcode '(\"test\" \"test\" \"test\" \"test\" \"test\")))", env))
+        assertEquals(true, eval("(apply = (map hashcode '(\"test\" \"test\" \"test\" \"test\" \"test\")))", env))
 
         // immutable interned strings must point to the same object
-        assertEquals(TRUE, eval("(eq? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
-        assertEquals(TRUE, eval("(eqv? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
-        assertEquals(TRUE, eval("(equal? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
+        assertEquals(true, eval("(eq? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
+        assertEquals(true, eval("(eqv? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
+        assertEquals(true, eval("(equal? \"test\" \"test\" \"test\" \"test\" \"test\")", env))
         // mutable interned strings
-        assertEquals(FALSE, eval("(eq? (string #\\a) (string #\\a))", env))
-        assertEquals(FALSE, eval("(eqv? (string #\\a) (string #\\a))", env))
-        assertEquals(TRUE, eval("(equal? (string #\\a) (string #\\a))", env))
-        assertEquals(TRUE, eval("(equal? \"a\" (string #\\a))", env))
-        assertEquals(TRUE, eval("(equal? (string #\\a) \"a\" )", env))
-        assertEquals(TRUE, eval("(mutable? (string #\\a))", env))
-        assertEquals(FALSE, eval("(immutable? (string #\\a))", env))
-        assertEquals(TRUE, eval("(immutable? \"a\")", env))
-        assertEquals(FALSE, eval("(mutable? \"a\")", env))
-        assertEquals(TRUE, eval("(immutable? (string->immutable-string (string #\\a)))", env))
+        assertEquals(false, eval("(eq? (string #\\a) (string #\\a))", env))
+        assertEquals(false, eval("(eqv? (string #\\a) (string #\\a))", env))
+        assertEquals(true, eval("(equal? (string #\\a) (string #\\a))", env))
+        assertEquals(true, eval("(equal? \"a\" (string #\\a))", env))
+        assertEquals(true, eval("(equal? (string #\\a) \"a\" )", env))
+        assertEquals(true, eval("(mutable? (string #\\a))", env))
+        assertEquals(false, eval("(immutable? (string #\\a))", env))
+        assertEquals(true, eval("(immutable? \"a\")", env))
+        assertEquals(false, eval("(mutable? \"a\")", env))
+        assertEquals(true, eval("(immutable? (string->immutable-string (string #\\a)))", env))
     }
 
     @Test
     fun testIsBlank() {
-        assertEquals(TRUE, eval("(blank? nil)", env))
-        assertEquals(TRUE, eval("(blank? \"\")", env))
-        assertEquals(TRUE, eval("(blank? \"      \")", env))
-        assertEquals(TRUE, eval("(blank? \" \t\t\r\n    \")", env))
-        assertEquals(FALSE, eval("(blank? \" \t\ta\r\n    \")", env))
-        assertEquals(FALSE, eval("(blank? \"not-blank\")", env))
+        assertEquals(true, eval("(blank? nil)", env))
+        assertEquals(true, eval("(blank? \"\")", env))
+        assertEquals(true, eval("(blank? \"      \")", env))
+        assertEquals(true, eval("(blank? \" \t\t\r\n    \")", env))
+        assertEquals(false, eval("(blank? \" \t\ta\r\n    \")", env))
+        assertEquals(false, eval("(blank? \"not-blank\")", env))
     }
 
     @Test
