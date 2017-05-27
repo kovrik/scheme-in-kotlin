@@ -20,24 +20,23 @@ enum class Let : ISpecialForm {
             throw IllegalSyntaxException.of(toString(), expression)
         }
         /* Normal let:
-     * (let ((id expr) ...) body ...+) */
+         * (let ((id expr) ...) body ...+) */
         if (expression[1] is List<*>) {
             val localEnv = Environment(env)
             val bindings = expression[1] as List<List<*>>
             /* Bind variables to fresh locations holding undefined values */
             for (binding in bindings) {
-                val `var` = binding[0]
-                localEnv.put(`var`, Environment.UNDEFINED)
+                localEnv.put(binding[0], Environment.UNDEFINED)
             }
             /* Evaluate inits */
             for (binding in bindings) {
-                val `var` = binding[0]
+                val variable = binding[0]
                 val init = binding[1]
-                if (localEnv[`var`] !== Environment.UNDEFINED) {
+                if (localEnv[variable] !== Environment.UNDEFINED) {
                     throw IllegalSyntaxException
-                            .of(toString(), expression, String.format("duplicate identifier: %s", `var`))
+                            .of(toString(), expression, String.format("duplicate identifier: %s", variable))
                 }
-                localEnv.put(`var`, evaluator.eval(init, env))
+                localEnv.put(variable, evaluator.eval(init, env))
             }
 
             /* Evaluate body */
@@ -49,8 +48,8 @@ enum class Let : ISpecialForm {
         } else if (expression[1] is Symbol) {
             // TODO Optimize and cleanup
             /* Named let:
-       * (let proc-id ((arg-id init-expr) ...) body ...+) */
-            val o = expression[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), expression)
+             * (let proc-id ((arg-id init-expr) ...) body ...+) */
+            val name = expression[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), expression)
             /* Construct lambda */
             val lambdaArgs = Cons.list<Any?>()
             val initValues = Cons.list<Any?>()
@@ -66,7 +65,6 @@ enum class Let : ISpecialForm {
             }
             val lambdaBody = expression[3]
             val lambda = Cons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody)
-            val name = o
             val l = Cons.list<Cons<*>>()
             l.add(Cons.list(name, lambda))
 

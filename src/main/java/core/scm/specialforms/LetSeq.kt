@@ -19,12 +19,10 @@ enum class LetSeq : ISpecialForm {
         }
 
         val localEnv = Environment(env)
-        val bindings = expression[1] as List<*>
+        val bindings = expression[1] as List<List<*>>
         /* Evaluate inits */
         for (binding in bindings) {
-            val `var` = (binding as List<*>)[0]
-            val init = binding[1]
-            localEnv.put(`var`, evaluator.eval(init, localEnv))
+            localEnv.put(binding[0], evaluator.eval(binding[1], localEnv))
         }
         /* Evaluate body */
         for (i in 2..expression.size - 1 - 1) {

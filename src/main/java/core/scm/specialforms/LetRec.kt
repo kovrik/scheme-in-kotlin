@@ -28,14 +28,11 @@ enum class LetRec : ISpecialForm {
         val bindings = expression[1] as List<List<*>>
         /* Bind variables to fresh locations holding undefined values */
         for (binding in bindings) {
-            val `var` = binding[0]
-            localEnv.put(`var`, Environment.UNDEFINED)
+            localEnv.put(binding[0], Environment.UNDEFINED)
         }
         /* Evaluate inits */
         for (binding in bindings) {
-            val `var` = binding[0]
-            val init = binding[1]
-            localEnv.put(`var`, evaluator.eval(init, localEnv))
+            localEnv.put(binding[0], evaluator.eval(binding[1], localEnv))
         }
         /* Evaluate body */
         for (i in 2..expression.size - 1 - 1) {

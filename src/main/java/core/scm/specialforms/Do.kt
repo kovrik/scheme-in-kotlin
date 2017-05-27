@@ -34,19 +34,19 @@ enum class Do : ISpecialForm {
             if (binding.size < 2) {
                 throw IllegalSyntaxException.of(toString(), expression)
             }
-            val `var` = binding[0]
+            val variable = binding[0]
             val init = binding[1]
             if (binding.size == 3) {
                 /* Put pair of Var and Step */
                 val step = binding[2]
-                steps.add(Cons.cons<Any>(`var`, step))
+                steps.add(Cons.cons(variable, step))
             }
             /* Check that we have no duplicates among variables */
-            if (tempEnv.containsKey(`var`)) {
+            if (tempEnv.containsKey(variable)) {
                 throw IllegalSyntaxException
-                        .of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", `var`))
+                        .of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", variable))
             }
-            tempEnv.put(`var`, evaluator.eval(init, tempEnv))
+            tempEnv.put(variable, evaluator.eval(init, tempEnv))
         }
 
         val cl = expression[2] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression)
