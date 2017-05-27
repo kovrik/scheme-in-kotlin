@@ -25,8 +25,7 @@ enum class Case : ISpecialForm {
         }
         val key = evaluator.eval(expression[1], env)
         for (i in 2..expression.size - 1) {
-            val node = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
-            val subform = node
+            val subform = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             val datum = subform[0]
             if (Else.ELSE_SYMBOL == datum) {
                 if (i != expression.size - 1) {

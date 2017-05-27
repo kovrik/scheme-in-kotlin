@@ -19,8 +19,7 @@ enum class Cond : ISpecialForm {
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         for (i in 1..expression.size - 1) {
-            val node = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform")
-            val subform = node
+            val subform = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform")
             val clause = subform[0]
             if (Else.ELSE_SYMBOL == clause) {
                 if (i != expression.size - 1) {
