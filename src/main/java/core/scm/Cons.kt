@@ -16,11 +16,9 @@ class Cons<E> : LinkedList<E?> {
     private constructor(car: E?, cdr: E?) : super() {
         add(car)
         isList = isList(cdr)
-        if (isList) {
-            /* cons becomes a list */
-            addAll(cdr as List<E>)
-        } else {
-            add(cdr)
+        when {
+            isList -> addAll(cdr as List<E>)
+            else   -> add(cdr)
         }
     }
 
@@ -35,9 +33,7 @@ class Cons<E> : LinkedList<E?> {
 
     /* Convert list to improper list (dotted pair, cons cells) */
     fun toCons(): Cons<E> {
-        if (!isList) {
-            return this
-        }
+        if (!isList) return this
         /* Cons backwards */
         val last = get(size - 1)
         val beforeLast = get(size - 2)
