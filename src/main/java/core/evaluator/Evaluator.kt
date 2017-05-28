@@ -65,7 +65,6 @@ class Evaluator {
             /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
             throw cc
         }
-
         if (result is BigRatio) {
             return Utils.downcastNumber(result as Number)
         }
@@ -93,13 +92,10 @@ class Evaluator {
     private fun Symbol.eval(env: Environment): Any? {
         /* Check if it is a Special Form */
         val o = env.findOrDefault(this, Environment.UNDEFINED)
-        if (o is ISpecialForm) {
-            throw IllegalSyntaxException.of(o.toString(), this)
-        }
+        if (o is ISpecialForm) throw IllegalSyntaxException.of(o.toString(), this)
         if (o === Environment.UNDEFINED) {
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            val clazz = reflector._getClass(name)
-            return clazz ?: reflector.evalJavaStaticField(toString())
+            return reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
         }
         return o
     }
@@ -167,9 +163,7 @@ class Evaluator {
         }
 
         /* If result is not a function, then raise an error */
-        if (op !is AFn && !javaMethod) {
-            throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
-        }
+        if (op !is AFn && !javaMethod) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
@@ -189,10 +183,8 @@ class Evaluator {
     /* Evaluate hash map */
     private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
         val result = HashMap<Any?, Any?>(size)
-        for ((key1, value1) in this) {
-            val key = eval(key1, env)
-            val value = eval(value1, env)
-            result.put(key, value)
+        for ((key, value) in this) {
+            result.put(eval(key, env), eval(value, env))
         }
         return result
     }
