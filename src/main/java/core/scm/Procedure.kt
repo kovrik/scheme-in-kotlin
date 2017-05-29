@@ -23,7 +23,7 @@ class Procedure(override var name: String,
     private val isBodyConst: Boolean
 
     /* Lexical environment */
-    private var localEnvironment: Environment? = null
+    private val localEnvironment: Environment
 
     constructor(name: String,
                 args: List<Symbol?>,
