@@ -38,7 +38,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     open val isPure
         get() = false
 
-    open val name
+    open val name: String
         get() = javaClass.simpleName
 
     override fun compare(o1: Any?, o2: Any?): Int {
