@@ -1,10 +1,10 @@
 package core.procedures.math
 
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.AFn
 import core.utils.Utils
 
-class Negation : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Negation : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "not"

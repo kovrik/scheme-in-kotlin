@@ -1,13 +1,12 @@
 package core.procedures.vectors
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Type
 import core.scm.MutableVector
 import core.scm.Void
 
-class VectorSet : AFn(FnArgsBuilder().min(3).max(3)
-        .mandatory(arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class VectorSet : AFn(FnArgs(min = 3, max = 3, mandatory = arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java))) {
 
     override val name = "vector-set!"
 

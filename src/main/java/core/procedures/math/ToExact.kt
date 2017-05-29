@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -10,7 +10,7 @@ import core.writer.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToExact : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
+class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     companion object {
 

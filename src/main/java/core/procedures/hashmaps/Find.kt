@@ -1,12 +1,12 @@
 package core.procedures.hashmaps
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.IAssoc
 import core.scm.MapEntry
 import core.utils.Utils
 
-class Find : AFn(FnArgsBuilder().max(2).min(2).mandatory(arrayOf(IAssoc::class.java, Any::class.java)).build()) {
+class Find : AFn(FnArgs(max = 2, min = 2, mandatory = arrayOf(IAssoc::class.java, Any::class.java))) {
 
     override val isPure = true
     override val name = "find"

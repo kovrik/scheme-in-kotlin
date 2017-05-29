@@ -2,12 +2,12 @@ package core.procedures.delayed
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Delay
 import core.scm.Future
 import core.scm.Promise
 
-class Force : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Force : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "force"
 

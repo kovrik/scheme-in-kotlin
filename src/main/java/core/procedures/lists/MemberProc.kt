@@ -2,15 +2,15 @@ package core.procedures.lists
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.scm.Cons
 import core.utils.Utils
 import core.writer.Writer
 
-class MemberProc(override val name: String, /* Procedure used to compare objects for equality */
-                 private val predicate: AFn) : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Any::class.java, List::class.java)).build()) {
+class MemberProc(override val name: String, private val predicate: AFn) :
+        AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Any::class.java, List::class.java))) {
 
     override val isPure = true
 

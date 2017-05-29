@@ -1,12 +1,12 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.Type
 import java.lang.NullPointerException
 
-class MakeRectangular : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)).build()) {
+class MakeRectangular : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java))) {
 
     override val isPure = true
     override val name = "make-rectangular"

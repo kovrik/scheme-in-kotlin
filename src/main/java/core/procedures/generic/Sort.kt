@@ -2,12 +2,12 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Vector
 
 import java.util.*
 
-class Sort : AFn(FnArgsBuilder().min(1).max(2).build()) {
+class Sort : AFn(FnArgs(min = 1, max = 2)) {
 
     override val isPure = true
     override val name = "sort"

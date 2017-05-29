@@ -2,10 +2,10 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 
-class IndexOf : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf<Class<*>>(CharSequence::class.java)).build()) {
+class IndexOf : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
 
     override val name = "index-of"
 

@@ -1,12 +1,11 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 
-class ListRef : AFn(FnArgsBuilder().min(2).max(2)
-        .mandatory(arrayOf(Type.Pair::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class ListRef : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class.java, Type.ExactNonNegativeInteger::class.java))) {
 
     override val isPure = true
     override val name = "list-ref"

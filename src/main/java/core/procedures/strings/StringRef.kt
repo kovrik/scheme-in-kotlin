@@ -1,11 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Type
 
-class StringRef : AFn(FnArgsBuilder().min(2).max(2)
-        .mandatory(arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class StringRef : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java))) {
 
     override val isPure = true
     override val name = "string-ref"

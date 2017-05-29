@@ -1,11 +1,11 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Vector
 import core.utils.Utils
 
-class Get : AFn(FnArgsBuilder().min(2).max(3).build()) {
+class Get : AFn(FnArgs(min = 2, max = 3)) {
 
     override val isPure = true
     override val name = "get"

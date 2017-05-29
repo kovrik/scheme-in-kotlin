@@ -2,7 +2,7 @@ package core.procedures.predicates
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.IFn
 import core.procedures.math.Remainder
 import core.scm.*
@@ -12,7 +12,7 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-class Predicate private constructor(override val name: String, private val predicate: java.util.function.Predicate<Any?>) : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Predicate private constructor(override val name: String, private val predicate: java.util.function.Predicate<Any?>) : AFn(FnArgs(min = 1, max = 1)) {
 
     companion object {
         val IS_NULL = Predicate("null?", java.util.function.Predicate<Any?> { Objects.isNull(it) })

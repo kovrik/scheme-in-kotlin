@@ -2,10 +2,10 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Type
 
-class ListToString : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ProperList::class.java)).build()) {
+class ListToString : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ProperList::class.java))) {
 
     override val name = "list->string"
 

@@ -1,9 +1,9 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class MapInvert : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Map::class.java)).build()) {
+class MapInvert : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Map::class.java))) {
 
     override val isPure = true
     override val name = "map-invert"

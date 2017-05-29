@@ -1,12 +1,12 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.math.Abs
 import core.scm.BigComplex
 import java.lang.NullPointerException
 
-class Magnitude : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
+class Magnitude : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     override val isPure = true
     override val name = "magnitude"

@@ -1,11 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.function.BiPredicate
 
-class StringComparison private constructor(override val name: String, private val predicate: BiPredicate<String, String>) : AFn(FnArgsBuilder().rest(CharSequence::class.java).build()) {
+class StringComparison private constructor(override val name: String, private val predicate: BiPredicate<String, String>) :
+        AFn(FnArgs(rest = CharSequence::class.java)) {
 
     companion object {
         val STRING_EQ          = StringComparison("string=?",     BiPredicate<String, String> { obj, anObject -> obj == anObject })

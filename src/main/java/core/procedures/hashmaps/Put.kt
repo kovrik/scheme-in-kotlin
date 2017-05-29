@@ -3,15 +3,14 @@ package core.procedures.hashmaps
 import core.exceptions.ArityException
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MapEntry
 import core.scm.MutableVector
 import core.utils.Utils
-
-import java.util.HashMap
+import java.util.*
 
 // TODO Rename to Assoc?
-class Put : AFn(FnArgsBuilder().min(3).mandatory(arrayOf<Class<*>>(Any::class.java, Any::class.java, Any::class.java)).build()) {
+class Put : AFn(FnArgs(min = 3, mandatory = arrayOf<Class<*>>(Any::class.java, Any::class.java, Any::class.java))) {
 
     override val isPure = true
     override val name = "put"
@@ -26,7 +25,7 @@ class Put : AFn(FnArgsBuilder().min(3).mandatory(arrayOf<Class<*>>(Any::class.ja
             var i = 1
             while (i < args.size) {
                 map.put(args[i], args[i + 1])
-                i = i + 2
+                i += 2
             }
             return map
         }

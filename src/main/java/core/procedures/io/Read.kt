@@ -2,14 +2,14 @@ package core.procedures.io
 
 import core.Repl
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.reader.Reader
 import core.scm.Cons
 import core.scm.InputPort
-import core.scm.specialforms.Begin
 import core.scm.Thunk
+import core.scm.specialforms.Begin
 
-class Read : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build()) {
+class Read : AFn(FnArgs(max = 1, rest = InputPort::class.java)) {
 
     override val name = "read"
 

@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
@@ -10,9 +10,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.function.BiPredicate
 
-class NumericalComparison private constructor(override val name: String, private val predicate: BiPredicate<Comparable<Number>, Number>) : AFn(FnArgsBuilder().min(2)
-        .mandatory(arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java))
-        .rest(Type.Real::class.java).build()) {
+class NumericalComparison private constructor(override val name: String, private val predicate: BiPredicate<Comparable<Number>, Number>) :
+        AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java), rest = Type.Real::class.java)) {
 
     companion object {
         val EQUAL         = NumericalComparison("=",  BiPredicate { f, s -> f.compareTo(s) == 0 })

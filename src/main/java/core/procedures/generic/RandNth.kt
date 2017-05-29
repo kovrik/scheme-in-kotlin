@@ -1,11 +1,11 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 import java.util.*
 
-class RandNth : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class RandNth : AFn(FnArgs(min = 1, max = 1)) {
 
     private val count = Count()
     private val get = Get()

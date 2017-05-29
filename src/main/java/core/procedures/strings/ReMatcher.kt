@@ -1,12 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class ReMatcher : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Pattern::class.java, CharSequence::class.java)).build()) {
+class ReMatcher : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Pattern::class.java, CharSequence::class.java))) {
 
     override val name = "re-matcher"
 

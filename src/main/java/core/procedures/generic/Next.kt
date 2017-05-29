@@ -2,14 +2,14 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Vector
 import core.utils.Utils
 
 import java.util.*
 
-open class Next : AFn(FnArgsBuilder().min(1).max(1).build()) {
+open class Next : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "next"

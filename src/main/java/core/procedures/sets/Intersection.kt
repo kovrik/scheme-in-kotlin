@@ -1,11 +1,10 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
+import java.util.*
 
-import java.util.HashSet
-
-class Intersection : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set::class.java)).rest(Set::class.java).build()) {
+class Intersection : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Set::class.java), rest = Set::class.java)) {
 
     override val isPure = true
     override val name = "intersection"

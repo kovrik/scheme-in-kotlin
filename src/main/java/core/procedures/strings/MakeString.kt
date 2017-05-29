@@ -1,13 +1,11 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MutableString
 import core.scm.Type
 
-class MakeString : AFn(FnArgsBuilder().min(1).max(2)
-        .mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))
-        .rest(Char::class.javaObjectType).build()) {
+class MakeString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java), rest = Char::class.javaObjectType)) {
 
     override val name = "make-string"
 

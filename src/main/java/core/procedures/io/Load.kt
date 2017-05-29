@@ -1,14 +1,14 @@
 package core.procedures.io
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.reader.FileReader
 import core.scm.Cons
 import core.scm.Thunk
 import core.scm.specialforms.Begin
 import java.io.File
 
-class Load : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(CharSequence::class.java)).build()) {
+class Load : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
 
     private val reader = FileReader()
 

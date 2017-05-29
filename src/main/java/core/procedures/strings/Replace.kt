@@ -2,11 +2,11 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.regex.Pattern
 
-class Replace : AFn(FnArgsBuilder().min(3).max(3).build()) {
+class Replace : AFn(FnArgs(min = 3, max = 3)) {
 
     override val name = "replace"
 

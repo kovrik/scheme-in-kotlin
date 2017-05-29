@@ -2,10 +2,10 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 
-class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
+class Nth : AFn(FnArgs(min = 2, max = 3)) {
 
     private val count = Count()
     private val get = Get()

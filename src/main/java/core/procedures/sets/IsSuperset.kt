@@ -1,9 +1,9 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class IsSuperset : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Set::class.java, Set::class.java)).build()) {
+class IsSuperset : AFn(FnArgs(min = 2, max = 2, mandatory =  arrayOf<Class<*>>(Set::class.java, Set::class.java))) {
 
     override val isPure = true
     override val name = "superset?"

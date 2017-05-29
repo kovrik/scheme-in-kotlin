@@ -1,9 +1,9 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class Union : AFn(FnArgsBuilder().min(0).rest(Set::class.java).build()) {
+class Union : AFn(FnArgs(min = 0, rest = Set::class.java)) {
 
     override val isPure = true
     override val name = "union"

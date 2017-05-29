@@ -1,14 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.reader.Reader
 import core.scm.Type
 import core.utils.Utils
 
-class StringToNumber : AFn(FnArgsBuilder().min(1).max(2)
-        .mandatory(arrayOf<Class<*>>(CharSequence::class.java))
-        .rest(Type.ExactPositiveInteger::class.java).build()) {
+class StringToNumber : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java), rest = Type.ExactPositiveInteger::class.java)) {
 
     override val name = "string->number"
 

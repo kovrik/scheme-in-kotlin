@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Multiplication : AFn(FnArgsBuilder().rest(Number::class.java).build()) {
+class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
 
     override val isPure = true
     override val name = "*"

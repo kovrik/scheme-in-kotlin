@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 
@@ -10,7 +10,7 @@ import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class GCD : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
+class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
 
     override val isPure = true
     override val name = NAME
@@ -79,27 +79,17 @@ class GCD : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
         }
 
         fun gcd(first: Number, second: Number): Number {
-            val f = Utils.upcast(first)
-            val s = Utils.upcast(second)
-            if (f is Long && s is Long) {
-                return gcd(f, s)
+            val f = Utils.upcast(first)!!
+            val s = Utils.upcast(second)!!
+            when {
+                f is Long && s is Long -> return gcd(f, s)
+                f is BigRatio && s is BigRatio -> return gcd(f, s)
+                f is BigRatio -> return gcd(f.toBigDecimal(), Utils.toBigDecimal(s))
+                s is BigRatio -> return gcd(Utils.toBigDecimal(f), s.toBigDecimal())
+                f is BigDecimal || s is BigDecimal -> return gcd(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+                f is BigInteger || s is BigInteger -> return gcd(Utils.toBigInteger(f), Utils.toBigInteger(s))
+                else -> return gcd(f.toDouble(), s.toDouble())
             }
-            if (first is BigRatio && second is BigRatio) {
-                return gcd(first, second)
-            }
-            if (first is BigRatio) {
-                return gcd(first.toBigDecimal(), Utils.toBigDecimal(second))
-            }
-            if (second is BigRatio) {
-                return gcd(Utils.toBigDecimal(first), second.toBigDecimal())
-            }
-            if (first is BigDecimal || second is BigDecimal) {
-                return gcd(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-            }
-            if (first is BigInteger || second is BigInteger) {
-                return gcd(Utils.toBigInteger(first), Utils.toBigInteger(second))
-            }
-            return gcd(first.toDouble(), second.toDouble())
         }
     }
 }

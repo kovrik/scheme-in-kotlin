@@ -1,7 +1,7 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
 import core.scm.BigRatio
@@ -10,7 +10,7 @@ import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Range : AFn(FnArgsBuilder().min(0).max(3).rest(Type.Real::class.java).build()) {
+class Range : AFn(FnArgs(min = 0, max = 3, rest = Type.Real::class.java)) {
 
     override val isPure = true
     override val name = "range"

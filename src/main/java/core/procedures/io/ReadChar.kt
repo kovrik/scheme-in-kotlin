@@ -3,12 +3,12 @@ package core.procedures.io
 import core.Repl
 import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.InputPort
 
 import java.io.IOException
 
-class ReadChar : AFn(FnArgsBuilder().max(1).rest(InputPort::class.java).build()) {
+class ReadChar : AFn(FnArgs(max = 1, rest = InputPort::class.java)) {
 
     override val name = "read-char"
 

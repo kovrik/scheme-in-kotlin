@@ -1,10 +1,10 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 
-class First : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class First : AFn(FnArgs(min = 1, max = 1)) {
 
     companion object {
         fun first(arg: Any?): Any? {

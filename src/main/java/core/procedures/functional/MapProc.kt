@@ -1,7 +1,7 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.IFn
 import core.procedures.generic.Count
 import core.scm.Cons
@@ -11,7 +11,7 @@ import core.scm.specialforms.Quote
 import core.utils.Utils
 import java.util.*
 
-class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::class.java)).build()) {
+class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java))) {
 
     companion object {
         internal val MAP_PROC = MapProc()

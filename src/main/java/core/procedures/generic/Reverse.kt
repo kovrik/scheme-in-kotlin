@@ -2,13 +2,13 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.MapEntry
 import core.scm.MutableVector
 import core.scm.Vector
 
-class Reverse : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Reverse : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "reverse"
 

@@ -2,11 +2,11 @@ package core.procedures.system
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.concurrent.ThreadLocalRandom
 
-class RandomProc : AFn(FnArgsBuilder().max(2).rest(Long::class.java).build()) {
+class RandomProc : AFn(FnArgs(max = 2, rest = Long::class.java)) {
 
     override val isPure = true
     override val name = "random"

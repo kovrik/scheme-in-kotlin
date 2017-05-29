@@ -1,9 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class StringAppend : AFn(FnArgsBuilder().rest(CharSequence::class.java).build()) {
+class StringAppend : AFn(FnArgs(rest = CharSequence::class.java)) {
 
     override val name = "string-append"
 

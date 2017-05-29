@@ -1,13 +1,13 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.IFn
 import core.scm.Cons
 import core.scm.Thunk
 import core.scm.Type
 
-class ForEach : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::class.java)).rest(Type.ProperList::class.java).build()) {
+class ForEach : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java), rest = Type.ProperList::class.java)) {
 
     override val name = "for-each"
 

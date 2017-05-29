@@ -1,7 +1,7 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.math.Multiplication
 import core.scm.BigComplex
 import core.scm.BigRatio
@@ -11,7 +11,7 @@ import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Sin : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
+class Sin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     override val isPure = true
     override val name = "sin"

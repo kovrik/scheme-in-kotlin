@@ -1,14 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Modulo : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)).build()) {
+open class Modulo : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
 
     companion object {
         private val REM = Remainder()

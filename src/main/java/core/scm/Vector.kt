@@ -2,7 +2,7 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 import core.writer.Writer
 import java.util.*
@@ -23,16 +23,16 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
-    constructor() : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
+    constructor() : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
         this.array = arrayOfNulls<Any>(0)
     }
 
-    constructor(size: Int, init: Any?) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
+    constructor(size: Int, init: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
         this.array = arrayOfNulls<Any>(size)
         Arrays.fill(array, init)
     }
 
-    constructor(vararg elements: Any?) : super(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
+    constructor(vararg elements: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
         this.array = elements as Array<Any?>
     }
 

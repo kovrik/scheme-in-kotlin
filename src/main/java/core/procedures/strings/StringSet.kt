@@ -1,12 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MutableString
 import core.scm.Type
 import core.scm.Void
 
-class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableString::class.java, Type.ExactNonNegativeInteger::class.java, Char::class.javaObjectType)).build()) {
+class StringSet : AFn(FnArgs(min = 3, max = 3, mandatory = arrayOf(MutableString::class.java, Type.ExactNonNegativeInteger::class.java, Char::class.javaObjectType))) {
 
     override val name = "string-set!"
 

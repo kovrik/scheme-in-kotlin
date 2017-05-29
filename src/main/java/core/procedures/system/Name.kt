@@ -2,10 +2,10 @@ package core.procedures.system
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.INamed
 
-class Name : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Name : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "name"

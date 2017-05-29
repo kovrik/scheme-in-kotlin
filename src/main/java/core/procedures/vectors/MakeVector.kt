@@ -1,11 +1,11 @@
 package core.procedures.vectors
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
-import core.scm.Type
+import core.procedures.FnArgs
 import core.scm.MutableVector
+import core.scm.Type
 
-class MakeVector : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)).build()) {
+class MakeVector : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
 
     override val name = "make-vector"
 

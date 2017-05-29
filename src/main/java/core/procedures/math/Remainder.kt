@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 import java.lang.NullPointerException
@@ -9,7 +9,7 @@ import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Remainder : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)).build()) {
+class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
 
     companion object {
 

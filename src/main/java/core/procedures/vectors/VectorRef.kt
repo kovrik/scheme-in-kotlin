@@ -1,11 +1,11 @@
 package core.procedures.vectors
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
-import core.scm.Type
+import core.procedures.FnArgs
 import core.scm.MutableVector
+import core.scm.Type
 
-class VectorRef : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class VectorRef : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(MutableVector::class.java, Type.ExactNonNegativeInteger::class.java))) {
 
     override val isPure = true
     override val name = "vector-ref"

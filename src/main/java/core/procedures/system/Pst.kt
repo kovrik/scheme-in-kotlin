@@ -1,10 +1,10 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Void
 
-class Pst : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Throwable::class.java)).build()) {
+class Pst : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Throwable::class.java))) {
 
     override val name = "pst"
 

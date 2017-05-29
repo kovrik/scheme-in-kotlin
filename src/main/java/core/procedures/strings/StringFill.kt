@@ -1,10 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MutableString
 
-class StringFill : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableString::class.java, Char::class.javaObjectType)).build()) {
+class StringFill : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(MutableString::class.java, Char::class.javaObjectType))) {
 
     override val name = "string-fill!"
 

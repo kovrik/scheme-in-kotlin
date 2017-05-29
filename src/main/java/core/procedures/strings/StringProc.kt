@@ -1,10 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MutableString
 
-class StringProc : AFn(FnArgsBuilder().rest(Char::class.javaObjectType).build()) {
+class StringProc : AFn(FnArgs(rest = Char::class.javaObjectType)) {
 
     override val name = "string"
 

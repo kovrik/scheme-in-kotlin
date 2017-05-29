@@ -2,12 +2,11 @@ package core.procedures.cons
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 
-class ListTail : AFn(FnArgsBuilder().min(2).max(2)
-        .mandatory(arrayOf(Any::class.java, Type.ExactNonNegativeInteger::class.java)).build()) {
+class ListTail : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Any::class.java, Type.ExactNonNegativeInteger::class.java))) {
 
     override val name = "list-tail"
 

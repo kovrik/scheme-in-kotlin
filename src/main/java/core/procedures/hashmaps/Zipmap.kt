@@ -1,12 +1,12 @@
 package core.procedures.hashmaps
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.utils.Utils
 
 import java.util.HashMap
 
-class Zipmap : AFn(FnArgsBuilder().min(2).max(2).build()) {
+class Zipmap : AFn(FnArgs(min = 2, max = 2)) {
 
     override val isPure = true
     override val name = "zipmap"

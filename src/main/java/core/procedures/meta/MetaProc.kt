@@ -1,10 +1,10 @@
 package core.procedures.meta
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.IMeta
 
-class MetaProc : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(IMeta::class.java)).build()) {
+class MetaProc : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(IMeta::class.java))) {
 
     override val name = "meta"
 

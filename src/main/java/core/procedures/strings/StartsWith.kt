@@ -1,9 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class StartsWith : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(CharSequence::class.java, CharSequence::class.java)).build()) {
+class StartsWith : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java, CharSequence::class.java))) {
 
     override val name = "starts-with?"
 

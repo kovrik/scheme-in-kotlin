@@ -1,14 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Quotient : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)).build()) {
+open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
 
     override val isPure = true
     override val name = "quotient"

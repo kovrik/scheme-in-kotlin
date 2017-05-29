@@ -1,9 +1,9 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class Identical : AFn(FnArgsBuilder().min(2).build()) {
+class Identical : AFn(FnArgs(min = 2)) {
 
     override val isPure = true
     override val name = "identical?"

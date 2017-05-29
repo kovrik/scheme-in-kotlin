@@ -1,7 +1,7 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.math.Addition
 import core.procedures.math.Multiplication
 import core.procedures.math.trigonometry.Cos
@@ -10,7 +10,7 @@ import core.scm.BigComplex
 import core.scm.Type
 import java.lang.NullPointerException
 
-class MakePolar : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)).build()) {
+class MakePolar : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java))) {
 
     override val isPure = true
     override val name = "make-polar"

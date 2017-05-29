@@ -1,12 +1,12 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 import core.scm.Void
 
-class SetCdr : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Type.Pair::class.java, Any::class.java)).build()) {
+class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class.java, Any::class.java))) {
 
     override val name = "set-cdr!"
 

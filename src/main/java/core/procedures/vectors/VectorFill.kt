@@ -1,13 +1,12 @@
 package core.procedures.vectors
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.MutableVector
 import core.scm.Void
+import java.util.*
 
-import java.util.Arrays
-
-class VectorFill : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableVector::class.java, Any::class.java)).build()) {
+class VectorFill : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(MutableVector::class.java, Any::class.java))) {
 
     override val name = "vector-fill!"
 

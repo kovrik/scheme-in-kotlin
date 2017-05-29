@@ -1,10 +1,10 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.writer.Writer
 
-open class ToString : AFn(FnArgsBuilder().min(0).build()) {
+open class ToString : AFn(FnArgs(min = 0)) {
 
     override val isPure = true
     override val name = "->string"

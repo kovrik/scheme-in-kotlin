@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Subtraction : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build()) {
+class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
     override val isPure = true
     override val name = "-"
@@ -19,8 +19,8 @@ class Subtraction : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build())
             when {
                 args[0] is BigDecimal -> return (args[0] as BigDecimal).negate()
                 args[0] is BigInteger -> return (args[0] as BigInteger).negate()
-                args[0] is BigRatio -> return (args[0] as BigRatio).negate()
-                args[0] is Long -> try {
+                args[0] is BigRatio   -> return (args[0] as BigRatio).negate()
+                args[0] is Long       -> try {
                     return Math.negateExact(args[0] as Long)
                 } catch (e: ArithmeticException) {
                     return BigInteger.valueOf(args[0] as Long).negate()

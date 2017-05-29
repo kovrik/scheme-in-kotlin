@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.predicates.Predicate
 import core.scm.BigComplex
 import core.scm.BigRatio
@@ -14,7 +14,7 @@ import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Number::class.java, Number::class.java)).build()) {
+class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::class.java, Number::class.java))) {
 
     override val isPure = true
     override val name = "expt"

@@ -1,12 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Type
 
-open class Substring : AFn(FnArgsBuilder().min(2).max(3)
-        .mandatory(arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java))
-        .rest(Type.ExactNonNegativeInteger::class.java).build()) {
+open class Substring : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java), rest = Type.ExactNonNegativeInteger::class.java)) {
 
     override val name = "substring"
 

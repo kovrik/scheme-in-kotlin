@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 
@@ -9,7 +9,7 @@ import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class LCM : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
+class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
 
     override val isPure = true
     override val name = "lcm"
@@ -48,27 +48,17 @@ class LCM : AFn(FnArgsBuilder().rest(BigRatio::class.java).build()) {
     }
 
     private fun lcm(first: Number, second: Number): Number {
-        val f = Utils.upcast(first)
-        val s = Utils.upcast(second)
-        if (f is Long && s is Long) {
-            return Companion.lcm(first as Long, second as Long)
+        val f = Utils.upcast(first)!!
+        val s = Utils.upcast(second)!!
+        when {
+            f is Long && s is Long -> return Companion.lcm(f, s)
+            f is BigRatio && s is BigRatio -> return lcm(f, s)
+            f is BigRatio -> return lcm(f.toBigDecimal(), Utils.toBigDecimal(s))
+            s is BigRatio -> return lcm(Utils.toBigDecimal(f), s.toBigDecimal())
+            f is BigDecimal || s is BigDecimal -> return lcm(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> return Companion.lcm(Utils.toBigInteger(f), Utils.toBigInteger(s))
+            else -> return Companion.lcm(f.toDouble(), s.toDouble())
         }
-        if (first is BigRatio && second is BigRatio) {
-            return lcm(first, second)
-        }
-        if (first is BigRatio) {
-            return lcm(first.toBigDecimal(), Utils.toBigDecimal(second))
-        }
-        if (second is BigRatio) {
-            return lcm(Utils.toBigDecimal(first), second.toBigDecimal())
-        }
-        if (first is BigDecimal || second is BigDecimal) {
-            return lcm(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-        }
-        if (first is BigInteger || second is BigInteger) {
-            return Companion.lcm(Utils.toBigInteger(first), Utils.toBigInteger(second))
-        }
-        return Companion.lcm(first.toDouble(), second.toDouble())
     }
 
     companion object {

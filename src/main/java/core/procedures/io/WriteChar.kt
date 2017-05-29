@@ -3,14 +3,13 @@ package core.procedures.io
 import core.Repl
 import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.OutputPort
 import core.scm.Void
 
 import java.io.IOException
 
-class WriteChar : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Char::class.javaObjectType))
-        .rest(OutputPort::class.java).build()) {
+class WriteChar : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Char::class.javaObjectType), rest = OutputPort::class.java)) {
 
     override val name = "write-char"
 

@@ -1,9 +1,10 @@
 package core.procedures.interop
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class PrimitiveNumberType private constructor(private val clazz: Class<*>) : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
+class PrimitiveNumberType private constructor(private val clazz: Class<*>) :
+        AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     companion object {
         val BYTE   = PrimitiveNumberType(Byte::class.java)

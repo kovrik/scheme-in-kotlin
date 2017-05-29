@@ -2,12 +2,12 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class ReFind : AFn(FnArgsBuilder().min(1).max(2).build()) {
+class ReFind : AFn(FnArgs(min = 1, max = 2)) {
 
     private val reGroups = ReGroups()
 
