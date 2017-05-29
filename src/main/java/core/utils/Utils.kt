@@ -464,9 +464,7 @@ object Utils {
         }
     }
 
-    /**
-     * Tries to downcast big number to a smaller type (if possible)
-     */
+    /* Try to downcast big number to a smaller type (if possible) */
     private fun tryDowncast(number: BigInteger): Number {
         /* Same checks are performed in longValueExact() method,
          * but we don't want exception to be thrown, just return the number */
@@ -575,9 +573,7 @@ object Utils {
             }
 
             override fun next(): Char {
-                if (!hasNext()) {
-                    throw NoSuchElementException()
-                }
+                if (!hasNext()) throw NoSuchElementException()
                 return string[index++]
             }
         }
