@@ -44,7 +44,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     override fun compare(o1: Any?, o2: Any?): Int {
         val result = invokeN(o1, o2)
         if (result is Boolean) {
-            if (Utils.toBoolean(result)) return -1
+            if (result) return -1
             if (Utils.toBoolean(invokeN(o2, o1))) return 1
             return 0
         }
