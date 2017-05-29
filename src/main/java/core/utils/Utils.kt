@@ -86,7 +86,6 @@ object Utils {
     // FIXME Simplify and cleanup!
     /* Check if string represents a valid number and process it */
     fun preProcessNumber(number: String, exactness: Char?, radix: Int): Any? {
-        var exactness = exactness
         /* First check if it is a special number */
         val special = SPECIAL_NUMBERS[number]
         if (special != null) {
@@ -103,6 +102,7 @@ object Utils {
         }
 
         /* Read exponent mark if present */
+        var exactness = exactness
         val exponentPattern      = if (radix == 16) EXPONENT16_PATTERN else EXPONENT_PATTERN
         val exponentMarksPattern = if (radix == 16) EXPONENT16_MARKS_PATTERN else EXPONENT_MARKS_PATTERN
         var exp: Long? = null
@@ -112,8 +112,7 @@ object Utils {
             n = split[0]
             val exponent = split[1]
             try {
-                val e = processNumber(exponent, radix, true, false, null) as? Long ?: throw IllegalSyntaxException("read: bad exponent: " + number)
-                exp = e
+                exp = processNumber(exponent, radix, true, false, null) as? Long ?: throw IllegalSyntaxException("read: bad exponent: " + number)
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: " + number)
             }
@@ -158,7 +157,6 @@ object Utils {
         /* Rational and Integral numbers are exact by default */
         val isIntegral = n.indexOf('.') < 0
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
-
         val threshold = RADIX_THRESHOLDS[radix]
         val hasSign = if (n[0] == '-' || n[0] == '+') 1 else 0
         if (slashIndex > -1) {
