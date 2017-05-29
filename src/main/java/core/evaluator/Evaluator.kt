@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
-import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.continuations.CalledContinuation
 import core.scm.*
@@ -139,18 +138,7 @@ class Evaluator {
             op = MapEntry(op)
         }
         if (op is Vector) {
-            if (size > 2) throw ArityException("vector", 1, 1, size - 1)
-            val vector = op.eval(env)
-            /* Evaluate key */
-            val key = eval(this[1], env)
-            if (!Utils.isInteger(key)) {
-                throw WrongTypeException("vector", Int::class.java, key)
-            }
-            val i = (key as Number).toInt()
-            if (vector.size <= i || i < 0) {
-                throw IndexOutOfBoundsException("vector: value out of range: $i")
-            }
-            return vector[i]
+            op = eval(op, env)
         }
         if (op is Map<*, *>) {
             /* Maps are functions of their keys */
