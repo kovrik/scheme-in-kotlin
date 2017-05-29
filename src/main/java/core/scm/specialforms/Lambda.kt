@@ -68,7 +68,7 @@ enum class Lambda : ISpecialForm {
             body = Cons.list(Begin.BEGIN)
             (body as MutableList<Any?>).addAll(expression.subList(2, expression.size))
         }
-        return Procedure("", params, body, env, variadic)
+        return Procedure("", params.toTypedArray(), body, env, variadic)
     }
 
     override fun toString(): String {

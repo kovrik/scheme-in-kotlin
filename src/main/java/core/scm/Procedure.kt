@@ -10,7 +10,8 @@ class Procedure(override var name: String,
                 private val args: Array<Symbol?>,
                 /* Body form of the procedure */
                 private val body: Any?,
-                localEnvironment: Environment,
+                /* Lexical environment */
+                private val localEnvironment: Environment,
                 isVariadic: Boolean) : AFn() {
 
     companion object {
@@ -22,18 +23,8 @@ class Procedure(override var name: String,
     /* Is body a constant? If it is, then no need to evaluate it */
     private val isBodyConst: Boolean
 
-    /* Lexical environment */
-    private val localEnvironment: Environment
-
-    constructor(name: String,
-                args: List<Symbol?>,
-                body: Any?,
-                localEnvironment: Environment,
-                isVariadic: Boolean) : this(name, args.toTypedArray(), body, localEnvironment, isVariadic)
-
     init {
         this.isBodyConst = isConst(body)
-        this.localEnvironment = localEnvironment
         if (isVariadic) {
             /* Do not count rest arg */
             this.minArgs = this.args.size - 1
