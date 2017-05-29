@@ -11,8 +11,8 @@ class ReGroups : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(M
     override val name = "re-groups"
 
     override operator fun invoke(arg: Any?): Any? {
-        val m = arg as Matcher?
-        val gc = m!!.groupCount()
+        val m = arg!! as Matcher
+        val gc = m.groupCount()
         if (gc == 0) {
             return m.group()
         }

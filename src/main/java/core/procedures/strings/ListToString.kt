@@ -10,8 +10,8 @@ class ListToString : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*
     override val name = "list->string"
 
     override operator fun invoke(arg: Any?): Any {
-        val cs = arg as List<*>?
-        if (cs!!.isEmpty()) {
+        val cs = arg!! as List<*>
+        if (cs.isEmpty()) {
             return ""
         }
         val sb = StringBuilder(cs.size)

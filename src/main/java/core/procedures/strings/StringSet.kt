@@ -16,7 +16,7 @@ class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableStr
         if (pos >= str!!.length) {
             throw IndexOutOfBoundsException("$name: value out of range: $pos")
         }
-        str.setCharAt(pos.toInt(), (arg3 as Char?)!!)
+        str.setCharAt(pos.toInt(), (arg3!! as Char))
         return Void
     }
 }

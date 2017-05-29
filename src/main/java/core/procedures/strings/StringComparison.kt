@@ -23,14 +23,7 @@ class StringComparison private constructor(override val name: String, private va
     override val isPure = true
 
     override operator fun invoke(vararg args: Any?): Boolean? {
-        if (args.size < 2) {
-            return true
-        }
-        for (i in 0..args.size - 1 - 1) {
-            if (!predicate.test(args[i].toString(), args[i + 1].toString())) {
-                return false
-            }
-        }
-        return true
+        if (args.size < 2) return true
+        return (0..args.size - 2).any { predicate.test(args[it].toString(), args[it + 1].toString()) }
     }
 }
