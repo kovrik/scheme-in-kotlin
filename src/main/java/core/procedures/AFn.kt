@@ -8,8 +8,8 @@ import core.utils.Utils
 /* Abstract superclass of all functions */
 abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
 
-    protected var minArgs: Int = 0
-    protected var maxArgs: Int = 0
+    protected var minArgs: Int
+    protected var maxArgs: Int
     private   val mandatoryArgsTypes: Array<Class<*>>
     private   val restArgsType: Class<*>?
     private   val lastArgType: Class<*>?
