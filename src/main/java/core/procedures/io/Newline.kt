@@ -18,12 +18,7 @@ class Newline : AFn(FnArgsBuilder().max(1).rest(OutputPort::class.java).build())
     override val name = "newline"
 
     override operator fun invoke(vararg args: Any?): Any? {
-        val outputPort: OutputPort
-        if (args.isEmpty()) {
-            outputPort = Repl.currentOutputPort
-        } else {
-            outputPort = args[0] as OutputPort
-        }
+        val outputPort: OutputPort = if (args.isEmpty()) Repl.currentOutputPort else args[0] as OutputPort
         try {
             outputPort.write(LS)
         } catch (e: IOException) {

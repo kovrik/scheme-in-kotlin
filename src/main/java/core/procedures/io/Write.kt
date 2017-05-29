@@ -16,12 +16,7 @@ class Write : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(Any:
     override val name = "write"
 
     override operator fun invoke(vararg args: Any?): Void {
-        val outputPort: OutputPort
-        if (args.size == 1) {
-            outputPort = Repl.currentOutputPort
-        } else {
-            outputPort = args[1] as OutputPort
-        }
+        val outputPort: OutputPort = if (args.size == 1) Repl.currentOutputPort else args[1] as OutputPort
         try {
             outputPort.write(Writer.write(args[0]))
         } catch (e: IOException) {

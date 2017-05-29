@@ -16,18 +16,12 @@ class Println : AFn(FnArgsBuilder().min(1).max(2).mandatory(arrayOf<Class<*>>(An
     override val name = "println"
 
     override operator fun invoke(vararg args: Any?): Any? {
-        val outputPort: OutputPort
-        if (args.size == 1) {
-            outputPort = Repl.currentOutputPort
-        } else {
-            outputPort = args[1] as OutputPort
-        }
+        val outputPort: OutputPort = if (args.size == 1) Repl.currentOutputPort else args[1] as OutputPort
         val arg = args[0]
         try {
-            if (arg is CharSequence || arg is Char) {
-                outputPort.writeln(arg.toString())
-            } else {
-                outputPort.writeln(Writer.write(arg))
+            when (arg) {
+                is CharSequence, is Char -> outputPort.writeln(arg.toString())
+                else -> outputPort.writeln(Writer.write(arg))
             }
         } catch (e: IOException) {
             throw ThrowableWrapper(e)
