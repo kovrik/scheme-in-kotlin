@@ -43,8 +43,7 @@ enum class Do : ISpecialForm {
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {
-                throw IllegalSyntaxException
-                        .of(Let.LET.toString(), expression, String.format("duplicate identifier: %s", variable))
+                throw IllegalSyntaxException.of(Let.LET.toString(), expression, "duplicate identifier: $variable")
             }
             tempEnv.put(variable, evaluator.eval(init, tempEnv))
         }
@@ -61,7 +60,7 @@ enum class Do : ISpecialForm {
             /* Evaluate command expressions */
             for (e in body) {
                 /* Each iteration establishes bindings to fresh locations
-         * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
+                 * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
                 val environment = Environment(env)
                 environment.putAll(tempEnv)
                 /* Evaluate using new fresh environment */

@@ -33,10 +33,10 @@ enum class Lambda : ISpecialForm {
                 val temp = HashSet<Any?>(args.size)
                 for (o in args) {
                     if (o !is Symbol && !Cons.isPair(o)) {
-                        throw IllegalSyntaxException.of(toString(), expression, String.format("not an identifier: %s", o))
+                        throw IllegalSyntaxException.of(toString(), expression, "not an identifier: $o")
                     }
                     if (temp.contains(o)) {
-                        throw IllegalSyntaxException.of(toString(), expression, String.format("duplicate argument name: %s", o))
+                        throw IllegalSyntaxException.of(toString(), expression, "duplicate argument name: $o")
                     }
                     temp.add(o)
                 }
@@ -55,7 +55,7 @@ enum class Lambda : ISpecialForm {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
             if (args !is Symbol) {
-                throw IllegalSyntaxException(String.format("lambda: bad argument sequence (%s) in form: %s", args, expression))
+                throw IllegalSyntaxException("lambda: bad argument sequence ($args) in form: $expression")
             }
             params = Cons.list(args)
             variadic = true

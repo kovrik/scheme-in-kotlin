@@ -323,7 +323,7 @@ open class Reader : IReader {
                     string.append(chr)
                 } else {
                     /* Check that escape sequence is valid */
-                    val character = ESCAPED[next] ?: throw IllegalSyntaxException(String.format("read: unknown escape sequence \\%s in string", next))
+                    val character = ESCAPED[next] ?: throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
                     string.append(character)
                 }
             } else {

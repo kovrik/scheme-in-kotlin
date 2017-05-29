@@ -21,14 +21,14 @@ class ListTail : AFn(FnArgsBuilder().min(2).max(2)
         }
         val list = arg1
         if (p >= list.size + 1) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, p))
+            throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
         if (list is Cons<*> && !list.isList) {
             if (p == 1L) {
                 return list.cdr()
             } else {
-                throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, p))
+                throw IndexOutOfBoundsException("$name: value out of range: $p")
             }
         }
         return list.subList(p.toInt(), list.size)

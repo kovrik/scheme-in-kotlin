@@ -172,8 +172,7 @@ class RosettaCodeTest : AbstractTest() {
         val y = calendar.get(Calendar.YEAR)
         val m = calendar.get(Calendar.MONTH) + 1
         val d = calendar.get(Calendar.DAY_OF_MONTH)
-        val todaySexp = "(day-of-week %s %s %s)"
-        assertEquals(dw!!.toLong(), eval(String.format(todaySexp, y, m, d), env))
+        assertEquals(dw!!.toLong(), eval("(day-of-week $y $m $d)", env))
     }
 
     @Test

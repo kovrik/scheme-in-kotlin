@@ -15,7 +15,7 @@ class ReplaceFirst : AFn(FnArgsBuilder().min(3).max(3).build()) {
             throw WrongTypeException(name, "String", arg1)
         }
         if (arg2 is CharSequence && arg3 is CharSequence) {
-            return arg1.toString().replaceFirst(arg2.toString().toRegex(), arg3.toString())
+            return arg1.toString().replaceFirst(arg2.toString(), arg3.toString())
         }
         // TODO arg2=string/arg3=function of match
         return (arg2 as Pattern).matcher((arg1 as CharSequence?)!!).replaceFirst((arg3 as CharSequence).toString())

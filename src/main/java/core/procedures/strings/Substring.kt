@@ -14,15 +14,14 @@ open class Substring : AFn(FnArgsBuilder().min(2).max(3)
         val s = args[0].toString()
         val start = (args[1] as Number).toLong()
         if (start > s.length) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, start))
+            throw IndexOutOfBoundsException("$name: value out of range: $start")
         }
-
         var end = s.length.toLong()
         if (args.size == 3) {
             end = args[2] as Long
         }
         if (end > s.length) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, end))
+            throw IndexOutOfBoundsException("$name: value out of range: $end")
         }
         return s.substring(start.toInt(), end.toInt())
     }

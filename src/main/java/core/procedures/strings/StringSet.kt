@@ -14,7 +14,7 @@ class StringSet : AFn(FnArgsBuilder().min(3).max(3).mandatory(arrayOf(MutableStr
         val str = arg1 as MutableString?
         val pos = (arg2 as Number).toLong()
         if (pos >= str!!.length) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, pos))
+            throw IndexOutOfBoundsException("$name: value out of range: $pos")
         }
         str.setCharAt(pos.toInt(), (arg3 as Char?)!!)
         return Void

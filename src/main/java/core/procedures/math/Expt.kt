@@ -126,7 +126,7 @@ class Expt : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf<Class<*>>(Numbe
                 }
                 if (Utils.isZero(base)) {
                     if (exponent == java.lang.Double.NEGATIVE_INFINITY) {
-                        throw ArithmeticException(String.format("%s: undefined for %s and %s", "expt", base, Writer.write(exponent)))
+                        throw ArithmeticException("expt: undefined for $base and ${Writer.write(exponent)}")
                     } else {
                         return 0L
                     }

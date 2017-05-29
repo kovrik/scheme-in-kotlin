@@ -16,29 +16,24 @@ class Reflector {
 
     companion object {
 
-        private val UNBOXED = HashMap<Class<*>, Class<*>>()
-
-        init {
-            UNBOXED.put(Byte::class.javaObjectType,    Byte::class.java)
-            UNBOXED.put(Short::class.javaObjectType,   Short::class.java)
-            UNBOXED.put(Int::class.javaObjectType,     Int::class.java)
-            UNBOXED.put(Long::class.javaObjectType,    Long::class.java)
-            UNBOXED.put(Float::class.javaObjectType,   Float::class.java)
-            UNBOXED.put(Double::class.javaObjectType,  Double::class.java)
-            UNBOXED.put(Char::class.javaObjectType,    Char::class.java)
-            UNBOXED.put(Boolean::class.javaObjectType, Boolean::class.java)
-        }
+        private val UNBOXED = hashMapOf(
+                Byte::class.javaObjectType    to Byte::class.java,
+                Short::class.javaObjectType   to Short::class.java,
+                Int::class.javaObjectType     to Int::class.java,
+                Long::class.javaObjectType    to Long::class.java,
+                Float::class.javaObjectType   to Float::class.java,
+                Double::class.javaObjectType  to Double::class.java,
+                Char::class.javaObjectType    to Char::class.java,
+                Boolean::class.javaObjectType to Boolean::class.java
+        )
 
         /* Some common classes that are not in java.lang. package could be resolved without package name */
-        private val CLASS_PACKAGE_MAPPING = HashMap<String, String>()
-
-        init {
-            CLASS_PACKAGE_MAPPING.put("BigInteger", "java.math.BigInteger")
-            CLASS_PACKAGE_MAPPING.put("BigDecimal", "java.math.BigDecimal")
-        }
+        private val CLASS_PACKAGE_MAPPING = hashMapOf(
+                "BigInteger" to "java.math.BigInteger",
+                "BigDecimal" to "java.math.BigDecimal"
+        )
 
         private val BOXED = HashMap<Class<*>?, Class<*>?>()
-
         init {
             for ((key, value) in UNBOXED) {
                 BOXED.put(value, key)
@@ -47,8 +42,9 @@ class Reflector {
     }
 
     private fun getMethod(clazz: Class<*>?, name: String, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Method {
+        clazz!!
         try {
-            return clazz!!.getMethod(name, *parameterTypes)
+            return clazz.getMethod(name, *parameterTypes)
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
@@ -56,7 +52,7 @@ class Reflector {
             val paramsOld = Arrays.copyOf(parameterTypes, parameterTypes.size)
             downcastArgs(args, parameterTypes)
             try {
-                return clazz!!.getMethod(name, *parameterTypes)
+                return clazz.getMethod(name, *parameterTypes)
             } catch (ex: NoSuchMethodException) {
                 try {
                     // FIXME Workaround: restore previous state
@@ -64,10 +60,9 @@ class Reflector {
                     System.arraycopy(argsOld, 0, args, 0, argsOld.size)
                     System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.size)
                     castToObject(parameterTypes)
-                    return clazz!!.getMethod(name, *parameterTypes)
+                    return clazz.getMethod(name, *parameterTypes)
                 } catch (ex2: NoSuchMethodException) {
-                    throw RuntimeException(String.format("reflector: unable to find matching method %s in class %s",
-                            name, clazz!!.name))
+                    throw RuntimeException("reflector: unable to find matching method $name in class ${clazz.name}")
                 }
             }
         }
@@ -82,8 +77,7 @@ class Reflector {
             try {
                 return clazz.getConstructor(*parameterTypes)
             } catch (ex: NoSuchMethodException) {
-                throw RuntimeException(String.format("reflector: unable to find matching constructor for class %s",
-                        clazz.name))
+                throw RuntimeException("reflector: unable to find matching constructor for class ${clazz.name}")
             }
         }
     }
@@ -105,8 +99,8 @@ class Reflector {
         }
     }
 
-    private fun unboxIfPossible(clazz: Class<*>?): Class<*> {
-        return (UNBOXED as Map<Class<*>, Class<*>>).getOrDefault(clazz!!, clazz)
+    private fun unboxIfPossible(clazz: Class<*>): Class<*> {
+        return UNBOXED.getOrDefault(clazz, clazz)
     }
 
     fun getClazz(name: String): Class<*> {
@@ -129,7 +123,7 @@ class Reflector {
         val c = getClazz(clazz)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
+            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
         }
         try {
             return getConstructor(c, args, argTypes).newInstance(*args)
@@ -138,14 +132,14 @@ class Reflector {
         } catch (e: InvocationTargetException) {
             throw RuntimeException(e.message)
         } catch (e: IllegalAccessException) {
-            throw RuntimeException(String.format("reflector: unable to access constructor for class %s", clazz))
+            throw RuntimeException("reflector: unable to access constructor for class $clazz")
         }
     }
 
     /* Java Interop: static fields */
     fun evalJavaStaticField(s: String): Any? {
         if (s.indexOf('/') > -1) {
-            val classAndField = s.split("/".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
+            val classAndField = s.split('/').dropLastWhile(String::isEmpty).toTypedArray()
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
@@ -155,14 +149,13 @@ class Reflector {
             try {
                 val field = c.getField(fieldName)
                 if (!Modifier.isStatic(field.modifiers)) {
-                    throw RuntimeException(
-                            String.format("reflector: unable to find static field %s of %s", fieldName, className))
+                    throw RuntimeException("reflector: unable to find static field $fieldName of $className")
                 }
                 return field.get(c)
             } catch (e: NoSuchFieldException) {
-                throw RuntimeException(String.format("reflector: unable to find static field %s in class %s", fieldName, className), e)
+                throw RuntimeException("reflector: unable to find static field $fieldName in class $className", e)
             } catch (e: IllegalAccessException) {
-                throw RuntimeException(String.format("reflector: unable to access static field %s in class %s", fieldName, className))
+                throw RuntimeException("reflector: unable to access static field $fieldName in class $className")
             }
         }
         throw UndefinedIdentifierException(s)
@@ -197,13 +190,13 @@ class Reflector {
         val clazz = instance?.javaClass
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
+            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         try {
             return method(instance, *args)
         } catch (e: IllegalAccessException) {
-            throw RuntimeException(String.format("reflector: unable to access method %s of %s", methodName, instance))
+            throw RuntimeException("reflector: unable to access method $methodName of $instance")
         } catch (e: InvocationTargetException) {
             throw RuntimeException("reflector: reflection exception")
         }
@@ -217,15 +210,15 @@ class Reflector {
             val field = clazz?.getField(fieldName)
             return field?.get(instance)
         } catch (e: NoSuchFieldException) {
-            throw RuntimeException(String.format("reflector: unable to find field %s of %s", fieldName, instance))
+            throw RuntimeException("reflector: unable to find field $fieldName of $instance")
         } catch (e: IllegalAccessException) {
-            throw RuntimeException(String.format("reflector: unable to access method %s of %s", fieldName, instance))
+            throw RuntimeException("reflector: unable to access method $fieldName of $instance")
         }
     }
 
     /* Java Interop: static method call */
     private fun evalJavaStaticMethod(m: String, args: Array<Any?>): Any? {
-        val classAndMethod = m.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val classAndMethod = m.split('/').dropLastWhile { it.isEmpty() }.toTypedArray()
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
         }
@@ -234,16 +227,16 @@ class Reflector {
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]?.javaClass)
+            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
-            throw RuntimeException(String.format("reflector: unable to find static method %s of %s", methodName, clazz.name))
+            throw RuntimeException("reflector: unable to find static method $methodName of ${clazz.name}")
         }
         try {
             return method(null, *args)
         } catch (e: IllegalAccessException) {
-            throw RuntimeException(String.format("reflector: unable to access static method %s of %s", methodName, clazz.name))
+            throw RuntimeException("reflector: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
             throw RuntimeException("reflector: reflection exception")
         }

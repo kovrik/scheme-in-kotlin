@@ -15,14 +15,14 @@ class ListRef : AFn(FnArgsBuilder().min(2).max(2)
         val list = arg1 as List<*>?
         val p = (arg2 as Number).toLong()
         if (p >= list!!.size) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, p))
+            throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
         if (list is Cons<*> && !list.isList) {
             if (p == 0L) {
                 return list.car()
             }
-            throw IllegalArgumentException(String.format("%s: index (%s) reaches a non-pair", name, p))
+            throw IllegalArgumentException("$name: index ($p) reaches a non-pair")
         }
         return list[p.toInt()]
     }

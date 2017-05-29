@@ -27,7 +27,7 @@ class AssocProc(override val name: String,
                     }
                 } else {
                     throw WrongTypeException(
-                            String.format("%s: wrong type argument in position %s (expecting association list): %s", name, n, Writer.write(list)))
+                        "$name: wrong type argument in position $n (expecting association list): ${Writer.write(list)}")
                 }
             }
             return false

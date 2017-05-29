@@ -25,8 +25,8 @@ object Utils {
 
     private val HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$")
 
-    private const val EXPONENT_MARKS_PATTERN   = "[sldefSLDEF]"
-    private const val EXPONENT16_MARKS_PATTERN = "[slSL]"
+    private val EXPONENT_MARKS_PATTERN   = "[sldefSLDEF]".toRegex()
+    private val EXPONENT16_MARKS_PATTERN = "[slSL]".toRegex()
     private val EXPONENT_PATTERN   = Pattern.compile(".+$EXPONENT_MARKS_PATTERN[+-]?\\d+(\\.\\d*)?$")
     private val EXPONENT16_PATTERN = Pattern.compile(".+$EXPONENT16_MARKS_PATTERN[+-]?\\w+$")
 
@@ -108,7 +108,7 @@ object Utils {
         var exp: Long? = null
         var n = number
         if (exponentPattern.matcher(number).matches()) {
-            val split = number.split(exponentMarksPattern.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val split = number.split(exponentMarksPattern).dropLastWhile { it.isEmpty() }.toTypedArray()
             n = split[0]
             val exponent = split[1]
             try {

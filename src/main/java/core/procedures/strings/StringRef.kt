@@ -14,7 +14,7 @@ class StringRef : AFn(FnArgsBuilder().min(2).max(2)
         val s = arg1!!.toString()
         val pos = (arg2 as Number).toLong()
         if (pos >= s.length) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, pos))
+            throw IndexOutOfBoundsException("$name: value out of range: $pos")
         }
         return s[pos.toInt()]
     }

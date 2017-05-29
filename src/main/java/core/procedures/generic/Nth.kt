@@ -28,7 +28,7 @@ class Nth : AFn(FnArgsBuilder().min(2).max(3).build()) {
         val i = (args[1] as Number).toInt()
         val size = count(col)!!
         if (size <= i && args.size < 3) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, i))
+            throw IndexOutOfBoundsException("$name: value out of range: $i")
         }
         return get(*args)
     }

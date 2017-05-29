@@ -15,7 +15,7 @@ open class MutableVector : Vector {
     constructor(vararg elements: Any?) : super(*elements)
 
     operator fun set(index: Int, value: Any?) {
-        if (size <= index) throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, index))
+        if (size <= index) throw IndexOutOfBoundsException("$name: value out of range: $index")
         array[index] = value
     }
 

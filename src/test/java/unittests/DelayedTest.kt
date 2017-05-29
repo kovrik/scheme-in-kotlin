@@ -45,7 +45,7 @@ class DelayedTest : AbstractTest() {
             eval("(force p)", env)
             fail()
         } catch (e: ReentrantDelayException) {
-            assertTrue(e.message!!.startsWith("Re-entrant delay:"))
+            assertTrue(e.message!!.startsWith("re-entrant delay:"))
         }
     }
 

@@ -28,7 +28,7 @@ enum class Time : ISpecialForm {
         val result = evaluator.eval(expression[expression.size - 1], env)
         val diff = (System.nanoTime() - start).toDouble() / 1000000
         try {
-            Repl.currentOutputPort.writeln(String.format("elapsed time: %s ms", diff))
+            Repl.currentOutputPort.writeln("elapsed time: $diff ms")
         } catch (e: IOException) {
             throw ThrowableWrapper(e)
         }

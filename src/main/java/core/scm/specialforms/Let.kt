@@ -33,8 +33,7 @@ enum class Let : ISpecialForm {
                 val variable = binding[0]
                 val init = binding[1]
                 if (localEnv[variable] !== Environment.UNDEFINED) {
-                    throw IllegalSyntaxException
-                            .of(toString(), expression, String.format("duplicate identifier: %s", variable))
+                    throw IllegalSyntaxException.of(toString(), expression, "duplicate identifier: $variable")
                 }
                 localEnv.put(variable, evaluator.eval(init, env))
             }
@@ -57,8 +56,7 @@ enum class Let : ISpecialForm {
             for (binding in bindings) {
                 val arg = (binding as List<*>)[0]
                 if (lambdaArgs.contains(arg)) {
-                    throw IllegalSyntaxException
-                            .of(toString(), expression, String.format("duplicate identifier: %s", arg))
+                    throw IllegalSyntaxException.of(toString(), expression, "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
                 initValues.add(binding[1])

@@ -32,12 +32,10 @@ class MemberProc(override val name: String, /* Procedure used to compare objects
         /* Not found */
         if (p == list.size) {
             if (!Cons.isList(list)) {
-                throw WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
-                        name, p, Writer.write(list)))
+                throw WrongTypeException("$name: wrong type argument in position $p (expecting list): ${Writer.write(list)}")
             }
             return false
         }
-        throw WrongTypeException(String.format("%s: wrong type argument in position %s (expecting list): %s",
-                name, p + 1, Writer.write(list)))
+        throw WrongTypeException("$name: wrong type argument in position ${p+1} (expecting list): ${Writer.write(list)}")
     }
 }

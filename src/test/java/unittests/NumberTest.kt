@@ -496,7 +496,7 @@ class NumberTest : AbstractTest() {
         assertEquals(2.2292818155483952E+16, eval("(lcm 3.3 6)", env))
 
         val big = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
-        assertEquals(BigInteger(big), eval(String.format("(lcm %s 9)", big), env))
+        assertEquals(BigInteger(big), eval("(lcm $big 9)", env))
 
         assertEquals(BigInteger("9066296685449845496062520942090242184133343279738102243137866423949"),
                 eval("(lcm (expt 17 34) (expt 21 19))", env))
@@ -594,45 +594,44 @@ class NumberTest : AbstractTest() {
                 "84132513")
 
         assertEquals(big1, eval("(expt 33 333)", env))
-        assertEquals(true, eval(String.format("(number? %s)", big0), env))
-        assertEquals(true, eval(String.format("(complex? %s)", big0), env))
+        assertEquals(true, eval("(number? $big0)", env))
+        assertEquals(true, eval("(complex? $big0)", env))
 
-        assertEquals(BigInteger(big0), eval(String.format("(* (/ %s 10) 10)", big0), env))
-        assertEquals(BigInteger(big0).multiply(BigInteger("2")), eval(String.format("(+ %s %s)", big0, big0), env))
+        assertEquals(BigInteger(big0), eval("(* (/ $big0 10) 10)", env))
+        assertEquals(BigInteger(big0).multiply(BigInteger("2")), eval("(+ $big0 $big0)", env))
         assertEquals(BigInteger(big0).multiply(BigInteger("2")).subtract(BigInteger(big0)),
-                eval(String.format("(- (* 2 %s) %s)", big0, big0), env))
+                eval("(- (* 2 $big0) $big0)", env))
 
         assertEquals(BigDecimal("999999999999997000000000000002999999999999999"),
                 eval("(* 999999999999999 999999999999999 999999999999999)", env))
 
-        assertEquals(BigDecimal(big0), eval(String.format("(truncate (+ 0.2 %s))", big0), env))
-        assertEquals(BigDecimal(big0).negate(), eval(String.format("(truncate (+ 0.2 -%s))", big0), env))
-        assertEquals(BigDecimal(big0), eval(String.format("(floor (+ 0.2 %s))", big0), env))
-        assertEquals(BigDecimal(big0).add(BigDecimal.ONE), eval(String.format("(ceiling (+ 0.2 %s))", big0), env))
+        assertEquals(BigDecimal(big0), eval("(truncate (+ 0.2 $big0))", env))
+        assertEquals(BigDecimal(big0).negate(), eval("(truncate (+ 0.2 -$big0))", env))
+        assertEquals(BigDecimal(big0), eval("(floor (+ 0.2 $big0))", env))
+        assertEquals(BigDecimal(big0).add(BigDecimal.ONE), eval("(ceiling (+ 0.2 $big0))", env))
 
-        assertEquals(BigInteger(big0), eval(String.format("(abs -%s)", big0), env))
-        assertEquals(BigInteger(big0).add(BigInteger.ONE), eval(String.format("(max (+ 1 %s) %s)", big0, big0), env))
+        assertEquals(BigInteger(big0), eval("(abs -$big0)", env))
+        assertEquals(BigInteger(big0).add(BigInteger.ONE), eval("(max (+ 1 $big0) $big0)", env))
 
-        assertEquals(BigInteger(big0), eval(String.format("(min (+ 1 %s) %s)", big0, big0), env))
+        assertEquals(BigInteger(big0), eval("(min (+ 1 $big0) $big0)", env))
 
         val big2 = "941737268473075634481294063531333847658485002458168527101639838005582185517473483816983389228732066437165294377295109210176795859047876399460771530181828861843994801526320659067260600443063376955200810073997787724454002350759571876705644517946943898492214066331998886559185229835330687165577365519449395424366904222913306696961330084086377946063169138303897697242206192836209273444873251023411764271944704088313845446589768727760791185170266144604537045173629663045739300767985189493967771010336173962367396474652866334212802605674879313278209206179544726008444885447395757991883875945457869103573901612777316112247438629624081718143710269108788904389008167209091151002216893051746019091645742839251513268837094248809018521046734530253606053753445604156050903737280600427015788467630468023527367174845920094011539693975275654700093627716413"
-        assertEquals(BigInteger.valueOf(1L), eval(String.format("(modulo %s 4)", big2), env))
-        assertEquals(BigInteger.valueOf(-2L), eval(String.format("(modulo %s -5)", big2), env))
-
-        assertEquals(BigInteger.valueOf(1L), eval(String.format("(remainder %s 4)", big2), env))
-        assertEquals(BigInteger.valueOf(3L), eval(String.format("(remainder %s -5)", big2), env))
+        assertEquals(BigInteger.valueOf(1L),  eval("(modulo $big2 4)", env))
+        assertEquals(BigInteger.valueOf(-2L), eval("(modulo $big2 -5)", env))
+        assertEquals(BigInteger.valueOf(1L),  eval("(remainder $big2 4)", env))
+        assertEquals(BigInteger.valueOf(3L),  eval("(remainder $big2 -5)", env))
 
         val quotientResult1 = "470868634236537817240647031765666923829242501229084263550819919002791092758736741908491694614366033218582647188647554605088397929523938199730385765090914430921997400763160329533630300221531688477600405036998893862227001175379785938352822258973471949246107033165999443279592614917665343582788682759724697712183452111456653348480665042043188973031584569151948848621103096418104636722436625511705882135972352044156922723294884363880395592585133072302268522586814831522869650383992594746983885505168086981183698237326433167106401302837439656639104603089772363004222442723697878995941937972728934551786950806388658056123719314812040859071855134554394452194504083604545575501108446525873009545822871419625756634418547124404509260523367265126803026876722802078025451868640300213507894233815234011763683587422960047005769846987637827350046813858206"
-        assertEquals(BigInteger(quotientResult1), eval(String.format("(quotient %s 2)", big2), env))
-        assertEquals(BigInteger.valueOf(2L), eval(String.format("(quotient %s (quotient %s 2))", big2, big2), env))
+        assertEquals(BigInteger(quotientResult1), eval("(quotient $big2 2)", env))
+        assertEquals(BigInteger.valueOf(2L), eval("(quotient $big2 (quotient $big2 2))", env))
 
-        assertEquals(true, eval(String.format("(eqv? %s %s)", big2, big2), env))
-        assertEquals(true, eval(String.format("(<= %s %s)", big2, big2), env))
-        assertEquals(false, eval(String.format("(< %s %s)", big2, big2), env))
-        assertEquals(true, eval(String.format("(> (+ 1 %s) %s)", big2, big2), env))
-        assertEquals(true, eval(String.format("(< (+ 1 2) %s)", big2), env))
+        assertEquals(true,  eval("(eqv? $big2 $big2)", env))
+        assertEquals(true,  eval("(<=   $big2 $big2)", env))
+        assertEquals(false, eval("(<    $big2 $big2)", env))
+        assertEquals(true,  eval("(> (+ 1 $big2) $big2)", env))
+        assertEquals(true,  eval("(< (+ 1 2) $big2)", env))
 
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval(String.format("(sqrt %s)", big2), env))
+        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(sqrt $big2)", env))
         assertEquals(BigInteger("-99999999999999999999999999999999999999999999999999"),
                 eval("(- 99999999999999999999999999999999999999999999999999)", env))
         assertEquals(1e247, eval("(+ 1/23 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.1)", env))
@@ -753,7 +752,7 @@ class NumberTest : AbstractTest() {
         numbers.put(15, "eeeeeeeeeeeeeeeee")
         numbers.put(16, "ffffffffffffffff")
         for ((key, value) in numbers) {
-            assertNotEquals(false, eval(String.format("(string->number \"%s\" %s)", value, key), env))
+            assertNotEquals(false, eval("(string->number \"$value\" $key)", env))
         }
     }
 

@@ -38,8 +38,7 @@ enum class Define : ISpecialForm {
             val args = Cons.list((expression[1] as List<Any>).subList(1, (expression[1] as List<Any>).size) as Collection<Any>)
             for (arg in args) {
                 if (arg !is Symbol && !Cons.isPair(arg)) {
-                    throw IllegalSyntaxException
-                            .of(toString(), expression, String.format("not an identifier: %s", Writer.write(arg)))
+                    throw IllegalSyntaxException.of(toString(), expression, "not an identifier: ${Writer.write(arg)}")
                 }
             }
             args.isList = Cons.isList(expression[1])
@@ -51,8 +50,8 @@ enum class Define : ISpecialForm {
             // TODO (define ((a n) c) n)
             id = id[0]
             if (id !is Symbol) {
-                throw IllegalSyntaxException
-                        .of(toString(), expression, String.format("not an identifier for procedure name: %s", Writer.write(id)))
+                throw IllegalSyntaxException.of(toString(), expression,
+                                                "not an identifier for procedure name: ${Writer.write(id)}")
             }
             val lambda = Lambda.LAMBDA.eval(l, env, evaluator)
             lambda.name = id.toString()

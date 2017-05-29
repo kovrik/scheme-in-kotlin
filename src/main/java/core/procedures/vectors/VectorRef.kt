@@ -14,7 +14,7 @@ class VectorRef : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(MutableVec
         val vec = arg1 as MutableVector?
         val pos = (arg2 as Number).toLong()
         if (pos >= vec!!.size) {
-            throw IndexOutOfBoundsException(String.format("%s: value out of range: %s", name, pos))
+            throw IndexOutOfBoundsException("$name: value out of range: $pos")
         }
         return vec[pos.toInt()]
     }

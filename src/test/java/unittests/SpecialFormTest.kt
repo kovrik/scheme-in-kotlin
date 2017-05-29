@@ -42,12 +42,12 @@ class SpecialFormTest : AbstractTest() {
 
         val fs = longArrayOf(1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 9, 10, 11, 11, 12, 13)
         for (i in fs.indices) {
-            assertEquals(fs[i], eval(String.format("(F %s)", i), env))
+            assertEquals(fs[i], eval("(F $i)", env))
         }
 
         val ms = longArrayOf(0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8, 9, 9, 10, 11, 11, 12, 12)
         for (i in ms.indices) {
-            assertEquals(ms[i], eval(String.format("(M %s)", i), env))
+            assertEquals(ms[i], eval("(M $i)", env))
         }
 
         val letrec = "(letrec ((F (lambda (n) (if (= n 0) 1 (- n (M (F (- n 1)))))))" +

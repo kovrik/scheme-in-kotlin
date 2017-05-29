@@ -31,7 +31,7 @@ class MapProc : AFn(FnArgsBuilder().min(2).mandatory(arrayOf<Class<*>>(IFn::clas
             iterators.put(i, Utils.toSequence(args[i]))
             /* Check size */
             if (count(args[i]) != size) {
-                throw IllegalArgumentException(String.format("%s: all collections must be of the same size", name))
+                throw IllegalArgumentException("$name: all collections must be of the same size")
             }
         }
 

@@ -16,8 +16,7 @@ enum class When : ISpecialForm {
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = expression.size
         if (size < 3) {
-            throw IllegalSyntaxException
-                    .of(toString(), expression, String.format("has %s parts after keyword", size - 1))
+            throw IllegalSyntaxException.of(toString(), expression, "has ${size - 1} parts after keyword")
         }
         val test = expression[1]
         if (Utils.toBoolean(evaluator.eval(test, env))) {
