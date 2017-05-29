@@ -14,16 +14,14 @@ class BigRatio : Number, Comparable<BigRatio> {
         val ZERO = BigRatio(BigInteger.ZERO)
         val ONE = BigRatio(BigInteger.ONE)
 
-        private val CONSTANTS = HashMap<String, BigInteger>()
-
-        init {
-            CONSTANTS.put("-2", BigInteger("-2").negate())
-            CONSTANTS.put("-1", BigInteger.ONE.negate())
-            CONSTANTS.put("0",  BigInteger.ZERO)
-            CONSTANTS.put("1",  BigInteger.ONE)
-            CONSTANTS.put("2",  BigInteger("2"))
-            CONSTANTS.put("10", BigInteger.TEN)
-        }
+        private val CONSTANTS = hashMapOf(
+                "-2" to BigInteger("-2").negate(),
+                "-1" to BigInteger.ONE.negate(),
+                "0"  to BigInteger.ZERO,
+                "1"  to BigInteger.ONE,
+                "2"  to BigInteger("2"),
+                "10" to BigInteger.TEN
+        )
 
         fun valueOf(numerator: String, denominator: String): BigRatio {
             return valueOf(parseBigInteger(numerator), parseBigInteger(denominator))

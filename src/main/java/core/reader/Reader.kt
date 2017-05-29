@@ -39,33 +39,29 @@ open class Reader : IReader {
         private const val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
 
         /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
-        private val ESCAPED = HashMap<Char, Char>()
+        private val ESCAPED = hashMapOf(
+                't'  to '\t',
+                'b'  to '\b',
+                'n'  to '\n',
+                'r'  to '\r',
+                '"'  to '\"',
+                '\\' to '\\'
+        )
 
-        init {
-            ESCAPED.put('t', '\t')
-            ESCAPED.put('b', '\b')
-            ESCAPED.put('n', '\n')
-            ESCAPED.put('r', '\r')
-            ESCAPED.put('"', '\"')
-            ESCAPED.put('\\', '\\')
-        }
-
-        val NAMED_CHARS: MutableMap<String, Char> = HashMap()
-
-        init {
-            NAMED_CHARS.put("newline",   '\n')
-            NAMED_CHARS.put("space",     ' ')
-            NAMED_CHARS.put("tab",       '\t')
-            NAMED_CHARS.put("return",    '\r')
-            NAMED_CHARS.put("backspace", '\b')
-            NAMED_CHARS.put("alarm",     '\u0007')
-            NAMED_CHARS.put("vtab",      '\u000B')
-            NAMED_CHARS.put("esc",       '\u001B')
-            NAMED_CHARS.put("escape",    '\u001B')
-            NAMED_CHARS.put("delete",    '\u007F')
-            NAMED_CHARS.put("null",       Character.MIN_VALUE)
-            NAMED_CHARS.put("nul",        Character.MIN_VALUE)
-        }
+        val NAMED_CHARS: Map<String, Char> = hashMapOf(
+                "newline"   to '\n',
+                "space"     to ' ',
+                "tab"       to '\t',
+                "return"    to '\r',
+                "backspace" to '\b',
+                "alarm"     to '\u0007',
+                "vtab"      to '\u000B',
+                "esc"       to '\u001B',
+                "escape"    to '\u001B',
+                "delete"    to '\u007F',
+                "null"      to Character.MIN_VALUE,
+                "nul"       to Character.MIN_VALUE
+        )
 
         private fun isValid(i: Int): Boolean {
             return i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt()

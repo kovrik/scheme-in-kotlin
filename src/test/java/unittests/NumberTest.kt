@@ -10,7 +10,6 @@ import org.junit.Test
 
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.HashMap
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -735,22 +734,21 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testThresholds() {
-        val numbers = HashMap<Int, String>()
-        numbers.put(2, "1111111111111111111111111111111111111111111111111111111111111111")
-        numbers.put(3, "2222222222222222222222222222222222222222")
-        numbers.put(4, "33333333333333333333333333333333")
-        numbers.put(5, "4444444444444444444444444444")
-        numbers.put(6, "5555555555555555555555555")
-        numbers.put(7, "66666666666666666666666")
-        numbers.put(8, "7777777777777777777777")
-        numbers.put(9, "88888888888888888888")
-        numbers.put(10, "9999999999999999999")
-        numbers.put(11, "aaaaaaaaaaaaaaaaaaa")
-        numbers.put(12, "bbbbbbbbbbbbbbbbbb")
-        numbers.put(13, "cccccccccccccccccc")
-        numbers.put(14, "ddddddddddddddddd")
-        numbers.put(15, "eeeeeeeeeeeeeeeee")
-        numbers.put(16, "ffffffffffffffff")
+        val numbers = hashMapOf(2  to "1111111111111111111111111111111111111111111111111111111111111111",
+                                3  to "2222222222222222222222222222222222222222",
+                                4  to "33333333333333333333333333333333",
+                                5  to "4444444444444444444444444444",
+                                6  to "5555555555555555555555555",
+                                7  to "66666666666666666666666",
+                                8  to "7777777777777777777777",
+                                9  to "88888888888888888888",
+                                10 to "9999999999999999999",
+                                11 to "aaaaaaaaaaaaaaaaaaa",
+                                12 to "bbbbbbbbbbbbbbbbbb",
+                                13 to "cccccccccccccccccc",
+                                14 to "ddddddddddddddddd",
+                                15 to "eeeeeeeeeeeeeeeee",
+                                16 to "ffffffffffffffff")
         for ((key, value) in numbers) {
             assertNotEquals(false, eval("(string->number \"$value\" $key)", env))
         }

@@ -168,7 +168,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * atan(b/y),      if x > 0
      * atan(b/y) + pi, if x < 0 and y >= 0
      * atan(b/y) - pi, if x < 0 and y <  0
-     * pi/2,          if x = 0 and y >  0
+     * pi/2,           if x = 0 and y >  0
      * -pi/2,          if x = 0 and y <  0
      * undefined,      if x = 0 and y =  0
      */
@@ -176,12 +176,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val re = re
         val im = im
         if (re.signum() == 0) {
-            if (im.signum() > 0) {
-                return Math.PI / 2
-            } else if (im.signum() < 0) {
-                return -Math.PI / 2
-            } else {
-                throw ArithmeticException("Undefined for 0+0i")
+            when {
+                im.signum() > 0 -> return  Math.PI / 2
+                im.signum() < 0 -> return -Math.PI / 2
+                else -> throw ArithmeticException("Undefined for 0+0i")
             }
         } else if (re.signum() < 0) {
             val atan = Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
