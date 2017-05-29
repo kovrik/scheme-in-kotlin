@@ -46,7 +46,6 @@ class Procedure(override var name: String,
     private fun bindArgs(vararg values: Any?): Environment {
         /* Evaluate mandatory params and put values into new local environment */
         val env = Environment(values.size, this.localEnvironment)
-        val args = args
         for (i in 0..minArgs - 1) {
             env.put(args[i], values[i])
         }
