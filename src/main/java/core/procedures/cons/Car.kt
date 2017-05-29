@@ -1,11 +1,11 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 
-class Car : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Type.Pair::class.java)).build()) {
+class Car : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Pair::class.java))) {
 
     companion object {
 

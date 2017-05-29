@@ -1,9 +1,9 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class Difference : AFn(FnArgsBuilder().min(1).mandatory(arrayOf<Class<*>>(Set::class.java)).rest(Set::class.java).build()) {
+class Difference : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Set::class.java), rest = Set::class.java)) {
 
     override val isPure = true
     override val name = "difference"

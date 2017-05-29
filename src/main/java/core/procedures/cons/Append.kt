@@ -1,14 +1,13 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 
-class Append : AFn(FnArgsBuilder().rest(Type.ProperList::class.java).last(Any::class.java).build()) {
+class Append : AFn(FnArgs(rest = Type.ProperList::class.java, last = Any::class.java)) {
 
     companion object {
-
         fun append(first: Any?, second: Any?): Any? {
             if (Cons.isNull(first)) {
                 return second

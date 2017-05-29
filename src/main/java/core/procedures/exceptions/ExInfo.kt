@@ -2,9 +2,9 @@ package core.procedures.exceptions
 
 import core.exceptions.ExInfoException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class ExInfo : AFn(FnArgsBuilder().min(2).max(3).mandatory(arrayOf(String::class.java, Map::class.java)).rest(Throwable::class.java).build()) {
+class ExInfo : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(String::class.java, Map::class.java), rest = Throwable::class.java)) {
 
     override val isPure = true
     override val name = "ex-info"

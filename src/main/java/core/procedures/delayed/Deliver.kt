@@ -1,12 +1,12 @@
 package core.procedures.delayed
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Promise
 
 import java.util.concurrent.CompletableFuture
 
-class Deliver : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Promise::class.java, Any::class.java)).build()) {
+class Deliver : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Promise::class.java, Any::class.java))) {
 
     override val name = "deliver"
 

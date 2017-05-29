@@ -2,14 +2,14 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.MutableVector
 import core.scm.Vector
 
 import java.util.*
 
-class Conj : AFn(FnArgsBuilder().min(1).build()) {
+class Conj : AFn(FnArgs(min = 1)) {
 
     override val name = "conj"
 

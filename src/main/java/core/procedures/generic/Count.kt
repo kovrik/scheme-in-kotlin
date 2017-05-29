@@ -2,9 +2,9 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-open class Count : AFn(FnArgsBuilder().min(1).max(1).build()) {
+open class Count : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "count"

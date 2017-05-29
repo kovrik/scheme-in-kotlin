@@ -23,11 +23,11 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     }
 
     protected constructor(fnArgs: FnArgs) {
-        this.minArgs = fnArgs.min()
-        this.maxArgs = fnArgs.max()
-        this.mandatoryArgsTypes = fnArgs.mandatory()
-        this.restArgsType = fnArgs.rest()
-        this.lastArgType = fnArgs.last()
+        this.minArgs = fnArgs.min
+        this.maxArgs = fnArgs.max
+        this.mandatoryArgsTypes = fnArgs.mandatory
+        this.restArgsType = fnArgs.rest
+        this.lastArgType = fnArgs.last
     }
 
     protected fun minArgs(): Int {

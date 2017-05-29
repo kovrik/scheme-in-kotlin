@@ -1,5 +1,6 @@
 package core.procedures
 
+@Deprecated(message = "No longer required, use FnArgs directly", replaceWith = ReplaceWith("FnArgs"))
 class FnArgsBuilder {
 
     private var min = 0

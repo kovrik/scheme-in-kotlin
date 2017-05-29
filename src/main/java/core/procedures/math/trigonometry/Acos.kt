@@ -1,15 +1,16 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
+import java.lang.Double
 
 import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Number::class.java)).build()) {
+class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     override val isPure = true
     override val name = "acos"
@@ -23,7 +24,7 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
             is BigRatio   -> return acos(arg.toBigDecimal())
             else -> {
                 val acos = Math.acos((arg as Number).toDouble())
-                if (java.lang.Double.isNaN(acos)) {
+                if (Double.isNaN(acos)) {
                     return acos(BigComplex(arg))
                 }
                 return acos
@@ -33,11 +34,11 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
 
     private fun acos(bd: BigDecimal): Number {
         val v = bd.toDouble()
-        if (java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(v) || Double.isNaN(v)) {
+            return Double.NaN
         } else {
             val acos = Math.acos(v)
-            if (java.lang.Double.isNaN(acos)) {
+            if (Double.isNaN(acos)) {
                 return acos(BigComplex(bd))
             }
             return acos
@@ -46,11 +47,11 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
 
     private fun acos(bi: BigInteger): Number {
         val v = bi.toDouble()
-        if (java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(v) || Double.isNaN(v)) {
+            return Double.NaN
         } else {
             val acos = Math.acos(v)
-            if (java.lang.Double.isNaN(acos)) {
+            if (Double.isNaN(acos)) {
                 return acos(BigComplex(bi))
             }
             return acos
@@ -72,12 +73,12 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
             signum = -i.signum()
         }
         val a = r.toDouble()
-        if (java.lang.Double.isInfinite(a) || java.lang.Double.isNaN(a)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(a) || Double.isNaN(a)) {
+            return Double.NaN
         }
         val b = i.toDouble()
-        if (java.lang.Double.isInfinite(b) || java.lang.Double.isNaN(b)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(b) || Double.isNaN(b)) {
+            return Double.NaN
         }
 
         val b2 = b * b
@@ -87,13 +88,13 @@ class Acos : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Numbe
         val B = (L + R) / 2
 
         val re = Math.acos(A)
-        if (java.lang.Double.isInfinite(re) || java.lang.Double.isNaN(re)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(re) || Double.isNaN(re)) {
+            return Double.NaN
         }
 
         val im = Math.log(B + Math.sqrt(B * B - 1))
-        if (java.lang.Double.isInfinite(im) || java.lang.Double.isNaN(im)) {
-            return java.lang.Double.NaN
+        if (Double.isInfinite(im) || Double.isNaN(im)) {
+            return Double.NaN
         }
         return BigComplex(re, signum * im)
     }

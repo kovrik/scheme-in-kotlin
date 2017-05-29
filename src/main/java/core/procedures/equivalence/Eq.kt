@@ -1,11 +1,11 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Symbol
 
-class Eq : AFn(FnArgsBuilder().min(2).build()) {
+class Eq : AFn(FnArgs(min = 2)) {
 
     override val isPure = true
     override val name = "eq?"

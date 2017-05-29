@@ -1,7 +1,7 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.procedures.IFn
 import core.scm.Cons
 import core.scm.Symbol
@@ -10,7 +10,7 @@ import core.scm.specialforms.Quote
 import core.utils.Utils
 import java.util.*
 
-class Apply : AFn(FnArgsBuilder().min(2).mandatory(arrayOf(IFn::class.java, Any::class.java)).build()) {
+class Apply : AFn(FnArgs(min = 2, mandatory = arrayOf(IFn::class.java, Any::class.java))) {
 
     override val name = "apply"
 

@@ -1,11 +1,11 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Symbol
 
-class Eqv : AFn(FnArgsBuilder().min(2).build()) {
+class Eqv : AFn(FnArgs(min = 2)) {
 
     companion object {
         fun eqv(first: Any?, second: Any?): Boolean {

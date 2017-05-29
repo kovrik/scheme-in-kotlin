@@ -1,13 +1,12 @@
 package core.procedures.characters
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.function.BiPredicate
 
-class CharComparison private constructor(override val name: String, private val predicate: BiPredicate<Char?, Char?>) : AFn(FnArgsBuilder().min(2)
-        .mandatory(arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType))
-        .rest(Char::class.javaObjectType).build()) {
+class CharComparison private constructor(override val name: String, private val predicate: BiPredicate<Char?, Char?>) :
+        AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType), rest = Char::class.javaObjectType)) {
 
     companion object {
         val CHAR_EQ          = CharComparison("char=?",     BiPredicate<Char?, Char?>{ arg1, arg2 -> arg1!!.compareTo(arg2!!) == 0 })

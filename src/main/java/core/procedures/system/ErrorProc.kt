@@ -1,10 +1,10 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Error
 
-class ErrorProc : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class ErrorProc : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "error"
 

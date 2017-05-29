@@ -1,10 +1,10 @@
 package core.procedures.bit
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Type
 
-class BitAnd : AFn(FnArgsBuilder().min(2).rest(Type.BitOp::class.java).build()) {
+class BitAnd : AFn(FnArgs(min = 2, rest = Type.BitOp::class.java)) {
 
     override val isPure = true
     override val name = "bit-and"

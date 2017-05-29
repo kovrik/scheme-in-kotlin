@@ -1,10 +1,10 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Thunk
 
-class Eval : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Eval : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "eval"
 

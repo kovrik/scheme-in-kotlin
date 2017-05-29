@@ -1,10 +1,10 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Cons
 
-class ConsProc : AFn(FnArgsBuilder().min(2).max(2).build()) {
+class ConsProc : AFn(FnArgs(min = 2, max = 2)) {
 
     companion object {
         fun cons(car: Any?, cdr: Any?): Cons<*> {

@@ -2,9 +2,9 @@ package core.procedures.interop
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class CharType : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class CharType : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "char"

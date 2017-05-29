@@ -1,9 +1,9 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
-class Cast : AFn(FnArgsBuilder().min(2).max(2).mandatory(arrayOf(Class::class.java, Any::class.java)).build()) {
+class Cast : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Class::class.java, Any::class.java))) {
 
     override val isPure = true
     override val name = "cast"

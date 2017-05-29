@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Division : AFn(FnArgsBuilder().min(1).rest(Number::class.java).build()) {
+class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
     companion object {
         /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */

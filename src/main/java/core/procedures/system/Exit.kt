@@ -1,10 +1,10 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.Void
 
-class Exit : AFn(FnArgsBuilder().max(1).rest(Long::class.java).build()) {
+class Exit : AFn(FnArgs(max = 1, rest = Long::class.java)) {
 
     override val name = "exit"
 

@@ -2,13 +2,13 @@ package core.procedures.io
 
 import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.OutputPort
 import core.scm.Void
 
 import java.io.IOException
 
-class CloseOutputPort : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(OutputPort::class.java)).build()) {
+class CloseOutputPort : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(OutputPort::class.java))) {
 
     override val name = "close-output-port"
 

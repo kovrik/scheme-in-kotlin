@@ -2,10 +2,10 @@ package core.procedures.delayed
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 import core.scm.IDeref
 
-class Deref : AFn(FnArgsBuilder().min(1).max(1).build()) {
+class Deref : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "deref"
 

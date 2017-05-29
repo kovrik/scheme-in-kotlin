@@ -1,11 +1,12 @@
 package core.procedures.characters
 
 import core.procedures.AFn
-import core.procedures.FnArgsBuilder
+import core.procedures.FnArgs
 
 import java.util.function.Function
 
-class CharProc private constructor(override val name: String, private val function: Function<Char?, Any>) : AFn(FnArgsBuilder().min(1).max(1).mandatory(arrayOf<Class<*>>(Char::class.javaObjectType)).build()) {
+class CharProc private constructor(override val name: String, private val function: Function<Char?, Any>) :
+        AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Char::class.javaObjectType))) {
 
     companion object {
         val CHAR_TO_INTEGER = CharProc("char->integer", Function<Char?, Any> { (it as Char).toLong() })
