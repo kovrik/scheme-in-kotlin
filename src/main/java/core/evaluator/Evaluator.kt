@@ -5,6 +5,7 @@ import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
+import core.procedures.FnArgs
 import core.procedures.continuations.CalledContinuation
 import core.scm.*
 import core.scm.Vector
@@ -36,6 +37,23 @@ class Evaluator {
     }
 
     private val reflector = Reflector()
+
+    inner class JavaMethodCall(val method: String) : AFn() {
+        override val name = method
+        override fun invoke(vararg args: Any?): Any? = reflector.evalJavaMethod(method, args as Array<Any?>)
+    }
+
+    // TODO Use custom HashMap class that extends AFn instead
+    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn(FnArgs(min = 1, max = 2)) {
+        /* Maps are functions of their keys */
+        override fun invoke(vararg args: Any?): Any? {
+            when (args.size) {
+                1    -> return map[args[0]]
+                2    -> return map.getOrDefault(args[0], args[1])
+                else -> throw ArityException("hashmap", 1, 2, args.size - 1)
+            }
+        }
+    }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
     fun macroexpandAndEvaluate(sexp: Any, env: Environment): Any? {
@@ -102,8 +120,7 @@ class Evaluator {
     /* Evaluate list */
     private fun MutableList<Any?>.eval(env: Environment): Any? {
         if (isEmpty()) throw IllegalSyntaxException.of("eval", this, "illegal empty application")
-        var javaMethod = false
-        var op: Any? = this[0]
+        var op = this[0]
         if (op is Symbol) {
             val sym = op
             /* Lookup symbol */
@@ -116,12 +133,13 @@ class Evaluator {
                     this[0] = op
                 }
             } else if (op === Environment.UNDEFINED) {
-                javaMethod = true
                 /* Special case: constructor call If Symbol ends with . */
                 if (sym.name[sym.name.length - 1] == '.') {
                     this[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
                     op = New.NEW
                     (this as Cons<Any>).push(op)
+                } else {
+                    op = JavaMethodCall(this[0].toString())
                 }
             }
         }
@@ -133,39 +151,21 @@ class Evaluator {
         if (op !is AFn) op = eval(op, env)
 
         /* Vectors and Map Entries are functions of index */
-        if (op is Map.Entry<Any?, Any?>) {
-            /* Convert Map Entry into a MapEntry */
-            op = MapEntry(op)
+        when (op) {
+            is Vector                -> op = eval(op, env)
+            is Map<*, *>             -> op = InvokableMap(op as Map<Any?, Any?>)
+            is Map.Entry<Any?, Any?> -> op = MapEntry(op)
         }
-        if (op is Vector) {
-            op = eval(op, env)
-        }
-        if (op is Map<*, *>) {
-            /* Maps are functions of their keys */
-            if (size > 3) throw ArityException("hashmap", 1, 2, size - 1)
-            val map = (op as Map<Any?, Any?>).eval(env)
-            /* Evaluate key */
-            val key = eval(this[1], env)
-            val defaultValue = if (size == 3) eval(this[2], env) else null
-            return map.getOrDefault(key, defaultValue)
-        }
-
         /* If result is not a function, then raise an error */
-        if (op !is AFn && !javaMethod) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
+        if (op !is AFn) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
         for (i in 1..size - 1) {
             args[i - 1] = eval(this[i], env)
         }
-
-        /* Call Java method */
-        if (javaMethod) {
-            val method = this[0].toString()
-            return reflector.evalJavaMethod(method, args)
-        }
         /* Call AFn via helper method */
-        return (op as AFn).invokeN(*args)
+        return op.invokeN(*args)
     }
 
     /* Evaluate hash map */
