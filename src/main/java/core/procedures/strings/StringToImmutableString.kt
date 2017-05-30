@@ -8,9 +8,9 @@ class StringToImmutableString : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf
     override val name = "string->immutable-string"
 
     override operator fun invoke(arg: Any?): Any? {
-        when (arg) {
-            is String -> return arg
-            else -> return arg!!.toString()
+        return when (arg) {
+            is String -> arg
+            else -> arg!!.toString()
         }
     }
 }

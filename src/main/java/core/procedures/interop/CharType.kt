@@ -11,9 +11,9 @@ class CharType : AFn(FnArgs(min = 1, max = 1)) {
 
     override operator fun invoke(arg: Any?): Char? {
         /* Have to box it */
-        when (arg) {
-            is Number -> return arg.toInt().toChar()
-            is Char   -> return arg
+        return when (arg) {
+            is Number -> arg.toInt().toChar()
+            is Char   -> arg
             else      -> throw WrongTypeException("char", "Character or Number", arg)
         }
     }

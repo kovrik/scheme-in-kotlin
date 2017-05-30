@@ -11,9 +11,9 @@ class Name : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "name"
 
     override operator fun invoke(arg: Any?): CharSequence? {
-        when (arg) {
-            is INamed -> return arg.name
-            is CharSequence -> return arg
+        return when (arg) {
+            is INamed -> arg.name
+            is CharSequence -> arg
             else -> throw WrongTypeException(name, "String or Symbol or Keyword", arg)
         }
     }

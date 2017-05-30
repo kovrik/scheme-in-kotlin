@@ -176,9 +176,9 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val re = re
         val im = im
         if (re.signum() == 0) {
-            when {
-                im.signum() > 0 -> return  Math.PI / 2
-                im.signum() < 0 -> return -Math.PI / 2
+            return when {
+                im.signum() > 0 ->  Math.PI / 2
+                im.signum() < 0 -> -Math.PI / 2
                 else -> throw ArithmeticException("Undefined for 0+0i")
             }
         } else if (re.signum() < 0) {

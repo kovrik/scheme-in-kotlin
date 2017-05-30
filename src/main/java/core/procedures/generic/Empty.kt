@@ -14,12 +14,12 @@ class Empty : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "empty"
 
     override operator fun invoke(arg: Any?): Any? {
-        when (arg) {
-            is List<*>   -> return Cons.list<Any>()
-            is Set<*>    -> return HashSet<Any>()
-            is Vector    -> return MutableVector()
-            is Map<*, *> -> return HashMap<Any, Any>()
-            else         -> return null
+        return when (arg) {
+            is List<*>   -> Cons.list<Any>()
+            is Set<*>    -> HashSet<Any>()
+            is Vector    -> MutableVector()
+            is Map<*, *> -> HashMap<Any, Any>()
+            else         -> null
         }
     }
 }

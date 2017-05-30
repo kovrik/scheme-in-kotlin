@@ -12,10 +12,10 @@ class Force : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "force"
 
     override operator fun invoke(arg: Any?): Any? {
-        when (arg) {
-            is Future, is Promise -> return arg
+        return when (arg) {
+            is Future, is Promise -> arg
             /* Force derefs delays */
-            is Delay -> return arg.deref()
+            is Delay -> arg.deref()
             else -> throw WrongTypeException(name, "Delay or Promise or Future", arg)
         }
     }

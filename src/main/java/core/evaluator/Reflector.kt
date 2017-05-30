@@ -106,9 +106,9 @@ class Reflector {
 
     fun _getClass(name: String): Class<*>? {
         try {
-            when {
-                name.indexOf('.') == -1 -> return Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang." + name))
-                else -> return Class.forName(name)
+            return when {
+                name.indexOf('.') == -1 -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang." + name))
+                else -> Class.forName(name)
             }
         } catch (e: ClassNotFoundException) {
             return null

@@ -1,9 +1,8 @@
 package unittests
 
-import org.junit.Test
-
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Test
 
 class RatioTest : AbstractTest() {
 
@@ -16,7 +15,7 @@ class RatioTest : AbstractTest() {
             eval("1/0", env)
             fail()
         } catch (e: ArithmeticException) {
-            assertEquals("/ by zero", e.message)
+            assertEquals("Division by zero", e.message)
         }
     }
 

@@ -21,15 +21,15 @@ class Abs : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Real
 
     companion object {
         fun abs(number: Number): Number {
-            when (number) {
-                is Long -> return Math.abs(number)
-                is Int -> return Math.abs(number)
-                is Double -> return Math.abs(number)
-                is Float -> return Math.abs(number)
-                is BigInteger -> return number.abs()
-                is BigDecimal -> return number.abs()
-                is BigRatio -> return number.abs()
-                else -> return Math.abs(number.toLong())
+            return when (number) {
+                is Long       -> Math.abs(number)
+                is Int        -> Math.abs(number)
+                is Double     -> Math.abs(number)
+                is Float      -> Math.abs(number)
+                is BigInteger -> number.abs()
+                is BigDecimal -> number.abs()
+                is BigRatio   -> number.abs()
+                else          -> Math.abs(number.toLong())
             }
         }
     }

@@ -15,13 +15,13 @@ class Ceiling : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.
 
     override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
-        when (arg) {
-            is Long, is Int, is Short, is Byte, is BigInteger -> return arg as Number?
-            is Double -> return Math.ceil((arg as Double?)!!)
-            is Float -> return Math.ceil((arg as Float?)!!.toDouble())
-            is BigDecimal -> return arg.setScale(0, BigDecimal.ROUND_UP)
-            is BigRatio -> return arg.ceiling()
-            else -> return Math.ceil((arg as Number).toDouble())
+        return when (arg) {
+            is Long, is Int, is Short, is Byte, is BigInteger -> arg as Number?
+            is Double -> Math.ceil((arg as Double?)!!)
+            is Float -> Math.ceil((arg as Float?)!!.toDouble())
+            is BigDecimal -> arg.setScale(0, BigDecimal.ROUND_UP)
+            is BigRatio -> arg.ceiling()
+            else -> Math.ceil((arg as Number).toDouble())
         }
     }
 }

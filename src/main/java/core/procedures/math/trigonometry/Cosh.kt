@@ -18,13 +18,13 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
     override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
         /* Special cases */
-        when {
-            Utils.isZero(arg) -> return 1L
-            arg is BigDecimal -> return cosh(arg)
-            arg is BigInteger -> return cosh(arg)
-            arg is BigComplex -> return cosh(arg)
-            arg is BigRatio   -> return cosh(arg.toBigDecimal())
-            else -> return Math.cosh((arg as Number).toDouble())
+        return when {
+            Utils.isZero(arg) -> 1L
+            arg is BigDecimal -> cosh(arg)
+            arg is BigInteger -> cosh(arg)
+            arg is BigComplex -> cosh(arg)
+            arg is BigRatio   -> cosh(arg.toBigDecimal())
+            else -> Math.cosh((arg as Number).toDouble())
         }
     }
 
@@ -32,17 +32,17 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
         internal fun cosh(bd: BigDecimal): Double {
             val v = bd.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.cosh(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.cosh(v)
             }
         }
 
         internal fun cosh(bi: BigInteger): Double {
             val v = bi.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.cosh(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.cosh(v)
             }
         }
 
@@ -52,10 +52,10 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             val y = c.im
             val re = Cosh.cosh(x) * Cos.cos(y)
             val im = Sinh.sinh(x) * Sin.sin(y)
-            when {
-                java.lang.Double.isInfinite(re) || java.lang.Double.isNaN(re) -> return java.lang.Double.NaN
-                java.lang.Double.isInfinite(im) || java.lang.Double.isNaN(im) -> return java.lang.Double.NaN
-                else -> return BigComplex(re, im)
+            return when {
+                java.lang.Double.isInfinite(re) || java.lang.Double.isNaN(re) -> java.lang.Double.NaN
+                java.lang.Double.isInfinite(im) || java.lang.Double.isNaN(im) -> java.lang.Double.NaN
+                else -> BigComplex(re, im)
             }
         }
     }

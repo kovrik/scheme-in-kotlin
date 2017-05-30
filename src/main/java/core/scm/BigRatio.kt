@@ -28,12 +28,12 @@ class BigRatio : Number, Comparable<BigRatio> {
         }
 
         fun valueOf(numerator: BigInteger, denominator: BigInteger): BigRatio {
-            when {
-                BigInteger.ZERO == denominator -> throw ArithmeticException("/ by zero")
-                BigInteger.ZERO == numerator -> return ZERO
-                BigInteger.ONE  == numerator && BigInteger.ONE == denominator -> return ONE
-                BigInteger.ONE  == denominator -> return BigRatio(numerator)
-                else -> return BigRatio(numerator, denominator)
+            return when {
+                BigInteger.ZERO == denominator -> throw ArithmeticException("Division by zero")
+                BigInteger.ZERO == numerator -> ZERO
+                BigInteger.ONE  == numerator && BigInteger.ONE == denominator -> ONE
+                BigInteger.ONE  == denominator -> BigRatio(numerator)
+                else -> BigRatio(numerator, denominator)
             }
         }
 
@@ -52,7 +52,7 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     private constructor(numerator: BigInteger, denominator: BigInteger) {
         if (BigInteger.ZERO == denominator) {
-            throw ArithmeticException("/ by zero")
+            throw ArithmeticException("Division by zero")
         }
         // reduce fraction
         val g = numerator.gcd(denominator)
@@ -91,8 +91,7 @@ class BigRatio : Number, Comparable<BigRatio> {
     }
 
     fun toBigDecimalInexact(): BigDecimal {
-        val bigDecimal = Division
-                .safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
+        val bigDecimal = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
         val scale = Math.max(1, bigDecimal.scale())
         return bigDecimal.setScale(scale, Utils.ROUNDING_MODE)
     }

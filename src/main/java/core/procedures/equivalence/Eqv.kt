@@ -9,13 +9,13 @@ class Eqv : AFn(FnArgs(min = 2)) {
 
     companion object {
         fun eqv(first: Any?, second: Any?): Boolean {
-            when {
-                first is Char && second is Char -> return first == second
-                first is Number && second is Number -> return first == second
-                first is Cons<*> && second is Cons<*> -> return first === second
-                first is List<*> && second is List<*> -> return first == second
-                first is Symbol && second is Symbol -> return first == second
-                else -> return first === second
+            return when {
+                first is Char && second is Char       -> first == second
+                first is Number && second is Number   -> first == second
+                first is Cons<*> && second is Cons<*> -> first === second
+                first is List<*> && second is List<*> -> first == second
+                first is Symbol && second is Symbol   -> first == second
+                else -> first === second
             }
         }
     }

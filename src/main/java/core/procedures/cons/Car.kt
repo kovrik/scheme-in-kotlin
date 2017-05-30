@@ -10,9 +10,9 @@ class Car : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Pair
     companion object {
 
         fun car(o: Any?): Any? {
-            when (o) {
-                is Cons<*> -> return o.car()
-                else -> return (o as List<*>)[0]
+            return when (o) {
+                is Cons<*> -> o.car()
+                else -> (o as List<*>)[0]
             }
         }
     }

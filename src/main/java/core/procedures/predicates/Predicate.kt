@@ -84,11 +84,11 @@ class Predicate private constructor(override val name: String, private val predi
         }
 
         private fun isEmpty(o: Any?): Boolean {
-            when (o) {
-                is Collection<*> -> return o.isEmpty()
-                is CharSequence  -> return o.length == 0
-                is Map<*, *>     -> return o.size == 0
-                else             -> return false
+            return when (o) {
+                is Collection<*> -> o.isEmpty()
+                is CharSequence  -> o.length == 0
+                is Map<*, *>     -> o.size == 0
+                else             -> false
             }
         }
 

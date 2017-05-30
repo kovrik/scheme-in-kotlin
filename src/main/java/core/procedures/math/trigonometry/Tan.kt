@@ -18,29 +18,29 @@ class Tan : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     override operator fun invoke(arg: Any?): Number {
         if (arg == null) throw NullPointerException()
         /* Special cases */
-        when {
-            Utils.isZero(arg) -> return 0L
-            arg is BigDecimal -> return tan(arg)
-            arg is BigInteger -> return tan(arg)
-            arg is BigComplex -> return tan(arg)
-            arg is BigRatio   -> return tan(arg.toBigDecimal())
-            else -> return Math.tan((arg as Number).toDouble())
+        return when {
+            Utils.isZero(arg) -> 0L
+            arg is BigDecimal -> tan(arg)
+            arg is BigInteger -> tan(arg)
+            arg is BigComplex -> tan(arg)
+            arg is BigRatio   -> tan(arg.toBigDecimal())
+            else -> Math.tan((arg as Number).toDouble())
         }
     }
 
     private fun tan(bd: BigDecimal): Double {
         val v = bd.toDouble()
-        when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-            else -> return Math.tan(v)
+        return when {
+            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            else -> Math.tan(v)
         }
     }
 
     private fun tan(bi: BigInteger): Double {
         val v = bi.toDouble()
-        when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-            else -> return Math.tan(v)
+        return when {
+            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            else -> Math.tan(v)
         }
     }
 

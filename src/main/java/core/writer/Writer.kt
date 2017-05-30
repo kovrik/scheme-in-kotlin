@@ -13,73 +13,50 @@ object Writer {
         Reader.NAMED_CHARS.forEach { key, value -> CODEPOINTS.put(value, key) }
     }
 
-    private val UNESCAPED = hashMapOf(
-            '\t' to 't',
-            '\b' to 'b',
-            '\r' to 'r',
-            '\n' to 'n',
-            '\"' to '"',
-            '\\' to '\\'
-    )
+    private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
 
     @JvmStatic fun write(o: Any?): String {
-        when (o) {
-            null               -> return "nil"
-            is Boolean         -> return if (o) "#t" else "#f"
-            is Symbol          -> return o.write()
-            is Class<*>        -> return o.write()
-            is List<*>         -> return o.write()
-            is Number          -> return o.write()
-            is CharSequence    -> return o.write()
-            is Char            -> return o.write()
-            is Pattern         -> return o.write()
-            is Throwable       -> return o.write()
-            is Map<*, *>       -> return o.write()
-            is Map.Entry<*, *> -> return o.write()
-            is Set<*>          -> return o.write()
-            else               -> return o.toString()
+        return when (o) {
+            null               -> "nil"
+            is Boolean         -> if (o) "#t" else "#f"
+            is Symbol          -> o.write()
+            is Class<*>        -> o.write()
+            is List<*>         -> o.write()
+            is Number          -> o.write()
+            is CharSequence    -> o.write()
+            is Char            -> o.write()
+            is Pattern         -> o.write()
+            is Throwable       -> o.write()
+            is Map<*, *>       -> o.write()
+            is Map.Entry<*, *> -> o.write()
+            is Set<*>          -> o.write()
+            else               -> o.toString()
         }
     }
 
-    fun Class<*>.write(): String {
-        return "#<class:$name>"
-    }
+    private fun Class<*>.write() = "#<class:$name>"
 
-    private fun Pattern.write(): String {
-        return "#\"${this}\""
-    }
+    private fun Pattern.write() = "#\"${this}\""
 
-    private fun List<*>.write(): String {
-        return Cons.toString(this)
-    }
+    private fun List<*>.write() = Cons.toString(this)
 
-    private fun Symbol.write(): String {
-        return when {
-            isEscape -> '|' + toString() + '|'
-            else -> toString()
-        }
+    private fun Map.Entry<*, *>.write() = "[${write(key)} ${write(value)}]"
+
+    private fun Symbol.write() = when {
+        isEscape -> '|' + toString() + '|'
+        else -> toString()
     }
 
     private fun Number.write(): String {
-        if (this is Double) {
-            if (java.lang.Double.isNaN(toDouble())) {
-                return "+nan.0"
-            } else if (this == java.lang.Double.POSITIVE_INFINITY) {
-                return "+inf.0"
-            } else if (this == java.lang.Double.NEGATIVE_INFINITY) {
-                return "-inf.0"
-            }
+        return when (this) {
+            Double.NaN               -> "+nan.0"
+            Double.POSITIVE_INFINITY -> "+inf.0"
+            Double.NEGATIVE_INFINITY -> "-inf.0"
+            Float.NaN                -> "+nan.0"
+            Float.POSITIVE_INFINITY  -> "+inf.0"
+            Float.NEGATIVE_INFINITY  -> "-inf.0"
+            else                     -> toString()
         }
-        if (this is Float) {
-            if (java.lang.Float.isNaN(toFloat())) {
-                return "+nan.0"
-            } else if (this == java.lang.Float.POSITIVE_INFINITY) {
-                return "+inf.0"
-            } else if (this == java.lang.Float.NEGATIVE_INFINITY) {
-                return "-inf.0"
-            }
-        }
-        return toString()
     }
 
     private fun CharSequence.write(): String {
@@ -105,14 +82,8 @@ object Writer {
         return if (codepoint == null) "#\\" + this!! else "#\\" + codepoint
     }
 
-    private fun Map.Entry<*, *>.write(): String {
-        return "[${write(key)} ${write(value)}]"
-    }
-
     private fun Map<*, *>.write(): String {
-        if (isEmpty()) {
-            return "{}"
-        }
+        if (isEmpty()) return "{}"
         val sb = StringBuilder().append('{')
         var first = true
         for ((key, value) in this) {
@@ -120,17 +91,15 @@ object Writer {
                 first -> first = false
                 else -> sb.append(", ")
             }
-            sb.append(if (key === this@Writer) "(this hashmap)" else write(key))
+            sb.append(if (key === this) "(this hashmap)" else write(key))
             sb.append(' ')
-            sb.append(if (value === this@Writer) "(this hashmap)" else write(value))
+            sb.append(if (value === this) "(this hashmap)" else write(value))
         }
         return sb.append('}').toString()
     }
 
     private fun Set<*>.write(): String {
-        if (isEmpty()) {
-            return "#{}"
-        }
+        if (isEmpty()) return "#{}"
         val sb = StringBuilder().append("#{")
         var first = true
         for (e in this) {
@@ -138,15 +107,15 @@ object Writer {
                 first -> first = false
                 else -> sb.append(' ')
             }
-            sb.append(if (e === this@Writer) "(this set)" else write(e))
+            sb.append(if (e === this) "(this set)" else write(e))
         }
         return sb.append('}').toString()
     }
 
     private fun Throwable.write(): String {
-        when {
-            this is ExInfoException -> return toString()
-            else -> return "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
+        return when {
+            this is ExInfoException -> toString()
+            else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
         }
     }
 }

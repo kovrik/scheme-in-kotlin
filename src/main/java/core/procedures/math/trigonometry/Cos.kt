@@ -25,29 +25,29 @@ class Cos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
         fun cos(number: Number): Number {
             /* Special cases */
-            when {
-                Utils.isZero(number) -> return 1L
-                number is BigDecimal -> return cos(number)
-                number is BigInteger -> return cos(number)
-                number is BigComplex -> return Cos.cos(number)
-                number is BigRatio   -> return cos(number.toBigDecimal())
-                else -> return Math.cos(number.toDouble())
+            return when {
+                Utils.isZero(number) -> 1L
+                number is BigDecimal -> cos(number)
+                number is BigInteger -> cos(number)
+                number is BigComplex -> Cos.cos(number)
+                number is BigRatio   -> cos(number.toBigDecimal())
+                else                 -> Math.cos(number.toDouble())
             }
         }
 
         fun cos(bd: BigDecimal): Double {
             val v = bd.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.cos(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.cos(v)
             }
         }
 
         fun cos(bi: BigInteger): Double {
             val v = bi.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.cos(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.cos(v)
             }
         }
 

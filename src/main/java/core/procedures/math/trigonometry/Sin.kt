@@ -25,29 +25,29 @@ class Sin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
         fun sin(number: Number): Number {
             /* Special cases */
-            when {
-                Utils.isZero(number) -> return 0L
-                number is BigDecimal -> return sin(number)
-                number is BigInteger -> return sin(number)
-                number is BigComplex -> return sin(number)
-                number is BigRatio   -> return sin(number.toBigDecimal())
-                else -> return Math.sin(number.toDouble())
+            return when {
+                Utils.isZero(number) -> 0L
+                number is BigDecimal -> sin(number)
+                number is BigInteger -> sin(number)
+                number is BigComplex -> sin(number)
+                number is BigRatio   -> sin(number.toBigDecimal())
+                else -> Math.sin(number.toDouble())
             }
         }
 
         fun sin(bd: BigDecimal): Double {
             val v = bd.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.sin(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.sin(v)
             }
         }
 
         fun sin(bi: BigInteger): Double {
             val v = bi.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.sin(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.sin(v)
             }
         }
 

@@ -89,9 +89,9 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     }
 
     override fun toString(): String {
-        when (name.isEmpty()) {
-            true  -> return "#<procedure>"
-            false -> return "#<procedure:$name>"
+        return when (name.isEmpty()) {
+            true  -> "#<procedure>"
+            false -> "#<procedure:$name>"
         }
     }
 
@@ -139,13 +139,13 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
         checkArgs(*args)
         /* if min == max, then function is not variadic, hence get arity */
         val arity = if (minArgs == maxArgs) minArgs else -1
-        when (arity) {
-            0    -> return invoke()
-            1    -> return invoke(args[0])
-            2    -> return invoke(args[0], args[1])
-            3    -> return invoke(args[0], args[1], args[2])
-            4    -> return invoke(args[0], args[1], args[2], args[3])
-            else -> return invoke(*args)
+        return when (arity) {
+            0    -> invoke()
+            1    -> invoke(args[0])
+            2    -> invoke(args[0], args[1])
+            3    -> invoke(args[0], args[1], args[2])
+            4    -> invoke(args[0], args[1], args[2], args[3])
+            else -> invoke(*args)
         }
     }
 }

@@ -59,12 +59,12 @@ open class Reader : IReader {
                 "nul"       to Character.MIN_VALUE
         )
 
-        @JvmStatic private fun isValid(i: Int): Boolean = i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt()
-        @JvmStatic private fun isLineBreak(c: Char): Boolean = LINE_BREAKS.indexOf(c) > -1
-        @JvmStatic fun isRadix(c: Char): Boolean = "bodxBODX".indexOf(c) > -1
-        @JvmStatic fun isExact(c: Char): Boolean = c == 'e' || c == 'E'
-        @JvmStatic fun isInexact(c: Char): Boolean = c == 'i' || c == 'I'
-        @JvmStatic fun isExactness(c: Char): Boolean = isExact(c) || isInexact(c)
+        @JvmStatic private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
+        @JvmStatic private fun isLineBreak(c: Char) = LINE_BREAKS.indexOf(c) > -1
+        @JvmStatic fun isRadix(c: Char)     = "bodxBODX".indexOf(c) > -1
+        @JvmStatic fun isExact(c: Char)     = (c == 'e'  || c == 'E')
+        @JvmStatic fun isInexact(c: Char)   = (c == 'i'  || c == 'I')
+        @JvmStatic fun isExactness(c: Char) = isExact(c) || isInexact(c)
     }
 
     override fun read(): List<Any> {
@@ -72,9 +72,7 @@ open class Reader : IReader {
         try {
             var token = nextToken()
             while (token != null || tokens.isEmpty()) {
-                when {
-                    token != null -> tokens.add(token)
-                }
+                if (token != null) tokens.add(token)
                 token = nextToken()
             }
         } catch (e: IOException) {
@@ -133,18 +131,18 @@ open class Reader : IReader {
             /* Now check if it IS a valid number */
             return preProcessNumber(number, null, 10)
         }
-        when (c) {
-            '\'' -> return readQuote(c)
-            '`'  -> return readQuote(c)
-            ','  -> return readQuote(c)
-            '@'  -> return readDeref()
-            '#'  -> return readHash()
-            '('  -> return readList(true, ')')
-            '{'  -> return readHashmap()
-            '['  -> return readVector(']')
-            ';'  -> return readComment()
-            '"'  -> return readString()
-            ':'  -> return readKeyword()
+        return when (c) {
+            '\'' -> readQuote(c)
+            '`'  -> readQuote(c)
+            ','  -> readQuote(c)
+            '@'  -> readDeref()
+            '#'  -> readHash()
+            '('  -> readList(true, ')')
+            '{'  -> readHashmap()
+            '['  -> readVector(']')
+            ';'  -> readComment()
+            '"'  -> readString()
+            ':'  -> readKeyword()
             ')'  -> throw IllegalSyntaxException("read: unexpected list terminator: $c")
             '}'  -> throw IllegalSyntaxException("read: unexpected terminator: $c")
             ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
@@ -152,9 +150,9 @@ open class Reader : IReader {
                 val s = c + readUntilDelimiter()
                 /* Read true and false as #t and #f */
                 when (s) {
-                    "true"  -> return true
-                    "false" -> return false
-                    else    -> return Symbol.intern(s)
+                    "true"  -> true
+                    "false" -> false
+                    else    -> Symbol.intern(s)
                 }
             }
         }

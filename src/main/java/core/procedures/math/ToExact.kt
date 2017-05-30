@@ -20,8 +20,8 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
             /* Special cases */
             if (Utils.isZero(o)) {
                 when (o) {
-                    is Double -> return 0.0
-                    is Float -> return 0f
+                    is Double     -> return 0.0
+                    is Float      -> return 0f
                     is BigDecimal -> return BigDecimal.ZERO
                 }
             }

@@ -18,9 +18,7 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
     override operator fun invoke(vararg args: Any?): Number? {
         when (args.size) {
             0 -> return 0L
-            1 -> {
-                return args[0] as Number?
-            }
+            1 -> return args[0] as Number?
             else -> {
                 var result: Any? = 0L
                 for (arg in args) {

@@ -50,14 +50,14 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
     private fun lcm(first: Number, second: Number): Number {
         val f = Utils.upcast(first)!!
         val s = Utils.upcast(second)!!
-        when {
-            f is Long && s is Long -> return Companion.lcm(f, s)
-            f is BigRatio && s is BigRatio -> return lcm(f, s)
-            f is BigRatio -> return lcm(f.toBigDecimal(), Utils.toBigDecimal(s))
-            s is BigRatio -> return lcm(Utils.toBigDecimal(f), s.toBigDecimal())
-            f is BigDecimal || s is BigDecimal -> return lcm(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> return Companion.lcm(Utils.toBigInteger(f), Utils.toBigInteger(s))
-            else -> return Companion.lcm(f.toDouble(), s.toDouble())
+        return when {
+            f is Long && s is Long -> Companion.lcm(f, s)
+            f is BigRatio && s is BigRatio -> lcm(f, s)
+            f is BigRatio -> lcm(f.toBigDecimal(), Utils.toBigDecimal(s))
+            s is BigRatio -> lcm(Utils.toBigDecimal(f), s.toBigDecimal())
+            f is BigDecimal || s is BigDecimal -> lcm(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> Companion.lcm(Utils.toBigInteger(f), Utils.toBigInteger(s))
+            else -> Companion.lcm(f.toDouble(), s.toDouble())
         }
     }
 

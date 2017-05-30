@@ -18,13 +18,13 @@ class Atan : AFn(FnArgs(min = 1, max = 1, mandatory =  arrayOf<Class<*>>(Number:
     override operator fun invoke(arg: Any?): Number? {
         if (arg == null) throw NullPointerException()
         /* Special cases */
-        when {
-            Utils.isZero(arg) -> return 0L
-            arg is BigDecimal -> return atan(arg)
-            arg is BigInteger -> return atan(arg)
-            arg is BigComplex -> return atan(arg)
-            arg is BigRatio   -> return atan(arg.toBigDecimal())
-            else -> return Math.atan((arg as Number).toDouble())
+        return when {
+            Utils.isZero(arg) -> 0L
+            arg is BigDecimal -> atan(arg)
+            arg is BigInteger -> atan(arg)
+            arg is BigComplex -> atan(arg)
+            arg is BigRatio   -> atan(arg.toBigDecimal())
+            else              -> Math.atan((arg as Number).toDouble())
         }
     }
 
@@ -40,9 +40,9 @@ class Atan : AFn(FnArgs(min = 1, max = 1, mandatory =  arrayOf<Class<*>>(Number:
 
         fun atan(bi: BigInteger): Double {
             val v = bi.toDouble()
-            when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> return java.lang.Double.NaN
-                else -> return Math.atan(v)
+            return when {
+                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                else -> Math.atan(v)
             }
         }
 

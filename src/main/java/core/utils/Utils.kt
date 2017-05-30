@@ -275,44 +275,44 @@ object Utils {
     }
 
     fun toBigDecimal(number: Number): BigDecimal {
-        when (number) {
-            is BigDecimal -> return number
-            is Long       -> return BigDecimal.valueOf(number)
-            is BigInteger -> return BigDecimal(number)
-            is Double     -> return BigDecimal.valueOf(number)
-            is BigRatio   -> return number.toBigDecimal()
+        return when (number) {
+            is BigDecimal -> number
+            is Long       -> BigDecimal.valueOf(number)
+            is BigInteger -> BigDecimal(number)
+            is Double     -> BigDecimal.valueOf(number)
+            is BigRatio   -> number.toBigDecimal()
             is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-            else          -> return BigDecimal(number.toString())
+            else          -> BigDecimal(number.toString())
         }
     }
 
     fun toBigInteger(number: Number): BigInteger {
-        when (number) {
-            is BigInteger -> return number
-            is Long       -> return BigInteger.valueOf(number)
-            is Double     -> return BigInteger.valueOf(number.toLong())
+        return when (number) {
+            is BigInteger -> number
+            is Long       -> BigInteger.valueOf(number)
+            is Double     -> BigInteger.valueOf(number.toLong())
             is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-            else          -> return BigInteger(number.toString())
+            else          -> BigInteger(number.toString())
         }
     }
 
     fun isRational(o: Any?): Boolean {
-        when (o) {
-            !is Number     -> return false
-            is BigComplex  -> return false
-            is Double      -> return !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
-            is Float       -> return !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
-            else           -> return true
+        return when (o) {
+            !is Number     -> false
+            is BigComplex  -> false
+            is Double      -> !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
+            is Float       -> !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
+            else           -> true
         }
     }
 
     fun isExact(o: Any?): Boolean {
-        when (o) {
-            null          -> return false
-            is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> return true
-            is BigDecimal -> return o.scale() == 0
-            is BigComplex -> return isExact(o.re) && isExact(o.im)
-            else          -> return false
+        return when (o) {
+            null          -> false
+            is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> true
+            is BigDecimal -> o.scale() == 0
+            is BigComplex -> isExact(o.re) && isExact(o.im)
+            else          -> false
         }
     }
 
@@ -321,13 +321,13 @@ object Utils {
     }
 
     fun isInteger(o: Any?): Boolean {
-        when (o) {
-            null           -> return false
-            is Long, is Int, is BigInteger, is Short, is Byte -> return true
-            is BigDecimal  -> return o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
-            is BigRatio    -> return o.isDenominatorEqualToOne
-            is Double      -> return o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
-            else           -> return false
+        return when (o) {
+            null           -> false
+            is Long, is Int, is BigInteger, is Short, is Byte -> true
+            is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
+            is BigRatio    -> o.isDenominatorEqualToOne
+            is Double      -> o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
+            else           -> false
         }
     }
 
@@ -336,66 +336,66 @@ object Utils {
     }
 
     fun isZero(o: Any?): Boolean {
-        when (o) {
-            null          -> return false
-            is Long       -> return ((o as Long?)!!).compareTo(0L) == 0
-            is Double     -> return Math.signum((o as Double?)!!) == 0.0
-            is BigRatio   -> return o.signum() == 0
-            is BigDecimal -> return o.signum() == 0
-            is Int        -> return Integer.signum((o as Int?)!!) == 0
-            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == 0
-            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == 0
-            is Float      -> return Math.signum((o as Float?)!!) == 0f
-            is BigInteger -> return o.signum() == 0
-            else          -> return false
+        return when (o) {
+            null          -> false
+            is Long       -> ((o as Long?)!!).compareTo(0L) == 0
+            is Double     -> Math.signum((o as Double?)!!) == 0.0
+            is BigRatio   -> o.signum() == 0
+            is BigDecimal -> o.signum() == 0
+            is Int        -> Integer.signum((o as Int?)!!) == 0
+            is Short      -> Integer.signum((o as Short?)!!.toInt()) == 0
+            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 0
+            is Float      -> Math.signum((o as Float?)!!) == 0f
+            is BigInteger -> o.signum() == 0
+            else          -> false
         }
     }
 
     fun isOne(o: Any?): Boolean {
-        when (o) {
-            null          -> return false
-            is Long       -> return (o as Long?)!!.toInt() == 1
-            is Double     -> return java.lang.Double.compare((o as Double?)!!, 1.0) == 0
-            is BigRatio   -> return o.isOne
-            is BigDecimal -> return o.compareTo(BigDecimal.ONE) == 0
-            is Int        -> return o as Int? == 1
-            is Short      -> return (o as Short?)!!.toInt() == 1
-            is Byte       -> return (o as Byte?)!!.toInt() == 1
-            is Float      -> return java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
-            is BigInteger -> return o.compareTo(BigInteger.ONE) == 0
-            else          -> return false
+        return when (o) {
+            null          -> false
+            is Long       -> (o as Long?)!!.toInt() == 1
+            is Double     -> java.lang.Double.compare((o as Double?)!!, 1.0) == 0
+            is BigRatio   -> o.isOne
+            is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
+            is Int        -> o as Int? == 1
+            is Short      -> (o as Short?)!!.toInt() == 1
+            is Byte       -> (o as Byte?)!!.toInt() == 1
+            is Float      -> java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
+            is BigInteger -> o.compareTo(BigInteger.ONE) == 0
+            else          -> false
         }
     }
 
     fun isPositive(o: Any?): Boolean {
-        when (o) {
-            null          -> return false
-            is Long       -> return (o as Long?)!! > 0
-            is Double     -> return Math.signum((o as Double?)!!) == 1.0
-            is BigRatio   -> return o.signum() == 1
-            is BigDecimal -> return o.signum() == 1
-            is Int        -> return Integer.signum((o as Int?)!!) == 1
-            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == 1
-            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == 1
-            is Float      -> return Math.signum((o as Float?)!!) == 1f
-            is BigInteger -> return o.signum() == 1
-            else          -> return false
+        return when (o) {
+            null          -> false
+            is Long       -> (o as Long?)!! > 0
+            is Double     -> Math.signum((o as Double?)!!) == 1.0
+            is BigRatio   -> o.signum() == 1
+            is BigDecimal -> o.signum() == 1
+            is Int        -> Integer.signum((o as Int?)!!) == 1
+            is Short      -> Integer.signum((o as Short?)!!.toInt()) == 1
+            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 1
+            is Float      -> Math.signum((o as Float?)!!) == 1f
+            is BigInteger -> o.signum() == 1
+            else          -> false
         }
     }
 
     fun isNegative(o: Any?): Boolean {
-        when (o) {
-            null          -> return false
-            is Long       -> return ((o as Long?)!!) < 0
-            is Double     -> return Math.signum((o as Double?)!!) == -1.0
-            is BigRatio   -> return o.signum() == -1
-            is BigDecimal -> return o.signum() == -1
-            is Int        -> return Integer.signum((o as Int?)!!) == -1
-            is Short      -> return Integer.signum((o as Short?)!!.toInt()) == -1
-            is Byte       -> return Integer.signum((o as Byte?)!!.toInt()) == -1
-            is Float      -> return Math.signum((o as Float?)!!) == -1f
-            is BigInteger -> return o.signum() == -1
-            else          -> return false
+        return when (o) {
+            null          -> false
+            is Long       -> ((o as Long?)!!) < 0
+            is Double     -> Math.signum((o as Double?)!!) == -1.0
+            is BigRatio   -> o.signum() == -1
+            is BigDecimal -> o.signum() == -1
+            is Int        -> Integer.signum((o as Int?)!!) == -1
+            is Short      -> Integer.signum((o as Short?)!!.toInt()) == -1
+            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == -1
+            is Float      -> Math.signum((o as Float?)!!) == -1f
+            is BigInteger -> o.signum() == -1
+            else          -> false
         }
     }
 
@@ -416,11 +416,11 @@ object Utils {
     }
 
     fun isFinite(number: Number?): Boolean {
-        when (number) {
-            null      -> return true
-            is Double -> return java.lang.Double.isFinite((number as Double?)!!)
-            is Float  -> return java.lang.Float.isFinite((number as Float?)!!)
-            else      -> return true
+        return when (number) {
+            null      -> true
+            is Double -> java.lang.Double.isFinite((number as Double?)!!)
+            is Float  -> java.lang.Float.isFinite((number as Float?)!!)
+            else      -> true
         }
     }
 
@@ -439,11 +439,11 @@ object Utils {
     }
 
     fun downcastNumber(number: Number): Number {
-        when {
-            number is BigRatio && number.isDenominatorEqualToOne -> return tryDowncast(number)
-            number is BigDecimal -> return tryDowncast(number)
-            number is BigInteger -> return tryDowncast(number)
-            else                 -> return number
+        return when {
+            number is BigRatio && number.isDenominatorEqualToOne -> tryDowncast(number)
+            number is BigDecimal -> tryDowncast(number)
+            number is BigInteger -> tryDowncast(number)
+            else                 -> number
         }
     }
 
@@ -487,11 +487,11 @@ object Utils {
 
     /* Upcast number if required */
     fun upcast(number: Number?): Number? {
-        when (number) {
-            null     -> return null
-            is Byte, is Short, is Int -> return number.toLong()
-            is Float -> return number.toDouble()
-            else     -> return number
+        return when (number) {
+            null     -> null
+            is Byte, is Short, is Int -> number.toLong()
+            is Float -> number.toDouble()
+            else     -> number
         }
     }
 
@@ -521,21 +521,21 @@ object Utils {
 
     // TODO return Lazy Sequence object, not Iterator
     fun toSequence(obj: Any?): Iterator<*> {
-        when (obj) {
-            is Iterable<*>     -> return obj.iterator()
-            is CharSequence    -> return stringIterator(obj)
-            is Map<*, *>       -> return obj.entries.iterator()
-            is Map.Entry<*, *> -> return MapEntry(obj).iterator()
-            null               -> return Collections.EMPTY_LIST.iterator()
+        return when (obj) {
+            is Iterable<*>     -> obj.iterator()
+            is CharSequence    -> stringIterator(obj)
+            is Map<*, *>       -> obj.entries.iterator()
+            is Map.Entry<*, *> -> MapEntry(obj).iterator()
+            null               -> Collections.EMPTY_LIST.iterator()
             else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
         }
     }
 
     fun toAssoc(obj: Any?): IAssoc {
-        when (obj) {
-            is IAssoc           -> return obj
-            is MutableMap<*, *> -> return mapToAssoc(obj)
-            is Map.Entry<*, *>  -> return MapEntry(obj)
+        return when (obj) {
+            is IAssoc           -> obj
+            is MutableMap<*, *> -> mapToAssoc(obj)
+            is Map.Entry<*, *>  -> MapEntry(obj)
             null                -> throw NullPointerException()
             else                -> throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
         }

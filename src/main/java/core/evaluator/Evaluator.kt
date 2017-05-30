@@ -46,9 +46,9 @@ class Evaluator {
     inner class InvokableMap(val map: Map<Any?, Any?>) : AFn(FnArgs(min = 1, max = 2)) {
         /* Maps are functions of their keys */
         override fun invoke(vararg args: Any?): Any? {
-            when (args.size) {
-                1    -> return map[args[0]]
-                else -> return map.getOrDefault(args[0], args[1])
+            return when (args.size) {
+                1    -> map[args[0]]
+                else -> map.getOrDefault(args[0], args[1])
             }
         }
     }
@@ -92,14 +92,14 @@ class Evaluator {
      * If Thunk is returned, then eval() method (trampoline) continues evaluation.
      */
     private fun evalIter(sexp: Any?, env: Environment): Any? {
-        when (sexp) {
-            is Symbol           -> return sexp.eval(env)
-            is MutableList<*>   -> return (sexp as MutableList<Any?>).eval(env)
-            is MutableMap<*, *> -> return (sexp as Map<Any?, Any?>).eval(env)
-            is Vector           -> return sexp.eval(env)
-            is MutableSet<*>    -> return sexp.eval(env)
+        return when (sexp) {
+            is Symbol           -> sexp.eval(env)
+            is MutableList<*>   -> (sexp as MutableList<Any?>).eval(env)
+            is MutableMap<*, *> -> (sexp as Map<Any?, Any?>).eval(env)
+            is Vector           -> sexp.eval(env)
+            is MutableSet<*>    -> sexp.eval(env)
             /* Everything else evaluates to itself: Numbers, Strings, Chars, Keywords etc. */
-            else -> return sexp
+            else -> sexp
         }
     }
 

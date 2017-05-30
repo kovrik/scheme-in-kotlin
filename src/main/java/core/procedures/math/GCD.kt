@@ -81,14 +81,14 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
         fun gcd(first: Number, second: Number): Number {
             val f = Utils.upcast(first)!!
             val s = Utils.upcast(second)!!
-            when {
-                f is Long && s is Long -> return gcd(f, s)
-                f is BigRatio && s is BigRatio -> return gcd(f, s)
-                f is BigRatio -> return gcd(f.toBigDecimal(), Utils.toBigDecimal(s))
-                s is BigRatio -> return gcd(Utils.toBigDecimal(f), s.toBigDecimal())
-                f is BigDecimal || s is BigDecimal -> return gcd(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-                f is BigInteger || s is BigInteger -> return gcd(Utils.toBigInteger(f), Utils.toBigInteger(s))
-                else -> return gcd(f.toDouble(), s.toDouble())
+            return when {
+                f is Long && s is Long -> gcd(f, s)
+                f is BigRatio && s is BigRatio -> gcd(f, s)
+                f is BigRatio -> gcd(f.toBigDecimal(), Utils.toBigDecimal(s))
+                s is BigRatio -> gcd(Utils.toBigDecimal(f), s.toBigDecimal())
+                f is BigDecimal || s is BigDecimal -> gcd(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+                f is BigInteger || s is BigInteger -> gcd(Utils.toBigInteger(f), Utils.toBigInteger(s))
+                else -> gcd(f.toDouble(), s.toDouble())
             }
         }
     }

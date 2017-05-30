@@ -56,10 +56,10 @@ class MutableString : INamed, CharSequence {
     }
 
     override fun equals(other: Any?): Boolean {
-        when {
-            this === other -> return true
-            other !is CharSequence -> return false
-            else -> return string.toString() == other.toString()
+        return when {
+            this === other -> true
+            other !is CharSequence -> false
+            else -> string.toString() == other.toString()
         }
     }
 

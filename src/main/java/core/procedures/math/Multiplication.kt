@@ -15,16 +15,16 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
     override val name = "*"
 
     override operator fun invoke(vararg args: Any?): Number? {
-        when (args.size) {
-            0 -> return 1L
-            1 -> return args[0] as Number
+        return when (args.size) {
+            0 -> 1L
+            1 -> args[0] as Number
             else -> {
                 var result: Any? = 1L
                 for (arg in args) {
                     if (arg == null) throw NullPointerException()
                     result = Companion(result as Number?, arg as Number?)
                 }
-                return result as Number
+                result as Number
             }
         }
     }

@@ -43,9 +43,9 @@ class Denominator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(B
             return BigInteger.ONE
         }
         if (exact is BigDecimal) {
-            when {
-                exact.scale() == 0 -> return BigDecimal.ONE
-                else -> return BigDecimal.ONE.setScale(1, Utils.ROUNDING_MODE)
+            return when {
+                exact.scale() == 0 -> BigDecimal.ONE
+                else -> BigDecimal.ONE.setScale(1, Utils.ROUNDING_MODE)
             }
         }
         return 1L

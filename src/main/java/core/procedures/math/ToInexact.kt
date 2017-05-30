@@ -13,17 +13,17 @@ class ToInexact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Num
 
     companion object {
         fun toInexact(o: Any?): Number {
-            when (o) {
+            return when (o) {
                 is BigComplex -> {
-                    return BigComplex(toInexact(o.re), toInexact(o.im))
+                    BigComplex(toInexact(o.re), toInexact(o.im))
                 }
-                is BigRatio -> return o.toBigDecimalInexact()
-                is BigInteger -> return BigDecimal(o.toString()).setScale(1, Utils.ROUNDING_MODE)
+                is BigRatio   -> o.toBigDecimalInexact()
+                is BigInteger -> BigDecimal(o.toString()).setScale(1, Utils.ROUNDING_MODE)
                 is BigDecimal -> {
                     val scale = Math.max(1, o.scale())
-                    return o.setScale(scale, Utils.ROUNDING_MODE)
+                    o.setScale(scale, Utils.ROUNDING_MODE)
                 }
-                else -> return (o as Number).toDouble()
+                else -> (o as Number).toDouble()
             }
         }
     }
