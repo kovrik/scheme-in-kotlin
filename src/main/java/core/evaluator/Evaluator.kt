@@ -126,15 +126,11 @@ class Evaluator {
             /* Lookup symbol */
             op = env.findOrDefault(sym, Environment.UNDEFINED)
             /* Inline Special Forms and Pure functions */
-            if (op is ISpecialForm) {
+            if (op is ISpecialForm || (op is AFn && op.isPure)) {
                 this[0] = op
-            } else if (op is AFn) {
-                if (op.isPure) {
-                    this[0] = op
-                }
             } else if (op === Environment.UNDEFINED) {
                 /* Special case: constructor call If Symbol ends with . */
-                if (sym.name[sym.name.length - 1] == '.') {
+                if (sym.name.endsWith('.')) {
                     this[0] = Symbol.intern(sym.name.substring(0, sym.name.length - 1))
                     op = New.NEW
                     (this as Cons<Any>).push(op)
