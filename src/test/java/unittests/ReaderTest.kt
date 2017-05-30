@@ -236,15 +236,16 @@ class ReaderTest : AbstractTest() {
         assertEquals('U', reader.readFirst("#\\U"))
         assertEquals('x', reader.readFirst("#\\x"))
         assertEquals('X', reader.readFirst("#\\X"))
+        assertEquals('S', reader.readFirst("#\\123"))
     }
 
     @Test
     fun testReadBoolean() {
-        assertEquals(true, reader.readFirst("#t"))
+        assertEquals(true,  reader.readFirst("#t"))
         assertEquals(false, reader.readFirst("#f"))
-        assertEquals(true, reader.readFirst("#T"))
+        assertEquals(true,  reader.readFirst("#T"))
         assertEquals(false, reader.readFirst("#F"))
-        assertEquals(true, reader.readFirst("true"))
+        assertEquals(true,  reader.readFirst("true"))
         assertEquals(false, reader.readFirst("false"))
     }
 
