@@ -19,14 +19,12 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val I = BigComplex(BigDecimal.ZERO, BigDecimal.ONE)
 
         /* Convert Number to BigComplex */
-        fun of(number: Number): BigComplex {
-            return number as? BigComplex ?: BigComplex(number)
-        }
+        fun of(number: Number) = number as? BigComplex ?: BigComplex(number)
     }
 
-    /* real part */
+    /* Real part */
     val re: BigDecimal
-    /* imaginary part */
+    /* Imaginary part */
     val im: BigDecimal
 
     /* Complex number is a zero if both real and imaginary parts are zeroes */
@@ -140,11 +138,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Natural logarithm of Complex number
      * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
      */
-    fun log(): BigComplex {
-        val re = Log.log(magnitude())
-        val im = angle()
-        return BigComplex(re, im)
-    }
+    fun log() = BigComplex(Log.log(magnitude()), angle())
 
     /**
      * Magnitude (Absolute value, Modulus) of Complex number
@@ -198,17 +192,11 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         else -> re.toString() + "+" + im + "i"
     }
 
-    override fun toByte() = throw UnsupportedOperationException()
-
-    override fun toChar() = throw UnsupportedOperationException()
-
+    override fun toByte()   = throw UnsupportedOperationException()
+    override fun toChar()   = throw UnsupportedOperationException()
     override fun toDouble() = throw UnsupportedOperationException()
-
-    override fun toFloat() = throw UnsupportedOperationException()
-
-    override fun toInt() = throw UnsupportedOperationException()
-
-    override fun toLong() = throw UnsupportedOperationException()
-
-    override fun toShort() = throw UnsupportedOperationException()
+    override fun toFloat()  = throw UnsupportedOperationException()
+    override fun toInt()    = throw UnsupportedOperationException()
+    override fun toLong()   = throw UnsupportedOperationException()
+    override fun toShort()  = throw UnsupportedOperationException()
 }
