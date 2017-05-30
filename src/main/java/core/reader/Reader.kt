@@ -28,25 +28,21 @@ open class Reader : IReader {
     }
 
     companion object {
-
         private val DOT = Symbol.intern(".")
-
         private val DEREF = Symbol.intern("deref")
 
         private const val LINE_BREAKS = "\n\r"
         private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
-        // <delimiter> --> <whitespace> | ( | ) | " | ;
+        /* <delimiter> --> <whitespace> | ( | ) | " | ; */
         private const val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
 
         /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
-        private val ESCAPED = hashMapOf(
-                't'  to '\t',
-                'b'  to '\b',
-                'n'  to '\n',
-                'r'  to '\r',
-                '"'  to '\"',
-                '\\' to '\\'
-        )
+        private val ESCAPED = hashMapOf('t'  to '\t',
+                                        'b'  to '\b',
+                                        'n'  to '\n',
+                                        'r'  to '\r',
+                                        '"'  to '\"',
+                                        '\\' to '\\')
 
         val NAMED_CHARS: Map<String, Char> = hashMapOf(
                 "newline"   to '\n',
@@ -63,29 +59,12 @@ open class Reader : IReader {
                 "nul"       to Character.MIN_VALUE
         )
 
-        private fun isValid(i: Int): Boolean {
-            return i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt()
-        }
-
-        private fun isLineBreak(c: Char): Boolean {
-            return LINE_BREAKS.indexOf(c) > -1
-        }
-
-        @JvmStatic fun isRadix(c: Char): Boolean {
-            return "bodxBODX".indexOf(c) > -1
-        }
-
-        @JvmStatic fun isExact(c: Char): Boolean {
-            return c == 'e' || c == 'E'
-        }
-
-        @JvmStatic fun isInexact(c: Char): Boolean {
-            return c == 'i' || c == 'I'
-        }
-
-        @JvmStatic fun isExactness(c: Char): Boolean {
-            return isExact(c) || isInexact(c)
-        }
+        @JvmStatic private fun isValid(i: Int): Boolean = i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt()
+        @JvmStatic private fun isLineBreak(c: Char): Boolean = LINE_BREAKS.indexOf(c) > -1
+        @JvmStatic fun isRadix(c: Char): Boolean = "bodxBODX".indexOf(c) > -1
+        @JvmStatic fun isExact(c: Char): Boolean = c == 'e' || c == 'E'
+        @JvmStatic fun isInexact(c: Char): Boolean = c == 'i' || c == 'I'
+        @JvmStatic fun isExactness(c: Char): Boolean = isExact(c) || isInexact(c)
     }
 
     override fun read(): List<Any> {
@@ -232,7 +211,6 @@ open class Reader : IReader {
             if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
                 throw IllegalSyntaxException("read: bad number: $number")
             }
-
             /* Check if this is a proper number */
             val result = preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
             return result
@@ -369,20 +347,16 @@ open class Reader : IReader {
             rest = first.toChar() + rest
             isCodepoint = true
         }
-        if (!isValidForRadix(rest[0], radix)) {
-            isCodepoint = false
-        }
-        if (isCodepoint) {
+        if (isCodepoint && isValidForRadix(rest[0], radix)) {
             val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: no hex digit following \\u in string")
             return codepoint.toInt().toChar()
         }
         /* Must be a named char */
         val character = first.toChar() + rest
         if ("linefeed" == character) {
-            return NAMED_CHARS["newline"]!!
+            return '\n'
         }
-        val namedChar = NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
-        return namedChar
+        return NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
     }
 
     /**
@@ -521,9 +495,7 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun readKeyword(): Keyword? {
         val s = readUntilDelimiter()
-        if (s.isEmpty()) {
-            throw IllegalSyntaxException("read: illegal use of :")
-        }
+        if (s.isEmpty()) throw IllegalSyntaxException("read: illegal use of :")
         return Keyword.intern(s)
     }
 
