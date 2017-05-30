@@ -37,7 +37,5 @@ open class Environment : HashMap<Any?, Any?> {
         }
     }
 
-    override fun toString(): String {
-        return "#<environment:" + (if (outer == null) "root" else super.toString()) + ">"
-    }
+    override fun toString() = "#<environment:" + (if (outer == null) "root" else super.toString()) + ">"
 }

@@ -19,9 +19,7 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
 
     override val isPure = true
 
-    override fun toString(): String {
-        return ':' + name
-    }
+    override fun toString() = ':' + name
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty() || args.size > 2) {
@@ -38,8 +36,6 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
         return name == that!!.name
     }
 
-    override fun hashCode(): Int {
-        return name.hashCode() + 1077096266
-    }
+    override fun hashCode() = name.hashCode() + 1077096266
 
 }

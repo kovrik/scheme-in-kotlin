@@ -10,14 +10,10 @@ import core.scm.Cons
 
 enum class CallCC : ISpecialForm {
     CALL_CC {
-        override fun toString(): String {
-            return "call/cc"
-        }
+        override fun toString() = "call/cc"
     },
     CALL_WITH_CURRENT_CONTINUATION {
-        override fun toString(): String {
-            return "call-with-current-continuation"
-        }
+        override fun toString() = "call-with-current-continuation"
     };
 
     /* Actual call-with-current-continuation */

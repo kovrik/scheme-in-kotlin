@@ -68,13 +68,9 @@ class Predicate private constructor(override val name: String, private val predi
         val IS_FLOAT = Predicate("float?", java.util.function.Predicate<Any?> { o -> o is Float || o is Double })
         val IS_FN = Predicate("fn?", java.util.function.Predicate<Any?> { isProcedure(it) })
 
-        private fun isMutable(o: Any?): Boolean {
-            return !isImmutable(o)
-        }
+        private fun isMutable(o: Any?) = !isImmutable(o)
 
-        private fun isImmutable(o: Any?): Boolean {
-            return !(o is MutableString || o is MutableVector)
-        }
+        private fun isImmutable(o: Any?) = !(o is MutableString || o is MutableVector)
 
         private fun assertClass(name: String, o: Any?, c: Class<*>): Boolean {
             if (Type.checkType(o, c)) {
@@ -107,7 +103,5 @@ class Predicate private constructor(override val name: String, private val predi
 
     override val isPure = true
 
-    override operator fun invoke(arg: Any?): Boolean {
-        return predicate.test(arg)
-    }
+    override operator fun invoke(arg: Any?) = predicate.test(arg)
 }

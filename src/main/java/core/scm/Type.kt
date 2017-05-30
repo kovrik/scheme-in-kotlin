@@ -65,9 +65,7 @@ object Type {
             IAssoc::class.java                  to Predicate<Any> { Utils.isAssoc(it) }
     )
 
-    fun nameOf(clazz: Class<*>): String {
-        return TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
-    }
+    fun nameOf(clazz: Class<*>): String = TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
 
     @JvmStatic fun checkType(o: Any?, expected: Class<*>): Boolean {
         /* Nil is possible value for any data type */

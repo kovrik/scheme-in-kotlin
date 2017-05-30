@@ -2,11 +2,7 @@ package core.exceptions
 
 class ThrowableWrapper(private val throwable: Throwable) : RuntimeException(throwable) {
 
-    fun get(): Throwable {
-        return throwable
-    }
+    fun get() = throwable
 
-    @Synchronized override fun fillInStackTrace(): Throwable? {
-        return null
-    }
+    @Synchronized override fun fillInStackTrace() = null
 }

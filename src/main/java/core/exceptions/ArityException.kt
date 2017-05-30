@@ -5,7 +5,5 @@ class ArityException(name: String, min: Int, max: Int, given: Int) : IllegalArgu
         "expected: " + (if (min == max) min else if (max > 255) "at least " + min else min.toString() + " to " + max) +
         ", given: " + given + ")", null) {
 
-    @Synchronized override fun fillInStackTrace(): Throwable? {
-        return null
-    }
+    @Synchronized override fun fillInStackTrace() = null
 }

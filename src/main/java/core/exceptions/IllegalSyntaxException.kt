@@ -2,9 +2,7 @@ package core.exceptions
 
 class IllegalSyntaxException(message: String) : RuntimeException(message) {
 
-    @Synchronized override fun fillInStackTrace(): Throwable? {
-        return null
-    }
+    @Synchronized override fun fillInStackTrace() = null
 
     companion object {
 

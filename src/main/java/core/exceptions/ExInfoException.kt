@@ -14,9 +14,7 @@ class ExInfoException : RuntimeException {
         this.info = info
     }
 
-    @Synchronized override fun fillInStackTrace(): Throwable? {
-        return null
-    }
+    @Synchronized override fun fillInStackTrace() = null
 
     override fun toString(): String {
         return "#<ex-info:{message:" + message +

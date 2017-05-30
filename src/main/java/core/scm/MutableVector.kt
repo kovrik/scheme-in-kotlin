@@ -19,13 +19,9 @@ open class MutableVector : Vector {
         array[index] = value
     }
 
-    override fun getArray(): Array<Any?> {
-        return array
-    }
+    override fun getArray() = array
 
-    override fun toArray(): Array<Any?> {
-        return array
-    }
+    override fun toArray() = array
 
     override fun assoc(key: Any, value: Any): Any {
         if (!Utils.isInteger(key)) throw WrongTypeException(name, Int::class.java, key)

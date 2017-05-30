@@ -46,21 +46,15 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
     @JvmOverloads constructor(re: Number, im: Number = BigDecimal.ZERO) : this(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
 
     /* Addition */
-    operator fun plus(other: Number): BigComplex {
-        if (other is BigComplex) {
-            return BigComplex(re.add(other.re), im.add(other.im))
-        } else {
-            return BigComplex(re.add(Utils.toBigDecimal(other)), im)
-        }
+    operator fun plus(other: Number) = when (other) {
+        is BigComplex -> BigComplex(re.add(other.re), im.add(other.im))
+        else -> BigComplex(re.add(Utils.toBigDecimal(other)), im)
     }
 
     /* Subtraction */
-    operator fun minus(other: Number): BigComplex {
-        if (other is BigComplex) {
-            return BigComplex(re.subtract(other.re), im.subtract(other.im))
-        } else {
-            return BigComplex(re.subtract(Utils.toBigDecimal(other)), im)
-        }
+    operator fun minus(other: Number) = when (other) {
+        is BigComplex -> BigComplex(re.subtract(other.re), im.subtract(other.im))
+        else -> BigComplex(re.subtract(Utils.toBigDecimal(other)), im)
     }
 
     /**
@@ -156,11 +150,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Magnitude (Absolute value, Modulus) of Complex number
      * r = |z| = |a+bi| = sqrt(a^2 + b^2)
      */
-    fun magnitude(): Number {
-        val re = re
-        val im = im
-        return Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)))
-    }
+    fun magnitude() = Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)))
 
     /**
      * Angle (Argument, Phase) of Complex number
@@ -203,35 +193,22 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         return result
     }
 
-    override fun toString(): String {
-        return if (im.signum() < 0) (re.toString() + "-" + im.negate() + "i") else (re.toString() + "+" + im + "i")
+    override fun toString() = when {
+        im.signum() < 0 -> re.toString() + "-" + im.negate() + "i"
+        else -> re.toString() + "+" + im + "i"
     }
 
-    override fun toByte(): Byte {
-        throw UnsupportedOperationException()
-    }
+    override fun toByte() = throw UnsupportedOperationException()
 
-    override fun toChar(): Char {
-        throw UnsupportedOperationException()
-    }
+    override fun toChar() = throw UnsupportedOperationException()
 
-    override fun toDouble(): Double {
-        throw UnsupportedOperationException()
-    }
+    override fun toDouble() = throw UnsupportedOperationException()
 
-    override fun toFloat(): Float {
-        throw UnsupportedOperationException()
-    }
+    override fun toFloat() = throw UnsupportedOperationException()
 
-    override fun toInt(): Int {
-        throw UnsupportedOperationException()
-    }
+    override fun toInt() = throw UnsupportedOperationException()
 
-    override fun toLong(): Long {
-        throw UnsupportedOperationException()
-    }
+    override fun toLong() = throw UnsupportedOperationException()
 
-    override fun toShort(): Short {
-        throw UnsupportedOperationException()
-    }
+    override fun toShort() = throw UnsupportedOperationException()
 }

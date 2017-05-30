@@ -39,9 +39,9 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
     override val size: Int
         get() = array.size
 
-    override fun contains(element: Any?): Boolean {
-        return array.contains(element)
-    }
+    override fun contains(element: Any?) = array.contains(element)
+
+    operator fun get(index: Int) = getArray()[index]
 
     override operator fun invoke(arg: Any?): Any? {
         val index = (arg as Number).toInt()
@@ -49,10 +49,6 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
             throw IndexOutOfBoundsException(name + ": value out of range: " + index)
         }
         return array[index]
-    }
-
-    operator fun get(index: Int): Any? {
-        return getArray()[index]
     }
 
     override val name = "vector"
@@ -74,29 +70,17 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
         return sb.toString()
     }
 
-    override fun iterator(): Iterator<Any?> {
-        return Arrays.asList(*array).iterator()
-    }
+    override fun iterator() = Arrays.asList(*array).iterator()
 
-    override fun isEmpty(): Boolean {
-        return size == 0
-    }
+    override fun isEmpty() = (size == 0)
 
-    open fun getArray(): Array<Any?> {
-        return Arrays.copyOf(array, size)
-    }
+    open fun getArray(): Array<Any?> = Arrays.copyOf(array, size)
 
-    open fun toArray(): Array<Any?> {
-        return Arrays.copyOf(array, size)
-    }
+    open fun toArray(): Array<Any?> = Arrays.copyOf(array, size)
 
-    override fun containsAll(elements: Collection<*>): Boolean {
-        return elements.any { contains(it) }
-    }
+    override fun containsAll(elements: Collection<*>) = elements.any { contains(it) }
 
-    override fun hashCode(): Int {
-        return Arrays.hashCode(getArray())
-    }
+    override fun hashCode() = Arrays.hashCode(getArray())
 
     override fun equals(other: Any?): Boolean {
         return other is Vector && Arrays.equals(getArray(), other.getArray())
@@ -118,7 +102,5 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
         return MapEntry(i, get(i))
     }
 
-    override fun assoc(key: Any, value: Any): Any {
-        throw UnsupportedOperationException("assoc is not supported for immutable vector")
-    }
+    override fun assoc(key: Any, value: Any): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")
 }

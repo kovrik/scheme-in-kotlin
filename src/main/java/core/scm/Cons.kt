@@ -27,9 +27,7 @@ class Cons<E> : LinkedList<E?> {
         return first
     }
 
-    fun cdr(): Any {
-        return if (isList) subList(1, size) else (last as Any)
-    }
+    fun cdr() = if (isList) subList(1, size) else (last as Any)
 
     /* Convert list to improper list (dotted pair, cons cells) */
     fun toCons(): Cons<E> {
@@ -44,9 +42,9 @@ class Cons<E> : LinkedList<E?> {
         return cons
     }
 
-    override fun toString(): String {
-        return toString(this)
-    }
+    override fun hashCode() = 31 * super.hashCode() + if (isList) 1 else 0
+
+    override fun toString() = toString(this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -62,15 +60,9 @@ class Cons<E> : LinkedList<E?> {
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
             val thisNext = thisIterator.next()
             val oNext = otherIterator.next()
-            if (thisNext != oNext) {
-                return false
-            }
+            if (thisNext != oNext) return false
         }
         return true
-    }
-
-    override fun hashCode(): Int {
-        return 31 * super.hashCode() + if (isList) 1 else 0
     }
 
     companion object {
@@ -108,26 +100,16 @@ class Cons<E> : LinkedList<E?> {
             return list
         }
 
-        fun <E> list(vararg elements: E?): Cons<E?> {
-            return if (elements.isEmpty()) EMPTY as Cons<E?> else list(Arrays.asList(*elements))
-        }
+        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY as Cons<E?> else list(Arrays.asList(*elements))
 
-        fun <E> list(c: Collection<E?>): Cons<E?> {
-            return if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
-        }
+        fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
 
         /* Return true if o is a List or Cons and a list */
-        fun isList(o: Any?): Boolean {
-            return o is List<*> && o !is Cons<*> || o is Cons<*> && o.isList
-        }
+        fun isList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isList
 
-        fun isPair(o: Any?): Boolean {
-            return o is List<*> && !o.isEmpty()
-        }
+        fun isPair(o: Any?) = o is List<*> && !o.isEmpty()
 
-        fun isNull(obj: Any?): Boolean {
-            return (obj as? List<*>)?.isEmpty() ?: (obj == null)
-        }
+        fun isNull(obj: Any?) = (obj as? List<*>)?.isEmpty() ?: (obj == null)
 
         /* Use this method to print all lists */
         fun toString(list: List<*>): String {

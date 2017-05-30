@@ -316,9 +316,7 @@ object Utils {
         }
     }
 
-    fun isInexact(o: Any?): Boolean {
-        return !isExact(o)
-    }
+    fun isInexact(o: Any?) = !isExact(o)
 
     fun isInteger(o: Any?): Boolean {
         return when (o) {
@@ -331,9 +329,7 @@ object Utils {
         }
     }
 
-    fun isExactInteger(o: Any?): Boolean {
-        return isExact(o) && isInteger(o)
-    }
+    fun isExactInteger(o: Any?) = isExact(o) && isInteger(o)
 
     fun isZero(o: Any?): Boolean {
         return when (o) {
@@ -399,21 +395,13 @@ object Utils {
         }
     }
 
-    fun isNonNegative(o: Any): Boolean {
-        return !isNegative(o)
-    }
+    fun isNonNegative(o: Any) = !isNegative(o)
 
-    fun isExactPositiveInteger(o: Any): Boolean {
-        return isExact(o) && isInteger(o) && isPositive(o)
-    }
+    fun isExactPositiveInteger(o: Any) = isExact(o) && isInteger(o) && isPositive(o)
 
-    fun isExactNonNegativeInteger(o: Any): Boolean {
-        return isExact(o) && isInteger(o) && isNonNegative(o)
-    }
+    fun isExactNonNegativeInteger(o: Any) = isExact(o) && isInteger(o) && isNonNegative(o)
 
-    fun isReal(o: Any?): Boolean {
-        return o !is BigComplex && o is Number
-    }
+    fun isReal(o: Any?) = o !is BigComplex && o is Number
 
     fun isFinite(number: Number?): Boolean {
         return when (number) {
@@ -424,9 +412,8 @@ object Utils {
         }
     }
 
-    fun isNaN(number: Number?): Boolean {
-        return number != null && number is Double && java.lang.Double.isNaN((number as Double?)!!)
-    }
+    fun isNaN(number: Number?) = number is Double && java.lang.Double.isNaN((number as Double?)!!) ||
+                                 number is Float && java.lang.Float.isNaN((number as Float?)!!)
 
     /**
      * Inexactness 'taint'
@@ -434,8 +421,9 @@ object Utils {
      * so that inexactness acts as a kind of taint on numbers.
      * See https://docs.racket-lang.org/guide/numbers.html
      */
-    fun inexactnessTaint(result: Number, other: Number?): Number {
-        return if (isInexact(other) && isExact(result)) ToInexact.toInexact(result) else result
+    fun inexactnessTaint(result: Number, other: Number?) = when {
+        isInexact(other) && isExact(result) -> ToInexact.toInexact(result)
+        else -> result
     }
 
     fun downcastNumber(number: Number): Number {
@@ -481,9 +469,7 @@ object Utils {
         return number
     }
 
-    private fun tryDowncast(bigRatio: BigRatio): Number {
-        return tryDowncast(bigRatio.numerator)
-    }
+    private fun tryDowncast(bigRatio: BigRatio) = tryDowncast(bigRatio.numerator)
 
     /* Upcast number if required */
     fun upcast(number: Number?): Number? {
@@ -507,17 +493,11 @@ object Utils {
      * Returns FALSE only if value is FALSE itself or null.
      * Returns TRUE otherwise.
      */
-    fun toBoolean(value: Any?): Boolean {
-        return value as? Boolean ?: (value != null)
-    }
+    fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
-    fun isSeqable(obj: Any?): Boolean {
-        return obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> || obj is Map.Entry<*, *>
-    }
+    fun isSeqable(obj: Any?) = obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> || obj is Map.Entry<*, *>
 
-    fun isAssoc(obj: Any?): Boolean {
-        return obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
-    }
+    fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     // TODO return Lazy Sequence object, not Iterator
     fun toSequence(obj: Any?): Iterator<*> {

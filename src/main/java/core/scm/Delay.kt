@@ -31,7 +31,6 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
         } catch (e: Exception) {
             completeExceptionally(e)
         }
-
         return value
     }
 
@@ -50,7 +49,6 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
                 }
                 throw RuntimeException(e.message)
             }
-
         }
 
     override fun toString(): String {

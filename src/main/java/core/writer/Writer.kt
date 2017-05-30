@@ -79,7 +79,10 @@ object Writer {
     private fun Char?.write(): String {
         /* Check named characters */
         val codepoint = CODEPOINTS[this]
-        return if (codepoint == null) "#\\" + this!! else "#\\" + codepoint
+        return when (codepoint) {
+            null -> "#\\" + this!!
+            else -> "#\\" + codepoint
+        }
     }
 
     private fun Map<*, *>.write(): String {
@@ -112,10 +115,8 @@ object Writer {
         return sb.append('}').toString()
     }
 
-    private fun Throwable.write(): String {
-        return when {
-            this is ExInfoException -> toString()
-            else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
-        }
+    private fun Throwable.write() = when {
+        this is ExInfoException -> toString()
+        else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
     }
 }

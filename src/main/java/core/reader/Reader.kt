@@ -422,7 +422,6 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readVector(terminator: Char): MutableVector {
-        /* Improper lists are not allowed */
         return MutableVector(*readList(false, terminator).toTypedArray())
     }
 
@@ -502,7 +501,5 @@ open class Reader : IReader {
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
-    private fun readDeref(): List<Any?> {
-        return Cons.list(DEREF, nextNonNullToken())
-    }
+    private fun readDeref() = Cons.list(DEREF, nextNonNullToken())
 }

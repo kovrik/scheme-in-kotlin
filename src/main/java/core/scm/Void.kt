@@ -6,7 +6,5 @@ package core.scm
  * so we need this VOID class to represent actual void result
  * (same as #<unspecified> in Scheme) */
 object Void {
-    override fun toString(): String {
-        return "#<void>"
-    }
+    override fun toString() = "#<void>"
 }

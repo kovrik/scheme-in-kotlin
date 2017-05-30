@@ -36,24 +36,16 @@ class MutableString : INamed, CharSequence {
         return string[index]
     }
 
-    override fun subSequence(startIndex: Int, endIndex: Int): CharSequence {
-        return string.subSequence(startIndex, endIndex)
-    }
+    override fun subSequence(startIndex: Int, endIndex: Int) = string.subSequence(startIndex, endIndex)
 
-    fun setCharAt(index: Int, ch: Char) {
-        this.string.setCharAt(index, ch)
-    }
+    fun setCharAt(index: Int, ch: Char) = this.string.setCharAt(index, ch)
 
-    fun clear() {
-        string.setLength(0)
-    }
+    fun clear() = string.setLength(0)
 
     override val name
         get() = string.toString()
 
-    override fun toString(): String {
-        return string.toString()
-    }
+    override fun toString() = string.toString()
 
     override fun equals(other: Any?): Boolean {
         return when {
@@ -63,7 +55,5 @@ class MutableString : INamed, CharSequence {
         }
     }
 
-    override fun hashCode(): Int {
-        return string.toString().hashCode()
-    }
+    override fun hashCode() = string.toString().hashCode()
 }

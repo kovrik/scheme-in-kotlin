@@ -10,9 +10,7 @@ class InputPort(val inputStream: InputStream) : IPort {
     private var next: Int? = null
 
     @Throws(IOException::class)
-    override fun close() {
-        inputStream.close()
-    }
+    override fun close() = inputStream.close()
 
     @Throws(IOException::class)
     fun read(): Int {
@@ -38,9 +36,7 @@ class InputPort(val inputStream: InputStream) : IPort {
     }
 
     @Throws(IOException::class)
-    fun available(): Int {
-        return inputStream.available()
-    }
+    fun available() = inputStream.available()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -49,14 +45,10 @@ class InputPort(val inputStream: InputStream) : IPort {
         return inputStream == that!!.inputStream
     }
 
-    override fun hashCode(): Int {
-        return inputStream.hashCode()
-    }
+    override fun hashCode() = inputStream.hashCode()
 
-    override fun toString(): String {
-        if (inputStream == System.`in`) {
-            return "#<input-port:stdin>"
-        }
-        return "#<input-port:$inputStream>"
+    override fun toString() = when (inputStream) {
+        System.`in` -> "#<input-port:stdin>"
+        else -> "#<input-port:$inputStream>"
     }
 }

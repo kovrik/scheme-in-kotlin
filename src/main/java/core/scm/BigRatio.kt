@@ -82,13 +82,9 @@ class BigRatio : Number, Comparable<BigRatio> {
     val isNegative: Boolean
         get() = signum() == -1
 
-    fun abs(): BigRatio {
-        return BigRatio(numerator.abs(), denominator.abs())
-    }
+    fun abs() = BigRatio(numerator.abs(), denominator.abs())
 
-    fun toBigDecimal(): BigDecimal {
-        return Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
-    }
+    fun toBigDecimal() = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
 
     fun toBigDecimalInexact(): BigDecimal {
         val bigDecimal = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
@@ -106,15 +102,9 @@ class BigRatio : Number, Comparable<BigRatio> {
         return BigRatio(BigDecimal(numerator).divide(BigDecimal(denominator), round).toBigInteger())
     }
 
-    fun round(): BigRatio {
-        val number = toBigDecimal()
-        val round = number.setScale(0, Utils.ROUNDING_MODE)
-        return BigRatio(round.toBigInteger())
-    }
+    fun round() = BigRatio(toBigDecimal().setScale(0, Utils.ROUNDING_MODE).toBigInteger())
 
-    fun truncate(): BigRatio {
-        return if (isNegative) ceiling() else floor()
-    }
+    fun truncate() = if (isNegative) ceiling() else floor()
 
     override fun toString(): String {
         return if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
@@ -132,17 +122,12 @@ class BigRatio : Number, Comparable<BigRatio> {
         return compareTo(b!!) == 0
     }
 
-    override fun hashCode(): Int {
-        return this.toString().hashCode()
-    }
+    override fun hashCode() = this.toString().hashCode()
 
-    fun multiply(other: BigRatio): BigRatio {
-        return BigRatio(this.numerator.multiply(other.numerator), this.denominator.multiply(other.denominator))
-    }
+    fun multiply(other: BigRatio) = BigRatio(this.numerator.multiply(other.numerator),
+                                             this.denominator.multiply(other.denominator))
 
-    fun multiply(other: BigInteger): BigRatio {
-        return BigRatio(this.numerator.multiply(other), this.denominator)
-    }
+    fun multiply(other: BigInteger) = BigRatio(this.numerator.multiply(other), this.denominator)
 
     operator fun plus(other: BigRatio): BigRatio {
         val numerator = this.numerator.multiply(other.denominator).add(other.numerator.multiply(this.denominator))
@@ -150,25 +135,15 @@ class BigRatio : Number, Comparable<BigRatio> {
         return BigRatio(numerator, denominator)
     }
 
-    fun negate(): BigRatio {
-        return BigRatio(numerator.negate(), denominator)
-    }
+    fun negate() = BigRatio(numerator.negate(), denominator)
 
-    operator fun minus(other: BigRatio): BigRatio {
-        return this.plus(other.negate())
-    }
+    operator fun minus(other: BigRatio) = this.plus(other.negate())
 
-    fun reciprocal(): BigRatio {
-        return BigRatio(denominator, numerator)
-    }
+    fun reciprocal() = BigRatio(denominator, numerator)
 
-    fun divide(other: BigRatio): BigRatio {
-        return this.multiply(other.reciprocal())
-    }
+    fun divide(other: BigRatio) = this.multiply(other.reciprocal())
 
-    fun divide(other: BigInteger): BigRatio {
-        return BigRatio(this.numerator, this.denominator.multiply(other))
-    }
+    fun divide(other: BigInteger) = BigRatio(this.numerator, this.denominator.multiply(other))
 
     private fun quotient(): BigDecimal {
         val numerator = BigDecimal(this.numerator)
@@ -176,35 +151,19 @@ class BigRatio : Number, Comparable<BigRatio> {
         return numerator.divide(denominator, 32, RoundingMode.HALF_EVEN)
     }
 
-    override fun toInt(): Int {
-        return quotient().toInt()
-    }
+    override fun toInt() = quotient().toInt()
 
-    override fun toLong(): Long {
-        return quotient().toLong()
-    }
+    override fun toLong() = quotient().toLong()
 
-    override fun toFloat(): Float {
-        return quotient().toFloat()
-    }
+    override fun toFloat() = quotient().toFloat()
 
-    override fun toDouble(): Double {
-        return quotient().toDouble()
-    }
+    override fun toDouble() = quotient().toDouble()
 
-    override fun toByte(): Byte {
-        return quotient().toByte()
-    }
+    override fun toByte() = quotient().toByte()
 
-    override fun toChar(): Char {
-        return quotient().toChar()
-    }
+    override fun toChar() = quotient().toChar()
 
-    override fun toShort(): Short {
-        return quotient().toShort()
-    }
+    override fun toShort() = quotient().toShort()
 
-    fun signum(): Int {
-        return numerator.signum() * denominator.signum()
-    }
+    fun signum() = numerator.signum() * denominator.signum()
 }
