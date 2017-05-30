@@ -15,14 +15,19 @@ import java.util.concurrent.atomic.AtomicInteger
 
 object Repl {
 
-    private val SYM_COUNTER = AtomicInteger(0)
-    private val SYM_LIMIT = 25
+    private const val SYM_LIMIT = 25
+    private const val WELCOME = "Welcome to Scheme in Kotlin!"
+    private const val PROMPT = "> "
 
-    private val WELCOME = "Welcome to Scheme in Java!"
-    private val PROMPT = "> "
-
+    private val symCounter = AtomicInteger(0)
     private val evaluator = Evaluator()
     private val defaultEnvironment = DefaultEnvironment()
+    init {
+        val stringReader = StringReader()
+        /* Eval lib procedures */
+        defaultEnvironment.libraryProcedures.flatMap { stringReader.read(it)!! }
+                                            .forEach { evaluator.macroexpandAndEvaluate(it, defaultEnvironment) }
+    }
 
     @JvmStatic var currentInputPort = InputPort(BufferedInputStream(System.`in`))
     @JvmStatic var currentOutputPort = OutputPort(System.out)
@@ -31,29 +36,20 @@ object Repl {
 
     @Throws(IOException::class)
     @JvmStatic fun main(args: Array<String>) {
-        val stringReader = StringReader()
-        /* Eval lib procedures */
-        for (proc in defaultEnvironment.libraryProcedures) {
-            for (s in stringReader.read(proc)!!) {
-                evaluator.macroexpandAndEvaluate(s, defaultEnvironment)
-            }
-        }
         repl(WELCOME, PROMPT, defaultEnvironment)
     }
 
-    private val nextID: Symbol?
-        get() {
-            val i = SYM_COUNTER.incrementAndGet()
-            if (i == SYM_LIMIT) {
-                SYM_COUNTER.set(0)
-            }
-            return Symbol.intern("$$i")
+    private fun getNextID(): Symbol? {
+        val i = symCounter.incrementAndGet()
+        if (i == SYM_LIMIT) {
+            symCounter.set(0)
         }
+        return Symbol.intern("$$i")
+    }
 
     @Throws(IOException::class)
     private fun repl(welcomeMessage: String, prompt: String, env: Environment) {
         currentOutputPort.writeln(welcomeMessage)
-
         while (true) {
             try {
                 currentOutputPort.write(prompt)
@@ -72,7 +68,7 @@ object Repl {
                         continue
                     }
                     /* Put result into environment */
-                    val id = nextID
+                    val id = getNextID()
                     env.put(id, result)
                     /* Print */
                     currentOutputPort.writeln("$id = ${Writer.write(result)}")
@@ -89,20 +85,20 @@ object Repl {
     @Throws(IOException::class)
     private fun error(e: Throwable) {
         val errorMessage: String
-        if (e is Error) {
-            errorMessage = "Error: ${e.message}"
-        } else if (e is ExInfoException) {
-            errorMessage = e.toString()
-        } else {
-            val sb = StringBuilder(e.javaClass.simpleName)
-            if (e.message != null) {
-                sb.append(": ").append(e.message)
+        when (e) {
+            is Error -> errorMessage = "Error: ${e.message}"
+            is ExInfoException -> errorMessage = e.toString()
+            else -> {
+                val sb = StringBuilder(e.javaClass.simpleName)
+                if (e.message != null) {
+                    sb.append(": ").append(e.message)
+                }
+                val frame = filterStackTrace(e.stackTrace)
+                if (frame != null) {
+                    sb.append(" (").append(frame.fileName).append(':').append(frame.lineNumber).append(')')
+                }
+                errorMessage = sb.toString()
             }
-            val frame = filterStackTrace(e.stackTrace)
-            if (frame != null) {
-                sb.append(" (").append(frame.fileName).append(':').append(frame.lineNumber).append(')')
-            }
-            errorMessage = sb.toString()
         }
         currentOutputPort.writeln(errorMessage)
     }
