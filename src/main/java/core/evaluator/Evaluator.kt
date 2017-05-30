@@ -69,7 +69,7 @@ class Evaluator {
         try {
             result = evalIter(sexp, env)
             while (result is Thunk) {
-                result = evalIter(result.expr, result.getContextOrDefault(env))
+                result = evalIter(result.expr, result.context ?: env)
             }
         } catch (cc: CalledContinuation) {
             if (cc.continuation.isInvoked) {
