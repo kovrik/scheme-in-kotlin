@@ -72,11 +72,9 @@ class Evaluator {
                 result = evalIter(result.expr, result.context ?: env)
             }
         } catch (cc: CalledContinuation) {
-            if (cc.continuation.isInvoked) {
-                /* We have one-shot continuations only, not full continuations.
-                 * It means that we can't use the same continuation multiple times. */
-                throw ReentrantContinuationException()
-            }
+            /* We have one-shot continuations only, not full continuations.
+             * It means that we can't use the same continuation multiple times. */
+            if (cc.continuation.isInvoked) throw ReentrantContinuationException()
             /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
             throw cc
         }
