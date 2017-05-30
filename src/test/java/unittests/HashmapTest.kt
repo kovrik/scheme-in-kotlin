@@ -5,13 +5,9 @@ import core.scm.Cons
 import core.scm.Keyword
 import core.scm.MapEntry
 import core.scm.MutableVector
+import org.junit.Assert.*
 import org.junit.Test
-
-import java.util.Collections
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
+import java.util.*
 
 class HashmapTest : AbstractTest() {
 
@@ -71,7 +67,6 @@ class HashmapTest : AbstractTest() {
         } catch (e: ArityException) {
             // success
         }
-
     }
 
     @Test

@@ -1,7 +1,6 @@
 package core.evaluator
 
 import core.environment.Environment
-import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
@@ -49,8 +48,7 @@ class Evaluator {
         override fun invoke(vararg args: Any?): Any? {
             when (args.size) {
                 1    -> return map[args[0]]
-                2    -> return map.getOrDefault(args[0], args[1])
-                else -> throw ArityException("hashmap", 1, 2, args.size - 1)
+                else -> return map.getOrDefault(args[0], args[1])
             }
         }
     }

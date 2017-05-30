@@ -28,16 +28,12 @@ class Reflector {
         )
 
         /* Some common classes that are not in java.lang. package could be resolved without package name */
-        private val CLASS_PACKAGE_MAPPING = hashMapOf(
-                "BigInteger" to "java.math.BigInteger",
-                "BigDecimal" to "java.math.BigDecimal"
-        )
+        private val CLASS_PACKAGE_MAPPING = hashMapOf("BigInteger" to "java.math.BigInteger",
+                                                      "BigDecimal" to "java.math.BigDecimal")
 
         private val BOXED = HashMap<Class<*>?, Class<*>?>()
         init {
-            for ((key, value) in UNBOXED) {
-                BOXED.put(value, key)
-            }
+            UNBOXED.forEach { (key, value) -> BOXED.put(value, key) }
         }
     }
 
@@ -48,7 +44,7 @@ class Reflector {
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
-            val argsOld = Arrays.copyOf(args, args.size)
+            val argsOld   = Arrays.copyOf(args, args.size)
             val paramsOld = Arrays.copyOf(parameterTypes, parameterTypes.size)
             downcastArgs(args, parameterTypes)
             try {
@@ -111,7 +107,7 @@ class Reflector {
     fun _getClass(name: String): Class<*>? {
         try {
             when {
-                name.indexOf('.') == -1 -> return Class.forName((CLASS_PACKAGE_MAPPING as Map<String, String>).getOrDefault(name, "java.lang." + name))
+                name.indexOf('.') == -1 -> return Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang." + name))
                 else -> return Class.forName(name)
             }
         } catch (e: ClassNotFoundException) {

@@ -60,27 +60,27 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalBooleanPredicates() {
-        assertEquals(true, eval("(boolean? #f)", env))
-        assertEquals(true, eval("(boolean? #t)", env))
-        assertEquals(true, eval("(boolean? (= 1 1))", env))
+        assertEquals(true,  eval("(boolean? #f)", env))
+        assertEquals(true,  eval("(boolean? #t)", env))
+        assertEquals(true,  eval("(boolean? (= 1 1))", env))
         assertEquals(false, eval("(boolean? #\\f)", env))
         assertEquals(false, eval("(boolean? 1)", env))
-        assertEquals(true, eval("(true? #t)", env))
+        assertEquals(true,  eval("(true? #t)", env))
         assertEquals(false, eval("(true? #f)", env))
         assertEquals(false, eval("(true? 1)", env))
-        assertEquals(true, eval("(true? (= 1 1))", env))
+        assertEquals(true,  eval("(true? (= 1 1))", env))
         assertEquals(false, eval("(false? #t)", env))
-        assertEquals(true, eval("(false? #f)", env))
+        assertEquals(true,  eval("(false? #f)", env))
         assertEquals(false, eval("(false? 1)", env))
         assertEquals(false, eval("(false? (= 1 1))", env))
-        assertEquals(true, eval("(false? (= 1 2))", env))
+        assertEquals(true,  eval("(false? (= 1 2))", env))
     }
 
     @Test
     fun testEvalNegation() {
         assertEquals(false, eval("(not #t)", env))
-        assertEquals(true, eval("(not #f)", env))
-        assertEquals(true, eval("(not (= 1 2 1))", env))
+        assertEquals(true,  eval("(not #f)", env))
+        assertEquals(true,  eval("(not (= 1 2 1))", env))
         assertEquals(false, eval("(not (= 1 1 1))", env))
     }
 
@@ -110,12 +110,12 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalEqual() {
-        assertEquals(true, eval("(equal? '() '())", env))
-        assertEquals(true, eval("(equal? '(1 2 3) '( 1 2 3))", env))
+        assertEquals(true,  eval("(equal? '() '())", env))
+        assertEquals(true,  eval("(equal? '(1 2 3) '( 1 2 3))", env))
         assertEquals(false, eval("(equal? '(1 2 3 5) '( 1 2 3))", env))
-        assertEquals(true, eval("(equal? 1 1)", env))
+        assertEquals(true,  eval("(equal? 1 1)", env))
         assertEquals(false, eval("(equal? 1 2)", env))
-        assertEquals(true, eval("(equal? \"1fe\" \"1fe\")", env))
+        assertEquals(true,  eval("(equal? \"1fe\" \"1fe\")", env))
     }
 
     @Test
@@ -203,8 +203,8 @@ class EvaluatorTest : AbstractTest() {
     @Test
     fun testEvalSet() {
         assertTrue(eval("#{}", env) is Set<*>)
-        assertEquals(1, eval("(count #{(+ 1 2)})", env))
-        assertEquals(3L, eval("(first #{(+ 1 2)})", env))
+        assertEquals(1,   eval("(count #{(+ 1 2)})", env))
+        assertEquals(3L,  eval("(first #{(+ 1 2)})", env))
         assertEquals(15L, eval("(first #{(apply + [1 2 3 4 5])})", env))
     }
 }

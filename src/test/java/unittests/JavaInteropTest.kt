@@ -27,8 +27,7 @@ class JavaInteropTest : AbstractTest() {
         assertEquals(Long::class.javaObjectType, eval("(.getClass 5)", env))
         assertEquals(Class::class.java, eval("(.getClass String)", env))
         assertEquals(String::class.java, eval("(.getClass \"String\")", env))
-        val map = "(define h (new java.util.HashMap))"
-        eval(map, env)
+        eval("(define h (new java.util.HashMap))", env)
         eval("(.put h \"KEY\" \"VALUE\")", env)
         assertEquals("VALUE", eval("(.get h \"KEY\")", env))
         assertEquals(5, eval("(.length (.get h \"KEY\"))", env))
@@ -45,20 +44,30 @@ class JavaInteropTest : AbstractTest() {
 
     @Test
     fun testJavaDowncast() {
-        assertEquals("es", eval("(.substring \"test\" 1 3)", env))
+        assertEquals("es",   eval("(.substring \"test\" 1 3)", env))
         assertEquals("zesz", eval("(.replace \"test\" #\\t #\\z)", env))
-        assertEquals(true, eval("(.isEmpty \"\")", env))
-        assertEquals('e', eval("(.charAt \"test\" 1)", env))
-        assertEquals(4, eval("(.length \"test\")", env))
+        assertEquals(true,   eval("(.isEmpty \"\")", env))
+        assertEquals('e',    eval("(.charAt \"test\" 1)", env))
+        assertEquals(4,      eval("(.length \"test\")", env))
     }
 
     @Test
     fun testJavaNewInstance() {
-        assertEquals(1L, eval("(new Long 1)", env))
-        assertEquals(6L, eval("(new Long (+ 1 2 3))", env))
+        assertEquals(1L,  eval("(new Long 1)", env))
+        assertEquals(6L,  eval("(new Long (+ 1 2 3))", env))
         assertEquals(31L, eval("(new Long (.substring \"123123\" 2 4))", env))
         assertEquals(BigDecimal.ONE, eval("(new java.math.BigDecimal 1)", env))
         assertEquals(123, eval("(new Integer 123)", env))
-        assertEquals(1, eval("(.signum (new java.math.BigDecimal 10))", env))
+        assertEquals(1,   eval("(.signum (new java.math.BigDecimal 10))", env))
+    }
+
+    @Test
+    fun testIsClass() {
+        assertEquals(true,  eval("(class? (class 123))", env))
+        assertEquals(true,  eval("(class? (class (new Object)))", env))
+        assertEquals(true,  eval("(class? (class +))", env))
+        assertEquals(false, eval("(class? 123)", env))
+        assertEquals(false, eval("(class? (new Object))", env))
+        assertEquals(false, eval("(class? +)", env))
     }
 }
