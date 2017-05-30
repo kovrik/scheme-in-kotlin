@@ -70,11 +70,11 @@ class ReaderTest : AbstractTest() {
         assertEquals(BigRatio.valueOf("3", "4"), reader.readFirst("#e3/4"))
         assertEquals(1500.0, reader.readFirst("15e2"))
         assertEquals(15000.0, reader.readFirst("15e3"))
-        assertEquals(
-                BigRatio.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
-                reader.readFirst("#e999999999999999999999999999999999999999999999999999999999999999999999.999"))
+        assertEquals(BigRatio.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
+                     reader.readFirst("#e999999999999999999999999999999999999999999999999999999999999999999999.999"))
 
-        val badNumbers = arrayOf("#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##", "#e#i1", "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1")
+        val badNumbers = arrayOf("#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##",
+                                 "#e#i1", "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1")
         for (bad in badNumbers) {
             try {
                 reader.readFirst(bad)
@@ -146,7 +146,6 @@ class ReaderTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: illegal use of '.'", e.message)
         }
-
     }
 
     @Test
@@ -160,7 +159,6 @@ class ReaderTest : AbstractTest() {
             } catch (e: IllegalSyntaxException) {
                 assertEquals("read: illegal use of '.'", e.message)
             }
-
         }
     }
 
@@ -178,7 +176,6 @@ class ReaderTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: unexpected list terminator: )", e.message)
         }
-
     }
 
     @Test
@@ -302,7 +299,6 @@ class ReaderTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: unknown escape sequence \\x in string", e.message)
         }
-
     }
 
     @Test
@@ -315,7 +311,6 @@ class ReaderTest : AbstractTest() {
             } catch (e: IllegalSyntaxException) {
                 assertEquals("read: bad syntax: " + bad, e.message)
             }
-
         }
     }
 
@@ -329,7 +324,6 @@ class ReaderTest : AbstractTest() {
             } catch (e: IllegalSyntaxException) {
                 assertEquals("read: bad character constant: #\\" + u, e.message)
             }
-
         }
     }
 
@@ -371,5 +365,11 @@ class ReaderTest : AbstractTest() {
         assertEquals(Keyword.intern("a"), reader.readFirst(":a"))
         assertEquals(Keyword.intern("test"), reader.readFirst(":test"))
         assertEquals(Keyword.intern("_"), reader.readFirst(":_"))
+        try {
+            reader.readFirst(":")
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // success
+        }
     }
 }
