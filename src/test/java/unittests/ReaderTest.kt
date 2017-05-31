@@ -188,16 +188,16 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadQuote() {
-        assertEquals(list(s(Quote.QUOTE.toString()), 1L), reader.readFirst("'1"))
-        assertEquals(list(s(Quote.QUOTE.toString()), list<Any?>(1L, "test")), reader.readFirst("'(1 \"test\")"))
-        assertEquals(list(s(Quote.QUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"))
+        assertEquals(list(Quote.Companion.QUOTE_SYMBOL, 1L), reader.readFirst("'1"))
+        assertEquals(list(Quote.Companion.QUOTE_SYMBOL, list<Any?>(1L, "test")), reader.readFirst("'(1 \"test\")"))
+        assertEquals(list(Quote.Companion.QUOTE_SYMBOL, list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("''1"))
     }
 
     @Test
     fun testReadQuasiquote() {
-        assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), 1L), reader.readFirst("`1"))
-        assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list<Any?>(1L, "test")), reader.readFirst("`(1 \"test\")"))
-        assertEquals(list(s(Quasiquote.QUASIQUOTE.toString()), list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"))
+        assertEquals(list(Quasiquote.Companion.QUASIQUOTE_SYMBOL, 1L), reader.readFirst("`1"))
+        assertEquals(list(Quasiquote.Companion.QUASIQUOTE_SYMBOL, list<Any?>(1L, "test")), reader.readFirst("`(1 \"test\")"))
+        assertEquals(list(Quasiquote.Companion.QUASIQUOTE_SYMBOL, list(s(Quote.QUOTE.toString()), 1L)), reader.readFirst("`'1"))
     }
 
     @Test

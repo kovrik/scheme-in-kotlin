@@ -18,16 +18,10 @@ enum class Quote : ISpecialForm {
 
         val QUOTE_SYMBOL: Symbol = Symbol.intern(QUOTE.toString())
 
-        fun quote(obj: Any): List<*> {
-            return Cons.list(QUOTE, obj)
-        }
+        fun quote(obj: Any) = Cons.list(QUOTE, obj)
     }
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        return expression[1]
-    }
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) = expression[1]
 
-    override fun toString(): String {
-        return "quote"
-    }
+    override fun toString() = "quote"
 }

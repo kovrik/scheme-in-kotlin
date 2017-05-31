@@ -106,8 +106,7 @@ enum class Quasiquote : ISpecialForm {
                     return Append.append(result, evaluator.eval(list[n + 1], env))
                 }
                 if (isList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
-                    throw IllegalSyntaxException
-                            .of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
+                    throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
                 result = Append.append(result, list(o))
@@ -201,7 +200,5 @@ enum class Quasiquote : ISpecialForm {
         return setProc(result)
     }
 
-    override fun toString(): String {
-        return "quasiquote"
-    }
+    override fun toString() = "quasiquote"
 }

@@ -17,7 +17,5 @@ enum class UnquoteSplicing : ISpecialForm {
         throw IllegalSyntaxException.of(toString(), expression, "not in quasiquote")
     }
 
-    override fun toString(): String {
-        return "unquote-splicing"
-    }
+    override fun toString() = "unquote-splicing"
 }
