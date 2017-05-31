@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Type
 
-class BitNot : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.BitOp::class.java))) {
+open class BitNot : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.BitOp::class.java))) {
 
     override val isPure = true
     override val name = "bit-not"

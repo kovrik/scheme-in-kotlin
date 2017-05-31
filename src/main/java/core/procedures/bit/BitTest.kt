@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Type
 
-class BitTest : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.BitOp::class.java, Long::class.javaObjectType))) {
+open class BitTest : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.BitOp::class.java, Long::class.javaObjectType))) {
 
     override val isPure = true
     override val name = "bit-test"

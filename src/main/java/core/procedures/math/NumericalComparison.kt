@@ -46,10 +46,7 @@ class NumericalComparison private constructor(override val name: String, private
             f = f.toLong()
             s = s.toLong()
         }
-        if (!predicate.test(f as Comparable<Number>, s)) {
-            return false
-        }
-        return true
+        return predicate.test(f as Comparable<Number>, s)
     }
 
     override operator fun invoke(vararg args: Any?): Boolean {

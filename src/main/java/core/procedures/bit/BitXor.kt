@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Type
 
-class BitXor : AFn(FnArgs(min = 2, rest = Type.BitOp::class.java)) {
+open class BitXor : AFn(FnArgs(min = 2, rest = Type.BitOp::class.java)) {
 
     override val isPure = true
     override val name = "bit-xor"

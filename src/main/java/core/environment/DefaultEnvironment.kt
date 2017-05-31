@@ -337,16 +337,22 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Bitwise */
                 BitAnd(),
+                object : BitAnd() { override val name = "bitwise-and" },
                 BitAndNot(),
                 BitClear(),
                 BitFlip(),
                 BitNot(),
+                object : BitNot() { override val name = "bitwise-not" },
                 BitOr(),
+                object : BitOr() { override val name = "bitwise-ior" },
                 BitSet(),
                 BItShiftLeft(),
                 BitShiftRight(),
+                ArithmeticShift(),
                 BitTest(),
+                object: BitTest() { override val name = "bitwise-bit-set?" },
                 BitXor(),
+                object : BitXor() { override val name = "bitwise-xor" },
 
                 /* Predicates */
                 Predicate.IS_NULL,
