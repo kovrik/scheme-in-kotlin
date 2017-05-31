@@ -7,7 +7,6 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 
-import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -17,8 +16,7 @@ class Sin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     override val name = "sin"
 
     override operator fun invoke(arg: Any?): Number {
-        if (arg == null) throw NullPointerException()
-        return sin(arg as Number)
+        return sin(arg!! as Number)
     }
 
     companion object {

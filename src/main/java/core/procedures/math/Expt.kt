@@ -10,7 +10,6 @@ import core.writer.Writer
 import java.lang.ArithmeticException
 import java.lang.Class
 import java.lang.Math
-import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -26,8 +25,8 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
     companion object {
         /* TODO: Optimize Special Cases! */
         fun expt(base: Number?, exponent: Number?): Number? {
-            if (base     == null) throw NullPointerException()
-            if (exponent == null) throw NullPointerException()
+            base!!
+            exponent!!
             /* Special cases
              *
              * Special cases when w is a real number:

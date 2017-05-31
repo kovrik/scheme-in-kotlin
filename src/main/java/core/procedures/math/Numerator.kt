@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 
@@ -14,8 +13,7 @@ class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Big
     override val name = "numerator"
 
     override operator fun invoke(arg: Any?): Number? {
-        if (arg == null) throw NullPointerException()
-        return numerator(arg)
+        return numerator(arg!!)
     }
 
     private fun numerator(o: Any): Number {

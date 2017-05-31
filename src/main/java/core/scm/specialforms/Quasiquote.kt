@@ -21,7 +21,6 @@ import core.scm.MutableVector
 import core.scm.Symbol
 import core.scm.specialforms.Unquote.UNQUOTE
 import core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING
-import java.lang.NullPointerException
 
 import kotlin.collections.Set
 
@@ -42,7 +41,6 @@ enum class Quasiquote : ISpecialForm {
         if (expression.size != 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
-        if (expression[1] == null) throw NullPointerException()
         return quasiquote(expression[1]!!, env, evaluator)
     }
 

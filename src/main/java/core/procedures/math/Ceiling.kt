@@ -14,7 +14,7 @@ class Ceiling : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.
     override val name = "ceiling"
 
     override operator fun invoke(arg: Any?): Number? {
-        if (arg == null) throw NullPointerException()
+        arg!!
         return when (arg) {
             is Long, is Int, is Short, is Byte, is BigInteger -> arg as Number?
             is Double -> Math.ceil((arg as Double?)!!)

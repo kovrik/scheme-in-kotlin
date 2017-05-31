@@ -3,7 +3,6 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
-import java.lang.NullPointerException
 import java.math.BigDecimal
 
 class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
@@ -20,7 +19,7 @@ class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
         fun exp(number: Number?): Number? {
-            if (number == null) throw NullPointerException()
+            number!!
             if (number is Double) {
                 if (number == Double.NEGATIVE_INFINITY) {
                     return 0L

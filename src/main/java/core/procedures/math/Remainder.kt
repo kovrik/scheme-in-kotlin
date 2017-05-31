@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -55,8 +54,6 @@ class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Lon
     override val name = NAME
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        if (arg1 == null) throw NullPointerException()
-        if (arg2 == null) throw NullPointerException()
-        return remainder(arg1 as Number, arg2 as Number)
+        return remainder(arg1!! as Number, arg2!! as Number)
     }
 }

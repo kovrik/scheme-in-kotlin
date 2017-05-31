@@ -26,10 +26,8 @@ class Max : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
     }
 
     private fun max(first: Number?, second: Number?): Number {
-        if (first  == null) throw NullPointerException()
-        if (second == null) throw NullPointerException()
-        var first = first
-        var second = second
+        var first = first!!
+        var second = second!!
         /* Big Ratio numbers */
         if (first is BigRatio && second is BigRatio) {
             return if (first > second) first else second

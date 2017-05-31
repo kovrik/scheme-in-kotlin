@@ -16,8 +16,7 @@ class AssocProc(override val name: String,
     private val get = Get()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        if (arg2 == null) throw NullPointerException()
-        if (Type.checkType(arg2, Type.ProperList::class.java)) {
+        if (Type.checkType(arg2!!, Type.ProperList::class.java)) {
             val list = arg2 as List<*>?
             for (n in list!!.indices) {
                 val pair = list[n]

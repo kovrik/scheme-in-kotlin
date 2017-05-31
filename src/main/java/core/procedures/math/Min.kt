@@ -26,10 +26,8 @@ class Min : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
     }
 
     private fun min(first: Number?, second: Number?): Number {
-        if (first  == null) throw NullPointerException()
-        if (second == null) throw NullPointerException()
-        var first = first
-        var second = second
+        var first = first!!
+        var second = second!!
         if (first is BigRatio && second is BigRatio) {
             return if (first < second) first else second
         }

@@ -5,7 +5,6 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 
-import java.lang.NullPointerException
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -15,7 +14,7 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
     override val name = "acos"
 
     override operator fun invoke(arg: Any?): Number? {
-        if (arg == null) throw NullPointerException()
+        arg!!
         when (arg) {
             is BigDecimal -> return acos(arg)
             is BigInteger -> return acos(arg)

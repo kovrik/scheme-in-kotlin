@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.procedures.math.Abs
 import core.scm.BigComplex
-import java.lang.NullPointerException
 
 class Magnitude : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
@@ -12,7 +11,7 @@ class Magnitude : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Num
     override val name = "magnitude"
 
     override operator fun invoke(arg: Any?): Number? {
-        if (arg == null) throw NullPointerException()
+        arg!!
         if (arg is BigComplex) return arg.magnitude()
         return Abs.abs((arg as Number?)!!)
     }

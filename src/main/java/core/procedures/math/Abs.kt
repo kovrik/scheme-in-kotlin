@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -15,8 +14,7 @@ class Abs : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Real
     override val name = "abs"
 
     override operator fun invoke(arg: Any?): Number? {
-        if (arg == null) throw NullPointerException()
-        return abs(arg as Number)
+        return abs(arg!! as Number)
     }
 
     companion object {

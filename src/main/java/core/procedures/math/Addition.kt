@@ -5,7 +5,6 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -22,7 +21,7 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
             else -> {
                 var result: Any? = 0L
                 for (arg in args) {
-                    if (arg == null) throw NullPointerException()
+                    arg!!
                     result = add(result as Number, arg as Number)
                 }
                 return result as Number
@@ -33,10 +32,8 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
     companion object {
 
         fun add(first: Number?, second: Number?): Number? {
-            if (first  == null) throw NullPointerException()
-            if (second == null) throw NullPointerException()
-            var first = first
-            var second = second
+            var first = first!!
+            var second = second!!
             /* Special cases */
             if (Utils.isZero(first)) {
                 return Utils.inexactnessTaint(second, first)

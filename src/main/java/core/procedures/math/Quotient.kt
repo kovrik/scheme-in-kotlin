@@ -14,8 +14,8 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
     override val name = "quotient"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        if (arg1 == null) throw NullPointerException()
-        if (arg2 == null) throw NullPointerException()
+        arg1!!
+        arg2!!
         /* Special cases */
         if (Utils.isOne(arg2)) {
             return Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)

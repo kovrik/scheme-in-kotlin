@@ -3,7 +3,6 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.utils.Utils
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -18,8 +17,8 @@ open class Modulo : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(L
     override val name = "modulo"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        if (arg1 == null) throw NullPointerException()
-        if (arg2 == null) throw NullPointerException()
+        arg1!!
+        arg2!!
         if (Utils.isZero(arg2)) {
             throw ArithmeticException("modulo: undefined for 0")
         }

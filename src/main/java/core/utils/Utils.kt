@@ -538,7 +538,7 @@ object Utils {
 
     /* Returns String Iterator */
     private fun stringIterator(string: CharSequence?): Iterator<Char> {
-        if (string == null) throw NullPointerException()
+        string!!
         return object : Iterator<Char> {
 
             private var index = 0

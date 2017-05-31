@@ -5,7 +5,6 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.NullPointerException
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -16,7 +15,7 @@ class Tan : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     override val name = "tan"
 
     override operator fun invoke(arg: Any?): Number {
-        if (arg == null) throw NullPointerException()
+        arg!!
         /* Special cases */
         return when {
             Utils.isZero(arg) -> 0L
