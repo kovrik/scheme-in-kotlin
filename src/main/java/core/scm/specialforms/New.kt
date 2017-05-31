@@ -22,7 +22,5 @@ enum class New : ISpecialForm {
         return reflector.newInstance(clazz, args)
     }
 
-    override fun toString(): String {
-        return "new"
-    }
+    override fun toString() = "new"
 }

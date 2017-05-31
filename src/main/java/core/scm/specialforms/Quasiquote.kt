@@ -32,7 +32,7 @@ enum class Quasiquote : ISpecialForm {
     QUASIQUOTE;
 
     companion object {
-        val QUASIQUOTE_SYMBOL: Symbol = Symbol.intern(QUASIQUOTE.toString())
+        val QUASIQUOTE_SYMBOL = Symbol.intern(QUASIQUOTE.toString())
     }
 
     private val setProc = SetProc()

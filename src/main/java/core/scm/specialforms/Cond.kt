@@ -34,7 +34,5 @@ enum class Cond : ISpecialForm {
         return Void
     }
 
-    override fun toString(): String {
-        return "cond"
-    }
+    override fun toString() = "cond"
 }

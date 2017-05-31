@@ -36,7 +36,5 @@ enum class Begin : ISpecialForm {
         return Thunk(expression[expression.size - 1], env)
     }
 
-    override fun toString(): String {
-        return "begin"
-    }
+    override fun toString() = "begin"
 }

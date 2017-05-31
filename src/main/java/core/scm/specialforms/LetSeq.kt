@@ -17,7 +17,6 @@ enum class LetSeq : ISpecialForm {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
-
         val localEnv = Environment(env)
         val bindings = expression[1] as List<List<*>>
         /* Evaluate inits */
@@ -31,7 +30,5 @@ enum class LetSeq : ISpecialForm {
         return Thunk(expression[expression.size - 1], localEnv)
     }
 
-    override fun toString(): String {
-        return "let*"
-    }
+    override fun toString() = "let*"
 }

@@ -32,7 +32,5 @@ enum class Assert : ISpecialForm {
         return true
     }
 
-    override fun toString(): String {
-        return "assert"
-    }
+    override fun toString() = "assert"
 }

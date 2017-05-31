@@ -11,7 +11,5 @@ enum class SyntaxRules : ISpecialForm {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 
-    override fun toString(): String {
-        return "syntax-rules"
-    }
+    override fun toString() = "syntax-rules"
 }

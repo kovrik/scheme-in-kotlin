@@ -84,7 +84,5 @@ enum class Do : ISpecialForm {
         return Begin.BEGIN.eval(clause, tempEnv, evaluator)
     }
 
-    override fun toString(): String {
-        return "do"
-    }
+    override fun toString() = "do"
 }

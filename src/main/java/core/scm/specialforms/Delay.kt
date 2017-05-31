@@ -26,7 +26,5 @@ enum class Delay : ISpecialForm {
         return core.scm.Delay(expr, env, evaluator)
     }
 
-    override fun toString(): String {
-        return "delay"
-    }
+    override fun toString() = "delay"
 }

@@ -62,7 +62,5 @@ enum class Define : ISpecialForm {
         return id
     }
 
-    override fun toString(): String {
-        return "define"
-    }
+    override fun toString() = "define"
 }

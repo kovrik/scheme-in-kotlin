@@ -77,7 +77,5 @@ enum class Let : ISpecialForm {
         throw IllegalSyntaxException.of(toString(), expression)
     }
 
-    override fun toString(): String {
-        return "let"
-    }
+    override fun toString() = "let"
 }

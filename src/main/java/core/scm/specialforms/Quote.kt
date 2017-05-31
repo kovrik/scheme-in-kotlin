@@ -15,8 +15,7 @@ enum class Quote : ISpecialForm {
     QUOTE;
 
     companion object {
-
-        val QUOTE_SYMBOL: Symbol = Symbol.intern(QUOTE.toString())
+        val QUOTE_SYMBOL = Symbol.intern(QUOTE.toString())
 
         fun quote(obj: Any) = Cons.list(QUOTE, obj)
     }

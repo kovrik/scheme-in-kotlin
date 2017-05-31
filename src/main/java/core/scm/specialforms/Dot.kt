@@ -68,7 +68,5 @@ enum class Dot : ISpecialForm {
         }
     }
 
-    override fun toString(): String {
-        return "."
-    }
+    override fun toString() = "."
 }

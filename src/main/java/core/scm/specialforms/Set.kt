@@ -24,7 +24,5 @@ enum class Set : ISpecialForm {
         return Void
     }
 
-    override fun toString(): String {
-        return "set!"
-    }
+    override fun toString() = "set!"
 }

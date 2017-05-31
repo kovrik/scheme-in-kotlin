@@ -9,14 +9,12 @@ enum class Else : ISpecialForm {
     ELSE;
 
     companion object {
-        val ELSE_SYMBOL: Symbol = Symbol.intern("else")
+        val ELSE_SYMBOL = Symbol.intern("else")
     }
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         throw IllegalSyntaxException.of(toString(), expression, "not allowed as an expression")
     }
 
-    override fun toString(): String {
-        return "else"
-    }
+    override fun toString() = "else"
 }

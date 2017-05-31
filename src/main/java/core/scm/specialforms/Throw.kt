@@ -20,7 +20,5 @@ enum class Throw : ISpecialForm {
         throw ThrowableWrapper((obj as Throwable?)!!)
     }
 
-    override fun toString(): String {
-        return "throw"
-    }
+    override fun toString() = "throw"
 }

@@ -28,7 +28,5 @@ enum class When : ISpecialForm {
         return Void
     }
 
-    override fun toString(): String {
-        return "when"
-    }
+    override fun toString() = "when"
 }

@@ -10,9 +10,7 @@ import core.scm.Cons
 enum class DynamicWind : ISpecialForm {
     DYNAMIC_WIND;
 
-    override fun toString(): String {
-        return "dynamic-wind"
-    }
+    override fun toString() = "dynamic-wind"
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = expression.size

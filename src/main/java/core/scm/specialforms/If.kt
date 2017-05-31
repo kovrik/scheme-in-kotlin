@@ -24,7 +24,5 @@ enum class If : ISpecialForm {
             Thunk(expression[3], env)
     }
 
-    override fun toString(): String {
-        return "if"
-    }
+    override fun toString() = "if"
 }

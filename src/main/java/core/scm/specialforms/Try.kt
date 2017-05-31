@@ -15,13 +15,11 @@ enum class Try : ISpecialForm {
 
     companion object {
         private val REFLECTOR = Reflector()
-        private val CATCH = Symbol.intern("catch")
+        private val CATCH   = Symbol.intern("catch")
         private val FINALLY = Symbol.intern("finally")
     }
 
-    override fun toString(): String {
-        return "try"
-    }
+    override fun toString() = "try"
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.isEmpty()) {
@@ -85,7 +83,7 @@ enum class Try : ISpecialForm {
             return result
         } catch (e: Throwable) {
             /* Unwrap if it is a ThrowableWrapper */
-            var ex = if (e is ThrowableWrapper) e.cause else e
+            val ex = if (e is ThrowableWrapper) e.cause else e
             /* Check if we had catch block for that type of exception (OR for any superclass) */
             for (clazz in catches.keys) {
                 if (clazz.isAssignableFrom(ex!!.javaClass)) {

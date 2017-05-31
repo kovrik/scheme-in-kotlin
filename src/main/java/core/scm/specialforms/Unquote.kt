@@ -9,7 +9,7 @@ enum class Unquote : ISpecialForm {
     UNQUOTE;
 
     companion object {
-        val UNQUOTE_SYMBOL: Symbol = Symbol.intern(UNQUOTE.toString())
+        val UNQUOTE_SYMBOL = Symbol.intern(UNQUOTE.toString())
     }
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {

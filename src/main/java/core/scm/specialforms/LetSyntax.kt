@@ -11,7 +11,5 @@ enum class LetSyntax : ISpecialForm {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 
-    override fun toString(): String {
-        return "let-syntax"
-    }
+    override fun toString() = "let-syntax"
 }

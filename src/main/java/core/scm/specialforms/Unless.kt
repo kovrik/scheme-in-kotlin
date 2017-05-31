@@ -28,7 +28,5 @@ enum class Unless : ISpecialForm {
         return Void
     }
 
-    override fun toString(): String {
-        return "unless"
-    }
+    override fun toString() = "unless"
 }

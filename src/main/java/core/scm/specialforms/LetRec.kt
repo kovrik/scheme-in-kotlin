@@ -41,7 +41,5 @@ enum class LetRec : ISpecialForm {
         return Thunk(expression[expression.size - 1], localEnv)
     }
 
-    override fun toString(): String {
-        return "letrec"
-    }
+    override fun toString() = "letrec"
 }

@@ -35,7 +35,5 @@ enum class Time : ISpecialForm {
         return result
     }
 
-    override fun toString(): String {
-        return "time"
-    }
+    override fun toString() = "time"
 }

@@ -11,7 +11,5 @@ enum class DefineSyntax : ISpecialForm {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 
-    override fun toString(): String {
-        return "define-syntax"
-    }
+    override fun toString() = "define-syntax"
 }

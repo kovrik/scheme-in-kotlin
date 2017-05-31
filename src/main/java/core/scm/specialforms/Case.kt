@@ -45,7 +45,5 @@ enum class Case : ISpecialForm {
         return Void
     }
 
-    override fun toString(): String {
-        return "case"
-    }
+    override fun toString() = "case"
 }

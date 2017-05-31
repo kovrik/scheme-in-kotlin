@@ -27,7 +27,5 @@ enum class Future : ISpecialForm {
         return future
     }
 
-    override fun toString(): String {
-        return "future"
-    }
+    override fun toString() = "future"
 }

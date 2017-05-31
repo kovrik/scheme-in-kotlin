@@ -25,7 +25,5 @@ enum class Or : ISpecialForm {
         return result
     }
 
-    override fun toString(): String {
-        return "or"
-    }
+    override fun toString() = "or"
 }

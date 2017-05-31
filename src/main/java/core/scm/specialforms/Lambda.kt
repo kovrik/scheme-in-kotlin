@@ -71,7 +71,5 @@ enum class Lambda : ISpecialForm {
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }
 
-    override fun toString(): String {
-        return "lambda"
-    }
+    override fun toString() = "lambda"
 }

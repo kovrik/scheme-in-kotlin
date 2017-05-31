@@ -11,7 +11,5 @@ enum class LetRecSyntax : ISpecialForm {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 
-    override fun toString(): String {
-        return "letrec-syntax"
-    }
+    override fun toString() = "letrec-syntax"
 }
