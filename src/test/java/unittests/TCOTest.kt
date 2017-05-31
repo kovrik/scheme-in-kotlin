@@ -1,21 +1,20 @@
 package unittests
 
-import org.junit.Test
-
 import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class TCOTest : AbstractTest() {
 
     companion object {
-        private val ITERS = 100000L
+        private const val ITERS = 100000L
     }
 
     @Test
     fun testIfTCO() {
-        val recur = "(define (recur n)" +
-                "  (if (zero? n)" +
-                "      \"DONE\"" +
-                "      (recur (- n 1))))"
+        val recur = """(define (recur n)
+                         (if (zero? n)
+                           "DONE"
+                           (recur (- n 1))))"""
         eval(recur, env)
         assertEquals("DONE", eval("(recur $ITERS)", env))
     }
