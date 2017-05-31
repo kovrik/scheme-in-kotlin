@@ -52,8 +52,8 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
              *
              *  w otherwise rational — 0.0
              */
-            if (Utils.isNaN(base) || Utils.isNaN(exponent)) {
-                return java.lang.Double.NaN
+            if ((base is Double && base.isNaN()) || (exponent is Double && exponent.isNaN())) {
+                return Double.NaN
             }
             if (Utils.isZero(base) && Utils.isZero(exponent)) {
                 return Utils.inexactnessTaint(1L, exponent)
@@ -62,15 +62,15 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                 if (base == -0.0) {
                     if (Utils.isNegative(exponent)) {
                         return if (Utils.isInteger(exponent) && Predicate.IS_ODD(exponent))
-                            java.lang.Double.NEGATIVE_INFINITY
+                            Double.NEGATIVE_INFINITY
                         else
-                            java.lang.Double.POSITIVE_INFINITY
+                            Double.POSITIVE_INFINITY
                     } else {
                         return if (Utils.isInteger(exponent) && Predicate.IS_ODD(exponent)) -0.0 else 0.0
                     }
                 }
                 return if (Utils.isNegative(exponent))
-                    java.lang.Double.valueOf(java.lang.Double.POSITIVE_INFINITY)
+                    Double.POSITIVE_INFINITY
                 else
                     Utils.inexactnessTaint(0L, base)
             }
@@ -94,12 +94,12 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
              *   w is odd  — -inf.0
              *   w is even — +inf.0
              */
-            if (base is Double && java.lang.Double.NEGATIVE_INFINITY == base) {
+            if (Double.NEGATIVE_INFINITY == base) {
                 if (Utils.isInteger(exponent)) {
                     if (Utils.isNegative(exponent)) {
                         return if (Predicate.IS_ODD(exponent)) -0.0 else 0.0
                     } else {
-                        return if (Predicate.IS_ODD(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD(exponent)) Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY
                     }
                 }
             }
@@ -107,8 +107,8 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
              *  w is negative — 0.0
              *  w is positive — +inf.0
              */
-            if (base is Double && java.lang.Double.POSITIVE_INFINITY == base) {
-                return if (Utils.isPositive(exponent)) java.lang.Double.POSITIVE_INFINITY else 0.0
+            if (Double.POSITIVE_INFINITY == base) {
+                return if (Utils.isPositive(exponent)) Double.POSITIVE_INFINITY else 0.0
             }
             /* (expt z -inf.0) for positive z:
              *
@@ -120,28 +120,28 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
              *  z is less than 1.0 — 0.0
              *  z is greater than 1.0 — +inf.0
              */
-            if (exponent is Double && java.lang.Double.isInfinite(exponent)) {
+            if (exponent == Double.POSITIVE_INFINITY || exponent == Double.NEGATIVE_INFINITY) {
                 if (base is BigComplex) {
-                    return java.lang.Double.NaN
+                    return Double.NaN
                 }
                 if (Utils.isZero(base)) {
-                    if (exponent == java.lang.Double.NEGATIVE_INFINITY) {
+                    if (exponent == Double.NEGATIVE_INFINITY) {
                         throw ArithmeticException("expt: undefined for $base and ${Writer.write(exponent)}")
                     } else {
                         return 0L
                     }
                 }
-                if (exponent == java.lang.Double.NEGATIVE_INFINITY) {
+                if (exponent == Double.NEGATIVE_INFINITY) {
                     if (NumericalComparison.LESS(base, 1L)) {
-                        return java.lang.Double.POSITIVE_INFINITY
+                        return Double.POSITIVE_INFINITY
                     } else if (NumericalComparison.GREATER(base, 1L)) {
                         return 0.0
                     }
-                } else if (exponent == java.lang.Double.POSITIVE_INFINITY) {
+                } else if (exponent == Double.POSITIVE_INFINITY) {
                     if (NumericalComparison.LESS(base, 1L)) {
                         return 0.0
                     } else if (NumericalComparison.GREATER(base, 1L)) {
-                        return java.lang.Double.POSITIVE_INFINITY
+                        return Double.POSITIVE_INFINITY
                     }
                 }
             }
@@ -172,9 +172,9 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                         return 0L
                     }
                     if (base.toLong() > 0) {
-                        return java.lang.Double.POSITIVE_INFINITY
+                        return Double.POSITIVE_INFINITY
                     } else {
-                        return if (Predicate.IS_ODD(exponent)) java.lang.Double.NEGATIVE_INFINITY else java.lang.Double.POSITIVE_INFINITY
+                        return if (Predicate.IS_ODD(exponent)) Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY
                     }
                 }
             }
@@ -206,10 +206,10 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
             }
             /* Double */
             val result = Math.pow(base.toDouble(), exponent.toDouble())
-            if (java.lang.Double.isInfinite(result)) {
+            if (result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY) {
                 return Utils.toBigDecimal(base).pow(exponent.toInt())
             }
-            if (java.lang.Double.isNaN(result)) {
+            if (result is Double && result.isNaN()) {
                 return BigComplex.of(base).expt(BigComplex.of(exponent))
             }
             return result
@@ -221,7 +221,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                 return n.pow(i)
             } catch (ex: ArithmeticException) {
                 // FIXME NEGATIVE_INFINITY and zero in some cases?
-                return java.lang.Double.POSITIVE_INFINITY
+                return Double.POSITIVE_INFINITY
             }
         }
 
@@ -232,7 +232,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                 return n.pow(i).setScale(scale, Utils.ROUNDING_MODE)
             } catch (ex: ArithmeticException) {
                 // FIXME NEGATIVE_INFINITY and zero in some cases?
-                return java.lang.Double.POSITIVE_INFINITY
+                return Double.POSITIVE_INFINITY
             }
         }
     }

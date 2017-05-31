@@ -74,14 +74,14 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
         }
         if (numerator is Float && denominator is Float) {
             val result = numerator.toFloat() / denominator.toFloat()
-            if (java.lang.Float.isNaN(result) || java.lang.Float.isInfinite(result)) {
+            if (!result.isFinite()) {
                 return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
             }
             return result
         }
         if (numerator is Double || denominator is Double || numerator is Float || denominator is Float) {
             val result = numerator.toDouble() / denominator.toDouble()
-            if (java.lang.Double.isNaN(result) || java.lang.Double.isInfinite(result)) {
+            if (!result.isFinite()) {
                 return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
             }
             return result

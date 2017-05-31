@@ -129,7 +129,7 @@ class NumberTest : AbstractTest() {
         // sqrt
         assertEquals(5.0, eval("(sqrt 25)", env))
         assertEquals(3.0, eval("(sqrt 9.0)", env))
-        assertTrue(java.lang.Double.isNaN(eval("(sqrt -5)", env) as Double))
+        assertTrue((eval("(sqrt -5)", env) as Double).isNaN())
 
         assertEquals(BigRatio.valueOf("1", "100"), eval("(/ 1 10 10)", env))
         assertEquals(BigRatio.valueOf("26", "5"), eval("(+ 1/5 (short 5))", env))
@@ -529,18 +529,18 @@ class NumberTest : AbstractTest() {
         assertEquals(1L, eval("(expt 0 0)", env))
         assertEquals(1L, eval("(expt 0.0 0)", env))
         assertEquals(1.0, eval("(expt 0 0.0)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt 0.0 -5)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.0 -5)", env))
         assertEquals(0.0, eval("(expt 0.0 5)", env))
-        assertEquals(java.lang.Double.NEGATIVE_INFINITY, eval("(expt -0.0 -5)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt -0.0 -6)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -0.0 -5)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt -0.0 -6)", env))
         assertEquals(-0.0, eval("(expt -0.0 5)", env))
         assertEquals(0.0, eval("(expt -0.0 6)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt +inf.0 2)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt +inf.0 2)", env))
         assertEquals(0.0, eval("(expt +inf.0 -2)", env))
         assertEquals(0.0, eval("(expt -inf.0 -2)", env))
         assertEquals(-0.0, eval("(expt -inf.0 -3)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt -inf.0 2)", env))
-        assertEquals(java.lang.Double.NEGATIVE_INFINITY, eval("(expt -inf.0 3)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt -inf.0 2)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -inf.0 3)", env))
         assertEquals(0L, eval("(expt 0 +inf.0)", env))
         try {
             eval("(expt 0 -inf.0)", env)
@@ -550,14 +550,14 @@ class NumberTest : AbstractTest() {
         }
 
         assertEquals(0.0, eval("(expt 0.5 +inf.0)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt 5 +inf.0)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt 0.5 -inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt 5 +inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.5 -inf.0)", env))
         assertEquals(0.0, eval("(expt 5 -inf.0)", env))
-        assertEquals(java.lang.Double.NaN, eval("(expt 2+3i -inf.0)", env))
-        assertEquals(java.lang.Double.NaN, eval("(expt 0 +nan.0)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt 2 2147483648", env))
-        assertEquals(java.lang.Double.NEGATIVE_INFINITY, eval("(expt -2 2147483647", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(expt -2 2147483648", env))
+        assertEquals(Double.NaN, eval("(expt 2+3i -inf.0)", env))
+        assertEquals(Double.NaN, eval("(expt 0 +nan.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt 2 2147483648", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -2 2147483647", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt -2 2147483648", env))
         assertEquals(9.610000000000001, eval("(expt -3.1 2)", env))
         assertEquals(BigComplex(BigDecimal("-0.0029666184064708"), BigDecimal("0.0009639127514694")),
                 eval("(expt -3.1 -5.1)", env))
@@ -630,7 +630,7 @@ class NumberTest : AbstractTest() {
         assertEquals(true,  eval("(> (+ 1 $big2) $big2)", env))
         assertEquals(true,  eval("(< (+ 1 2) $big2)", env))
 
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(sqrt $big2)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(sqrt $big2)", env))
         assertEquals(BigInteger("-99999999999999999999999999999999999999999999999999"),
                 eval("(- 99999999999999999999999999999999999999999999999999)", env))
         assertEquals(1e247, eval("(+ 1/23 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.1)", env))
@@ -726,10 +726,10 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testSpecialNumbers() {
-        assertEquals(java.lang.Double.NaN, eval("+nan.0", env))
-        assertEquals(java.lang.Double.NaN, eval("-nan.0", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("+inf.0", env))
-        assertEquals(java.lang.Double.NEGATIVE_INFINITY, eval("-inf.0", env))
+        assertEquals(Double.NaN, eval("+nan.0", env))
+        assertEquals(Double.NaN, eval("-nan.0", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("+inf.0", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("-inf.0", env))
     }
 
     @Test
@@ -884,7 +884,7 @@ class NumberTest : AbstractTest() {
         assertEquals(0.36787944117144233, eval("(exp -1)", env))
         assertEquals(2.117000016612675, eval("(exp 3/4)", env))
         assertEquals(2.718281828459045, eval("(exp 1/1)", env))
-        assertEquals(java.lang.Double.POSITIVE_INFINITY, eval("(exp 999999999)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(exp 999999999)", env))
         assertEquals(0.0, eval("(exp -999999999)", env))
     }
 
@@ -892,12 +892,12 @@ class NumberTest : AbstractTest() {
     fun testLog() {
         assertEquals(0L, eval("(log 1)", env))
         assertEquals(2.3978952727983707, eval("(log 11)", env))
-        assertEquals(java.lang.Double.NaN, eval("(log -1)", env))
+        assertEquals(Double.NaN, eval("(log -1)", env))
         assertEquals(-0.2876820724517809, eval("(log 3/4)", env))
         assertEquals(0L, eval("(log 1/1)", env))
         assertEquals(20.72326583594641, eval("(log 999999999)", env))
-        assertEquals(java.lang.Double.NaN, eval("(log -999999999)", env))
-        assertEquals(java.lang.Double.NEGATIVE_INFINITY, eval("(log 0.0)", env))
+        assertEquals(Double.NaN, eval("(log -999999999)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env))
         assertEquals(110.52408446371419, eval("(log 999999999999999999999999999999999999999999999999)", env))
         assertEquals(135.8525204866487, eval("(log 99999999999999999999999999999999999999999999999999999999999)", env))
         assertEquals(135630.27870981017, eval("(log (expt 3 123456))", env))

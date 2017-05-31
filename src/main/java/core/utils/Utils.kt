@@ -300,8 +300,8 @@ object Utils {
         return when (o) {
             !is Number     -> false
             is BigComplex  -> false
-            is Double      -> !java.lang.Double.isInfinite(o) && !java.lang.Double.isNaN(o)
-            is Float       -> !java.lang.Float.isInfinite(o) && !java.lang.Float.isNaN(o)
+            is Double      -> o.isFinite()
+            is Float       -> o.isFinite()
             else           -> true
         }
     }
@@ -324,7 +324,7 @@ object Utils {
             is Long, is Int, is BigInteger, is Short, is Byte -> true
             is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
             is BigRatio    -> o.isDenominatorEqualToOne
-            is Double      -> o as Double? == Math.floor(o) && !java.lang.Double.isInfinite(o)
+            is Double      -> o as Double? == Math.floor(o) && o.isFinite()
             else           -> false
         }
     }
@@ -351,7 +351,7 @@ object Utils {
         return when (o) {
             null          -> false
             is Long       -> (o as Long?)!!.toInt() == 1
-            is Double     -> java.lang.Double.compare((o as Double?)!!, 1.0) == 0
+            is Double     -> o == 1
             is BigRatio   -> o.isOne
             is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
             is Int        -> o as Int? == 1
@@ -405,15 +405,11 @@ object Utils {
 
     fun isFinite(number: Number?): Boolean {
         return when (number) {
-            null      -> true
-            is Double -> java.lang.Double.isFinite((number as Double?)!!)
-            is Float  -> java.lang.Float.isFinite((number as Float?)!!)
+            is Double -> number.isFinite()
+            is Float  -> number.isFinite()
             else      -> true
         }
     }
-
-    fun isNaN(number: Number?) = number is Double && java.lang.Double.isNaN((number as Double?)!!) ||
-                                 number is Float && java.lang.Float.isNaN((number as Float?)!!)
 
     /**
      * Inexactness 'taint'
@@ -474,7 +470,6 @@ object Utils {
     /* Upcast number if required */
     fun upcast(number: Number?): Number? {
         return when (number) {
-            null     -> null
             is Byte, is Short, is Int -> number.toLong()
             is Float -> number.toDouble()
             else     -> number

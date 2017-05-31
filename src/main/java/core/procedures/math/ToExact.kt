@@ -30,7 +30,7 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
             }
             if (o is Float) {
                 val f = o
-                if (java.lang.Float.isInfinite(f) || java.lang.Float.isNaN(f)) {
+                if (!f.isFinite()) {
                     throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(f))
                 }
                 /* Check if Double is integral */
@@ -40,15 +40,14 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
                 return doubleToExact(f.toDouble())
             }
             if (o is Double) {
-                val d = o
-                if (java.lang.Double.isInfinite(d) || java.lang.Double.isNaN(d)) {
-                    throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(d))
+                if (!o.isFinite()) {
+                    throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(o))
                 }
                 /* Check if Double is integral */
-                if (d == Math.floor(d)) {
-                    return d
+                if (o == Math.floor(o)) {
+                    return o
                 }
-                return doubleToExact(d)
+                return doubleToExact(o)
             }
             if (o is BigDecimal) {
                 return bigDecimalToExact(o)

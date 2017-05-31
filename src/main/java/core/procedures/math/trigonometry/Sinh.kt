@@ -33,7 +33,7 @@ class Sinh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         internal fun sinh(bd: BigDecimal): Double {
             val v = bd.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite()-> Double.NaN
                 else -> Math.sinh(v)
             }
         }
@@ -41,7 +41,7 @@ class Sinh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         internal fun sinh(bi: BigInteger): Double {
             val v = bi.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite() -> Double.NaN
                 else -> Math.sinh(v)
             }
         }
@@ -53,8 +53,8 @@ class Sinh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             val re = sinh(x) * Cos.cos(y)
             val im = Cosh.cosh(x) * Sin.sin(y)
             return when {
-                java.lang.Double.isInfinite(re) || java.lang.Double.isNaN(re) -> java.lang.Double.NaN
-                java.lang.Double.isInfinite(im) || java.lang.Double.isNaN(im) -> java.lang.Double.NaN
+                !re.isFinite() -> Double.NaN
+                !im.isFinite() -> Double.NaN
                 else -> BigComplex(re, im)
             }
         }

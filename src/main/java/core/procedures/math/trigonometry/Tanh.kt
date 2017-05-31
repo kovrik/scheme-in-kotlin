@@ -31,7 +31,7 @@ class Tanh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
     private fun tanh(bd: BigDecimal): Double {
         val v = bd.toDouble()
         return when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            !v.isFinite() -> Double.NaN
             else -> Math.tanh(v)
         }
     }
@@ -39,19 +39,19 @@ class Tanh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
     private fun tanh(bi: BigInteger): Double {
         val v = bi.toDouble()
         return when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            !v.isFinite() -> Double.NaN
             else -> Math.tanh(v)
         }
     }
 
     private fun tanh(c: BigComplex): Number {
         val sinh = Sinh.sinh(c)
-        if (sinh is Double && (java.lang.Double.isInfinite(sinh) || java.lang.Double.isNaN(sinh))) {
-            return java.lang.Double.NaN
+        if (sinh is Double && !sinh.isFinite()) {
+            return Double.NaN
         }
         val cosh = Cosh.cosh(c)
-        if (cosh is Double && (java.lang.Double.isInfinite(cosh) || java.lang.Double.isNaN(cosh))) {
-            return java.lang.Double.NaN
+        if (cosh is Double && !cosh.isFinite()) {
+            return Double.NaN
         }
         return (sinh as BigComplex).divide(cosh)
     }

@@ -22,19 +22,19 @@ class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         fun exp(number: Number?): Number? {
             if (number == null) throw NullPointerException()
             if (number is Double) {
-                if (number == java.lang.Double.NEGATIVE_INFINITY) {
+                if (number == Double.NEGATIVE_INFINITY) {
                     return 0L
                 }
-                if (java.lang.Double.isNaN(number) || java.lang.Double.isInfinite(number)) {
+                if (!number.isFinite()) {
                     return number
                 }
                 return Math.exp(number.toDouble())
             }
             if (number is Float) {
-                if (number == java.lang.Float.NEGATIVE_INFINITY) {
+                if (number == Float.NEGATIVE_INFINITY) {
                     return 0L
                 }
-                if (java.lang.Float.isNaN(number) || java.lang.Float.isInfinite(number)) {
+                if (!number.isFinite()) {
                     return number
                 }
                 return Math.exp(number.toDouble())

@@ -18,7 +18,7 @@ class JavaInteropTest : AbstractTest() {
     fun testJavaStaticMethods() {
         System.setProperty("TESTKEY", "TESTVALUE")
         assertEquals("TESTVALUE", eval("(System/getProperty \"TESTKEY\")", env))
-        assertEquals(java.lang.Short.valueOf("5"), eval("(Short/parseShort \"12\" 3)", env))
+        assertEquals(5.toShort(), eval("(Short/parseShort \"12\" 3)", env))
     }
 
     @Test

@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
-import java.lang.Double
 
 import java.lang.NullPointerException
 import java.math.BigDecimal
@@ -24,7 +23,7 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             is BigRatio   -> return acos(arg.toBigDecimal())
             else -> {
                 val acos = Math.acos((arg as Number).toDouble())
-                if (Double.isNaN(acos)) {
+                if (acos.isNaN()) {
                     return acos(BigComplex(arg))
                 }
                 return acos
@@ -34,11 +33,11 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
     private fun acos(bd: BigDecimal): Number {
         val v = bd.toDouble()
-        if (Double.isInfinite(v) || Double.isNaN(v)) {
+        if (!v.isFinite()) {
             return Double.NaN
         } else {
             val acos = Math.acos(v)
-            if (Double.isNaN(acos)) {
+            if (acos.isNaN()) {
                 return acos(BigComplex(bd))
             }
             return acos
@@ -47,11 +46,11 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
     private fun acos(bi: BigInteger): Number {
         val v = bi.toDouble()
-        if (Double.isInfinite(v) || Double.isNaN(v)) {
+        if (!v.isFinite()) {
             return Double.NaN
         } else {
             val acos = Math.acos(v)
-            if (Double.isNaN(acos)) {
+            if (acos.isNaN()) {
                 return acos(BigComplex(bi))
             }
             return acos
@@ -73,11 +72,11 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             signum = -i.signum()
         }
         val a = r.toDouble()
-        if (Double.isInfinite(a) || Double.isNaN(a)) {
+        if (!a.isFinite()) {
             return Double.NaN
         }
         val b = i.toDouble()
-        if (Double.isInfinite(b) || Double.isNaN(b)) {
+        if (!b.isFinite()) {
             return Double.NaN
         }
 
@@ -88,12 +87,12 @@ class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         val B = (L + R) / 2
 
         val re = Math.acos(A)
-        if (Double.isInfinite(re) || Double.isNaN(re)) {
+        if (!re.isFinite()) {
             return Double.NaN
         }
 
         val im = Math.log(B + Math.sqrt(B * B - 1))
-        if (Double.isInfinite(im) || Double.isNaN(im)) {
+        if (!im.isFinite()) {
             return Double.NaN
         }
         return BigComplex(re, signum * im)

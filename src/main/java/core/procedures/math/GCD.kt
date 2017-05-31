@@ -48,12 +48,8 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
         }
 
         internal fun gcd(a: Double, b: Double): Number {
-            if (a.isInfinite() || a.isNaN()) {
-                throw WrongTypeException(NAME, "Integer", a)
-            }
-            if (b.isInfinite() || b.isNaN()) {
-                throw WrongTypeException(NAME, "Integer", b)
-            }
+            if (!a.isFinite()) throw WrongTypeException(NAME, "Integer", a)
+            if (!b.isFinite()) throw WrongTypeException(NAME, "Integer", b)
             if (a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0) {
                 return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)))
             }

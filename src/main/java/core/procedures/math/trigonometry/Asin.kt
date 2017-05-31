@@ -5,7 +5,6 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-import java.lang.Double
 
 import java.lang.NullPointerException
 import java.math.BigDecimal
@@ -27,7 +26,7 @@ class Asin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             arg is BigRatio   -> return asin(arg.toBigDecimal())
             else -> {
                 val asin = Math.asin((arg as Number).toDouble())
-                if (Double.isNaN(asin)) {
+                if (asin.isNaN()) {
                     return asin(BigComplex(arg))
                 }
                 return asin
@@ -37,11 +36,11 @@ class Asin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
     private fun asin(bd: BigDecimal): Number {
         val v = bd.toDouble()
-        if (Double.isInfinite(v) || Double.isNaN(v)) {
+        if (!v.isFinite()) {
             return Double.NaN
         } else {
             val asin = Math.asin(v)
-            if (Double.isNaN(asin)) {
+            if (asin.isNaN()) {
                 return asin(BigComplex(bd))
             }
             return asin
@@ -50,11 +49,11 @@ class Asin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
     private fun asin(bi: BigInteger): Number {
         val v = bi.toDouble()
-        if (Double.isInfinite(v) || Double.isNaN(v)) {
+        if (!v.isFinite()) {
             return Double.NaN
         } else {
             val asin = Math.asin(v)
-            if (Double.isNaN(asin)) {
+            if (asin.isNaN()) {
                 return asin(BigComplex(bi))
             }
             return asin
@@ -76,11 +75,11 @@ class Asin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             signum = i.signum()
         }
         val a = r.toDouble()
-        if (Double.isInfinite(a) || Double.isNaN(a)) {
+        if (!a.isFinite()) {
             return Double.NaN
         }
         val b = i.toDouble()
-        if (Double.isInfinite(b) || Double.isNaN(b)) {
+        if (!b.isFinite()) {
             return Double.NaN
         }
 
@@ -91,12 +90,12 @@ class Asin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         val B = (L + R) / 2
 
         val re = Math.asin(A)
-        if (Double.isInfinite(re) || Double.isNaN(re)) {
+        if (!re.isFinite()) {
             return Double.NaN
         }
 
         val im = Math.log(B + Math.sqrt(B * B - 1))
-        if (Double.isInfinite(im) || Double.isNaN(im)) {
+        if (!im.isFinite()) {
             return Double.NaN
         }
         return BigComplex(re, signum * im)

@@ -33,7 +33,7 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         internal fun cosh(bd: BigDecimal): Double {
             val v = bd.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite() -> Double.NaN
                 else -> Math.cosh(v)
             }
         }
@@ -41,7 +41,7 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         internal fun cosh(bi: BigInteger): Double {
             val v = bi.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite() -> Double.NaN
                 else -> Math.cosh(v)
             }
         }
@@ -53,8 +53,8 @@ class Cosh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
             val re = Cosh.cosh(x) * Cos.cos(y)
             val im = Sinh.sinh(x) * Sin.sin(y)
             return when {
-                java.lang.Double.isInfinite(re) || java.lang.Double.isNaN(re) -> java.lang.Double.NaN
-                java.lang.Double.isInfinite(im) || java.lang.Double.isNaN(im) -> java.lang.Double.NaN
+                !re.isFinite() -> Double.NaN
+                !im.isFinite() -> Double.NaN
                 else -> BigComplex(re, im)
             }
         }

@@ -77,14 +77,14 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
         }
         if (first is Float && second is Float) {
             val result = first.toFloat() - second.toFloat()
-            if (java.lang.Float.isNaN(result) || java.lang.Float.isInfinite(result)) {
+            if (!result.isFinite()) {
                 return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second))
             }
             return result
         }
         if (first is Double || second is Double || first is Float || second is Float) {
             val result = first.toDouble() - second.toDouble()
-            if (java.lang.Double.isNaN(result) || java.lang.Double.isInfinite(result)) {
+            if (!result.isFinite()) {
                 return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second))
             }
             return result

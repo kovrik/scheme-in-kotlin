@@ -38,7 +38,7 @@ class Cos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         fun cos(bd: BigDecimal): Double {
             val v = bd.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite() -> Double.NaN
                 else -> Math.cos(v)
             }
         }
@@ -46,7 +46,7 @@ class Cos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         fun cos(bi: BigInteger): Double {
             val v = bi.toDouble()
             return when {
-                java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+                !v.isFinite() -> Double.NaN
                 else -> Math.cos(v)
             }
         }

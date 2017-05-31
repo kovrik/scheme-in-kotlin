@@ -31,7 +31,7 @@ class Tan : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     private fun tan(bd: BigDecimal): Double {
         val v = bd.toDouble()
         return when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            !v.isFinite() -> Double.NaN
             else -> Math.tan(v)
         }
     }
@@ -39,7 +39,7 @@ class Tan : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     private fun tan(bi: BigInteger): Double {
         val v = bi.toDouble()
         return when {
-            java.lang.Double.isInfinite(v) || java.lang.Double.isNaN(v) -> java.lang.Double.NaN
+            !v.isFinite() -> Double.NaN
             else -> Math.tan(v)
         }
     }

@@ -62,7 +62,7 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */
         private fun logBig(number: BigDecimal): Number {
             var number = number
-            if (java.lang.Double.isFinite(number.toDouble())) {
+            if (number.toDouble().isFinite()) {
                 return Math.log(number.toDouble())
             }
             val digits = integerDigits(number)
