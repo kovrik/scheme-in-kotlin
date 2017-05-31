@@ -5,11 +5,13 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.ExInfoException
 import core.exceptions.ThrowableWrapper
+import core.reader.FileReader
 import core.reader.Reader
 import core.reader.StringReader
 import core.scm.*
 import core.writer.Writer
 import java.io.BufferedInputStream
+import java.io.File
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -29,15 +31,10 @@ object Repl {
                                             .forEach { evaluator.macroexpandAndEvaluate(it, defaultEnvironment) }
     }
 
-    @JvmStatic var currentInputPort = InputPort(BufferedInputStream(System.`in`))
+    @JvmStatic var currentInputPort  = InputPort(BufferedInputStream(System.`in`))
     @JvmStatic var currentOutputPort = OutputPort(System.out)
 
     private val reader = Reader(currentInputPort.inputStream)
-
-    @Throws(IOException::class)
-    @JvmStatic fun main(args: Array<String>) {
-        repl(WELCOME, PROMPT, defaultEnvironment)
-    }
 
     private fun getNextID(): Symbol? {
         val i = symCounter.incrementAndGet()
@@ -47,6 +44,25 @@ object Repl {
         return Symbol.intern("$$i")
     }
 
+    @Throws(IOException::class)
+    @JvmStatic fun main(args: Array<String>) {
+        when {
+            args.isEmpty() -> repl(WELCOME, PROMPT, defaultEnvironment)
+            else           -> evaluateFile(args[0], defaultEnvironment)
+        }
+    }
+
+    /**
+     * Read and evaluate a file and then exit
+     */
+    @Throws(IOException::class)
+    private fun evaluateFile(filename: String, env: Environment) {
+        FileReader().read(File(filename)).forEach { expr -> evaluator.macroexpandAndEvaluate(expr, env) }
+    }
+
+    /**
+     * Run REPL and evaluate user inputs
+     */
     @Throws(IOException::class)
     private fun repl(welcomeMessage: String, prompt: String, env: Environment) {
         currentOutputPort.writeln(welcomeMessage)
