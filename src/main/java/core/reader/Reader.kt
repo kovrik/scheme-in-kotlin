@@ -167,7 +167,7 @@ open class Reader : IReader {
             if (vector.isEmpty()) {
                 return vector
             }
-            return Cons.list(Quote.QUOTE_SYMBOL, vector)
+            return Quote.quote(vector)
         } else if (c == '{') {
             return readSet()
         } else if (c == '\\') {
