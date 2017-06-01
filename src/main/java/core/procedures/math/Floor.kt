@@ -17,11 +17,11 @@ class Floor : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Re
         arg!!
         return when (arg) {
             is Long, is Int, is Short, is Byte, is BigInteger -> arg as Number?
-            is Double -> Math.floor((arg as Double?)!!)
-            is Float -> Math.floor((arg as Float?)!!.toDouble())
+            is Double     -> Math.floor((arg as Double?)!!)
+            is Float      -> Math.floor((arg as Float?)!!.toDouble())
             is BigDecimal -> arg.setScale(0, BigDecimal.ROUND_DOWN)
-            is BigRatio -> arg.floor()
-            else -> Math.floor((arg as Number).toDouble())
+            is BigRatio   -> arg.floor()
+            else          -> Math.floor((arg as Number).toDouble())
         }
     }
 }

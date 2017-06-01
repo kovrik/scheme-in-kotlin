@@ -17,11 +17,11 @@ class Ceiling : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.
         arg!!
         return when (arg) {
             is Long, is Int, is Short, is Byte, is BigInteger -> arg as Number?
-            is Double -> Math.ceil((arg as Double?)!!)
-            is Float -> Math.ceil((arg as Float?)!!.toDouble())
+            is Double     -> Math.ceil((arg as Double?)!!)
+            is Float      -> Math.ceil((arg as Float?)!!.toDouble())
             is BigDecimal -> arg.setScale(0, BigDecimal.ROUND_UP)
-            is BigRatio -> arg.ceiling()
-            else -> Math.ceil((arg as Number).toDouble())
+            is BigRatio   -> arg.ceiling()
+            else          -> Math.ceil((arg as Number).toDouble())
         }
     }
 }

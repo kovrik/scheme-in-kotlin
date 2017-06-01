@@ -63,9 +63,7 @@ class Min : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
             val i = second.compareTo(Utils.toBigDecimal(first))
             return if (i > 0) first else second
         }
-        if (first.toDouble() == second.toDouble()) {
-            return first
-        } else if (first.toDouble() < second.toDouble()) {
+        if (first.toDouble() <= second.toDouble()) {
             return first
         }
         return second

@@ -16,12 +16,7 @@ class Denominator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(B
 
     private fun denominator(o: Any): Number {
         val isExact = Utils.isExact(o)
-        val exact: Number
-        if (isExact) {
-            exact = o as Number
-        } else {
-            exact = ToExact.toExact(o)
-        }
+        val exact: Number = if (isExact) (o as Number) else ToExact.toExact(o)
         if (exact is BigRatio) {
             if (!isExact) {
                 val result = BigDecimal(exact.denominator)
@@ -29,21 +24,15 @@ class Denominator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(B
             }
             return exact.denominator
         }
-        if (exact is Long || exact is Int || exact is Byte || exact is Short) {
-            return 1L
-        }
-        if (exact is Double || exact is Float) {
-            return 1.0
-        }
-        if (exact is BigInteger) {
-            return BigInteger.ONE
-        }
-        if (exact is BigDecimal) {
-            return when {
+        when (exact) {
+            is Long, is Int, is Byte, is Short -> return 1L
+            is Double, is Float    -> return 1.0
+            is BigInteger          -> return BigInteger.ONE
+            is BigDecimal          -> return when {
                 exact.scale() == 0 -> BigDecimal.ONE
                 else -> BigDecimal.ONE.setScale(1, Utils.ROUNDING_MODE)
             }
+            else -> return 1L
         }
-        return 1L
     }
 }

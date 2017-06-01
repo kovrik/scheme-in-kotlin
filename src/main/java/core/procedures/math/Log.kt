@@ -57,14 +57,13 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
         /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */
         private fun logBig(number: BigDecimal): Number {
-            var number = number
             if (number.toDouble().isFinite()) {
                 return Math.log(number.toDouble())
             }
             val digits = integerDigits(number)
             val n = digits / MAX_DIGITS
-            number = number.movePointLeft(n * MAX_DIGITS)
-            return n * VALUE + Math.log(number.toDouble())
+            val num = number.movePointLeft(n * MAX_DIGITS)
+            return n * VALUE + Math.log(num.toDouble())
         }
 
         /* Return number of digits of a given BigDecimal number */

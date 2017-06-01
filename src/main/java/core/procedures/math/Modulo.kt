@@ -19,9 +19,7 @@ open class Modulo : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(L
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!
         arg2!!
-        if (Utils.isZero(arg2)) {
-            throw ArithmeticException("modulo: undefined for 0")
-        }
+        if (Utils.isZero(arg2)) throw ArithmeticException("modulo: undefined for 0")
         return invoke(arg1 as Number, arg2 as Number)
     }
 

@@ -15,12 +15,7 @@ class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Big
 
     private fun numerator(o: Any): Number {
         val isExact = Utils.isExact(o)
-        val exact: Number
-        if (isExact) {
-            exact = o as Number
-        } else {
-            exact = ToExact.toExact(o)
-        }
+        val exact: Number = if (isExact) (o as Number) else ToExact.toExact(o)
         if (exact is BigRatio) {
             if (!isExact) {
                 val result = BigDecimal(exact.numerator)

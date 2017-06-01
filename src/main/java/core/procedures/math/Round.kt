@@ -17,14 +17,11 @@ class Round : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Re
     override operator fun invoke(arg: Any?) = round(arg as Number?)
 
     private fun round(number: Number?): Number {
-        if (number is Long || number is Int || number is Short || number is Byte || number is BigInteger) {
-            return number
-        } else if (number is BigDecimal) {
-            val bd = number
-            return if (bd.scale() == 0) bd.round(MathContext.UNLIMITED) else bd.round(Utils.DEFAULT_CONTEXT)
-        } else if (number is BigRatio) {
-            return number.round()
+        when (number) {
+            is Long, is Int, is Short, is Byte, is BigInteger -> return number
+            is BigDecimal -> return if (number.scale() == 0) number.round(MathContext.UNLIMITED) else number.round(Utils.DEFAULT_CONTEXT)
+            is BigRatio -> return number.round()
+            else -> return Math.rint(number!!.toDouble())
         }
-        return Math.rint(number!!.toDouble())
     }
 }
