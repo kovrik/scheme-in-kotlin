@@ -3,10 +3,9 @@ package core.procedures.generic
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Cons
-import core.scm.Type
 import core.utils.Utils
 
-class Take : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.ExactNonNegativeInteger.javaClass))) {
+class Take : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Int::class.javaObjectType))) {
 
     override val isPure = true
     override val name = "take"
