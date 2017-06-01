@@ -5,7 +5,6 @@ import core.scm.*
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
 import core.scm.Cons.Companion.list
-import core.scm.Vector
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -525,5 +524,26 @@ class ListTest : AbstractTest() {
         assertEquals(Vector(), eval("(sort [])", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l '(1 2 3 4 5))) (map + l (sort > l)))", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l  [1 2 3 4 5])) (map + l (sort > l)))", env))
+    }
+
+    @Test
+    fun testEvalTake() {
+        assertEquals(Cons.list<Any?>(), eval("(take -3 '(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(), eval("(take  0 '(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(), eval("(take -3  [1 2 3 4 5])", env))
+        assertEquals(Cons.list<Any?>(), eval("(take  0  [1 2 3 4 5])", env))
+        assertEquals(Cons.list<Any?>(), eval("(take -3 #(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(), eval("(take  0 #(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(), eval("(take -3  {1 2 3 4})", env))
+        assertEquals(Cons.list<Any?>(), eval("(take  0  {1 2 3 4})", env))
+        assertEquals(Cons.list<Any?>(1L), eval("(take  1 '(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(1L), eval("(take  1  [1 2 3 4 5])", env))
+        assertEquals(Cons.list<Any?>(1L), eval("(take  1 #(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L), eval("(take  3 '(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L), eval("(take  3  [1 2 3 4 5])", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L), eval("(take  3 #(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L, 4L, 5L), eval("(take  30 '(1 2 3 4 5))", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L, 4L, 5L), eval("(take  30  [1 2 3 4 5])", env))
+        assertEquals(Cons.list<Any?>(1L, 2L, 3L, 4L, 5L), eval("(take  30 #(1 2 3 4 5))", env))
     }
 }
