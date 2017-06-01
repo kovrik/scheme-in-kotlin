@@ -323,6 +323,7 @@ class DefaultEnvironment : Environment(null) {
                 Next(),
                 object : Next() { override val name = "rest" },
                 RandNth(),
+                Take(),
 
                 /* Keywords */
                 KeywordProc(),
