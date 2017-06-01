@@ -16,7 +16,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
 
     constructor() {
         minArgs = 0
-        maxArgs = Integer.MAX_VALUE
+        maxArgs = Int.MAX_VALUE
         mandatoryArgsTypes = arrayOf<Class<*>>()
         restArgsType = null
         lastArgType = null

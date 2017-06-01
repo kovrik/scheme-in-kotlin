@@ -154,7 +154,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
             val ex = Utils.upcast(exponent)
             if (b is Long && ex is Long) {
                 var isNegative = false
-                if (exponent.toLong() < Integer.MAX_VALUE) {
+                if (exponent.toLong() < Int.MAX_VALUE) {
                     var e = exponent.toInt()
                     if (e < 0) {
                         isNegative = true
@@ -166,7 +166,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                     }
                     return Utils.downcastNumber(result)
                 } else {
-                    /* If we came here, then exponent is greater than Integer.MAX_VALUE */
+                    /* If we came here, then exponent is greater than Int.MAX_VALUE */
                     if (Math.abs(base.toLong()) < 1) {
                         return 0L
                     }
