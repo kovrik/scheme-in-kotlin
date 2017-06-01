@@ -7,8 +7,5 @@ class Identity : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "identity"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return arg
-    }
+    override operator fun invoke(arg: Any?) = arg
 }

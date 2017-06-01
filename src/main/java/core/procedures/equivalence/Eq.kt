@@ -18,13 +18,11 @@ class Eq : AFn(FnArgs(min = 2)) {
         return result
     }
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean? {
-        return eq(arg1, arg2)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = eq(arg1, arg2)
 
     private fun eq(first: Any?, second: Any?): Boolean {
         if (first is Symbol && second is Symbol && first !== second) {
-            /* Now check if 2 symbols are eq without metadata (if attached) */
+            /* Check if 2 symbols are eq ignoring metadata */
             return first == second
         }
         return EMPTY == first && EMPTY == second || first === second

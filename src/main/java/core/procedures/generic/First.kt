@@ -18,8 +18,5 @@ class First : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "first"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return first(arg)
-    }
+    override operator fun invoke(arg: Any?) = first(arg)
 }

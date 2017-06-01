@@ -28,10 +28,8 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
         return result
     }
 
-    private fun lcm(first: BigRatio, second: BigRatio): BigRatio {
-        return BigRatio.valueOf(Companion.lcm(first.numerator, second.numerator),
-                                      GCD.gcd(first.denominator, second.denominator))
-    }
+    private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(Companion.lcm(first.numerator, second.numerator),
+                                                                          GCD.gcd(first.denominator, second.denominator))
 
     private fun lcm(a: BigDecimal, b: BigDecimal): Number {
         if (BigDecimal.ZERO.compareTo(a) == 0 && BigDecimal.ZERO.compareTo(b) == 0) {
@@ -77,8 +75,6 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
             return a / GCD.gcd(a, b).toDouble() * b
         }
 
-        internal fun lcm(first: BigInteger, second: BigInteger): BigInteger {
-            return first.multiply(second.divide(GCD.gcd(first, second)))
-        }
+        internal fun lcm(first: BigInteger, second: BigInteger) = first.multiply(second.divide(GCD.gcd(first, second)))
     }
 }

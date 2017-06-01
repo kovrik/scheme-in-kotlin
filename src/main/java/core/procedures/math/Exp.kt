@@ -9,10 +9,7 @@ class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
     override val isPure = true
     override val name = "exp"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return exp(arg as Number?)
-    }
+    override operator fun invoke(arg: Any?) = exp(arg as Number?)
 
     companion object {
 

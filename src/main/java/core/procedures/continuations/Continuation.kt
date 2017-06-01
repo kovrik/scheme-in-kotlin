@@ -17,11 +17,7 @@ class Continuation : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "continuation"
 
-    override operator fun invoke(arg: Any?): Number? {
-        throw CalledContinuation(arg!!, this)
-    }
+    override operator fun invoke(arg: Any?) = throw CalledContinuation(arg!!, this)
 
-    override fun toString(): String {
-        return "#<continuation>"
-    }
+    override fun toString() = "#<continuation>"
 }

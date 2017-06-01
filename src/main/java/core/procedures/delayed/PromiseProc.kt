@@ -10,7 +10,5 @@ class PromiseProc : AFn(FnArgs(max = 0)) {
 
     override val name = "promise"
 
-    override operator fun invoke(): CompletableFuture<Any> {
-        return Promise()
-    }
+    override operator fun invoke() = Promise()
 }

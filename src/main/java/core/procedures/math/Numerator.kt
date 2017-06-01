@@ -11,10 +11,7 @@ class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Big
 
     override val isPure = true
     override val name = "numerator"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return numerator(arg!!)
-    }
+    override operator fun invoke(arg: Any?) = numerator(arg!!)
 
     private fun numerator(o: Any): Number {
         val isExact = Utils.isExact(o)

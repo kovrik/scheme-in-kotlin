@@ -88,8 +88,5 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
 
     override val isPure = true
     override val name = NAME
-
-    override operator fun invoke(arg: Any?): Number? {
-        return toExact(arg)
-    }
+    override operator fun invoke(arg: Any?) = toExact(arg)
 }

@@ -8,8 +8,5 @@ class Keys : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Map::cla
 
     override val isPure = true
     override val name = "keys"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return Cons.list((arg as Map<*, *>).keys)
-    }
+    override operator fun invoke(arg: Any?) = Cons.list((arg as Map<*, *>).keys)
 }

@@ -7,8 +7,5 @@ class IsSubset : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Set:
 
     override val isPure = true
     override val name = "subset?"
-
-    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
-        return (arg2 as Set<*>).containsAll((arg1 as Set<*>?)!!)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = (arg2 as Set<*>).containsAll((arg1 as Set<*>?)!!)
 }

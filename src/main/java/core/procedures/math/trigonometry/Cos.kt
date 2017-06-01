@@ -14,10 +14,7 @@ class Cos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
     override val isPure = true
     override val name = "cos"
-
-    override operator fun invoke(arg: Any?): Number {
-        return cos(arg!! as Number)
-    }
+    override operator fun invoke(arg: Any?) = cos(arg!! as Number)
 
     companion object {
 

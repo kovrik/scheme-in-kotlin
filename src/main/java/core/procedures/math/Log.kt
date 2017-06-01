@@ -13,10 +13,7 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
     override val isPure = true
     override val name = "log"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return log(arg!! as Number)
-    }
+    override operator fun invoke(arg: Any?) = log(arg!! as Number)
 
     companion object {
         /* If number has 307 digits or less, then can use Math.log(double) */

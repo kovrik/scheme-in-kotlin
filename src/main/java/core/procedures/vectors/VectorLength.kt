@@ -9,8 +9,5 @@ class VectorLength : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(
 
     override val isPure = true
     override val name = "vector-length"
-
-    override operator fun invoke(arg: Any?): Long {
-        return (arg as MutableVector).size.toLong()
-    }
+    override operator fun invoke(arg: Any?) = (arg as MutableVector).size.toLong()
 }

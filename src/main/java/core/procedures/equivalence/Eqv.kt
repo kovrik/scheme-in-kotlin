@@ -22,6 +22,7 @@ class Eqv : AFn(FnArgs(min = 2)) {
 
     override val isPure = true
     override val name = "eqv?"
+    override operator fun invoke(arg1: Any?, arg2: Any?) = eqv(arg1, arg2)
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = true
@@ -29,9 +30,5 @@ class Eqv : AFn(FnArgs(min = 2)) {
             result = result && eqv(args[i], args[i + 1])
         }
         return result
-    }
-
-    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
-        return eqv(arg1, arg2)
     }
 }

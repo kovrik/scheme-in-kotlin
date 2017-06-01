@@ -7,8 +7,5 @@ import core.scm.Thunk
 class Eval : AFn(FnArgs(min = 1, max = 1)) {
 
     override val name = "eval"
-
-    override operator fun invoke(arg: Any?): Any {
-        return Thunk(arg!!)
-    }
+    override operator fun invoke(arg: Any?) = Thunk(arg!!)
 }

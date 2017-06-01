@@ -14,13 +14,9 @@ class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Lon
 
         private val NAME = "remainder"
 
-        private operator fun invoke(first: BigDecimal, second: BigDecimal): Number {
-            return first.remainder(second)
-        }
+        private operator fun invoke(first: BigDecimal, second: BigDecimal) = first.remainder(second)
 
-        private operator fun invoke(first: BigInteger, second: BigInteger): Number {
-            return first.remainder(second)
-        }
+        private operator fun invoke(first: BigInteger, second: BigInteger) = first.remainder(second)
 
         fun remainder(first: Number, second: Number): Number? {
             if (Utils.isZero(second)) {
@@ -52,8 +48,5 @@ class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Lon
 
     override val isPure = true
     override val name = NAME
-
-    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        return remainder(arg1!! as Number, arg2!! as Number)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = remainder(arg1!! as Number, arg2!! as Number)
 }

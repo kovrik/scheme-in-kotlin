@@ -21,7 +21,6 @@ class Promise : CompletableFuture<Any>(), IDeref {
                 else -> throw RuntimeException(e.message)
             }
         }
-
     }
 
     override fun toString(): String {

@@ -20,8 +20,5 @@ class Sqrt : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
 
     override val isPure = true
     override val name = "sqrt"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return sqrt(arg as Number?)
-    }
+    override operator fun invoke(arg: Any?) = sqrt(arg as Number?)
 }

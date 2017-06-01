@@ -30,9 +30,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
         this.lastArgType = fnArgs.last
     }
 
-    protected fun minArgs(): Int {
-        return minArgs
-    }
+    protected fun minArgs() = minArgs
 
     /* Return true if function is pure (referentially transparent) */
     open val isPure
@@ -56,37 +54,21 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     }
 
     @Throws(Exception::class)
-    override fun call(): Any? {
-        return invoke()
-    }
+    override fun call(): Any? = invoke()
 
-    override fun apply(arg: Any?): Any? {
-        return invoke(arg)
-    }
+    override fun apply(arg: Any?): Any? = invoke(arg)
 
-    override operator fun invoke(): Any? {
-        throw ArityException(name, minArgs, maxArgs, 1)
-    }
+    override operator fun invoke(): Any? = throw ArityException(name, minArgs, maxArgs, 1)
 
-    override operator fun invoke(arg: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, 1)
-    }
+    override operator fun invoke(arg: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 1)
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, 2)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 2)
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, 3)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 3)
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, 4)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 4)
 
-    override operator fun invoke(vararg args: Any?): Any? {
-        throw ArityException(name, minArgs, maxArgs, args.size)
-    }
+    override operator fun invoke(vararg args: Any?): Any? = throw ArityException(name, minArgs, maxArgs, args.size)
 
     override fun toString(): String {
         return when (name.isEmpty()) {

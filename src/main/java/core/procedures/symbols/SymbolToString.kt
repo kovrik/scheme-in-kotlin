@@ -8,8 +8,5 @@ class SymbolToString : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>
 
     override val isPure = true
     override val name = "symbol->string"
-
-    override operator fun invoke(arg: Any?): String? {
-        return arg!!.toString()
-    }
+    override operator fun invoke(arg: Any?) = arg!!.toString()
 }

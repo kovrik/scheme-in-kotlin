@@ -30,8 +30,5 @@ class ToInexact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Num
 
     override val isPure = true
     override val name = "exact->inexact"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return toInexact(arg)
-    }
+    override operator fun invoke(arg: Any?) = toInexact(arg)
 }

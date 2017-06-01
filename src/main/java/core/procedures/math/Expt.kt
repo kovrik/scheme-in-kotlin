@@ -7,9 +7,6 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import core.writer.Writer
-import java.lang.ArithmeticException
-import java.lang.Class
-import java.lang.Math
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -18,9 +15,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
     override val isPure = true
     override val name = "expt"
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        return expt(arg1 as Number?, arg2 as Number?)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = expt(arg1 as Number?, arg2 as Number?)
 
     companion object {
         /* TODO: Optimize Special Cases! */

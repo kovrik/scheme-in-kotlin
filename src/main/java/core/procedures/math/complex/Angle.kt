@@ -9,10 +9,7 @@ class Angle : AFn(FnArgs(min =  1, max = 1, mandatory =  arrayOf<Class<*>>(Numbe
 
     override val isPure = true
     override val name = "angle"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return angle(arg!! as Number)
-    }
+    override operator fun invoke(arg: Any?) = angle(arg!! as Number)
 
     private fun angle(number: Number): Number {
         if (Utils.isZero(number)) throw ArithmeticException(name + ": undefined for 0")

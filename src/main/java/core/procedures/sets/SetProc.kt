@@ -15,9 +15,8 @@ class SetProc : AFn(FnArgs(min = 1, max = 1)) {
         }
         if (arg is CharSequence) {
             val set = HashSet<Any>(arg.length)
-            val cs = arg
-            for (i in 0..cs.length - 1) {
-                set.add(cs[i])
+            for (i in 0..arg.length - 1) {
+                set.add(arg[i])
             }
             return set
         }

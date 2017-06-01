@@ -12,6 +12,7 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
 
     override val isPure = true
     override val name = "quotient"
+    private operator fun invoke(first: BigInteger, second: BigInteger) = first.divide(second)
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!
@@ -34,10 +35,6 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
         } else {
             return first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE)
         }
-    }
-
-    private operator fun invoke(first: BigInteger, second: BigInteger): Number {
-        return first.divide(second)
     }
 
     private operator fun invoke(first: Number, second: Number): Number? {

@@ -7,8 +7,5 @@ class Num : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "num"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return arg as Number?
-    }
+    override operator fun invoke(arg: Any?) = arg as Number?
 }

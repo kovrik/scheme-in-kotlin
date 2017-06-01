@@ -7,8 +7,5 @@ open class ClassProc : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "class"
-
-    override operator fun invoke(arg: Any?): Class<*>? {
-        return arg?.javaClass
-    }
+    override operator fun invoke(arg: Any?) = arg?.javaClass
 }

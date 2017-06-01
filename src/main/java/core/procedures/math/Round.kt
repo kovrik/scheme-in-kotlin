@@ -14,10 +14,7 @@ class Round : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Re
 
     override val isPure = true
     override val name = "round"
-
-    override operator fun invoke(arg: Any?): Number {
-        return round(arg as Number?)
-    }
+    override operator fun invoke(arg: Any?) = round(arg as Number?)
 
     private fun round(number: Number?): Number {
         if (number is Long || number is Int || number is Short || number is Byte || number is BigInteger) {

@@ -9,14 +9,9 @@ import core.scm.Vector
 class VectorToList : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Vector::class.java))) {
 
     companion object {
-        fun vectorToList(v: MutableVector): Cons<*> {
-            return Cons.list(*v.getArray())
-        }
+        fun vectorToList(v: MutableVector) = Cons.list(*v.getArray())
     }
 
     override val name = "vector->list"
-
-    override operator fun invoke(arg: Any?): Cons<*>? {
-        return vectorToList(arg as MutableVector)
-    }
+    override operator fun invoke(arg: Any?) = vectorToList(arg as MutableVector)
 }

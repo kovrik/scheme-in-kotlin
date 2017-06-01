@@ -63,14 +63,10 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
             }
         }
 
-        internal fun gcd(a: BigInteger, b: BigInteger): BigInteger {
-            return a.gcd(b)
-        }
+        internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
 
-        internal fun gcd(first: BigRatio, second: BigRatio): BigRatio {
-            return BigRatio.valueOf(first.numerator.gcd(second.numerator),
-                            LCM.lcm(first.denominator, second.denominator))
-        }
+        internal fun gcd(first: BigRatio, second: BigRatio) = BigRatio.valueOf(first.numerator.gcd(second.numerator),
+                                                                               LCM.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
             val f = Utils.upcast(first)!!

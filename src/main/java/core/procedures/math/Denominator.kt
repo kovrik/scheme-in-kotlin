@@ -12,10 +12,7 @@ class Denominator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(B
 
     override val isPure = true
     override val name = "denominator"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return denominator(arg!!)
-    }
+    override operator fun invoke(arg: Any?) = denominator(arg!!)
 
     private fun denominator(o: Any): Number {
         val isExact = Utils.isExact(o)

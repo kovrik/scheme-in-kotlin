@@ -20,7 +20,5 @@ class Car : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Pair
     override val isPure = true
     override val name = "car"
 
-    override operator fun invoke(arg: Any?): Any? {
-        return car(arg)
-    }
+    override operator fun invoke(arg: Any?) = car(arg)
 }

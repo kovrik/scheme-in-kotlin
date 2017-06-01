@@ -15,5 +15,4 @@ class ExData : AFn(FnArgs(min = 1, max = 1)) {
         }
         return null
     }
-
 }

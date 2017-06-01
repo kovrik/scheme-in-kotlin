@@ -98,7 +98,5 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override operator fun invoke(vararg args: Any?): Any? {
-        return if (isBodyConst) body else Thunk(body, bindArgs(*args))
-    }
+    override operator fun invoke(vararg args: Any?) = if (isBodyConst) body else Thunk(body, bindArgs(*args))
 }

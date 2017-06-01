@@ -12,15 +12,12 @@ class Cdr : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Pair
             if (o is Cons<*>) {
                 return o.cdr()
             }
-            val list = o as List<*>
-            return list.subList(1, list.size)
+            return (o as List<*>).subList(1, o.size)
         }
     }
 
     override val isPure = true
     override val name = "cdr"
 
-    override operator fun invoke(arg: Any?): Any? {
-        return cdr(arg)
-    }
+    override operator fun invoke(arg: Any?) = cdr(arg)
 }

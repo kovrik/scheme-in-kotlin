@@ -14,10 +14,7 @@ class Sin : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
     override val isPure = true
     override val name = "sin"
-
-    override operator fun invoke(arg: Any?): Number {
-        return sin(arg!! as Number)
-    }
+    override operator fun invoke(arg: Any?) = sin(arg!! as Number)
 
     companion object {
 

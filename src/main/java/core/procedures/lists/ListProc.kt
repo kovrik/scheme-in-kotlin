@@ -7,8 +7,5 @@ class ListProc : AFn() {
 
     override val isPure = true
     override val name = "list"
-
-    override operator fun invoke(vararg args: Any?): List<Any?>? {
-        return Cons.list(*args)
-    }
+    override operator fun invoke(vararg args: Any?) = Cons.list(*args)
 }
