@@ -29,9 +29,9 @@ class Cons<E> : LinkedList<E?> {
 
     fun cdr() = if (isProperList) subList(1, size) else (last as Any)
 
-    override fun hashCode() = 31 * super.hashCode() + if (isProperList) 1 else 0
-
     override fun toString() = toString(this)
+
+    override fun hashCode() = 31 * super.hashCode() + if (isProperList) 1 else 0
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -95,9 +95,15 @@ class Cons<E> : LinkedList<E?> {
                 return "()"
             }
             /* Cons cell */
-            val sb = StringBuilder()
-            sb.append("(")
-            if (!isProperList(list)) {
+            val sb = StringBuilder("(")
+            if (isProperList(list)) {
+                /* List */
+                for (i in 0..list.size - 1 - 1) {
+                    val e = list[i]
+                    sb.append(if (e === list) "(this list)" else Writer.write(e)).append(' ')
+                }
+                sb.append(Writer.write(list[list.size - 1]))
+            } else {
                 sb.append(Writer.write(list[0]))
                 var cdr = list[list.size - 1]
                 while (cdr is Cons<*>) {
@@ -106,13 +112,6 @@ class Cons<E> : LinkedList<E?> {
                 }
                 /* Dotted notation */
                 sb.append(" . ").append(Writer.write(cdr))
-            } else {
-                /* List */
-                for (i in 0..list.size - 1 - 1) {
-                    val e = list[i]
-                    sb.append(if (e === list) "(this list)" else Writer.write(e)).append(' ')
-                }
-                sb.append(Writer.write(list[list.size - 1]))
             }
             return sb.append(')').toString()
         }
