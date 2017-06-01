@@ -18,41 +18,21 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
 
         fun toExact(o: Any?): Number {
             /* Special cases */
-            if (Utils.isZero(o)) {
-                return o as Number
+            when {
+                Utils.isZero(o) -> return o as Number
+                o is Float      -> return doubleToExact(o.toDouble())
+                o is Double     -> return doubleToExact(o)
+                o is BigDecimal -> return bigDecimalToExact(o)
+                o is BigComplex -> return BigComplex(toExact(o.re), toExact(o.im))
+                else            -> return o as Number
             }
-            if (o is BigComplex) {
-                return BigComplex(toExact(o.re), toExact(o.im))
-            }
-            if (o is Float) {
-                val f = o
-                if (!f.isFinite()) {
-                    throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(f))
-                }
-                /* Check if Double is integral */
-                if (f == Math.floor(f.toDouble())) {
-                    return f
-                }
-                return doubleToExact(f.toDouble())
-            }
-            if (o is Double) {
-                if (!o.isFinite()) {
-                    throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(o))
-                }
-                /* Check if Double is integral */
-                if (o == Math.floor(o)) {
-                    return o
-                }
-                return doubleToExact(o)
-            }
-            if (o is BigDecimal) {
-                return bigDecimalToExact(o)
-            }
-            return o as Number
         }
 
-        private fun doubleToExact(number: Double?): Number {
-            val bits = java.lang.Double.doubleToLongBits(number!!)
+        private fun doubleToExact(number: Double): Number {
+            if (!number.isFinite()) throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(number))
+            /* Check if Double is integral */
+            if (number == Math.floor(number)) return number
+            val bits = java.lang.Double.doubleToLongBits(number)
             val sign = bits.ushr(63)
             val exponent = (bits.ushr(52) xor (sign shl 11)) - 1023
             val fraction = bits shl 12
