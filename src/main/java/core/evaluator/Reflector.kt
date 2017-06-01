@@ -135,7 +135,7 @@ class Reflector {
     /* Java Interop: static fields */
     fun evalJavaStaticField(s: String): Any? {
         if (s.indexOf('/') > -1) {
-            val classAndField = s.split('/').dropLastWhile(String::isEmpty).toTypedArray()
+            val classAndField = s.split('/').dropLastWhile(String::isEmpty)
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
@@ -214,7 +214,7 @@ class Reflector {
 
     /* Java Interop: static method call */
     private fun evalJavaStaticMethod(m: String, args: Array<Any?>): Any? {
-        val classAndMethod = m.split('/').dropLastWhile { it.isEmpty() }.toTypedArray()
+        val classAndMethod = m.split('/').dropLastWhile { it.isEmpty() }
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
         }
