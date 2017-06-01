@@ -21,7 +21,7 @@ class Predicate private constructor(override val name: String, private val predi
         val IS_SOME = Predicate("some?", java.util.function.Predicate<Any?> { Objects.nonNull(it) })
         val IS_EMPTY = Predicate("empty?", java.util.function.Predicate<Any?> { o -> o == null || isEmpty(o) })
         val IS_PAIR = Predicate("pair?", java.util.function.Predicate<Any?> { Cons.isPair(it) })
-        val IS_LIST = Predicate("list?", java.util.function.Predicate<Any?> { Cons.isList(it) })
+        val IS_LIST = Predicate("list?", java.util.function.Predicate<Any?> { Cons.isProperList(it) })
         val IS_PROMISE = Predicate("promise?", java.util.function.Predicate<Any?> { o -> o is CompletableFuture<*> || Delay::class.java == o!!.javaClass })
         val IS_FUTURE = Predicate("future?", java.util.function.Predicate<Any?> { o -> o is java.util.concurrent.Future<*> && o !is Delay && o !is Promise })
         val IS_FUTURE_DONE = Predicate("future-done?", java.util.function.Predicate<Any?> { o -> assertClass("future-done?", o, java.util.concurrent.Future::class.java) && (o as java.util.concurrent.Future<*>).isDone })

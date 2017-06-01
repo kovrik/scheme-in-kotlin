@@ -13,8 +13,8 @@ import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
-import core.scm.Cons.Companion.isList
-import core.scm.Cons.Companion.isNull
+import core.scm.Cons.Companion.isProperList
+import core.scm.Cons.Companion.isPair
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 
@@ -70,14 +70,14 @@ enum class Quasiquote : ISpecialForm {
                 return list
             }
             /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-            if (isList(list) && Unquote.UNQUOTE_SYMBOL == list[0]) {
+            if (isProperList(list) && Unquote.UNQUOTE_SYMBOL == list[0]) {
                 if (list.size != 2) {
                     throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression")
                 }
                 return evaluator.eval(list[1], env)
             }
             /* `,@(list 1 2) syntax is not valid */
-            if (isList(list) && list.size > 0 && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == list[0]) {
+            if (isProperList(list) && list.size > 0 && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == list[0]) {
                 throw IllegalSyntaxException.of(list[0].toString(), expr, "invalid context within quasiquote")
             }
             /* List quasiquotation */
@@ -90,7 +90,7 @@ enum class Quasiquote : ISpecialForm {
     // TODO Optimize and simplify
     private fun quasiquoteList(depth: Int, expr: Any, env: Environment, evaluator: Evaluator): Any? {
         val list = expr as List<*>
-        val isList = isList(list)
+        val isList = isProperList(list)
         var result: Any? = list<Any>()
         for (n in list.indices) {
             val o = list[n]
@@ -105,7 +105,7 @@ enum class Quasiquote : ISpecialForm {
                     /* Evaluate and append last element */
                     return Append.append(result, evaluator.eval(list[n + 1], env))
                 }
-                if (isList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
+                if (isProperList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
                     throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
@@ -148,7 +148,7 @@ enum class Quasiquote : ISpecialForm {
         if (!isList) {
             /* In the case of a pair, if the cdr of the relevant quoted pair is empty,
              * then expr need not produce a list, and its result is used directly in place of the quoted pair */
-            if (isNull(Cdr.cdr(result))) {
+            if (!isPair(Cdr.cdr(result))) {
                 return (result as List<*>)[0]
             } else {
                 // TODO Is car(cdr(result)) correct?
@@ -173,7 +173,7 @@ enum class Quasiquote : ISpecialForm {
         val list = VectorToList.vectorToList(expr)
         val result = quasiquoteList(0, list, env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
-        if (!isList(result)) {
+        if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
         return ListToVector.listToVector(result)
@@ -194,7 +194,7 @@ enum class Quasiquote : ISpecialForm {
         val list = Cons.list(set)
         val result = quasiquoteList(0, list, env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
-        if (!isList(result)) {
+        if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
         return setProc(result)

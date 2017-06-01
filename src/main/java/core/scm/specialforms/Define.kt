@@ -41,7 +41,7 @@ enum class Define : ISpecialForm {
                     throw IllegalSyntaxException.of(toString(), expression, "not an identifier: ${Writer.write(arg)}")
                 }
             }
-            args.isList = Cons.isList(expression[1])
+            args.isProperList = Cons.isProperList(expression[1])
             l.add(args)
             /* Body */
             l.addAll(expression.subList(2, expression.size))

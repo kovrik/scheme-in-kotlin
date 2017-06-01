@@ -9,7 +9,7 @@ class Append : AFn(FnArgs(rest = Type.ProperList::class.java, last = Any::class.
 
     companion object {
         fun append(first: Any?, second: Any?): Any? {
-            if (Cons.isNull(first)) {
+            if (!Cons.isPair(first)) {
                 return second
             }
             return Cons.cons(Car.car(first), append(Cdr.cdr(first), second))

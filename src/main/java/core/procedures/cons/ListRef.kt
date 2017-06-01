@@ -17,7 +17,7 @@ class ListRef : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::clas
             throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
-        if (list is Cons<*> && !list.isList) {
+        if (list is Cons<*> && !list.isProperList) {
             if (p == 0L) {
                 return list.car()
             }

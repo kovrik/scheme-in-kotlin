@@ -51,7 +51,7 @@ object Type {
     private val TYPE_PREDICATES = hashMapOf(
             String::class.java                  to Predicate<Any> { o -> o is CharSequence },
             MutableString::class.java           to Predicate<Any> { o -> o is StringBuilder || o is MutableString },
-            ProperList::class.java              to Predicate<Any> { Cons.isList(it) },
+            ProperList::class.java              to Predicate<Any> { Cons.isProperList(it) },
             Pair::class.java                    to Predicate<Any> { Cons.isPair(it) },
             BigRatio::class.java                to Predicate<Any> { Utils.isRational(it) },
             Long::class.java                    to Predicate<Any> { Utils.isInteger(it) },

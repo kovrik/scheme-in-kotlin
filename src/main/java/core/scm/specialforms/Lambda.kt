@@ -43,7 +43,7 @@ enum class Lambda : ISpecialForm {
             }
             /* (lambda (arg-id ...+) body ...+) OR
              * (lambda (arg-id ...+ . rest-id) body ...+) */
-            if (Cons.isList(args)) {
+            if (Cons.isProperList(args)) {
                 /* args is a proper list, hence non-variadic lambda */
                 params = args as List<Symbol>
             } else {

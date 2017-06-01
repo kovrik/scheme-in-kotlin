@@ -20,7 +20,7 @@ class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class
         } else {
             list.add(arg2)
             if (list is Cons<*>) {
-                list.isList = false
+                list.isProperList = false
             }
         }
         return Void

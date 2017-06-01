@@ -23,7 +23,7 @@ class ListTail : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Any::class.jav
             throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
-        if (list is Cons<*> && !list.isList) {
+        if (list is Cons<*> && !list.isProperList) {
             if (p == 1L) {
                 return list.cdr()
             } else {

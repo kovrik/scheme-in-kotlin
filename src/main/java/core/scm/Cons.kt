@@ -4,10 +4,12 @@ import core.exceptions.WrongTypeException
 import core.writer.Writer
 import java.util.*
 
-// TODO Separate class for Proper and Improper Lists?
 class Cons<E> : LinkedList<E?> {
 
-    var isList = true
+    /* Is it a Proper List or an Improper one?
+     * Proper lists just have this flag set to true, they don't end with empty list.
+     **/
+    var isProperList = true
 
     private constructor() : super()
 
@@ -15,10 +17,10 @@ class Cons<E> : LinkedList<E?> {
 
     private constructor(car: E?, cdr: E?) : super() {
         add(car)
-        isList = isList(cdr)
+        isProperList = isProperList(cdr)
         when {
-            isList -> addAll(cdr as List<E>)
-            else   -> add(cdr)
+            isProperList -> addAll(cdr as List<E>)
+            else         -> add(cdr)
         }
     }
 
@@ -27,11 +29,11 @@ class Cons<E> : LinkedList<E?> {
         return first
     }
 
-    fun cdr() = if (isList) subList(1, size) else (last as Any)
+    fun cdr() = if (isProperList) subList(1, size) else (last as Any)
 
     /* Convert list to improper list (dotted pair, cons cells) */
     fun toCons(): Cons<E> {
-        if (!isList) return this
+        if (!isProperList) return this
         /* Cons backwards */
         val last = get(size - 1)
         val beforeLast = get(size - 2)
@@ -42,7 +44,7 @@ class Cons<E> : LinkedList<E?> {
         return cons
     }
 
-    override fun hashCode() = 31 * super.hashCode() + if (isList) 1 else 0
+    override fun hashCode() = 31 * super.hashCode() + if (isProperList) 1 else 0
 
     override fun toString() = toString(this)
 
@@ -54,7 +56,7 @@ class Cons<E> : LinkedList<E?> {
         if (size == 0 && other.size == 0) return true
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
-        if (other is Cons<*> && isList != other.isList) return false
+        if (other is Cons<*> && isProperList != other.isProperList) return false
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
@@ -104,12 +106,10 @@ class Cons<E> : LinkedList<E?> {
 
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
 
-        /* Return true if o is a List or Cons and a list */
-        fun isList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isList
+        /* Return true if o is a Proper List */
+        fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList
 
         fun isPair(o: Any?) = o is List<*> && !o.isEmpty()
-
-        fun isNull(obj: Any?) = (obj as? List<*>)?.isEmpty() ?: (obj == null)
 
         /* Use this method to print all lists */
         fun toString(list: List<*>): String {
@@ -119,7 +119,7 @@ class Cons<E> : LinkedList<E?> {
             /* Cons cell */
             val sb = StringBuilder()
             sb.append("(")
-            if (!isList(list)) {
+            if (!isProperList(list)) {
                 sb.append(Writer.write(list[0]))
                 var cdr = list[list.size - 1]
                 while (cdr is Cons<*>) {

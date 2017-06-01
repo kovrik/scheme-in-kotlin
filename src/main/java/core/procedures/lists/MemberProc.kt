@@ -31,7 +31,7 @@ class MemberProc(override val name: String, private val predicate: AFn) :
         }
         /* Not found */
         if (p == list.size) {
-            if (!Cons.isList(list)) {
+            if (!Cons.isProperList(list)) {
                 throw WrongTypeException("$name: wrong type argument in position $p (expecting list): ${Writer.write(list)}")
             }
             return false
