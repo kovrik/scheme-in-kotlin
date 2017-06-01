@@ -12,9 +12,7 @@ class Cons<E> : LinkedList<E?> {
     var isProperList = true
 
     private constructor() : super()
-
     private constructor(c: Collection<E>) : super(c)
-
     private constructor(car: E?, cdr: E?) : super() {
         add(car)
         isProperList = isProperList(cdr)
@@ -24,25 +22,12 @@ class Cons<E> : LinkedList<E?> {
         }
     }
 
-    fun car(): E? {
-        if (isEmpty()) throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
-        return first
+    fun car() = when {
+        isEmpty() -> throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
+        else      -> first
     }
 
     fun cdr() = if (isProperList) subList(1, size) else (last as Any)
-
-    /* Convert list to improper list (dotted pair, cons cells) */
-    fun toCons(): Cons<E> {
-        if (!isProperList) return this
-        /* Cons backwards */
-        val last = get(size - 1)
-        val beforeLast = get(size - 2)
-        var cons = cons(beforeLast, last)
-        for (n in size - 3 downTo 0) {
-            cons = cons(get(n), cons as E)
-        }
-        return cons
-    }
 
     override fun hashCode() = 31 * super.hashCode() + if (isProperList) 1 else 0
 
@@ -60,9 +45,7 @@ class Cons<E> : LinkedList<E?> {
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
-            val thisNext = thisIterator.next()
-            val oNext = otherIterator.next()
-            if (thisNext != oNext) return false
+            if (thisIterator.next() != otherIterator.next()) return false
         }
         return true
     }
@@ -70,34 +53,29 @@ class Cons<E> : LinkedList<E?> {
     companion object {
 
         /* Empty list constant */
-        val EMPTY: Cons<Any?> = Cons()
+        val EMPTY = Cons<Any?>()
 
         fun <E> cons(car: E?, cdr: E?): Cons<E> {
             if (cdr == null) return Cons(car, EMPTY) as Cons<E>
             return Cons(car, cdr)
         }
 
-        fun <E> list(): Cons<E?> {
-            return Cons()
-        }
+        fun <E> list(): Cons<E?> = Cons()
 
         fun <E> list(e: E?): Cons<E?> {
-            val list = Cons<E?>()
+            val list = list<E?>()
             list.add(e)
             return list
         }
 
         fun <E> list(e1: E?, e2: E?): Cons<E?> {
-            val list = Cons<E?>()
-            list.add(e1)
+            val list = list<E?>(e1)
             list.add(e2)
             return list
         }
 
         fun <E> list(e1: E?, e2: E?, e3: E?): Cons<E?> {
-            val list = Cons<E?>()
-            list.add(e1)
-            list.add(e2)
+            val list = list<E?>(e1, e2)
             list.add(e3)
             return list
         }
@@ -137,21 +115,6 @@ class Cons<E> : LinkedList<E?> {
                 sb.append(Writer.write(list[list.size - 1]))
             }
             return sb.append(')').toString()
-        }
-
-        /* Non-recursively flatten a list (or a chain of conses) */
-        fun <E> flatten(list: List<E>): List<E> {
-            val result = ArrayList<E>()
-            val queue = LinkedList(list)
-            while (!queue.isEmpty()) {
-                val e = queue.remove()
-                if (e is List<*>) {
-                    queue.addAll(e as List<E>)
-                } else {
-                    result.add(e)
-                }
-            }
-            return result
         }
     }
 }

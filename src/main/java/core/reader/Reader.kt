@@ -412,7 +412,11 @@ open class Reader : IReader {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
         /* Convert list into cons */
-        return list.toCons()
+        var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
+        for (n in list.size - 3 downTo 0) {
+            cons = Cons.cons(list[n], cons)
+        }
+        return cons
     }
 
     /**

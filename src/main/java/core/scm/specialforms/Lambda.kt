@@ -6,6 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.scm.Procedure
 import core.scm.Symbol
+import java.util.*
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -18,11 +19,12 @@ import core.scm.Symbol
 enum class Lambda : ISpecialForm {
     LAMBDA;
 
+    override fun toString() = "lambda"
+
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
         if (expression.size < 3) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
-
         val params: List<Symbol?>
         var variadic = false
         /* Check if args is a List or not */
@@ -48,7 +50,7 @@ enum class Lambda : ISpecialForm {
                 params = args as List<Symbol>
             } else {
                 /* args is an improper list, hence variadic lambda */
-                params = Cons.flatten(args as List<Symbol>)
+                params = flatten(args as List<Symbol>)
                 variadic = true
             }
         } else {
@@ -71,5 +73,18 @@ enum class Lambda : ISpecialForm {
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }
 
-    override fun toString() = "lambda"
+    /* Non-recursively flatten a list (or a chain of conses) */
+    fun <E> flatten(list: List<E>): List<E> {
+        val result = ArrayList<E>()
+        val queue = LinkedList(list)
+        while (!queue.isEmpty()) {
+            val e = queue.remove()
+            if (e is List<*>) {
+                queue.addAll(e as List<E>)
+            } else {
+                result.add(e)
+            }
+        }
+        return result
+    }
 }
