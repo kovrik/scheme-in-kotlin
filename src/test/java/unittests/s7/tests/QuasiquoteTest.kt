@@ -5,6 +5,7 @@ import core.exceptions.UndefinedIdentifierException
 import core.procedures.cons.ConsProc
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.list
+import core.scm.Vector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -53,6 +54,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(list(s("+")), eval("(let ((x '())) `(+ ,@x)) '(+)", env))
         assertEquals(1L, eval("`(,@1)", env))
         assertEquals("String", eval("`(,@\"String\")", env))
+        assertEquals(Vector(1L), eval("`[,1]", env))
         try {
             eval("`(1 , %(list 2 3))", env)
             fail()
@@ -60,8 +62,7 @@ class QuasiquoteTest : AbstractTest() {
             // expected
         }
 
-        // FIXME `#(unquote 1)
-        val illegals = arrayOf("`,@#(list 1 2)", ",(1 (unquote 1 2 3))", "`((unquote (+ 1 2) (+3 4)))")
+        val illegals = arrayOf("`,@#(list 1 2)", ",(1 (unquote 1 2 3))", "`((unquote (+ 1 2) (+3 4)))", "`[unquote 1]")
         for (s in illegals) {
             try {
                 eval(s, env)
@@ -69,12 +70,10 @@ class QuasiquoteTest : AbstractTest() {
             } catch (e: IllegalSyntaxException) {
                 // expected
             }
-
         }
     }
 
     companion object {
-
         private val LS = System.getProperty("line.separator")
     }
 }
