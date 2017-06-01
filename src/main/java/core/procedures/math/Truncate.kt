@@ -20,10 +20,9 @@ class Truncate : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type
                 return Math.floor(arg.toDouble())
             }
         } else if (arg is BigDecimal) {
-            val bd = arg
             return when {
-                bd.signum() < 0 -> bd.setScale(0, BigDecimal.ROUND_UP)
-                else            -> bd.setScale(0, BigDecimal.ROUND_DOWN)
+                arg.signum() < 0 -> arg.setScale(0, BigDecimal.ROUND_UP)
+                else             -> arg.setScale(0, BigDecimal.ROUND_DOWN)
             }
         } else if (arg is BigRatio) {
             return arg.truncate()
