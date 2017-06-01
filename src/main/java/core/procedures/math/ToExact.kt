@@ -19,11 +19,7 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
         fun toExact(o: Any?): Number {
             /* Special cases */
             if (Utils.isZero(o)) {
-                when (o) {
-                    is Double     -> return 0.0
-                    is Float      -> return 0f
-                    is BigDecimal -> return BigDecimal.ZERO
-                }
+                return o as Number
             }
             if (o is BigComplex) {
                 return BigComplex(toExact(o.re), toExact(o.im))
