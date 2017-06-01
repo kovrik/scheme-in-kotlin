@@ -6,7 +6,6 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import core.writer.Writer
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -16,16 +15,13 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
 
         private val NAME = "inexact->exact"
 
-        fun toExact(o: Any?): Number {
-            /* Special cases */
-            when {
-                Utils.isZero(o) -> return o as Number
-                o is Float      -> return doubleToExact(o.toDouble())
-                o is Double     -> return doubleToExact(o)
-                o is BigDecimal -> return bigDecimalToExact(o)
-                o is BigComplex -> return BigComplex(toExact(o.re), toExact(o.im))
-                else            -> return o as Number
-            }
+        fun toExact(o: Any?): Number = when {
+            Utils.isZero(o) -> o as Number
+            o is Float      -> doubleToExact(o.toDouble())
+            o is Double     -> doubleToExact(o)
+            o is BigDecimal -> bigDecimalToExact(o)
+            o is BigComplex -> BigComplex(toExact(o.re), toExact(o.im))
+            else            -> o as Number
         }
 
         private fun doubleToExact(number: Double): Number {
