@@ -19,10 +19,7 @@ enum class Dot : ISpecialForm {
         // FIXME Optimize and cleanup
         var first: Any? = expression[1]
         if (first is Symbol) {
-            first = env.findOrDefault(first, null)
-            if (first == null) {
-                first = evaluator.eval(expression[1], env)
-            }
+            first = env.findOrDefault(first, evaluator.eval(first, env))
         } else {
             first = evaluator.eval(first, env)
         }
@@ -37,9 +34,8 @@ enum class Dot : ISpecialForm {
                     if (e.cause is NoSuchFieldException) {
                         /* now try static no-args static method */
                         return reflector.evalJavaMethod(statik, arrayOf<Any?>())
-                    } else {
-                        throw e
                     }
+                    throw e
                 }
 
             } else {
