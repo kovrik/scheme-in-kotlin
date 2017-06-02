@@ -25,8 +25,7 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
         if (args.isEmpty() || args.size > 2) {
             throw ArityException(toString() + " Keyword", 1, 2, args.size)
         }
-        val defaultValue = if (args.size == 2) args[1] else null
-        return (args[0] as Map<Any?, Any?>).getOrDefault(this, defaultValue)
+        return (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
     }
 
     override fun equals(other: Any?): Boolean {

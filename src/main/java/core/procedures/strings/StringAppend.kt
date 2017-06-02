@@ -12,8 +12,7 @@ class StringAppend : AFn(FnArgs(rest = CharSequence::class.java)) {
             return ""
         }
         if (args.size == 1) {
-            val o = args[0]
-            return o.toString()
+            return args[0].toString()
         }
         val sb = StringBuilder()
         for (arg in args) {

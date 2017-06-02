@@ -10,11 +10,6 @@ class MakeVector : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Ty
     override val name = "make-vector"
 
     override operator fun invoke(vararg args: Any?): Any {
-        val s = (args[0] as Number).toLong()
-        var init: Any? = null
-        if (args.size == 2) {
-            init = args[1]
-        }
-        return MutableVector(s.toInt(), init)
+        return MutableVector((args[0] as Number).toInt(), args.getOrNull(1))
     }
 }

@@ -8,9 +8,7 @@ class First : AFn(FnArgs(min = 1, max = 1)) {
 
     companion object {
         fun first(arg: Any?): Any? {
-            if (arg == null) {
-                return null
-            }
+            if (arg == null) return null
             val iterator = Utils.toSequence(arg)
             return if (iterator.hasNext()) iterator.next() else null
         }
