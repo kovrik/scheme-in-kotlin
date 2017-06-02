@@ -11,10 +11,7 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
         /* Pool of all interned keywords */
         private val POOL = InternPool<Keyword>()
 
-        fun intern(value: String): Keyword {
-            // always intern keywords
-            return POOL.intern(Keyword(value))!!
-        }
+        fun intern(value: String) = POOL.intern(Keyword(value))
     }
 
     override val isPure = true
@@ -36,5 +33,4 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
     }
 
     override fun hashCode() = name.hashCode() + 1077096266
-
 }

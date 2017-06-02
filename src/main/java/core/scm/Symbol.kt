@@ -18,15 +18,12 @@ import core.utils.InternPool
 class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), INamed, IMeta {
 
     companion object {
+        private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
+
         /* Pool of all interned symbols */
         private val POOL = InternPool<Symbol>()
 
-        private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
-
-        fun intern(name: String?): Symbol {
-            // always intern symbols
-            return POOL.intern(Symbol(name!!))!!
-        }
+        fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
 
         /* Check if Symbol has Special Characters and needs to be escaped */
         private fun hasSpecialChars(name: String): Boolean {
