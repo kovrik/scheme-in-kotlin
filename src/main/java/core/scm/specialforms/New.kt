@@ -14,11 +14,11 @@ enum class New : ISpecialForm {
         if (expression.size < 2) {
             throw IllegalSyntaxException.of(toString(), expression)
         }
-        val clazz = expression[1].toString()
         val args = arrayOfNulls<Any>(expression.size - 2)
         for (i in args.indices) {
             args[i] = evaluator.eval(expression[i + 2], env)
         }
+        val clazz = expression[1].toString()
         return reflector.newInstance(clazz, args)
     }
 
