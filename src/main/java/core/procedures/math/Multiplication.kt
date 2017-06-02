@@ -35,9 +35,15 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
             var second = second!!
             /* Special cases */
             if (Utils.isZero(first)) {
+                if (!Utils.isFinite(second) && Utils.isInexact(first)) {
+                    return Double.NaN
+                }
                 return Utils.inexactnessTaint(first, second)
             }
             if (Utils.isZero(second)) {
+                if (!Utils.isFinite(first) && Utils.isInexact(second)) {
+                    return Double.NaN
+                }
                 return Utils.inexactnessTaint(second, first)
             }
             if (Utils.isOne(first)) {

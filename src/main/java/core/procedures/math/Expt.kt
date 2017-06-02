@@ -120,6 +120,9 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                 }
                 if (Utils.isZero(base)) {
                     if (exponent == Double.NEGATIVE_INFINITY) {
+                        if (Utils.isInexact(base)) {
+                            return Double.POSITIVE_INFINITY
+                        }
                         throw ArithmeticException("expt: undefined for $base and ${Writer.write(exponent)}")
                     } else {
                         return 0L

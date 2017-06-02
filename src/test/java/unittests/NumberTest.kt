@@ -962,6 +962,8 @@ class NumberTest : AbstractTest() {
         assertEquals(Double.POSITIVE_INFINITY, eval("(* 1 +inf.0)", env))
         assertEquals(Double.POSITIVE_INFINITY, eval("(/ +inf.0 1)", env))
         assertEquals(Double.POSITIVE_INFINITY, eval("(/ 1 +inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(expt 0.0 -inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(- -inf.0)", env))
 
         assertEquals(Double.NEGATIVE_INFINITY, eval("(+ -inf.0 1)", env))
         assertEquals(Double.NEGATIVE_INFINITY, eval("(+ 1 -inf.0)", env))
@@ -971,6 +973,7 @@ class NumberTest : AbstractTest() {
         assertEquals(Double.NEGATIVE_INFINITY, eval("(* 1 -inf.0)", env))
         assertEquals(Double.NEGATIVE_INFINITY, eval("(/ -inf.0 1)", env))
         assertEquals(Double.NEGATIVE_INFINITY, eval("(/ 1 -inf.0)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(- +inf.0)",   env))
 
         assertEquals(0.0, eval("(* +nan.0 0)", env))
         assertEquals(0.0, eval("(* 0 +nan.0)", env))
@@ -985,6 +988,21 @@ class NumberTest : AbstractTest() {
         assertEquals(0.0, eval("(/ 0 -nan.0)", env))
         assertEquals(0.0, eval("(/ 0 +inf.0)", env))
         assertEquals(0.0, eval("(/ 0 -inf.0)", env))
+
+        assertEquals(Double.NaN, eval("(/ 0.0 0.0)", env))
+        assertEquals(Double.NaN, eval("(* 0.0 +nan.0)", env))
+        assertEquals(Double.NaN, eval("(* 0.0 -nan.0)", env))
+        assertEquals(Double.NaN, eval("(* 0.0 +inf.0)", env))
+        assertEquals(Double.NaN, eval("(* 0.0 -inf.0)", env))
+        assertEquals(Double.NaN, eval("(* +nan.0 0.0)", env))
+        assertEquals(Double.NaN, eval("(* -nan.0 0.0)", env))
+        assertEquals(Double.NaN, eval("(* +inf.0 0.0)", env))
+        assertEquals(Double.NaN, eval("(* -inf.0 0.0)", env))
+
+        assertEquals(Double.NaN, eval("(+ -inf.0 +inf.0)", env))
+        assertEquals(Double.NaN, eval("(+ +inf.0 -inf.0)", env))
+        assertEquals(Double.NaN, eval("(- -inf.0 +inf.0)", env))
+        assertEquals(Double.NaN, eval("(- +inf.0 -inf.0)", env))
 
         val divByZero = arrayOf("(/ +nan.0 0)", "(/ -nan.0 0)", "(/ +inf.0 0)", "(/ -inf.0 0)")
         for (s in divByZero) {

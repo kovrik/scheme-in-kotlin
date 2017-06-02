@@ -34,6 +34,12 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
                 }
 
             }
+            if (Utils.isPositiveInfinity(args[0] as Number)) {
+                return Double.NEGATIVE_INFINITY
+            }
+            if (Utils.isNegativeInfinity(args[0] as Number)) {
+                return Double.POSITIVE_INFINITY
+            }
             return subtract(0L, args[0] as Number)
         }
         var result = args[0]
@@ -44,9 +50,15 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     }
 
     private fun subtract(first: Number, second: Number): Number? {
-        var first = first
+        var first  = first
         var second = second
         /* Special cases */
+        if (Utils.isPositiveInfinity(first) && Utils.isNegativeInfinity(second)) {
+            return Double.NaN
+        }
+        if (Utils.isPositiveInfinity(second) && Utils.isNegativeInfinity(first)) {
+            return Double.NaN
+        }
         if (Utils.isZero(second)) {
             return Utils.inexactnessTaint(first, second)
         }

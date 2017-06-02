@@ -411,6 +411,10 @@ object Utils {
         }
     }
 
+    fun isPositiveInfinity(number: Number?) = number == Double.POSITIVE_INFINITY || number == Float.POSITIVE_INFINITY
+
+    fun isNegativeInfinity(number: Number?) = number == Double.NEGATIVE_INFINITY || number == Float.NEGATIVE_INFINITY
+
     /**
      * Inexactness 'taint'
      * Computations that involve an inexact number produce inexact results,

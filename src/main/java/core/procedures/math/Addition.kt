@@ -34,6 +34,12 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
             var first = first!!
             var second = second!!
             /* Special cases */
+            if (Utils.isPositiveInfinity(first) && Utils.isNegativeInfinity(second)) {
+                return Double.NaN
+            }
+            if (Utils.isPositiveInfinity(second) && Utils.isNegativeInfinity(first)) {
+                return Double.NaN
+            }
             if (Utils.isZero(first)) {
                 return Utils.inexactnessTaint(second, first)
             }

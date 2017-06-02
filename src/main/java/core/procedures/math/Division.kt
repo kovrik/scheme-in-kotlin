@@ -43,6 +43,9 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
             throw ArithmeticException("Division by zero")
         }
         if (Utils.isZero(numerator)) {
+            if (Utils.isZero(denominator) && Utils.isInexact(numerator) && Utils.isInexact(denominator)) {
+                return Double.NaN
+            }
             return Utils.inexactnessTaint(numerator, denominator)
         }
         /* Complex numbers*/
