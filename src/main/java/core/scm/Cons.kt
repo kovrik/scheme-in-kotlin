@@ -98,7 +98,7 @@ class Cons<E> : LinkedList<E?> {
             val sb = StringBuilder("(")
             if (isProperList(list)) {
                 /* List */
-                for (i in 0..list.size - 1 - 1) {
+                for (i in 0..list.size - 2) {
                     val e = list[i]
                     sb.append(if (e === list) "(this list)" else Writer.write(e)).append(' ')
                 }

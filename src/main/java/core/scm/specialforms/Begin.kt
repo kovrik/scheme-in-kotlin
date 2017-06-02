@@ -30,7 +30,7 @@ enum class Begin : ISpecialForm {
         if (expression.size <= 1) {
             return Void
         }
-        for (i in 1..expression.size - 1 - 1) {
+        for (i in 1..expression.size - 2) {
             evaluator.eval(expression[i], env)
         }
         return Thunk(expression[expression.size - 1], env)

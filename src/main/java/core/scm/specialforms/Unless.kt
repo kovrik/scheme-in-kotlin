@@ -20,7 +20,7 @@ enum class Unless : ISpecialForm {
         }
         val test = expression[1]
         if (!Utils.toBoolean(evaluator.eval(test, env))) {
-            for (i in 2..expression.size - 1 - 1) {
+            for (i in 2..expression.size - 2) {
                 evaluator.eval(expression[i], env)
             }
             return Thunk(expression[expression.size - 1], env)

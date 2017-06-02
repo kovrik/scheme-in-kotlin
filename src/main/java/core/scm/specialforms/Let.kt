@@ -30,8 +30,7 @@ enum class Let : ISpecialForm {
             }
             /* Evaluate inits */
             for (binding in bindings) {
-                val variable = binding[0]
-                val init = binding[1]
+                val (variable, init) = binding
                 if (localEnv[variable] !== Environment.UNDEFINED) {
                     throw IllegalSyntaxException.of(toString(), expression, "duplicate identifier: $variable")
                 }
@@ -39,7 +38,7 @@ enum class Let : ISpecialForm {
             }
 
             /* Evaluate body */
-            for (i in 2..expression.size - 1 - 1) {
+            for (i in 2..expression.size - 2) {
                 evaluator.eval(expression[i], localEnv)
             }
             return Thunk(expression[expression.size - 1], localEnv)

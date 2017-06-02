@@ -22,7 +22,7 @@ enum class Time : ISpecialForm {
             throw IllegalSyntaxException.of(toString(), expression)
         }
         val start = System.nanoTime()
-        for (i in 1..expression.size - 1 - 1) {
+        for (i in 1..expression.size - 2) {
             evaluator.eval(expression[i], env)
         }
         val result = evaluator.eval(expression[expression.size - 1], env)

@@ -24,7 +24,7 @@ enum class LetSeq : ISpecialForm {
             localEnv.put(binding[0], evaluator.eval(binding[1], localEnv))
         }
         /* Evaluate body */
-        for (i in 2..expression.size - 1 - 1) {
+        for (i in 2..expression.size - 2) {
             evaluator.eval(expression[i], localEnv)
         }
         return Thunk(expression[expression.size - 1], localEnv)

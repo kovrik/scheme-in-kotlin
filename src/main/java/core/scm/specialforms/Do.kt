@@ -34,8 +34,7 @@ enum class Do : ISpecialForm {
             if (binding.size < 2) {
                 throw IllegalSyntaxException.of(toString(), expression)
             }
-            val variable = binding[0]
-            val init = binding[1]
+            val (variable, init) = binding
             if (binding.size == 3) {
                 /* Put pair of Var and Step */
                 val step = binding[2]
@@ -48,8 +47,7 @@ enum class Do : ISpecialForm {
             tempEnv.put(variable, evaluator.eval(init, tempEnv))
         }
 
-        val cl = expression[2] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression)
-        val clause = cl as List<Any>
+        val clause = expression[2] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression)
         if (clause.isEmpty()) {
             throw IllegalSyntaxException.of(toString(), expression)
         }

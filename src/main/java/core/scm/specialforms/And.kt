@@ -14,7 +14,7 @@ enum class And : ISpecialForm {
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         var result: Any? = true
         if (expression.size > 1) {
-            for (i in 1..expression.size - 1 - 1) {
+            for (i in 1..expression.size - 2) {
                 result = evaluator.eval(expression[i], env)
                 if (!Utils.toBoolean(result)) {
                     return result

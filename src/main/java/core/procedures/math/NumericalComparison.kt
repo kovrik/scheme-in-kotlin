@@ -50,7 +50,7 @@ class NumericalComparison private constructor(override val name: String, private
     }
 
     override operator fun invoke(vararg args: Any?): Boolean {
-        for (i in 0..args.size - 1 - 1) {
+        for (i in 0..args.size - 2) {
             val result = invoke(args[i], args[i + 1])
             if (!result) {
                 return false
