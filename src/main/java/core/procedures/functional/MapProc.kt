@@ -11,11 +11,7 @@ import core.scm.specialforms.Quote
 import core.utils.Utils
 import java.util.*
 
-class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java))) {
-
-    companion object {
-        internal val MAP_PROC = MapProc()
-    }
+open class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java))) {
 
     private val count = Count()
 
@@ -24,6 +20,9 @@ class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.jav
     // TODO Very naive implementation. Re-implement and optimize
     override operator fun invoke(vararg args: Any?): Thunk {
         /* Check that all lists/vectors are of the same size */
+        if (!Utils.isSeqable(args[1])) {
+            throw IllegalArgumentException("don't know how to create Sequence from " + args[1]?.javaClass)
+        }
         val size = count(args[1])!!
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
         for (i in 1..args.size - 1) {

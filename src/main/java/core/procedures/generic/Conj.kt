@@ -30,14 +30,11 @@ class Conj : AFn(FnArgs(min = 1)) {
                 return set
             }
             first is Vector -> {
-                val size = first.size + args.size - 1
-                val vector = MutableVector(size, null)
-                val v = first
-                val length = v.size
-                for (i in 0..length - 1) {
-                    vector.getArray()[i] = v[i]
+                val vector = MutableVector(first.size + args.size - 1, null)
+                for (i in 0..first.size - 1) {
+                    vector[i] = first[i]
                 }
-                System.arraycopy(args, 1, vector.getArray(), length, args.size - 1)
+                System.arraycopy(args, 1, vector.getArray(), first.size, args.size - 1)
                 return vector
             }
             // TODO Map?
