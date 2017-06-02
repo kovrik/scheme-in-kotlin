@@ -15,9 +15,7 @@ open class ToString : AFn(FnArgs(min = 0)) {
             args.size == 1 -> str(args[0])
             else -> {
                 val sb = StringBuilder()
-                for (arg in args) {
-                    sb.append(str(arg))
-                }
+                args.forEach { arg -> sb.append(str(arg)) }
                 sb.toString()
             }
         }

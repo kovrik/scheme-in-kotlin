@@ -15,25 +15,15 @@ open class Next : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "next"
 
     override operator fun invoke(arg: Any?): Any? {
-        if (!Utils.isSeqable(arg)) {
-            throw IllegalArgumentException("don't know how to create Sequence from " + arg!!.javaClass)
-        }
-        when (arg) {
-            is List<*> -> {
-                val list = arg
-                return if (list.isEmpty()) null else list.subList(1, list.size)
-            }
-            is Set<*> -> return next(arg)
-            is Map<*, *> -> return next(arg.entries)
-            is Map.Entry<*, *> -> return Cons.list(arg.value!!)
-            is Vector -> {
-                val vec = arg
-                return if (vec.size == 0) null else Vector(*Arrays.copyOfRange<Any>(vec.getArray(), 1, vec.size))
-            }
-            is CharSequence -> {
-                val cs = arg
-                return if (cs.length == 0) null else cs.subSequence(1, cs.length)
-            }
+        return when (arg) {
+            null -> null
+            !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from " + arg.javaClass)
+            is List<*> -> if (arg.isEmpty()) null else arg.subList(1, arg.size)
+            is Set<*> -> next(arg)
+            is Map<*, *> -> next(arg.entries)
+            is Map.Entry<*, *> -> Cons.list(arg.value!!)
+            is Vector -> if (arg.size == 0) null else Vector(*Arrays.copyOfRange<Any>(arg.getArray(), 1, arg.size))
+            is CharSequence -> if (arg.length == 0) null else arg.subSequence(1, arg.length)
             else -> throw WrongTypeException("next", "List or Vector or Set or String or Map", arg)
         }
     }
@@ -42,9 +32,9 @@ open class Next : AFn(FnArgs(min = 1, max = 1)) {
         if (set.isEmpty()) {
             return null
         }
-        val next = HashSet<Any?>()
         val iter = set.iterator()
         iter.next()
+        val next = HashSet<Any?>()
         while (iter.hasNext()) {
             next.add(iter.next())
         }
