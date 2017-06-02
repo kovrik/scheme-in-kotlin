@@ -39,6 +39,9 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
         var numerator = numerator!!
         var denominator = denominator!!
+        if (Utils.isZero(denominator) && Utils.isExact(denominator)) {
+            throw ArithmeticException("Division by zero")
+        }
         if (Utils.isZero(numerator)) {
             return Utils.inexactnessTaint(numerator, denominator)
         }

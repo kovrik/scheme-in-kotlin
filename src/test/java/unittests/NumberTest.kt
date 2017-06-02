@@ -986,10 +986,14 @@ class NumberTest : AbstractTest() {
         assertEquals(0.0, eval("(/ 0 +inf.0)", env))
         assertEquals(0.0, eval("(/ 0 -inf.0)", env))
 
-        // TODO
-//        assertEquals(0.0, eval("(/ +nan.0 0)", env))
-//        assertEquals(0.0, eval("(/ -nan.0 0)", env))
-//        assertEquals(0.0, eval("(/ +inf.0 0)", env))
-//        assertEquals(0.0, eval("(/ -inf.0 0)", env))
+        val divByZero = arrayOf("(/ +nan.0 0)", "(/ -nan.0 0)", "(/ +inf.0 0)", "(/ -inf.0 0)")
+        for (s in divByZero) {
+            try {
+                eval(s, env)
+                fail()
+            } catch (e: ArithmeticException) {
+                // expected
+            }
+        }
     }
 }
