@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException
 
 class Promise : CompletableFuture<Any>(), IDeref {
 
-    override fun deref(): Any {
+    override fun deref(): Any? {
         try {
             return get()
         } catch (e: InterruptedException) {

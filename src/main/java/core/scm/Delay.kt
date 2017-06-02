@@ -34,7 +34,7 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
         return value
     }
 
-    private val value: Any
+    private val value: Any?
         get() {
             try {
                 return get()
