@@ -37,6 +37,9 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
             if (Utils.isZero(first)) {
                 return Utils.inexactnessTaint(first, second)
             }
+            if (Utils.isZero(second)) {
+                return Utils.inexactnessTaint(second, first)
+            }
             if (Utils.isOne(first)) {
                 return Utils.inexactnessTaint(second, first)
             }
@@ -69,6 +72,10 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
                 }
             }
             if (first is Float && second is Float) {
+                when {
+                    !first.isFinite()  -> return first
+                    !second.isFinite() -> return second
+                }
                 val result = first.toFloat() * second.toFloat()
                 if (!result.isFinite()) {
                     return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second))
@@ -76,6 +83,12 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
                 return result
             }
             if (first is Double || second is Double || first is Float || second is Float) {
+                when {
+                    first  is Double && !first.isFinite()  -> return first
+                    second is Double && !second.isFinite() -> return second
+                    first  is Float  && !first.isFinite()  -> return first
+                    second is Float  && !second.isFinite() -> return second
+                }
                 val result = first.toDouble() * second.toDouble()
                 if (!result.isFinite()) {
                     return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second))

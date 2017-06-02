@@ -71,6 +71,10 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
             return BigRatio.valueOf(Utils.toBigInteger(numerator), Utils.toBigInteger(denominator))
         }
         if (numerator is Float && denominator is Float) {
+            when {
+                !numerator.isFinite()   -> return numerator
+                !denominator.isFinite() -> return denominator
+            }
             val result = numerator.toFloat() / denominator.toFloat()
             if (!result.isFinite()) {
                 return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
@@ -78,6 +82,12 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
             return result
         }
         if (numerator is Double || denominator is Double || numerator is Float || denominator is Float) {
+            when {
+                numerator   is Double && !numerator.isFinite()   -> return numerator
+                denominator is Double && !denominator.isFinite() -> return denominator
+                numerator   is Float  && !numerator.isFinite()   -> return numerator
+                denominator is Float  && !denominator.isFinite() -> return denominator
+            }
             val result = numerator.toDouble() / denominator.toDouble()
             if (!result.isFinite()) {
                 return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)

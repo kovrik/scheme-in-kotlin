@@ -6,15 +6,10 @@ import core.exceptions.UndefinedIdentifierException
 import core.exceptions.WrongTypeException
 import core.scm.BigComplex
 import core.scm.BigRatio
+import org.junit.Assert.*
 import org.junit.Test
-
 import java.math.BigDecimal
 import java.math.BigInteger
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 
 class NumberTest : AbstractTest() {
 
@@ -938,5 +933,63 @@ class NumberTest : AbstractTest() {
         assertEquals(0L, eval("(rationalize 2/3 1)", env))
         assertEquals(2333L, eval("(rationalize 2335 2)", env))
         assertEquals(-2L, eval("(rationalize -5 3)", env))
+    }
+
+    @Test
+    fun testArithmeticWIthNonFiniteNumbers() {
+        assertEquals(Double.NaN, eval("(+ +nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(+ -nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(+ 1 +nan.0)", env))
+        assertEquals(Double.NaN, eval("(+ 1 -nan.0)", env))
+        assertEquals(Double.NaN, eval("(- +nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(- -nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(- 1 +nan.0)", env))
+        assertEquals(Double.NaN, eval("(- 1 -nan.0)", env))
+        assertEquals(Double.NaN, eval("(* +nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(* -nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(* 1 +nan.0)", env))
+        assertEquals(Double.NaN, eval("(* 1 -nan.0)", env))
+        assertEquals(Double.NaN, eval("(/ +nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(/ -nan.0 1)", env))
+        assertEquals(Double.NaN, eval("(/ 1 +nan.0)", env))
+        assertEquals(Double.NaN, eval("(/ 1 -nan.0)", env))
+
+        assertEquals(Double.POSITIVE_INFINITY, eval("(+ +inf.0 1)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(+ 1 +inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(- +inf.0 1)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(- 1 +inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(* +inf.0 1)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(* 1 +inf.0)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(/ +inf.0 1)", env))
+        assertEquals(Double.POSITIVE_INFINITY, eval("(/ 1 +inf.0)", env))
+
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(+ -inf.0 1)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(+ 1 -inf.0)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(- -inf.0 1)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(- 1 -inf.0)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(* -inf.0 1)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(* 1 -inf.0)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(/ -inf.0 1)", env))
+        assertEquals(Double.NEGATIVE_INFINITY, eval("(/ 1 -inf.0)", env))
+
+        assertEquals(0.0, eval("(* +nan.0 0)", env))
+        assertEquals(0.0, eval("(* 0 +nan.0)", env))
+        assertEquals(0.0, eval("(* -nan.0 0)", env))
+        assertEquals(0.0, eval("(* 0 -nan.0)", env))
+        assertEquals(0.0, eval("(* +inf.0 0)", env))
+        assertEquals(0.0, eval("(* 0 +inf.0)", env))
+        assertEquals(0.0, eval("(* -inf.0 0)", env))
+        assertEquals(0.0, eval("(* 0 -inf.0)", env))
+
+        assertEquals(0.0, eval("(/ 0 +nan.0)", env))
+        assertEquals(0.0, eval("(/ 0 -nan.0)", env))
+        assertEquals(0.0, eval("(/ 0 +inf.0)", env))
+        assertEquals(0.0, eval("(/ 0 -inf.0)", env))
+
+        // TODO
+//        assertEquals(0.0, eval("(/ +nan.0 0)", env))
+//        assertEquals(0.0, eval("(/ -nan.0 0)", env))
+//        assertEquals(0.0, eval("(/ +inf.0 0)", env))
+//        assertEquals(0.0, eval("(/ -inf.0 0)", env))
     }
 }

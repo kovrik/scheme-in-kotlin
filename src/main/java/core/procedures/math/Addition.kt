@@ -5,7 +5,6 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -67,6 +66,10 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
                 }
             }
             if (first is Float && second is Float) {
+                when {
+                    !first.isFinite()  -> return first
+                    !second.isFinite() -> return second
+                }
                 val result = first.toFloat() + second.toFloat()
                 if (!result.isFinite()) {
                     return Utils.toBigDecimal(first).add(Utils.toBigDecimal(second))
@@ -74,6 +77,12 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
                 return result
             }
             if (first is Double || second is Double || first is Float || second is Float) {
+                when {
+                    first  is Double && !first.isFinite()  -> return first
+                    second is Double && !second.isFinite() -> return second
+                    first  is Float  && !first.isFinite()  -> return first
+                    second is Float  && !second.isFinite() -> return second
+                }
                 val result = first.toDouble() + second.toDouble()
                 if (!result.isFinite()) {
                     return Utils.toBigDecimal(first).add(Utils.toBigDecimal(second))
