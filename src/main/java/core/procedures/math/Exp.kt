@@ -3,6 +3,7 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
+import core.utils.Utils
 import java.math.BigDecimal
 
 class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
@@ -17,38 +18,19 @@ class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
         fun exp(number: Number?): Number? {
             number!!
-            if (number is Double) {
-                if (number == Double.NEGATIVE_INFINITY) {
-                    return 0L
+            when {
+                Utils.isZero(number) -> return Utils.inexactnessTaint(1L, number)
+                number is Double || number is Float -> {
+                    when {
+                        Utils.isNegativeInfinity(number) -> return 0L
+                        !Utils.isFinite(number)          -> return number
+                        else                             -> return Math.exp(number.toDouble())
+                    }
                 }
-                if (!number.isFinite()) {
-                    return number
-                }
-                return Math.exp(number.toDouble())
+                number is Long || number is Int || number is Short || number is Byte -> return Math.exp(number.toDouble())
+                number is BigRatio && number.isOne -> return Math.exp(1.0)
+                else -> return Expt.expt(E, number)
             }
-            if (number is Float) {
-                if (number == Float.NEGATIVE_INFINITY) {
-                    return 0L
-                }
-                if (!number.isFinite()) {
-                    return number
-                }
-                return Math.exp(number.toDouble())
-            }
-            if (number is Long || number is Byte || number is Short || number is Int) {
-                if (number.toLong() == 0L) {
-                    return 1L
-                }
-                return Math.exp(number.toDouble())
-            }
-            if (number is BigRatio) {
-                /* Special cases */
-                when {
-                    number.isZero -> return 1L
-                    number.isOne  -> return Math.exp(1.0)
-                }
-            }
-            return Expt.expt(E, number)
         }
     }
 }
