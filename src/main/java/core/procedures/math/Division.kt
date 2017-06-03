@@ -42,6 +42,12 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
         if (Utils.isZero(denominator) && Utils.isExact(denominator)) {
             throw ArithmeticException("Division by zero")
         }
+        if (Utils.isPositiveInfinity(denominator)) {
+            return 0.0
+        }
+        if (Utils.isNegativeInfinity(denominator)) {
+            return -0.0
+        }
         if (Utils.isZero(numerator)) {
             if (Utils.isZero(denominator) && Utils.isInexact(numerator) && Utils.isInexact(denominator)) {
                 return Double.NaN

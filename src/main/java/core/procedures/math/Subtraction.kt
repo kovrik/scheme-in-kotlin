@@ -32,7 +32,6 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
                 } catch (e: ArithmeticException) {
                     return Math.negateExact((args[0] as Int).toLong())
                 }
-
             }
             if (Utils.isPositiveInfinity(args[0] as Number)) {
                 return Double.NEGATIVE_INFINITY
@@ -50,79 +49,30 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     }
 
     private fun subtract(first: Number, second: Number): Number? {
-        var first  = first
-        var second = second
-        /* Special cases */
-        if (Utils.isPositiveInfinity(first) && Utils.isNegativeInfinity(second)) {
-            return Double.NaN
-        }
-        if (Utils.isPositiveInfinity(second) && Utils.isNegativeInfinity(first)) {
-            return Double.NaN
-        }
-        if (Utils.isZero(second)) {
-            return Utils.inexactnessTaint(first, second)
-        }
-        /* Complex numbers*/
-        if (first is BigComplex) {
-            return first.minus(second)
-        }
-        if (second is BigComplex) {
-            return BigComplex(first).minus(second)
-        }
-        /* Big Ratio numbers */
-        if (first is BigRatio && second is BigRatio) {
-            return first.minus(second)
-        }
-        if (first is BigRatio) {
-            if (Utils.isExact(second)) {
-                return first.minus(BigRatio.valueOf(second.toString(), "1"))
-            } else {
-                first = first.toDouble()
+        var (f, s) = Utils.upcast(first, second)
+        when {
+            /* Special cases */
+            Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> return Double.NaN
+            Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> return Double.NaN
+            !Utils.isFinite(f)                                         -> return f
+            !Utils.isFinite(s)                 -> return s
+            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
+            Utils.isZero(s)                    -> return Utils.inexactnessTaint(f, s)
+            f is BigComplex && s is BigComplex -> return f.minus(s)
+            f is BigRatio   && s is BigRatio   -> return f.minus(s)
+            f is BigDecimal && s is BigDecimal -> return f.subtract(s)
+            f is BigInteger && s is BigInteger -> return f.subtract(s)
+            f is Double     && s is Double     -> return f - s
+            f is Float      && s is Float      -> return f - s
+            else -> {
+                val f = f.toLong()
+                val s = s.toLong()
+                try {
+                    return Math.subtractExact(f, s)
+                } catch (e: ArithmeticException) {
+                    return BigDecimal.valueOf(f).subtract(BigDecimal.valueOf(s))
+                }
             }
-        }
-        if (second is BigRatio) {
-            if (Utils.isExact(first)) {
-                return BigRatio.valueOf(first.toString(), "1").minus(second)
-            } else {
-                second = second.toDouble()
-            }
-        }
-        if (first is Float && second is Float) {
-            when {
-                !first.isFinite()  -> return first
-                !second.isFinite() -> return second
-            }
-            val result = first.toFloat() - second.toFloat()
-            if (!result.isFinite()) {
-                return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second))
-            }
-            return result
-        }
-        if (first is Double || second is Double || first is Float || second is Float) {
-            when {
-                first  is Double && !first.isFinite()  -> return first
-                second is Double && !second.isFinite() -> return second
-                first  is Float  && !first.isFinite()  -> return first
-                second is Float  && !second.isFinite() -> return second
-            }
-            val result = first.toDouble() - second.toDouble()
-            if (!result.isFinite()) {
-                return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second))
-            }
-            return result
-        }
-        if (first is BigDecimal || second is BigDecimal) {
-            return Utils.toBigDecimal(first).subtract(Utils.toBigDecimal(second))
-        }
-        if (first is BigInteger || second is BigInteger) {
-            return Utils.toBigInteger(first).subtract(Utils.toBigInteger(second))
-        }
-        val f = first.toLong()
-        val s = second.toLong()
-        try {
-            return Math.subtractExact(f, s)
-        } catch (e: ArithmeticException) {
-            return BigDecimal.valueOf(f).subtract(BigDecimal.valueOf(s))
         }
     }
 }

@@ -31,88 +31,39 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
     companion object {
 
         operator fun invoke(first: Number?, second: Number?): Number {
-            var first = first!!
-            var second = second!!
+            var (f, s) = Utils.upcast(first!!, second!!)
             /* Special cases */
-            if (Utils.isZero(first)) {
-                if (!Utils.isFinite(second) && Utils.isInexact(first)) {
+            if (Utils.isZero(f)) {
+                if (!Utils.isFinite(s) && Utils.isInexact(f)) {
                     return Double.NaN
                 }
-                return Utils.inexactnessTaint(first, second)
+                return Utils.inexactnessTaint(f, s)
             }
-            if (Utils.isZero(second)) {
-                if (!Utils.isFinite(first) && Utils.isInexact(second)) {
+            if (Utils.isZero(s)) {
+                if (!Utils.isFinite(f) && Utils.isInexact(s)) {
                     return Double.NaN
                 }
-                return Utils.inexactnessTaint(second, first)
+                return Utils.inexactnessTaint(s, f)
             }
-            if (Utils.isOne(first)) {
-                return Utils.inexactnessTaint(second, first)
-            }
-            if (Utils.isOne(second)) {
-                return Utils.inexactnessTaint(first, second)
-            }
-            /* Complex numbers*/
-            if (first is BigComplex) {
-                return first.multiply(second)
-            }
-            if (second is BigComplex) {
-                return second.multiply(first)
-            }
-            /* Big Ratio numbers */
-            if (first is BigRatio && second is BigRatio) {
-                return first.multiply(second)
-            }
-            if (first is BigRatio) {
-                if (Utils.isExact(second)) {
-                    return first.multiply(Utils.toBigInteger(second))
-                } else {
-                    first = first.toDouble()
+            when {
+                /* Special cases */
+                Utils.isOne(f)                     -> return Utils.inexactnessTaint(s, f)
+                Utils.isOne(s)                     -> return Utils.inexactnessTaint(f, s)
+                f is BigComplex && s is BigComplex -> return f.multiply(s)
+                f is BigRatio   && s is BigRatio   -> return f.multiply(s)
+                f is BigDecimal && s is BigDecimal -> return f.multiply(s)
+                f is BigInteger && s is BigInteger -> return f.multiply(s)
+                f is Double     && s is Double     -> return f * s
+                f is Float      && s is Float      -> return f * s
+                else -> {
+                    val f = f.toLong()
+                    val s = s.toLong()
+                    try {
+                        return Math.multiplyExact(f, s)
+                    } catch (e: ArithmeticException) {
+                        return BigDecimal.valueOf(f).multiply(BigDecimal.valueOf(s))
+                    }
                 }
-            }
-            if (second is BigRatio) {
-                if (Utils.isExact(first)) {
-                    return second.multiply(Utils.toBigInteger(first))
-                } else {
-                    second = second.toDouble()
-                }
-            }
-            if (first is Float && second is Float) {
-                when {
-                    !first.isFinite()  -> return first
-                    !second.isFinite() -> return second
-                }
-                val result = first.toFloat() * second.toFloat()
-                if (!result.isFinite()) {
-                    return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second))
-                }
-                return result
-            }
-            if (first is Double || second is Double || first is Float || second is Float) {
-                when {
-                    first  is Double && !first.isFinite()  -> return first
-                    second is Double && !second.isFinite() -> return second
-                    first  is Float  && !first.isFinite()  -> return first
-                    second is Float  && !second.isFinite() -> return second
-                }
-                val result = first.toDouble() * second.toDouble()
-                if (!result.isFinite()) {
-                    return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second))
-                }
-                return result
-            }
-            if (first is BigDecimal || second is BigDecimal) {
-                return Utils.toBigDecimal(first).multiply(Utils.toBigDecimal(second))
-            }
-            if (first is BigInteger || second is BigInteger) {
-                return Utils.toBigInteger(first).multiply(Utils.toBigInteger(second))
-            }
-            val f = first.toLong()
-            val s = second.toLong()
-            try {
-                return Math.multiplyExact(f, s)
-            } catch (e: ArithmeticException) {
-                return BigDecimal.valueOf(f).multiply(BigDecimal.valueOf(s))
             }
         }
     }

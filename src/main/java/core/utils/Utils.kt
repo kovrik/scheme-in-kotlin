@@ -595,6 +595,7 @@ object Utils {
             else -> return when {
                 f is BigComplex || s is BigComplex -> arrayOf(toBigComplex(f), toBigComplex(s))
                 f is BigRatio   || s is BigRatio   -> arrayOf(toBigRatio(f), toBigRatio(s))
+                f is BigDecimal || s is BigDecimal -> arrayOf(toBigDecimal(f), toBigDecimal(s))
                 f is BigInteger || s is BigInteger -> arrayOf(toBigInteger(f), toBigInteger(s))
                 f is Long       || s is Long       -> arrayOf(f.toLong(), s.toLong())
                 f is Int        || s is Int        -> arrayOf(f.toInt(), s.toInt())
