@@ -5,9 +5,7 @@ import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-
 import java.math.BigDecimal
-import java.math.BigInteger
 
 class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
@@ -37,83 +35,25 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     }
 
     private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
-        var numerator = numerator!!
-        var denominator = denominator!!
-        if (Utils.isZero(denominator) && Utils.isExact(denominator)) {
-            throw ArithmeticException("Division by zero")
-        }
-        if (Utils.isPositiveInfinity(denominator)) {
-            return 0.0
-        }
-        if (Utils.isNegativeInfinity(denominator)) {
-            return -0.0
-        }
-        if (Utils.isZero(numerator)) {
-            if (Utils.isZero(denominator) && Utils.isInexact(numerator) && Utils.isInexact(denominator)) {
+        var (n, d) = Utils.upcast(numerator, denominator)
+        if (Utils.isZero(d) && Utils.isExact(d)) throw ArithmeticException("Division by zero")
+        if (Utils.isPositiveInfinity(d)) return  0.0
+        if (Utils.isNegativeInfinity(d)) return -0.0
+        if (Utils.isZero(n)) {
+            if (Utils.isZero(d) && Utils.isInexact(n) && Utils.isInexact(d)) {
                 return Double.NaN
             }
-            return Utils.inexactnessTaint(numerator, denominator)
+            return Utils.inexactnessTaint(n, d)
         }
-        /* Complex numbers*/
-        if (numerator is BigComplex) {
-            return numerator.divide(denominator)
+        when {
+            /* Special cases */
+            n is BigComplex  && d is BigComplex  -> return n.divide(d)
+            n is BigRatio    && d is BigRatio    -> return n.divide(d)
+            n is BigDecimal  && d is BigDecimal  -> return n.divide(d)
+            Utils.isExact(n) && Utils.isExact(d) -> return BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
+            n is Double      && d is Double      -> return n / d
+            n is Float       && d is Float       -> return n / d
+            else                                 -> return n.toDouble() / d.toDouble()
         }
-        if (denominator is BigComplex) {
-            return BigComplex(numerator).divide(denominator)
-        }
-        /* Big Ratio numbers */
-        if (numerator is BigRatio && denominator is BigRatio) {
-            return numerator.divide(denominator)
-        }
-        if (numerator is BigRatio) {
-            if (Utils.isExact(denominator)) {
-                return numerator.divide(Utils.toBigInteger(denominator))
-            } else {
-                numerator = numerator.toDouble()
-            }
-        }
-        if (denominator is BigRatio) {
-            if (Utils.isExact(numerator)) {
-                return denominator.reciprocal().multiply(Utils.toBigInteger(numerator))
-            } else {
-                denominator = denominator.toDouble()
-            }
-        }
-        if (Utils.isExact(numerator) && Utils.isExact(denominator)) {
-            return BigRatio.valueOf(Utils.toBigInteger(numerator), Utils.toBigInteger(denominator))
-        }
-        if (numerator is Float && denominator is Float) {
-            when {
-                !numerator.isFinite()   -> return numerator
-                !denominator.isFinite() -> return denominator
-            }
-            val result = numerator.toFloat() / denominator.toFloat()
-            if (!result.isFinite()) {
-                return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
-            }
-            return result
-        }
-        if (numerator is Double || denominator is Double || numerator is Float || denominator is Float) {
-            when {
-                numerator   is Double && !numerator.isFinite()   -> return numerator
-                denominator is Double && !denominator.isFinite() -> return denominator
-                numerator   is Float  && !numerator.isFinite()   -> return numerator
-                denominator is Float  && !denominator.isFinite() -> return denominator
-            }
-            val result = numerator.toDouble() / denominator.toDouble()
-            if (!result.isFinite()) {
-                return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
-            }
-            return result
-        }
-        if (numerator is BigDecimal || denominator is BigDecimal) {
-            return Utils.toBigDecimal(numerator).divide(Utils.toBigDecimal(denominator), Utils.DEFAULT_CONTEXT)
-        }
-        if (numerator is BigInteger || denominator is BigInteger) {
-            return Utils.toBigInteger(numerator).divide(Utils.toBigInteger(denominator))
-        }
-        val f = numerator.toDouble()
-        val s = denominator.toDouble()
-        return f / s
     }
 }
