@@ -12,7 +12,6 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
 
     override val isPure = true
     override val name = "quotient"
-    private operator fun invoke(first: BigInteger, second: BigInteger) = first.divide(second)
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!
@@ -20,7 +19,7 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
         when {
             Utils.isOne(arg2)  -> return Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
             Utils.isZero(arg2) -> throw ArithmeticException("quotient: undefined for 0")
-            else -> return invoke(arg1 as Number, arg2 as Number)
+            else               -> return invoke(arg1 as Number, arg2 as Number)
         }
     }
 
@@ -34,21 +33,17 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
     }
 
     private operator fun invoke(first: Number, second: Number): Number? {
-        if (Utils.isZero(first)) {
-            return Utils.inexactnessTaint(first, second)
+        val (f, s) = Utils.upcast(first, second)
+        when {
+            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
+            f is BigDecimal && s is BigDecimal -> return invoke(f, s)
+            f is BigInteger && s is BigInteger -> return f.divide(s)
+            f is Double     && s is Double && Utils.isInteger(f) && Utils.isInteger(s) -> return (f.toLong() / s.toLong()).toDouble()
+            f is Float      && s is Float  && Utils.isInteger(f) && Utils.isInteger(s) -> return (f.toLong() / s.toLong()).toDouble()
+            f is Double     && s is Double     -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is Float      && s is Float      -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is BigRatio   && s is BigRatio   -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            else                               -> return f.toLong() / s.toLong()
         }
-        if (first is BigDecimal || second is BigDecimal) {
-            return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-        }
-        if (first is BigInteger || second is BigInteger) {
-            return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
-        }
-        if ((first is Double || second is Double || first is Float || second is Float) && Utils.isInteger(first) && Utils.isInteger(second)) {
-            return java.lang.Long.valueOf(first.toLong() / second.toLong())!!.toDouble()
-        }
-        if (first is Double || second is Double || first is BigRatio || second is BigRatio) {
-            return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-        }
-        return first.toLong() / second.toLong()
     }
 }
