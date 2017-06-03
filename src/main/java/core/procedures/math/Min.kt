@@ -18,54 +18,26 @@ class Min : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
         if (args.size == 1) {
             return args[0] as Number
         }
-        var result = args[0]
+        var result = args[0]!!
         for (arg in args) {
-            result = min(result as Number, arg as Number)
+            result = min(result as Number, arg!! as Number)
         }
         return result as Number
     }
 
-    private fun min(first: Number?, second: Number?): Number {
-        var first = first!!
-        var second = second!!
-        if (first is BigRatio && second is BigRatio) {
-            return if (first < second) first else second
+    private fun min(f: Number, s: Number): Number {
+        return when {
+            f is Int        && s is Int        -> Math.min(f, s)
+            f is Long       && s is Long       -> Math.min(f, s)
+            f is Float      && s is Float      -> Math.min(f, s)
+            f is Double     && s is Double     -> Math.min(f, s)
+            f is BigRatio   && s is BigRatio   -> f.min(s)
+            f is BigInteger && s is BigInteger -> f.min(s)
+            f is BigDecimal && s is BigDecimal -> f.min(s)
+            f is BigDecimal                    -> f.min(Utils.toBigDecimal(s))
+            s is BigDecimal                    -> s.min(Utils.toBigDecimal(f))
+            f.toDouble() <= s.toDouble()       -> f
+            else                               -> s
         }
-        if (first is BigRatio) {
-            first = first.toDouble()
-        }
-        if (second is BigRatio) {
-            second = second.toDouble()
-        }
-        if (first is Int && second is Int) {
-            return Math.min(first, second)
-        }
-        if (first is Long && second is Long) {
-            return Math.min(first, second)
-        }
-        if (first is Float && second is Float) {
-            return Math.min(first, second)
-        }
-        if (first is Double && second is Double) {
-            return Math.min(first, second)
-        }
-        if (first is BigInteger && second is BigInteger) {
-            return first.min(second)
-        }
-        if (first is BigDecimal && second is BigDecimal) {
-            return first.min(second)
-        }
-        if (first is BigDecimal) {
-            val i = first.compareTo(Utils.toBigDecimal(second))
-            return if (i > 0) second else first
-        }
-        if (second is BigDecimal) {
-            val i = second.compareTo(Utils.toBigDecimal(first))
-            return if (i > 0) first else second
-        }
-        if (first.toDouble() <= second.toDouble()) {
-            return first
-        }
-        return second
     }
 }

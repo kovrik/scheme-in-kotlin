@@ -18,55 +18,26 @@ class Max : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
         if (args.size == 1) {
             return args[0] as Number
         }
-        var result = args[0]
+        var result = args[0]!!
         for (arg in args) {
-            result = max(result as Number, arg as Number)
+            result = max(result as Number, arg!! as Number)
         }
         return result as Number
     }
 
-    private fun max(first: Number?, second: Number?): Number {
-        var first = first!!
-        var second = second!!
-        /* Big Ratio numbers */
-        if (first is BigRatio && second is BigRatio) {
-            return if (first > second) first else second
+    private fun max(f: Number, s: Number): Number {
+        return when {
+            f is Int        && s is Int        -> Math.max(f, s)
+            f is Long       && s is Long       -> Math.max(f, s)
+            f is Float      && s is Float      -> Math.max(f, s)
+            f is Double     && s is Double     -> Math.max(f, s)
+            f is BigRatio   && s is BigRatio   -> f.max(s)
+            f is BigInteger && s is BigInteger -> f.max(s)
+            f is BigDecimal && s is BigDecimal -> f.max(s)
+            f is BigDecimal                    -> f.max(Utils.toBigDecimal(s))
+            s is BigDecimal                    -> s.max(Utils.toBigDecimal(f))
+            f.toDouble() >= s.toDouble()       -> f
+            else                               -> s
         }
-        if (first is BigRatio) {
-            first = first.toDouble()
-        }
-        if (second is BigRatio) {
-            second = second.toDouble()
-        }
-        if (first is Int && second is Int) {
-            return Math.max(first, second)
-        }
-        if (first is Long && second is Long) {
-            return Math.max(first, second)
-        }
-        if (first is Float && second is Float) {
-            return Math.max(first, second)
-        }
-        if (first is Double && second is Double) {
-            return Math.max(first, second)
-        }
-        if (first is BigInteger && second is BigInteger) {
-            return first.max(second)
-        }
-        if (first is BigDecimal && second is BigDecimal) {
-            return first.max(second)
-        }
-        if (first is BigDecimal) {
-            val i = first.compareTo(Utils.toBigDecimal(second))
-            return if (i < 0) second else first
-        }
-        if (second is BigDecimal) {
-            val i = second.compareTo(Utils.toBigDecimal(first))
-            return if (i < 0) first else second
-        }
-        if (first.toDouble() >= second.toDouble()) {
-            return first
-        }
-        return second
     }
 }

@@ -104,24 +104,6 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun truncate() = if (isNegative) ceiling() else floor()
 
-    override fun toString(): String {
-        return if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
-    }
-
-    override fun compareTo(other: BigRatio): Int {
-        return numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other == null) return false
-        if (other.javaClass != this.javaClass) return false
-        val b = other as BigRatio?
-        return compareTo(b!!) == 0
-    }
-
-    override fun hashCode() = this.toString().hashCode()
-
     fun multiply(other: BigRatio) = BigRatio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
 
     fun multiply(other: BigInteger) = BigRatio(numerator.multiply(other), denominator)
@@ -142,12 +124,32 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun divide(other: BigRatio) = multiply(other.reciprocal())
 
-    fun divide(other: BigInteger) = BigRatio(numerator, denominator.multiply(other))
+    fun max(other: BigRatio) = if (this > other) this else other
+
+    fun min(other: BigRatio) = if (this < other) this else other
 
     private fun quotient(): BigDecimal {
         val numerator = BigDecimal(numerator)
         val denominator = BigDecimal(denominator)
         return numerator.divide(denominator, 32, RoundingMode.HALF_EVEN)
+    }
+
+    override fun compareTo(other: BigRatio): Int {
+        return numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
+    }
+
+    override fun hashCode() = this.toString().hashCode()
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other == null) return false
+        if (other.javaClass != this.javaClass) return false
+        val b = other as BigRatio?
+        return compareTo(b!!) == 0
+    }
+
+    override fun toString(): String {
+        return if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
     }
 
     override fun toInt()    = quotient().toInt()
