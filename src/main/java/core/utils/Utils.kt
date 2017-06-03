@@ -296,6 +296,22 @@ object Utils {
         }
     }
 
+    fun toBigRatio(number: Number): BigRatio {
+        return when (number) {
+            is BigRatio   -> number
+            is BigInteger -> BigRatio.valueOf(toBigInteger(number), BigInteger.ONE)
+            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+            else          -> BigRatio.valueOf(number.toString(), "1")
+        }
+    }
+
+    fun toBigComplex(number: Number): BigComplex {
+        return when (number) {
+            is BigComplex -> number
+            else          -> BigComplex.of(number)
+        }
+    }
+
     fun isRational(o: Any?): Boolean {
         return when (o) {
             !is Number     -> false
@@ -554,6 +570,37 @@ object Utils {
             override fun next(): Char {
                 if (!hasNext()) throw NoSuchElementException()
                 return string[index++]
+            }
+        }
+    }
+
+    /**
+     * Up-cast two numbers to the same type
+     */
+    fun upcast(f: Number?, s: Number?): Array<Number> {
+        f!!
+        s!!
+        when {
+            f.javaClass == s.javaClass   -> return arrayOf(f, s)
+            !isFinite(f) || !isFinite(s) -> return arrayOf(f, s)
+            isInexact(f) || isInexact(s) -> return when {
+                f is BigComplex || s is BigComplex -> arrayOf(toBigComplex(f), toBigComplex(s))
+                f is BigRatio   || s is BigRatio   -> arrayOf(f.toDouble(), s.toDouble())
+                f is BigDecimal || s is BigDecimal -> arrayOf(toBigDecimal(f), toBigDecimal(s))
+                f is BigInteger || s is BigInteger -> arrayOf(toBigDecimal(f), toBigDecimal(s))
+                f is Double     || s is Double     -> arrayOf(f.toDouble(), s.toDouble())
+                f is Float      || s is Float      -> arrayOf(f.toFloat(), s.toFloat())
+                else                               -> arrayOf(f, s)
+            }
+            else -> return when {
+                f is BigComplex || s is BigComplex -> arrayOf(toBigComplex(f), toBigComplex(s))
+                f is BigRatio   || s is BigRatio   -> arrayOf(toBigRatio(f), toBigRatio(s))
+                f is BigInteger || s is BigInteger -> arrayOf(toBigInteger(f), toBigInteger(s))
+                f is Long       || s is Long       -> arrayOf(f.toLong(), s.toLong())
+                f is Int        || s is Int        -> arrayOf(f.toInt(), s.toInt())
+                f is Short      || s is Short      -> arrayOf(f.toShort(), s.toShort())
+                f is Byte       || s is Byte       -> arrayOf(f.toByte(), s.toByte())
+                else                               -> arrayOf(f, s)
             }
         }
     }
