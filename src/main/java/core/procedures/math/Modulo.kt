@@ -25,46 +25,36 @@ open class Modulo : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(L
 
     private operator fun invoke(first: BigDecimal, second: BigDecimal): BigDecimal {
         val remainder = first.remainder(second)
-        if (remainder.signum() == 0) {
-            return remainder
+        return when {
+            remainder.signum() == 0 -> remainder
+            first.signum() > 0 == second.signum() > 0 -> remainder
+            else -> second.add(remainder)
         }
-        if (first.signum() > 0 == second.signum() > 0) {
-            return remainder
-        }
-        return second.add(remainder)
     }
 
     private operator fun invoke(first: BigInteger, second: BigInteger): BigInteger {
         val remainder = first.remainder(second)
-        if (remainder.signum() == 0) {
-            return remainder
+        return when {
+            remainder.signum() == 0 -> remainder
+            first.signum() > 0 == second.signum() > 0 -> remainder
+            else -> second.add(remainder)
         }
-        if (first.signum() > 0 == second.signum() > 0) {
-            return remainder
-        }
-        return second.add(remainder)
     }
 
     private operator fun invoke(first: Number, second: Number): Number? {
-        if (Utils.isZero(first)) {
-            return Utils.inexactnessTaint(first, second)
+        val (f, s) = Utils.upcast(first, second)
+        when {
+            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
+            f is BigDecimal && s is BigDecimal -> return invoke(f, s)
+            f is BigInteger && s is BigInteger -> return invoke(f, s)
         }
-        if (first is BigDecimal || second is BigDecimal) {
-            return invoke(Utils.toBigDecimal(first), second as BigDecimal)
+        val m = REM(f, s)!!
+        return when {
+            m.toInt() == 0                   -> m
+            f.toLong() > 0 == s.toLong() > 0 -> m
+            f is Double && s is Double       -> m.toDouble() + s.toDouble()
+            f is Float  && s is Float        -> m.toDouble() + s.toDouble()
+            else                             -> m.toLong() + s.toLong()
         }
-        if (first is BigInteger || second is BigInteger) {
-            return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
-        }
-        val m = REM(first, second)
-        if (m!!.toInt() == 0) {
-            return m
-        }
-        if (first.toLong() > 0 == second.toLong() > 0) {
-            return m
-        }
-        if (first is Double || second is Double || first is Float || second is Float) {
-            return m.toDouble() + second.toDouble()
-        }
-        return m.toLong() + second.toLong()
     }
 }
