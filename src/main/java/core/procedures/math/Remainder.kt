@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -14,35 +13,24 @@ class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Lon
 
         private val NAME = "remainder"
 
-        private operator fun invoke(first: BigDecimal, second: BigDecimal) = first.remainder(second)
-
-        private operator fun invoke(first: BigInteger, second: BigInteger) = first.remainder(second)
-
         fun remainder(first: Number, second: Number): Number? {
-            if (Utils.isZero(second)) {
-                throw ArithmeticException("remainder: undefined for 0")
-            }
-            if (Utils.isZero(first)) {
-                return Utils.inexactnessTaint(first, second)
-            }
-            if (first is BigRatio || second is BigRatio) {
-                return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-            }
-            if (first is BigDecimal || second is BigDecimal) {
-                return invoke(Utils.toBigDecimal(first), Utils.toBigDecimal(second))
-            }
-            if (first is BigInteger || second is BigInteger) {
-                return invoke(Utils.toBigInteger(first), Utils.toBigInteger(second))
-            }
-            if (first is Double || second is Double || first is Float || second is Float) {
-                val result = first.toDouble() % second.toDouble()
-                // Don't want negative zero
-                if (result == -0.0) {
-                    return Math.abs(result)
+            val (f, s) = Utils.upcast(first, second)
+            when {
+                Utils.isZero(s)                      -> throw ArithmeticException("remainder: undefined for 0")
+                Utils.isZero(f)                      -> return Utils.inexactnessTaint(f, s)
+                f is BigRatio    && s is BigRatio    -> return Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
+                f is BigDecimal  && s is BigDecimal  -> return Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
+                f is BigInteger  && s is BigInteger  -> return Utils.toBigInteger(f).remainder(Utils.toBigInteger(s))
+                Utils.isExact(f) && Utils.isExact(s) -> return f.toLong() % s.toLong()
+                else -> {
+                    val result = f.toDouble() % s.toDouble()
+                    return when (result) {
+                        /* Don't want negative zero */
+                        -0.0 -> 0.0
+                        else -> result
+                    }
                 }
-                return result
             }
-            return first.toLong() % second.toLong()
         }
     }
 
