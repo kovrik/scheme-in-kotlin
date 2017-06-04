@@ -11,6 +11,8 @@ import java.math.BigInteger
 
 class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
 
+    private val ABS = Abs()
+
     override val isPure = true
     override val name = NAME
 
@@ -32,7 +34,6 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
     companion object {
 
         private val NAME = "gcd"
-        private val ABS = Abs()
 
         internal fun gcd(a: Long, b: Long): Long {
             var a = a

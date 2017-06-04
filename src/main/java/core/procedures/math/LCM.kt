@@ -10,6 +10,8 @@ import java.math.BigInteger
 
 class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
 
+    private val ABS = Abs()
+
     override val isPure = true
     override val name = "lcm"
 
@@ -43,38 +45,35 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
         }
     }
 
+    private fun lcm(a: Long, b: Long): Long {
+        if (a.toInt() == 0 && b.toInt() == 0) {
+            return 0L
+        }
+        return a / GCD.gcd(a, b) * b
+    }
+
+    private fun lcm(a: Double, b: Double): Double {
+        if (a.toInt() == 0 && b.toInt() == 0) {
+            return 0.0
+        }
+        return a / GCD.gcd(a, b).toDouble() * b
+    }
+
     private fun lcm(first: Number, second: Number): Number {
         val f = Utils.upcast(first)!!
         val s = Utils.upcast(second)!!
         return when {
-            f is Long && s is Long -> Companion.lcm(f, s)
+            f is Long && s is Long -> lcm(f, s)
             f is BigRatio && s is BigRatio -> lcm(f, s)
             f is BigRatio -> lcm(f.toBigDecimal(), Utils.toBigDecimal(s))
             s is BigRatio -> lcm(Utils.toBigDecimal(f), s.toBigDecimal())
             f is BigDecimal || s is BigDecimal -> lcm(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
             f is BigInteger || s is BigInteger -> Companion.lcm(Utils.toBigInteger(f), Utils.toBigInteger(s))
-            else -> Companion.lcm(f.toDouble(), s.toDouble())
+            else -> lcm(f.toDouble(), s.toDouble())
         }
     }
 
     companion object {
-
-        private val ABS = Abs()
-
-        private fun lcm(a: Long, b: Long): Long {
-            if (a.toInt() == 0 && b.toInt() == 0) {
-                return 0L
-            }
-            return a / GCD.gcd(a, b) * b
-        }
-
-        private fun lcm(a: Double, b: Double): Double {
-            if (a.toInt() == 0 && b.toInt() == 0) {
-                return 0.0
-            }
-            return a / GCD.gcd(a, b).toDouble() * b
-        }
-
         internal fun lcm(first: BigInteger, second: BigInteger) = first.multiply(second.divide(GCD.gcd(first, second)))
     }
 }
