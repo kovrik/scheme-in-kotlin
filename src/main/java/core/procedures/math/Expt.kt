@@ -46,7 +46,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
              *
              *  w otherwise rational — 0.0
              */
-            if ((base is Double && base.isNaN()) || (exponent is Double && exponent.isNaN())) {
+            if (Utils.isNaN(base) || Utils.isNaN(exponent)) {
                 return Double.NaN
             }
             if (Utils.isZero(base) && Utils.isZero(exponent)) {

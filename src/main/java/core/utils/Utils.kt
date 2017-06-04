@@ -427,6 +427,8 @@ object Utils {
         }
     }
 
+    fun isNaN(number: Number?) = number == Double.NaN || number == Float.NaN
+
     fun isPositiveInfinity(number: Number?) = number == Double.POSITIVE_INFINITY || number == Float.POSITIVE_INFINITY
 
     fun isNegativeInfinity(number: Number?) = number == Double.NEGATIVE_INFINITY || number == Float.NEGATIVE_INFINITY
