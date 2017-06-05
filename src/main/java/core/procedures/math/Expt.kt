@@ -147,6 +147,32 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
             if (base is BigComplex || exponent is BigComplex) {
                 return BigComplex.of(base).expt(BigComplex.of(exponent))
             }
+            /* BigIntegers */
+            if (base is BigInteger && Utils.isInteger(exponent)) {
+                if (Utils.isInteger(base)) {
+                    if (exponent is BigInteger) {
+                        try {
+                            return base.pow(exponent.intValueExact())
+                        } catch (e: ArithmeticException) {
+                            // ignore
+                        }
+                    }
+                }
+                return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent))
+            }
+            /* BigDecimals */
+            if (base is BigDecimal && Utils.isInteger(exponent)) {
+                if (Utils.isInteger(base)) {
+                    if (exponent is BigDecimal) {
+                        try {
+                            return base.pow(exponent.intValueExact())
+                        } catch (e: ArithmeticException) {
+                            return exptBigDec(base, exponent)
+                        }
+                    }
+                }
+                return exptBigDec(base, Utils.toBigDecimal(exponent))
+            }
             /* Long, Integer, Short, Byte */
             val b = Utils.upcast(base)
             val ex = Utils.upcast(exponent)
@@ -175,38 +201,12 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                     }
                 }
             }
-            /* BigIntegers */
-            if (base is BigInteger && Utils.isInteger(exponent)) {
-                if (Utils.isInteger(base)) {
-                    if (exponent is BigInteger) {
-                        try {
-                            return base.pow(exponent.intValueExact())
-                        } catch (e: ArithmeticException) {
-                            // ignore
-                        }
-                    }
-                }
-                return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent))
-            }
-            /* BigDecimals */
-            if (base is BigDecimal && Utils.isInteger(exponent)) {
-                if (Utils.isInteger(base)) {
-                    if (exponent is BigDecimal) {
-                        try {
-                            return base.pow(exponent.intValueExact())
-                        } catch (e: ArithmeticException) {
-                            return exptBigDec(base, exponent)
-                        }
-                    }
-                }
-                return exptBigDec(base, Utils.toBigDecimal(exponent))
-            }
             /* Double */
             val result = Math.pow(base.toDouble(), exponent.toDouble())
             if (result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY) {
                 return Utils.toBigDecimal(base).pow(exponent.toInt())
             }
-            if (result is Double && result.isNaN()) {
+            if (Utils.isNaN(result)) {
                 return BigComplex.of(base).expt(BigComplex.of(exponent))
             }
             return result
