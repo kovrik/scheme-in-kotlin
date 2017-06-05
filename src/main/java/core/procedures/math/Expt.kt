@@ -124,9 +124,8 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                             return Double.POSITIVE_INFINITY
                         }
                         throw ArithmeticException("expt: undefined for $base and ${Writer.write(exponent)}")
-                    } else {
-                        return 0L
                     }
+                    return 0L
                 }
                 if (exponent == Double.NEGATIVE_INFINITY) {
                     if (NumericalComparison.LESS(base, 1L)) {
@@ -142,33 +141,28 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                     }
                 }
             }
-
             /* Complex numbers */
             if (base is BigComplex || exponent is BigComplex) {
                 return BigComplex.of(base).expt(BigComplex.of(exponent))
             }
             /* BigIntegers */
             if (base is BigInteger && Utils.isInteger(exponent)) {
-                if (Utils.isInteger(base)) {
-                    if (exponent is BigInteger) {
-                        try {
-                            return base.pow(exponent.intValueExact())
-                        } catch (e: ArithmeticException) {
-                            // ignore
-                        }
+                if (exponent is BigInteger && Utils.isInteger(base)) {
+                    try {
+                        return base.pow(exponent.intValueExact())
+                    } catch (e: ArithmeticException) {
+                        // ignore
                     }
                 }
                 return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent))
             }
             /* BigDecimals */
             if (base is BigDecimal && Utils.isInteger(exponent)) {
-                if (Utils.isInteger(base)) {
-                    if (exponent is BigDecimal) {
-                        try {
-                            return base.pow(exponent.intValueExact())
-                        } catch (e: ArithmeticException) {
-                            return exptBigDec(base, exponent)
-                        }
+                if (exponent is BigDecimal && Utils.isInteger(base)) {
+                    try {
+                        return base.pow(exponent.intValueExact())
+                    } catch (e: ArithmeticException) {
+                        return exptBigDec(base, exponent)
                     }
                 }
                 return exptBigDec(base, Utils.toBigDecimal(exponent))
@@ -203,19 +197,16 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
             }
             /* Double */
             val result = Math.pow(base.toDouble(), exponent.toDouble())
-            if (result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY) {
-                return Utils.toBigDecimal(base).pow(exponent.toInt())
+            return when {
+                result.isNaN()      -> BigComplex.of(base).expt(BigComplex.of(exponent))
+                !result.isFinite()  -> Utils.toBigDecimal(base).pow(exponent.toInt())
+                else                -> result
             }
-            if (Utils.isNaN(result)) {
-                return BigComplex.of(base).expt(BigComplex.of(exponent))
-            }
-            return result
         }
 
         private fun exptBigInt(n: BigInteger, e: BigInteger): Number {
             try {
-                val i = e.intValueExact()
-                return n.pow(i)
+                return n.pow(e.intValueExact())
             } catch (ex: ArithmeticException) {
                 // FIXME NEGATIVE_INFINITY and zero in some cases?
                 return Double.POSITIVE_INFINITY
@@ -225,8 +216,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
         private fun exptBigDec(n: BigDecimal, e: BigDecimal): Number {
             try {
                 val scale = Math.max(n.scale(), n.stripTrailingZeros().scale())
-                val i = e.intValueExact()
-                return n.pow(i).setScale(scale, Utils.ROUNDING_MODE)
+                return n.pow(e.intValueExact()).setScale(scale, Utils.ROUNDING_MODE)
             } catch (ex: ArithmeticException) {
                 // FIXME NEGATIVE_INFINITY and zero in some cases?
                 return Double.POSITIVE_INFINITY
