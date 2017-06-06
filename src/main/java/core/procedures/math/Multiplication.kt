@@ -31,7 +31,7 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
     companion object {
 
         operator fun invoke(first: Number?, second: Number?): Number {
-            var (f, s) = Utils.upcast(first!!, second!!)
+            val (f, s) = Utils.upcast(first!!, second!!)
             /* Special cases */
             if (Utils.isZero(f)) {
                 if (!Utils.isFinite(s) && Utils.isInexact(f)) {

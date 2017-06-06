@@ -49,7 +49,7 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     }
 
     private fun subtract(first: Number, second: Number): Number? {
-        var (f, s) = Utils.upcast(first, second)
+        val (f, s) = Utils.upcast(first, second)
         when {
             /* Special cases */
             Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> return Double.NaN

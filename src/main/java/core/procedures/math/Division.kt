@@ -35,7 +35,7 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     }
 
     private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
-        var (n, d) = Utils.upcast(numerator, denominator)
+        val (n, d) = Utils.upcast(numerator, denominator)
         if (Utils.isZero(d) && Utils.isExact(d)) throw ArithmeticException("Division by zero")
         if (Utils.isPositiveInfinity(d)) return  0.0
         if (Utils.isNegativeInfinity(d)) return -0.0

@@ -31,7 +31,7 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
     companion object {
 
         fun add(first: Number?, second: Number?): Number? {
-            var (f, s) = Utils.upcast(first!!, second!!)
+            val (f, s) = Utils.upcast(first!!, second!!)
             when {
                 /* Special cases */
                 Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> return Double.NaN
