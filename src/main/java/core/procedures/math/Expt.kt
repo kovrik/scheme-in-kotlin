@@ -141,64 +141,47 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                     }
                 }
             }
+            val (b, ex)= Utils.upcast(base, exponent)
             /* Complex numbers */
-            if (base is BigComplex || exponent is BigComplex) {
-                return BigComplex.of(base).expt(BigComplex.of(exponent))
+            if (b is BigComplex && ex is BigComplex) {
+                return b.expt(ex)
             }
             /* BigIntegers */
-            if (base is BigInteger && Utils.isInteger(exponent)) {
-                if (exponent is BigInteger && Utils.isInteger(base)) {
-                    try {
-                        return base.pow(exponent.intValueExact())
-                    } catch (e: ArithmeticException) {
-                        // ignore
-                    }
-                }
-                return exptBigInt(Utils.toBigInteger(base), Utils.toBigInteger(exponent))
+            if (b is BigInteger && ex is BigInteger) {
+                return exptBigInt(b, ex)
             }
-            /* BigDecimals */
-            if (base is BigDecimal && Utils.isInteger(exponent)) {
-                if (exponent is BigDecimal && Utils.isInteger(base)) {
-                    try {
-                        return base.pow(exponent.intValueExact())
-                    } catch (e: ArithmeticException) {
-                        return exptBigDec(base, exponent)
-                    }
-                }
-                return exptBigDec(base, Utils.toBigDecimal(exponent))
+            /* BigDecimals (only if they are integral) */
+            if (b is BigDecimal && ex is BigDecimal && Utils.isInteger(b) && Utils.isInteger(ex)) {
+                return exptBigDec(b, ex)
             }
             /* Long, Integer, Short, Byte */
-            val (b, ex) = Utils.upcast(base, exponent)
             if (b is Long && ex is Long) {
                 var isNegative = false
-                if (exponent.toLong() < Int.MAX_VALUE) {
-                    var e = exponent.toInt()
+                if (ex < Int.MAX_VALUE) {
+                    var e = ex.toInt()
                     if (e < 0) {
                         isNegative = true
                         e = Math.abs(e)
                     }
-                    val result = BigInteger.valueOf(base.toLong()).pow(e)
+                    val result = BigInteger.valueOf(b).pow(e)
                     if (isNegative) {
                         return BigRatio.valueOf(BigInteger.ONE, result)
                     }
                     return Utils.downcastNumber(result)
                 } else {
-                    /* If we came here, then exponent is greater than Int.MAX_VALUE */
-                    if (Math.abs(base.toLong()) < 1) {
-                        return 0L
-                    }
-                    if (base.toLong() > 0) {
-                        return Double.POSITIVE_INFINITY
-                    } else {
-                        return if (Predicate.IS_ODD(exponent)) Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY
+                    /* If we came here, then ex is greater than Int.MAX_VALUE */
+                    return when {
+                        Math.abs(b) < 1 -> 0L
+                        b > 0           -> Double.POSITIVE_INFINITY
+                        else -> if (Predicate.IS_ODD(ex)) Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY
                     }
                 }
             }
             /* Double */
-            val result = Math.pow(base.toDouble(), exponent.toDouble())
+            val result = Math.pow(b.toDouble(), ex.toDouble())
             return when {
-                result.isNaN()      -> BigComplex.of(base).expt(BigComplex.of(exponent))
-                !result.isFinite()  -> Utils.toBigDecimal(base).pow(exponent.toInt())
+                result.isNaN()      -> BigComplex.of(b).expt(BigComplex.of(ex))
+                !result.isFinite()  -> Utils.toBigDecimal(b).pow(ex.toInt())
                 else                -> result
             }
         }
