@@ -10,9 +10,6 @@ class BooleanType : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "boolean"
 
     override operator fun invoke(arg: Any?): Boolean? {
-        return when {
-            Utils.toBoolean(arg) -> true
-            else -> false
-        }
+        return Utils.toBoolean(arg)
     }
 }

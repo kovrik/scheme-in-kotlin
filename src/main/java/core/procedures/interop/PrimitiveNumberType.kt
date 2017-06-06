@@ -3,32 +3,17 @@ package core.procedures.interop
 import core.procedures.AFn
 import core.procedures.FnArgs
 
-class PrimitiveNumberType private constructor(private val clazz: Class<*>) :
+open class PrimitiveNumberType private constructor(override val name: String) :
         AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
 
     companion object {
-        val BYTE   = PrimitiveNumberType(Byte::class.java)
-        val SHORT  = PrimitiveNumberType(Short::class.java)
-        val INT    = PrimitiveNumberType(Int::class.java)
-        val LONG   = PrimitiveNumberType(Long::class.java)
-        val DOUBLE = PrimitiveNumberType(Double::class.java)
-        val FLOAT  = PrimitiveNumberType(Float::class.java)
+        val BYTE   = object : PrimitiveNumberType("byte")   { override operator fun invoke(arg: Any?) = (arg!! as Number).toByte() }
+        val SHORT  = object : PrimitiveNumberType("short")  { override operator fun invoke(arg: Any?) = (arg!! as Number).toShort() }
+        val INT    = object : PrimitiveNumberType("int")    { override operator fun invoke(arg: Any?) = (arg!! as Number).toInt() }
+        val LONG   = object : PrimitiveNumberType("long")   { override operator fun invoke(arg: Any?) = (arg!! as Number).toLong() }
+        val FLOAT  = object : PrimitiveNumberType("float")  { override operator fun invoke(arg: Any?) = (arg!! as Number).toFloat() }
+        val DOUBLE = object : PrimitiveNumberType("double") { override operator fun invoke(arg: Any?) = (arg!! as Number).toDouble() }
     }
 
     override val isPure = true
-    override val name: String = clazz.simpleName
-
-    /* FIXME Have to box it */
-    override operator fun invoke(arg: Any?): Number? {
-        val number = arg as Number?
-        return when (clazz) {
-            Byte::class.javaPrimitiveType   -> number!!.toByte()
-            Short::class.javaPrimitiveType  -> number!!.toShort()
-            Int::class.javaPrimitiveType    -> number!!.toInt()
-            Long::class.javaPrimitiveType   -> number!!.toLong()
-            Double::class.javaPrimitiveType -> number!!.toDouble()
-            Float::class.javaPrimitiveType  -> number!!.toFloat()
-            else -> throw IllegalArgumentException("Unknown primitive type: " + clazz)
-        }
-    }
 }

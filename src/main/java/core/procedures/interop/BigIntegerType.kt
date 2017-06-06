@@ -13,7 +13,7 @@ class BigIntegerType : AFn(FnArgs(min = 1, max = 1)) {
 
     override operator fun invoke(arg: Any?): BigInteger {
         if (arg is Number) {
-            return Utils.toBigInteger((arg as Number?)!!)
+            return Utils.toBigInteger(arg)
         }
         return BigInteger(arg!!.toString())
     }
