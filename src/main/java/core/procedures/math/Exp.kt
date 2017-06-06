@@ -18,18 +18,18 @@ class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
 
         fun exp(number: Number?): Number? {
             number!!
-            when {
-                Utils.isZero(number) -> return Utils.inexactnessTaint(1L, number)
+            return when {
+                Utils.isZero(number) -> Utils.inexactnessTaint(1L, number)
                 number is Double || number is Float -> {
                     when {
-                        Utils.isNegativeInfinity(number) -> return 0L
-                        !Utils.isFinite(number)          -> return number
-                        else                             -> return Math.exp(number.toDouble())
+                        Utils.isNegativeInfinity(number) -> 0L
+                        !Utils.isFinite(number)          -> number
+                        else                             -> Math.exp(number.toDouble())
                     }
                 }
-                number is Long || number is Int || number is Short || number is Byte -> return Math.exp(number.toDouble())
-                number is BigRatio && number.isOne -> return Math.exp(1.0)
-                else -> return Expt.expt(E, number)
+                number is Long || number is Int || number is Short || number is Byte -> Math.exp(number.toDouble())
+                number is BigRatio && number.isOne -> Math.exp(1.0)
+                else -> Expt.expt(E, number)
             }
         }
     }
