@@ -34,16 +34,16 @@ open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>
 
     private operator fun invoke(first: Number, second: Number): Number? {
         val (f, s) = Utils.upcast(first, second)
-        when {
-            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
-            f is BigDecimal && s is BigDecimal -> return invoke(f, s)
-            f is BigInteger && s is BigInteger -> return f.divide(s)
-            f is Double     && s is Double && Utils.isInteger(f) && Utils.isInteger(s) -> return (f.toLong() / s.toLong()).toDouble()
-            f is Float      && s is Float  && Utils.isInteger(f) && Utils.isInteger(s) -> return (f.toLong() / s.toLong()).toDouble()
-            f is Double     && s is Double     -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            f is Float      && s is Float      -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            f is BigRatio   && s is BigRatio   -> return invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            else                               -> return f.toLong() / s.toLong()
+        return when {
+            Utils.isZero(f)                    -> Utils.inexactnessTaint(f, s)
+            f is BigDecimal && s is BigDecimal -> invoke(f, s)
+            f is BigInteger && s is BigInteger -> f.divide(s)
+            f is Double     && s is Double && Utils.isInteger(f) && Utils.isInteger(s) -> (f.toLong() / s.toLong()).toDouble()
+            f is Float      && s is Float  && Utils.isInteger(f) && Utils.isInteger(s) -> (f.toLong() / s.toLong()).toDouble()
+            f is Double     && s is Double     -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is Float      && s is Float      -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is BigRatio   && s is BigRatio   -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            else                               -> f.toLong() / s.toLong()
         }
     }
 }
