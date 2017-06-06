@@ -45,7 +45,8 @@ object Type {
             ProperList::class.java     to "List",
             IPort::class.java          to "Port",
             Map.Entry::class.java      to "MapEntry",
-            IAssoc::class.java         to "Associative"
+            IAssoc::class.java         to "Associative",
+            IDeref::class.java         to "Delay or Promise or Future"
     )
 
     private val TYPE_PREDICATES = hashMapOf(
