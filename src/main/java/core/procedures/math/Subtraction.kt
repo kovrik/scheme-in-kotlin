@@ -17,9 +17,9 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {
             when {
-                args[0] is BigDecimal -> return (args[0] as BigDecimal).negate()
-                args[0] is BigInteger -> return (args[0] as BigInteger).negate()
-                args[0] is BigRatio   -> return (args[0] as BigRatio).negate()
+                args[0] is BigDecimal -> return  (args[0] as BigDecimal).negate()
+                args[0] is BigInteger -> return  (args[0] as BigInteger).negate()
+                args[0] is BigRatio   -> return -(args[0] as BigRatio)
                 args[0] is Long       -> try {
                     return Math.negateExact(args[0] as Long)
                 } catch (e: ArithmeticException) {

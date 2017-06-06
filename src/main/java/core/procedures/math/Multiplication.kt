@@ -49,8 +49,8 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
                 /* Special cases */
                 Utils.isOne(f)                     -> Utils.inexactnessTaint(s, f)
                 Utils.isOne(s)                     -> Utils.inexactnessTaint(f, s)
-                f is BigComplex && s is BigComplex -> f.multiply(s)
-                f is BigRatio   && s is BigRatio   -> f.multiply(s)
+                f is BigComplex && s is BigComplex -> f * s
+                f is BigRatio   && s is BigRatio   -> f * s
                 f is BigDecimal && s is BigDecimal -> f.multiply(s)
                 f is BigInteger && s is BigInteger -> f.multiply(s)
                 f is Double     && s is Double     -> f * s

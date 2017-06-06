@@ -104,9 +104,9 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun truncate() = if (isNegative) ceiling() else floor()
 
-    fun multiply(other: BigRatio) = BigRatio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
+    operator fun times(other: BigRatio) = BigRatio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
 
-    fun multiply(other: BigInteger) = BigRatio(numerator.multiply(other), denominator)
+    operator fun times(other: BigInteger) = BigRatio(numerator.multiply(other), denominator)
 
     operator fun plus(other: BigRatio): BigRatio {
         val numerator = numerator.multiply(other.denominator).add(other.numerator.multiply(denominator))
@@ -114,15 +114,15 @@ class BigRatio : Number, Comparable<BigRatio> {
         return BigRatio(numerator, denominator)
     }
 
-    operator fun minus(other: BigRatio) = plus(other.negate())
+    operator fun minus(other: BigRatio) = plus(-other)
 
-    fun negate() = BigRatio(numerator.negate(), denominator)
+    operator fun div(other: BigRatio) = times(other.reciprocal())
+
+    operator fun unaryMinus() = BigRatio(numerator.negate(), denominator)
 
     fun signum() = numerator.signum() * denominator.signum()
 
     fun reciprocal() = BigRatio(denominator, numerator)
-
-    fun divide(other: BigRatio) = multiply(other.reciprocal())
 
     fun max(other: BigRatio) = if (this > other) this else other
 

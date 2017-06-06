@@ -52,6 +52,6 @@ class Tanh : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::
         if (cosh is Double && !cosh.isFinite()) {
             return Double.NaN
         }
-        return (sinh as BigComplex).divide(cosh)
+        return (sinh as BigComplex) / cosh
     }
 }

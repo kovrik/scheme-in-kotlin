@@ -44,8 +44,6 @@ class Tan : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
     }
 
     private fun tan(c: BigComplex): BigComplex {
-        val sin = Sin.sin(c)
-        val cos = Cos.cos(c)
-        return sin.divide(cos)
+        return Sin.sin(c) / Cos.cos(c)
     }
 }

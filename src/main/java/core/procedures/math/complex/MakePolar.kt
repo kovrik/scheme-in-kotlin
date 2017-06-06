@@ -18,6 +18,6 @@ class MakePolar : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Typ
         /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
         val m = arg1!! as Number
         val a = arg2!! as Number
-        return Addition.add(Multiplication(m, Cos.cos(a)), BigComplex.I.multiply(Sin.sin(a)).multiply(m))
+        return Addition.add(Multiplication(m, Cos.cos(a)), BigComplex.I * Sin.sin(a) * m)
     }
 }

@@ -47,8 +47,8 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
         }
         return when {
             /* Special cases */
-            n is BigComplex  && d is BigComplex  -> n.divide(d)
-            n is BigRatio    && d is BigRatio    -> n.divide(d)
+            n is BigComplex  && d is BigComplex  -> n / d
+            n is BigRatio    && d is BigRatio    -> n / d
             n is BigDecimal  && d is BigDecimal  -> n.divide(d)
             Utils.isExact(n) && Utils.isExact(d) -> BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
             n is Double      && d is Double      -> n / d

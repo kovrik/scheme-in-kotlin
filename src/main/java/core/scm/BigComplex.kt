@@ -59,7 +59,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Multiplication
      * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
      */
-    fun multiply(other: Number): BigComplex {
+    operator fun times(other: Number): BigComplex {
         val o = of(other)
         val a = this.re
         val b = this.im
@@ -90,14 +90,14 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * ------ =  ----------  + --------- i
      * c + di    c*c + d*d     c*c + d*d
      */
-    fun divide(other: Number): BigComplex {
+    operator fun div(other: Number): BigComplex {
         val o = of(other)
         val a = this.re
         val b = this.im
         val c = o.re
         val d = o.im
-        val real = a.multiply(c).add(b.multiply(d))
-        val imag = b.multiply(c).subtract(a.multiply(d))
+        val real  = a.multiply(c).add(b.multiply(d))
+        val imag  = b.multiply(c).subtract(a.multiply(d))
         val denom = c.multiply(c).add(d.multiply(d))
         return BigComplex(real.divide(denom, Utils.DEFAULT_CONTEXT), imag.divide(denom, Utils.DEFAULT_CONTEXT))
     }
