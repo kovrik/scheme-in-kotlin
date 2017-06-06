@@ -50,27 +50,27 @@ class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
     private fun subtract(first: Number, second: Number): Number? {
         val (f, s) = Utils.upcast(first, second)
-        when {
+        return when {
             /* Special cases */
-            Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> return Double.NaN
-            Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> return Double.NaN
-            !Utils.isFinite(f)                                         -> return f
-            !Utils.isFinite(s)                 -> return s
-            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
-            Utils.isZero(s)                    -> return Utils.inexactnessTaint(f, s)
-            f is BigComplex && s is BigComplex -> return f.minus(s)
-            f is BigRatio   && s is BigRatio   -> return f.minus(s)
-            f is BigDecimal && s is BigDecimal -> return f.subtract(s)
-            f is BigInteger && s is BigInteger -> return f.subtract(s)
-            f is Double     && s is Double     -> return f - s
-            f is Float      && s is Float      -> return f - s
+            Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> Double.NaN
+            Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> Double.NaN
+            !Utils.isFinite(f)                 -> f
+            !Utils.isFinite(s)                 -> s
+            Utils.isZero(f)                    -> Utils.inexactnessTaint(f, s)
+            Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
+            f is BigComplex && s is BigComplex -> f.minus(s)
+            f is BigRatio   && s is BigRatio   -> f.minus(s)
+            f is BigDecimal && s is BigDecimal -> f.subtract(s)
+            f is BigInteger && s is BigInteger -> f.subtract(s)
+            f is Double     && s is Double     -> f - s
+            f is Float      && s is Float      -> f - s
             else -> {
-                val f = f.toLong()
-                val s = s.toLong()
+                val fl = f.toLong()
+                val sl = s.toLong()
                 try {
-                    return Math.subtractExact(f, s)
+                    return Math.subtractExact(fl, sl)
                 } catch (e: ArithmeticException) {
-                    return BigDecimal.valueOf(f).subtract(BigDecimal.valueOf(s))
+                    return BigInteger.valueOf(fl).subtract(BigInteger.valueOf(sl))
                 }
             }
         }

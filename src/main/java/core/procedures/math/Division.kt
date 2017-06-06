@@ -45,15 +45,15 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
             }
             return Utils.inexactnessTaint(n, d)
         }
-        when {
+        return when {
             /* Special cases */
-            n is BigComplex  && d is BigComplex  -> return n.divide(d)
-            n is BigRatio    && d is BigRatio    -> return n.divide(d)
-            n is BigDecimal  && d is BigDecimal  -> return n.divide(d)
-            Utils.isExact(n) && Utils.isExact(d) -> return BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
-            n is Double      && d is Double      -> return n / d
-            n is Float       && d is Float       -> return n / d
-            else                                 -> return n.toDouble() / d.toDouble()
+            n is BigComplex  && d is BigComplex  -> n.divide(d)
+            n is BigRatio    && d is BigRatio    -> n.divide(d)
+            n is BigDecimal  && d is BigDecimal  -> n.divide(d)
+            Utils.isExact(n) && Utils.isExact(d) -> BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
+            n is Double      && d is Double      -> n / d
+            n is Float       && d is Float       -> n / d
+            else                                 -> n.toDouble() / d.toDouble()
         }
     }
 }

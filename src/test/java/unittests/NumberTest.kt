@@ -86,6 +86,10 @@ class NumberTest : AbstractTest() {
         assertEquals(2L, eval("(/ 10 5)", env))
         assertEquals(2.0, eval("(/ 10.0 5)", env))
         assertEquals(2.0, eval("(/ 10 5.0)", env))
+        assertEquals(BigInteger("18446744073709551614"), eval("(+ Long/MAX_VALUE Long/MAX_VALUE)", env))
+        assertEquals(BigInteger("18446744073709551615"), eval("(- Long/MAX_VALUE Long/MIN_VALUE)", env))
+        assertEquals(BigInteger("-85070591730234615856620279821087277056"), eval("(* Long/MAX_VALUE Long/MIN_VALUE)", env))
+        assertEquals(BigRatio.valueOf("9223372036854775807", "-9223372036854775808"), eval("(/ Long/MAX_VALUE Long/MIN_VALUE)", env))
 
         assertEquals(5L, eval("(abs 5)", env))
         assertEquals(5L, eval("(abs -5)", env))
@@ -596,7 +600,7 @@ class NumberTest : AbstractTest() {
         assertEquals(BigInteger(big0).multiply(BigInteger("2")).subtract(BigInteger(big0)),
                 eval("(- (* 2 $big0) $big0)", env))
 
-        assertEquals(BigDecimal("999999999999997000000000000002999999999999999"),
+        assertEquals(BigInteger("999999999999997000000000000002999999999999999"),
                 eval("(* 999999999999999 999999999999999 999999999999999)", env))
 
         assertEquals(BigDecimal(big0), eval("(truncate (+ 0.2 $big0))", env))

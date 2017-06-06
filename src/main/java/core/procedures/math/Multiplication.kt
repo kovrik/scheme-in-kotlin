@@ -45,23 +45,23 @@ class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
                 }
                 return Utils.inexactnessTaint(s, f)
             }
-            when {
+            return when {
                 /* Special cases */
-                Utils.isOne(f)                     -> return Utils.inexactnessTaint(s, f)
-                Utils.isOne(s)                     -> return Utils.inexactnessTaint(f, s)
-                f is BigComplex && s is BigComplex -> return f.multiply(s)
-                f is BigRatio   && s is BigRatio   -> return f.multiply(s)
-                f is BigDecimal && s is BigDecimal -> return f.multiply(s)
-                f is BigInteger && s is BigInteger -> return f.multiply(s)
-                f is Double     && s is Double     -> return f * s
-                f is Float      && s is Float      -> return f * s
+                Utils.isOne(f)                     -> Utils.inexactnessTaint(s, f)
+                Utils.isOne(s)                     -> Utils.inexactnessTaint(f, s)
+                f is BigComplex && s is BigComplex -> f.multiply(s)
+                f is BigRatio   && s is BigRatio   -> f.multiply(s)
+                f is BigDecimal && s is BigDecimal -> f.multiply(s)
+                f is BigInteger && s is BigInteger -> f.multiply(s)
+                f is Double     && s is Double     -> f * s
+                f is Float      && s is Float      -> f * s
                 else -> {
-                    val f = f.toLong()
-                    val s = s.toLong()
+                    val fl = f.toLong()
+                    val sl = s.toLong()
                     try {
-                        return Math.multiplyExact(f, s)
+                        return Math.multiplyExact(fl, sl)
                     } catch (e: ArithmeticException) {
-                        return BigDecimal.valueOf(f).multiply(BigDecimal.valueOf(s))
+                        return BigInteger.valueOf(fl).multiply(BigInteger.valueOf(sl))
                     }
                 }
             }

@@ -32,27 +32,27 @@ class Addition : AFn(FnArgs(rest = Number::class.java)) {
 
         fun add(first: Number?, second: Number?): Number? {
             val (f, s) = Utils.upcast(first!!, second!!)
-            when {
+            return when {
                 /* Special cases */
-                Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> return Double.NaN
-                Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> return Double.NaN
-                !Utils.isFinite(f)                 -> return f
-                !Utils.isFinite(s)                 -> return s
-                Utils.isZero(f)                    -> return Utils.inexactnessTaint(s, f)
-                Utils.isZero(s)                    -> return Utils.inexactnessTaint(f, s)
-                f is BigComplex && s is BigComplex -> return f.plus(s)
-                f is BigRatio   && s is BigRatio   -> return f.plus(s)
-                f is BigDecimal && s is BigDecimal -> return f.add(s)
-                f is BigInteger && s is BigInteger -> return f.add(s)
-                f is Double     && s is Double     -> return f + s
-                f is Float      && s is Float      -> return f + s
+                Utils.isPositiveInfinity(f) && Utils.isNegativeInfinity(s) -> Double.NaN
+                Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> Double.NaN
+                !Utils.isFinite(f)                 -> f
+                !Utils.isFinite(s)                 -> s
+                Utils.isZero(f)                    -> Utils.inexactnessTaint(s, f)
+                Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
+                f is BigComplex && s is BigComplex -> f.plus(s)
+                f is BigRatio   && s is BigRatio   -> f.plus(s)
+                f is BigDecimal && s is BigDecimal -> f.add(s)
+                f is BigInteger && s is BigInteger -> f.add(s)
+                f is Double     && s is Double     -> f + s
+                f is Float      && s is Float      -> f + s
                 else -> {
-                    val f = f.toLong()
-                    val s = s.toLong()
+                    val fl = f.toLong()
+                    val sl = s.toLong()
                     try {
-                        return Math.addExact(f, s)
+                        return Math.addExact(fl, sl)
                     } catch (e: ArithmeticException) {
-                        return BigDecimal.valueOf(f).add(BigDecimal.valueOf(s))
+                        return BigInteger.valueOf(fl).add(BigInteger.valueOf(sl))
                     }
                 }
             }
