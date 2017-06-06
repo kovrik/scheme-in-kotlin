@@ -74,9 +74,7 @@ object Utils {
     }
 
     /* Check if digit is valid for a number in a specific radix */
-    fun isValidForRadix(c: Char, radix: Int): Boolean {
-        return RADIX_CHARS[radix]!!.indexOf(c) > -1
-    }
+    fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.indexOf(c) > -1
 
     /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
     fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext {
@@ -274,141 +272,119 @@ object Utils {
         return number
     }
 
-    fun toBigDecimal(number: Number): BigDecimal {
-        return when (number) {
-            is BigDecimal -> number
-            is Long       -> BigDecimal.valueOf(number)
-            is BigInteger -> BigDecimal(number)
-            is Double     -> BigDecimal.valueOf(number)
-            is BigRatio   -> number.toBigDecimal()
-            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-            else          -> BigDecimal(number.toString())
-        }
+    fun toBigDecimal(number: Number): BigDecimal = when (number) {
+        is BigDecimal -> number
+        is Long       -> BigDecimal.valueOf(number)
+        is BigInteger -> BigDecimal(number)
+        is Double     -> BigDecimal.valueOf(number)
+        is BigRatio   -> number.toBigDecimal()
+        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+        else          -> BigDecimal(number.toString())
     }
 
-    fun toBigInteger(number: Number): BigInteger {
-        return when (number) {
-            is BigInteger -> number
-            is Long       -> BigInteger.valueOf(number)
-            is Double     -> BigInteger.valueOf(number.toLong())
-            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-            else          -> BigInteger(number.toString())
-        }
+    fun toBigInteger(number: Number): BigInteger = when (number) {
+        is BigInteger -> number
+        is Long       -> BigInteger.valueOf(number)
+        is Double     -> BigInteger.valueOf(number.toLong())
+        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+        else          -> BigInteger(number.toString())
     }
 
-    fun toBigRatio(number: Number): BigRatio {
-        return when (number) {
-            is BigRatio   -> number
-            is BigInteger -> BigRatio.valueOf(toBigInteger(number), BigInteger.ONE)
-            is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-            else          -> BigRatio.valueOf(number.toString(), "1")
-        }
+    fun toBigRatio(number: Number) = when (number) {
+        is BigRatio   -> number
+        is BigInteger -> BigRatio.valueOf(toBigInteger(number), BigInteger.ONE)
+        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+        else          -> BigRatio.valueOf(number.toString(), "1")
     }
 
-    fun toBigComplex(number: Number): BigComplex {
-        return when (number) {
-            is BigComplex -> number
-            else          -> BigComplex.of(number)
-        }
+    fun toBigComplex(number: Number) = when (number) {
+        is BigComplex -> number
+        else          -> BigComplex.of(number)
     }
 
-    fun isRational(o: Any?): Boolean {
-        return when (o) {
-            !is Number     -> false
-            is BigComplex  -> false
-            is Double      -> o.isFinite()
-            is Float       -> o.isFinite()
-            else           -> true
-        }
+    fun isRational(o: Any?) = when (o) {
+        !is Number     -> false
+        is BigComplex  -> false
+        is Double      -> o.isFinite()
+        is Float       -> o.isFinite()
+        else           -> true
     }
 
-    fun isExact(o: Any?): Boolean {
-        return when (o) {
-            null          -> false
-            is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> true
-            is BigDecimal -> o.scale() == 0
-            is BigComplex -> isExact(o.re) && isExact(o.im)
-            else          -> false
-        }
+    fun isExact(o: Any?): Boolean = when (o) {
+        null          -> false
+        is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> true
+        is BigDecimal -> o.scale() == 0
+        is BigComplex -> isExact(o.re) && isExact(o.im)
+        else          -> false
     }
 
     fun isInexact(o: Any?) = !isExact(o)
 
-    fun isInteger(o: Any?): Boolean {
-        return when (o) {
-            null           -> false
-            is Long, is Int, is BigInteger, is Short, is Byte -> true
-            is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
-            is BigRatio    -> o.isDenominatorEqualToOne
-            is Double      -> o as Double? == Math.floor(o) && o.isFinite()
-            else           -> false
-        }
+    fun isInteger(o: Any?) = when (o) {
+        null           -> false
+        is Long, is Int, is BigInteger, is Short, is Byte -> true
+        is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
+        is BigRatio    -> o.isDenominatorEqualToOne
+        is Double      -> o as Double? == Math.floor(o) && o.isFinite()
+        else           -> false
     }
 
     fun isExactInteger(o: Any?) = isExact(o) && isInteger(o)
 
-    fun isZero(o: Any?): Boolean {
-        return when (o) {
-            null          -> false
-            is Long       -> ((o as Long?)!!).compareTo(0L) == 0
-            is Double     -> Math.signum((o as Double?)!!) == 0.0
-            is BigRatio   -> o.signum() == 0
-            is BigDecimal -> o.signum() == 0
-            is Int        -> Integer.signum((o as Int?)!!) == 0
-            is Short      -> Integer.signum((o as Short?)!!.toInt()) == 0
-            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 0
-            is Float      -> Math.signum((o as Float?)!!) == 0f
-            is BigInteger -> o.signum() == 0
-            else          -> false
-        }
+    fun isZero(o: Any?) = when (o) {
+        null          -> false
+        is Long       -> ((o as Long?)!!).compareTo(0L) == 0
+        is Double     -> Math.signum((o as Double?)!!) == 0.0
+        is BigRatio   -> o.signum() == 0
+        is BigDecimal -> o.signum() == 0
+        is Int        -> Integer.signum((o as Int?)!!) == 0
+        is Short      -> Integer.signum((o as Short?)!!.toInt()) == 0
+        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 0
+        is Float      -> Math.signum((o as Float?)!!) == 0f
+        is BigInteger -> o.signum() == 0
+        else          -> false
     }
 
-    fun isOne(o: Any?): Boolean {
-        return when (o) {
-            null          -> false
-            is Long       -> (o as Long?)!!.toInt() == 1
-            is Double     -> o == 1
-            is BigRatio   -> o.isOne
-            is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
-            is Int        -> o as Int? == 1
-            is Short      -> (o as Short?)!!.toInt() == 1
-            is Byte       -> (o as Byte?)!!.toInt() == 1
-            is Float      -> java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
-            is BigInteger -> o.compareTo(BigInteger.ONE) == 0
-            else          -> false
-        }
+    fun isOne(o: Any?) = when (o) {
+        null          -> false
+        is Long       -> (o as Long?)!!.toInt() == 1
+        is Double     -> o == 1
+        is BigRatio   -> o.isOne
+        is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
+        is Int        -> o as Int? == 1
+        is Short      -> (o as Short?)!!.toInt() == 1
+        is Byte       -> (o as Byte?)!!.toInt() == 1
+        is Float      -> java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
+        is BigInteger -> o.compareTo(BigInteger.ONE) == 0
+        else          -> false
     }
 
-    fun isPositive(o: Any?): Boolean {
-        return when (o) {
-            null          -> false
-            is Long       -> (o as Long?)!! > 0
-            is Double     -> Math.signum((o as Double?)!!) == 1.0
-            is BigRatio   -> o.signum() == 1
-            is BigDecimal -> o.signum() == 1
-            is Int        -> Integer.signum((o as Int?)!!) == 1
-            is Short      -> Integer.signum((o as Short?)!!.toInt()) == 1
-            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 1
-            is Float      -> Math.signum((o as Float?)!!) == 1f
-            is BigInteger -> o.signum() == 1
-            else          -> false
-        }
+    fun isPositive(o: Any?) = when (o) {
+        null          -> false
+        is Long       -> (o as Long?)!! > 0
+        is Double     -> Math.signum((o as Double?)!!) == 1.0
+        is BigRatio   -> o.signum() == 1
+        is BigDecimal -> o.signum() == 1
+        is Int        -> Integer.signum((o as Int?)!!) == 1
+        is Short      -> Integer.signum((o as Short?)!!.toInt()) == 1
+        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 1
+        is Float      -> Math.signum((o as Float?)!!) == 1f
+        is BigInteger -> o.signum() == 1
+        else          -> false
     }
 
-    fun isNegative(o: Any?): Boolean {
-        return when (o) {
-            null          -> false
-            is Long       -> ((o as Long?)!!) < 0
-            is Double     -> Math.signum((o as Double?)!!) == -1.0
-            is BigRatio   -> o.signum() == -1
-            is BigDecimal -> o.signum() == -1
-            is Int        -> Integer.signum((o as Int?)!!) == -1
-            is Short      -> Integer.signum((o as Short?)!!.toInt()) == -1
-            is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == -1
-            is Float      -> Math.signum((o as Float?)!!) == -1f
-            is BigInteger -> o.signum() == -1
-            else          -> false
-        }
+    fun isNegative(o: Any?) = when (o) {
+        null          -> false
+        is Long       -> ((o as Long?)!!) < 0
+        is Double     -> Math.signum((o as Double?)!!) == -1.0
+        is BigRatio   -> o.signum() == -1
+        is BigDecimal -> o.signum() == -1
+        is Int        -> Integer.signum((o as Int?)!!) == -1
+        is Short      -> Integer.signum((o as Short?)!!.toInt()) == -1
+        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == -1
+        is Float      -> Math.signum((o as Float?)!!) == -1f
+        is BigInteger -> o.signum() == -1
+        else          -> false
     }
 
     fun isNonNegative(o: Any) = !isNegative(o)
@@ -419,12 +395,10 @@ object Utils {
 
     fun isReal(o: Any?) = o !is BigComplex && o is Number
 
-    fun isFinite(number: Number?): Boolean {
-        return when (number) {
-            is Double -> number.isFinite()
-            is Float  -> number.isFinite()
-            else      -> true
-        }
+    fun isFinite(number: Number?) = when (number) {
+        is Double -> number.isFinite()
+        is Float  -> number.isFinite()
+        else      -> true
     }
 
     fun isNaN(number: Number?) = number == Double.NaN || number == Float.NaN
@@ -490,12 +464,10 @@ object Utils {
     private fun tryDowncast(bigRatio: BigRatio) = tryDowncast(bigRatio.numerator)
 
     /* Upcast number if required */
-    fun upcast(number: Number?): Number? {
-        return when (number) {
-            is Byte, is Short, is Int -> number.toLong()
-            is Float -> number.toDouble()
-            else     -> number
-        }
+    fun upcast(number: Number?) = when (number) {
+        is Byte, is Short, is Int -> number.toLong()
+        is Float -> number.toDouble()
+        else     -> number
     }
 
     fun isBitOpSupported(obj: Any): Boolean {
@@ -517,63 +489,34 @@ object Utils {
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     // TODO return Lazy Sequence object, not Iterator
-    fun toSequence(obj: Any?): Iterator<*> {
-        return when (obj) {
-            is Iterable<*>     -> obj.iterator()
-            is CharSequence    -> stringIterator(obj)
-            is Map<*, *>       -> obj.entries.iterator()
-            is Map.Entry<*, *> -> MapEntry(obj).iterator()
-            null               -> Collections.EMPTY_LIST.iterator()
-            else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
-        }
+    fun toSequence(obj: Any?) = when (obj) {
+        is Iterable<*>     -> obj.iterator()
+        is CharSequence    -> stringIterator(obj)
+        is Map<*, *>       -> obj.entries.iterator()
+        is Map.Entry<*, *> -> MapEntry(obj).iterator()
+        null               -> Collections.EMPTY_LIST.iterator()
+        else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
     }
 
-    fun toAssoc(obj: Any?): IAssoc {
-        return when (obj) {
-            is IAssoc           -> obj
-            is MutableMap<*, *> -> mapToAssoc(obj)
-            is Map.Entry<*, *>  -> MapEntry(obj)
-            null                -> throw NullPointerException()
-            else                -> throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
-        }
+    fun toAssoc(obj: Any?) = when (obj) {
+        is IAssoc           -> obj
+        is MutableMap<*, *> -> mapToAssoc(obj)
+        is Map.Entry<*, *>  -> MapEntry(obj)
+        null                -> throw NullPointerException()
+        else                -> throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
     }
 
-    private fun mapToAssoc(map: MutableMap<*, *>): IAssoc {
-        return object : IAssoc {
-            override fun containsKey(key: Any): Boolean {
-                return map.containsKey(key)
-            }
-
-            override fun getEntry(key: Any): MapEntry? {
-                if (map.containsKey(key)) {
-                    return MapEntry(key, map[key])
-                }
-                return null
-            }
-
-            override fun assoc(key: Any, value: Any): Any {
-                throw UnsupportedOperationException()
-//                return map.put(key, value)
-            }
-        }
+    private fun mapToAssoc(map: MutableMap<*, *>) = object : IAssoc {
+        override fun containsKey(key: Any) = map.containsKey(key)
+        override fun getEntry(key: Any) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
+        override fun assoc(key: Any, value: Any) = throw UnsupportedOperationException()
     }
 
     /* Returns String Iterator */
-    private fun stringIterator(string: CharSequence?): Iterator<Char> {
-        string!!
-        return object : Iterator<Char> {
-
-            private var index = 0
-
-            override fun hasNext(): Boolean {
-                return index < string.length
-            }
-
-            override fun next(): Char {
-                if (!hasNext()) throw NoSuchElementException()
-                return string[index++]
-            }
-        }
+    private fun stringIterator(string: CharSequence?) = object : Iterator<Char> {
+        private var index = 0
+        override fun hasNext() = index < string!!.length
+        override fun next() = if (!hasNext()) throw NoSuchElementException() else string!![index++]
     }
 
     /**
