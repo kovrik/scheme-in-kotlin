@@ -7,6 +7,7 @@ import core.exceptions.IllegalSyntaxException
 import core.exceptions.ThrowableWrapper
 
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 /**
  * Time Special Form:
@@ -26,7 +27,7 @@ enum class Time : ISpecialForm {
             evaluator.eval(expression[i], env)
         }
         val result = evaluator.eval(expression[expression.size - 1], env)
-        val diff = (System.nanoTime() - start).toDouble() / 1000000
+        val diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
         try {
             Repl.currentOutputPort.writeln("elapsed time: $diff ms")
         } catch (e: IOException) {
