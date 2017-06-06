@@ -14,12 +14,11 @@ class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Big
     override operator fun invoke(arg: Any?) = numerator(arg!!)
 
     private fun numerator(o: Any): Number {
-        val isExact = Utils.isExact(o)
-        val exact: Number = if (isExact) (o as Number) else ToExact.toExact(o)
+        val isIntegerOrRatio = o is BigRatio || Utils.isInteger(o)
+        val exact: Number = if (isIntegerOrRatio) (o as Number) else ToExact.toExact(o)
         if (exact is BigRatio) {
-            if (!isExact) {
-                val result = BigDecimal(exact.numerator)
-                return result.setScale(1, Utils.ROUNDING_MODE)
+            if (!isIntegerOrRatio) {
+                return BigDecimal(exact.numerator).setScale(1, Utils.ROUNDING_MODE)
             }
             return exact.numerator
         }

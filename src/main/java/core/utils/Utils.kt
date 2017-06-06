@@ -463,13 +463,6 @@ object Utils {
 
     private fun tryDowncast(bigRatio: BigRatio) = tryDowncast(bigRatio.numerator)
 
-    /* Upcast number if required */
-    fun upcast(number: Number?) = when (number) {
-        is Byte, is Short, is Int -> number.toLong()
-        is Float -> number.toDouble()
-        else     -> number
-    }
-
     fun isBitOpSupported(obj: Any): Boolean {
         if (!(obj is Byte || obj is Short || obj is Int || obj is Long)) {
             throw WrongTypeException("bit operation not supported for: " + Writer.write(obj))

@@ -439,13 +439,13 @@ class NumberTest : AbstractTest() {
         // gcd of no args is 0
         assertEquals(0L, eval("(gcd)", env))
         // gcd of 0(s) is 0
-        assertEquals(0L, eval("(gcd 0)", env))
+        assertEquals(0L,  eval("(gcd 0)", env))
         assertEquals(0.0, eval("(gcd 0.0)", env))
-        assertEquals(0L, eval("(gcd 0 0)", env))
+        assertEquals(0L,  eval("(gcd 0 0)", env))
         assertEquals(0.0, eval("(gcd 0 0.0)", env))
-        assertEquals(5L, eval("(gcd 5 0)", env))
+        assertEquals(5L,  eval("(gcd 5 0)", env))
         assertEquals(5.0, eval("(gcd 5.0 0)", env))
-        assertEquals(5L, eval("(gcd 0 5)", env))
+        assertEquals(5L,  eval("(gcd 0 5)", env))
 
         // gcd of n is n
         assertEquals(5L, eval("(gcd 5)", env))

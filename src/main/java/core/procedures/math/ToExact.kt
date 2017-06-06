@@ -27,7 +27,6 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
         private fun doubleToExact(number: Double): Number {
             if (!number.isFinite()) throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(number))
             /* Check if Double is integral */
-            if (number == Math.floor(number)) return number
             val bits = java.lang.Double.doubleToLongBits(number)
             val sign = bits.ushr(63)
             val exponent = (bits.ushr(52) xor (sign shl 11)) - 1023

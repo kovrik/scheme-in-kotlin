@@ -168,8 +168,7 @@ class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::
                 return exptBigDec(base, Utils.toBigDecimal(exponent))
             }
             /* Long, Integer, Short, Byte */
-            val b = Utils.upcast(base)
-            val ex = Utils.upcast(exponent)
+            val (b, ex) = Utils.upcast(base, exponent)
             if (b is Long && ex is Long) {
                 var isNegative = false
                 if (exponent.toLong() < Int.MAX_VALUE) {

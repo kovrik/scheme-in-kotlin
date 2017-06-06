@@ -37,11 +37,10 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
         if (BigDecimal.ZERO.compareTo(a) == 0 && BigDecimal.ZERO.compareTo(b) == 0) {
             return BigDecimal.ZERO
         }
-        val scale = Math.max(a.scale(), b.scale())
-        if (scale == 0) {
-            return BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
+        return if (Math.max(a.scale(), b.scale()) == 0) {
+            BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
         } else {
-            return ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))
+            ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))
         }
     }
 
@@ -60,16 +59,14 @@ class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
     }
 
     private fun lcm(first: Number, second: Number): Number {
-        val f = Utils.upcast(first)!!
-        val s = Utils.upcast(second)!!
+        val (f, s) = Utils.upcast(first, second)
         return when {
-            f is Long && s is Long -> lcm(f, s)
-            f is BigRatio && s is BigRatio -> lcm(f, s)
-            f is BigRatio -> lcm(f.toBigDecimal(), Utils.toBigDecimal(s))
-            s is BigRatio -> lcm(Utils.toBigDecimal(f), s.toBigDecimal())
-            f is BigDecimal || s is BigDecimal -> lcm(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> Companion.lcm(Utils.toBigInteger(f), Utils.toBigInteger(s))
-            else -> lcm(f.toDouble(), s.toDouble())
+            f is Double     && s is Double     -> lcm(f, s)
+            f is Float      && s is Float      -> lcm(f.toDouble(), s.toDouble())
+            f is BigRatio   && s is BigRatio   -> lcm(f, s)
+            f is BigDecimal && s is BigDecimal -> lcm(f, s)
+            f is BigInteger && s is BigInteger -> Companion.lcm(f, s)
+            else                               -> lcm(f.toLong(), s.toLong())
         }
     }
 

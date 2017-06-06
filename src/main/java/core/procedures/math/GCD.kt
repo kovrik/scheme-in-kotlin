@@ -50,7 +50,9 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
             if (!a.isFinite()) throw WrongTypeException(NAME, "Integer", a)
             if (!b.isFinite()) throw WrongTypeException(NAME, "Integer", b)
             if (a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0) {
-                return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)))
+                val aex = ToExact.toExact(a)
+                val bex = ToExact.toExact(b)
+                return ToInexact.toInexact(gcd(aex, bex))
             }
             return gcd(a.toLong(), b.toLong()).toDouble()
         }
@@ -70,16 +72,14 @@ class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
                                                                                LCM.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
-            val f = Utils.upcast(first)!!
-            val s = Utils.upcast(second)!!
+            val (f, s) = Utils.upcast(first, second)
             return when {
-                f is Long && s is Long -> gcd(f, s)
-                f is BigRatio && s is BigRatio -> gcd(f, s)
-                f is BigRatio -> gcd(f.toBigDecimal(), Utils.toBigDecimal(s))
-                s is BigRatio -> gcd(Utils.toBigDecimal(f), s.toBigDecimal())
-                f is BigDecimal || s is BigDecimal -> gcd(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-                f is BigInteger || s is BigInteger -> gcd(Utils.toBigInteger(f), Utils.toBigInteger(s))
-                else -> gcd(f.toDouble(), s.toDouble())
+                f is Double     && s is Double     -> gcd(f, s)
+                f is Float      && s is Float      -> gcd(f.toDouble(), s.toDouble())
+                f is BigRatio   && s is BigRatio   -> gcd(f, s)
+                f is BigDecimal && s is BigDecimal -> gcd(f, s)
+                f is BigInteger && s is BigInteger -> gcd(f, s)
+                else                               -> gcd(f.toLong(), s.toLong())
             }
         }
     }
