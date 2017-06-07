@@ -9,9 +9,6 @@ open class HashCode : AFn(FnArgs(min = 1, max = 1)) {
     override val name = "hashcode"
 
     override operator fun invoke(arg: Any?): Any? {
-        return when (arg) {
-            null -> 0L
-            else -> arg.hashCode()
-        }
+        return arg?.hashCode() ?: 0L
     }
 }
