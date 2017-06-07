@@ -11,13 +11,12 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
     companion object {
         /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
-        fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal {
+        fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal =
             try {
-                return num.divide(den, Utils.getMathContext(num, den))
+                num.divide(den, Utils.getMathContext(num, den))
             } catch (e: ArithmeticException) {
-                return num.divide(den, Utils.DEFAULT_CONTEXT)
+                num.divide(den, Utils.DEFAULT_CONTEXT)
             }
-        }
     }
 
     override val isPure = true
@@ -36,23 +35,17 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
 
     private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
         val (n, d) = Utils.upcast(numerator, denominator)
-        if (Utils.isZero(d) && Utils.isExact(d)) throw ArithmeticException("Division by zero")
-        if (Utils.isPositiveInfinity(d)) return  0.0
-        if (Utils.isNegativeInfinity(d)) return -0.0
-        if (Utils.isZero(n)) {
-            if (Utils.isZero(d) && Utils.isInexact(n) && Utils.isInexact(d)) {
-                return Double.NaN
-            }
-            return Utils.inexactnessTaint(n, d)
-        }
         return when {
-            /* Special cases */
+            Utils.isZero(d)  && Utils.isExact(d) -> throw ArithmeticException("Division by zero")
+            Utils.isPositiveInfinity(d)          ->  0.0
+            Utils.isNegativeInfinity(d)          -> -0.0
+            Utils.isZero(n)  && Utils.isExact(n) -> Utils.inexactnessTaint(n, d)
             n is BigComplex  && d is BigComplex  -> n / d
             n is BigRatio    && d is BigRatio    -> n / d
             n is BigDecimal  && d is BigDecimal  -> n.divide(d)
-            Utils.isExact(n) && Utils.isExact(d) -> BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
             n is Double      && d is Double      -> n / d
             n is Float       && d is Float       -> n / d
+            Utils.isExact(n) && Utils.isExact(d) -> BigRatio.valueOf(Utils.toBigInteger(n), Utils.toBigInteger(d))
             else                                 -> n.toDouble() / d.toDouble()
         }
     }
