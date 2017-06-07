@@ -7,7 +7,7 @@ import java.util.*
 open class Environment : HashMap<Any?, Any?> {
 
     /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
-    companion object { val UNDEFINED = Any() }
+    companion object { val UNDEFINED = object : Any() { override fun toString() = "#<undefined>" } }
 
     private val outer: Environment?
 
