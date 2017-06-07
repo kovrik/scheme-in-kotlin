@@ -25,7 +25,7 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
             number is BigComplex                          -> number.log()
             number is BigRatio                            -> logBig(number.toBigDecimal())
             number is BigDecimal                          -> logBig(number)
-            number is BigInteger                          -> logBig(Utils.toBigDecimal(number))
+            number is BigInteger                          -> logBig(BigDecimal(number))
             else                                          -> Math.log(number.toDouble())
         }
 
@@ -35,14 +35,11 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
                 return Math.log(number.toDouble())
             }
             val digits = integerDigits(number)
-            val n = digits / MAX_DIGITS
-            val num = number.movePointLeft(n * MAX_DIGITS)
-            return n * VALUE + Math.log(num.toDouble())
+            val num = number.movePointLeft(digits - digits.rem(MAX_DIGITS))
+            return (digits / MAX_DIGITS) * VALUE + Math.log(num.toDouble())
         }
 
         /* Return number of digits of a given BigDecimal number */
-        private fun integerDigits(n: BigDecimal): Int {
-            return if (n.signum() == 0) 1 else n.precision() - n.scale()
-        }
+        private fun integerDigits(n: BigDecimal) = if (n.signum() == 0) 1 else n.precision() - n.scale()
     }
 }

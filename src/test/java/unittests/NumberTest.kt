@@ -899,7 +899,7 @@ class NumberTest : AbstractTest() {
         assertEquals(Double.NEGATIVE_INFINITY, eval("(log 0.0)", env))
         assertEquals(110.52408446371419, eval("(log 999999999999999999999999999999999999999999999999)", env))
         assertEquals(135.8525204866487, eval("(log 99999999999999999999999999999999999999999999999999999999999)", env))
-        assertEquals(135630.27870981017, eval("(log (expt 3 123456))", env))
+        assertEquals(13562.368703607815, eval("(log (expt 3 12345))", env))
         try {
             assertEquals(1L, eval("(log 0)", env))
             fail()
