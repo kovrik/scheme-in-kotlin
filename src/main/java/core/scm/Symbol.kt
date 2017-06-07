@@ -23,7 +23,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
         /* Pool of all interned symbols */
         private val POOL = InternPool<Symbol>()
 
-        fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
+        @JvmStatic fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
 
         /* Check if Symbol has Special Characters and needs to be escaped */
         private fun hasSpecialChars(name: String) = when {
@@ -41,11 +41,9 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
 
     override fun meta() = meta
 
-    override operator fun invoke(vararg args: Any?): Any? {
-        if (args.isEmpty() || args.size > 2) {
-            throw ArityException(toString() + " Symbol", 1, 2, args.size)
-        }
-        return (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
+    override operator fun invoke(vararg args: Any?) = when {
+        args.isEmpty() || args.size > 2 -> throw ArityException(toString() + " Symbol", 1, 2, args.size)
+        else -> (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
     }
 
     override fun equals(other: Any?): Boolean {
