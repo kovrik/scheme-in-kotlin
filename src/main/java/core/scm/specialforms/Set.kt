@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
-import core.scm.Void
 
 /* Syntax:
  * (set! <variable> <expression>)
@@ -12,7 +11,7 @@ import core.scm.Void
 enum class Set : ISpecialForm {
     SET;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Void? {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Unit {
         if (expression.size != 3) {
             throw IllegalSyntaxException.of(toString(), expression, "has ${expression.size - 1} parts after keyword")
         }
@@ -21,7 +20,7 @@ enum class Set : ISpecialForm {
             throw IllegalSyntaxException.of(toString(), expression, "not an identifier: `$identifier`")
         }
         env.findAndPut(identifier, evaluator.eval(expression[2], env))
-        return Void
+        return Unit
     }
 
     override fun toString() = "set!"

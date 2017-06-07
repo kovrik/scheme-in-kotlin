@@ -18,6 +18,7 @@ object Writer {
     @JvmStatic fun write(o: Any?): String {
         return when (o) {
             null               -> "nil"
+            is Unit            -> "#<void>"
             is Boolean         -> if (o) "#t" else "#f"
             is Symbol          -> o.write()
             is Class<*>        -> o.write()

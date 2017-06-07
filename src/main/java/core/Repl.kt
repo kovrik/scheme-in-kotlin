@@ -75,7 +75,7 @@ object Repl {
                     /* Macroexpand and then Evaluate each S-expression */
                     val result = evaluator.macroexpandAndEvaluate(expr, env)
                     /* Do not print and do not store void results */
-                    if (result === Void) {
+                    if (result === Unit) {
                         continue
                     }
                     /* nil, on the other hand, is a valid result - print it, but not store it */

@@ -2,7 +2,6 @@ package core.scm.specialforms
 
 import core.environment.Environment
 import core.evaluator.Evaluator
-import core.scm.Void
 
 /**
  * Comment Special Form:
@@ -13,7 +12,6 @@ import core.scm.Void
 enum class Comment : ISpecialForm {
     COMMENT;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) = Void
-
     override fun toString() = "comment"
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) = Unit
 }

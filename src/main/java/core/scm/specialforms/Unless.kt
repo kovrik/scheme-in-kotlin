@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
-import core.scm.Void
 import core.utils.Utils
 
 /* Syntax:
@@ -25,7 +24,7 @@ enum class Unless : ISpecialForm {
             }
             return Thunk(expression[expression.size - 1], env)
         }
-        return Void
+        return Unit
     }
 
     override fun toString() = "unless"

@@ -2,7 +2,6 @@ package core.procedures.hashmaps
 
 import core.procedures.AFn
 import core.procedures.FnArgs
-import core.scm.Void
 import java.util.*
 
 class Merge : AFn(FnArgs(min = 0, rest = Map::class.java)) {
@@ -12,7 +11,7 @@ class Merge : AFn(FnArgs(min = 0, rest = Map::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {
-            return Void
+            return Unit
         }
         val result = HashMap<Any?, Any?>()
         for (m in args) {

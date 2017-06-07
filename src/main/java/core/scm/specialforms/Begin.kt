@@ -3,7 +3,6 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.scm.Thunk
-import core.scm.Void
 
 /* Syntax:
  * (begin <expression1> <expression2> ...)
@@ -28,7 +27,7 @@ enum class Begin : ISpecialForm {
 
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (expression.size <= 1) {
-            return Void
+            return Unit
         }
         for (i in 1..expression.size - 2) {
             evaluator.eval(expression[i], env)

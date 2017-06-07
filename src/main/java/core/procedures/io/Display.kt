@@ -5,7 +5,6 @@ import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.OutputPort
-import core.scm.Void
 import core.writer.Writer
 
 import java.io.IOException
@@ -14,7 +13,7 @@ open class Display : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(
 
     override val name = "display"
 
-    override operator fun invoke(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Unit {
         val outputPort: OutputPort
         when {
             args.size == 1 -> outputPort = Repl.currentOutputPort
@@ -29,6 +28,5 @@ open class Display : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(
         } catch (e: IOException) {
             throw ThrowableWrapper(e)
         }
-        return Void
     }
 }

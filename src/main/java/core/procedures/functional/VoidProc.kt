@@ -1,7 +1,6 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.scm.Void
 
 class VoidProc : AFn() {
 
@@ -11,5 +10,5 @@ class VoidProc : AFn() {
 
     override val isPure = true
     override val name = "void"
-    override operator fun invoke(vararg args: Any?) = Void
+    override operator fun invoke(vararg args: Any?) = Unit
 }

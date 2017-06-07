@@ -9,10 +9,8 @@ class VectorToImmutableVector : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf
 
     override val name = "vector->immutable-vector"
 
-    override operator fun invoke(arg: Any?): Vector? {
-        if (arg is MutableVector) {
-            return Vector(*(arg as Vector).getArray())
-        }
-        return arg as Vector?
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is MutableVector -> Vector(*(arg as Vector).getArray())
+        else -> arg as Vector?
     }
 }

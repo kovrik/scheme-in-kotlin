@@ -4,13 +4,12 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
-import core.scm.Void
 
 class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class.java, Any::class.java))) {
 
     override val name = "set-cdr!"
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Unit {
         val list = arg1 as MutableList<Any?>?
         /* Remove tail */
         list!!.subList(1, list.size).clear()
@@ -23,6 +22,5 @@ class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class
                 list.isProperList = false
             }
         }
-        return Void
     }
 }

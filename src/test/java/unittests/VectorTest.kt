@@ -80,14 +80,14 @@ class VectorTest : AbstractTest() {
             eval("(vector-ref (vector 1 2 3) 3)", env)
             fail()
         } catch (e: IndexOutOfBoundsException) {
-            assertEquals("vector-ref: value out of range: 3", e.message)
+            assertEquals("vector: value out of range: 3", e.message)
         }
 
         try {
             eval("(vector-ref (vector) 0)", env)
             fail()
         } catch (e: IndexOutOfBoundsException) {
-            assertEquals("vector-ref: value out of range: 0", e.message)
+            assertEquals("vector: value out of range: 0", e.message)
         }
 
         try {
@@ -131,7 +131,7 @@ class VectorTest : AbstractTest() {
             eval(sexp, env)
             fail()
         } catch (e: IndexOutOfBoundsException) {
-            assertEquals("vector-set!: value out of range: 3", e.message)
+            assertEquals("vector: value out of range: 3", e.message)
         }
 
         sexp = "(begin (define v (vector))" + "       (vector-set! v 0 \"test\"))"
@@ -139,7 +139,7 @@ class VectorTest : AbstractTest() {
             eval(sexp, env)
             fail()
         } catch (e: IndexOutOfBoundsException) {
-            assertEquals("vector-set!: value out of range: 0", e.message)
+            assertEquals("vector: value out of range: 0", e.message)
         }
 
         sexp = "(begin (define v '(1 2 3))" + "       (vector-set! v 0 \"test\"))"

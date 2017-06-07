@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.equivalence.Eqv
-import core.scm.Void
 
 /* Syntax:
  * (case <key> <clause1> <clause2> ...)
@@ -42,7 +41,7 @@ enum class Case : ISpecialForm {
                 }
             }
         }
-        return Void
+        return Unit
     }
 
     override fun toString() = "case"

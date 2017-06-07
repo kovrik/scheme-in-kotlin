@@ -3,7 +3,6 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.Void
 import core.utils.Utils
 
 /* Syntax:
@@ -31,7 +30,7 @@ enum class Cond : ISpecialForm {
                 return Begin.BEGIN.eval(subform, env, evaluator)
             }
         }
-        return Void
+        return Unit
     }
 
     override fun toString() = "cond"

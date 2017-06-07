@@ -7,7 +7,6 @@ import core.procedures.io.Display
 import core.scm.Cons.Companion.list
 import core.scm.OutputPort
 import core.scm.Symbol
-import core.scm.Void
 import org.junit.Assert.*
 import org.junit.Test
 import java.io.ByteArrayOutputStream
@@ -192,7 +191,7 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testForEach() {
-        assertEquals(Void, eval("(for-each length '(() (a) (a b)))", env))
+        assertEquals(Unit, eval("(for-each length '(() (a) (a b)))", env))
     }
 
     @Test
