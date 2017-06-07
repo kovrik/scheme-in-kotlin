@@ -10,11 +10,6 @@ class StringSet : AFn(FnArgs(min = 3, max = 3, mandatory = arrayOf(MutableString
     override val name = "string-set!"
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Unit {
-        val str = arg1!! as MutableString
-        val pos = (arg2 as Number).toInt()
-        if (pos >= str.length) {
-            throw IndexOutOfBoundsException("$name: value out of range: $pos")
-        }
-        str.setCharAt(pos, (arg3!! as Char))
+        (arg1!! as MutableString)[(arg2 as Number).toInt()] = (arg3!! as Char)
     }
 }

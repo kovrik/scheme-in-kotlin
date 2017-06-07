@@ -13,26 +13,22 @@ class InputPort(val inputStream: InputStream) : IPort {
     override fun close() = inputStream.close()
 
     @Throws(IOException::class)
-    fun read(): Int {
-        synchronized(lock) {
-            if (next != null) {
-                val result = next!!
-                next = null
-                return result
-            } else {
-                return inputStream.read()
-            }
+    fun read(): Int = synchronized(lock) {
+        if (next != null) {
+            val result = next!!
+            next = null
+            return result
+        } else {
+            return inputStream.read()
         }
     }
 
     @Throws(IOException::class)
-    fun peek(): Int {
-        synchronized(lock) {
-            if (next == null) {
-                next = inputStream.read()
-            }
-            return next!!
+    fun peek(): Int = synchronized(lock) {
+        if (next == null) {
+            next = inputStream.read()
         }
+        return next!!
     }
 
     @Throws(IOException::class)

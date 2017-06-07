@@ -72,33 +72,25 @@ class Predicate private constructor(override val name: String, private val predi
 
         private fun isImmutable(o: Any?) = !(o is MutableString || o is MutableVector)
 
-        private fun assertClass(name: String, o: Any?, c: Class<*>): Boolean {
-            if (Type.checkType(o, c)) {
-                return true
-            }
-            throw WrongTypeException(name, c, o)
+        private fun assertClass(name: String, o: Any?, c: Class<*>) = when {
+            Type.checkType(o, c) -> true
+            else -> throw WrongTypeException(name, c, o)
         }
 
-        private fun isEmpty(o: Any?): Boolean {
-            return when (o) {
-                is Collection<*> -> o.isEmpty()
-                is CharSequence  -> o.length == 0
-                is Map<*, *>     -> o.size == 0
-                else             -> false
-            }
+        private fun isEmpty(o: Any?) = when (o) {
+            is Collection<*> -> o.isEmpty()
+            is CharSequence  -> o.length == 0
+            is Map<*, *>     -> o.size == 0
+            else             -> false
         }
 
-        private fun isRealized(o: Any?): Boolean {
-            if (o is java.util.concurrent.Future<*>) {
-                return o.isDone
-            }
-            throw WrongTypeException("realized?", "Delay or Promise or Future", o)
+        private fun isRealized(o: Any?) = when (o) {
+            is java.util.concurrent.Future<*> -> o.isDone
+            else -> throw WrongTypeException("realized?", "Delay or Promise or Future", o)
         }
 
-        private fun isProcedure(o: Any?): Boolean {
-            return o is IFn<*, *> && o !is Symbol && o !is Keyword && o !is Map<*, *> &&
-                   o !is Vector && o !is Map.Entry<*, *>
-        }
+        private fun isProcedure(o: Any?) = o is IFn<*, *> && o !is Symbol && o !is Keyword &&
+                                           o !is Map<*, *> && o !is Vector && o !is Map.Entry<*, *>
     }
 
     override val isPure = true

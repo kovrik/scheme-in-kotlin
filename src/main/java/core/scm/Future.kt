@@ -2,6 +2,7 @@ package core.scm
 
 import core.environment.Environment
 import core.evaluator.Evaluator
+import core.exceptions.ThrowableWrapper
 import core.writer.Writer
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
@@ -30,12 +31,11 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
         val sb = StringBuilder("#<").append("future")
         if (isDone) {
             sb.append("!")
-            var value: Any?
-            try {
-                value = deref()
+            val value = try {
+                deref()
             } catch (e: RuntimeException) {
                 sb.append("error!")
-                value = e
+                (e as? ThrowableWrapper)?.get() ?: e
             }
             sb.append(if (value == this) "(this future)" else Writer.write(value))
         } else if (isCancelled) {

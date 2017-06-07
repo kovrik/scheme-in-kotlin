@@ -10,10 +10,8 @@ class WIthMeta : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(IMeta::class.j
 
     override val name = "with-meta"
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
-        if (arg1 is Symbol) {
-            return Symbol(arg1.name, arg2 as Map<*, *>?)
-        }
-        throw WrongTypeException(name, "IMeta", arg1)
+    override operator fun invoke(arg1: Any?, arg2: Any?) = when (arg1) {
+        is Symbol -> Symbol(arg1.name, arg2 as Map<*, *>?)
+        else      -> throw WrongTypeException(name, "IMeta", arg1)
     }
 }

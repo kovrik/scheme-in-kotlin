@@ -32,13 +32,14 @@ class MutableString : INamed, CharSequence {
         return this
     }
 
-    override fun get(index: Int): Char {
-        return string[index]
-    }
+    override operator fun get(index: Int) = string[index]
 
     override fun subSequence(startIndex: Int, endIndex: Int) = string.subSequence(startIndex, endIndex)
 
-    fun setCharAt(index: Int, ch: Char) = this.string.setCharAt(index, ch)
+    operator fun set(index: Int, ch: Char) = when {
+        index >= length -> throw IndexOutOfBoundsException("string-set!: value out of range: $index")
+        else -> this.string.setCharAt(index, ch)
+    }
 
     fun clear() = string.setLength(0)
 
@@ -47,12 +48,10 @@ class MutableString : INamed, CharSequence {
 
     override fun toString() = string.toString()
 
-    override fun equals(other: Any?): Boolean {
-        return when {
-            this === other -> true
-            other !is CharSequence -> false
-            else -> string.toString() == other.toString()
-        }
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other !is CharSequence -> false
+        else -> string.toString() == other.toString()
     }
 
     override fun hashCode() = string.toString().hashCode()

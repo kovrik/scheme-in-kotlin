@@ -82,9 +82,7 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
 
     override fun hashCode() = Arrays.hashCode(getArray())
 
-    override fun equals(other: Any?): Boolean {
-        return other is Vector && Arrays.equals(getArray(), other.getArray())
-    }
+    override fun equals(other: Any?) = other is Vector && Arrays.equals(getArray(), other.getArray())
 
     override fun containsKey(key: Any): Boolean {
         if (!Utils.isInteger(key)) {

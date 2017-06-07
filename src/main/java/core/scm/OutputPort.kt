@@ -21,9 +21,6 @@ class OutputPort(val outputStream: OutputStream?) : IPort {
     @Throws(IOException::class)
     fun writeln(str: String) = outputStream!!.write((str + LS).toByteArray())
 
-    @Throws(IOException::class)
-    fun flush() = outputStream!!.flush()
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || javaClass != other.javaClass) return false

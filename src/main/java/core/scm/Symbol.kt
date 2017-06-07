@@ -26,13 +26,10 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
         fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
 
         /* Check if Symbol has Special Characters and needs to be escaped */
-        private fun hasSpecialChars(name: String): Boolean {
-            /* Check if string representation must be escaped */
-            if (name.isEmpty() || Character.isDigit(name[0])) return true
-            if (name[0] == '#') {
-                if (name.length == 1 || name[1] != '%') return true
-            }
-            return name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.indexOf(it) > -1 }
+        private fun hasSpecialChars(name: String) = when {
+            name.isEmpty() || Character.isDigit(name[0]) -> true
+            name[0] == '#' && (name.length == 1 || name[1] != '%') -> true
+            else -> name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.indexOf(it) > -1 }
         }
     }
 

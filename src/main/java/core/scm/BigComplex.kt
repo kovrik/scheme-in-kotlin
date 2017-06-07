@@ -27,10 +27,6 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
     /* Imaginary part */
     val im: BigDecimal
 
-    /* Complex number is a zero if both real and imaginary parts are zeroes */
-    val isZero: Boolean
-        get() = re.signum() == 0 && im.signum() == 0
-
     init {
         val minScale = if (tre.scale() > 0 || tim.scale() > 0) 1 else 0
         val reScaleStripped = tre.stripTrailingZeros().scale()
@@ -181,11 +177,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         return if (true) im == that.im else false
     }
 
-    override fun hashCode(): Int {
-        var result = re.hashCode()
-        result = 31 * result + (im.hashCode())
-        return result
-    }
+    override fun hashCode() = 31 * re.hashCode() + (im.hashCode())
 
     override fun toString() = when {
         im.signum() < 0 -> re.toString() + "-" + im.negate() + "i"

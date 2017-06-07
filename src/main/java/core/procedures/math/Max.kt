@@ -25,19 +25,17 @@ class Max : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
         return result as Number
     }
 
-    private fun max(f: Number, s: Number): Number {
-        return when {
-            f is Int        && s is Int        -> Math.max(f, s)
-            f is Long       && s is Long       -> Math.max(f, s)
-            f is Float      && s is Float      -> Math.max(f, s)
-            f is Double     && s is Double     -> Math.max(f, s)
-            f is BigRatio   && s is BigRatio   -> f.max(s)
-            f is BigInteger && s is BigInteger -> f.max(s)
-            f is BigDecimal && s is BigDecimal -> f.max(s)
-            f is BigDecimal                    -> f.max(Utils.toBigDecimal(s))
-            s is BigDecimal                    -> s.max(Utils.toBigDecimal(f))
-            f.toDouble() >= s.toDouble()       -> f
-            else                               -> s
-        }
+    private fun max(f: Number, s: Number) = when {
+        f is Int        && s is Int        -> Math.max(f, s)
+        f is Long       && s is Long       -> Math.max(f, s)
+        f is Float      && s is Float      -> Math.max(f, s)
+        f is Double     && s is Double     -> Math.max(f, s)
+        f is BigRatio   && s is BigRatio   -> f.max(s)
+        f is BigInteger && s is BigInteger -> f.max(s)
+        f is BigDecimal && s is BigDecimal -> f.max(s)
+        f is BigDecimal                    -> f.max(Utils.toBigDecimal(s))
+        s is BigDecimal                    -> s.max(Utils.toBigDecimal(f))
+        f.toDouble() >= s.toDouble()       -> f
+        else                               -> s
     }
 }

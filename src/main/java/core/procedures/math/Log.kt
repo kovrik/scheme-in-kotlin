@@ -19,16 +19,14 @@ class Log : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::c
         private val MAX_DIGITS = 307
         private val VALUE = Math.log(Math.pow(10.0, MAX_DIGITS.toDouble()))
 
-        fun log(number: Number): Number {
-            return when {
-                Utils.isZero(number) && Utils.isExact(number) -> throw ArithmeticException("log: undefined for 0")
-                Utils.isOne(number)  && Utils.isExact(number) -> 0L
-                number is BigComplex                          -> number.log()
-                number is BigRatio                            -> logBig(number.toBigDecimal())
-                number is BigDecimal                          -> logBig(number)
-                number is BigInteger                          -> logBig(Utils.toBigDecimal(number))
-                else                                          -> Math.log(number.toDouble())
-            }
+        fun log(number: Number) = when {
+            Utils.isZero(number) && Utils.isExact(number) -> throw ArithmeticException("log: undefined for 0")
+            Utils.isOne(number)  && Utils.isExact(number) -> 0L
+            number is BigComplex                          -> number.log()
+            number is BigRatio                            -> logBig(number.toBigDecimal())
+            number is BigDecimal                          -> logBig(number)
+            number is BigInteger                          -> logBig(Utils.toBigDecimal(number))
+            else                                          -> Math.log(number.toDouble())
         }
 
         /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */

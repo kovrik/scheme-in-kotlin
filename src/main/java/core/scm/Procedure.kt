@@ -15,9 +15,7 @@ class Procedure(override var name: String,
                 isVariadic: Boolean) : AFn() {
 
     companion object {
-        private fun isConst(obj: Any?): Boolean {
-            return !(obj is Symbol || obj is Collection<*> || obj is Map<*, *>)
-        }
+        private fun isConst(obj: Any?) = !(obj is Symbol || obj is Collection<*> || obj is Map<*, *>)
     }
 
     /* Is body a constant? If it is, then no need to evaluate it */
@@ -49,11 +47,9 @@ class Procedure(override var name: String,
         return env
     }
 
-    override operator fun invoke(): Any? {
-        if (isBodyConst) {
-            return body
-        }
-        return Thunk(body, Environment(0, this.localEnvironment))
+    override operator fun invoke() = when {
+        isBodyConst -> body
+        else        -> Thunk(body, Environment(0, this.localEnvironment))
     }
 
     override operator fun invoke(arg: Any?): Any? {

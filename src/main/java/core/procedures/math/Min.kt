@@ -25,19 +25,17 @@ class Min : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.j
         return result as Number
     }
 
-    private fun min(f: Number, s: Number): Number {
-        return when {
-            f is Int        && s is Int        -> Math.min(f, s)
-            f is Long       && s is Long       -> Math.min(f, s)
-            f is Float      && s is Float      -> Math.min(f, s)
-            f is Double     && s is Double     -> Math.min(f, s)
-            f is BigRatio   && s is BigRatio   -> f.min(s)
-            f is BigInteger && s is BigInteger -> f.min(s)
-            f is BigDecimal && s is BigDecimal -> f.min(s)
-            f is BigDecimal                    -> f.min(Utils.toBigDecimal(s))
-            s is BigDecimal                    -> s.min(Utils.toBigDecimal(f))
-            f.toDouble() <= s.toDouble()       -> f
-            else                               -> s
-        }
+    private fun min(f: Number, s: Number) = when {
+        f is Int        && s is Int        -> Math.min(f, s)
+        f is Long       && s is Long       -> Math.min(f, s)
+        f is Float      && s is Float      -> Math.min(f, s)
+        f is Double     && s is Double     -> Math.min(f, s)
+        f is BigRatio   && s is BigRatio   -> f.min(s)
+        f is BigInteger && s is BigInteger -> f.min(s)
+        f is BigDecimal && s is BigDecimal -> f.min(s)
+        f is BigDecimal                    -> f.min(Utils.toBigDecimal(s))
+        s is BigDecimal                    -> s.min(Utils.toBigDecimal(f))
+        f.toDouble() <= s.toDouble()       -> f
+        else                               -> s
     }
 }

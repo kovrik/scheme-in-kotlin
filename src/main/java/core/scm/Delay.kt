@@ -3,6 +3,7 @@ package core.scm
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.ReentrantDelayException
+import core.exceptions.ThrowableWrapper
 import core.writer.Writer
 
 import java.util.concurrent.CompletableFuture
@@ -39,31 +40,30 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
             try {
                 return get()
             } catch (e: InterruptedException) {
-                if (e.cause is RuntimeException) {
-                    throw e.cause as RuntimeException
+                when {
+                    e.cause is RuntimeException -> throw e.cause as RuntimeException
+                    else -> throw RuntimeException(e.message)
                 }
-                throw RuntimeException(e.message)
             } catch (e: ExecutionException) {
-                if (e.cause is RuntimeException) {
-                    throw e.cause as RuntimeException
+                when {
+                    e.cause is RuntimeException -> throw e.cause as RuntimeException
+                    else -> throw RuntimeException(e.message)
                 }
-                throw RuntimeException(e.message)
             }
         }
 
     override fun toString(): String {
         val sb = StringBuilder("#<").append("delay")
         if (isCompletedExceptionally) {
-            var value: Any
-            try {
-                value = get()
+            val value = try {
+                get()
+            } catch (e: ExecutionException) {
+                (e.cause as? ThrowableWrapper)?.get() ?: e.cause
             } catch (e: RuntimeException) {
-                value = e
+                (e as? ThrowableWrapper)?.get() ?: e
             }
-
             sb.append("!error!").append(if (value === this) "(this delay)" else Writer.write(value))
         } else if (isDone) {
-            val value = value
             sb.append("!").append(if (value === this) Writer.write("(this delay)") else Writer.write(value))
         } else if (isCancelled) {
             sb.append(":cancelled")

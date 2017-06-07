@@ -23,9 +23,7 @@ class BigRatio : Number, Comparable<BigRatio> {
                 "10" to BigInteger.TEN
         )
 
-        fun valueOf(numerator: String, denominator: String): BigRatio {
-            return valueOf(parseBigInteger(numerator), parseBigInteger(denominator))
-        }
+        fun valueOf(numerator: String, denominator: String) = valueOf(parseBigInteger(numerator), parseBigInteger(denominator))
 
         fun valueOf(numerator: BigInteger, denominator: BigInteger): BigRatio {
             return when {
@@ -134,9 +132,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         return numerator.divide(denominator, 32, RoundingMode.HALF_EVEN)
     }
 
-    override fun compareTo(other: BigRatio): Int {
-        return numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
-    }
+    override fun compareTo(other: BigRatio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
 
     override fun hashCode() = this.toString().hashCode()
 
@@ -148,9 +144,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         return compareTo(b!!) == 0
     }
 
-    override fun toString(): String {
-        return if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
-    }
+    override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
 
     override fun toInt()    = quotient().toInt()
     override fun toLong()   = quotient().toLong()
