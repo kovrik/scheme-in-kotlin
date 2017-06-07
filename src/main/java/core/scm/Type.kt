@@ -4,8 +4,6 @@ import core.procedures.AFn
 import core.procedures.IFn
 import core.utils.Utils
 
-import java.util.function.Predicate
-
 object Type {
 
     /* Marker classes for FnArgs annotation
@@ -50,20 +48,20 @@ object Type {
     )
 
     private val TYPE_PREDICATES = hashMapOf(
-            String::class.java                  to Predicate<Any> { o -> o is CharSequence },
-            MutableString::class.java           to Predicate<Any> { o -> o is StringBuilder || o is MutableString },
-            ProperList::class.java              to Predicate<Any> { Cons.isProperList(it) },
-            Pair::class.java                    to Predicate<Any> { Cons.isPair(it) },
-            BigRatio::class.java                to Predicate<Any> { Utils.isRational(it) },
-            Long::class.java                    to Predicate<Any> { Utils.isInteger(it) },
-            Long::class.javaObjectType          to Predicate<Any> { Utils.isInteger(it) },
-            Int::class.java                     to Predicate<Any> { Utils.isInteger(it) },
-            Int::class.javaObjectType           to Predicate<Any> { Utils.isInteger(it) },
-            ExactPositiveInteger::class.java    to Predicate<Any> { Utils.isExactPositiveInteger(it) },
-            ExactNonNegativeInteger::class.java to Predicate<Any> { Utils.isExactNonNegativeInteger(it) },
-            Real::class.java                    to Predicate<Any> { Utils.isReal(it) },
-            BitOp::class.java                   to Predicate<Any> { Utils.isBitOpSupported(it) },
-            IAssoc::class.java                  to Predicate<Any> { Utils.isAssoc(it) }
+            String::class.java                  to { o: Any? -> o is CharSequence },
+            MutableString::class.java           to { o: Any? -> o is StringBuilder || o is MutableString },
+            ProperList::class.java              to Cons.Companion::isProperList,
+            Pair::class.java                    to Cons.Companion::isPair,
+            BigRatio::class.java                to Utils::isRational,
+            Long::class.java                    to Utils::isInteger,
+            Long::class.javaObjectType          to Utils::isInteger,
+            Int::class.java                     to Utils::isInteger,
+            Int::class.javaObjectType           to Utils::isInteger,
+            ExactPositiveInteger::class.java    to Utils::isExactPositiveInteger,
+            ExactNonNegativeInteger::class.java to Utils::isExactNonNegativeInteger,
+            Real::class.java                    to Utils::isReal,
+            BitOp::class.java                   to Utils::isBitOpSupported,
+            IAssoc::class.java                  to Utils::isAssoc
     )
 
     fun nameOf(clazz: Class<*>): String = TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
@@ -72,6 +70,6 @@ object Type {
         /* Nil is possible value for any data type */
         if (o == null) return true
         if (expected == o.javaClass || expected.isAssignableFrom(o.javaClass)) return true
-        return TYPE_PREDICATES[expected]?.test(o) ?: false
+        return TYPE_PREDICATES.getOrDefault(expected, {false})(o)
     }
 }
