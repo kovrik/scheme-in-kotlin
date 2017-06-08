@@ -57,22 +57,15 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     override fun call(): Any? = invoke()
 
     override operator fun invoke(): Any? = throw ArityException(name, minArgs, maxArgs, 1)
-
     override operator fun invoke(arg: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 1)
-
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 2)
-
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 3)
-
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 4)
-
     override operator fun invoke(vararg args: Any?): Any? = throw ArityException(name, minArgs, maxArgs, args.size)
 
-    override fun toString(): String {
-        return when (name.isEmpty()) {
-            true  -> "#<procedure>"
-            false -> "#<procedure:$name>"
-        }
+    override fun toString() = when (name.isEmpty()) {
+        true  -> "#<procedure>"
+        false -> "#<procedure:$name>"
     }
 
     /**
