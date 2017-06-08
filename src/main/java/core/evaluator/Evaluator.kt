@@ -122,7 +122,7 @@ class Evaluator {
                 if (symbolName.endsWith('.')) {
                     this[0] = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
                     op = New.NEW
-                    (this as Cons<Any>).push(op)
+                    this.add(0, op)
                 } else {
                     op = JavaMethodCall(this[0].toString())
                 }
