@@ -26,7 +26,7 @@ class Nth : AFn(FnArgs(min = 2, max = 3)) {
             throw WrongTypeException(name, Int::class.java, index)
         }
         val i = (args[1] as Number).toInt()
-        val size = count(col)!!
+        val size = count(col)
         if (size <= i && args.size < 3) {
             throw IndexOutOfBoundsException("$name: value out of range: $i")
         }

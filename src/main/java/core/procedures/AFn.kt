@@ -70,7 +70,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     /**
      * Checks the number of arguments and their types
      */
-    private fun checkArgs(vararg args: Any?) {
+    private fun checkArgs(args: Array<out Any?>) {
         /* Check arg count */
         val argsSize = args.size
         if (argsSize < minArgs || argsSize > maxArgs) throw ArityException(name, minArgs, maxArgs, argsSize)
@@ -94,7 +94,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
      * Calls variadic invoke() otherwise.
      */
     fun invokeN(vararg args: Any?): Any? {
-        checkArgs(*args)
+        checkArgs(args)
         return when (getArity()) {
             0    -> invoke()
             1    -> invoke(args[0])
