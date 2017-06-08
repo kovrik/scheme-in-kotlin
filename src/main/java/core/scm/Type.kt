@@ -67,16 +67,11 @@ object Type {
 
     fun nameOf(clazz: Class<*>): String = TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
 
-    @JvmStatic private fun checkType(o: Any?, expected: Class<*>) = when {
-        /* Nil is possible value for any data type */
+    @JvmStatic fun assertType(name: String, o: Any?, expected: Class<*>) = when {
         o == null -> true
         expected == o.javaClass -> true
         expected.isAssignableFrom(o.javaClass) -> true
-        else -> TYPE_PREDICATES.getOrDefault(expected, { false })(o)
-    }
-
-    @JvmStatic fun assertType(name: String, o: Any?, c: Class<*>) = when {
-        Type.checkType(o, c) -> true
-        else -> throw WrongTypeException(name, c, o)
+        !TYPE_PREDICATES.getOrDefault(expected, { false })(o) -> throw WrongTypeException(name, expected, o)
+        else -> true
     }
 }
