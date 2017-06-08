@@ -24,8 +24,8 @@ class Predicate private constructor(override val name: String, private val predi
         val IS_LIST = Predicate("list?", Cons.Companion::isProperList)
         val IS_PROMISE = Predicate("promise?", { it is CompletableFuture<*> || Delay::class.java == it!!.javaClass })
         val IS_FUTURE = Predicate("future?", { it is java.util.concurrent.Future<*> && it !is Delay && it !is Promise })
-        val IS_FUTURE_DONE = Predicate("future-done?", { assertClass("future-done?", it, java.util.concurrent.Future::class.java) && (it as java.util.concurrent.Future<*>).isDone })
-        val IS_FUTURE_CANCELLED = Predicate("future-cancelled?", { assertClass("future-cancelled?", it, java.util.concurrent.Future::class.java) && (it as java.util.concurrent.Future<*>).isCancelled })
+        val IS_FUTURE_DONE = Predicate("future-done?", { Type.assertType("future-done?", it, java.util.concurrent.Future::class.java) && (it as java.util.concurrent.Future<*>).isDone })
+        val IS_FUTURE_CANCELLED = Predicate("future-cancelled?", { Type.assertType("future-cancelled?", it, java.util.concurrent.Future::class.java) && (it as java.util.concurrent.Future<*>).isCancelled })
         val IS_DELAY = Predicate("delay?", { it is Delay })
         val IS_REALIZED = Predicate("realized?", this::isRealized)
         val IS_CHAR = Predicate("char?", { it is Char })
@@ -49,20 +49,20 @@ class Predicate private constructor(override val name: String, private val predi
         val IS_RATIO = Predicate("ratio?", { it is BigRatio })
         val IS_REAL = Predicate("real?", Utils::isReal)
         val IS_COMPLEX = Predicate("complex?", { it is Number })
-        val IS_ZERO = Predicate("zero?", { assertClass("zero?", it, Number::class.java) && Utils.isZero(it) })
-        val IS_POSITIVE = Predicate("positive?", { assertClass("positive?", it, Type.Real::class.java) && Utils.isPositive(it) })
-        val IS_POS = Predicate("pos?", { assertClass("pos?", it, Type.Real::class.java) && Utils.isPositive(it) })
-        val IS_NEGATIVE = Predicate("negative?", { assertClass("negative?", it, Type.Real::class.java) && Utils.isNegative(it) })
-        val IS_NEG = Predicate("neg?", { assertClass("neg?", it, Type.Real::class.java) && Utils.isNegative(it) })
-        val IS_EXACT = Predicate("exact?", { assertClass("exact?", it, Number::class.java) && Utils.isExact(it) })
-        val IS_INEXACT = Predicate("inexact?", { assertClass("inexact?", it, Number::class.java) && Utils.isInexact(it) })
+        val IS_ZERO = Predicate("zero?", { Type.assertType("zero?", it, Number::class.java) && Utils.isZero(it) })
+        val IS_POSITIVE = Predicate("positive?", { Type.assertType("positive?", it, Type.Real::class.java) && Utils.isPositive(it) })
+        val IS_POS = Predicate("pos?", { Type.assertType("pos?", it, Type.Real::class.java) && Utils.isPositive(it) })
+        val IS_NEGATIVE = Predicate("negative?", { Type.assertType("negative?", it, Type.Real::class.java) && Utils.isNegative(it) })
+        val IS_NEG = Predicate("neg?", { Type.assertType("neg?", it, Type.Real::class.java) && Utils.isNegative(it) })
+        val IS_EXACT = Predicate("exact?", { Type.assertType("exact?", it, Number::class.java) && Utils.isExact(it) })
+        val IS_INEXACT = Predicate("inexact?", { Type.assertType("inexact?", it, Number::class.java) && Utils.isInexact(it) })
         val IS_IMMUTABLE = Predicate("immutable?", this::isImmutable)
         val IS_MUTABLE = Predicate("mutable?", this::isMutable)
-        val IS_EVEN = Predicate("even?", { assertClass("even?", it, Int::class.javaObjectType) && Utils.isZero(Remainder.remainder(it as Number, 2L)) })
-        val IS_ODD = Predicate("odd?", { assertClass("odd?", it, Int::class.javaObjectType) && !Utils.isZero(Remainder.remainder(it as Number, 2L)) })
+        val IS_EVEN = Predicate("even?", { Type.assertType("even?", it, Int::class.javaObjectType) && Utils.isZero(Remainder.remainder(it as Number, 2L)) })
+        val IS_ODD = Predicate("odd?", { Type.assertType("odd?", it, Int::class.javaObjectType) && !Utils.isZero(Remainder.remainder(it as Number, 2L)) })
         val IS_KEYWORD = Predicate("keyword?", { it is Keyword })
         val IS_ANY = Predicate("any?", { true })
-        val IS_BLANK = Predicate("blank?", { assertClass("blank?", it, String::class.java) && it == null || it!!.toString().isEmpty() || it.toString().trim({ it <= ' ' }).isEmpty() })
+        val IS_BLANK = Predicate("blank?", { Type.assertType("blank?", it, String::class.java) && it == null || it!!.toString().isEmpty() || it.toString().trim({ it <= ' ' }).isEmpty() })
         val IS_CLASS = Predicate("class?", { it is Class<*> })
         val IS_DECIMAL = Predicate("decimal?", { it is BigDecimal })
         val IS_FLOAT = Predicate("float?", { it is Float || it is Double })
@@ -71,11 +71,6 @@ class Predicate private constructor(override val name: String, private val predi
         private fun isMutable(o: Any?) = !isImmutable(o)
 
         private fun isImmutable(o: Any?) = !(o is MutableString || o is MutableVector)
-
-        private fun assertClass(name: String, o: Any?, c: Class<*>) = when {
-            Type.checkType(o, c) -> true
-            else -> throw WrongTypeException(name, c, o)
-        }
 
         private fun isEmpty(o: Any?) = when (o) {
             is Collection<*> -> o.isEmpty()

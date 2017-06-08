@@ -80,24 +80,10 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
         for (i in 0..argsSize - 1) {
             val arg = args[i]
             /* Mandatory args */
-            if (mandatoryArgsTypes.isNotEmpty() && i < mandatoryArgsTypes.size) {
-                if (!Type.checkType(arg, mandatoryArgsTypes[i])) {
-                    throw WrongTypeException(name, mandatoryArgsTypes[i], arg)
-                }
-                continue
-            }
-            /* Last argument (optional special case) */
-            if (i == argsSize - 1 && lastArgType != null) {
-                if (!Type.checkType(arg, lastArgType)) {
-                    throw WrongTypeException(name, lastArgType, arg)
-                }
-                continue
-            }
-            /* Rest args */
-            if (restArgsType != null) {
-                if (!Type.checkType(arg, restArgsType)) {
-                    throw WrongTypeException(name, restArgsType, arg)
-                }
+            when {
+                i < mandatoryArgsTypes.size              -> Type.assertType(name, arg, mandatoryArgsTypes[i])
+                i == argsSize - 1 && lastArgType != null -> Type.assertType(name, arg, lastArgType)
+                restArgsType != null                     -> Type.assertType(name, arg, restArgsType)
             }
         }
     }

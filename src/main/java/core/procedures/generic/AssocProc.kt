@@ -5,7 +5,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.procedures.equivalence.Equal
 import core.scm.Cons
-import core.scm.Type
 import core.utils.Utils
 import core.writer.Writer
 
@@ -16,7 +15,7 @@ class AssocProc(override val name: String,
     private val get = Get()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        if (Type.checkType(arg2!!, Type.ProperList::class.java)) {
+        if (Cons.Companion.isProperList(arg2)) {
             val list = arg2 as List<*>?
             for (n in list!!.indices) {
                 val pair = list[n]

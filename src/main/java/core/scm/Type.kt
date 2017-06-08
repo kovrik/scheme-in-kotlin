@@ -1,5 +1,6 @@
 package core.scm
 
+import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.IFn
 import core.utils.Utils
@@ -66,10 +67,16 @@ object Type {
 
     fun nameOf(clazz: Class<*>): String = TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
 
-    @JvmStatic fun checkType(o: Any?, expected: Class<*>): Boolean {
+    @JvmStatic private fun checkType(o: Any?, expected: Class<*>) = when {
         /* Nil is possible value for any data type */
-        if (o == null) return true
-        if (expected == o.javaClass || expected.isAssignableFrom(o.javaClass)) return true
-        return TYPE_PREDICATES.getOrDefault(expected, {false})(o)
+        o == null -> true
+        expected == o.javaClass -> true
+        expected.isAssignableFrom(o.javaClass) -> true
+        else -> TYPE_PREDICATES.getOrDefault(expected, { false })(o)
+    }
+
+    @JvmStatic fun assertType(name: String, o: Any?, c: Class<*>) = when {
+        Type.checkType(o, c) -> true
+        else -> throw WrongTypeException(name, c, o)
     }
 }
