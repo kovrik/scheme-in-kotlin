@@ -21,7 +21,7 @@ class Eq : AFn(FnArgs(min = 2)) {
     override operator fun invoke(arg1: Any?, arg2: Any?) = eq(arg1, arg2)
 
     private fun eq(first: Any?, second: Any?): Boolean {
-        if (first is Symbol && second is Symbol && first !== second) {
+        if (first is Symbol && second is Symbol) {
             /* Check if 2 symbols are eq ignoring metadata */
             return first == second
         }

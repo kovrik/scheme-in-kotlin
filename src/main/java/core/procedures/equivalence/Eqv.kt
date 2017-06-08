@@ -2,20 +2,16 @@ package core.procedures.equivalence
 
 import core.procedures.AFn
 import core.procedures.FnArgs
-import core.scm.Cons
-import core.scm.Symbol
 
 class Eqv : AFn(FnArgs(min = 2)) {
 
     companion object {
         fun eqv(first: Any?, second: Any?): Boolean {
             return when {
-                first is Char && second is Char       -> first == second
-                first is Number && second is Number   -> first == second
-                first is Cons<*> && second is Cons<*> -> first === second
-                first is List<*> && second is List<*> -> first == second
-                first is Symbol && second is Symbol   -> first == second
-                else -> first === second
+                first is List<*> && first.isEmpty() && second is List<*> && second.isEmpty() -> true
+                first is Char    && second is Char    -> first == second
+                first is Number  && second is Number  -> first == second
+                else                                  -> first === second
             }
         }
     }

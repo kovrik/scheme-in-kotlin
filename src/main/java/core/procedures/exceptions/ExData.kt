@@ -8,11 +8,5 @@ class ExData : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
     override val name = "ex-data"
-
-    override operator fun invoke(arg: Any?): Map<*, *>? {
-        if (arg is ExInfoException) {
-            return arg.info
-        }
-        return null
-    }
+    override operator fun invoke(arg: Any?) = if (arg is ExInfoException) arg.info else null
 }

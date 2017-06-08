@@ -16,9 +16,5 @@ class ExInfoException : RuntimeException {
 
     @Synchronized override fun fillInStackTrace() = null
 
-    override fun toString(): String {
-        return "#<ex-info:{message:" + message +
-                ", cause: " + Writer.write(cause) +
-                ", data: " + Writer.write(info) + "}>"
-    }
+    override fun toString() = "#<ex-info:{message:$message, cause: ${Writer.write(cause)}, data: ${Writer.write(info)}}>"
 }

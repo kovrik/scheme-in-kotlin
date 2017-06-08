@@ -17,14 +17,10 @@ class Equal : AFn(FnArgs(min = 2)) {
         return result
     }
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
-        return equal(arg1, arg2)
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = equal(arg1, arg2)
 
-    private fun equal(first: Any?, second: Any?): Boolean {
-        if (first is CharSequence && second is MutableString) {
-            return second == first
-        }
-        return first == second
+    private fun equal(first: Any?, second: Any?) = when {
+        first is CharSequence && second is MutableString -> second == first
+        else -> first == second
     }
 }
