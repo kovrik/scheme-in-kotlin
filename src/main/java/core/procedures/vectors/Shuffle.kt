@@ -5,7 +5,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Vector
 
-import java.util.ArrayList
 import java.util.Collections
 
 class Shuffle : AFn(FnArgs(min = 1, max = 1)) {

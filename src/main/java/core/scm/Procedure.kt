@@ -2,7 +2,6 @@ package core.scm
 
 import core.environment.Environment
 import core.procedures.AFn
-import java.util.*
 
 /* Lambda */
 class Procedure(override var name: String,
@@ -42,7 +41,7 @@ class Procedure(override var name: String,
         if (minArgs != maxArgs) {
             /* Optional params: pass them as a list bound to the last param.
              * Everything AFTER mandatory params goes to that list. */
-            env.put(args[minArgs()], Arrays.asList(*Arrays.copyOfRange(values, minArgs(), values.size)))
+            env.put(args[minArgs()], values.copyOfRange(minArgs(), values.size).toList())
         }
         return env
     }

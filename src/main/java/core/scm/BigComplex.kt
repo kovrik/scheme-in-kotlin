@@ -134,7 +134,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Natural logarithm of Complex number
      * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
      */
-    fun log() = BigComplex(Log.log(magnitude()), angle())
+    fun log(): BigComplex = BigComplex(Log.log(magnitude()), angle())
 
     /**
      * Magnitude (Absolute value, Modulus) of Complex number

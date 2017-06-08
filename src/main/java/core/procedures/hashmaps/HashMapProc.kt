@@ -2,8 +2,6 @@ package core.procedures.hashmaps
 
 import core.procedures.AFn
 
-import java.util.HashMap
-
 class HashMapProc : AFn() {
 
     override val isPure = true

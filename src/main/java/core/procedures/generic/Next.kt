@@ -7,8 +7,6 @@ import core.scm.Cons
 import core.scm.Vector
 import core.utils.Utils
 
-import java.util.*
-
 open class Next : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true
@@ -22,7 +20,7 @@ open class Next : AFn(FnArgs(min = 1, max = 1)) {
             is Set<*> -> next(arg)
             is Map<*, *> -> next(arg.entries)
             is Map.Entry<*, *> -> Cons.list(arg.value!!)
-            is Vector -> if (arg.size == 0) null else Vector(*Arrays.copyOfRange<Any>(arg.getArray(), 1, arg.size))
+            is Vector -> if (arg.size == 0) null else Vector(arg.getArray().copyOfRange(1, arg.size))
             is CharSequence -> if (arg.length == 0) null else arg.subSequence(1, arg.length)
             else -> throw WrongTypeException("next", "List or Vector or Set or String or Map", arg)
         }

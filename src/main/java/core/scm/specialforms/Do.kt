@@ -5,7 +5,6 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.utils.Utils
-import java.util.*
 
 /* Syntax:
  * (do <bindings> <clause> <body>)

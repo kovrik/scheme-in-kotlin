@@ -56,8 +56,6 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     @Throws(Exception::class)
     override fun call(): Any? = invoke()
 
-    override fun apply(arg: Any?): Any? = invoke(arg)
-
     override operator fun invoke(): Any? = throw ArityException(name, minArgs, maxArgs, 1)
 
     override operator fun invoke(arg: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 1)

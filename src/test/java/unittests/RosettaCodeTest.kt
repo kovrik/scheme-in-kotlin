@@ -11,7 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
-import java.util.*
+import java.util.Calendar
 
 class RosettaCodeTest : AbstractTest() {
 

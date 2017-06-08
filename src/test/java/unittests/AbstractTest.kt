@@ -6,7 +6,7 @@ import core.evaluator.Evaluator
 import core.reader.StringReader
 import core.scm.Symbol
 import org.junit.Assert.assertEquals
-import java.util.*
+import java.util.Arrays
 
 abstract class AbstractTest {
 

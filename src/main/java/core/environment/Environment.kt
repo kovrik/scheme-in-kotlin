@@ -2,8 +2,6 @@ package core.environment
 
 import core.exceptions.UndefinedIdentifierException
 
-import java.util.*
-
 open class Environment : HashMap<Any?, Any?> {
 
     /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */

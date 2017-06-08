@@ -9,7 +9,6 @@ import core.scm.Symbol
 import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
-import java.util.*
 
 open class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java))) {
 

@@ -2,7 +2,6 @@ package core.procedures.hashmaps
 
 import core.procedures.AFn
 import core.procedures.FnArgs
-import java.util.*
 
 class Merge : AFn(FnArgs(min = 0, rest = Map::class.java)) {
 

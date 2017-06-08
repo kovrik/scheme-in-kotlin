@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.scm.Procedure
 import core.scm.Symbol
-import java.util.*
+import java.util.LinkedList
 
 /* Syntax:
  * (lambda <formals> <body>)

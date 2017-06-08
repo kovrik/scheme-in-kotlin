@@ -40,7 +40,6 @@ import core.procedures.vectors.*
 import core.scm.Symbol
 import core.scm.specialforms.*
 import core.scm.specialforms.Set
-import java.util.*
 
 class DefaultEnvironment : Environment(null) {
 

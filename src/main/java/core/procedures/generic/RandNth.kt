@@ -3,7 +3,7 @@ package core.procedures.generic
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.utils.Utils
-import java.util.*
+import java.util.Random
 
 class RandNth : AFn(FnArgs(min = 1, max = 1)) {
 

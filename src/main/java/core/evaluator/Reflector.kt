@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
-import java.util.Arrays
 import kotlin.collections.HashMap
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -44,8 +43,8 @@ class Reflector {
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
-            val argsOld   = Arrays.copyOf(args, args.size)
-            val paramsOld = Arrays.copyOf(parameterTypes, parameterTypes.size)
+            val argsOld   = args.copyOf()
+            val paramsOld = parameterTypes.copyOf()
             downcastArgs(args, parameterTypes)
             try {
                 return clazz.getMethod(name, *parameterTypes)
@@ -170,7 +169,7 @@ class Reflector {
                 throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
             }
             val instance = args[0]
-            val rest = Arrays.copyOfRange(args, 1, args.size)
+            val rest = args.copyOfRange(1, args.size)
             result = evalJavaInstanceMethod(method, instance, rest)
         } else if (method.indexOf('/') != -1) {
             result = evalJavaStaticMethod(method, args)

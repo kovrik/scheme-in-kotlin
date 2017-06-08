@@ -1,7 +1,7 @@
 package core.utils
 
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.WeakHashMap
 
 internal class WeakPool<T> {
 

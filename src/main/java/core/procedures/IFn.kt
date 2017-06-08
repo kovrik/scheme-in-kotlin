@@ -1,19 +1,18 @@
 package core.procedures
 
 import java.util.concurrent.Callable
-import java.util.function.Function
 
-interface IFn<T, R> : Function<T, R>, Callable<Any?>, Runnable {
+interface IFn<in T, out R> : (T) -> R, Callable<Any?>, Runnable {
 
-    operator fun invoke(): Any?
+    operator fun invoke(): R
 
-    operator fun invoke(arg: Any?): Any?
+    override operator fun invoke(arg: T): R
 
-    operator fun invoke(arg1: Any?, arg2: Any?): Any?
+    operator fun invoke(arg1: T, arg2: T): R
 
-    operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any?
+    operator fun invoke(arg1: T, arg2: T, arg3: T): R
 
-    operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any?
+    operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R
 
-    operator fun invoke(vararg args: Any?): Any?
+    operator fun invoke(vararg args: T): R
 }

@@ -7,8 +7,6 @@ import core.scm.Cons
 import core.scm.MutableVector
 import core.scm.Vector
 
-import java.util.*
-
 class Conj : AFn(FnArgs(min = 1)) {
 
     override val name = "conj"
@@ -20,13 +18,13 @@ class Conj : AFn(FnArgs(min = 1)) {
             first is List<*> -> {
                 val list = Cons.list<Any?>()
                 list.addAll(first)
-                list.addAll(Arrays.asList(*args).subList(1, args.size))
+                list.addAll(args.toList().subList(1, args.size))
                 return list
             }
             first is Set<*> -> {
                 val set = HashSet<Any?>()
                 set.addAll(first as Collection<*>)
-                set.addAll(Arrays.asList(*args).subList(1, args.size))
+                set.addAll(args.toList().subList(1, args.size))
                 return set
             }
             first is Vector -> {

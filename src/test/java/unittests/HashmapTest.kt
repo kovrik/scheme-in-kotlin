@@ -7,7 +7,6 @@ import core.scm.MapEntry
 import core.scm.MutableVector
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.*
 
 class HashmapTest : AbstractTest() {
 
@@ -75,8 +74,8 @@ class HashmapTest : AbstractTest() {
         assertEquals(Cons.EMPTY, eval("(keys {})", env))
         assertEquals(6L, eval("(apply + (vals (zipmap '[+ - /] '(1 2 3))))", env))
         assertEquals(Cons.EMPTY, eval("(vals {})", env))
-        assertEquals(Collections.EMPTY_MAP, eval("(zipmap [] '())", env))
-        assertEquals(Collections.EMPTY_MAP, eval("(zipmap nil nil)", env))
+        assertEquals(emptyMap<Any?, Any?>(), eval("(zipmap [] '())", env))
+        assertEquals(emptyMap<Any?, Any?>(), eval("(zipmap nil nil)", env))
         assertEquals(3L, eval("(get (zipmap \"test\" [1 2 3 4]) #\\s)", env))
     }
 

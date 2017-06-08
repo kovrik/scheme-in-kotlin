@@ -9,7 +9,6 @@ import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.list
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.*
 
 class ConsTest {
 
@@ -36,8 +35,8 @@ class ConsTest {
         assertEquals("(() (1 2 ()) ())", list<Cons<Any?>>(EMPTY, list(1, 2, EMPTY), EMPTY).toString())
         assertEquals("()", list<Any>().toString())
         assertEquals("(1)", list(1).toString())
-        assertEquals("(1)", ConsProc.cons(1, Collections.EMPTY_LIST).toString())
-        assertEquals("(2 1)", ConsProc.cons(2, ConsProc.cons(1, Collections.EMPTY_LIST)).toString())
+        assertEquals("(1)", ConsProc.cons(1, emptyList<Any?>()).toString())
+        assertEquals("(2 1)", ConsProc.cons(2, ConsProc.cons(1, emptyList<Any?>())).toString())
         assertEquals("(1 2)", list(1, 2).toString())
         assertEquals("(1 2 3 4)", list(1, 2, 3, 4).toString())
         assertEquals("(1 2 () 4)", list(1, 2, EMPTY, 4).toString())

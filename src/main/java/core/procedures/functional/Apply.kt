@@ -8,7 +8,6 @@ import core.scm.Symbol
 import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
-import java.util.*
 
 class Apply : AFn(FnArgs(min = 2, mandatory = arrayOf(IFn::class.java, Any::class.java))) {
 
@@ -17,7 +16,7 @@ class Apply : AFn(FnArgs(min = 2, mandatory = arrayOf(IFn::class.java, Any::clas
     override operator fun invoke(vararg args: Any?): Any {
         val sexp = Cons.list(args[0])
         if (args.size > 2) {
-            sexp.addAll(Arrays.asList(*args).subList(1, args.size - 1))
+            sexp.addAll(args.toList().subList(1, args.size - 1))
         }
         val last = args[args.size - 1]
         val iterator = Utils.toSequence(last)

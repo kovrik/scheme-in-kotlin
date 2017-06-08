@@ -4,8 +4,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.Vector
-
-import java.util.*
+import java.util.TreeMap
 
 class Sort : AFn(FnArgs(min = 1, max = 2)) {
 
@@ -24,8 +23,8 @@ class Sort : AFn(FnArgs(min = 1, max = 2)) {
                         return copy
                     }
                     is Vector -> {
-                        val copy = Arrays.copyOf(arg.getArray(), arg.size)
-                        Arrays.sort(copy)
+                        val copy = arg.getArray().copyOf()
+                        copy.sort()
                         return Vector(*copy)
                     }
                     is Map<*, *> -> return TreeMap(arg as Map<*, *>?)
@@ -46,8 +45,8 @@ class Sort : AFn(FnArgs(min = 1, max = 2)) {
                     return copy
                 }
                 is Vector -> {
-                    val copy = Arrays.copyOf(arg.getArray(), arg.size)
-                    Arrays.sort(copy, comparator)
+                    val copy = arg.getArray().copyOf()
+                    copy.sortWith(comparator)
                     return Vector(*copy)
                 }
                 is Map<*, *> -> {

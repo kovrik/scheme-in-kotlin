@@ -2,7 +2,6 @@ package core.reader
 
 import java.io.IOException
 import java.io.PushbackReader
-import java.util.*
 
 class StringReader : Reader() {
 

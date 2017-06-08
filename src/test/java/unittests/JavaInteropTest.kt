@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.math.BigDecimal
-import java.util.*
+import java.util.Collections
 
 class JavaInteropTest : AbstractTest() {
 

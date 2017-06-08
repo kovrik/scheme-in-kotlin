@@ -4,8 +4,6 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.utils.Utils
 
-import java.util.HashMap
-
 class Zipmap : AFn(FnArgs(min = 2, max = 2)) {
 
     override val isPure = true

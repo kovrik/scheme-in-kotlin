@@ -2,7 +2,7 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.writer.Writer
-import java.util.*
+import java.util.LinkedList
 
 class Cons<E> : LinkedList<E?> {
 
@@ -80,7 +80,7 @@ class Cons<E> : LinkedList<E?> {
             return list
         }
 
-        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY as Cons<E?> else list(Arrays.asList(*elements))
+        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY as Cons<E?> else list(elements.toList())
 
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
 

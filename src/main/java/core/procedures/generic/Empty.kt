@@ -6,8 +6,6 @@ import core.scm.Cons
 import core.scm.MutableVector
 import core.scm.Vector
 
-import java.util.*
-
 class Empty : AFn(FnArgs(min = 1, max = 1)) {
 
     override val isPure = true

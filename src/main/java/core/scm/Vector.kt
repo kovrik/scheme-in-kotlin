@@ -5,7 +5,7 @@ import core.procedures.AFn
 import core.procedures.FnArgs
 import core.utils.Utils
 import core.writer.Writer
-import java.util.*
+import java.util.Arrays
 
 // TODO implement List instead?
 /* Immutable Vector */
@@ -29,7 +29,7 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
 
     constructor(size: Int, init: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
         this.array = arrayOfNulls<Any>(size)
-        Arrays.fill(array, init)
+        array.fill(init)
     }
 
     constructor(vararg elements: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
@@ -70,17 +70,17 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
         return sb.toString()
     }
 
-    override fun iterator() = Arrays.asList(*array).iterator()
+    override fun iterator() = array.toList().iterator()
 
     override fun isEmpty() = (size == 0)
 
-    open fun getArray(): Array<Any?> = Arrays.copyOf(array, size)
+    open fun getArray(): Array<Any?> = array.copyOf()
 
-    open fun toArray(): Array<Any?> = Arrays.copyOf(array, size)
+    open fun toArray(): Array<Any?> = array.copyOf()
 
     override fun containsAll(elements: Collection<*>) = elements.any { contains(it) }
 
-    override fun hashCode() = Arrays.hashCode(getArray())
+    override fun hashCode() = getArray().hashCode()
 
     override fun equals(other: Any?) = other is Vector && Arrays.equals(getArray(), other.getArray())
 

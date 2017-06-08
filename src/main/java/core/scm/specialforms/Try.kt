@@ -8,8 +8,6 @@ import core.exceptions.ThrowableWrapper
 import core.scm.Cons
 import core.scm.Symbol
 
-import java.util.*
-
 enum class Try : ISpecialForm {
     TRY;
 

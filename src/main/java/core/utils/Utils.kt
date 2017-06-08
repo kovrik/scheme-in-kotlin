@@ -13,7 +13,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
-import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.IntStream
 
@@ -487,7 +486,7 @@ object Utils {
         is CharSequence    -> stringIterator(obj)
         is Map<*, *>       -> obj.entries.iterator()
         is Map.Entry<*, *> -> MapEntry(obj).iterator()
-        null               -> Collections.EMPTY_LIST.iterator()
+        null               -> emptyList<Any?>().iterator()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
     }
 

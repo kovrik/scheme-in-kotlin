@@ -9,7 +9,7 @@ import core.scm.*
 import core.scm.Vector
 import core.utils.Utils
 import java.math.BigDecimal
-import java.util.*
+import java.util.Objects
 import java.util.concurrent.CompletableFuture
 
 class Predicate private constructor(override val name: String, private val predicate: (Any?) -> Boolean) : AFn(FnArgs(min = 1, max = 1)) {

@@ -2,7 +2,6 @@ package core.procedures.sets
 
 import core.procedures.AFn
 import core.procedures.FnArgs
-import java.util.*
 
 class Intersection : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Set::class.java), rest = Set::class.java)) {
 
