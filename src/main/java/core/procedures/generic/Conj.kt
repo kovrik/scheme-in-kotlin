@@ -18,13 +18,13 @@ class Conj : AFn(FnArgs(min = 1)) {
             first is List<*> -> {
                 val list = Cons.list<Any?>()
                 list.addAll(first)
-                list.addAll(args.toList().subList(1, args.size))
+                list.addAll(args.copyOfRange(1, args.size))
                 return list
             }
             first is Set<*> -> {
                 val set = HashSet<Any?>()
                 set.addAll(first as Collection<*>)
-                set.addAll(args.toList().subList(1, args.size))
+                set.addAll(args.copyOfRange(1, args.size))
                 return set
             }
             first is Vector -> {
