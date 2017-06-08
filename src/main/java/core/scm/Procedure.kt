@@ -13,17 +13,12 @@ class Procedure(override var name: String,
                 private val localEnvironment: Environment,
                 isVariadic: Boolean) : AFn() {
 
-    companion object {
-        private fun isConst(obj: Any?) = !(obj is Symbol || obj is Collection<*> || obj is Map<*, *>)
-    }
-
     /* Is body a constant? If it is, then no need to evaluate it */
-    private val isBodyConst: Boolean
+    private val isBodyConst: Boolean = body !is Symbol && body !is Collection<*> && body !is Map<*, *>
 
     init {
-        this.isBodyConst = isConst(body)
         if (isVariadic) {
-            /* Do not count rest arg */
+            /* Do not count `rest` arg */
             this.minArgs = this.args.size - 1
         } else {
             this.minArgs = this.args.size
