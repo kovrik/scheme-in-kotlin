@@ -10,11 +10,11 @@ class StringRef : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(CharSequence:
     override val name = "string-ref"
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any {
-        val s = arg1!!.toString()
-        val pos = (arg2 as Number).toLong()
-        if (pos >= s.length) {
+        val str = arg1!!.toString()
+        val pos = (arg2 as Number).toInt()
+        if (pos >= str.length) {
             throw IndexOutOfBoundsException("$name: value out of range: $pos")
         }
-        return s[pos.toInt()]
+        return str[pos]
     }
 }

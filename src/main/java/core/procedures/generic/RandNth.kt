@@ -20,7 +20,7 @@ class RandNth : AFn(FnArgs(min = 1, max = 1)) {
         if (!Utils.isSeqable(arg)) {
             throw IllegalArgumentException("don't know how to create Sequence from " + arg?.javaClass)
         }
-        val bound = count(arg)!!
+        val bound = count(arg)
         if (bound == 0) {
             throw IndexOutOfBoundsException()
         }

@@ -11,10 +11,8 @@ class BigIntegerType : AFn(FnArgs(min = 1, max = 1)) {
     override val isPure = true
     override val name = "bigint"
 
-    override operator fun invoke(arg: Any?): BigInteger {
-        if (arg is Number) {
-            return Utils.toBigInteger(arg)
-        }
-        return BigInteger(arg!!.toString())
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is Number -> Utils.toBigInteger(arg)
+        else      -> BigInteger(arg!!.toString())
     }
 }

@@ -10,9 +10,9 @@ class MakeString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Ty
     override val name = "make-string"
 
     override operator fun invoke(vararg args: Any?): MutableString? {
-        val s = (args[0] as Number).toLong()
+        val s = (args[0] as Number).toInt()
         val c = if (args.size == 1) Character.MIN_VALUE else args[1]
-        val string = MutableString()
+        val string = MutableString(s)
         for (i in 0..s - 1) {
             string.append(c)
         }
