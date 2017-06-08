@@ -13,7 +13,7 @@ open class Display : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(
 
     override val name = "display"
 
-    override operator fun invoke(vararg args: Any?): Unit {
+    override operator fun invoke(vararg args: Any?) {
         val outputPort: OutputPort
         when {
             args.size == 1 -> outputPort = Repl.currentOutputPort

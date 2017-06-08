@@ -11,7 +11,7 @@ import core.scm.Symbol
 enum class Set : ISpecialForm {
     SET;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Unit {
+    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) {
         if (expression.size != 3) {
             throw IllegalSyntaxException.of(toString(), expression, "has ${expression.size - 1} parts after keyword")
         }

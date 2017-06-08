@@ -13,7 +13,7 @@ class Println : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Any::
 
     override val name = "println"
 
-    override operator fun invoke(vararg args: Any?): Unit {
+    override operator fun invoke(vararg args: Any?) {
         val outputPort: OutputPort = if (args.size == 1) Repl.currentOutputPort else args[1] as OutputPort
         try {
             when (args[0]) {

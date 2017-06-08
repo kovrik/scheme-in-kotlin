@@ -9,7 +9,7 @@ class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class
 
     override val name = "set-cdr!"
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Unit {
+    override operator fun invoke(arg1: Any?, arg2: Any?) {
         val list = arg1 as MutableList<Any?>?
         /* Remove tail */
         list!!.subList(1, list.size).clear()
