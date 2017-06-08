@@ -1,7 +1,6 @@
 package core.procedures
 
 import core.exceptions.ArityException
-import core.exceptions.WrongTypeException
 import core.scm.Type
 import core.utils.Utils
 
@@ -74,19 +73,19 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
     private fun checkArgs(vararg args: Any?) {
         /* Check arg count */
         val argsSize = args.size
-        if (argsSize < minArgs || argsSize > maxArgs) {
-            throw ArityException(name, minArgs, maxArgs, argsSize)
-        }
+        if (argsSize < minArgs || argsSize > maxArgs) throw ArityException(name, minArgs, maxArgs, argsSize)
+        /* Check arg types */
         for (i in 0..argsSize - 1) {
-            val arg = args[i]
-            /* Mandatory args */
             when {
-                i < mandatoryArgsTypes.size              -> Type.assertType(name, arg, mandatoryArgsTypes[i])
-                i == argsSize - 1 && lastArgType != null -> Type.assertType(name, arg, lastArgType)
-                restArgsType != null                     -> Type.assertType(name, arg, restArgsType)
+                i < mandatoryArgsTypes.size              -> Type.assertType(name, args[i], mandatoryArgsTypes[i])
+                i == argsSize - 1 && lastArgType != null -> Type.assertType(name, args[i], lastArgType)
+                restArgsType != null                     -> Type.assertType(name, args[i], restArgsType)
             }
         }
     }
+
+    /* if min == max, then function is not variadic, hence get arity */
+    private fun getArity() = if (minArgs == maxArgs) minArgs else -1
 
     /**
      * Helper method that checks if FnArgs annotation is present,
@@ -96,9 +95,7 @@ abstract class AFn : IFn<Any?, Any?>, Comparator<Any?> {
      */
     fun invokeN(vararg args: Any?): Any? {
         checkArgs(*args)
-        /* if min == max, then function is not variadic, hence get arity */
-        val arity = if (minArgs == maxArgs) minArgs else -1
-        return when (arity) {
+        return when (getArity()) {
             0    -> invoke()
             1    -> invoke(args[0])
             2    -> invoke(args[0], args[1])
