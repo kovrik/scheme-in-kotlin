@@ -27,6 +27,7 @@ object Type {
     object Pair
     /* Marker classes for numbers */
     object ExactNonNegativeInteger
+    object Rational
     object Real
     object BitOp
 
@@ -34,7 +35,7 @@ object Type {
     private val TYPE_NAME_MAPPINGS = hashMapOf(
             Int::class.javaObjectType  to "Integer",
             Long::class.javaObjectType to "Integer",
-            BigRatio::class.java       to "Rational",
+            Rational::class.java       to "Rational",
             BigComplex::class.java     to "Complex",
             CharSequence::class.java   to "String",
             StringBuilder::class.java  to "MutableString",
@@ -53,7 +54,7 @@ object Type {
             MutableString::class.java           to { o: Any? -> o is StringBuilder || o is MutableString },
             ProperList::class.java              to Cons.Companion::isProperList,
             Pair::class.java                    to Cons.Companion::isPair,
-            BigRatio::class.java                to Utils::isRational,
+            Rational::class.java                to Utils::isRational,
             Long::class.java                    to Utils::isInteger,
             Long::class.javaObjectType          to Utils::isInteger,
             Int::class.java                     to Utils::isInteger,

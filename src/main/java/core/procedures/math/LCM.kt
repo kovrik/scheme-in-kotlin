@@ -3,12 +3,13 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
+import core.scm.Type
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class LCM : AFn(FnArgs(rest = BigRatio::class.java)) {
+class LCM : AFn(FnArgs(rest = Type.Rational::class.java)) {
 
     private val ABS = Abs()
 

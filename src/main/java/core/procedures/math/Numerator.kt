@@ -3,11 +3,12 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
+import core.scm.Type
 import core.utils.Utils
 
 import java.math.BigDecimal
 
-class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(BigRatio::class.java))) {
+class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Rational::class.java))) {
 
     override val isPure = true
     override val name = "numerator"

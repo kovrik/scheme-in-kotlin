@@ -4,12 +4,13 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.scm.BigRatio
+import core.scm.Type
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class GCD : AFn(FnArgs(rest = BigRatio::class.java)) {
+class GCD : AFn(FnArgs(rest = Type.Rational::class.java)) {
 
     private val ABS = Abs()
 
