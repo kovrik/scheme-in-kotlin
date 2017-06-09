@@ -9,20 +9,14 @@ abstract class AFn(var minArgs: Int = 0,
                    var maxArgs: Int = Int.MAX_VALUE,
                    val mandatoryArgsTypes: Array<Class<*>> = emptyArray(),
                    val restArgsType: Class<*>? = null,
-                   val lastArgType: Class<*>? = null) : IFn<Any?, Any?>, Comparator<Any?> {
+                   val lastArgType: Class<*>? = null,
+                   open val name: String = "",
+                   /* Return true if function is pure (referentially transparent) */
+                   open val isPure: Boolean = false) : IFn<Any?, Any?>, Comparator<Any?> {
 
     protected constructor(fnArgs: FnArgs) : this(fnArgs.min, fnArgs.max, fnArgs.mandatory, fnArgs.rest, fnArgs.last)
 
     private val arity = if (minArgs == maxArgs) minArgs else -1
-
-    protected fun minArgs() = minArgs
-
-    /* Return true if function is pure (referentially transparent) */
-    open val isPure
-        get() = false
-
-    open val name: String
-        get() = javaClass.simpleName
 
     override fun compare(o1: Any?, o2: Any?): Int {
         val result = invokeN(o1, o2)
