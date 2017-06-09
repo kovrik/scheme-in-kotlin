@@ -67,7 +67,7 @@ object Type {
 
     fun nameOf(clazz: Class<*>): String = TYPE_NAME_MAPPINGS.getOrDefault(clazz, clazz.simpleName)
 
-    @JvmStatic fun assertType(name: String, o: Any?, expected: Class<*>) = when {
+    fun assertType(name: String, o: Any?, expected: Class<*>) = when {
         o == null -> true
         expected == o.javaClass -> true
         expected.isAssignableFrom(o.javaClass) -> true
