@@ -156,7 +156,7 @@ class Evaluator {
     /* Evaluate hash map */
     private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
         val result = HashMap<Any?, Any?>(size)
-        this.forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
+        forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
         return result
     }
 
@@ -167,5 +167,5 @@ class Evaluator {
     }
 
     /* Evaluate set */
-    private fun Set<Any?>.eval(env: Environment) = this.mapTo(HashSet<Any?>(size)) { eval(it, env) }
+    private fun Set<Any?>.eval(env: Environment) = mapTo(HashSet<Any?>(size)) { eval(it, env) }
 }
