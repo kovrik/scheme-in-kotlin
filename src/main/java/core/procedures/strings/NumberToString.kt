@@ -2,13 +2,12 @@ package core.procedures.strings
 
 import core.procedures.AFn
 import core.procedures.FnArgs
-import core.scm.Type
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Number::class.java), rest = Type.ExactPositiveInteger::class.java)) {
+class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Number::class.java), rest = Long::class.java)) {
 
     override val name = "number->string"
 

@@ -3,10 +3,9 @@ package core.procedures.strings
 import core.procedures.AFn
 import core.procedures.FnArgs
 import core.reader.Reader
-import core.scm.Type
 import core.utils.Utils
 
-class StringToNumber : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java), rest = Type.ExactPositiveInteger::class.java)) {
+class StringToNumber : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java), rest = Long::class.java)) {
 
     override val name = "string->number"
 
@@ -45,9 +44,9 @@ class StringToNumber : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>
         var radix = Utils.getRadixByChar(radixChar)
         /* Get default (optional) radix if present */
         if (args.size == 2) {
-            val optRadix = (args[1] as Long).toInt()
+            val optRadix = (args[1] as Number).toInt()
             if (optRadix < 2 || optRadix > 16) {
-                throw IllegalArgumentException(name + ": expected radix from 2 to 16!")
+                throw IllegalArgumentException(name + ": expected radix from 2 to 16")
             }
             if (!override) {
                 radix = optRadix

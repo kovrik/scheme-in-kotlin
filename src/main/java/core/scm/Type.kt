@@ -27,12 +27,12 @@ object Type {
     object Pair
     /* Marker classes for numbers */
     object ExactNonNegativeInteger
-    object ExactPositiveInteger
     object Real
     object BitOp
 
     /* Override type names for some classes */
     private val TYPE_NAME_MAPPINGS = hashMapOf(
+            Int::class.javaObjectType  to "Integer",
             Long::class.javaObjectType to "Integer",
             BigRatio::class.java       to "Rational",
             BigComplex::class.java     to "Complex",
@@ -58,7 +58,6 @@ object Type {
             Long::class.javaObjectType          to Utils::isInteger,
             Int::class.java                     to Utils::isInteger,
             Int::class.javaObjectType           to Utils::isInteger,
-            ExactPositiveInteger::class.java    to Utils::isExactPositiveInteger,
             ExactNonNegativeInteger::class.java to Utils::isExactNonNegativeInteger,
             Real::class.java                    to Utils::isReal,
             BitOp::class.java                   to Utils::isBitOpSupported,

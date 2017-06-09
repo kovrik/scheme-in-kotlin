@@ -10,17 +10,17 @@ open class Substring : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(CharSequ
 
     override operator fun invoke(vararg args: Any?): String? {
         val s = args[0].toString()
-        val start = (args[1] as Number).toLong()
+        val start = (args[1] as Number).toInt()
         if (start > s.length) {
             throw IndexOutOfBoundsException("$name: value out of range: $start")
         }
-        var end = s.length.toLong()
+        var end = s.length
         if (args.size == 3) {
-            end = args[2] as Long
+            end = (args[2] as Number).toInt()
         }
         if (end > s.length) {
             throw IndexOutOfBoundsException("$name: value out of range: $end")
         }
-        return s.substring(start.toInt(), end.toInt())
+        return s.substring(start, end)
     }
 }

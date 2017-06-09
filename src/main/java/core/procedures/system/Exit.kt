@@ -9,6 +9,6 @@ class Exit : AFn(FnArgs(max = 1, rest = Long::class.java)) {
 
     override operator fun invoke(vararg args: Any?) = when {
         args.isEmpty() -> System.exit(0)
-        else -> System.exit((args[0] as Long).toInt())
+        else -> System.exit((args[0] as Number).toInt())
     }
 }
