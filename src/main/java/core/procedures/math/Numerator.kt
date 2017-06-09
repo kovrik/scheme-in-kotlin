@@ -1,17 +1,15 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
 
 import java.math.BigDecimal
 
-class Numerator : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Rational::class.java))) {
+class Numerator : AFn(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
+                      mandatoryArgsTypes = arrayOf<Class<*>>(Type.Rational::class.java)) {
 
-    override val isPure = true
-    override val name = "numerator"
     override operator fun invoke(arg: Any?) = numerator(arg!!)
 
     private fun numerator(o: Any): Number {

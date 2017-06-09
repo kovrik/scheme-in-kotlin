@@ -1,14 +1,13 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 import core.scm.Vector
 import java.util.regex.Pattern
 
-class Split : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(CharSequence::class.java, Pattern::class.java), rest = Long::class.java)) {
-
-    override val name = "split"
+class Split : AFn(name = "split", isPure = true, minArgs = 2, maxArgs = 3,
+                  mandatoryArgsTypes = arrayOf(CharSequence::class.java, Pattern::class.java),
+                  restArgsType = Long::class.java) {
 
     override operator fun invoke(vararg args: Any?): Vector {
         return when (args.size) {

@@ -1,12 +1,8 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class MapInvert : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Map::class.java))) {
-
-    override val isPure = true
-    override val name = "map-invert"
+class MapInvert : AFn(name = "map-invert", isPure = true, minArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Map::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Map<Any?, Any?>? {
         val result = HashMap<Any?, Any?>()

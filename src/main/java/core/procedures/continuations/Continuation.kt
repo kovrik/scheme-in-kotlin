@@ -1,12 +1,11 @@
 package core.procedures.continuations
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 /*
  * "Upward" one-shot continuation
  */
-class Continuation : AFn(FnArgs(min = 1, max = 1)) {
+class Continuation : AFn(name = "continuation", minArgs = 1, maxArgs = 1) {
 
     var isInvoked = false
         private set
@@ -14,8 +13,6 @@ class Continuation : AFn(FnArgs(min = 1, max = 1)) {
     fun invalidate() {
         this.isInvoked = true
     }
-
-    override val name = "continuation"
 
     override operator fun invoke(arg: Any?) = throw CalledContinuation(arg!!, this)
 

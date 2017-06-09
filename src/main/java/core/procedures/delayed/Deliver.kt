@@ -1,14 +1,11 @@
 package core.procedures.delayed
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Promise
 
 import java.util.concurrent.CompletableFuture
 
-class Deliver : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Promise::class.java, Any::class.java))) {
-
-    override val name = "deliver"
+class Deliver : AFn(name = "deliver", minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Promise::class.java, Any::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): CompletableFuture<Any>? {
         val p = arg1 as Promise?

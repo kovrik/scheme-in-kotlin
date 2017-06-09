@@ -2,13 +2,10 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 import java.util.regex.Pattern
 
-class ReplaceFirst : AFn(FnArgs(min = 3, max = 3)) {
-
-    override val name = "replace-first"
+class ReplaceFirst : AFn(name = "replace-first", isPure = true, minArgs = 3, maxArgs = 3) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String? {
         if (arg1 !is CharSequence) {

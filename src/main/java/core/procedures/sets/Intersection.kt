@@ -1,12 +1,9 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class Intersection : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Set::class.java), rest = Set::class.java)) {
-
-    override val isPure = true
-    override val name = "intersection"
+class Intersection : AFn(name = "intersection", isPure = true, minArgs = 1,
+                         mandatoryArgsTypes = arrayOf<Class<*>>(Set::class.java), restArgsType = Set::class.java) {
 
     override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.size == 1) {

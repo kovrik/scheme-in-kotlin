@@ -2,10 +2,7 @@ package core.procedures.io
 
 import core.Repl
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class CurrentOutputPort : AFn(FnArgs(max = 0)) {
-
-    override val name = "current-output-port"
+class CurrentOutputPort : AFn(name = "current-output-port", maxArgs = 0) {
     override operator fun invoke() = Repl.currentOutputPort
 }

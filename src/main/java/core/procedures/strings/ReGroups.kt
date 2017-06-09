@@ -1,14 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.MutableVector
 
 import java.util.regex.Matcher
 
-class ReGroups : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Matcher::class.java))) {
-
-    override val name = "re-groups"
+class ReGroups : AFn(name = "re-groups", isPure = true, minArgs = 1, maxArgs = 1,
+                     mandatoryArgsTypes = arrayOf<Class<*>>(Matcher::class.java)) {
 
     override operator fun invoke(arg: Any?): Any? {
         val m = arg!! as Matcher

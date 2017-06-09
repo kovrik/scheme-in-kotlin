@@ -2,7 +2,6 @@ package core.procedures.io
 
 import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.IFn
 import core.scm.Cons
 import core.scm.InputPort
@@ -11,9 +10,8 @@ import core.scm.Thunk
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 
-class CallWithInputFile : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(CharSequence::class.java, IFn::class.java))) {
-
-    override val name = "call-with-input-file"
+class CallWithInputFile : AFn(name = "call-with-input-file", minArgs = 2, maxArgs = 2,
+                              mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Any {
         val inputPort: InputPort

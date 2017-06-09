@@ -1,17 +1,13 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.MutableString
 
-class StringToMutableString : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
+class StringToMutableString : AFn(name = "string->mutable-string", isPure = true, minArgs = 1, maxArgs = 1,
+                                  mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
-    override val name = "string->mutable-string"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return when (arg) {
-            is MutableString, is StringBuilder -> arg
-            else -> MutableString(arg!!.toString())
-        }
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is MutableString, is StringBuilder -> arg
+        else -> MutableString(arg!!.toString())
     }
 }

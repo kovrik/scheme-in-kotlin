@@ -1,12 +1,8 @@
 package core.procedures.sets
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class Union : AFn(FnArgs(min = 0, rest = Set::class.java)) {
-
-    override val isPure = true
-    override val name = "union"
+class Union : AFn(name = "union", isPure = true, restArgsType = Set::class.java) {
 
     override operator fun invoke(vararg args: Any?): Set<Any?> {
         if (args.isEmpty()) {

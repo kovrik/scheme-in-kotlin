@@ -1,14 +1,10 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Symbol
 
-class Eq : AFn(FnArgs(min = 2)) {
-
-    override val isPure = true
-    override val name = "eq?"
+class Eq : AFn(name = "eq?", isPure = true, minArgs = 2) {
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = true

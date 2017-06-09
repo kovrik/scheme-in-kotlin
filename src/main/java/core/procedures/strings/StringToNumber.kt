@@ -1,13 +1,11 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.reader.Reader
 import core.utils.Utils
 
-class StringToNumber : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java), rest = Long::class.java)) {
-
-    override val name = "string->number"
+class StringToNumber : AFn(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
+                           mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         val number = args[0].toString()

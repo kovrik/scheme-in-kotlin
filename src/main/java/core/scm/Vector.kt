@@ -2,10 +2,9 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 import core.writer.Writer
-import java.util.Arrays
+import java.util.*
 
 // TODO implement List instead?
 /* Immutable Vector */
@@ -23,16 +22,16 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
-    constructor() : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
+    constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
         this.array = arrayOfNulls<Any>(0)
     }
 
-    constructor(size: Int, init: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
+    constructor(size: Int, init: Any?) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
         this.array = arrayOfNulls<Any>(size)
         array.fill(init)
     }
 
-    constructor(vararg elements: Any?) : super(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java))) {
+    constructor(vararg elements: Any?) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
         this.array = elements as Array<Any?>
     }
 

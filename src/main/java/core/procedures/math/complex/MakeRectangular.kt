@@ -1,14 +1,11 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.Type
 
-class MakeRectangular : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java))) {
-
-    override val isPure = true
-    override val name = "make-rectangular"
+class MakeRectangular : AFn(name = "make-rectangular", isPure = true, minArgs = 2, maxArgs = 2,
+                            mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number {
         /* (+ x (* y 0+1i)) */

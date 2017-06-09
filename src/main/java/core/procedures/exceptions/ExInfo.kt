@@ -2,12 +2,9 @@ package core.procedures.exceptions
 
 import core.exceptions.ExInfoException
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class ExInfo : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(String::class.java, Map::class.java), rest = Throwable::class.java)) {
-
-    override val isPure = true
-    override val name = "ex-info"
+class ExInfo : AFn(name = "ex-info", isPure = true, minArgs = 2, maxArgs = 3,
+                   mandatoryArgsTypes = arrayOf(String::class.java, Map::class.java), restArgsType = Throwable::class.java) {
 
     override operator fun invoke(vararg args: Any?): ExInfoException? {
         if (args.size == 2) {

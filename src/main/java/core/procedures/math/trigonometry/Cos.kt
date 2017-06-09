@@ -1,7 +1,6 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.math.Multiplication
 import core.scm.BigComplex
 import core.scm.BigRatio
@@ -10,10 +9,8 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Cos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
+class Cos : AFn(name = "cos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override val isPure = true
-    override val name = "cos"
     override operator fun invoke(arg: Any?) = cos(arg!! as Number)
 
     companion object {

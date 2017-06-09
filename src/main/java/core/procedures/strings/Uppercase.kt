@@ -1,10 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class Uppercase : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
+class Uppercase : AFn(name = "upper-case", isPure = true, minArgs = 1, maxArgs = 1,
+                      mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
-    override val name = "upper-case"
     override operator fun invoke(arg: Any?) = arg!!.toString().toUpperCase()
 }

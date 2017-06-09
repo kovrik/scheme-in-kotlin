@@ -1,7 +1,6 @@
 package core.environment
 
 import core.procedures.bit.*
-import core.procedures.bit.BitSet
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc

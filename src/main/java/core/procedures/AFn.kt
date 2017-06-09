@@ -14,8 +14,6 @@ abstract class AFn(var minArgs: Int = 0,
                    /* Return true if function is pure (referentially transparent) */
                    open val isPure: Boolean = false) : IFn<Any?, Any?>, Comparator<Any?> {
 
-    protected constructor(fnArgs: FnArgs) : this(fnArgs.min, fnArgs.max, fnArgs.mandatory, fnArgs.rest, fnArgs.last)
-
     private val arity = if (minArgs == maxArgs) minArgs else -1
 
     override fun compare(o1: Any?, o2: Any?): Int {
@@ -65,9 +63,9 @@ abstract class AFn(var minArgs: Int = 0,
     }
 
     /**
-     * Helper method that checks if FnArgs annotation is present,
+     * Helper method that checks args count and their types,
      * if function is a fixed-arity function and if it is,
-     * then calls invokeN() methods (where N is arity).
+     * then calls invoke<N>() methods (where N is arity).
      * Calls variadic invoke() otherwise.
      */
     fun invokeN(vararg args: Any?): Any? {

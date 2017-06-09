@@ -1,16 +1,12 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
 
 import java.math.BigDecimal
 
-class Truncate : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.java))) {
-
-    override val isPure = true
-    override val name = "truncate"
+class Truncate : AFn(name = "truncate", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
 
     override operator fun invoke(arg: Any?): Number? {
         if (arg is Double || arg is Float) {

@@ -2,16 +2,12 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
-class Nth : AFn(FnArgs(min = 2, max = 3)) {
+class Nth : AFn(name = "nth", isPure = true, minArgs = 2, maxArgs = 3) {
 
     private val count = Count()
     private val get = Get()
-
-    override val isPure = true
-    override val name = "nth"
 
     override operator fun invoke(vararg args: Any?): Any? {
         val col = args[0]

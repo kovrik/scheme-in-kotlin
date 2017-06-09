@@ -1,17 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Quotient : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
-
-    override val isPure = true
-    override val name = "quotient"
+open class Quotient : AFn(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
+                          mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!

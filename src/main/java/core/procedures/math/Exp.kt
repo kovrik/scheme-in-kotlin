@@ -1,19 +1,15 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Exp : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
+class Exp : AFn(name = "exp", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override val isPure = true
-    override val name = "exp"
     override operator fun invoke(arg: Any?) = exp(arg as Number?)
 
     companion object {
-
         val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
         fun exp(number: Number?): Number? {

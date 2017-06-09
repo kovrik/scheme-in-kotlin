@@ -2,14 +2,10 @@ package core.procedures.system
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 import java.util.concurrent.ThreadLocalRandom
 
-class RandomProc : AFn(FnArgs(max = 2, rest = Long::class.java)) {
-
-    override val isPure = true
-    override val name = "random"
+class RandomProc : AFn(name = "random", isPure = true, maxArgs = 2, restArgsType = Long::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {

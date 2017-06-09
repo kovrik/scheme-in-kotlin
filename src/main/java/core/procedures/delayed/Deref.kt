@@ -1,14 +1,9 @@
 package core.procedures.delayed
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.IDeref
 
-class Deref : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf(IDeref::class.java))) {
+class Deref : AFn(name = "deref", minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf(IDeref::class.java)) {
 
-    override val name = "deref"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return (arg!! as IDeref).deref()
-    }
+    override operator fun invoke(arg: Any?) = (arg!! as IDeref).deref()
 }

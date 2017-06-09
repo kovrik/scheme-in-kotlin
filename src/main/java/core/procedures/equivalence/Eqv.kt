@@ -1,9 +1,8 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class Eqv : AFn(FnArgs(min = 2)) {
+class Eqv : AFn(name = "eqv?", isPure = true, minArgs = 2) {
 
     companion object {
         fun eqv(first: Any?, second: Any?): Boolean {
@@ -16,8 +15,6 @@ class Eqv : AFn(FnArgs(min = 2)) {
         }
     }
 
-    override val isPure = true
-    override val name = "eqv?"
     override operator fun invoke(arg1: Any?, arg2: Any?) = eqv(arg1, arg2)
 
     override operator fun invoke(vararg args: Any?): Boolean? {

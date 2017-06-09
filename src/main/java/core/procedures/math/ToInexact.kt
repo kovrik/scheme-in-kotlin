@@ -1,15 +1,15 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToInexact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
+class ToInexact : AFn(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+
+    override operator fun invoke(arg: Any?) = toInexact(arg)
 
     companion object {
         fun toInexact(o: Any?): Number = when (o) {
@@ -20,8 +20,4 @@ class ToInexact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Num
             else          -> (o as Number).toDouble()
         }
     }
-
-    override val isPure = true
-    override val name = "exact->inexact"
-    override operator fun invoke(arg: Any?) = toInexact(arg)
 }

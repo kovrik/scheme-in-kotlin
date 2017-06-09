@@ -2,7 +2,6 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.equivalence.Equal
 import core.scm.Cons
 import core.utils.Utils
@@ -10,7 +9,7 @@ import core.writer.Writer
 
 class AssocProc(override val name: String,
                 /* Procedure used to compare objects for equality */
-                private val predicate: AFn) : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Any::class.java))) {
+                private val predicate: AFn) : AFn(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java)) {
 
     private val get = Get()
 

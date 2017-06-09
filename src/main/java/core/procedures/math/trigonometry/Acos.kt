@@ -1,17 +1,12 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Acos : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
-
-    override val isPure = true
-    override val name = "acos"
+class Acos : AFn(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Any?): Number? {
         arg!!

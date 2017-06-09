@@ -1,14 +1,11 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.utils.Utils
 
-class Angle : AFn(FnArgs(min =  1, max = 1, mandatory =  arrayOf<Class<*>>(Number::class.java))) {
+class Angle : AFn(name = "angle", isPure = true, minArgs =  1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override val isPure = true
-    override val name = "angle"
     override operator fun invoke(arg: Any?) = angle(arg!! as Number)
 
     private fun angle(number: Number): Number {

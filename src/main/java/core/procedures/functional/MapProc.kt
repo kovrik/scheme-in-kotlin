@@ -1,7 +1,6 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.IFn
 import core.procedures.generic.Count
 import core.scm.Cons
@@ -10,11 +9,9 @@ import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-open class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::class.java))) {
+open class MapProc : AFn(name = "map", minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(IFn::class.java)) {
 
     private val count = Count()
-
-    override val name = "map"
 
     // TODO Very naive implementation. Re-implement and optimize
     override operator fun invoke(vararg args: Any?): Thunk {
@@ -22,7 +19,7 @@ open class MapProc : AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(IFn::clas
         if (!Utils.isSeqable(args[1])) {
             throw IllegalArgumentException("don't know how to create Sequence from " + args[1]?.javaClass)
         }
-        val size = count(args[1])!!
+        val size = count(args[1])
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
         for (i in 1..args.size - 1) {
             /* Check type */

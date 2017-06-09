@@ -2,16 +2,13 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class ReFind : AFn(FnArgs(min = 1, max = 2)) {
+class ReFind : AFn(name = "re-find", isPure = true, minArgs = 1, maxArgs = 2) {
 
     private val reGroups = ReGroups()
-
-    override val name = "re-find"
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {

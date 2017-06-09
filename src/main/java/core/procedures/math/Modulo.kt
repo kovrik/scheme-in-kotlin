@@ -1,20 +1,15 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Modulo : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
+open class Modulo : AFn(name = "modulo", isPure = true, minArgs = 2, maxArgs = 2,
+                        mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
-    companion object {
-        private val REM = Remainder()
-    }
-
-    override val isPure = true
-    override val name = "modulo"
+    private val REM = Remainder()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!

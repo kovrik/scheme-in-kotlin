@@ -1,12 +1,8 @@
 package core.procedures.hashmaps
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class Merge : AFn(FnArgs(min = 0, rest = Map::class.java)) {
-
-    override val isPure = true
-    override val name = "merge"
+class Merge : AFn(name = "merge", isPure = true, restArgsType = Map::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.isEmpty()) {

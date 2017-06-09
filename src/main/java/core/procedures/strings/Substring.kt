@@ -1,12 +1,11 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Type
 
-open class Substring : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java), rest = Type.ExactNonNegativeInteger::class.java)) {
-
-    override val name = "substring"
+open class Substring : AFn(name = "substring", isPure = true, minArgs = 2, maxArgs = 3,
+                           mandatoryArgsTypes = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java),
+                           restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
     override operator fun invoke(vararg args: Any?): String? {
         val s = args[0].toString()

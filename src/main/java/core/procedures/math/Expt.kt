@@ -1,7 +1,6 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.predicates.Predicate
 import core.scm.BigComplex
 import core.scm.BigRatio
@@ -10,10 +9,8 @@ import core.writer.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Expt : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Number::class.java, Number::class.java))) {
-
-    override val isPure = true
-    override val name = "expt"
+class Expt : AFn(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
+                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = expt(arg1 as Number?, arg2 as Number?)
 

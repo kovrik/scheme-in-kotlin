@@ -1,10 +1,9 @@
 package core.procedures.characters
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 class CharPredicate private constructor(override val name: String, private val predicate: (Char) -> Boolean) :
-        AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Char::class.javaObjectType))) {
+        AFn(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType)) {
 
     companion object {
         val IS_CHAR_WHITESPACE = CharPredicate("char-whitespace?", Character::isWhitespace)

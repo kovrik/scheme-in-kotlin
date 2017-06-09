@@ -1,7 +1,6 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,10 +8,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Multiplication : AFn(FnArgs(rest = Number::class.java)) {
-
-    override val isPure = true
-    override val name = "*"
+class Multiplication : AFn(name = "*", isPure = true, restArgsType = Number::class.java) {
 
     override operator fun invoke(vararg args: Any?): Number? {
         return when (args.size) {

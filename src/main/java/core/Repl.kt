@@ -8,7 +8,10 @@ import core.exceptions.ThrowableWrapper
 import core.reader.FileReader
 import core.reader.Reader
 import core.reader.StringReader
-import core.scm.*
+import core.scm.Error
+import core.scm.InputPort
+import core.scm.OutputPort
+import core.scm.Symbol
 import core.writer.Writer
 import java.io.BufferedInputStream
 import java.io.File

@@ -1,13 +1,9 @@
 package core.procedures.bit
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Type
 
-class BitAndNot : AFn(FnArgs(min = 2, rest = Type.BitOp::class.java)) {
-
-    override val isPure = true
-    override val name = "bit-and-not"
+class BitAndNot : AFn(name = "bit-and-not", isPure = true, minArgs = 2, restArgsType = Type.BitOp::class.java) {
 
     override operator fun invoke(vararg args: Any?): Long? {
         var result = (args[0] as Number).toLong()

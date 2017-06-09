@@ -1,12 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.MutableString
 
-class StringProc : AFn(FnArgs(rest = Char::class.javaObjectType)) {
-
-    override val name = "string"
+class StringProc : AFn(name = "string", isPure = true, restArgsType = Char::class.javaObjectType) {
 
     override operator fun invoke(vararg args: Any?): MutableString? {
         if (args.isEmpty()) {

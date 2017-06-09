@@ -1,14 +1,8 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-open class HashCode : AFn(FnArgs(min = 1, max = 1)) {
+open class HashCode : AFn(name = "hashcode", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override val isPure = true
-    override val name = "hashcode"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return arg?.hashCode() ?: 0L
-    }
+    override operator fun invoke(arg: Any?) = arg?.hashCode() ?: 0L
 }

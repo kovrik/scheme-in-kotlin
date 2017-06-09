@@ -2,10 +2,7 @@ package core.procedures.hashmaps
 
 import core.procedures.AFn
 
-class HashMapProc : AFn() {
-
-    override val isPure = true
-    override val name = "hash-map"
+class HashMapProc : AFn(name = "hash-map", isPure = true) {
 
     override operator fun invoke(vararg args: Any?): Map<Any?, Any?> {
         if (args.size % 2 != 0) {

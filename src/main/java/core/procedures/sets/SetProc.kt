@@ -2,12 +2,8 @@ package core.procedures.sets
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class SetProc : AFn(FnArgs(min = 1, max = 1)) {
-
-    override val isPure = true
-    override val name = "set"
+class SetProc : AFn(name = "set", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Set<Any?> {
         if (arg is Collection<*>) {

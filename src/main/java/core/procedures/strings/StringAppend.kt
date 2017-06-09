@@ -1,11 +1,8 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class StringAppend : AFn(FnArgs(rest = CharSequence::class.java)) {
-
-    override val name = "string-append"
+class StringAppend : AFn(name = "string-append", isPure = true, restArgsType = CharSequence::class.java) {
 
     override operator fun invoke(vararg args: Any?): String? {
         if (args.isEmpty()) {

@@ -1,13 +1,9 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.MutableString
 
-class Equal : AFn(FnArgs(min = 2)) {
-
-    override val isPure = true
-    override val name = "equal?"
+class Equal : AFn(name = "equal?", isPure = true, minArgs = 2) {
 
     override operator fun invoke(vararg args: Any?): Boolean? {
         var result = true

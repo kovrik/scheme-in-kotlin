@@ -1,10 +1,11 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
-class First : AFn(FnArgs(min = 1, max = 1)) {
+class First : AFn(name = "first", isPure = true, minArgs = 1, maxArgs = 1) {
+
+    override operator fun invoke(arg: Any?) = first(arg)
 
     companion object {
         fun first(arg: Any?): Any? {
@@ -13,8 +14,4 @@ class First : AFn(FnArgs(min = 1, max = 1)) {
             return if (iterator.hasNext()) iterator.next() else null
         }
     }
-
-    override val isPure = true
-    override val name = "first"
-    override operator fun invoke(arg: Any?) = first(arg)
 }

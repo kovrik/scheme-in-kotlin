@@ -2,10 +2,10 @@ package core.scm
 
 import core.exceptions.ArityException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.InternPool
 
-class Keyword private constructor(override val name: String) : AFn(FnArgs(mandatory = arrayOf<Class<*>>(Map::class.java))), INamed {
+class Keyword private constructor(override val name: String) :
+        AFn(isPure = true, mandatoryArgsTypes = arrayOf<Class<*>>(Map::class.java)), INamed {
 
     companion object {
         /* Pool of all interned keywords */
@@ -13,8 +13,6 @@ class Keyword private constructor(override val name: String) : AFn(FnArgs(mandat
 
         fun intern(value: String) = POOL.intern(Keyword(value))
     }
-
-    override val isPure = true
 
     override fun toString() = ':' + name
 

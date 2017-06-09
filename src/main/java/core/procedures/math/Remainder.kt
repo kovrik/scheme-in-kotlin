@@ -1,18 +1,17 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType))) {
+class Remainder : AFn(name = "remainder", isPure = true, minArgs = 2, maxArgs = 2,
+                      mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
+
+    override operator fun invoke(arg1: Any?, arg2: Any?) = remainder(arg1!! as Number, arg2!! as Number)
 
     companion object {
-
-        private val NAME = "remainder"
-
         fun remainder(first: Number, second: Number): Number? {
             val (f, s) = Utils.upcast(first, second)
             when {
@@ -33,8 +32,4 @@ class Remainder : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf<Class<*>>(Lon
             }
         }
     }
-
-    override val isPure = true
-    override val name = NAME
-    override operator fun invoke(arg1: Any?, arg2: Any?) = remainder(arg1!! as Number, arg2!! as Number)
 }

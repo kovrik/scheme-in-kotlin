@@ -1,13 +1,10 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Type
 
-class SetCdr : AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Type.Pair::class.java, Any::class.java))) {
-
-    override val name = "set-cdr!"
+class SetCdr : AFn(name = "set-cdr!", minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Type.Pair::class.java, Any::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) {
         val list = arg1 as MutableList<Any?>?

@@ -4,10 +4,8 @@ import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.continuations.CalledContinuation
 import core.scm.*
-import core.scm.Vector
 import core.scm.specialforms.ISpecialForm
 import core.scm.specialforms.New
 import core.utils.Utils
@@ -36,7 +34,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     // TODO Use custom HashMap class that extends AFn instead
-    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn(FnArgs(min = 1, max = 2)) {
+    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn(minArgs = 1, maxArgs = 2) {
         /* Maps are functions of their keys */
         override fun invoke(vararg args: Any?) = when (args.size) {
             1    -> map[args[0]]

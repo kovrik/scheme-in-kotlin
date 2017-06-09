@@ -1,13 +1,9 @@
 package core.procedures.hashmaps
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
-class Zipmap : AFn(FnArgs(min = 2, max = 2)) {
-
-    override val isPure = true
-    override val name = "zipmap"
+class Zipmap : AFn(name = "zipmap", isPure = true, minArgs = 2, maxArgs = 2) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val iterator1 = Utils.toSequence(arg1)

@@ -1,10 +1,9 @@
 package core.procedures.characters
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
 class CharComparison private constructor(override val name: String, private val predicate: (Char?, Char?) -> Boolean) :
-        AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType), rest = Char::class.javaObjectType)) {
+        AFn(minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType), restArgsType = Char::class.javaObjectType) {
 
     companion object {
         val CHAR_EQ          = CharComparison("char=?",     { arg1, arg2 -> arg1!! == arg2!! })

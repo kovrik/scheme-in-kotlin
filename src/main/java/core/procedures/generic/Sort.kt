@@ -2,14 +2,10 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Vector
-import java.util.TreeMap
+import java.util.*
 
-class Sort : AFn(FnArgs(min = 1, max = 2)) {
-
-    override val isPure = true
-    override val name = "sort"
+class Sort : AFn(name = "sort", isPure = true, minArgs = 1, maxArgs = 2) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1 || args[0] == null) {

@@ -1,12 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
-class Join : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
-
-    override val name = "join"
+class Join : AFn(name = "join", isPure = true, minArgs = 1, maxArgs = 2,
+                 mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
     override operator fun invoke(vararg args: Any?): String? {
         if (args.size == 1) {

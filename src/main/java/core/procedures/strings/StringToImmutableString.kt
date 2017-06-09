@@ -1,16 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class StringToImmutableString : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
+class StringToImmutableString : AFn(name = "string->immutable-string", isPure = true, minArgs = 1, maxArgs = 1,
+                                    mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
-    override val name = "string->immutable-string"
-
-    override operator fun invoke(arg: Any?): Any? {
-        return when (arg) {
-            is String -> arg
-            else -> arg!!.toString()
-        }
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is String -> arg
+        else      -> arg!!.toString()
     }
 }

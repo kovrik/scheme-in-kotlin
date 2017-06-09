@@ -2,14 +2,11 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.MutableVector
 import core.scm.Vector
 
-class Conj : AFn(FnArgs(min = 1)) {
-
-    override val name = "conj"
+class Conj : AFn(name = "conj", minArgs = 1) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         val first = args[0]

@@ -1,11 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 
-class StringLength : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
+class StringLength : AFn(name = "string-length", isPure = true, minArgs = 1, maxArgs = 1,
+                         mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
-    override val isPure = true
-    override val name = "string-length"
     override operator fun invoke(arg: Any?) = arg!!.toString().length.toLong()
 }

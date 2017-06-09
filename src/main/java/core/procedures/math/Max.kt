@@ -1,7 +1,6 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
@@ -9,10 +8,8 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Max : AFn(FnArgs(min = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.java), rest = Type.Real::class.java)) {
-
-    override val isPure = true
-    override val name = "max"
+class Max : AFn(name = "max", isPure = true, minArgs = 1,
+                mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java), restArgsType = Type.Real::class.java) {
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {

@@ -1,7 +1,6 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
 import core.scm.BigRatio
@@ -10,10 +9,7 @@ import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Range : AFn(FnArgs(min = 0, max = 3, rest = Type.Real::class.java)) {
-
-    override val isPure = true
-    override val name = "range"
+class Range : AFn(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
     // TODO Write Unit tests!!!
     override operator fun invoke(vararg args: Any?): List<Any?>? {

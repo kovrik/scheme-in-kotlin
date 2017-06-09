@@ -1,18 +1,12 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Vector
 import core.utils.Utils
 
-class Get : AFn(FnArgs(min = 2, max = 3)) {
+class Get : AFn(name = "get", isPure = true, minArgs = 2, maxArgs = 3) {
 
-    override val isPure = true
-    override val name = "get"
-
-    override operator fun invoke(vararg args: Any?): Any? {
-        return invoke(args[0], args[1], args.getOrNull(2))
-    }
+    override operator fun invoke(vararg args: Any?) = invoke(args[0], args[1], args.getOrNull(2))
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         if (arg1 is Map<*, *>) {

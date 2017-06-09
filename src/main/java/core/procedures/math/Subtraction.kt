@@ -1,7 +1,6 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,10 +8,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Subtraction : AFn(FnArgs(min = 1, rest = Number::class.java)) {
-
-    override val isPure = true
-    override val name = "-"
+class Subtraction : AFn(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         if (args.size == 1) {

@@ -2,15 +2,11 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Cons
 import core.scm.Vector
 import core.utils.Utils
 
-open class Next : AFn(FnArgs(min = 1, max = 1)) {
-
-    override val isPure = true
-    override val name = "next"
+open class Next : AFn(name = "next", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         null                  -> null

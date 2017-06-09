@@ -7,9 +7,7 @@ import core.utils.Utils
 
 object Type {
 
-    /* Marker classes for FnArgs annotation
-     *
-     * FnArgs can't cover all numerical types because of the following limitation:
+    /* Marker classes
      *
      * The return type of a method declared in an annotation type must be one of the following,
      * or a compile-time error occurs:

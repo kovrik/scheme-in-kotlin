@@ -1,22 +1,20 @@
 package core.procedures.strings
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>>(Number::class.java), rest = Long::class.java)) {
-
-    override val name = "number->string"
+class NumberToString : AFn(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
+                           mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(vararg args: Any?): String? {
         val o = args[0] as Number
         val o1 = args.getOrNull(1)
         if (o1 != null) {
             if (!(o1 == 2L || o1 == 8L || o1 == 10L || o1 == 16L)) {
-                throw IllegalArgumentException(name + ": bad radix (must be one of: 2, 8, 10 or 16): " + o1)
+                throw IllegalArgumentException("$name: bad radix (must be one of: 2, 8, 10 or 16): $o1")
             }
         }
         val radix = if (o1 != null) (o1 as Number).toInt() else 10
@@ -25,7 +23,7 @@ class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>
         }
         if (o is Double) {
             if (radix != 10) {
-                throw IllegalArgumentException(name + ": inexact numbers can only be printed in base 10")
+                throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
             return o.toString()
         }
@@ -38,7 +36,7 @@ class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>
             if (Utils.isInteger(bigDecimal)) {
                 return bigDecimal.toBigInteger().toString(radix)
             }
-            throw IllegalArgumentException(name + ": inexact numbers can only be printed in base 10")
+            throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
         }
         if (o is BigInteger) {
             val bigInteger = o
@@ -49,7 +47,7 @@ class NumberToString : AFn(FnArgs(min = 1, max = 2, mandatory = arrayOf<Class<*>
             if (Utils.isInteger(bigInteger)) {
                 return bigInteger.toString(radix)
             }
-            throw IllegalArgumentException(name + ": inexact numbers can only be printed in base 10")
+            throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
         }
         return o.toString()
     }

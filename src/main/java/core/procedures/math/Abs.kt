@@ -1,21 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
-
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Abs : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Type.Real::class.java))) {
+class Abs : AFn(name = "abs", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
 
-    override val isPure = true
-    override val name = "abs"
-
-    override operator fun invoke(arg: Any?): Number? {
-        return abs(arg!! as Number)
-    }
+    override operator fun invoke(arg: Any?) = abs(arg!! as Number)
 
     companion object {
         fun abs(number: Number): Number = when (number) {

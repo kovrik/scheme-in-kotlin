@@ -2,12 +2,10 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.utils.Utils
 
-class IndexOf : AFn(FnArgs(min = 2, max = 3, mandatory = arrayOf<Class<*>>(CharSequence::class.java))) {
-
-    override val name = "index-of"
+class IndexOf : AFn(name = "index-of", isPure = true, minArgs = 2, maxArgs = 3,
+                    mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Int {
         if (args[1] !is CharSequence && args[1] !is Char) {

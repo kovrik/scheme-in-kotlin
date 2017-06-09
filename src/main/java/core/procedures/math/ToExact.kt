@@ -1,19 +1,19 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
+import core.procedures.functional.ForEach.map.name
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
-import core.writer.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
+class ToExact : AFn(name = "inexact->exact", isPure = true, minArgs = 1, maxArgs = 1,
+                    mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+
+    override operator fun invoke(arg: Any?) = toExact(arg)
 
     companion object {
-
-        private val NAME = "inexact->exact"
 
         fun toExact(o: Any?): Number = when {
             Utils.isZero(o) -> o as Number
@@ -25,7 +25,7 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
         }
 
         private fun doubleToExact(number: Double): Number {
-            if (!number.isFinite()) throw ArithmeticException(NAME + ": no exact representation of: " + Writer.write(number))
+            if (!number.isFinite()) throw ArithmeticException("$name: no exact representation of: Writer.write(number)")
             /* Check if Double is integral */
             val bits = java.lang.Double.doubleToLongBits(number)
             val sign = bits.ushr(63)
@@ -56,8 +56,4 @@ class ToExact : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Numbe
                 BigRatio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE)
         }
     }
-
-    override val isPure = true
-    override val name = NAME
-    override operator fun invoke(arg: Any?) = toExact(arg)
 }

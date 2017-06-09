@@ -2,14 +2,12 @@ package core.procedures.io
 
 import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.InputPort
 
 import java.io.IOException
 
-class CloseInputPort : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(InputPort::class.java))) {
-
-    override val name = "close-input-port"
+class CloseInputPort : AFn(name = "close-input-port", minArgs = 1, maxArgs = 1,
+                           mandatoryArgsTypes = arrayOf<Class<*>>(InputPort::class.java)) {
 
     override operator fun invoke(arg: Any?) = try {
         (arg as InputPort).close()

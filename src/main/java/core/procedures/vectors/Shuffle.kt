@@ -2,15 +2,13 @@ package core.procedures.vectors
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Vector
-
 import java.util.Collections
+import kotlin.collections.ArrayList
+import kotlin.collections.Collection
+import kotlin.collections.toTypedArray
 
-class Shuffle : AFn(FnArgs(min = 1, max = 1)) {
-
-    override val isPure = true
-    override val name = "shuffle"
+class Shuffle : AFn(name = "shuffle", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Vector {
         if (arg is Collection<*>) {

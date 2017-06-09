@@ -2,7 +2,6 @@ package core.procedures.lists
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.scm.Cons
@@ -10,9 +9,7 @@ import core.utils.Utils
 import core.writer.Writer
 
 class MemberProc(override val name: String, private val predicate: AFn) :
-        AFn(FnArgs(min = 2, max = 2, mandatory = arrayOf(Any::class.java, List::class.java))) {
-
-    override val isPure = true
+        AFn(isPure = true, minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Any::class.java, List::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg2 as List<*>?

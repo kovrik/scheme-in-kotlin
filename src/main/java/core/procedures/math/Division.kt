@@ -1,13 +1,12 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
+class Division : AFn(name = "/", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
     companion object {
         /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
@@ -18,9 +17,6 @@ class Division : AFn(FnArgs(min = 1, rest = Number::class.java)) {
                 num.divide(den, Utils.DEFAULT_CONTEXT)
             }
     }
-
-    override val isPure = true
-    override val name = "/"
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {

@@ -1,7 +1,6 @@
 package core.procedures.functional
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.IFn
 import core.scm.Cons
 import core.scm.Symbol
@@ -9,9 +8,7 @@ import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-class Apply : AFn(FnArgs(min = 2, mandatory = arrayOf(IFn::class.java, Any::class.java))) {
-
-    override val name = "apply"
+class Apply : AFn(name = "apply", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Any {
         val sexp = Cons.list(args[0])

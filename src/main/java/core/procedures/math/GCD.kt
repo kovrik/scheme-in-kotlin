@@ -2,7 +2,6 @@ package core.procedures.math
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
@@ -10,12 +9,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class GCD : AFn(FnArgs(rest = Type.Rational::class.java)) {
+class GCD : AFn(name = "gcd", isPure = true, restArgsType = Type.Rational::class.java) {
 
     private val ABS = Abs()
-
-    override val isPure = true
-    override val name = NAME
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.isEmpty()) {

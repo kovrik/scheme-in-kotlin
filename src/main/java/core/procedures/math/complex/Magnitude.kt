@@ -1,14 +1,11 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.procedures.math.Abs
 import core.scm.BigComplex
 
-class Magnitude : AFn(FnArgs(min = 1, max = 1, mandatory = arrayOf<Class<*>>(Number::class.java))) {
-
-    override val isPure = true
-    override val name = "magnitude"
+class Magnitude : AFn(name = "magnitude", isPure = true, minArgs = 1, maxArgs = 1,
+                      mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Any?): Number? {
         arg!!

@@ -1,12 +1,12 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.procedures.FnArgs
 import core.scm.Type
 import core.utils.Utils
 
 class NumericalComparison private constructor(override val name: String, private val predicate: (Comparable<Number>, Number) -> Boolean) :
-        AFn(FnArgs(min = 2, mandatory = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java), rest = Type.Real::class.java)) {
+        AFn(isPure = true, minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java),
+            restArgsType = Type.Real::class.java) {
 
     companion object {
         val EQUAL         = NumericalComparison("=",  { f, s -> f == s } )
@@ -15,8 +15,6 @@ class NumericalComparison private constructor(override val name: String, private
         val LESS_EQUAL    = NumericalComparison("<=", { f, s -> f <= s } )
         val GREATER_EQUAL = NumericalComparison(">=", { f, s -> f >= s } )
     }
-
-    override val isPure = true
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
         val (f, s) = Utils.upcast(arg1!! as Number, arg2!! as Number)
