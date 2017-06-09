@@ -15,7 +15,7 @@ import core.utils.InternPool
  *
  * will reference to the same symbol object.
  */
-class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), INamed, IMeta {
+class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(isPure = true), INamed, IMeta {
 
     companion object {
         private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
@@ -23,7 +23,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
         /* Pool of all interned symbols */
         private val POOL = InternPool<Symbol>()
 
-        @JvmStatic fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
+        fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
 
         /* Check if Symbol has Special Characters and needs to be escaped */
         private fun hasSpecialChars(name: String) = when {
@@ -34,8 +34,6 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(), 
     }
 
     val isEscape: Boolean = hasSpecialChars(name)
-
-    override val isPure = true
 
     private constructor(name: String) : this(name, null)
 

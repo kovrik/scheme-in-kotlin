@@ -58,12 +58,12 @@ open class Reader : IReader {
                 "nul"       to Character.MIN_VALUE
         )
 
-        @JvmStatic private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
-        @JvmStatic private fun isLineBreak(c: Char) = LINE_BREAKS.indexOf(c) > -1
-        @JvmStatic fun isRadix(c: Char)     = "bodxBODX".indexOf(c) > -1
-        @JvmStatic fun isExact(c: Char)     = (c == 'e'  || c == 'E')
-        @JvmStatic fun isInexact(c: Char)   = (c == 'i'  || c == 'I')
-        @JvmStatic fun isExactness(c: Char) = isExact(c) || isInexact(c)
+        private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
+        private fun isLineBreak(c: Char) = LINE_BREAKS.indexOf(c) > -1
+        fun isRadix(c: Char)     = "bodxBODX".indexOf(c) > -1
+        fun isExact(c: Char)     = (c == 'e'  || c == 'E')
+        fun isInexact(c: Char)   = (c == 'i'  || c == 'I')
+        fun isExactness(c: Char) = isExact(c) || isInexact(c)
     }
 
     override fun read(): List<Any> {

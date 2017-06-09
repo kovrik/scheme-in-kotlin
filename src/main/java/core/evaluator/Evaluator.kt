@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicLong
 
-class Evaluator {
+class Evaluator(private val reflector: Reflector = Reflector()) {
 
     companion object {
         /* Executor Service for Futures */
@@ -31,10 +31,7 @@ class Evaluator {
         }
     }
 
-    private val reflector = Reflector()
-
-    inner class JavaMethodCall(val method: String) : AFn() {
-        override val name = method
+    inner class JavaMethodCall(val method: String) : AFn(name = method) {
         override fun invoke(vararg args: Any?) = reflector.evalJavaMethod(method, args as Array<Any?>)
     }
 
