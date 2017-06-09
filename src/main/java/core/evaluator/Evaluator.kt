@@ -156,24 +156,16 @@ class Evaluator {
     /* Evaluate hash map */
     private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
         val result = HashMap<Any?, Any?>(size)
-        for ((key, value) in this) {
-            result.put(eval(key, env), eval(value, env))
-        }
+        this.forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
         return result
     }
 
     /* Evaluate vector */
     private fun Vector.eval(env: Environment): Vector {
-        for (i in indices) {
-            array[i] = eval(array[i], env)
-        }
+        indices.forEach { i -> array[i] = eval(array[i], env) }
         return this
     }
 
     /* Evaluate set */
-    private fun Set<Any?>.eval(env: Environment): Set<Any?> {
-        val result = HashSet<Any?>(size)
-        this.mapTo(result) { eval(it, env) }
-        return result
-    }
+    private fun Set<Any?>.eval(env: Environment) = this.mapTo(HashSet<Any?>(size)) { eval(it, env) }
 }
