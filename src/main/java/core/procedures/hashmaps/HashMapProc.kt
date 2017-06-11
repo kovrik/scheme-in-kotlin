@@ -6,7 +6,7 @@ class HashMapProc : AFn(name = "hash-map", isPure = true) {
 
     override operator fun invoke(vararg args: Any?): Map<Any?, Any?> {
         if (args.size % 2 != 0) {
-            throw IllegalArgumentException("hash-map: no value supplied for key: " + args[args.size - 1])
+            throw IllegalArgumentException("hash-map: no value supplied for key: ${args[args.size - 1]}")
         }
         val result = HashMap<Any?, Any?>()
         var i = 0

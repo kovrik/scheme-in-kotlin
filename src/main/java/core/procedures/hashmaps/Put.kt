@@ -14,7 +14,7 @@ class Put : AFn(name = "put", isPure = true, minArgs = 3,
         var m = args[0]
         if (m is Map<*, *>) {
             if (args.size % 2 != 1) {
-                throw IllegalArgumentException(name + ": no value supplied for key: " + args[args.size - 1])
+                throw IllegalArgumentException("$name: no value supplied for key: ${args[args.size - 1]}")
             }
             val map = HashMap(args[0] as Map<*, *>)
             var i = 1

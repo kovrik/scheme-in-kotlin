@@ -45,7 +45,7 @@ enum class Try : ISpecialForm {
                     continue
                 } else if (CATCH == op) {
                     if (expr.size < 3) {
-                        throw IllegalSyntaxException("catch: bad syntax in form: " + expr)
+                        throw IllegalSyntaxException("catch: bad syntax in form: $expr")
                     }
                     hadCatch = true
                     if (catches.isEmpty()) {
@@ -60,7 +60,7 @@ enum class Try : ISpecialForm {
                     catches.put(clazz, catchExpr)
                     val cb = expr[2]
                     if (cb !is Symbol) {
-                        throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: " + cb)
+                        throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: $cb")
                     }
                     catchBindings.put(clazz, cb)
                     continue

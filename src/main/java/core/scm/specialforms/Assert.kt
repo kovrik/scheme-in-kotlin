@@ -23,9 +23,9 @@ enum class Assert : ISpecialForm {
                 if (expression[2] !is CharSequence) {
                     throw IllegalSyntaxException.of(toString(), expression)
                 }
-                message = ": " + expression[2].toString()
+                message = ": ${expression[2].toString()}"
             }
-            val assertionError = AssertionError("assert failed" + message)
+            val assertionError = AssertionError("assert failed $message")
             assertionError.stackTrace = EMPTY
             throw assertionError
         }

@@ -109,9 +109,9 @@ object Utils {
             n = split[0]
             val exponent = split[1]
             try {
-                exp = processNumber(exponent, radix, true, false, null) as? Long ?: throw IllegalSyntaxException("read: bad exponent: " + number)
+                exp = processNumber(exponent, radix, true, false, null) as? Long ?: throw IllegalSyntaxException("read: bad exponent: $number")
             } catch (ex: NumberFormatException) {
-                throw IllegalSyntaxException("read: bad exponent: " + number)
+                throw IllegalSyntaxException("read: bad exponent: $number")
             }
             exactness = exactness ?: 'i'
         }
@@ -464,7 +464,7 @@ object Utils {
 
     fun isBitOpSupported(obj: Any): Boolean {
         if (!(obj is Byte || obj is Short || obj is Int || obj is Long)) {
-            throw WrongTypeException("bit operation not supported for: " + Writer.write(obj))
+            throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
         }
         return true
     }
@@ -487,7 +487,7 @@ object Utils {
         is Map<*, *>       -> obj.entries.iterator()
         is Map.Entry<*, *> -> MapEntry(obj).iterator()
         null               -> emptyList<Any?>().iterator()
-        else               -> throw IllegalArgumentException("don't know how to create Sequence from " + obj.javaClass)
+        else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
     fun toAssoc(obj: Any?) = when (obj) {
@@ -495,7 +495,7 @@ object Utils {
         is MutableMap<*, *> -> mapToAssoc(obj)
         is Map.Entry<*, *>  -> MapEntry(obj)
         null                -> throw NullPointerException()
-        else                -> throw IllegalArgumentException("don't know how to create Map from " + obj.javaClass)
+        else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
     private fun mapToAssoc(map: MutableMap<*, *>) = object : IAssoc {

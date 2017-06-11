@@ -144,7 +144,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         return compareTo(b!!) == 0
     }
 
-    override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else numerator.toString() + "/" + denominator
+    override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else "$numerator/$denominator"
 
     override fun toInt()    = quotient().toInt()
     override fun toLong()   = quotient().toLong()

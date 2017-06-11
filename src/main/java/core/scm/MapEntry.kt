@@ -15,7 +15,7 @@ class MapEntry(key: Any?, value: Any?) : MutableVector(key, value) {
     val value: Any?
         get() = get(1)
 
-    override fun toString() = "[" + Writer.write(key) + " " + Writer.write(value) + "]"
+    override fun toString() = "[${Writer.write(key)} ${Writer.write(value)}]"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

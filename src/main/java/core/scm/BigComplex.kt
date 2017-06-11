@@ -180,8 +180,8 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
     override fun hashCode() = 31 * re.hashCode() + (im.hashCode())
 
     override fun toString() = when {
-        im.signum() < 0 -> re.toString() + "-" + im.negate() + "i"
-        else -> re.toString() + "+" + im + "i"
+        im.signum() < 0 -> "$re-${im.negate()}i"
+        else            -> "$re+${im}i"
     }
 
     override fun toByte()   = throw UnsupportedOperationException()

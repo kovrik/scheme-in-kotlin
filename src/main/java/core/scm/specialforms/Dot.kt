@@ -24,7 +24,7 @@ enum class Dot : ISpecialForm {
             first = evaluator.eval(first, env)
         }
         if (first is Class<*>) {
-            val statik = expression[1].toString() + "/" + expression[2]
+            val statik = "${expression[1]}/${expression[2]}"
             if (expression.size == 3) {
                 /* (. Classname-symbol member-symbol) */
                 /* try static field first */

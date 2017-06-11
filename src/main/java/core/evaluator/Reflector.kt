@@ -99,14 +99,14 @@ class Reflector {
     }
 
     fun getClazz(name: String): Class<*> {
-        val clazz = _getClass(name) ?: throw RuntimeException("reflector: class not found: " + name)
+        val clazz = _getClass(name) ?: throw RuntimeException("reflector: class not found: $name")
         return clazz
     }
 
     fun _getClass(name: String): Class<*>? {
         try {
             return when {
-                name.indexOf('.') == -1 -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang." + name))
+                name.indexOf('.') == -1 -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
                 else -> Class.forName(name)
             }
         } catch (e: ClassNotFoundException) {

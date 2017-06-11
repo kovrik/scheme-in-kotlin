@@ -81,8 +81,8 @@ object Writer {
         /* Check named characters */
         val codepoint = CODEPOINTS[this]
         return when (codepoint) {
-            null -> "#\\" + this!!
-            else -> "#\\" + codepoint
+            null -> "#\\${this!!}"
+            else -> "#\\$codepoint"
         }
     }
 

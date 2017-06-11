@@ -10,7 +10,7 @@ open class Next : AFn(name = "next", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         null                  -> null
-        !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from " + arg.javaClass)
+        !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from ${arg.javaClass}")
         is List<*>            -> if (arg.isEmpty()) null else arg.subList(1, arg.size)
         is Set<*>             -> next(arg)
         is Map<*, *>          -> next(arg.entries)
