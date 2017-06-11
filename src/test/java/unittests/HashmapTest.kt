@@ -36,6 +36,14 @@ class HashmapTest : AbstractTest() {
         assertEquals(5L, eval("(.getOrDefault {3 5} 7 5)", env))
         assertEquals("B", eval("(.getOrDefault {3 5, \"A\" \"B\"} \"A\" 5)", env))
         assertEquals("B", eval("(.getOrDefault (hash-map 3 5 \"A\" \"B\") \"A\" 5)", env))
+        assertEquals(5L, eval("({'a 5} 'a)", env))
+        assertEquals(4L, eval("({'a 5 'b 3 'c 4} 'c)", env))
+        assertEquals(5L, eval("('a {'a 5})", env))
+        assertEquals(4L, eval("('c {'a 5 'b 3 'c 4})", env))
+        assertEquals(5L, eval("({:a 5} :a)", env))
+        assertEquals(4L, eval("({:a 5 :b 3 :c 4} :c)", env))
+        assertEquals(5L, eval("(:a {:a 5})", env))
+        assertEquals(4L, eval("(:c {:a 5 :b 3 :c 4})", env))
     }
 
     @Test
