@@ -7,24 +7,21 @@ import core.utils.InternPool
 /* Symbol class
  *
  * By default all symbols are interned and stored in INTERNED Map.
- *
  * This means that two values:
  *
- *   (define s1 'test)
- *   (define s2 'test)
+ *   (define s1 'test) and (define s2 'test)
  *
  * will reference to the same symbol object.
  */
-class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(isPure = true), INamed, IMeta {
+class Symbol (override val name: String, private val meta: Map<*, *>? = null) : AFn(isPure = true), INamed, IMeta {
 
     companion object {
-        private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
-
         /* Pool of all interned symbols */
         private val POOL = InternPool<Symbol>()
 
         fun intern(name: String?) = POOL.intern(Symbol(name!!))!!
 
+        private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
         /* Check if Symbol has Special Characters and needs to be escaped */
         private fun hasSpecialChars(name: String) = when {
             name.isEmpty() || Character.isDigit(name[0]) -> true
@@ -35,8 +32,6 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(isP
 
     val isEscape: Boolean = hasSpecialChars(name)
 
-    private constructor(name: String) : this(name, null)
-
     override fun meta() = meta
 
     override operator fun invoke(vararg args: Any?) = when {
@@ -44,11 +39,10 @@ class Symbol (override val name: String, private val meta: Map<*, *>?) : AFn(isP
         else -> (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || other.javaClass != Symbol::class.java) return false
-        val o = other as Symbol?
-        return name == o!!.name
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null || other.javaClass != Symbol::class.java -> false
+        else -> name == (other as Symbol).name
     }
 
     override fun hashCode() = name.hashCode() + 1037096266
