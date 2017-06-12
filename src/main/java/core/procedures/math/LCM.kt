@@ -10,14 +10,12 @@ import java.math.BigInteger
 
 class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
-    private val ABS = Abs()
-
     override operator fun invoke(vararg args: Any?): Number {
         if (args.isEmpty()) {
             return 1L
         }
         if (args.size == 1) {
-            return ABS(args[0] as Number?)
+            return Abs.abs(args[0]!! as Number)
         }
         var result = args[0]!! as Number
         for (i in 1..args.size - 1) {
