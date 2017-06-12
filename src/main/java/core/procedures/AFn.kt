@@ -38,7 +38,8 @@ abstract class AFn<T, R>(var minArgs: Int = 0,
     override operator fun invoke(arg1: T, arg2: T): R = throw ArityException(name, minArgs, maxArgs, 2)
     override operator fun invoke(arg1: T, arg2: T, arg3: T): R = throw ArityException(name, minArgs, maxArgs, 3)
     override operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R = throw ArityException(name, minArgs, maxArgs, 4)
-    override operator fun invoke(vararg args: T): R = throw ArityException(name, minArgs, maxArgs, args.size)
+
+    override operator fun invoke(vararg args: Any?): R = throw ArityException(name, minArgs, maxArgs, args.size)
 
     override fun toString() = when (name.isEmpty()) {
         true  -> "#<procedure>"

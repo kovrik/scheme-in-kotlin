@@ -14,5 +14,6 @@ interface IFn<in T, out R> : () -> R,
     override operator fun invoke(arg1: T, arg2: T): R
     override operator fun invoke(arg1: T, arg2: T, arg3: T): R
     override operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R
-    operator fun invoke(vararg args: T): R
+
+    operator fun invoke(vararg args: Any?): R
 }
