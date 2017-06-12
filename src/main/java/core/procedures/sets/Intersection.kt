@@ -2,18 +2,18 @@ package core.procedures.sets
 
 import core.procedures.AFn
 
-class Intersection : AFn<Set<*>?, Set<*>>(name = "intersection", isPure = true, minArgs = 1,
+class Intersection : AFn<Any?, Set<*>>(name = "intersection", isPure = true, minArgs = 1,
                          mandatoryArgsTypes = arrayOf<Class<*>>(Set::class.java), restArgsType = Set::class.java) {
 
-    override operator fun invoke(vararg args: Set<*>?): Set<*> {
+    override operator fun invoke(vararg args: Any?): Set<*> {
         if (args.size == 1) {
-            return args[0]!!
+            return args[0]!! as Set<*>
         }
-        val result = HashSet(args[0]!!)
+        val result = HashSet(args[0]!! as Set<*>)
         var i = 1
         val argsLength = args.size
         while (i < argsLength) {
-            result.retainAll(args[i]!!)
+            result.retainAll(args[i]!! as Set<*>)
             i++
         }
         return result
