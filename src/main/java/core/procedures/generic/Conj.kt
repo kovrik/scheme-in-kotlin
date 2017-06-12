@@ -6,7 +6,7 @@ import core.scm.Cons
 import core.scm.MutableVector
 import core.scm.Vector
 
-class Conj : AFn(name = "conj", minArgs = 1) {
+class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
 
     override operator fun invoke(vararg args: Any?): Any? {
         val first = args[0]

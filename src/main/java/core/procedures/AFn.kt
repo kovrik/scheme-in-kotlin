@@ -5,18 +5,18 @@ import core.scm.Type
 import core.utils.Utils
 
 /* Abstract superclass of all functions */
-abstract class AFn(var minArgs: Int = 0,
+abstract class AFn<T, R>(var minArgs: Int = 0,
                    var maxArgs: Int = Int.MAX_VALUE,
                    val mandatoryArgsTypes: Array<Class<*>> = emptyArray(),
                    val restArgsType: Class<*>? = null,
                    val lastArgType: Class<*>? = null,
                    open val name: String = "",
                    /* Return true if function is pure (referentially transparent) */
-                   open val isPure: Boolean = false) : IFn<Any?, Any?>, Comparator<Any?> {
+                   open val isPure: Boolean = false) : IFn<T, R>, Comparator<T> {
 
     private val arity = if (minArgs == maxArgs) minArgs else -1
 
-    override fun compare(o1: Any?, o2: Any?): Int {
+    override fun compare(o1: T, o2: T): Int {
         val result = invokeN(o1, o2)
         if (result is Boolean) {
             if (result) return -1
@@ -33,12 +33,12 @@ abstract class AFn(var minArgs: Int = 0,
     @Throws(Exception::class)
     override fun call(): Any? = invoke()
 
-    override operator fun invoke(): Any? = throw ArityException(name, minArgs, maxArgs, 1)
-    override operator fun invoke(arg: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 1)
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 2)
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 3)
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? = throw ArityException(name, minArgs, maxArgs, 4)
-    override operator fun invoke(vararg args: Any?): Any? = throw ArityException(name, minArgs, maxArgs, args.size)
+    override operator fun invoke(): R = throw ArityException(name, minArgs, maxArgs, 1)
+    override operator fun invoke(arg: T): R = throw ArityException(name, minArgs, maxArgs, 1)
+    override operator fun invoke(arg1: T, arg2: T): R = throw ArityException(name, minArgs, maxArgs, 2)
+    override operator fun invoke(arg1: T, arg2: T, arg3: T): R = throw ArityException(name, minArgs, maxArgs, 3)
+    override operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R = throw ArityException(name, minArgs, maxArgs, 4)
+    override operator fun invoke(vararg args: T): R = throw ArityException(name, minArgs, maxArgs, args.size)
 
     override fun toString() = when (name.isEmpty()) {
         true  -> "#<procedure>"
@@ -68,7 +68,7 @@ abstract class AFn(var minArgs: Int = 0,
      * then calls invoke<N>() methods (where N is arity).
      * Calls variadic invoke() otherwise.
      */
-    fun invokeN(vararg args: Any?): Any? {
+    fun invokeN(vararg args: T): R {
         checkArgs(args)
         return when (arity) {
             0    -> invoke()

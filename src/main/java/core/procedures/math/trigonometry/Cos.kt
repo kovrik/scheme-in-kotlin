@@ -9,9 +9,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Cos : AFn(name = "cos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?) = cos(arg!! as Number)
+    override operator fun invoke(arg: Number?) = cos(arg!!)
 
     companion object {
 

@@ -7,9 +7,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Asin : AFn(name = "asin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?): Number? {
+    override operator fun invoke(arg: Number?): Number {
         arg!!
         /* Special cases */
         when {
@@ -19,7 +19,7 @@ class Asin : AFn(name = "asin", isPure = true, minArgs = 1, maxArgs = 1, mandato
             arg is BigComplex -> return asin(arg)
             arg is BigRatio   -> return asin(arg.toBigDecimal())
             else -> {
-                val asin = Math.asin((arg as Number).toDouble())
+                val asin = Math.asin(arg.toDouble())
                 if (asin.isNaN()) {
                     return asin(BigComplex(arg))
                 }

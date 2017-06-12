@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.reader.Reader
 import core.utils.Utils
 
-class StringToNumber : AFn(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
+class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
                            mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any? {

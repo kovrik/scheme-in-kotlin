@@ -8,19 +8,18 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class LCM : AFn(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
+class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
     private val ABS = Abs()
 
-    override operator fun invoke(vararg args: Any?): Number? {
+    override operator fun invoke(vararg args: Any?): Number {
         if (args.isEmpty()) {
             return 1L
         }
         if (args.size == 1) {
-            return ABS(args[0])
+            return ABS(args[0] as Number?)
         }
-        args[0]!!
-        var result = args[0] as Number
+        var result = args[0]!! as Number
         for (i in 1..args.size - 1) {
             result = lcm(result, args[i]!! as Number)
         }

@@ -176,7 +176,7 @@ enum class Quasiquote : ISpecialForm {
         if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
-        return ListToVector.listToVector(result)
+        return ListToVector.listToVector(result as List<*>)
     }
 
     private fun quasiquoteSet(expr: Any, env: Environment, evaluator: Evaluator): Any {

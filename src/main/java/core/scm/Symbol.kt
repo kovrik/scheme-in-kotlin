@@ -13,7 +13,7 @@ import core.utils.InternPool
  *
  * will reference to the same symbol object.
  */
-class Symbol (override val name: String, private val meta: Map<*, *>? = null) : AFn(isPure = true), INamed, IMeta {
+class Symbol (override val name: String, private val meta: Map<*, *>? = null) : AFn<Any?, Any?>(isPure = true), INamed, IMeta {
 
     companion object {
         /* Pool of all interned symbols */

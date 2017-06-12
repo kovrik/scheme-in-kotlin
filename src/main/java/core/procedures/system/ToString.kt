@@ -3,7 +3,7 @@ package core.procedures.system
 import core.procedures.AFn
 import core.writer.Writer
 
-open class ToString : AFn(name = "->string", isPure = true) {
+open class ToString : AFn<Any?, CharSequence>(name = "->string", isPure = true) {
 
     override operator fun invoke(vararg args: Any?) = when {
         args.isEmpty() -> ""

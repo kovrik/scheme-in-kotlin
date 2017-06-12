@@ -8,10 +8,10 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Denominator : AFn(name = "denominator", isPure = true, minArgs = 1, maxArgs = 1,
+class Denominator : AFn<Number?, Number>(name = "denominator", isPure = true, minArgs = 1, maxArgs = 1,
                         mandatoryArgsTypes = arrayOf<Class<*>>(Type.Rational::class.java)) {
 
-    override operator fun invoke(arg: Any?) = denominator(arg!!)
+    override operator fun invoke(arg: Number?) = denominator(arg!!)
 
     private fun denominator(o: Any): Number {
         val isIntegerOrRatio = o is BigRatio || Utils.isInteger(o)

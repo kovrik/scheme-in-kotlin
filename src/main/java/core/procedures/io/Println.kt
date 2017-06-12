@@ -8,7 +8,7 @@ import core.writer.Writer
 
 import java.io.IOException
 
-class Println : AFn(name = "println", minArgs = 1, maxArgs = 2,
+class Println : AFn<Any?, Unit>(name = "println", minArgs = 1, maxArgs = 2,
                     mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java), restArgsType = OutputPort::class.java) {
 
     override operator fun invoke(vararg args: Any?) {

@@ -6,9 +6,9 @@ import core.scm.BigRatio
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Acos : AFn(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?): Number? {
+    override operator fun invoke(arg: Number?): Number {
         arg!!
         when (arg) {
             is BigDecimal -> return acos(arg)
@@ -16,7 +16,7 @@ class Acos : AFn(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandato
             is BigComplex -> return acos(arg)
             is BigRatio   -> return acos(arg.toBigDecimal())
             else -> {
-                val acos = Math.acos((arg as Number).toDouble())
+                val acos = Math.acos(arg.toDouble())
                 if (acos.isNaN()) {
                     return acos(BigComplex(arg))
                 }

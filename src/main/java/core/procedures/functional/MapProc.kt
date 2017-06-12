@@ -9,7 +9,7 @@ import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-open class MapProc : AFn(name = "map", minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(IFn::class.java)) {
+open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(IFn::class.java)) {
 
     private val count = Count()
 

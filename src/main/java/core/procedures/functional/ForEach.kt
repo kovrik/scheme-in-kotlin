@@ -5,7 +5,7 @@ import core.procedures.IFn
 import core.scm.Cons
 import core.scm.Thunk
 
-class ForEach : AFn(name = "for-each", minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(IFn::class.java)) {
+class ForEach : AFn<Any?, Any>(name = "for-each", minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(IFn::class.java)) {
 
     object map : MapProc() { override val name = "for-each" }
 

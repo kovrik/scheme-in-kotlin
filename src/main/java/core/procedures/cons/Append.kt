@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.scm.Cons
 import core.scm.Type
 
-class Append : AFn(name = "append", restArgsType = Type.ProperList::class.java, lastArgType = Any::class.java) {
+class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::class.java, lastArgType = Any::class.java) {
 
     companion object {
         fun append(first: Any?, second: Any?): Any? {

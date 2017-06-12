@@ -3,9 +3,9 @@ package core.procedures.sets
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 
-class SetProc : AFn(name = "set", isPure = true, minArgs = 1, maxArgs = 1) {
+class SetProc : AFn<Any?, Set<*>>(name = "set", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override operator fun invoke(arg: Any?): Set<Any?> {
+    override operator fun invoke(arg: Any?): Set<*> {
         if (arg is Collection<*>) {
             return HashSet(arg)
         }

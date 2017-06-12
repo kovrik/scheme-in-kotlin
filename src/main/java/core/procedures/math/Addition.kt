@@ -7,7 +7,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Addition : AFn(name = "+", isPure = true, restArgsType = Number::class.java) {
+class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Number::class.java) {
 
     override operator fun invoke(vararg args: Any?): Number? {
         when (args.size) {

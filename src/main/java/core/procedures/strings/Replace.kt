@@ -5,9 +5,9 @@ import core.procedures.AFn
 
 import java.util.regex.Pattern
 
-class Replace : AFn(name = "replace", isPure = true, minArgs = 3, maxArgs = 3) {
+class Replace : AFn<Any?, String>(name = "replace", isPure = true, minArgs = 3, maxArgs = 3) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String? {
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): String {
         if (arg1 !is CharSequence) {
             throw WrongTypeException(name, "String", arg1)
         }

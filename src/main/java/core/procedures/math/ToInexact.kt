@@ -7,9 +7,10 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToInexact : AFn(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1,
+                                       mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?) = toInexact(arg)
+    override operator fun invoke(arg: Number?) = toInexact(arg!!)
 
     companion object {
         fun toInexact(o: Any?): Number = when (o) {

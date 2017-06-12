@@ -3,7 +3,7 @@ package core.procedures.characters
 import core.procedures.AFn
 
 class CharPredicate private constructor(override val name: String, private val predicate: (Char) -> Boolean) :
-        AFn(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType)) {
+        AFn<Char?, Boolean>(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType)) {
 
     companion object {
         val IS_CHAR_WHITESPACE = CharPredicate("char-whitespace?", Character::isWhitespace)
@@ -13,5 +13,5 @@ class CharPredicate private constructor(override val name: String, private val p
         val IS_CHAR_NUMERIC    = CharPredicate("char-numeric?",    Character::isDigit)
     }
 
-    override operator fun invoke(arg: Any?) = predicate(arg as Char)
+    override operator fun invoke(arg: Char?) = predicate(arg!!)
 }

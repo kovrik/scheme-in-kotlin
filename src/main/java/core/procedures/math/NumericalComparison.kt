@@ -5,7 +5,7 @@ import core.scm.Type
 import core.utils.Utils
 
 class NumericalComparison private constructor(override val name: String, private val predicate: (Comparable<Number>, Number) -> Boolean) :
-        AFn(isPure = true, minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java),
+        AFn<Any?, Boolean>(isPure = true, minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java),
             restArgsType = Type.Real::class.java) {
 
     companion object {

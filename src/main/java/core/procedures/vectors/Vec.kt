@@ -4,9 +4,9 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.scm.MutableVector
 
-class Vec : AFn(name = "vec", isPure = true, minArgs = 1, maxArgs = 1) {
+class Vec : AFn<Any?, MutableVector>(name = "vec", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override operator fun invoke(arg: Any?): MutableVector? {
+    override operator fun invoke(arg: Any?): MutableVector {
         if (arg is Collection<*>) {
             return MutableVector(*arg.toTypedArray())
         }

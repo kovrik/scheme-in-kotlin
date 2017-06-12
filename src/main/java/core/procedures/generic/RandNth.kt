@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.utils.Utils
 import java.util.*
 
-class RandNth : AFn(name = "rand-nth", isPure = true, minArgs = 1, maxArgs = 1) {
+class RandNth : AFn<Any?, Any?>(name = "rand-nth", isPure = true, minArgs = 1, maxArgs = 1) {
 
     private val count = Count()
     private val get = Get()

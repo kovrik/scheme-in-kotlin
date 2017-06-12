@@ -3,7 +3,9 @@ package core.procedures.characters
 import core.procedures.AFn
 
 class CharComparison private constructor(override val name: String, private val predicate: (Char?, Char?) -> Boolean) :
-        AFn(minArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType), restArgsType = Char::class.javaObjectType) {
+        AFn<Any?, Boolean>(minArgs = 2,
+                           mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType, Char::class.javaObjectType),
+                           restArgsType = Char::class.javaObjectType) {
 
     companion object {
         val CHAR_EQ          = CharComparison("char=?",     { arg1, arg2 -> arg1!! == arg2!! })
@@ -20,7 +22,7 @@ class CharComparison private constructor(override val name: String, private val 
 
     override val isPure = true
 
-    override operator fun invoke(vararg args: Any?): Boolean? {
+    override operator fun invoke(vararg args: Any?): Boolean {
         for (i in 0..args.size - 2) {
             if (!predicate(args[i] as Char, args[i + 1] as Char)) {
                 return false

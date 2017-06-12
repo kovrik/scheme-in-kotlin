@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.utils.Utils
 
-class Nth : AFn(name = "nth", isPure = true, minArgs = 2, maxArgs = 3) {
+class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 3) {
 
     private val count = Count()
     private val get = Get()

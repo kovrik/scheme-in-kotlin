@@ -5,7 +5,7 @@ import core.procedures.AFn
 import core.scm.Cons
 import core.scm.Type
 
-class ListTail : AFn(name = "list-tail", minArgs = 2, maxArgs = 2,
+class ListTail : AFn<Any?, Any?>(name = "list-tail", minArgs = 2, maxArgs = 2,
                      mandatoryArgsTypes = arrayOf(Any::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {

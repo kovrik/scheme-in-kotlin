@@ -29,12 +29,12 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         }
     }
 
-    inner class JavaMethodCall(val method: String) : AFn(name = method) {
+    inner class JavaMethodCall(val method: String) : AFn<Any?, Any?>(name = method) {
         override fun invoke(vararg args: Any?) = reflector.evalJavaMethod(method, args as Array<Any?>)
     }
 
     // TODO Use custom HashMap class that extends AFn instead
-    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn(minArgs = 1, maxArgs = 2) {
+    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 2) {
         /* Maps are functions of their keys */
         override fun invoke(vararg args: Any?) = when (args.size) {
             1    -> map[args[0]]
@@ -110,7 +110,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             /* Lookup symbol */
             op = env.findOrDefault(op, Environment.UNDEFINED)
             /* Inline Special Forms and Pure functions */
-            if (op is ISpecialForm || (op is AFn && op.isPure)) {
+            if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) {
                 this[0] = op
             } else if (op === Environment.UNDEFINED) {
                 /* Special case: constructor call If Symbol ends with . */
@@ -128,7 +128,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
 
         /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
-        if (op !is AFn) op = eval(op, env)
+        if (op !is AFn<*, *>) op = eval(op, env)
 
         /* Vectors and Map Entries are functions of index */
         when (op) {
@@ -137,7 +137,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             is Map.Entry<Any?, Any?> -> op = MapEntry(op)
         }
         /* If result is not a function, then raise an error */
-        if (op !is AFn) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
+        if (op !is AFn<*, *>) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
@@ -145,7 +145,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             args[i - 1] = eval(this[i], env)
         }
         /* Call AFn via helper method */
-        return op.invokeN(*args)
+        return (op as AFn<Any?, Any?>).invokeN(*args)
     }
 
     /* Evaluate hash map */

@@ -8,7 +8,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Multiplication : AFn(name = "*", isPure = true, restArgsType = Number::class.java) {
+class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsType = Number::class.java) {
 
     override operator fun invoke(vararg args: Any?): Number? {
         return when (args.size) {

@@ -7,9 +7,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Log : AFn(name = "log", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?) = log(arg!! as Number)
+    override operator fun invoke(arg: Number?) = log(arg!!)
 
     companion object {
         /* If number has 307 digits or less, then can use Math.log(double) */

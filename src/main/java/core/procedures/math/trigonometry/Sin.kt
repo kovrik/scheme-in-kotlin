@@ -9,9 +9,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Sin : AFn(name = "sin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?) = sin(arg!! as Number)
+    override operator fun invoke(arg: Number?) = sin(arg!!)
 
     companion object {
 

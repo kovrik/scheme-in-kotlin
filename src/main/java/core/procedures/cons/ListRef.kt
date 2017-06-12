@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.scm.Cons
 import core.scm.Type
 
-class ListRef : AFn(name = "list-ref", isPure = true, minArgs = 2, maxArgs = 2,
+class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, minArgs = 2, maxArgs = 2,
                     mandatoryArgsTypes = arrayOf(Type.Pair::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {

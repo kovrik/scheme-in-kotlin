@@ -9,10 +9,10 @@ import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Range : AFn(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
+class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
     // TODO Write Unit tests!!!
-    override operator fun invoke(vararg args: Any?): List<Any?>? {
+    override operator fun invoke(vararg args: Any?): List<Any?> {
         if (args.isEmpty()) {
             return Cons.EMPTY
         }

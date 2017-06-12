@@ -6,13 +6,13 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Remainder : AFn(name = "remainder", isPure = true, minArgs = 2, maxArgs = 2,
+class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArgs = 2, maxArgs = 2,
                       mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?) = remainder(arg1!! as Number, arg2!! as Number)
+    override operator fun invoke(arg1: Number?, arg2: Number?) = remainder(arg1!!, arg2!!)
 
     companion object {
-        fun remainder(first: Number, second: Number): Number? {
+        fun remainder(first: Number, second: Number): Number {
             val (f, s) = Utils.upcast(first, second)
             when {
                 Utils.isZero(s)                      -> throw ArithmeticException("remainder: undefined for 0")

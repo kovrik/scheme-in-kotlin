@@ -7,7 +7,7 @@ import core.scm.OutputPort
 
 import java.io.IOException
 
-class WriteChar : AFn(name = "write-char", minArgs = 1, maxArgs = 2,
+class WriteChar : AFn<Any?, Unit>(name = "write-char", minArgs = 1, maxArgs = 2,
                       mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType), restArgsType = OutputPort::class.java) {
 
     override operator fun invoke(vararg args: Any?) = try {

@@ -8,8 +8,8 @@ import core.scm.Cons
 import core.utils.Utils
 import core.writer.Writer
 
-class MemberProc(override val name: String, private val predicate: AFn) :
-        AFn(isPure = true, minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Any::class.java, List::class.java)) {
+class MemberProc(override val name: String, private val predicate: AFn<Any?, Boolean>) :
+        AFn<Any?, Any?>(isPure = true, minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Any::class.java, List::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val list = arg2 as List<*>?

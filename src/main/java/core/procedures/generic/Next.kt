@@ -6,7 +6,7 @@ import core.scm.Cons
 import core.scm.Vector
 import core.utils.Utils
 
-open class Next : AFn(name = "next", isPure = true, minArgs = 1, maxArgs = 1) {
+open class Next : AFn<Any?, Any?>(name = "next", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         null                  -> null

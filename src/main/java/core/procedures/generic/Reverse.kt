@@ -7,7 +7,7 @@ import core.scm.MapEntry
 import core.scm.MutableVector
 import core.scm.Vector
 
-class Reverse : AFn(name = "reverse", isPure = true, minArgs = 1, maxArgs = 1) {
+class Reverse : AFn<Any?, Any?>(name = "reverse", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Any? {
         when (arg) {

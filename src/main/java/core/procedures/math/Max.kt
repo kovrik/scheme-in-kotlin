@@ -8,18 +8,18 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Max : AFn(name = "max", isPure = true, minArgs = 1,
+class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
                 mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java), restArgsType = Type.Real::class.java) {
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
             return args[0] as Number
         }
-        var result = args[0]!!
+        var result = args[0]!! as Number
         for (arg in args) {
-            result = max(result as Number, arg!! as Number)
+            result = max(result, arg!! as Number)
         }
-        return result as Number
+        return result
     }
 
     private fun max(f: Number, s: Number) = when {

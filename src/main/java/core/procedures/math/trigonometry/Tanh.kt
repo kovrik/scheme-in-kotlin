@@ -8,9 +8,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Tanh : AFn(name = "tanh", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Tanh : AFn<Number?, Number>(name = "tanh", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?): Number? {
+    override operator fun invoke(arg: Number?): Number {
         arg!!
         /* Special cases */
         return when {
@@ -19,7 +19,7 @@ class Tanh : AFn(name = "tanh", isPure = true, minArgs = 1, maxArgs = 1, mandato
             arg is BigInteger -> tanh(arg)
             arg is BigComplex -> tanh(arg)
             arg is BigRatio   -> tanh(arg.toBigDecimal())
-            else -> Math.tanh((arg as Number).toDouble())
+            else -> Math.tanh(arg.toDouble())
         }
     }
 

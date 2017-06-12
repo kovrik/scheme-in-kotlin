@@ -7,7 +7,7 @@ import core.scm.MapEntry
 import core.scm.MutableVector
 import core.utils.Utils
 
-class Put : AFn(name = "put", isPure = true, minArgs = 3,
+class Put : AFn<Any?, Any?>(name = "put", isPure = true, minArgs = 3,
                 mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java, Any::class.java, Any::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Any? {

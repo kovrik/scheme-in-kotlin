@@ -8,7 +8,7 @@ import core.scm.InputPort
 import core.scm.Thunk
 import core.scm.specialforms.Begin
 
-class Read : AFn(name = "read", maxArgs = 1, restArgsType = InputPort::class.java) {
+class Read : AFn<Any?, Any>(name = "read", maxArgs = 1, restArgsType = InputPort::class.java) {
 
     override operator fun invoke(vararg args: Any?): Any {
         val inputPort: InputPort = if (args.isEmpty()) Repl.currentInputPort else args[0] as InputPort

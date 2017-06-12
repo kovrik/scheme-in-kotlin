@@ -8,9 +8,9 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Subtraction : AFn(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
+class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Any? {
+    override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
             when {
                 args[0] is BigDecimal -> return  (args[0] as BigDecimal).negate()
@@ -41,7 +41,7 @@ class Subtraction : AFn(name = "-", isPure = true, minArgs = 1, restArgsType = N
         for (i in 1..args.size - 1) {
             result = subtract(result as Number, args[i] as Number)
         }
-        return result
+        return result as Number?
     }
 
     private fun subtract(first: Number, second: Number): Number? {

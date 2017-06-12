@@ -5,7 +5,7 @@ import core.procedures.AFn
 import core.utils.InternPool
 
 class Keyword private constructor(override val name: String) :
-        AFn(isPure = true, mandatoryArgsTypes = arrayOf<Class<*>>(Map::class.java)), INamed {
+        AFn<Any?, Any?>(isPure = true, mandatoryArgsTypes = arrayOf<Class<*>>(Map::class.java)), INamed {
 
     companion object {
         /* Pool of all interned keywords */

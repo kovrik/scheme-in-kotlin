@@ -7,10 +7,10 @@ import core.utils.Utils
 
 import java.math.BigDecimal
 
-class Numerator : AFn(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
+class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
                       mandatoryArgsTypes = arrayOf<Class<*>>(Type.Rational::class.java)) {
 
-    override operator fun invoke(arg: Any?) = numerator(arg!!)
+    override operator fun invoke(arg: Number?) = numerator(arg!!)
 
     private fun numerator(o: Any): Number {
         val isIntegerOrRatio = o is BigRatio || Utils.isInteger(o)

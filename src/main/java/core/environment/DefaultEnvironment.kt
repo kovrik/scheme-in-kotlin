@@ -1,5 +1,6 @@
 package core.environment
 
+import core.procedures.AFn
 import core.procedures.bit.*
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
@@ -62,7 +63,7 @@ class DefaultEnvironment : Environment(null) {
 
     companion object {
 
-        private val STANDARD_PROCEDURES = arrayOf(
+        private val STANDARD_PROCEDURES = arrayOf<AFn<*, *>>(
                 /* Primitive Types */
                 PrimitiveNumberType.BYTE,
                 PrimitiveNumberType.SHORT,

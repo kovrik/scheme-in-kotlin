@@ -5,7 +5,7 @@ import core.utils.Utils
 
 import java.math.BigDecimal
 
-class BigDecimalType : AFn(name = "bigdec", isPure = true, minArgs = 1, maxArgs = 1) {
+class BigDecimalType : AFn<Any?, BigDecimal>(name = "bigdec", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         is Number -> Utils.toBigDecimal(arg)

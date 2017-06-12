@@ -9,14 +9,14 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 
-class Round : AFn(name = "round", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
+class Round : AFn<Number?, Number>(name = "round", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
 
-    override operator fun invoke(arg: Any?) = round(arg as Number?)
+    override operator fun invoke(arg: Number?) = round(arg!!)
 
-    private fun round(number: Number?) = when (number) {
+    private fun round(number: Number) = when (number) {
         is Long, is Int, is Short, is Byte, is BigInteger -> number
         is BigDecimal -> if (number.scale() == 0) number.round(MathContext.UNLIMITED) else number.round(Utils.DEFAULT_CONTEXT)
         is BigRatio -> number.round()
-        else -> Math.rint(number!!.toDouble())
+        else -> Math.rint(number.toDouble())
     }
 }

@@ -7,11 +7,12 @@ import core.scm.Thunk
 import core.scm.specialforms.Begin
 import java.io.File
 
-class Load : AFn(name = "load", minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
+class Load : AFn<CharSequence?, Any>(name = "load", minArgs = 1, maxArgs = 1,
+                                     mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
     private val reader = FileReader()
 
-    override operator fun invoke(arg: Any?): Any {
+    override operator fun invoke(arg: CharSequence?): Any {
         val file = File(arg.toString())
         val sexps = Cons.list<Any>(Begin.BEGIN)
         sexps.addAll(reader.read(file))

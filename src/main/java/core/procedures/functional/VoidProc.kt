@@ -2,7 +2,7 @@ package core.procedures.functional
 
 import core.procedures.AFn
 
-class VoidProc : AFn(name = "void", isPure = true) {
+class VoidProc : AFn<Any?, Unit>(name = "void", isPure = true) {
 
     override operator fun invoke(vararg args: Any?) = Unit
 

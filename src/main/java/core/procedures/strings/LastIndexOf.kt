@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.utils.Utils
 
-class LastIndexOf : AFn(name = "last-index-of", isPure = true, minArgs =  2, maxArgs = 3,
+class LastIndexOf : AFn<Any?, Int>(name = "last-index-of", isPure = true, minArgs =  2, maxArgs = 3,
                         mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
     override operator fun invoke(vararg args: Any?): Int {

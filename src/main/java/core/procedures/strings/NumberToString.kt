@@ -6,11 +6,11 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class NumberToString : AFn(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
+class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
                            mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java), restArgsType = Long::class.java) {
 
-    override operator fun invoke(vararg args: Any?): String? {
-        val o = args[0] as Number
+    override operator fun invoke(vararg args: Any?): String {
+        val o = args[0]!! as Number
         val o1 = args.getOrNull(1)
         if (o1 != null) {
             if (!(o1 == 2L || o1 == 8L || o1 == 10L || o1 == 16L)) {

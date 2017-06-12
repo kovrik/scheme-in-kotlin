@@ -8,10 +8,10 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToExact : AFn(name = "inexact->exact", isPure = true, minArgs = 1, maxArgs = 1,
+class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, minArgs = 1, maxArgs = 1,
                     mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Any?) = toExact(arg)
+    override operator fun invoke(arg: Number?) = toExact(arg!!)
 
     companion object {
 

@@ -6,11 +6,12 @@ import core.scm.Type
 
 import java.math.BigDecimal
 
-class Truncate : AFn(name = "truncate", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
+class Truncate : AFn<Number?, Number>(name = "truncate", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
 
-    override operator fun invoke(arg: Any?): Number? {
+    override operator fun invoke(arg: Number?): Number {
+        arg!!
         if (arg is Double || arg is Float) {
-            if ((arg as Number).toDouble() < 0) {
+            if (arg.toDouble() < 0) {
                 return Math.ceil(arg.toDouble())
             } else {
                 return Math.floor(arg.toDouble())
@@ -23,6 +24,6 @@ class Truncate : AFn(name = "truncate", isPure = true, minArgs = 1, maxArgs = 1,
         } else if (arg is BigRatio) {
             return arg.truncate()
         }
-        return arg as Number?
+        return arg
     }
 }

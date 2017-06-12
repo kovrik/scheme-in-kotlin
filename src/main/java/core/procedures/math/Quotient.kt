@@ -7,7 +7,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Quotient : AFn(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
+open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
                           mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {

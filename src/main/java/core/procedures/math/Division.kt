@@ -6,7 +6,7 @@ import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Division : AFn(name = "/", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
+class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
     companion object {
         /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
@@ -22,15 +22,15 @@ class Division : AFn(name = "/", isPure = true, minArgs = 1, restArgsType = Numb
         if (args.size == 1) {
             return invoke(1L, args[0] as Number)
         }
-        var result = args[0] as Number?
+        var result = args[0] as Number
         for (d in 1..args.size - 1) {
-            result = invoke(result, args[d] as Number)
+            result = invoke(result, args[d]!! as Number)
         }
         return result
     }
 
-    private operator fun invoke(numerator: Number?, denominator: Number?): Number? {
-        val (n, d) = Utils.upcast(numerator, denominator)
+    private operator fun invoke(arg1: Number?, arg2: Number?): Number {
+        val (n, d) = Utils.upcast(arg1, arg2)
         return when {
             Utils.isZero(d)  && Utils.isExact(d) -> throw ArithmeticException("Division by zero")
             Utils.isPositiveInfinity(d)          ->  0.0

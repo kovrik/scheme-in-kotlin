@@ -4,9 +4,9 @@ import core.procedures.AFn
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Symbol
 
-class Eq : AFn(name = "eq?", isPure = true, minArgs = 2) {
+class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
 
-    override operator fun invoke(vararg args: Any?): Boolean? {
+    override operator fun invoke(vararg args: Any?): Boolean {
         var result = true
         for (i in 0..args.size - 2) {
             result = result && eq(args[i], args[i + 1])

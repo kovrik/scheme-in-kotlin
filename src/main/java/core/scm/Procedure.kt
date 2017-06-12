@@ -11,7 +11,7 @@ class Procedure(override var name: String,
                 private val body: Any?,
                 /* Lexical environment */
                 private val localEnvironment: Environment,
-                isVariadic: Boolean) : AFn() {
+                isVariadic: Boolean) : AFn<Any?, Any?>() {
 
     /* Is body a constant? If it is, then no need to evaluate it */
     private val isBodyConst: Boolean = body !is Symbol && body !is Collection<*> && body !is Map<*, *>

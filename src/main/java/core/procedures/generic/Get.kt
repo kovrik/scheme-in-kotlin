@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.scm.Vector
 import core.utils.Utils
 
-class Get : AFn(name = "get", isPure = true, minArgs = 2, maxArgs = 3) {
+class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 3) {
 
     override operator fun invoke(vararg args: Any?) = invoke(args[0], args[1], args.getOrNull(2))
 

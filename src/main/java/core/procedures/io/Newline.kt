@@ -7,7 +7,7 @@ import core.scm.OutputPort
 
 import java.io.IOException
 
-class Newline : AFn(name = "newline", maxArgs = 1, restArgsType = OutputPort::class.java) {
+class Newline : AFn<Any?, Unit>(name = "newline", maxArgs = 1, restArgsType = OutputPort::class.java) {
 
     companion object {
         private val LS = System.getProperty("line.separator")

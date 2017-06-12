@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.scm.INamed
 
-class Name : AFn(name = "name", isPure = true, minArgs = 1, maxArgs = 1) {
+class Name : AFn<Any?, CharSequence>(name = "name", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         is INamed -> arg.name

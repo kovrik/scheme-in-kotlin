@@ -6,7 +6,7 @@ import core.scm.Delay
 import core.scm.Future
 import core.scm.Promise
 
-class Force : AFn(name = "force", minArgs = 1, maxArgs = 1) {
+class Force : AFn<Any?, Any?>(name = "force", minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Any? {
         return when (arg) {

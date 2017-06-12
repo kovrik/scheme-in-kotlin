@@ -12,7 +12,7 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class Predicate private constructor(override val name: String, private val predicate: (Any?) -> Boolean) :
-        AFn(isPure = true, minArgs = 1, maxArgs = 1) {
+        AFn<Any?, Boolean>(isPure = true, minArgs = 1, maxArgs = 1) {
 
     companion object {
         val IS_NULL = Predicate("null?", Objects::isNull)

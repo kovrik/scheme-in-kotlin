@@ -9,14 +9,14 @@ import core.writer.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Expt : AFn(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
+class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?) = expt(arg1 as Number?, arg2 as Number?)
+    override operator fun invoke(arg1: Number?, arg2: Number?) = expt(arg1, arg2)
 
     companion object {
         /* TODO: Optimize Special Cases! */
-        fun expt(base: Number?, exponent: Number?): Number? {
+        fun expt(base: Number?, exponent: Number?): Number {
             base!!
             exponent!!
             /* Special cases

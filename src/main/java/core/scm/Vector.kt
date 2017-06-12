@@ -8,7 +8,7 @@ import java.util.*
 
 // TODO implement List instead?
 /* Immutable Vector */
-open class Vector : AFn, Collection<Any?>, IAssoc {
+open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     companion object {
         /* Scheme Vector syntax */
@@ -42,8 +42,8 @@ open class Vector : AFn, Collection<Any?>, IAssoc {
 
     operator fun get(index: Int) = getArray()[index]
 
-    override operator fun invoke(arg: Any?): Any? {
-        val index = (arg as Number).toInt()
+    override operator fun invoke(arg: Number?): Any? {
+        val index = arg!!.toInt()
         if (index >= array.size) {
             throw IndexOutOfBoundsException("$name: value out of range: $index")
         }
