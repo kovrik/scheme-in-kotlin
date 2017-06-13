@@ -2,7 +2,7 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.writer.Writer
-import java.util.LinkedList
+import java.util.*
 
 class Cons<E> : LinkedList<E?> {
 
@@ -99,13 +99,12 @@ class Cons<E> : LinkedList<E?> {
             if (isProperList(list)) {
                 /* List */
                 for (i in 0..list.size - 2) {
-                    val e = list[i]
-                    sb.append(if (e === list) "(this list)" else Writer.write(e)).append(' ')
+                    sb.append(if (list[i] === list) "(this list)" else Writer.write(list[i])).append(' ')
                 }
-                sb.append(Writer.write(list[list.size - 1]))
+                sb.append(Writer.write(list.last()))
             } else {
                 sb.append(Writer.write(list[0]))
-                var cdr = list[list.size - 1]
+                var cdr = list.last()
                 while (cdr is Cons<*>) {
                     sb.append(" ").append(Writer.write(cdr.first))
                     cdr = cdr.last
