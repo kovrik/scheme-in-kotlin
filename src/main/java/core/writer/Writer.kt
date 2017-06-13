@@ -15,7 +15,7 @@ object Writer {
 
     private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
 
-    @JvmStatic fun write(o: Any?): String {
+    fun write(o: Any?): String {
         return when (o) {
             null               -> "nil"
             is Unit            -> "#<void>"

@@ -34,8 +34,8 @@ object Repl {
                                             .forEach { evaluator.macroexpandAndEvaluate(it, defaultEnvironment) }
     }
 
-    @JvmStatic var currentInputPort  = InputPort(BufferedInputStream(System.`in`))
-    @JvmStatic var currentOutputPort = OutputPort(System.out)
+    var currentInputPort  = InputPort(BufferedInputStream(System.`in`))
+    var currentOutputPort = OutputPort(System.out)
 
     private val reader = Reader(currentInputPort.inputStream)
 
