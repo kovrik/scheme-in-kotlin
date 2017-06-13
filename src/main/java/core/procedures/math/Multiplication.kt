@@ -13,7 +13,7 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
     override operator fun invoke(vararg args: Any?): Number? {
         return when (args.size) {
             0 -> 1L
-            1 -> args[0] as Number
+            1 -> args[0] as Number?
             else -> {
                 var result: Any? = 1L
                 for (arg in args) {

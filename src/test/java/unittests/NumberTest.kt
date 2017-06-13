@@ -57,14 +57,12 @@ class NumberTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
         assertEquals(BigComplex(BigDecimal("255.0"), BigDecimal("2987.9375")), eval("#x#iFf+BaB.fI", env))
-
         try {
             eval("+#", env)
             fail()
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         try {
             eval("+1#1", env)
             fail()
@@ -76,11 +74,13 @@ class NumberTest : AbstractTest() {
     @Test
     fun testEvalMath() {
         assertEquals(null, eval("(+ nil)", env))
-        assertEquals(6L, eval("(+ 1 2 3)", env))
-        assertEquals(6L, eval("(+ (byte 1) (int 2) (short 3))", env))
-        assertEquals(2.1, eval("(+ (byte 1) (double 1.1)", env))
-        assertEquals(5.5, eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env))
-        assertEquals(5.0, eval("(/ 10.0 2)", env))
+        assertEquals(null, eval("(- nil)", env))
+        assertEquals(null, eval("(* nil)", env))
+        assertEquals(6L,   eval("(+ 1 2 3)", env))
+        assertEquals(6L,   eval("(+ (byte 1) (int 2) (short 3))", env))
+        assertEquals(2.1,  eval("(+ (byte 1) (double 1.1)", env))
+        assertEquals(5.5,  eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env))
+        assertEquals(5.0,  eval("(/ 10.0 2)", env))
         assertEquals(BigRatio.valueOf("1", "10"), eval("(/ 10)", env))
         assertEquals(BigRatio.valueOf("13", "4"), eval("(/ 13 4)", env))
         assertEquals(2L, eval("(/ 10 5)", env))
@@ -391,19 +391,18 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalMax() {
-        assertEquals(0L, eval("(max 0)", env))
-        assertEquals(5.0, eval("(max 5.0)", env))
+        assertEquals(null, eval("(max nil)", env))
+        assertEquals(0L,   eval("(max 0)", env))
+        assertEquals(5.0,  eval("(max 5.0)", env))
         assertEquals(-5.0, eval("(max -5.0)", env))
         assertEquals(-5.0, eval("(max -6 -7 -5.0)", env))
         assertEquals(7L, eval("(max 6 7 5.0)", env))
-
         try {
             eval("(max \"test\" 1 2 3)", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("max: type mismatch; (expected: Real, given: \"test\")", e.message)
         }
-
         try {
             eval("(max 0 \"test\")", env)
             fail()
@@ -414,18 +413,18 @@ class NumberTest : AbstractTest() {
 
     @Test
     fun testEvalMin() {
-        assertEquals(0L, eval("(min 0)", env))
-        assertEquals(5.0, eval("(min 5.0)", env))
+        assertEquals(null, eval("(min nil)", env))
+        assertEquals(0L,   eval("(min 0)", env))
+        assertEquals(5.0,  eval("(min 5.0)", env))
         assertEquals(-5.0, eval("(min -5.0)", env))
-        assertEquals(-7L, eval("(min -6 -7 -5.0)", env))
-        assertEquals(5.0, eval("(min 6 7 5.0)", env))
+        assertEquals(-7L,  eval("(min -6 -7 -5.0)", env))
+        assertEquals(5.0,  eval("(min 6 7 5.0)", env))
         try {
             eval("(min \"test\" 1 2 3)", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("min: type mismatch; (expected: Real, given: \"test\")", e.message)
         }
-
         try {
             eval("(min 0 \"test\")", env)
             fail()
@@ -475,18 +474,18 @@ class NumberTest : AbstractTest() {
         // lcm of no args is 0
         assertEquals(1L, eval("(lcm)", env))
         // lcm of 0(s) is 0
-        assertEquals(0L, eval("(lcm 0)", env))
+        assertEquals(0L,  eval("(lcm 0)", env))
         assertEquals(0.0, eval("(lcm 0.0)", env))
-        assertEquals(0L, eval("(lcm 0 0)", env))
+        assertEquals(0L,  eval("(lcm 0 0)", env))
 
         // lcm of n is n
-        assertEquals(5L, eval("(lcm 5)", env))
+        assertEquals(5L,  eval("(lcm 5)", env))
         assertEquals(5.0, eval("(lcm 5.0)", env))
-        assertEquals(5L, eval("(lcm -5)", env))
+        assertEquals(5L,  eval("(lcm -5)", env))
 
         // lcm of multiple numbers
-        assertEquals(10L, eval("(lcm 5 10)", env))
-        assertEquals(24L, eval("(lcm 3 6 8)", env))
+        assertEquals(10L,  eval("(lcm 5 10)", env))
+        assertEquals(24L,  eval("(lcm 3 6 8)", env))
         assertEquals(24.0, eval("(lcm 3 6 8.0)", env))
 
         assertEquals(6.0, eval("(lcm 3.0 6)", env))
@@ -517,14 +516,12 @@ class NumberTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("expt: type mismatch; (expected: Number, given: \"test\")", e.message)
         }
-
         try {
             eval("(expt 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("expt: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 1)", e.message)
         }
-
         assertEquals(1L, eval("(expt 0 0)", env))
         assertEquals(1L, eval("(expt 0.0 0)", env))
         assertEquals(1.0, eval("(expt 0 0.0)", env))

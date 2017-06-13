@@ -13,7 +13,7 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
-            return args[0] as Number
+            return args[0] as Number?
         }
         var result = args[0]!! as Number
         for (arg in args) {

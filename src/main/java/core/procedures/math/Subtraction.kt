@@ -13,6 +13,9 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
             when {
+                args[0] == null       -> return  null
+                Utils.isPositiveInfinity(args[0] as Number) -> return Double.NEGATIVE_INFINITY
+                Utils.isNegativeInfinity(args[0] as Number) -> return Double.POSITIVE_INFINITY
                 args[0] is BigDecimal -> return  (args[0] as BigDecimal).negate()
                 args[0] is BigInteger -> return  (args[0] as BigInteger).negate()
                 args[0] is BigRatio   -> return -(args[0] as BigRatio)
@@ -21,21 +24,13 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
                 } catch (e: ArithmeticException) {
                     return BigInteger.valueOf(args[0] as Long).negate()
                 }
-            }
-            if (args[0] is Int) {
-                try {
+                args[0] is Int -> try {
                     return Math.negateExact(args[0] as Int)
                 } catch (e: ArithmeticException) {
                     return Math.negateExact((args[0] as Int).toLong())
                 }
+                else -> return subtract(0L, args[0] as Number)
             }
-            if (Utils.isPositiveInfinity(args[0] as Number)) {
-                return Double.NEGATIVE_INFINITY
-            }
-            if (Utils.isNegativeInfinity(args[0] as Number)) {
-                return Double.POSITIVE_INFINITY
-            }
-            return subtract(0L, args[0] as Number)
         }
         var result = args[0]
         for (i in 1..args.size - 1) {
