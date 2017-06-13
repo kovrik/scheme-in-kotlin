@@ -19,20 +19,22 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         private val CLOSE = "]"
     }
 
+    override val name = "vector"
+
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
     constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        this.array = arrayOfNulls<Any>(0)
+        array = arrayOfNulls<Any>(0)
     }
 
-    constructor(size: Int, init: Any?) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        this.array = arrayOfNulls<Any>(size)
+    constructor(size: Int, init: Any?) {
+        array = arrayOfNulls<Any>(size)
         array.fill(init)
     }
 
     constructor(vararg elements: Any?) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        this.array = elements as Array<Any?>
+        array = elements as Array<Any?>
     }
 
     override val size: Int
@@ -49,8 +51,6 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         }
         return array[index]
     }
-
-    override val name = "vector"
 
     override fun toString(): String {
         if (getArray().isEmpty()) {
