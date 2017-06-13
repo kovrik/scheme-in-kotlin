@@ -92,13 +92,13 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     /* Evaluate Symbol */
     private fun Symbol.eval(env: Environment): Any? {
         /* Check if it is a Special Form */
-        val o = env.findOrDefault(this, Environment.UNDEFINED)
-        if (o is ISpecialForm) throw IllegalSyntaxException.of(o.toString(), this)
-        if (o === Environment.UNDEFINED) {
+        val result = env.findOrDefault(this, Environment.UNDEFINED)
+        if (result is ISpecialForm) throw IllegalSyntaxException.of(result.toString(), this)
+        if (result === Environment.UNDEFINED) {
             /* Check if it is a Java class. If not found, then assume it is a static field */
             return reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
         }
-        return o
+        return result
     }
 
     /* Evaluate list */
@@ -130,7 +130,6 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
         if (op !is AFn<*, *>) op = eval(op, env)
 
-        /* Vectors and Map Entries are functions of index */
         when (op) {
             is Vector                -> op = eval(op, env)
             is Map<*, *>             -> op = InvokableMap(op as Map<Any?, Any?>)
@@ -141,9 +140,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
-        for (i in 1..size - 1) {
-            args[i - 1] = eval(this[i], env)
-        }
+        (1..size - 1).forEach { i -> args[i - 1] = eval(this[i], env) }
         /* Call AFn via helper method */
         return (op as AFn<Any?, Any?>).invokeN(*args)
     }

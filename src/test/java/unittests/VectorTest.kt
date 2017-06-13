@@ -1,11 +1,10 @@
 package unittests
 
-import core.scm.MutableVector
-import org.junit.Test
-
 import core.scm.Cons.Companion.list
+import core.scm.MutableVector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Test
 
 class VectorTest : AbstractTest() {
 
@@ -26,6 +25,7 @@ class VectorTest : AbstractTest() {
         assertEquals(MutableVector(2L, 1L), eval("(reverse (vector 1 2))", env))
         assertEquals(MutableVector(1L), eval("(reverse (vector 1))", env))
         assertEquals(MutableVector(), eval("(reverse (vector))", env))
+        assertEquals(7L, eval("([(+ 1 2) (+ 3 4)] 1)", env))
     }
 
     @Test

@@ -16,7 +16,7 @@ class DelayedTest : AbstractTest() {
     @Test
     fun testEvalDelayed() {
         try {
-            eval("((delay (* (+ 2 3) 4))))", env)
+            eval("((delay (* (+ 2 3) 4)))", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertTrue(e.message!!.startsWith("wrong type to apply"))

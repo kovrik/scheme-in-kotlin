@@ -64,8 +64,8 @@ class HashmapTest : AbstractTest() {
 
     @Test
     fun testHashmapEval() {
-        assertEquals(8L, eval("({(+ 1 2 3) (* 2 4)} 6)", env))
-        assertEquals(8L, eval("((hash-map (+ 1 2 3) (* 2 4)) 6)", env))
+        assertEquals(8L,  eval("({(+ 1 2 3) (* 2 4)} 6)", env))
+        assertEquals(8L,  eval("((hash-map (+ 1 2 3) (* 2 4)) 6)", env))
         assertEquals(10L, eval("(({* *, + +} +) 1 2 3 4)", env))
         assertEquals(10L, eval("(((hash-map * * + +) +) 1 2 3 4)", env))
         try {
