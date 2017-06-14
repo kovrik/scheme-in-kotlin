@@ -362,12 +362,13 @@ open class Reader : IReader {
      * <list> -> (<list_contents>)
      */
     @Throws(IOException::class)
-    private fun readList(allowImproperList: Boolean, terminator: Char): Cons<Any?> {
-        var list: Cons<Any?> = Cons.EMPTY
+    private fun readList(allowImproperList: Boolean, terminator: Char): Cons<*> {
         /* Remember position of a dot (if we meet it) */
         var dotPos = -1
         var i = reader.read()
         var c = i.toChar()
+        if (c == terminator) return Cons.EMPTY
+        var list: Cons<Any?> = Cons.list()
         while (isValid(i) && c != terminator) {
             /* Skip whitespaces */
             while (Character.isWhitespace(c)) {

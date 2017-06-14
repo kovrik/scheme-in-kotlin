@@ -53,7 +53,7 @@ class Cons<E> : LinkedList<E?> {
     companion object {
 
         /* Empty list constant */
-        val EMPTY = Cons<Any?>()
+        val EMPTY = Cons<Nothing>()
 
         fun <E> cons(car: E?, cdr: E?): Cons<E> {
             if (cdr == null) return Cons(car, EMPTY) as Cons<E>
@@ -80,9 +80,9 @@ class Cons<E> : LinkedList<E?> {
             return list
         }
 
-        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY as Cons<E?> else list(elements.toList())
+        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY else list(elements.toList())
 
-        fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY as Cons<E?> else Cons(c)
+        fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
 
         /* Return true if o is a Proper List */
         fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList
