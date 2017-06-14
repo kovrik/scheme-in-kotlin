@@ -2,6 +2,7 @@ package core.reader
 
 import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
+import core.scm.InvokableMap
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.Symbol
@@ -435,7 +436,7 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readHashmap(): Map<Any?, Any?> {
-        val hashmap= HashMap<Any?, Any?>()
+        val hashmap = InvokableMap()
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {

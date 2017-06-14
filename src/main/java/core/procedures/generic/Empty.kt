@@ -2,6 +2,7 @@ package core.procedures.generic
 
 import core.procedures.AFn
 import core.scm.Cons
+import core.scm.InvokableMap
 import core.scm.MutableVector
 import core.scm.Vector
 
@@ -11,7 +12,7 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArg
         is List<*>   -> Cons.list<Any>()
         is Set<*>    -> HashSet<Any>()
         is Vector    -> MutableVector()
-        is Map<*, *> -> HashMap<Any, Any>()
+        is Map<*, *> -> InvokableMap()
         else         -> null
     }
 }

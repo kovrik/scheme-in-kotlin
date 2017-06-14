@@ -3,6 +3,7 @@ package core.procedures.hashmaps
 import core.exceptions.ArityException
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.scm.InvokableMap
 import core.scm.MapEntry
 import core.scm.MutableVector
 import core.utils.Utils
@@ -16,7 +17,7 @@ class Put : AFn<Any?, Any?>(name = "put", isPure = true, minArgs = 3,
             if (args.size % 2 != 1) {
                 throw IllegalArgumentException("$name: no value supplied for key: ${args[args.size - 1]}")
             }
-            val map = HashMap(args[0] as Map<*, *>)
+            val map = InvokableMap((args[0] as Map<*, *>).toMutableMap())
             var i = 1
             while (i < args.size) {
                 map.put(args[i], args[i + 1])

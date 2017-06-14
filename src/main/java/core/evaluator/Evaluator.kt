@@ -33,15 +33,6 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         override fun invoke(vararg args: Any?) = reflector.evalJavaMethod(method, args as Array<Any?>)
     }
 
-    // TODO Use custom HashMap class that extends AFn instead
-    inner class InvokableMap(val map: Map<Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 2) {
-        /* Maps are functions of their keys */
-        override fun invoke(vararg args: Any?) = when (args.size) {
-            1    -> map[args[0]]
-            else -> map.getOrDefault(args[0], args[1])
-        }
-    }
-
     /* Macroexpand S-expression, evaluate it and then return the result */
     fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpand(sexp), env)
 
@@ -124,15 +115,13 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             }
         }
 
-        /* If it is a Special Form, then evaluate it */
-        if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
-
-        /* If it is not AFn, then try to evaluate it (assuming it is a Lambda) */
-        if (op !is AFn<*, *>) op = eval(op, env)
-
         when (op) {
+            /* Special Forms have special evaluation rules */
+            is ISpecialForm          -> return op.eval(this, env, this@Evaluator)
+            is List<*>               -> op = eval(op, env)
             is Vector                -> op = eval(op, env)
-            is Map<*, *>             -> op = InvokableMap(op as Map<Any?, Any?>)
+            is InvokableMap          -> op = eval(op, env)
+            is Map<*, *>             -> op = InvokableMap((op as Map<Any?, Any?>).toMutableMap())
             is Map.Entry<Any?, Any?> -> op = MapEntry(op)
         }
         /* If result is not a function, then raise an error */
@@ -147,7 +136,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
 
     /* Evaluate hash map */
     private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
-        val result = HashMap<Any?, Any?>(size)
+        val result = InvokableMap(size)
         forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
         return result
     }
