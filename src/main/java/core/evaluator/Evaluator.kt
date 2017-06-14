@@ -72,7 +72,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         return when (sexp) {
             is Symbol           -> sexp.eval(env)
             is MutableList<*>   -> (sexp as MutableList<Any?>).eval(env)
-            is Map<*, *>        -> (sexp as Map<Any?, Any?>).eval(env)
+            is Map<*, *>        -> sexp.eval(env)
             is Vector           -> sexp.eval(env)
             is Set<*>           -> sexp.eval(env)
             /* Everything else evaluates to itself: Numbers, Strings, Chars, Keywords etc. */
@@ -130,7 +130,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     /* Evaluate hash map */
-    private fun Map<Any?, Any?>.eval(env: Environment): Map<Any?, Any?> {
+    private fun Map<*, *>.eval(env: Environment): Map<*, *> {
         val result = InvokableMap(size)
         forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
         return result
