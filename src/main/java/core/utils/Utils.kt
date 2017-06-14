@@ -484,7 +484,7 @@ object Utils {
     fun toSequence(obj: Any?) = when (obj) {
         is Iterable<*>     -> obj.iterator()
         is CharSequence    -> stringIterator(obj)
-        is Map<*, *>       -> obj.entries.iterator()
+        is Map<*, *>       -> mapIterator(obj)
         is Map.Entry<*, *> -> MapEntry(obj).iterator()
         null               -> emptyList<Any?>().iterator()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
@@ -506,9 +506,15 @@ object Utils {
 
     /* Returns String Iterator */
     private fun stringIterator(string: CharSequence?) = object : Iterator<Char> {
-        private var index = 0
+        private  var index = 0
         override fun hasNext() = index < string!!.length
         override fun next() = if (!hasNext()) throw NoSuchElementException() else string!![index++]
+    }
+
+    private fun mapIterator(map: Map<*, *>) = object : Iterator<MapEntry> {
+        private  var iterator = map.iterator()
+        override fun hasNext() = iterator.hasNext()
+        override fun next() = MapEntry(iterator.next())
     }
 
     /**

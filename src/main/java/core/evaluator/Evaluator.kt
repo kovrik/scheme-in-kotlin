@@ -72,9 +72,9 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         return when (sexp) {
             is Symbol           -> sexp.eval(env)
             is MutableList<*>   -> (sexp as MutableList<Any?>).eval(env)
-            is MutableMap<*, *> -> (sexp as Map<Any?, Any?>).eval(env)
+            is Map<*, *>        -> (sexp as Map<Any?, Any?>).eval(env)
             is Vector           -> sexp.eval(env)
-            is MutableSet<*>    -> sexp.eval(env)
+            is Set<*>           -> sexp.eval(env)
             /* Everything else evaluates to itself: Numbers, Strings, Chars, Keywords etc. */
             else -> sexp
         }
@@ -115,14 +115,10 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             }
         }
 
-        when (op) {
-            /* Special Forms have special evaluation rules */
-            is ISpecialForm          -> return op.eval(this, env, this@Evaluator)
-            is List<*>               -> op = eval(op, env)
-            is Vector                -> op = eval(op, env)
-            is InvokableMap          -> op = eval(op, env)
-            is Map.Entry<Any?, Any?> -> op = MapEntry(op)
-        }
+        if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
+
+        // TODO Do not evaluate if already evaluated?
+        op = eval(op, env)
         /* If result is not a function, then raise an error */
         if (op !is AFn<*, *>) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
 
