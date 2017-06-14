@@ -15,7 +15,6 @@ import core.utils.Utils.isValidForRadix
 import core.utils.Utils.preProcessNumber
 import java.io.*
 import java.util.regex.Pattern
-import kotlin.collections.HashMap
 
 open class Reader : IReader {
 
