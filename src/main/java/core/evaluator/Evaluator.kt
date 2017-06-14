@@ -121,7 +121,6 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             is List<*>               -> op = eval(op, env)
             is Vector                -> op = eval(op, env)
             is InvokableMap          -> op = eval(op, env)
-            is Map<*, *>             -> op = InvokableMap((op as Map<Any?, Any?>).toMutableMap())
             is Map.Entry<Any?, Any?> -> op = MapEntry(op)
         }
         /* If result is not a function, then raise an error */
