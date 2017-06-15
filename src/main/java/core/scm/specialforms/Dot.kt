@@ -11,6 +11,8 @@ enum class Dot : ISpecialForm {
 
     private val reflector = Reflector()
 
+    override fun toString() = "."
+
     override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = expression.size
         if (size < 3) {
@@ -63,6 +65,4 @@ enum class Dot : ISpecialForm {
             return reflector.evalJavaMethod(method, args)
         }
     }
-
-    override fun toString() = "."
 }

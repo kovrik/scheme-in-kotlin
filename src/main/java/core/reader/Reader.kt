@@ -6,6 +6,7 @@ import core.scm.InvokableMap
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.Symbol
+import core.scm.specialforms.Dot
 import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
 import core.scm.specialforms.Unquote
@@ -27,7 +28,7 @@ open class Reader : IReader {
     }
 
     companion object {
-        private val DOT = Symbol.intern(".")
+        private val DOT = Symbol.intern(Dot.DOT.toString())
         private val DEREF = Symbol.intern("deref")
 
         private const val LINE_BREAKS = "\n\r"
@@ -43,20 +44,18 @@ open class Reader : IReader {
                                         '"'  to '\"',
                                         '\\' to '\\')
 
-        val NAMED_CHARS: Map<String, Char> = hashMapOf(
-                "newline"   to '\n',
-                "space"     to ' ',
-                "tab"       to '\t',
-                "return"    to '\r',
-                "backspace" to '\b',
-                "alarm"     to '\u0007',
-                "vtab"      to '\u000B',
-                "esc"       to '\u001B',
-                "escape"    to '\u001B',
-                "delete"    to '\u007F',
-                "null"      to Character.MIN_VALUE,
-                "nul"       to Character.MIN_VALUE
-        )
+        val NAMED_CHARS: Map<String, Char> = hashMapOf("newline"   to '\n',
+                                                       "space"     to ' ',
+                                                       "tab"       to '\t',
+                                                       "return"    to '\r',
+                                                       "backspace" to '\b',
+                                                       "alarm"     to '\u0007',
+                                                       "vtab"      to '\u000B',
+                                                       "esc"       to '\u001B',
+                                                       "escape"    to '\u001B',
+                                                       "delete"    to '\u007F',
+                                                       "null"      to Character.MIN_VALUE,
+                                                       "nul"       to Character.MIN_VALUE)
 
         private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
         private fun isLineBreak(c: Char) = LINE_BREAKS.indexOf(c) > -1
@@ -96,10 +95,7 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun nextNonNullToken(): Any {
         var token = nextToken()
-        while (token == null) {
-            /* Read */
-            token = nextToken()
-        }
+        while (token == null) { token = nextToken() }
         return token
     }
 
@@ -159,10 +155,10 @@ open class Reader : IReader {
         if (c == '(') {
             /* Read Quoted vector #(...) */
             val vector = readVector(')')
-            if (vector.isEmpty()) {
-                return vector
+            return when {
+                vector.isEmpty() -> vector
+                else -> Quote.quote(vector)
             }
-            return Quote.quote(vector)
         } else if (c == '{') {
             return readSet()
         } else if (c == '\\') {
@@ -200,23 +196,23 @@ open class Reader : IReader {
                 }
                 break
             }
-
             if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
                 throw IllegalSyntaxException("read: bad number: $number")
             }
             /* Check if this is a proper number */
             val result = preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
             return result
+        } else {
+            /* Bad hash syntax: read token and throw exception */
+            val token = StringBuilder("#")
+            if (isValid(c.toInt())) {
+                token.append(c)
+            }
+            if (!Character.isWhitespace(c)) {
+                token.append(readUntilDelimiter())
+            }
+            throw IllegalSyntaxException("read: bad syntax: $token")
         }
-        /* Bad hash syntax: read token and throw exception */
-        val token = StringBuilder("#")
-        if (isValid(c.toInt())) {
-            token.append(c)
-        }
-        if (!Character.isWhitespace(c)) {
-            token.append(readUntilDelimiter())
-        }
-        throw IllegalSyntaxException("read: bad syntax: $token")
     }
 
     /**
@@ -229,23 +225,21 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readQuote(c: Char): List<*> {
-        val symbol: Symbol
-        if (c == '\'') {
-            symbol = Quote.QUOTE_SYMBOL
-        } else if (c == '`') {
-            symbol = Quasiquote.QUASIQUOTE_SYMBOL
-        } else if (c == ',') {
-            val next = reader.read().toChar()
-            if (next == '@') {
-                symbol = UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL
-            } else {
-                reader.unread(next.toInt())
-                symbol = Unquote.UNQUOTE_SYMBOL
+        val quote = when (c) {
+            '\'' -> Quote.QUOTE_SYMBOL
+            '`'  -> Quasiquote.QUASIQUOTE_SYMBOL
+            ','  -> {
+                val next = reader.read().toChar()
+                if (next == '@') {
+                    UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL
+                } else {
+                    reader.unread(next.toInt())
+                    Unquote.UNQUOTE_SYMBOL
+                }
             }
-        } else {
-            throw IllegalSyntaxException("read: unknown quotation type: $c")
+            else -> throw IllegalSyntaxException("read: unknown quotation type: $c")
         }
-        return Cons.list(symbol, nextNonNullToken())
+        return Cons.list(quote, nextNonNullToken())
     }
 
     /**
@@ -256,10 +250,8 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun readComment(): String? {
         var i = reader.read()
-        while (isValid(i) && !isLineBreak(i.toChar())) {
-            /* Read everything until line break */
-            i = reader.read()
-        }
+        /* Read everything until line break */
+        while (isValid(i) && !isLineBreak(i.toChar())) { i = reader.read() }
         /* Comments are ignored, return null */
         return null
     }
@@ -290,8 +282,8 @@ open class Reader : IReader {
                     string.append(chr)
                 } else {
                     /* Check that escape sequence is valid */
-                    val character = ESCAPED[next] ?: throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
-                    string.append(character)
+                    val escaped = ESCAPED[next] ?: throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
+                    string.append(escaped)
                 }
             } else {
                 string.append(c)
@@ -345,10 +337,10 @@ open class Reader : IReader {
             return codepoint.toInt().toChar()
         }
         /* Must be a named char */
-        val character = first.toChar() + rest
-        return when (character) {
+        val named = first.toChar() + rest
+        return when (named) {
             "linefeed" -> '\n'
-            else -> NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
+            else -> NAMED_CHARS[named] ?: throw IllegalSyntaxException("read: bad character constant: #\\$named")
         }
     }
 
@@ -390,16 +382,16 @@ open class Reader : IReader {
             i = reader.read()
             c = i.toChar()
         }
-        when {
+        return when {
             /* Was it a proper list or dot is the first element? */
-            dotPos < 1 -> return list
+            dotPos < 1 -> list
             /* Validate dot position */
             dotPos != list.size - 1 -> throw IllegalSyntaxException("read: illegal use of '.'")
             /* Convert list into cons */
             else -> {
                 var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
                 (list.size - 3 downTo 0).forEach { n -> cons = Cons.cons(list[n], cons) }
-                return cons
+                cons
             }
         }
     }
