@@ -346,10 +346,10 @@ open class Reader : IReader {
         }
         /* Must be a named char */
         val character = first.toChar() + rest
-        if ("linefeed" == character) {
-            return '\n'
+        return when (character) {
+            "linefeed" -> '\n'
+            else -> NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
         }
-        return NAMED_CHARS[character] ?: throw IllegalSyntaxException("read: bad character constant: #\\$character")
     }
 
     /**
