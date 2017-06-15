@@ -101,9 +101,9 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             /* Lookup symbol */
             op = env.findOrDefault(op, Environment.UNDEFINED)
             /* Inline Special Forms and Pure functions */
-            if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) {
-                this[0] = op
-            } else if (op === Environment.UNDEFINED) {
+            // Doesn't help much, so commenting it out for now
+            // if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else
+            if (op === Environment.UNDEFINED) {
                 /* Special case: constructor call If Symbol ends with . */
                 if (symbolName.endsWith('.')) {
                     this[0] = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
