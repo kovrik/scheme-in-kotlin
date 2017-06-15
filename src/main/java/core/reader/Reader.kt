@@ -114,11 +114,7 @@ open class Reader : IReader {
         }
         var c = i.toChar()
         /* Skip whitespaces until line break */
-        if (Character.isWhitespace(c)) {
-            while (isValid(c.toInt()) && Character.isWhitespace(c) && !isLineBreak(c)) {
-                c = reader.read().toChar()
-            }
-        }
+        while (isValid(c.toInt()) && Character.isWhitespace(c) && !isLineBreak(c)) { c = reader.read().toChar() }
         /* Check if there is anything to read */
         if (!isValid(c.toInt()) || isLineBreak(c)) {
             return null
@@ -367,18 +363,16 @@ open class Reader : IReader {
         var dotPos = -1
         var i = reader.read()
         var c = i.toChar()
+        /* Skip whitespaces */
+        while (Character.isWhitespace(c)) { c = reader.read().toChar() }
         if (c == terminator) return Cons.EMPTY
-        var list: Cons<Any?> = Cons.list()
+        val list: Cons<Any?> = Cons.list()
         while (isValid(i) && c != terminator) {
             /* Skip whitespaces */
-            while (Character.isWhitespace(c)) {
-                c = reader.read().toChar()
-            }
-            if (c == terminator) {
-                break
-            }
+            while (Character.isWhitespace(c)) { c = reader.read().toChar() }
+            if (c == terminator) break
             reader.unread(c.toInt())
-            val token = nextToken()
+            val token = nextNonNullToken()
             /* Check if current token is a dot */
             if (DOT == token) {
                 if (!allowImproperList || dotPos > -1) {
@@ -388,35 +382,26 @@ open class Reader : IReader {
                 dotPos = list.size
                 /* Dot Special Form is allowed as the first element of a list */
                 if (dotPos == 0) {
-                    list = Cons.list<Any?>(DOT)
+                    list.add(DOT)
                 }
-            } else if (token != null) {
-                /* List is empty so far */
-                if (list.isEmpty()) {
-                    /* Initialize list with the first element (can't modify EMPTY) */
-                    list = Cons.list(token)
-                } else {
-                    /* Add list element */
-                    list.add(token)
-                }
+            } else {
+                list.add(token)
             }
             i = reader.read()
             c = i.toChar()
         }
-        /* Was it a proper list or dot is the first element? */
-        if (dotPos < 1) {
-            return list
+        when {
+            /* Was it a proper list or dot is the first element? */
+            dotPos < 1 -> return list
+            /* Validate dot position */
+            dotPos != list.size - 1 -> throw IllegalSyntaxException("read: illegal use of '.'")
+            /* Convert list into cons */
+            else -> {
+                var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
+                (list.size - 3 downTo 0).forEach { n -> cons = Cons.cons(list[n], cons) }
+                return cons
+            }
         }
-        /* Process improper list */
-        if (dotPos != list.size - 1) {
-            throw IllegalSyntaxException("read: illegal use of '.'")
-        }
-        /* Convert list into cons */
-        var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
-        for (n in list.size - 3 downTo 0) {
-            cons = Cons.cons(list[n], cons)
-        }
-        return cons
     }
 
     /**
@@ -441,18 +426,14 @@ open class Reader : IReader {
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c) || c == ',') {
-                c = reader.read().toChar()
-            }
+            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
             if (c == '}') break
             reader.unread(c.toInt())
             val key = nextToken()
 
             /* Skip whitespaces and commas */
             c = reader.read().toChar()
-            while (Character.isWhitespace(c) || c == ',') {
-                c = reader.read().toChar()
-            }
+            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
             if (c == '}') break
             reader.unread(c.toInt())
             val value = nextToken()
@@ -476,9 +457,7 @@ open class Reader : IReader {
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c)) {
-                c = reader.read().toChar()
-            }
+            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
             if (c == '}') break
             reader.unread(c.toInt())
             set.add(nextToken())
