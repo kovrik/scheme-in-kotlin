@@ -71,7 +71,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     private fun evalIter(sexp: Any?, env: Environment): Any? {
         return when (sexp) {
             is Symbol           -> sexp.eval(env)
-            is MutableList<*>   -> (sexp as MutableList<Any?>).eval(env)
+            is MutableList<*>   -> sexp.eval(env)
             is Map<*, *>        -> sexp.eval(env)
             is Vector           -> sexp.eval(env)
             is Set<*>           -> sexp.eval(env)
@@ -93,25 +93,27 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     /* Evaluate list */
-    private fun MutableList<Any?>.eval(env: Environment): Any? {
+    private fun List<Any?>.eval(env: Environment): Any? {
         if (isEmpty()) throw IllegalSyntaxException.of("eval", this, "illegal empty application")
         var op = this[0]
         if (op is Symbol) {
             val symbolName = op.name
             /* Lookup symbol */
             op = env.findOrDefault(op, Environment.UNDEFINED)
-            /* Inline Special Forms and Pure functions */
-            // Doesn't help much, so commenting it out for now
-            // if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else
+            /* Inline Special Forms and Pure functions
+             * Doesn't help much, so commenting it out for now
+             * if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
             if (op === Environment.UNDEFINED) {
+                // TODO implement as a macro
                 /* Special case: constructor call If Symbol ends with . */
                 if (symbolName.endsWith('.')) {
-                    this[0] = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
-                    op = New.NEW
-                    this.add(0, op)
-                } else {
-                    op = JavaMethodCall(this[0].toString())
+                    val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
+                    val form = mutableListOf<Any?>(New.NEW, clazz)
+                    /* Add args (if any) */
+                    (1..size - 1).forEach { i -> form.add(this[i]) }
+                    return New.NEW.eval(form, env, this@Evaluator)
                 }
+                op = JavaMethodCall(this[0].toString())
             }
         }
 
