@@ -410,9 +410,7 @@ open class Reader : IReader {
      * <vector> -> #(<vector_contents>)
      */
     @Throws(IOException::class)
-    private fun readVector(terminator: Char): MutableVector {
-        return MutableVector(*readList(false, terminator).toTypedArray())
-    }
+    private fun readVector(terminator: Char) = MutableVector(*readList(false, terminator).toTypedArray())
 
     /**
      * Read hashmap
