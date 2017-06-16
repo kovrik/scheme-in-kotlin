@@ -71,7 +71,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     private fun evalIter(sexp: Any?, env: Environment): Any? {
         return when (sexp) {
             is Symbol           -> sexp.eval(env)
-            is MutableList<*>   -> sexp.eval(env)
+            is List<*>          -> sexp.eval(env)
             is Map<*, *>        -> sexp.eval(env)
             is Vector           -> sexp.eval(env)
             is Set<*>           -> sexp.eval(env)
