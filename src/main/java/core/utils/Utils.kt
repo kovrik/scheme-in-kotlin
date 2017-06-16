@@ -72,6 +72,8 @@ object Utils {
         RADIX_CHARS.put(16, RADIX_CHARS[15] + "fF")
     }
 
+    private val EMPTY_ASSOC = mapToAssoc(mutableMapOf<Nothing, Nothing>())
+
     /* Check if digit is valid for a number in a specific radix */
     fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.indexOf(c) > -1
 
@@ -388,11 +390,9 @@ object Utils {
 
     fun isNonNegative(o: Any) = !isNegative(o)
 
-    fun isExactPositiveInteger(o: Any) = isExact(o) && isInteger(o) && isPositive(o)
-
     fun isExactNonNegativeInteger(o: Any) = isExact(o) && isInteger(o) && isNonNegative(o)
 
-    fun isReal(o: Any?) = o !is BigComplex && o is Number
+    fun isReal(o: Any?) = o is Number && o !is BigComplex
 
     fun isFinite(number: Number?) = when (number) {
         is Double -> number.isFinite()
@@ -481,7 +481,7 @@ object Utils {
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     // TODO return Lazy Sequence object, not Iterator
-    fun toSequence(obj: Any?) = when (obj) {
+    fun toSequence(obj: Any?): Iterator<*> = when (obj) {
         is Iterable<*>     -> obj.iterator()
         is CharSequence    -> stringIterator(obj)
         is Map<*, *>       -> mapIterator(obj)
@@ -490,11 +490,11 @@ object Utils {
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
-    fun toAssoc(obj: Any?) = when (obj) {
+    fun toAssoc(obj: Any?): IAssoc = when (obj) {
         is IAssoc           -> obj
         is MutableMap<*, *> -> mapToAssoc(obj)
         is Map.Entry<*, *>  -> MapEntry(obj)
-        null                -> throw NullPointerException()
+        null                -> EMPTY_ASSOC
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
@@ -512,7 +512,7 @@ object Utils {
     }
 
     private fun mapIterator(map: Map<*, *>) = object : Iterator<MapEntry> {
-        private  var iterator = map.iterator()
+        private  val iterator = map.iterator()
         override fun hasNext() = iterator.hasNext()
         override fun next() = MapEntry(iterator.next())
     }

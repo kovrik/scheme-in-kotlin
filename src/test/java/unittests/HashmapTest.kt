@@ -111,5 +111,6 @@ class HashmapTest : AbstractTest() {
         assertEquals(MapEntry(0, Keyword.intern("a")), eval("(find [:a :b :c :d] 0)", env))
         assertEquals(MapEntry(2, Keyword.intern("c")), eval("(find [:a :b :c :d] 2)", env))
         assertEquals(null, eval("(find [:a :b :c :d] 5)", env))
+        assertEquals(null, eval("(find nil 5)", env))
     }
 }
