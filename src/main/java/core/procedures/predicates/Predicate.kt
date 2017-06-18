@@ -74,8 +74,8 @@ class Predicate private constructor(override val name: String, private val predi
 
         private fun isEmpty(o: Any?) = when (o) {
             is Collection<*> -> o.isEmpty()
-            is CharSequence  -> o.length == 0
-            is Map<*, *>     -> o.size == 0
+            is CharSequence  -> o.isEmpty()
+            is Map<*, *>     -> o.isEmpty()
             else             -> false
         }
 
@@ -84,7 +84,7 @@ class Predicate private constructor(override val name: String, private val predi
             else -> throw WrongTypeException("realized?", "Delay or Promise or Future", o)
         }
 
-        private fun isProcedure(o: Any?) = o is IFn<*, *> && o !is Symbol && o !is Keyword &&
+        private fun isProcedure(o: Any?) = o is IFn<*, *>  && o !is Symbol && o !is Keyword &&
                                            o !is Map<*, *> && o !is Vector && o !is Map.Entry<*, *>
     }
 
