@@ -23,7 +23,7 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
         for (i in 1..args.size - 1) {
             /* Check type */
-            iterators.put(i, Utils.toSequence(args[i]))
+            iterators.put(i, Utils.toSequence(args[i]).iterator())
             /* Check size */
             if (count(args[i]) != size) {
                 throw IllegalArgumentException("$name: all collections must be of the same size")

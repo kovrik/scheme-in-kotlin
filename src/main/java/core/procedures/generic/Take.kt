@@ -9,13 +9,7 @@ class Take : AFn<Any?, Any?>(name = "take", isPure = true, minArgs = 2, maxArgs 
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         val count = (arg1 as Number).toInt()
-        val iterator = Utils.toSequence(arg2)
-        val result = Cons.list<Any?>()
         var n = 0L
-        while (iterator.hasNext() && n < count) {
-            result.add(iterator.next())
-            n += 1
-        }
-        return result
+        return Utils.toSequence(arg2).takeWhile { n++ < count }.toCollection(Cons.list())
     }
 }

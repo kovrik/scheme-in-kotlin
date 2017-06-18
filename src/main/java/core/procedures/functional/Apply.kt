@@ -16,13 +16,10 @@ class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = a
             sexp.addAll(args.copyOfRange(1, args.size - 1))
         }
         val last = args[args.size - 1]
-        val iterator = Utils.toSequence(last)
-        while (iterator.hasNext()) {
-            val o = iterator.next()
-            if (o is List<*> || o is Symbol) {
-                sexp.add(Quote.quote(o))
-            } else {
-                sexp.add(o)
+        Utils.toSequence(last).forEach {
+            when (it) {
+                is List<*>, is Symbol -> sexp.add(Quote.quote(it))
+                else -> sexp.add(it)
             }
         }
         return Thunk(sexp)

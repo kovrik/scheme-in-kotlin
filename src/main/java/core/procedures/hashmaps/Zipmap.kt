@@ -6,13 +6,6 @@ import core.utils.Utils
 
 class Zipmap : AFn<Any?, Map<*, *>>(name = "zipmap", isPure = true, minArgs = 2, maxArgs = 2) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Map<*, *> {
-        val iterator1 = Utils.toSequence(arg1)
-        val iterator2 = Utils.toSequence(arg2)
-        val map = InvokableMap()
-        while (iterator1.hasNext() && iterator2.hasNext()) {
-            map.put(iterator1.next(), iterator2.next())
-        }
-        return map
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = InvokableMap(Utils.toSequence(arg1).zip(
+                                                                        Utils.toSequence(arg2)).toMap().toMutableMap())
 }

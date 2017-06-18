@@ -480,13 +480,12 @@ object Utils {
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
-    // TODO return Lazy Sequence object, not Iterator
-    fun toSequence(obj: Any?): Iterator<*> = when (obj) {
-        is Iterable<*>     -> obj.iterator()
-        is CharSequence    -> stringIterator(obj)
-        is Map<*, *>       -> mapIterator(obj)
-        is Map.Entry<*, *> -> MapEntry(obj).iterator()
-        null               -> emptyList<Any?>().iterator()
+    fun toSequence(obj: Any?): Sequence<*> = when (obj) {
+        is Iterable<*>     -> obj.asSequence()
+        is CharSequence    -> stringIterator(obj).asSequence()
+        is Map<*, *>       -> mapIterator(obj).asSequence()
+        is Map.Entry<*, *> -> MapEntry(obj).iterator().asSequence()
+        null               -> emptyList<Any?>().asSequence()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 

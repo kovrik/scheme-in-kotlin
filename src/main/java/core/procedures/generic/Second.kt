@@ -8,15 +8,6 @@ class Second : AFn<Any?, Any?>(name = "second", isPure = true, minArgs = 1, maxA
     override operator fun invoke(arg: Any?) = second(arg)
 
     companion object {
-        fun second(arg: Any?): Any? {
-            if (arg != null) {
-                val iterator = Utils.toSequence(arg)
-                if (iterator.hasNext()) {
-                    iterator.next()
-                    return if (iterator.hasNext()) iterator.next() else null
-                }
-            }
-            return null
-        }
+        fun second(arg: Any?) = arg?.let { Utils.toSequence(it).elementAtOrNull(1) }
     }
 }
