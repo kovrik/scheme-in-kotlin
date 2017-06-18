@@ -44,9 +44,7 @@ object Utils {
         IntStream.rangeClosed(2, 16).forEach { r -> BIG_DECIMAL_RADICES.put(r, BigDecimal(r)) }
     }
 
-    fun getRadixByChar(radixChar: Char?): Int {
-        return NAMED_RADICES[radixChar] ?: 10
-    }
+    fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
 
     /* Threshold after which we switch to BigDecimals */
     private val RADIX_THRESHOLDS = hashMapOf(2  to 63, 3  to 39, 4  to 31, 5  to 27, 6  to 24, 7  to 22, 8  to 21,
@@ -78,8 +76,9 @@ object Utils {
     fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.indexOf(c) > -1
 
     /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
-    fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext {
-        return if (first.scale() > 0 || second.scale() > 0) MathContext.DECIMAL64 else MathContext.UNLIMITED
+    fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext = when {
+        first.scale() > 0 || second.scale() > 0 -> MathContext.DECIMAL64
+        else -> MathContext.UNLIMITED
     }
 
     // FIXME Simplify and cleanup!
@@ -482,9 +481,9 @@ object Utils {
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
         is Iterable<*>     -> obj.asSequence()
-        is CharSequence    -> stringIterator(obj).asSequence()
+        is CharSequence    -> obj.asSequence()
         is Map<*, *>       -> mapIterator(obj).asSequence()
-        is Map.Entry<*, *> -> MapEntry(obj).iterator().asSequence()
+        is Map.Entry<*, *> -> MapEntry(obj).asSequence()
         null               -> emptyList<Any?>().asSequence()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
@@ -501,13 +500,6 @@ object Utils {
         override fun containsKey(key: Any) = map.containsKey(key)
         override fun getEntry(key: Any) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
         override fun assoc(key: Any, value: Any) = throw UnsupportedOperationException()
-    }
-
-    /* Returns String Iterator */
-    private fun stringIterator(string: CharSequence?) = object : Iterator<Char> {
-        private  var index = 0
-        override fun hasNext() = index < string!!.length
-        override fun next() = if (!hasNext()) throw NoSuchElementException() else string!![index++]
     }
 
     private fun mapIterator(map: Map<*, *>) = object : Iterator<MapEntry> {
