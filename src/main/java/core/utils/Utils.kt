@@ -70,7 +70,7 @@ object Utils {
         RADIX_CHARS.put(16, RADIX_CHARS[15] + "fF")
     }
 
-    private val EMPTY_ASSOC = mapToAssoc(mutableMapOf<Nothing, Nothing>())
+    private val EMPTY_ASSOC = mapToAssoc(mapOf<Nothing, Nothing>())
 
     /* Check if digit is valid for a number in a specific radix */
     fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.indexOf(c) > -1
@@ -490,13 +490,13 @@ object Utils {
 
     fun toAssoc(obj: Any?): IAssoc = when (obj) {
         is IAssoc           -> obj
-        is MutableMap<*, *> -> mapToAssoc(obj)
+        is Map<*, *>        -> mapToAssoc(obj)
         is Map.Entry<*, *>  -> MapEntry(obj)
         null                -> EMPTY_ASSOC
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
-    private fun mapToAssoc(map: MutableMap<*, *>) = object : IAssoc {
+    private fun mapToAssoc(map: Map<*, *>) = object : IAssoc {
         override fun containsKey(key: Any) = map.containsKey(key)
         override fun getEntry(key: Any) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
         override fun assoc(key: Any, value: Any) = throw UnsupportedOperationException()
