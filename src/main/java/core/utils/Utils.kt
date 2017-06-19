@@ -73,7 +73,7 @@ object Utils {
     private val EMPTY_ASSOC = mapToAssoc(mapOf<Nothing, Nothing>())
 
     /* Check if digit is valid for a number in a specific radix */
-    fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.indexOf(c) > -1
+    fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.contains(c)
 
     /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
     fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext = when {
@@ -129,7 +129,7 @@ object Utils {
                 return Symbol.intern(number)
             }
             /* Check if it is a digit, not a hash/sign char */
-            if ("#+-.".indexOf(c) == -1) {
+            if (!"#+-.".contains(c)) {
                 hasAtLeastOneDigit = true
             }
         }
@@ -137,7 +137,7 @@ object Utils {
             return Symbol.intern(number)
         }
 
-        if (n.indexOf('#') > -1) {
+        if (n.contains('#')) {
             if (HASH_PATTERN.matcher(n).matches()) {
                 n = n.replace('#', '0')
                 exactness = exactness ?: 'i'
@@ -148,12 +148,12 @@ object Utils {
 
         /* Check if it is a rational number and if it is valid */
         val slashIndex = n.indexOf('/')
-        if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.indexOf('.') > -1)) {
+        if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.contains('.'))) {
             return Symbol.intern(number)
         }
 
         /* Rational and Integral numbers are exact by default */
-        val isIntegral = n.indexOf('.') < 0
+        val isIntegral = !n.contains('.')
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]
         val hasSign = if (n[0] == '-' || n[0] == '+') 1 else 0

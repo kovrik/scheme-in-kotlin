@@ -106,7 +106,7 @@ class Reflector {
     fun _getClass(name: String): Class<*>? {
         try {
             return when {
-                name.indexOf('.') == -1 -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
+                !name.contains('.') -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
                 else -> Class.forName(name)
             }
         } catch (e: ClassNotFoundException) {
@@ -133,7 +133,7 @@ class Reflector {
 
     /* Java Interop: static fields */
     fun evalJavaStaticField(s: String): Any? {
-        if (s.indexOf('/') > -1) {
+        if (s.contains('/')) {
             val classAndField = s.split('/').dropLastWhile(String::isEmpty)
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
@@ -164,14 +164,14 @@ class Reflector {
             }
             val instance = args[0]
             result = evalJavaInstanceField(method, instance)
-        } else if (method.indexOf('.') == 0) {
+        } else if (method.startsWith('.')) {
             if (args.isEmpty()) {
                 throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
             }
             val instance = args[0]
             val rest = args.copyOfRange(1, args.size)
             result = evalJavaInstanceMethod(method, instance, rest)
-        } else if (method.indexOf('/') != -1) {
+        } else if (method.contains('/')) {
             result = evalJavaStaticMethod(method, args)
         } else {
             throw UndefinedIdentifierException(method)

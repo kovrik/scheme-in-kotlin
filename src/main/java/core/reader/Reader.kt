@@ -58,8 +58,8 @@ open class Reader : IReader {
                                                        "nul"       to Character.MIN_VALUE)
 
         private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
-        private fun isLineBreak(c: Char) = LINE_BREAKS.indexOf(c) > -1
-        fun isRadix(c: Char)     = "bodxBODX".indexOf(c) > -1
+        private fun isLineBreak(c: Char) = LINE_BREAKS.contains(c)
+        fun isRadix(c: Char)     = "bodxBODX".contains(c)
         fun isExact(c: Char)     = (c == 'e'  || c == 'E')
         fun isInexact(c: Char)   = (c == 'i'  || c == 'I')
         fun isExactness(c: Char) = isExact(c) || isInexact(c)
@@ -83,7 +83,7 @@ open class Reader : IReader {
     private fun readUntilDelimiter(): String {
         val token = StringBuilder()
         var i = reader.read()
-        while (isValid(i) && DELIMITERS.indexOf(i.toChar()) < 0) {
+        while (isValid(i) && !DELIMITERS.contains(i.toChar())) {
             token.append(i.toChar())
             i = reader.read()
         }

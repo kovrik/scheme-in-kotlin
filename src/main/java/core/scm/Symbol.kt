@@ -26,7 +26,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
         private fun hasSpecialChars(name: String) = when {
             name.isEmpty() || Character.isDigit(name[0]) -> true
             name[0] == '#' && (name.length == 1 || name[1] != '%') -> true
-            else -> name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.indexOf(it) > -1 }
+            else -> name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.contains(it) }
         }
     }
 
