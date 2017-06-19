@@ -191,18 +191,18 @@ object Utils {
     }
 
     /* Parse string into a number */
-    private fun processNumber(number: String, r: Int?, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
+    private fun processNumber(number: String, r: Int, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
         var num = number
         var result: Number?
         val dotPos = num.indexOf('.')
         if (useBigNum) {
             if (dotPos < 0) {
-                result = BigInteger(num, r!!)
+                result = BigInteger(num, r)
             } else {
                 /* Remove dot */
                 num = num.replace(".", "")
                 /* Process radix */
-                var bigDecimal = if (r == 10) BigDecimal(num) else BigDecimal(BigInteger(num, r!!))
+                var bigDecimal = if (r == 10) BigDecimal(num) else BigDecimal(BigInteger(num, r))
                 /* Process radix for a number with decimal point */
                 bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 if (bigDecimal.stripTrailingZeros().scale() == 0) {
@@ -212,14 +212,14 @@ object Utils {
             }
         } else {
             if (dotPos < 0) {
-                result = num.toLong(r!!)
+                result = num.toLong(r)
             } else {
                 if (r == 10) {
                     result = num.toDouble()
                 } else {
                     /* Remove dot */
                     num = num.replace(".", "")
-                    result = num.toLong(r!!) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
+                    result = num.toLong(r) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
                 }
             }
         }
@@ -259,7 +259,7 @@ object Utils {
     }
 
     /* Parse string into a rational number */
-    private fun processRationalNumber(numerator: String, denominator: String, r: Int?, exact: Boolean,
+    private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean,
                                       useBigNum: Boolean, exp: Long?): Number? {
 
         val num = processNumber(numerator, r, true, useBigNum, null)
