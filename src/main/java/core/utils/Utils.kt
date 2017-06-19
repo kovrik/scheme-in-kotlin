@@ -325,7 +325,7 @@ object Utils {
         is Long, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
         is BigRatio    -> o.isDenominatorEqualToOne
-        is Double      -> o as Double? == Math.floor(o) && o.isFinite()
+        is Double      -> o == Math.floor(o) && o.isFinite()
         else           -> false
     }
 
@@ -333,56 +333,56 @@ object Utils {
 
     fun isZero(o: Any?) = when (o) {
         null          -> false
-        is Long       -> ((o as Long?)!!).compareTo(0L) == 0
-        is Double     -> Math.signum((o as Double?)!!) == 0.0
+        is Long       -> o.compareTo(0L) == 0
+        is Double     -> Math.signum(o) == 0.0
         is BigRatio   -> o.signum() == 0
         is BigDecimal -> o.signum() == 0
-        is Int        -> Integer.signum((o as Int?)!!) == 0
-        is Short      -> Integer.signum((o as Short?)!!.toInt()) == 0
-        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 0
-        is Float      -> Math.signum((o as Float?)!!) == 0f
+        is Int        -> Integer.signum(o.toInt()) == 0
+        is Short      -> Integer.signum(o.toInt()) == 0
+        is Byte       -> Integer.signum(o.toInt()) == 0
+        is Float      -> Math.signum(o) == 0f
         is BigInteger -> o.signum() == 0
         else          -> false
     }
 
     fun isOne(o: Any?) = when (o) {
         null          -> false
-        is Long       -> (o as Long?)!!.toInt() == 1
+        is Long       -> o == 1L
         is Double     -> o == 1
         is BigRatio   -> o.isOne
         is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
-        is Int        -> o as Int? == 1
-        is Short      -> (o as Short?)!!.toInt() == 1
-        is Byte       -> (o as Byte?)!!.toInt() == 1
-        is Float      -> java.lang.Float.floatToRawIntBits((o as Float?)!!) == 1
+        is Int        -> o == 1
+        is Short      -> o.toInt() == 1
+        is Byte       -> o.toInt() == 1
+        is Float      -> java.lang.Float.floatToRawIntBits(o) == 1
         is BigInteger -> o.compareTo(BigInteger.ONE) == 0
         else          -> false
     }
 
     fun isPositive(o: Any?) = when (o) {
         null          -> false
-        is Long       -> (o as Long?)!! > 0
-        is Double     -> Math.signum((o as Double?)!!) == 1.0
+        is Long       -> o > 0
+        is Double     -> Math.signum(o) == 1.0
         is BigRatio   -> o.signum() == 1
         is BigDecimal -> o.signum() == 1
-        is Int        -> Integer.signum((o as Int?)!!) == 1
-        is Short      -> Integer.signum((o as Short?)!!.toInt()) == 1
-        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == 1
-        is Float      -> Math.signum((o as Float?)!!) == 1f
+        is Int        -> Integer.signum(o) == 1
+        is Short      -> Integer.signum(o.toInt()) == 1
+        is Byte       -> Integer.signum(o.toInt()) == 1
+        is Float      -> Math.signum(o) == 1f
         is BigInteger -> o.signum() == 1
         else          -> false
     }
 
     fun isNegative(o: Any?) = when (o) {
         null          -> false
-        is Long       -> ((o as Long?)!!) < 0
-        is Double     -> Math.signum((o as Double?)!!) == -1.0
+        is Long       -> o < 0
+        is Double     -> Math.signum(o) == -1.0
         is BigRatio   -> o.signum() == -1
         is BigDecimal -> o.signum() == -1
-        is Int        -> Integer.signum((o as Int?)!!) == -1
-        is Short      -> Integer.signum((o as Short?)!!.toInt()) == -1
-        is Byte       -> Integer.signum((o as Byte?)!!.toInt()) == -1
-        is Float      -> Math.signum((o as Float?)!!) == -1f
+        is Int        -> Integer.signum(o) == -1
+        is Short      -> Integer.signum(o.toInt()) == -1
+        is Byte       -> Integer.signum(o.toInt()) == -1
+        is Float      -> Math.signum(o) == -1f
         is BigInteger -> o.signum() == -1
         else          -> false
     }
