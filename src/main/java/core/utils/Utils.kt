@@ -418,48 +418,44 @@ object Utils {
 
     fun downcastNumber(number: Number): Number {
         return when {
-            number is BigRatio && number.isDenominatorEqualToOne -> tryDowncast(number)
-            number is BigDecimal -> tryDowncast(number)
-            number is BigInteger -> tryDowncast(number)
+            number is BigRatio && number.isDenominatorEqualToOne -> number.numerator.tryDowncast()
+            number is BigDecimal -> number.tryDowncast()
+            number is BigInteger -> number.tryDowncast()
             else                 -> number
         }
     }
 
-    /**
-     * Tries to downcast big number to a smaller type (if possible)
-     */
-    private fun tryDowncast(number: BigDecimal): Number {
+    /* Try to downcast Big Decimal to a smaller type (if possible) */
+    private fun BigDecimal.tryDowncast(): Number {
         /* Same checks are performed in longValueExact() method,
          * but we don't want exception to be thrown, just return the number */
-        if (!isInteger(number)) {
-            return number
+        if (!isInteger(this)) {
+            return this
         }
         try {
-            return number.longValueExact()
+            return this.longValueExact()
         } catch (e: ArithmeticException) {
             /* Down-casting has failed, ignore and cast to BigInteger then */
-            return number.toBigInteger()
+            return this.toBigInteger()
         }
     }
 
-    /* Try to downcast big number to a smaller type (if possible) */
-    private fun tryDowncast(number: BigInteger): Number {
+    /* Try to downcast Big Integer to a smaller type (if possible) */
+    private fun BigInteger.tryDowncast(): Number {
         /* Same checks are performed in longValueExact() method,
-         * but we don't want exception to be thrown, just return the number */
-        if (number.bitLength() <= 63) {
-            return number.toLong()
+         * but we don't want exception to be thrown, just return the this */
+        if (this.bitLength() <= 63) {
+            return this.toLong()
         }
-        if (isInteger(number)) {
+        if (isInteger(this)) {
             try {
-                return number.longValueExact()
+                return this.longValueExact()
             } catch (e: ArithmeticException) {
-                /* Down-casting has failed, ignore and return the original number */
+                /* Down-casting has failed, ignore and return the original this */
             }
         }
-        return number
+        return this
     }
-
-    private fun tryDowncast(bigRatio: BigRatio) = tryDowncast(bigRatio.numerator)
 
     fun isBitOpSupported(obj: Any): Boolean {
         if (!(obj is Byte || obj is Short || obj is Int || obj is Long)) {
@@ -512,8 +508,6 @@ object Utils {
      * Up-cast two numbers to the same type
      */
     fun upcast(f: Number, s: Number): Pair<Number, Number> {
-        f!!
-        s!!
         return when {
             f.javaClass == s.javaClass   -> Pair(f, s)
             !isFinite(f) || !isFinite(s) -> Pair(f, s)
