@@ -463,7 +463,7 @@ open class Reader : IReader {
      * <keyword> -> :<token>
      */
     @Throws(IOException::class)
-    private fun readKeyword(): Keyword? {
+    private fun readKeyword(): Keyword {
         val s = readUntilDelimiter()
         if (s.isEmpty()) throw IllegalSyntaxException("read: illegal use of :")
         return Keyword.intern(s)

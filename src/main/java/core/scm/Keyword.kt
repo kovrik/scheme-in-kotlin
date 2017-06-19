@@ -11,7 +11,7 @@ class Keyword private constructor(override val name: String) :
         /* Pool of all interned keywords */
         private val POOL = InternPool<Keyword>()
 
-        fun intern(value: String) = POOL.intern(Keyword(value))
+        fun intern(value: String) = POOL.intern(Keyword(value))!!
     }
 
     override fun toString() = ':' + name
