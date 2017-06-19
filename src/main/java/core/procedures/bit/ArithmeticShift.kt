@@ -9,10 +9,10 @@ class ArithmeticShift : AFn<Number?, Long>(name = "arithmetic-shift", isPure = t
 
     // TODO shifts for big numbers
     override operator fun invoke(arg1: Number?, arg2: Number?): Long {
-        return if (Utils.isPositive(arg2)) {
-            arg1!!.toLong() shl arg2!!.toInt()
+        return if (Utils.isPositive(arg2!!)) {
+            arg1!!.toLong() shl arg2.toInt()
         } else {
-            arg1!!.toLong() ushr arg2!!.toInt().times(-1)
+            arg1!!.toLong() ushr arg2.toInt().times(-1)
         }
     }
 }
