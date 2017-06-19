@@ -43,7 +43,7 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, minArgs =
             f is BigDecimal && s is BigDecimal -> return invoke(f, s)
             f is BigInteger && s is BigInteger -> return invoke(f, s)
         }
-        val m = REM(f, s)!!
+        val m = REM(f, s)
         return when {
             m.toInt() == 0                   -> m
             f.toLong() > 0 == s.toLong() > 0 -> m

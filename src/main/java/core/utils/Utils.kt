@@ -511,7 +511,7 @@ object Utils {
     /**
      * Up-cast two numbers to the same type
      */
-    fun upcast(f: Number?, s: Number?): Pair<Number, Number> {
+    fun upcast(f: Number, s: Number): Pair<Number, Number> {
         f!!
         s!!
         return when {

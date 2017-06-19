@@ -34,7 +34,7 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
         }
         var result = args[0]
         for (i in 1..args.size - 1) {
-            result = subtract(result as Number, args[i] as Number)
+            result = subtract(result!! as Number, args[i]!! as Number)
         }
         return result as Number?
     }

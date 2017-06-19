@@ -20,16 +20,16 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, rest
 
     override operator fun invoke(vararg args: Any?): Number? {
         if (args.size == 1) {
-            return invoke(1L, args[0] as Number)
+            return invoke(1L, args[0]!! as Number)
         }
-        var result = args[0] as Number
+        var result = args[0]!! as Number
         for (d in 1..args.size - 1) {
             result = invoke(result, args[d]!! as Number)
         }
         return result
     }
 
-    private operator fun invoke(arg1: Number?, arg2: Number?): Number {
+    private operator fun invoke(arg1: Number, arg2: Number): Number {
         val (n, d) = Utils.upcast(arg1, arg2)
         return when {
             Utils.isZero(d)  && Utils.isExact(d) -> throw ArithmeticException("Division by zero")
