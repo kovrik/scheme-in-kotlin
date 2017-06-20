@@ -13,7 +13,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
-import java.util.regex.Pattern
 import java.util.stream.IntStream
 
 object Utils {
@@ -22,12 +21,12 @@ object Utils {
     val ROUNDING_MODE = RoundingMode.HALF_EVEN
     val DEFAULT_CONTEXT = MathContext(DEFAULT_SCALE, ROUNDING_MODE)
 
-    private val HASH_PATTERN = Pattern.compile(".+(#+\\.?+#?)/?(#+\\.?+#?)?$")
+    private val HASH_REGEX = ".+(#+\\.?+#?)/?(#+\\.?+#?)?$".toRegex()
 
-    private val EXPONENT_MARKS_PATTERN   = "[sldefSLDEF]".toRegex()
-    private val EXPONENT16_MARKS_PATTERN = "[slSL]".toRegex()
-    private val EXPONENT_PATTERN   = Pattern.compile(".+$EXPONENT_MARKS_PATTERN[+-]?\\d+(\\.\\d*)?$")
-    private val EXPONENT16_PATTERN = Pattern.compile(".+$EXPONENT16_MARKS_PATTERN[+-]?\\w+$")
+    private val EXPONENT_MARKS_REGEX   = "[sldefSLDEF]".toRegex()
+    private val EXPONENT16_MARKS_REGEX = "[slSL]".toRegex()
+    private val EXPONENT_REGEX         = ".+$EXPONENT_MARKS_REGEX[+-]?\\d+(\\.\\d*)?$".toRegex()
+    private val EXPONENT16_REGEX       = ".+$EXPONENT16_MARKS_REGEX[+-]?\\w+$".toRegex()
 
     private val SPECIAL_NUMBERS = hashMapOf("+nan.0" to Double.NaN,
                                             "-nan.0" to Double.NaN,
@@ -97,12 +96,12 @@ object Utils {
 
         /* Read exponent mark if present */
         var exactness = exactness
-        val exponentPattern      = if (radix == 16) EXPONENT16_PATTERN else EXPONENT_PATTERN
-        val exponentMarksPattern = if (radix == 16) EXPONENT16_MARKS_PATTERN else EXPONENT_MARKS_PATTERN
+        val exponentRegex      = if (radix == 16) EXPONENT16_REGEX else EXPONENT_REGEX
+        val exponentMarksRegex = if (radix == 16) EXPONENT16_MARKS_REGEX else EXPONENT_MARKS_REGEX
         var exp: Long? = null
         var n = number
-        if (exponentPattern.matcher(number).matches()) {
-            val split = number.split(exponentMarksPattern).dropLastWhile { it.isEmpty() }.toTypedArray()
+        if (exponentRegex.matches(number)) {
+            val split = number.split(exponentMarksRegex).dropLastWhile { it.isEmpty() }.toTypedArray()
             n = split[0]
             val exponent = split[1]
             try {
@@ -148,7 +147,7 @@ object Utils {
         }
 
         if (hasHashChar) {
-            if (HASH_PATTERN.matcher(n).matches()) {
+            if (HASH_REGEX.matches(n)) {
                 n = n.replace('#', '0')
                 exactness = exactness ?: 'i'
             } else {
