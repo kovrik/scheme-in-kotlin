@@ -94,10 +94,6 @@ object Utils {
         if (last == 'i' || last == 'I') {
             return processComplexNumber(number, exactness, radix)
         }
-        /* Multiple decimal points are not allowed*/
-        if (number.indexOf('.') != number.lastIndexOf('.')) {
-            return Symbol.intern(number)
-        }
 
         /* Read exponent mark if present */
         var exactness = exactness
@@ -117,6 +113,7 @@ object Utils {
             exactness = exactness ?: 'i'
         }
         /* Validate all digits */
+        var hasSign = 0
         var hasAtLeastOneDigit = false
         var isIntegral = true
         var hasHashChar = false
@@ -125,9 +122,10 @@ object Utils {
         for (c in n.toCharArray()) {
             i += 1
             when (c) {
-                '.' -> isIntegral = false
-                '+' -> if (i > 0) return Symbol.intern(number)
-                '-' -> if (i > 0) return Symbol.intern(number)
+                /* Multiple decimal points are not allowed*/
+                '.' -> if (isIntegral) isIntegral = false else return Symbol.intern(number)
+                '+' -> if (i == 0) hasSign = 1 else return Symbol.intern(number)
+                '-' -> if (i == 0) hasSign = 1 else return Symbol.intern(number)
                 '#' -> when {
                     hasAtLeastOneDigit -> hasHashChar = true
                     else -> return Symbol.intern(number)
@@ -161,7 +159,6 @@ object Utils {
         /* Rational and Integral numbers are exact by default */
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]!!
-        val hasSign = if (n[0] == '-' || n[0] == '+') 1 else 0
         if (slashIndex > -1) {
             val numerator = n.substring(0, slashIndex)
             val denominator = n.substring(slashIndex + 1)
