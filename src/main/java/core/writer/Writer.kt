@@ -27,6 +27,7 @@ object Writer {
             is CharSequence    -> o.write()
             is Char            -> o.write()
             is Pattern         -> o.write()
+            is Regex           -> o.write()
             is Throwable       -> o.write()
             is Map<*, *>       -> o.write()
             is Map.Entry<*, *> -> o.write()
@@ -38,6 +39,8 @@ object Writer {
     private fun Class<*>.write() = "#<class:$name>"
 
     private fun Pattern.write() = "#\"${this}\""
+
+    private fun Regex.write() = "#\"${this}\""
 
     private fun List<*>.write() = Cons.toString(this)
 
