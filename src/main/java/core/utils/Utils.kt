@@ -116,28 +116,40 @@ object Utils {
             }
             exactness = exactness ?: 'i'
         }
-        /* Validate sign */
-        if (n.lastIndexOf('+') > 0 || n.lastIndexOf('-') > 0) {
-            return Symbol.intern(number)
-        }
-
         /* Validate all digits */
         var hasAtLeastOneDigit = false
+        var isIntegral = true
+        var hasHashChar = false
+        var slashIndex = -1
+        var i = -1
         for (c in n.toCharArray()) {
-            /* Check if char is valid for this radix AND that we don't have # before digits */
-            if (c != '/' && !isValidForRadix(c, radix) || c == '#' && !hasAtLeastOneDigit) {
-                return Symbol.intern(number)
-            }
-            /* Check if it is a digit, not a hash/sign char */
-            if (!"#+-.".contains(c)) {
-                hasAtLeastOneDigit = true
+            i += 1
+            when (c) {
+                '.' -> isIntegral = false
+                '+' -> if (i > 0) return Symbol.intern(number)
+                '-' -> if (i > 0) return Symbol.intern(number)
+                '#' -> when {
+                    hasAtLeastOneDigit -> hasHashChar = true
+                    else -> return Symbol.intern(number)
+                }
+                '/' -> {
+                    /* Check if it is a rational number and if it is valid */
+                    when {
+                        slashIndex > -1 || !isIntegral -> return Symbol.intern(number)
+                        else -> slashIndex = i
+                    }
+                }
+                else -> when {
+                    isValidForRadix(c, radix) -> hasAtLeastOneDigit = true
+                    else -> return Symbol.intern(number)
+                }
             }
         }
         if (!hasAtLeastOneDigit) {
             return Symbol.intern(number)
         }
 
-        if (n.contains('#')) {
+        if (hasHashChar) {
             if (HASH_PATTERN.matcher(n).matches()) {
                 n = n.replace('#', '0')
                 exactness = exactness ?: 'i'
@@ -146,14 +158,7 @@ object Utils {
             }
         }
 
-        /* Check if it is a rational number and if it is valid */
-        val slashIndex = n.indexOf('/')
-        if (slashIndex > -1 && (slashIndex != n.lastIndexOf('/') || n.contains('.'))) {
-            return Symbol.intern(number)
-        }
-
         /* Rational and Integral numbers are exact by default */
-        val isIntegral = !n.contains('.')
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]!!
         val hasSign = if (n[0] == '-' || n[0] == '+') 1 else 0
