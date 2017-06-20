@@ -155,15 +155,15 @@ object Utils {
         /* Rational and Integral numbers are exact by default */
         val isIntegral = !n.contains('.')
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
-        val threshold = RADIX_THRESHOLDS[radix]
+        val threshold = RADIX_THRESHOLDS[radix]!!
         val hasSign = if (n[0] == '-' || n[0] == '+') 1 else 0
         if (slashIndex > -1) {
             val numerator = n.substring(0, slashIndex)
             val denominator = n.substring(slashIndex + 1)
-            val useBigNum = numerator.length > threshold!! + hasSign || denominator.length > threshold + hasSign
+            val useBigNum = numerator.length > threshold + hasSign || denominator.length > threshold + hasSign
             return processRationalNumber(numerator, denominator, radix, exact, useBigNum, exp)
         }
-        val useBigNum = n.length > threshold!! + hasSign
+        val useBigNum = n.length > threshold + hasSign
         return processNumber(n, radix, exact, useBigNum, exp)
     }
 
