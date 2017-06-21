@@ -8,7 +8,7 @@ import core.utils.Utils
 
 open class Next : AFn<Any?, Any?>(name = "next", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override operator fun invoke(arg: Any?) = when (arg) {
+    override operator fun invoke(arg: Any?): Any? = when (arg) {
         null                  -> null
         !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from ${arg.javaClass}")
         is List<*>            -> if (arg.isEmpty()) null else arg.subList(1, arg.size)
@@ -20,16 +20,8 @@ open class Next : AFn<Any?, Any?>(name = "next", isPure = true, minArgs = 1, max
         else                  -> throw WrongTypeException("next", "List or Vector or Set or String or Map", arg)
     }
 
-    private fun next(set: Set<*>): Any? {
-        if (set.isEmpty()) {
-            return null
-        }
-        val iter = set.iterator()
-        iter.next()
-        val next = HashSet<Any?>()
-        while (iter.hasNext()) {
-            next.add(iter.next())
-        }
-        return next
+    private fun next(col: Collection<*>) = when {
+        col.isEmpty() -> null
+        else -> col.asSequence().drop(1).toSet()
     }
 }
