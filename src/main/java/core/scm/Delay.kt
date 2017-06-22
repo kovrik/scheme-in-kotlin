@@ -15,24 +15,22 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
     private val forced = AtomicBoolean(false)
 
     override fun deref(): Any? {
-        if (isCancelled) {
-            return null
-        }
-        if (isCompletedExceptionally || isDone) {
-            return value
-        }
-        if (!forced.compareAndSet(false, true)) {
+        when {
+            isCancelled -> return null
+            isCompletedExceptionally || isDone -> return value
             /* Do not allow delay to be forced twice */
-            throw ReentrantDelayException(this)
+            !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
+            else -> {
+                try {
+                    /* Always run delay in the current thread */
+                    complete(evaluator.eval(expr, env))
+                    return get()
+                } catch (e: Exception) {
+                    completeExceptionally(e)
+                }
+                return value
+            }
         }
-        try {
-            /* Always run delay in current thread */
-            complete(evaluator.eval(expr, env))
-            return get()
-        } catch (e: Exception) {
-            completeExceptionally(e)
-        }
-        return value
     }
 
     private val value: Any?
@@ -54,23 +52,21 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
 
     override fun toString(): String {
         val sb = StringBuilder("#<").append("delay")
-        if (isCompletedExceptionally) {
-            val value = try {
-                get()
-            } catch (e: ExecutionException) {
-                (e.cause as? ThrowableWrapper)?.get() ?: e.cause
-            } catch (e: RuntimeException) {
-                (e as? ThrowableWrapper)?.get() ?: e
+        when {
+            isCompletedExceptionally -> {
+                val value = try {
+                    get()
+                } catch (e: ExecutionException) {
+                    (e.cause as? ThrowableWrapper)?.get() ?: e.cause
+                } catch (e: RuntimeException) {
+                    (e as? ThrowableWrapper)?.get() ?: e
+                }
+                sb.append("!error!").append(if (value === this) "(this delay)" else Writer.write(value))
             }
-            sb.append("!error!").append(if (value === this) "(this delay)" else Writer.write(value))
-        } else if (isDone) {
-            sb.append("!").append(if (value === this) Writer.write("(this delay)") else Writer.write(value))
-        } else if (isCancelled) {
-            sb.append(":cancelled")
-        } else if (forced.get()) {
-            sb.append(":running")
-        } else {
-            sb.append(":pending")
+            isDone -> sb.append("!").append(if (value === this) Writer.write("(this delay)") else Writer.write(value))
+            isCancelled  -> sb.append(":cancelled")
+            forced.get() -> sb.append(":running")
+            else         -> sb.append(":pending")
         }
         return sb.append(">").toString()
     }
