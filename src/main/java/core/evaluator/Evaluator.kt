@@ -114,15 +114,15 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         }
 
         if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
-
         // TODO Do not evaluate if already evaluated?
         op = eval(op, env)
+
         /* If result is not a function, then raise an error */
         if (op !is AFn<*, *>) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
-        (1..size - 1).forEach { i -> args[i - 1] = eval(this[i], env) }
+        (1..args.size).forEach { args[it - 1] = eval(this[it], env) }
         /* Call AFn via helper method */
         return (op as AFn<Any?, Any?>).invokeN(*args)
     }
