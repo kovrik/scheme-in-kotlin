@@ -57,10 +57,10 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
             throw cc
         }
-        if (result is BigRatio) {
-            return Utils.downcastNumber(result as Number)
+        when (result) {
+            is BigRatio -> return Utils.downcastNumber(result)
+            else        -> return result
         }
-        return result
     }
 
     /**
@@ -79,14 +79,13 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
 
     /* Evaluate Symbol */
     private fun Symbol.eval(env: Environment): Any? {
-        /* Check if it is a Special Form */
         val result = env.findOrDefault(this, Environment.UNDEFINED)
-        if (result is ISpecialForm) throw IllegalSyntaxException.of(result.toString(), this)
-        if (result === Environment.UNDEFINED) {
+        return when {
+            result is ISpecialForm -> throw IllegalSyntaxException.of(result.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            return reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
+            result === Environment.UNDEFINED -> reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
+            else -> result
         }
-        return result
     }
 
     /* Evaluate list */
