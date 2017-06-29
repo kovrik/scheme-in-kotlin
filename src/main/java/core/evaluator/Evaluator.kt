@@ -69,12 +69,12 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
      * If Thunk is returned, then eval() method (trampoline) continues evaluation.
      */
     private fun evalIter(sexp: Any?, env: Environment) = when (sexp) {
-        is Symbol           -> sexp.eval(env)
-        is List<*>          -> sexp.eval(env)
-        is Map<*, *>        -> sexp.eval(env)
-        is Vector           -> sexp.eval(env)
-        is Set<*>           -> sexp.eval(env)
-        else                -> sexp
+        is Symbol    -> sexp.eval(env)
+        is List<*>   -> sexp.eval(env)
+        is Map<*, *> -> sexp.eval(env)
+        is Vector    -> sexp.eval(env)
+        is Set<*>    -> sexp.eval(env)
+        else         -> sexp
     }
 
     /* Evaluate Symbol */
