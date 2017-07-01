@@ -19,7 +19,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(EMPTY, eval("`()", env))
         assertEquals(list(s("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
         assertEquals(list(1L, 1L, 2L, 4L), eval("`(1 ,@(list 1 2) 4)", env))
-        assertEquals(list(s("a"), 3L, 4L, 5L, 6L, s("b")), eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
+        assertEquals(list(arrayOf<Any?>(s("a"), 3L, 4L, 5L, 6L, s("b"))), eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
         assertEquals(list(s("a"), list(s("quasiquote"), list(s("b"), list(s("unquote"), s("x")), list(s("unquote"), list(s("quote"), s("y"))), s("d"))), s("e")),
                 eval("(let ((name1 'x) (name2 'y)) `(a `(b ,,name1 ,',name2 d) e))", env))
         assertEquals(list(1L, 2L, 81L, 3L, 4L), eval("`(1 2 ,(* 9 9) 3 4)", env))
@@ -42,7 +42,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(EMPTY, eval("(quasiquote ())", env))
         assertEquals(list(s("list"), 3L, 4L), eval("(quasiquote (list ,(+ 1 2) 4))", env))
         assertEquals(list(1L, 1L, 2L, 4L), eval("(quasiquote (1 ,@(list 1 2) 4))", env))
-        assertEquals(list(s("a"), 3L, 4L, 5L, 6L, s("b")), eval("(quasiquote (a ,(+ 1 2) ,@(map abs '(4 -5 6)) b))", env))
+        assertEquals(list(arrayOf<Any?>(s("a"), 3L, 4L, 5L, 6L, s("b"))), eval("(quasiquote (a ,(+ 1 2) ,@(map abs '(4 -5 6)) b))", env))
         assertEquals(list(1L, 2L, 81L, 3L, 4L), eval("(quasiquote (1 2 ,(* 9 9) 3 4))", env))
         assertEquals(list(1L, 2L, 3L), eval("(quasiquote (1 ,(+ 1 1) 3))", env))
         assertEquals(list(3L), eval("(quasiquote (,(+ 1 2)))", env))
@@ -54,7 +54,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(list(s("+")), eval("(let ((x '())) `(+ ,@x)) '(+)", env))
         assertEquals(1L, eval("`(,@1)", env))
         assertEquals("String", eval("`(,@\"String\")", env))
-        assertEquals(Vector(1L), eval("`[,1]", env))
+        assertEquals(Vector(arrayOf(1L)), eval("`[,1]", env))
         try {
             eval("`(1 , %(list 2 3))", env)
             fail()

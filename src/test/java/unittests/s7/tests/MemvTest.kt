@@ -32,7 +32,7 @@ class MemvTest : AbstractTest() {
         assertEquals(list<Any?>('a', 2L), eval("(memv #\\a '(1 #f #\\a 2))", env))
         assertEquals(false, eval("(memv #(1) '(1 #(1) 2))", env))
         assertEquals(list(EMPTY, 2L), eval("(memv '() '(1 () 2))", env))
-        assertEquals(list(MutableVector(1L, 2L, 3L), MutableVector(1L, 2L)), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env))
+        assertEquals(list(MutableVector(arrayOf(1L, 2L, 3L)), MutableVector(arrayOf(1L, 2L))), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (memv x lst))", env))
         assertEquals(false, eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (memv x lst))", env))
         try {
             eval("(memv 'asdf '(a b . c))", env)

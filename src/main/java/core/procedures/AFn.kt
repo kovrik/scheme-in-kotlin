@@ -17,10 +17,10 @@ abstract class AFn<T, R>(var minArgs: Int = 0,
     private val arity = if (minArgs == maxArgs) minArgs else -1
 
     override fun compare(o1: T, o2: T): Int {
-        val result = invokeN(o1, o2)
+        val result = invoke(o1, o2)
         if (result is Boolean) {
             if (result) return -1
-            if (Utils.toBoolean(invokeN(o2, o1))) return 1
+            if (Utils.toBoolean(invoke(o2, o1))) return 1
             return 0
         }
         return (result as Number).toInt()
@@ -39,7 +39,7 @@ abstract class AFn<T, R>(var minArgs: Int = 0,
     override operator fun invoke(arg1: T, arg2: T, arg3: T): R = throw ArityException(name, minArgs, maxArgs, 3)
     override operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R = throw ArityException(name, minArgs, maxArgs, 4)
 
-    override operator fun invoke(vararg args: Any?): R = throw ArityException(name, minArgs, maxArgs, args.size)
+    override operator fun invoke(args: Array<Any?>): R = throw ArityException(name, minArgs, maxArgs, args.size)
 
     override fun toString() = when (name.isEmpty()) {
         true  -> "#<procedure>"
@@ -69,7 +69,7 @@ abstract class AFn<T, R>(var minArgs: Int = 0,
      * then calls invoke<N>() methods (where N is arity).
      * Calls variadic invoke() otherwise.
      */
-    fun invokeN(vararg args: T): R {
+    fun invokeN(args: Array<T>): R {
         checkArgs(args)
         return when (arity) {
             0    -> invoke()
@@ -77,7 +77,7 @@ abstract class AFn<T, R>(var minArgs: Int = 0,
             2    -> invoke(args[0], args[1])
             3    -> invoke(args[0], args[1], args[2])
             4    -> invoke(args[0], args[1], args[2], args[3])
-            else -> invoke(*args)
+            else -> invoke(args as Array<Any?>)
         }
     }
 }

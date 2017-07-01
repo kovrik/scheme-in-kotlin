@@ -3,7 +3,7 @@ package core.scm
 import core.writer.Writer
 
 // TODO implement proper interfaces, refactor
-class MapEntry(key: Any?, value: Any?) : MutableVector(key, value), Map.Entry<Any?, Any?> {
+class MapEntry(key: Any?, value: Any?) : MutableVector(arrayOf(key, value)), Map.Entry<Any?, Any?> {
 
     constructor(entry: Map.Entry<Any?, Any?>) : this(entry.key, entry.value)
 

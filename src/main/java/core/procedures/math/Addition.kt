@@ -9,7 +9,7 @@ import java.math.BigInteger
 
 class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Number::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Number? {
+    override operator fun invoke(args: Array<Any?>): Number? {
         when (args.size) {
             0 -> return 0L
             1 -> return args[0] as Number?

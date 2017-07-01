@@ -5,7 +5,7 @@ import core.scm.MutableString
 
 class StringProc : AFn<Any?, MutableString>(name = "string", isPure = true, restArgsType = Char::class.javaObjectType) {
 
-    override operator fun invoke(vararg args: Any?): MutableString {
+    override operator fun invoke(args: Array<Any?>): MutableString {
         if (args.isEmpty()) {
             return MutableString()
         }

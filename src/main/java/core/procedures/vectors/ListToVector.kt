@@ -10,6 +10,6 @@ class ListToVector : AFn<List<*>?, MutableVector>(name = "list->vector", isPure 
     override operator fun invoke(arg: List<*>?) = listToVector(arg)
 
     companion object {
-        fun listToVector(arg: List<*>?) = MutableVector(*arg!!.toTypedArray())
+        fun listToVector(arg: List<*>?) = MutableVector(arg!!.toTypedArray())
     }
 }

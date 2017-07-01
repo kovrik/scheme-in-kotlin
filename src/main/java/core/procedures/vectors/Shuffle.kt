@@ -15,7 +15,7 @@ class Shuffle : AFn<Collection<*>?, Vector>(name = "shuffle", isPure = true, min
         if (arg is Collection<*>) {
             val list = ArrayList(arg)
             Collections.shuffle(list)
-            return MutableVector(*list.toTypedArray())
+            return MutableVector(list.toTypedArray())
         }
         throw WrongTypeException(name, Collection::class.java, arg)
     }

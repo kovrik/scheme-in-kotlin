@@ -14,7 +14,7 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
     private val count = Count()
 
     // TODO Very naive implementation. Re-implement and optimize
-    override operator fun invoke(vararg args: Any?): Thunk {
+    override operator fun invoke(args: Array<Any?>): Thunk {
         /* Check that all lists/vectors are of the same size */
         if (!Utils.isSeqable(args[1])) {
             throw IllegalArgumentException("don't know how to create Sequence from ${args[1]?.javaClass}")

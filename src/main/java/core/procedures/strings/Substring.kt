@@ -7,7 +7,7 @@ open class Substring : AFn<Any?, String>(name = "substring", isPure = true, minA
                            mandatoryArgsTypes = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java),
                            restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
-    override operator fun invoke(vararg args: Any?): String {
+    override operator fun invoke(args: Array<Any?>): String {
         val s = args[0].toString()
         val start = (args[1] as Number).toInt()
         if (start > s.length) {

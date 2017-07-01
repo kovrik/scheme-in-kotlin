@@ -9,7 +9,7 @@ import java.io.IOException
 
 class ReadChar : AFn<Any?, Char>(name = "read-char", maxArgs = 1, restArgsType = InputPort::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Char {
+    override operator fun invoke(args: Array<Any?>): Char {
         val inputPort: InputPort = if (args.isEmpty()) Repl.currentInputPort else args[0] as InputPort
         try {
             return inputPort.read().toChar()

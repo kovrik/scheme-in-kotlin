@@ -33,8 +33,8 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         array.fill(init)
     }
 
-    constructor(vararg elements: Any?) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        array = elements as Array<Any?>
+    constructor(elements: Array<Any?>) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+        array = elements
     }
 
     override val size: Int

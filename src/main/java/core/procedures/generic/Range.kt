@@ -12,7 +12,7 @@ import java.math.BigDecimal
 class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
     // TODO Write Unit tests!!!
-    override operator fun invoke(vararg args: Any?): List<Any?> {
+    override operator fun invoke(args: Array<Any?>): List<Any?> {
         if (args.isEmpty()) {
             return Cons.EMPTY
         }
@@ -98,7 +98,7 @@ class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, 
         return result
     }
 
-    private fun range(vararg args: Any?): List<Any?> {
+    private fun range(args: Array<Any?>): List<Any?> {
         val result = Cons.list<Number>()
         var start: Number = 0L
         var end:   Number = 0L

@@ -1,16 +1,8 @@
 package core.reader
 
 import core.exceptions.IllegalSyntaxException
-import core.scm.Cons
-import core.scm.InvokableMap
-import core.scm.Keyword
-import core.scm.MutableVector
-import core.scm.Symbol
-import core.scm.specialforms.Dot
-import core.scm.specialforms.Quasiquote
-import core.scm.specialforms.Quote
-import core.scm.specialforms.Unquote
-import core.scm.specialforms.UnquoteSplicing
+import core.scm.*
+import core.scm.specialforms.*
 import core.utils.Utils.getRadixByChar
 import core.utils.Utils.isValidForRadix
 import core.utils.Utils.preProcessNumber
@@ -402,7 +394,7 @@ open class Reader : IReader {
      * <vector> -> #(<vector_contents>)
      */
     @Throws(IOException::class)
-    private fun readVector(terminator: Char) = MutableVector(*readList(false, terminator).toTypedArray())
+    private fun readVector(terminator: Char) = MutableVector(readList(false, terminator).toTypedArray())
 
     /**
      * Read hashmap

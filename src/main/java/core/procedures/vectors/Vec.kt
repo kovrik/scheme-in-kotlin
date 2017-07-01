@@ -8,7 +8,7 @@ class Vec : AFn<Any?, MutableVector>(name = "vec", isPure = true, minArgs = 1, m
 
     override operator fun invoke(arg: Any?): MutableVector {
         if (arg is Collection<*>) {
-            return MutableVector(*arg.toTypedArray())
+            return MutableVector(arg.toTypedArray())
         }
         if (arg is CharSequence) {
             val size = arg.length

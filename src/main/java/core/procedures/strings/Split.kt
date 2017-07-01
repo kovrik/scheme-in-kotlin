@@ -9,10 +9,10 @@ class Split : AFn<Any?, Vector>(name = "split", isPure = true, minArgs = 2, maxA
                   mandatoryArgsTypes = arrayOf(CharSequence::class.java, Pattern::class.java),
                   restArgsType = Long::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Vector {
+    override operator fun invoke(args: Array<Any?>): Vector {
         return when (args.size) {
-            2    -> Vector(*(args[1] as Pattern).split(args[0] as CharSequence))
-            else -> Vector(*(args[1] as Pattern).split(args[0] as CharSequence, (args[2] as Long).toInt()))
+            2    -> Vector((args[1] as Pattern).split(args[0] as CharSequence) as Array<Any?>)
+            else -> Vector((args[1] as Pattern).split(args[0] as CharSequence, (args[2] as Long).toInt()) as Array<Any?>)
         }
     }
 }

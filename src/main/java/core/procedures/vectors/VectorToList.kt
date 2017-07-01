@@ -10,6 +10,6 @@ class VectorToList : AFn<Vector, List<*>>(name = "vector->list", isPure = true, 
     override operator fun invoke(arg: Vector) = vectorToList(arg)
 
     companion object {
-        fun vectorToList(v: Vector) = Cons.list(*v.getArray())
+        fun vectorToList(v: Vector) = Cons.list(v.getArray())
     }
 }

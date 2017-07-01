@@ -9,7 +9,7 @@ import java.math.BigInteger
 class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
                            mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java), restArgsType = Long::class.java) {
 
-    override operator fun invoke(vararg args: Any?): String {
+    override operator fun invoke(args: Array<Any?>): String {
         val o = args[0]!! as Number
         val o1 = args.getOrNull(1)
         if (o1 != null) {

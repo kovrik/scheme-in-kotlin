@@ -5,5 +5,5 @@ import core.scm.Vector
 
 class VectorImmutable : AFn<Any?, Vector>(name = "vector-immutable") {
 
-    override operator fun invoke(vararg args: Any?) = Vector(*args)
+    override operator fun invoke(args: Array<Any?>) = Vector(args)
 }

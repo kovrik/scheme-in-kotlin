@@ -30,7 +30,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     inner class JavaMethodCall(val method: String) : AFn<Any?, Any?>(name = method) {
-        override fun invoke(vararg args: Any?) = reflector.evalJavaMethod(method, args as Array<Any?>)
+        override fun invoke(args: Array<Any?>) = reflector.evalJavaMethod(method, args)
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
@@ -124,7 +124,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
         val args = arrayOfNulls<Any>(size - 1)
         (1..args.size).forEach { args[it - 1] = eval(this[it], env) }
         /* Call AFn via helper method */
-        return (op as AFn<Any?, Any?>).invokeN(*args)
+        return (op as AFn<Any?, Any?>).invokeN(args)
     }
 
     /* Evaluate hash map */

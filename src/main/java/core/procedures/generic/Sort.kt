@@ -7,7 +7,7 @@ import java.util.*
 
 class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs = 2) {
 
-    override operator fun invoke(vararg args: Any?): Any? {
+    override operator fun invoke(args: Array<Any?>): Any? {
         if (args.size == 1 || args[0] == null) {
             val arg = args[0] ?: args[1]
             try {
@@ -21,7 +21,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
                     is Vector -> {
                         val copy = arg.getArray().copyOf()
                         copy.sort()
-                        return Vector(*copy)
+                        return Vector(copy)
                     }
                     is Map<*, *> -> return TreeMap(arg as Map<*, *>?)
                 }
@@ -43,7 +43,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
                 is Vector -> {
                     val copy = arg.getArray().copyOf()
                     copy.sortWith(comparator)
-                    return Vector(*copy)
+                    return Vector(copy)
                 }
                 is Map<*, *> -> {
                     val treeMap = TreeMap<Any?, Any?>(comparator)

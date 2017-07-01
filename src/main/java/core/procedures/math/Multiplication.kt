@@ -10,7 +10,7 @@ import java.math.BigInteger
 
 class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsType = Number::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Number? {
+    override operator fun invoke(args: Array<Any?>): Number? {
         return when (args.size) {
             0 -> 1L
             1 -> args[0] as Number?

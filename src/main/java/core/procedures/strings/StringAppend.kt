@@ -4,7 +4,7 @@ import core.procedures.AFn
 
 class StringAppend : AFn<Any?, String>(name = "string-append", isPure = true, restArgsType = CharSequence::class.java) {
 
-    override operator fun invoke(vararg args: Any?): String {
+    override operator fun invoke(args: Array<Any?>): String {
         if (args.isEmpty()) {
             return ""
         }

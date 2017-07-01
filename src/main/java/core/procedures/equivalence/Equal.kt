@@ -5,7 +5,7 @@ import core.scm.MutableString
 
 class Equal : AFn<Any?, Boolean>(name = "equal?", isPure = true, minArgs = 2) {
 
-    override operator fun invoke(vararg args: Any?): Boolean {
+    override operator fun invoke(args: Array<Any?>): Boolean {
         var result = true
         for (i in 0..args.size - 2) {
             result = result && equal(args[i], args[i + 1])

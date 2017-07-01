@@ -8,7 +8,7 @@ import core.scm.Vector
 
 class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
 
-    override operator fun invoke(vararg args: Any?): Any? {
+    override operator fun invoke(args: Array<Any?>): Any? {
         val first = args[0]
         when {
             args.size == 1 -> return first

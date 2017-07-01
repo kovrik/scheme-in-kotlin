@@ -320,7 +320,7 @@ class SpecialFormTest : AbstractTest() {
                 "     (i 0 (+ i 1)))" +
                 "    ((= i 5) vec)" +
                 "  (vector-set! vec i i))"
-        assertEquals(MutableVector(0L, 1L, 2L, 3L, 4L), eval(doTest1, env))
+        assertEquals(MutableVector(arrayOf(0L, 1L, 2L, 3L, 4L)), eval(doTest1, env))
 
         val doTest2 = "(let ((x '(1 3 5 7 9)))" +
                 "  (do ((x x (cdr x))" +
@@ -635,8 +635,8 @@ class SpecialFormTest : AbstractTest() {
                 eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env))
 
         assertEquals(list(1L, list(Symbol.intern("quasiquote"), list(Symbol.intern("unquote"), list(
-                Symbol.intern("+"), 1L, MutableVector(
-                Symbol.intern("+"), 2L, 3L)))), 4L),
+                Symbol.intern("+"), 1L, MutableVector(arrayOf(
+                Symbol.intern("+"), 2L, 3L))))), 4L),
                 eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env))
 
         assertEquals(list(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
@@ -644,7 +644,7 @@ class SpecialFormTest : AbstractTest() {
                 Symbol.intern("quote"), Symbol.intern("a"))),
                 eval("(let ((name 'a)) `(list ,name ',name))", env))
 
-        assertEquals(list(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
+        assertEquals(list(arrayOf<Any?>(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b"))),
                 eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
 
         assertEquals(cons(list(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
@@ -657,9 +657,9 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env))
         assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
 
-        assertEquals(MutableVector(1L, 5L), eval("`[1 ,(+ 2 3)]", env))
-        assertEquals(MutableVector(1L, list(Symbol.intern("quasiquote"), list(
-                Symbol.intern("unquote"), list(1L, 5L)))),
+        assertEquals(MutableVector(arrayOf(1L, 5L)), eval("`[1 ,(+ 2 3)]", env))
+        assertEquals(MutableVector(arrayOf(1L, list(Symbol.intern("quasiquote"), list(
+                Symbol.intern("unquote"), list(1L, 5L))))),
                 eval("`[1 `,(1 ,(+ 2 3))]", env))
 
         assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env))

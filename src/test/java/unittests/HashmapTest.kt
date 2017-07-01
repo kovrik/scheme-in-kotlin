@@ -56,8 +56,8 @@ class HashmapTest : AbstractTest() {
         assertEquals("B", eval("((put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env))
         assertEquals("B", eval("(get (put {} 3 5 \"A\" \"B\") \"A\" 5)", env))
         assertEquals("B", eval("(get (put (hash-map) 3 5 \"A\" \"B\") \"A\" 5)", env))
-        assertEquals(MutableVector(Keyword.intern("a"), 2L, 3L), eval("(put [1 2 3] 0 :a)", env))
-        assertEquals(MutableVector(1L, Keyword.intern("a"), 3L), eval("(put [1 2 3] 1 :a)", env))
+        assertEquals(MutableVector(arrayOf(Keyword.intern("a"), 2L, 3L)), eval("(put [1 2 3] 0 :a)", env))
+        assertEquals(MutableVector(arrayOf(1L, Keyword.intern("a"), 3L)), eval("(put [1 2 3] 1 :a)", env))
         assertEquals(MapEntry(Keyword.intern("c"), 1L), eval("(put (first {:a 1}) 0 :c)", env))
         assertEquals(MapEntry(Keyword.intern("a"), Keyword.intern("c")), eval("(put (first {:a 1}) 1 :c)", env))
     }
@@ -99,7 +99,7 @@ class HashmapTest : AbstractTest() {
         assertEquals(1L, eval("(get (first {:a 1 :b 2 :c 3}) 1)", env))
         assertEquals(1L, eval("(nth (first {:a 1 :b 2 :c 3}) 1)", env))
         assertEquals(MapEntry(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env))
-        assertEquals(MutableVector(Keyword.intern("a"), 1L), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env))
+        assertEquals(MutableVector(arrayOf(Keyword.intern("a"), 1L)), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env))
     }
 
     @Test

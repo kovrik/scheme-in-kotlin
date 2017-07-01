@@ -5,5 +5,5 @@ import core.scm.Cons
 
 class ListProc : AFn<Any?, List<*>>(name = "list", isPure = true) {
 
-    override operator fun invoke(vararg args: Any?) = Cons.list(*args)
+    override operator fun invoke(args: Array<Any?>) = Cons.list(args)
 }

@@ -5,7 +5,7 @@ import core.writer.Writer
 
 open class ToString : AFn<Any?, CharSequence>(name = "->string", isPure = true) {
 
-    override operator fun invoke(vararg args: Any?) = when {
+    override operator fun invoke(args: Array<Any?>) = when {
         args.isEmpty() -> ""
         args.size == 1 -> str(args[0])
         else -> {

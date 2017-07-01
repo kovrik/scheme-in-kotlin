@@ -18,7 +18,7 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, rest
             }
     }
 
-    override operator fun invoke(vararg args: Any?): Number? {
+    override operator fun invoke(args: Array<Any?>): Number? {
         if (args.size == 1) {
             return invoke(1L, args[0]!! as Number)
         }

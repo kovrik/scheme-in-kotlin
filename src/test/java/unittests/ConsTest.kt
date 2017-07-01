@@ -97,7 +97,7 @@ class ConsTest {
         assertEquals(1, list(1).size.toLong())
         assertEquals(2, list<Cons<*>>(EMPTY, ConsProc.cons(EMPTY, EMPTY)).size.toLong())
         assertEquals(3, list(1, EMPTY, 3).size.toLong())
-        assertEquals(9, list(1, EMPTY, 3, 4, 5, 6, 777, 88, 99999).size.toLong())
+        assertEquals(9, list(arrayOf<Any?>(1, EMPTY, 3, 4, 5, 6, 777, 88, 99999)).size.toLong())
     }
 
     @Test

@@ -5,7 +5,7 @@ import core.scm.InvokableMap
 
 class HashMapProc : AFn<Any?, Map<*, *>>(name = "hash-map", isPure = true) {
 
-    override operator fun invoke(vararg args: Any?): Map<*, *> {
+    override operator fun invoke(args: Array<Any?>): Map<*, *> {
         if (args.size % 2 != 0) {
             throw IllegalArgumentException("hash-map: no value supplied for key: ${args[args.size - 1]}")
         }

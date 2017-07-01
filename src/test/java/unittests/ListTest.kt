@@ -1,10 +1,13 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.scm.*
+import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
 import core.scm.Cons.Companion.list
+import core.scm.MutableVector
+import core.scm.Symbol
+import core.scm.Vector
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -47,7 +50,7 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalListToVector() {
-        assertEquals(MutableVector(1L, 2L, "test"), eval("(list->vector '(1 2 \"test\"))", env))
+        assertEquals(MutableVector(arrayOf(1L, 2L, "test")), eval("(list->vector '(1 2 \"test\"))", env))
         assertEquals(MutableVector(), eval("(list->vector '())", env))
         try {
             eval("(list->vector #(1 2 3))", env)
@@ -236,7 +239,7 @@ class ListTest : AbstractTest() {
         eval("(define a '(1 2 3 4))", env)
         eval("(define b (list-tail (cdr a) 2))", env)
         eval("(set-cdr! b '(33 44))", env)
-        assertEquals(list(1L, 2L, 3L, 4L, 33L, 44L), eval("a", env))
+        assertEquals(list(arrayOf<Any?>(1L, 2L, 3L, 4L, 33L, 44L)), eval("a", env))
         assertEquals(list(4L, 33L, 44L), eval("b", env))
         try {
             eval("(list-tail 1 2)", env)
@@ -519,8 +522,8 @@ class ListTest : AbstractTest() {
         assertEquals(list(5L, 4L, 3L, 2L, 1L), eval("(sort > '(5 4 3 2 1))", env))
         assertEquals(list(5L, 4L, 3L, 2L, 1L), eval("(sort > '(5 4 3 2 1))", env))
         assertEquals(Cons.EMPTY, eval("(sort '())", env))
-        assertEquals(Vector(1L, 2L, 3L, 4L, 5L), eval("(sort   [5 4 3 2 1])", env))
-        assertEquals(Vector(5L, 4L, 3L, 2L, 1L), eval("(sort > [5 4 3 2 1])", env))
+        assertEquals(Vector(arrayOf(1L, 2L, 3L, 4L, 5L)), eval("(sort   [5 4 3 2 1])", env))
+        assertEquals(Vector(arrayOf(5L, 4L, 3L, 2L, 1L)), eval("(sort > [5 4 3 2 1])", env))
         assertEquals(Vector(), eval("(sort [])", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l '(1 2 3 4 5))) (map + l (sort > l)))", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l  [1 2 3 4 5])) (map + l (sort > l)))", env))

@@ -8,7 +8,7 @@ class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true,
                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
                        restArgsType = Char::class.javaObjectType) {
 
-    override operator fun invoke(vararg args: Any?): MutableString {
+    override operator fun invoke(args: Array<Any?>): MutableString {
         val s = (args[0] as Number).toInt()
         val c = if (args.size == 1) Character.MIN_VALUE else args[1]
         val string = MutableString(s)

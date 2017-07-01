@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom
 
 class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, maxArgs = 2, restArgsType = Long::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Number {
+    override operator fun invoke(args: Array<Any?>): Number {
         if (args.isEmpty()) {
             return Math.random()
         }

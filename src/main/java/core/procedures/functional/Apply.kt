@@ -10,7 +10,7 @@ import core.utils.Utils
 
 class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
 
-    override operator fun invoke(vararg args: Any?): Any {
+    override operator fun invoke(args: Array<Any?>): Any {
         val sexp = Cons.list(args[0])
         if (args.size > 2) {
             sexp.addAll(args.copyOfRange(1, args.size - 1))

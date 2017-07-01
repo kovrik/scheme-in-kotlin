@@ -80,7 +80,19 @@ class Cons<E> : LinkedList<E?> {
             return list
         }
 
-        fun <E> list(vararg elements: E?) = if (elements.isEmpty()) EMPTY else list(elements.toList())
+        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?): Cons<E?> {
+            val list = list<E?>(e1, e2, e3)
+            list.add(e4)
+            return list
+        }
+
+        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?, e5: E?): Cons<E?> {
+            val list = list<E?>(e1, e2, e3, e4)
+            list.add(e5)
+            return list
+        }
+
+        fun <E> list(elements: Array<E?>) = if (elements.isEmpty()) EMPTY else list(elements.toList())
 
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
 

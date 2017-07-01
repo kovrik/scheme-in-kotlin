@@ -13,7 +13,7 @@ import java.io.FileNotFoundException
 class CallWithInputFile : AFn<Any?, Any>(name = "call-with-input-file", minArgs = 2, maxArgs = 2,
                               mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
-    override operator fun invoke(vararg args: Any?): Any {
+    override operator fun invoke(args: Array<Any?>): Any {
         val inputPort: InputPort
         try {
             inputPort = InputPort(FileInputStream(args[0]!!.toString()))

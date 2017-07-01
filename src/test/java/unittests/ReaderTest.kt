@@ -13,7 +13,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.Arrays
+import java.util.*
 import java.util.regex.Pattern
 
 class ReaderTest : AbstractTest() {
@@ -124,15 +124,15 @@ class ReaderTest : AbstractTest() {
     @Test
     fun testReadVector() {
         assertEquals(MutableVector(), reader.readFirst("#()"))
-        assertEquals(MutableVector(0L), reader.readFirst("[0]"))
-        assertEquals(MutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"))
-        assertEquals(MutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"))
-        assertEquals(MutableVector(1L, MutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"))
+        assertEquals(MutableVector(arrayOf(0L)), reader.readFirst("[0]"))
+        assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), reader.readFirst("[1 2 3]"))
+        assertEquals(MutableVector(arrayOf(1L, "test", 3L)), reader.readFirst("[1 \"test\" 3]"))
+        assertEquals(MutableVector(arrayOf(1L, MutableVector(arrayOf(2L)), 3L)), reader.readFirst("[1 [2] 3]"))
         assertEquals(MutableVector(), reader.readFirst("[]"))
-        assertEquals(MutableVector(0L), reader.readFirst("[0]"))
-        assertEquals(MutableVector(1L, 2L, 3L), reader.readFirst("[1 2 3]"))
-        assertEquals(MutableVector(1L, "test", 3L), reader.readFirst("[1 \"test\" 3]"))
-        assertEquals(MutableVector(1L, MutableVector(2L), 3L), reader.readFirst("[1 [2] 3]"))
+        assertEquals(MutableVector(arrayOf(0L)), reader.readFirst("[0]"))
+        assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), reader.readFirst("[1 2 3]"))
+        assertEquals(MutableVector(arrayOf(1L, "test", 3L)), reader.readFirst("[1 \"test\" 3]"))
+        assertEquals(MutableVector(arrayOf(1L, MutableVector(arrayOf(2L)), 3L)), reader.readFirst("[1 [2] 3]"))
         try {
             reader.readFirst("#(1 . 2)")
             fail()
@@ -168,7 +168,7 @@ class ReaderTest : AbstractTest() {
         assertEquals(list(0L), reader.readFirst("(0)"))
         assertEquals(list(1L, 2L, 3L), reader.readFirst("(1 2 3)"))
         assertEquals(list<Any?>(1L, "test", 3L), reader.readFirst("(1 \"test\" 3)"))
-        assertEquals(list(1L, MutableVector(2L), 3L), reader.readFirst("(1 [2] 3)"))
+        assertEquals(list(1L, MutableVector(arrayOf(2L)), 3L), reader.readFirst("(1 [2] 3)"))
         assertEquals(list(1L, list(2L), 3L), reader.readFirst("(1 (2) 3)"))
         try {
             reader.readFirst(")")

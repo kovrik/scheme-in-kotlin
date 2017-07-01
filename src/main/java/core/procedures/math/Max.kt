@@ -11,7 +11,7 @@ import java.math.BigInteger
 class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
                 mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java), restArgsType = Type.Real::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Number? {
+    override operator fun invoke(args: Array<Any?>): Number? {
         if (args.size == 1) {
             return args[0] as Number?
         }

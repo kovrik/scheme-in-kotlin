@@ -17,22 +17,22 @@ class VectorTest : AbstractTest() {
     @Test
     fun testEvalVector() {
         assertEquals(MutableVector(), eval("#()", env))
-        assertEquals(MutableVector(1L, 2L, 3L), eval("#(1 2 3 )", env))
+        assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("#(1 2 3 )", env))
         assertEquals(MutableVector(), eval("(vector)", env))
-        assertEquals(MutableVector(1L, 2L, 3L), eval("(vector 1 2 3)", env))
-        assertEquals(MutableVector(1L, 2L, 3L), eval("(vector 1 2 (+ 1 2))", env))
-        assertEquals(MutableVector(3L, 2L, 1L), eval("(reverse (vector 1 2 3))", env))
-        assertEquals(MutableVector(2L, 1L), eval("(reverse (vector 1 2))", env))
-        assertEquals(MutableVector(1L), eval("(reverse (vector 1))", env))
+        assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("(vector 1 2 3)", env))
+        assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("(vector 1 2 (+ 1 2))", env))
+        assertEquals(MutableVector(arrayOf(3L, 2L, 1L)), eval("(reverse (vector 1 2 3))", env))
+        assertEquals(MutableVector(arrayOf(2L, 1L)), eval("(reverse (vector 1 2))", env))
+        assertEquals(MutableVector(arrayOf(1L)), eval("(reverse (vector 1))", env))
         assertEquals(MutableVector(), eval("(reverse (vector))", env))
         assertEquals(7L, eval("([(+ 1 2) (+ 3 4)] 1)", env))
     }
 
     @Test
     fun testEvalMakeVector() {
-        assertEquals(MutableVector(1L, 1L, 1L), eval("(make-vector 3 1)", env))
+        assertEquals(MutableVector(arrayOf(1L, 1L, 1L)), eval("(make-vector 3 1)", env))
         assertEquals(MutableVector(), eval("(make-vector 0)", env))
-        assertEquals(MutableVector(null, null, null), eval("(make-vector 3)", env))
+        assertEquals(MutableVector(arrayOf(null, null, null)), eval("(make-vector 3)", env))
         try {
             eval("(make-vector 1 2 3)", env)
             fail()
@@ -178,7 +178,7 @@ class VectorTest : AbstractTest() {
         var sexp = "(begin (define v (vector 1 2 3))" +
                 "       (vector-fill! v 3)" +
                 "       v)"
-        assertEquals(MutableVector(3L, 3L, 3L), eval(sexp, env))
+        assertEquals(MutableVector(arrayOf(3L, 3L, 3L)), eval(sexp, env))
 
         sexp = "(begin (define v (vector))" +
                 "       (vector-fill! v 3)" +

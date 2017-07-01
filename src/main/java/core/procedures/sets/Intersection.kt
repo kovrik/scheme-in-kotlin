@@ -5,7 +5,7 @@ import core.procedures.AFn
 class Intersection : AFn<Any?, Set<*>>(name = "intersection", isPure = true, minArgs = 1,
                          mandatoryArgsTypes = arrayOf<Class<*>>(Set::class.java), restArgsType = Set::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Set<*> {
+    override operator fun invoke(args: Array<Any?>): Set<*> {
         if (args.size == 1) {
             return args[0]!! as Set<*>
         }

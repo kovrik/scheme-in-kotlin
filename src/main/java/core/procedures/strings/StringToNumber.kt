@@ -7,7 +7,7 @@ import core.utils.Utils
 class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
                            mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java), restArgsType = Long::class.java) {
 
-    override operator fun invoke(vararg args: Any?): Any? {
+    override operator fun invoke(args: Array<Any?>): Any? {
         val number = args[0].toString()
         /* Check if we should override optional radix */
         /* Read radix and/or exactness and a number */

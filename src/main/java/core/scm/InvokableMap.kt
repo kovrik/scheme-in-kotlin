@@ -11,6 +11,6 @@ class InvokableMap(val map: MutableMap<in Any?, Any?>) : AFn<Any?, Any?>(minArgs
     constructor(size: Int) : this(LinkedHashMap(size))
 
     /* Maps are functions of their keys */
-    override fun invoke(vararg args: Any?) = map.getOrDefault(args[0], args.getOrNull(1))
+    override fun invoke(args: Array<Any?>) = map.getOrDefault(args[0], args.getOrNull(1))
 }
 

@@ -11,7 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
-import java.util.Calendar
+import java.util.*
 
 class RosettaCodeTest : AbstractTest() {
 
@@ -42,7 +42,7 @@ class RosettaCodeTest : AbstractTest() {
                 "          (else (append (flatten (car x))" +
                 "                        (flatten (cdr x))))))"
         eval(flatten, env)
-        assertEquals(list(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L), eval("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))", env))
+        assertEquals(list(arrayOf<Long?>(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)), eval("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))", env))
     }
 
     @Test
@@ -71,7 +71,7 @@ class RosettaCodeTest : AbstractTest() {
 
         eval(splitby, env)
         eval(quick, env)
-        assertEquals(list(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L), eval("(quicksort '(1 3 5 7 9 8 6 4 2) >)", env))
+        assertEquals(list(arrayOf<Long?>(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L)), eval("(quicksort '(1 3 5 7 9 8 6 4 2) >)", env))
     }
 
     @Test
@@ -92,7 +92,7 @@ class RosettaCodeTest : AbstractTest() {
         eval(gnome, env)
 
         val test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))"
-        val sorted = list(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L)
+        val sorted = list(arrayOf<Long?>(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L))
         assertEquals(sorted, eval(test, env))
     }
 
@@ -117,7 +117,7 @@ class RosettaCodeTest : AbstractTest() {
         eval(hailstoneLength, env)
         eval(hailstoneMax, env)
 
-        val seq = list(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
+        val seq = list(arrayOf<Long?>(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L,
                 242L, 121L, 364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L,
                 700L, 350L, 175L, 526L, 263L, 790L, 395L, 1186L, 593L, 1780L, 890L, 445L, 1336L,
                 668L, 334L, 167L, 502L, 251L, 754L, 377L, 1132L, 566L, 283L, 850L, 425L, 1276L,
@@ -125,7 +125,7 @@ class RosettaCodeTest : AbstractTest() {
                 7288L, 3644L, 1822L, 911L, 2734L, 1367L, 4102L, 2051L, 6154L, 3077L, 9232L, 4616L,
                 2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
                 61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L,
-                8L, 4L, 2L, 1L)
+                8L, 4L, 2L, 1L))
 
         val res = eval("(hailstone 27)", env) as List<Number>
         for (i in seq.indices) {
