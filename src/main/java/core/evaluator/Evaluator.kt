@@ -106,7 +106,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
                     val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
                     val form = mutableListOf<Any?>(New.NEW, clazz)
                     /* Add args (if any) */
-                    (1..size - 1).forEach { i -> form.add(this[i]) }
+                    for (i in 1..size - 1) { form.add(this[i]) }
                     return New.NEW.eval(form, env, this@Evaluator)
                 }
                 op = JavaMethodCall(this[0].toString())
@@ -122,7 +122,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
 
         /* Scheme has applicative order, so evaluate all arguments first */
         val args = arrayOfNulls<Any>(size - 1)
-        (1..args.size).forEach { args[it - 1] = eval(this[it], env) }
+        for (it in 1..args.size) { args[it - 1] = eval(this[it], env) }
         /* Call AFn via helper method */
         return (op as AFn<Any?, Any?>).invokeN(args)
     }

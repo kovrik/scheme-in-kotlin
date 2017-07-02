@@ -382,7 +382,7 @@ open class Reader : IReader {
             /* Convert list into cons */
             else -> {
                 var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
-                (list.size - 3 downTo 0).forEach { n -> cons = Cons.cons(list[n], cons) }
+                for (n in list.size - 3 downTo 0) { cons = Cons.cons(list[n], cons) }
                 cons
             }
         }
