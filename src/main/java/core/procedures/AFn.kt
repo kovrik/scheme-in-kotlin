@@ -5,14 +5,14 @@ import core.scm.Type
 import core.utils.Utils
 
 /* Abstract superclass of all functions */
-abstract class AFn<T, R>(var minArgs: Int = 0,
-                         var maxArgs: Int = Int.MAX_VALUE,
-                         val mandatoryArgsTypes: Array<Class<*>> = emptyArray(),
-                         val restArgsType: Class<*>? = null,
-                         val lastArgType: Class<*>? = null,
-                         open val name: String = "",
-                         /* Return true if function is pure (referentially transparent) */
-                         open val isPure: Boolean = false) : IFn<T, R>, Comparator<T> {
+abstract class AFn<T, out R>(var minArgs: Int = 0,
+                             var maxArgs: Int = Int.MAX_VALUE,
+                             val mandatoryArgsTypes: Array<Class<*>> = emptyArray(),
+                             val restArgsType: Class<*>? = null,
+                             val lastArgType: Class<*>? = null,
+                             open val name: String = "",
+                             /* Return true if function is pure (referentially transparent) */
+                             open val isPure: Boolean = false) : IFn<T, R>, Comparator<T> {
 
     private val arity = if (minArgs == maxArgs) minArgs else -1
 
