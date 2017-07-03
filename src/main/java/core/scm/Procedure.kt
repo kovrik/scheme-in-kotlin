@@ -26,7 +26,7 @@ class Procedure(override var name: String,
         }
     }
 
-    private fun bindArgs(values: Array<Any?>): Environment {
+    private fun bindArgs(values: Array<out Any?>): Environment {
         /* Evaluate mandatory params and put values into new local environment */
         val env = Environment(values.size, this.localEnvironment)
         for (i in 0..minArgs - 1) {
@@ -88,5 +88,5 @@ class Procedure(override var name: String,
         return Thunk(body, environment)
     }
 
-    override operator fun invoke(args: Array<Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
+    override operator fun invoke(args: Array<out Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
 }

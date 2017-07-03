@@ -10,7 +10,7 @@ open class MutableVector : Vector {
 
     constructor(size: Int, init: Any?) : super(size, init)
 
-    constructor(elements: Array<Any?>) : super(elements)
+    constructor(elements: Array<out Any?>) : super(elements)
 
     operator fun set(index: Int, value: Any?) {
         if (size <= index) throw IndexOutOfBoundsException("$name: value out of range: $index")

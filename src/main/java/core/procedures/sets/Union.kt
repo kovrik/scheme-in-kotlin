@@ -4,7 +4,7 @@ import core.procedures.AFn
 
 class Union : AFn<Any?, Set<*>>(name = "union", isPure = true, restArgsType = Set::class.java) {
 
-    override operator fun invoke(args: Array<Any?>): Set<*> {
+    override operator fun invoke(args: Array<out Any?>): Set<*> {
         if (args.isEmpty()) {
             return emptySet<Any?>()
         }

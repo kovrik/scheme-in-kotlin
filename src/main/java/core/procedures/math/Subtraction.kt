@@ -10,7 +10,7 @@ import java.math.BigInteger
 
 class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
-    override operator fun invoke(args: Array<Any?>): Number? {
+    override operator fun invoke(args: Array<out Any?>): Number? {
         if (args.size == 1) {
             when {
                 args[0] == null       -> return  null

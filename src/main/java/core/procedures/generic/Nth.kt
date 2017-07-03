@@ -9,7 +9,7 @@ class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 
     private val count = Count()
     private val get = Get()
 
-    override operator fun invoke(args: Array<Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Any? {
         val col = args[0]
         if (col is Map<*, *>) {
             throw UnsupportedOperationException("nth not supported on this type: ${col.javaClass}")

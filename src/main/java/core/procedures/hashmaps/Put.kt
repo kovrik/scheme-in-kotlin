@@ -11,7 +11,7 @@ import core.utils.Utils
 class Put : AFn<Any?, Any?>(name = "put", isPure = true, minArgs = 3,
                 mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java, Any::class.java, Any::class.java)) {
 
-    override operator fun invoke(args: Array<Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Any? {
         var m = args[0]
         if (m is Map<*, *>) {
             if (args.size % 2 != 1) {

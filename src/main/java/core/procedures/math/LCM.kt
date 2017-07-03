@@ -10,7 +10,7 @@ import java.math.BigInteger
 
 class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
-    override operator fun invoke(args: Array<Any?>): Number {
+    override operator fun invoke(args: Array<out Any?>): Number {
         if (args.isEmpty()) {
             return 1L
         }

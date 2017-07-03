@@ -7,5 +7,5 @@ import core.scm.Type
 class MakeVector : AFn<Any?, MutableVector>(name = "make-vector", isPure = true, minArgs = 1, maxArgs = 2,
                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
 
-    override operator fun invoke(args: Array<Any?>) = MutableVector((args[0] as Number).toInt(), args.getOrNull(1))
+    override operator fun invoke(args: Array<out Any?>) = MutableVector((args[0] as Number).toInt(), args.getOrNull(1))
 }

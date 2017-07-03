@@ -11,7 +11,7 @@ open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
                                      mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java),
                                      restArgsType = OutputPort::class.java) {
 
-    override operator fun invoke(args: Array<Any?>) {
+    override operator fun invoke(args: Array<out Any?>) {
         val outputPort: OutputPort
         when {
             args.size == 1 -> outputPort = Repl.currentOutputPort

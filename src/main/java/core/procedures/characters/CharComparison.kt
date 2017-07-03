@@ -22,7 +22,7 @@ class CharComparison private constructor(override val name: String, private val 
 
     override val isPure = true
 
-    override operator fun invoke(args: Array<Any?>): Boolean {
+    override operator fun invoke(args: Array<out Any?>): Boolean {
         for (i in 0..args.size - 2) {
             if (!predicate(args[i] as Char, args[i + 1] as Char)) {
                 return false

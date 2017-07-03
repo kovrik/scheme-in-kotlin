@@ -7,7 +7,7 @@ import core.utils.Utils
 class LastIndexOf : AFn<Any?, Int>(name = "last-index-of", isPure = true, minArgs =  2, maxArgs = 3,
                         mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
 
-    override operator fun invoke(args: Array<Any?>): Int {
+    override operator fun invoke(args: Array<out Any?>): Int {
         if (args[1] !is CharSequence && args[1] !is Char) {
             throw WrongTypeException(name, "String or Character", args[1])
         }

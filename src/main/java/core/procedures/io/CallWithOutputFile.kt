@@ -12,7 +12,7 @@ import java.io.FileOutputStream
 class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", minArgs = 2, maxArgs = 2,
                                mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
-    override operator fun invoke(args: Array<Any?>): Any {
+    override operator fun invoke(args: Array<out Any?>): Any {
         val outputPort: OutputPort
         try {
             outputPort = OutputPort(FileOutputStream(args[0]!!.toString()))

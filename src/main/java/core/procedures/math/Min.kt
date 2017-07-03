@@ -11,7 +11,7 @@ import java.math.BigInteger
 class Min : AFn<Any?, Number?>(name = "min", isPure = true, minArgs = 1,
                 mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java), restArgsType = Type.Real::class.java) {
 
-    override operator fun invoke(args: Array<Any?>): Number? {
+    override operator fun invoke(args: Array<out Any?>): Number? {
         if (args.size == 1) {
             return args[0] as Number?
         }

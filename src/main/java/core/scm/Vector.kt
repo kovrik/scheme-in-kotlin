@@ -33,8 +33,9 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         array.fill(init)
     }
 
-    constructor(elements: Array<Any?>) : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        array = elements
+    constructor(elements: Array<out Any?>) : super(minArgs = 1, maxArgs = 1,
+                                                   mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+        array = Arrays.copyOf(elements, elements.size)
     }
 
     override val size: Int

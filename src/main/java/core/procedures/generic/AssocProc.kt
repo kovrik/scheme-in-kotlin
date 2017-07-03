@@ -39,5 +39,5 @@ class AssocProc(override val name: String,
         throw WrongTypeException(name, "List", arg2)
     }
 
-    override operator fun invoke(args: Array<Any?>) = invoke(args[0], args[1])
+    override operator fun invoke(args: Array<out Any?>) = invoke(args[0], args[1])
 }

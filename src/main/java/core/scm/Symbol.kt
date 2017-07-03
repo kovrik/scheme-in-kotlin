@@ -34,7 +34,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
 
     override fun meta() = meta
 
-    override operator fun invoke(args: Array<Any?>) = when {
+    override operator fun invoke(args: Array<out Any?>) = when {
         args.isEmpty() || args.size > 2 -> throw ArityException(toString() + " Symbol", 1, 2, args.size)
         else -> (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
     }

@@ -7,7 +7,7 @@ import java.util.*
 
 class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs = 2) {
 
-    override operator fun invoke(args: Array<Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.size == 1 || args[0] == null) {
             val arg = args[0] ?: args[1]
             try {

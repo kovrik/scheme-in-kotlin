@@ -32,7 +32,7 @@ class VectorTest : AbstractTest() {
     fun testEvalMakeVector() {
         assertEquals(MutableVector(arrayOf(1L, 1L, 1L)), eval("(make-vector 3 1)", env))
         assertEquals(MutableVector(), eval("(make-vector 0)", env))
-        assertEquals(MutableVector(arrayOf(null, null, null)), eval("(make-vector 3)", env))
+        assertEquals(MutableVector(arrayOf<Any?>(null, null, null)), eval("(make-vector 3)", env))
         try {
             eval("(make-vector 1 2 3)", env)
             fail()

@@ -16,7 +16,7 @@ class Keyword private constructor(override val name: String) :
 
     override fun toString() = ':' + name
 
-    override operator fun invoke(args: Array<Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.isEmpty() || args.size > 2) {
             throw ArityException(toString() + " Keyword", 1, 2, args.size)
         }

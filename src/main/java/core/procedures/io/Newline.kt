@@ -13,7 +13,7 @@ class Newline : AFn<Any?, Unit>(name = "newline", maxArgs = 1, restArgsType = Ou
         private val LS = System.getProperty("line.separator")
     }
 
-    override operator fun invoke(args: Array<Any?>) = try {
+    override operator fun invoke(args: Array<out Any?>) = try {
         val outputPort: OutputPort = if (args.isEmpty()) Repl.currentOutputPort else args[0] as OutputPort
         outputPort.write(LS)
     } catch (e: IOException) {

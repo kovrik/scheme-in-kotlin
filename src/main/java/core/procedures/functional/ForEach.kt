@@ -9,7 +9,7 @@ class ForEach : AFn<Any?, Any>(name = "for-each", minArgs = 2, mandatoryArgsType
 
     object map : MapProc() { override val name = "for-each" }
 
-    override operator fun invoke(args: Array<Any?>): Thunk {
+    override operator fun invoke(args: Array<out Any?>): Thunk {
         /* For-each is the same as `map`, but ignores the result */
         val result = map.invoke(args)
         /* Void (ignore) results: (void <map-results>) */

@@ -30,7 +30,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     inner class JavaMethodCall(val method: String) : AFn<Any?, Any?>(name = method) {
-        override fun invoke(args: Array<Any?>) = reflector.evalJavaMethod(method, args)
+        override fun invoke(args: Array<out Any?>) = reflector.evalJavaMethod(method, args)
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */

@@ -6,7 +6,7 @@ import core.utils.Utils
 
 class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 3) {
 
-    override operator fun invoke(args: Array<Any?>) = invoke(args[0], args[1], args.getOrNull(2))
+    override operator fun invoke(args: Array<out Any?>) = invoke(args[0], args[1], args.getOrNull(2))
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         if (arg1 is Map<*, *>) {

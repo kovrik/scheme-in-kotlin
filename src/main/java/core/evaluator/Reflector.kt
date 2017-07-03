@@ -36,16 +36,16 @@ class Reflector {
         }
     }
 
-    private fun getMethod(clazz: Class<*>?, name: String, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Method {
+    private fun getMethod(clazz: Class<*>?, name: String, args: Array<out Any?>, parameterTypes: Array<Class<*>?>): Method {
         clazz!!
         try {
             return clazz.getMethod(name, *parameterTypes)
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
-            val argsOld   = args.copyOf()
+            val argsOld = args.copyOf()
             val paramsOld = parameterTypes.copyOf()
-            downcastArgs(args, parameterTypes)
+            downcastArgs(args as Array<Any?>, parameterTypes)
             try {
                 return clazz.getMethod(name, *parameterTypes)
             } catch (ex: NoSuchMethodException) {
@@ -156,7 +156,7 @@ class Reflector {
         throw UndefinedIdentifierException(s)
     }
 
-    fun evalJavaMethod(method: String, args: Array<Any?>): Any? {
+    fun evalJavaMethod(method: String, args: Array<out Any?>): Any? {
         val result: Any?
         if (method.startsWith(".-")) {
             if (args.isEmpty()) {
@@ -180,7 +180,7 @@ class Reflector {
     }
 
     /* Java Interop: instance method call */
-    private fun evalJavaInstanceMethod(m: String, instance: Any?, args: Array<Any?>): Any? {
+    private fun evalJavaInstanceMethod(m: String, instance: Any?, args: Array<out Any?>): Any? {
         val methodName = m.substring(1)
         val clazz = instance?.javaClass
         val argTypes = arrayOfNulls<Class<*>>(args.size)
@@ -212,7 +212,7 @@ class Reflector {
     }
 
     /* Java Interop: static method call */
-    private fun evalJavaStaticMethod(m: String, args: Array<Any?>): Any? {
+    private fun evalJavaStaticMethod(m: String, args: Array<out Any?>): Any? {
         val classAndMethod = m.split('/').dropLastWhile { it.isEmpty() }
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")

@@ -5,5 +5,5 @@ import core.scm.MutableVector
 
 class VectorProc : AFn<Any?, MutableVector>(name = "vector") {
 
-    override operator fun invoke(args: Array<Any?>) = MutableVector(args)
+    override operator fun invoke(args: Array<out Any?>) = MutableVector(args)
 }
