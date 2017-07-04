@@ -26,21 +26,6 @@ class Procedure(override var name: String,
         }
     }
 
-    private fun bindArgs(values: Array<out Any?>): Environment {
-        /* Evaluate mandatory params and put values into new local environment */
-        val env = Environment(values.size, this.localEnvironment)
-        for (i in 0..minArgs - 1) {
-            env.put(args[i], values[i])
-        }
-        /* If it is a variadic function, then evaluate rest param */
-        if (minArgs != maxArgs) {
-            /* Optional params: pass them as a list bound to the last param.
-             * Everything AFTER mandatory params goes to that list. */
-            env.put(args[minArgs], values.copyOfRange(minArgs, values.size).toList())
-        }
-        return env
-    }
-
     override operator fun invoke() = when {
         isBodyConst -> body
         else        -> Thunk(body, Environment(0, this.localEnvironment))
@@ -89,4 +74,19 @@ class Procedure(override var name: String,
     }
 
     override operator fun invoke(args: Array<out Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
+
+    private fun bindArgs(values: Array<out Any?>): Environment {
+        /* Evaluate mandatory params and put values into new local environment */
+        val env = Environment(values.size, this.localEnvironment)
+        for (i in 0..minArgs - 1) {
+            env.put(args[i], values[i])
+        }
+        /* If it is a variadic function, then evaluate rest param */
+        if (minArgs != maxArgs) {
+            /* Optional params: pass them as a list bound to the last param.
+             * Everything AFTER mandatory params goes to that list. */
+            env.put(args[minArgs], values.copyOfRange(minArgs, values.size).toList())
+        }
+        return env
+    }
 }
