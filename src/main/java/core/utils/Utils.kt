@@ -338,7 +338,7 @@ object Utils {
         is Double     -> Math.signum(o) == 0.0
         is BigRatio   -> o.signum() == 0
         is BigDecimal -> o.signum() == 0
-        is Int        -> Integer.signum(o.toInt()) == 0
+        is Int        -> Integer.signum(o) == 0
         is Short      -> Integer.signum(o.toInt()) == 0
         is Byte       -> Integer.signum(o.toInt()) == 0
         is Float      -> Math.signum(o) == 0f
