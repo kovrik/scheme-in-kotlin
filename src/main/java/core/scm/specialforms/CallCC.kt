@@ -25,7 +25,7 @@ enum class CallCC : ISpecialForm {
         val cont = Continuation()
         try {
             /* Pass Continuation to the Procedure: (proc cont) */
-            return evaluator.eval(Cons.list<Any>(proc, cont), env)
+            return evaluator.eval(Cons.list(proc, cont), env)
         } catch (ex: CalledContinuation) {
             if (ex.continuation != cont) {
                 /* Not our continuation, throw it further */
