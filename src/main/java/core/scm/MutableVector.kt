@@ -21,7 +21,7 @@ open class MutableVector : Vector {
 
     override fun toArray() = array
 
-    override fun assoc(key: Any, value: Any): Any {
+    override fun assoc(key: Any?, value: Any?): Any {
         if (!Utils.isInteger(key)) throw WrongTypeException(name, Int::class.java, key)
         set((key as Number).toInt(), value)
         return this

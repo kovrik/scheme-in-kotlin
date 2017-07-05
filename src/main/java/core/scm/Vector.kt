@@ -84,7 +84,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     override fun equals(other: Any?) = other is Vector && Arrays.equals(getArray(), other.getArray())
 
-    override fun containsKey(key: Any): Boolean {
+    override fun containsKey(key: Any?): Boolean {
         if (!Utils.isInteger(key)) {
             throw WrongTypeException(name, Int::class.java, key)
         }
@@ -92,7 +92,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         return size > i
     }
 
-    override fun getEntry(key: Any): MapEntry? {
+    override fun getEntry(key: Any?): MapEntry? {
         if (!Utils.isInteger(key)) {
             throw WrongTypeException(name, Int::class.java, key)
         }
@@ -100,5 +100,5 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         return MapEntry(i, get(i))
     }
 
-    override fun assoc(key: Any, value: Any): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")
+    override fun assoc(key: Any?, value: Any?): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")
 }

@@ -2,9 +2,9 @@ package core.scm
 
 interface IAssoc {
 
-    fun containsKey(key: Any): Boolean
+    fun containsKey(key: Any?): Boolean
 
-    fun getEntry(key: Any): MapEntry?
+    fun getEntry(key: Any?): MapEntry?
 
-    fun assoc(key: Any, value: Any): Any
+    fun assoc(key: Any?, value: Any?): Any
 }
