@@ -6,7 +6,7 @@ import core.evaluator.Evaluator
 import core.reader.StringReader
 import core.scm.Symbol
 import org.junit.Assert.assertEquals
-import java.util.Arrays
+import java.util.*
 
 abstract class AbstractTest {
 
@@ -24,13 +24,9 @@ abstract class AbstractTest {
     }
 
     /* Helper method: evaluates first S-expression */
-    protected fun eval(sexp: String, env: Environment): Any? {
-        return eval.macroexpandAndEvaluate(reader.readFirst(sexp)!!, env)
-    }
+    protected fun eval(sexp: String, env: Environment) = eval.macroexpandAndEvaluate(reader.readFirst(sexp)!!, env)
 
-    protected fun s(str: String): Symbol {
-        return Symbol.intern(str)
-    }
+    protected fun s(str: String) = Symbol.intern(str)
 
     protected fun assertAllEqual(expected: Any, forms: Array<String>, env: Environment) {
         Arrays.stream(forms).forEach { form -> assertEquals(form, expected, eval(form, env)) }
