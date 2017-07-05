@@ -17,8 +17,8 @@ enum class CallCC : ISpecialForm {
     };
 
     /* Actual call-with-current-continuation */
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val proc = evaluator.eval(expression[1], env)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        val proc = evaluator.eval(form[1], env)
         if (proc !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", proc)
         }

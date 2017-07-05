@@ -7,7 +7,7 @@ import core.evaluator.Evaluator
 enum class SyntaxRules : ISpecialForm {
     SYNTAX_RULES;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")
     }
 

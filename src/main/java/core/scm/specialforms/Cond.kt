@@ -16,13 +16,13 @@ import core.utils.Utils
 enum class Cond : ISpecialForm {
     COND;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        for (i in 1..expression.size - 1) {
-            val subform = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), expression, "invalid clause in subform")
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        for (i in 1..form.size - 1) {
+            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), form, "invalid clause in subform")
             val clause = subform[0]
             if (Else.ELSE_SYMBOL == clause) {
-                if (i != expression.size - 1) {
-                    throw IllegalSyntaxException.of(toString(), expression, "else must be the last clause in subform")
+                if (i != form.size - 1) {
+                    throw IllegalSyntaxException.of(toString(), form, "else must be the last clause in subform")
                 }
                 return Begin.BEGIN.eval(subform, env, evaluator)
             }

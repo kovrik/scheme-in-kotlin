@@ -18,15 +18,15 @@ import java.util.concurrent.TimeUnit
 enum class Time : ISpecialForm {
     TIME;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.size < 2) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size < 2) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         val start = System.nanoTime()
-        for (i in 1..expression.size - 2) {
-            evaluator.eval(expression[i], env)
+        for (i in 1..form.size - 2) {
+            evaluator.eval(form[i], env)
         }
-        val result = evaluator.eval(expression[expression.size - 1], env)
+        val result = evaluator.eval(form[form.size - 1], env)
         val diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
         try {
             Repl.currentOutputPort.writeln("elapsed time: $diff ms")

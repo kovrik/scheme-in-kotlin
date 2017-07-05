@@ -13,15 +13,15 @@ import core.utils.Utils
 enum class If : ISpecialForm {
     IF;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val size = expression.size
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        val size = form.size
         if (size != 4) {
-            throw IllegalSyntaxException.of(toString(), expression, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
-        return if (Utils.toBoolean(evaluator.eval(expression[1], env)))
-            Thunk(expression[2], env)
+        return if (Utils.toBoolean(evaluator.eval(form[1], env)))
+            Thunk(form[2], env)
         else
-            Thunk(expression[3], env)
+            Thunk(form[3], env)
     }
 
     override fun toString() = "if"

@@ -12,17 +12,17 @@ import core.utils.Utils
 enum class Unless : ISpecialForm {
     UNLESS;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val size = expression.size
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        val size = form.size
         if (size < 3) {
-            throw IllegalSyntaxException.of(toString(), expression, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
-        val test = expression[1]
+        val test = form[1]
         if (!Utils.toBoolean(evaluator.eval(test, env))) {
-            for (i in 2..expression.size - 2) {
-                evaluator.eval(expression[i], env)
+            for (i in 2..form.size - 2) {
+                evaluator.eval(form[i], env)
             }
-            return Thunk(expression[expression.size - 1], env)
+            return Thunk(form[form.size - 1], env)
         }
         return Unit
     }

@@ -15,15 +15,15 @@ import core.scm.Thunk
 enum class Let : ISpecialForm {
     LET;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any {
-        if (expression.size < 3) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+        if (form.size < 3) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         /* Normal let:
          * (let ((id expr) ...) body ...+) */
-        if (expression[1] is List<*>) {
+        if (form[1] is List<*>) {
             val localEnv = Environment(env)
-            val bindings = expression[1] as List<List<*>>
+            val bindings = form[1] as List<List<*>>
             /* Bind variables to fresh locations holding undefined values */
             for (binding in bindings) {
                 localEnv.put(binding[0], Environment.UNDEFINED)
@@ -32,35 +32,35 @@ enum class Let : ISpecialForm {
             for (binding in bindings) {
                 val (variable, init) = binding
                 if (localEnv[variable] !== Environment.UNDEFINED) {
-                    throw IllegalSyntaxException.of(toString(), expression, "duplicate identifier: $variable")
+                    throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $variable")
                 }
                 localEnv.put(variable, evaluator.eval(init, env))
             }
 
             /* Evaluate body */
-            for (i in 2..expression.size - 2) {
-                evaluator.eval(expression[i], localEnv)
+            for (i in 2..form.size - 2) {
+                evaluator.eval(form[i], localEnv)
             }
-            return Thunk(expression[expression.size - 1], localEnv)
+            return Thunk(form[form.size - 1], localEnv)
 
-        } else if (expression[1] is Symbol) {
+        } else if (form[1] is Symbol) {
             // TODO Optimize and cleanup
             /* Named let:
              * (let proc-id ((arg-id init-expr) ...) body ...+) */
-            val name = expression[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), expression)
+            val name = form[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), form)
             /* Construct lambda */
             val lambdaArgs = Cons.list<Any?>()
             val initValues = Cons.list<Any?>()
-            val bindings = expression[2] as List<*>
+            val bindings = form[2] as List<*>
             for (binding in bindings) {
                 val arg = (binding as List<*>)[0]
                 if (lambdaArgs.contains(arg)) {
-                    throw IllegalSyntaxException.of(toString(), expression, "duplicate identifier: $arg")
+                    throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
                 initValues.add(binding[1])
             }
-            val lambdaBody = expression[3]
+            val lambdaBody = form[3]
             val lambda = Cons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody)
             val l = Cons.list<Cons<*>>()
             l.add(Cons.list(name, lambda))
@@ -73,7 +73,7 @@ enum class Let : ISpecialForm {
             /* Letrec has TCO */
             return LetRec.LETREC.eval(letrec, Environment(env), evaluator)
         }
-        throw IllegalSyntaxException.of(toString(), expression)
+        throw IllegalSyntaxException.of(toString(), form)
     }
 
     override fun toString() = "let"

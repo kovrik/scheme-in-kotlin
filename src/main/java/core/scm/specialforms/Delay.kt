@@ -11,17 +11,17 @@ import core.scm.Cons
 enum class Delay : ISpecialForm {
     DELAY;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): core.scm.Delay {
-        if (expression.size < 2) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): core.scm.Delay {
+        if (form.size < 2) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         val expr: Any?
-        if (expression.size > 2) {
+        if (form.size > 2) {
             val list: MutableList<Any?> = Cons.list(Begin.BEGIN)
-            list.addAll(expression.subList(1, expression.size))
+            list.addAll(form.subList(1, form.size))
             expr = list
         } else {
-            expr = expression[1]
+            expr = form[1]
         }
         return core.scm.Delay(expr, env, evaluator)
     }

@@ -11,17 +11,17 @@ import core.scm.Cons
 enum class Future : ISpecialForm {
     FUTURE;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.size < 2) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size < 2) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         val future: core.scm.Future
-        if (expression.size > 2) {
+        if (form.size > 2) {
             val list: MutableList<Any?> = Cons.list(Begin.BEGIN)
-            list.addAll(expression.subList(1, expression.size))
+            list.addAll(form.subList(1, form.size))
             future = core.scm.Future(list, env, evaluator)
         } else {
-            future = core.scm.Future(expression[1], env, evaluator)
+            future = core.scm.Future(form[1], env, evaluator)
         }
         Evaluator.executor.submit(future)
         return future

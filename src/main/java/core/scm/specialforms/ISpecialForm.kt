@@ -5,5 +5,5 @@ import core.evaluator.Evaluator
 
 interface ISpecialForm {
 
-    fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any?
+    fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any?
 }

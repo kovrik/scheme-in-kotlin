@@ -13,21 +13,21 @@ import core.scm.Thunk
 enum class LetSeq : ISpecialForm {
     LETSEQ;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any {
-        if (expression.size < 3) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+        if (form.size < 3) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         val localEnv = Environment(env)
-        val bindings = expression[1] as List<List<*>>
+        val bindings = form[1] as List<List<*>>
         /* Evaluate inits */
         for (binding in bindings) {
             localEnv.put(binding[0], evaluator.eval(binding[1], localEnv))
         }
         /* Evaluate body */
-        for (i in 2..expression.size - 2) {
-            evaluator.eval(expression[i], localEnv)
+        for (i in 2..form.size - 2) {
+            evaluator.eval(form[i], localEnv)
         }
-        return Thunk(expression[expression.size - 1], localEnv)
+        return Thunk(form[form.size - 1], localEnv)
     }
 
     override fun toString() = "let*"

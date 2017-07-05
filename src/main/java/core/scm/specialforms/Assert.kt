@@ -12,18 +12,18 @@ enum class Assert : ISpecialForm {
         private val EMPTY = arrayOfNulls<StackTraceElement>(0)
     }
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.size < 2 || expression.size > 3) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size < 2 || form.size > 3) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
-        val result = evaluator.eval(expression[1], env)
+        val result = evaluator.eval(form[1], env)
         if (!Utils.toBoolean(result)) {
             var message = ""
-            if (expression.size == 3) {
-                if (expression[2] !is CharSequence) {
-                    throw IllegalSyntaxException.of(toString(), expression)
+            if (form.size == 3) {
+                if (form[2] !is CharSequence) {
+                    throw IllegalSyntaxException.of(toString(), form)
                 }
-                message = ": ${expression[2].toString()}"
+                message = ": ${form[2].toString()}"
             }
             val assertionError = AssertionError("assert failed $message")
             assertionError.stackTrace = EMPTY

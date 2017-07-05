@@ -19,8 +19,8 @@ enum class Try : ISpecialForm {
 
     override fun toString() = "try"
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.isEmpty()) {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.isEmpty()) {
             return null
         }
         var hadCatch = false
@@ -29,13 +29,13 @@ enum class Try : ISpecialForm {
         var fin: Any? = null
         val expressions = ArrayList<Any?>()
         /* Init and check syntax */
-        for (i in 1..expression.size - 1) {
-            val e = expression[i]
+        for (i in 1..form.size - 1) {
+            val e = form[i]
             if (e is List<*> && !e.isEmpty()) {
                 val expr = e
                 val op = expr[0]
                 if (FINALLY == op) {
-                    if (i != expression.size - 1) {
+                    if (i != form.size - 1) {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {

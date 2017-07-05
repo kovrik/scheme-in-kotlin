@@ -20,7 +20,7 @@ enum class Quote : ISpecialForm {
         fun quote(obj: Any) = Cons.list(QUOTE, obj)
     }
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) = expression[1]
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = form[1]
 
     override fun toString() = "quote"
 }

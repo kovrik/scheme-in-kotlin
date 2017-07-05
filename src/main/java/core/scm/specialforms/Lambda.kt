@@ -21,24 +21,24 @@ enum class Lambda : ISpecialForm {
 
     override fun toString() = "lambda"
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
-        if (expression.size < 3) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
+        if (form.size < 3) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
         val params: List<Symbol?>
         var variadic = false
         /* Check if args is a List or not */
-        val args = expression[1]
+        val args = form[1]
         if (args is List<*>) {
             /* Check args for duplicates */
             if (!args.isEmpty()) {
                 val temp = HashSet<Any?>(args.size)
                 for (o in args) {
                     if (o !is Symbol && !Cons.isPair(o)) {
-                        throw IllegalSyntaxException.of(toString(), expression, "not an identifier: $o")
+                        throw IllegalSyntaxException.of(toString(), form, "not an identifier: $o")
                     }
                     if (temp.contains(o)) {
-                        throw IllegalSyntaxException.of(toString(), expression, "duplicate argument name: $o")
+                        throw IllegalSyntaxException.of(toString(), form, "duplicate argument name: $o")
                     }
                     temp.add(o)
                 }
@@ -57,18 +57,18 @@ enum class Lambda : ISpecialForm {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
             if (args !is Symbol) {
-                throw IllegalSyntaxException("lambda: bad argument sequence ($args) in form: $expression")
+                throw IllegalSyntaxException("lambda: bad argument sequence ($args) in form: $form")
             }
             params = Cons.list(args)
             variadic = true
         }
         val body: Any?
-        if (expression.size == 3) {
-            body = expression[2]
+        if (form.size == 3) {
+            body = form[2]
         } else {
             /* Add implicit `begin` */
             body = Cons.list(Begin.BEGIN)
-            (body as MutableList<Any?>).addAll(expression.subList(2, expression.size))
+            (body as MutableList<Any?>).addAll(form.subList(2, form.size))
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }

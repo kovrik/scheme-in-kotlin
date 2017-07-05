@@ -13,21 +13,21 @@ enum class Dot : ISpecialForm {
 
     override fun toString() = "."
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val size = expression.size
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        val size = form.size
         if (size < 3) {
-            throw IllegalSyntaxException.of(toString(), expression, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
         // FIXME Optimize and cleanup
-        var first: Any? = expression[1]
+        var first: Any? = form[1]
         if (first is Symbol) {
             first = env.findOrDefault(first, evaluator.eval(first, env))
         } else {
             first = evaluator.eval(first, env)
         }
         if (first is Class<*>) {
-            val statik = "${expression[1]}/${expression[2]}"
-            if (expression.size == 3) {
+            val statik = "${form[1]}/${form[2]}"
+            if (form.size == 3) {
                 /* (. Classname-symbol member-symbol) */
                 /* try static field first */
                 try {
@@ -42,10 +42,10 @@ enum class Dot : ISpecialForm {
 
             } else {
                 /* (. Classname-symbol method-symbol args) */
-                val args = arrayOfNulls<Any>(expression.size - 3)
+                val args = arrayOfNulls<Any>(form.size - 3)
                 /* Add args */
                 for (i in args.indices) {
-                    args[i] = evaluator.eval(expression[i + 3], env)
+                    args[i] = evaluator.eval(form[i + 3], env)
                 }
                 return reflector.evalJavaMethod(statik, args)
             }
@@ -54,13 +54,13 @@ enum class Dot : ISpecialForm {
              * (. instance-expr -field-symbol)
              * (. instance-expr method-symbol args)
              */
-            val method = '.' + expression[2].toString()
-            val args = arrayOfNulls<Any>(expression.size - 2)
+            val method = '.' + form[2].toString()
+            val args = arrayOfNulls<Any>(form.size - 2)
             /* Add instance */
             args[0] = first
             /* Add rest args (if any) */
             for (i in 1..args.size - 1) {
-                args[i] = evaluator.eval(expression[i + 2], env)
+                args[i] = evaluator.eval(form[i + 2], env)
             }
             return reflector.evalJavaMethod(method, args)
         }

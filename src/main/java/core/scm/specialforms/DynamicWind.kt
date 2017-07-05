@@ -12,20 +12,20 @@ enum class DynamicWind : ISpecialForm {
 
     override fun toString() = "dynamic-wind"
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val size = expression.size
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        val size = form.size
         if (size != 4) {
-            throw IllegalSyntaxException.of(toString(), expression, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
-        val pre = evaluator.eval(expression[1], env)
+        val pre = evaluator.eval(form[1], env)
         if (pre !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", pre)
         }
-        val value = evaluator.eval(expression[2], env)
+        val value = evaluator.eval(form[2], env)
         if (value !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", value)
         }
-        val post = evaluator.eval(expression[3], env)
+        val post = evaluator.eval(form[3], env)
         if (post !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", post)
         }

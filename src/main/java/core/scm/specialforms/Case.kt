@@ -16,18 +16,18 @@ import core.procedures.equivalence.Eqv
 enum class Case : ISpecialForm {
     CASE;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        /* Save string representation of expression before evaluation */
-        val exprString = expression.toString()
-        if (expression.size <= 1) {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        /* Save string representation of form before evaluation */
+        val exprString = form.toString()
+        if (form.size <= 1) {
             throw IllegalSyntaxException.of(toString(), exprString, "source expression failed to match any pattern")
         }
-        val key = evaluator.eval(expression[1], env)
-        for (i in 2..expression.size - 1) {
-            val subform = expression[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
+        val key = evaluator.eval(form[1], env)
+        for (i in 2..form.size - 1) {
+            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             val datum = subform[0]
             if (Else.ELSE_SYMBOL == datum) {
-                if (i != expression.size - 1) {
+                if (i != form.size - 1) {
                     throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform")
                 }
                 return Begin.BEGIN.eval(subform, env, evaluator)

@@ -12,8 +12,8 @@ enum class Else : ISpecialForm {
         val ELSE_SYMBOL = Symbol.intern("else")
     }
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        throw IllegalSyntaxException.of(toString(), expression, "not allowed as an expression")
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        throw IllegalSyntaxException.of(toString(), form, "not allowed as an expression")
     }
 
     override fun toString() = "else"

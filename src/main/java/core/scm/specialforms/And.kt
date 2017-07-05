@@ -11,16 +11,16 @@ import core.utils.Utils
 enum class And : ISpecialForm {
     AND;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         var result: Any? = true
-        if (expression.size > 1) {
-            for (i in 1..expression.size - 2) {
-                result = evaluator.eval(expression[i], env)
+        if (form.size > 1) {
+            for (i in 1..form.size - 2) {
+                result = evaluator.eval(form[i], env)
                 if (!Utils.toBoolean(result)) {
                     return result
                 }
             }
-            result = Thunk(expression[expression.size - 1], env)
+            result = Thunk(form[form.size - 1], env)
         }
         return result
     }

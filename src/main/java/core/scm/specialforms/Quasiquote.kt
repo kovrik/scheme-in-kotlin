@@ -37,11 +37,11 @@ enum class Quasiquote : ISpecialForm {
 
     private val setProc = SetProc()
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.size != 2) {
-            throw IllegalSyntaxException.of(toString(), expression)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size != 2) {
+            throw IllegalSyntaxException.of(toString(), form)
         }
-        return quasiquote(expression[1]!!, env, evaluator)
+        return quasiquote(form[1]!!, env, evaluator)
     }
 
     /**

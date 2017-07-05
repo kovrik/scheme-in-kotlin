@@ -13,5 +13,5 @@ enum class Comment : ISpecialForm {
     COMMENT;
 
     override fun toString() = "comment"
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator) = Unit
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = Unit
 }

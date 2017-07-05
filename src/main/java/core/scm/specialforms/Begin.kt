@@ -25,14 +25,14 @@ import core.scm.Thunk
 enum class Begin : ISpecialForm {
     BEGIN;
 
-    override fun eval(expression: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (expression.size <= 1) {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size <= 1) {
             return Unit
         }
-        for (i in 1..expression.size - 2) {
-            evaluator.eval(expression[i], env)
+        for (i in 1..form.size - 2) {
+            evaluator.eval(form[i], env)
         }
-        return Thunk(expression[expression.size - 1], env)
+        return Thunk(form[form.size - 1], env)
     }
 
     override fun toString() = "begin"
