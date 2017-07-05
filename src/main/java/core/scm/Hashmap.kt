@@ -2,10 +2,9 @@ package core.scm
 
 import core.procedures.AFn
 
-// TODO generics, type safety
-// TODO rename
-class InvokableMap(val map: MutableMap<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 2),
-                                                         MutableMap<Any?, Any?> by map, IAssoc {
+// TODO generify
+class Hashmap(val map: MutableMap<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 2),
+                                                    MutableMap<Any?, Any?> by map, IAssoc {
 
     constructor() : this(mutableMapOf())
     constructor(size: Int) : this(LinkedHashMap(size))

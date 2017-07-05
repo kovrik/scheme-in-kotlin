@@ -486,7 +486,7 @@ object Utils {
     fun toAssoc(obj: Any?): IAssoc = when (obj) {
         is IAssoc           -> obj
         is Map.Entry<*, *>  -> MapEntry(obj)
-        null                -> InvokableMap()
+        null                -> Hashmap()
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 

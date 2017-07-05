@@ -129,7 +129,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
 
     /* Evaluate hash map */
     private fun Map<*, *>.eval(env: Environment): Map<*, *> {
-        val result = InvokableMap(size)
+        val result = Hashmap(size)
         forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
         return result
     }

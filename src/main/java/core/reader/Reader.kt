@@ -403,7 +403,7 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readHashmap(): Map<Any?, Any?> {
-        val hashmap = InvokableMap()
+        val hashmap = Hashmap()
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {

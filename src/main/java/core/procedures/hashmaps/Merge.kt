@@ -1,7 +1,7 @@
 package core.procedures.hashmaps
 
 import core.procedures.AFn
-import core.scm.InvokableMap
+import core.scm.Hashmap
 
 class Merge : AFn<Any?, Map<*, *>?>(name = "merge", isPure = true, restArgsType = Map::class.java) {
 
@@ -9,7 +9,7 @@ class Merge : AFn<Any?, Map<*, *>?>(name = "merge", isPure = true, restArgsType 
         if (args.isEmpty()) {
             return null
         }
-        val result = InvokableMap()
+        val result = Hashmap()
         for (m in args) {
             result.putAll(m as Map<*, *>)
         }
