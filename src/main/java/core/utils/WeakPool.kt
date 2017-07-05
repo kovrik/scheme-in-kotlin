@@ -7,17 +7,9 @@ internal class WeakPool<T> {
 
     private val pool = WeakHashMap<T, WeakReference<T>>()
 
-    operator fun get(`object`: T): T? {
-        val res: T?
-        val ref = pool[`object`]
-        when {
-            ref != null -> res = ref.get()
-            else -> res = null
-        }
-        return res
-    }
+    operator fun get(obj: T) = pool[obj]?.get()
 
-    fun put(`object`: T) {
-        pool.put(`object`, WeakReference(`object`))
+    fun put(obj: T) {
+        pool.put(obj, WeakReference(obj))
     }
 }
