@@ -85,7 +85,7 @@ class Procedure(override var name: String,
         if (minArgs != maxArgs) {
             /* Optional params: pass them as a list bound to the last param.
              * Everything AFTER mandatory params goes to that list. */
-            env.put(args[minArgs], values.copyOfRange(minArgs, values.size).toList())
+            env.put(args[minArgs], values.copyOfRange(minArgs, values.size).asList())
         }
         return env
     }

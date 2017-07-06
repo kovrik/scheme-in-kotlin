@@ -92,7 +92,7 @@ class Cons<E> : LinkedList<E?> {
             return list
         }
 
-        fun <E> list(elements: Array<E?>) = if (elements.isEmpty()) EMPTY else list(elements.toList())
+        fun <E> list(elements: Array<E?>) = if (elements.isEmpty()) EMPTY else list(elements.asList())
 
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
 
@@ -118,7 +118,7 @@ class Cons<E> : LinkedList<E?> {
                 sb.append(Writer.write(list[0]))
                 var cdr = list.last()
                 while (cdr is Cons<*>) {
-                    sb.append(" ").append(Writer.write(cdr.first))
+                    sb.append(' ').append(Writer.write(cdr.first))
                     cdr = cdr.last
                 }
                 /* Dotted notation */

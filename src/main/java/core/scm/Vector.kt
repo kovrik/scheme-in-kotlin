@@ -70,7 +70,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         return sb.toString()
     }
 
-    override fun iterator() = array.toList().iterator()
+    override fun iterator() = array.asList().iterator()
 
     override fun isEmpty() = (size == 0)
 
@@ -78,18 +78,15 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     open fun toArray(): Array<Any?> = array.copyOf()
 
-    override fun containsAll(elements: Collection<*>) = elements.any { contains(it) }
+    override fun containsAll(elements: Collection<*>) = elements.all { contains(it) }
 
     override fun hashCode() = getArray().hashCode()
 
     override fun equals(other: Any?) = other is Vector && Arrays.equals(getArray(), other.getArray())
 
-    override fun containsKey(key: Any?): Boolean {
-        if (!Utils.isInteger(key)) {
-            throw WrongTypeException(name, Int::class.java, key)
-        }
-        val i = (key as Number).toInt()
-        return size > i
+    override fun containsKey(key: Any?) = when {
+        Utils.isInteger(key) -> size > (key as Number).toInt()
+        else -> throw WrongTypeException(name, Int::class.java, key)
     }
 
     override fun getEntry(key: Any?): MapEntry? {
