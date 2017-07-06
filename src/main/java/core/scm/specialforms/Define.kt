@@ -35,14 +35,14 @@ enum class Define : ISpecialForm {
             /* Construct lambda form */
             val l = Cons.list<Any?>(Lambda.LAMBDA)
             /* Args */
-            val args = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
-            for (arg in args) {
+            val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
+            for (arg in lambdaArgs) {
                 if (arg !is Symbol && !Cons.isPair(arg)) {
                     throw IllegalSyntaxException.of(toString(), form, "not an identifier: ${Writer.write(arg)}")
                 }
             }
-            args.isProperList = Cons.isProperList(form[1])
-            l.add(args)
+            lambdaArgs.isProperList = Cons.isProperList(form[1])
+            l.add(lambdaArgs)
             /* Body */
             l.addAll(form.subList(2, form.size))
             /* Get procedure's name */

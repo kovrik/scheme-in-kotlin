@@ -28,12 +28,12 @@ enum class Lambda : ISpecialForm {
         val params: List<Symbol?>
         var variadic = false
         /* Check if args is a List or not */
-        val args = form[1]
-        if (args is List<*>) {
+        val lambdaArgs = form[1]
+        if (lambdaArgs is List<*>) {
             /* Check args for duplicates */
-            if (!args.isEmpty()) {
-                val temp = HashSet<Any?>(args.size)
-                for (o in args) {
+            if (!lambdaArgs.isEmpty()) {
+                val temp = HashSet<Any?>(lambdaArgs.size)
+                for (o in lambdaArgs) {
                     if (o !is Symbol && !Cons.isPair(o)) {
                         throw IllegalSyntaxException.of(toString(), form, "not an identifier: $o")
                     }
@@ -45,21 +45,21 @@ enum class Lambda : ISpecialForm {
             }
             /* (lambda (arg-id ...+) body ...+) OR
              * (lambda (arg-id ...+ . rest-id) body ...+) */
-            if (Cons.isProperList(args)) {
+            if (Cons.isProperList(lambdaArgs)) {
                 /* args is a proper list, hence non-variadic lambda */
-                params = args as List<Symbol>
+                params = lambdaArgs as List<Symbol>
             } else {
                 /* args is an improper list, hence variadic lambda */
-                params = flatten(args as List<Symbol>)
+                params = flatten(lambdaArgs as List<Symbol>)
                 variadic = true
             }
         } else {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
-            if (args !is Symbol) {
-                throw IllegalSyntaxException("lambda: bad argument sequence ($args) in form: $form")
+            if (lambdaArgs !is Symbol) {
+                throw IllegalSyntaxException("lambda: bad argument sequence ($lambdaArgs) in form: $form")
             }
-            params = Cons.list(args)
+            params = Cons.list(lambdaArgs)
             variadic = true
         }
         val body: Any?

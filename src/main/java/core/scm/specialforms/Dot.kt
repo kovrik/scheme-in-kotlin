@@ -42,12 +42,12 @@ enum class Dot : ISpecialForm {
 
             } else {
                 /* (. Classname-symbol method-symbol args) */
-                val args = arrayOfNulls<Any>(form.size - 3)
+                val methodArgs = arrayOfNulls<Any>(form.size - 3)
                 /* Add args */
-                for (i in args.indices) {
-                    args[i] = evaluator.eval(form[i + 3], env)
+                for (i in methodArgs.indices) {
+                    methodArgs[i] = evaluator.eval(form[i + 3], env)
                 }
-                return reflector.evalJavaMethod(statik, args)
+                return reflector.evalJavaMethod(statik, methodArgs)
             }
         } else {
             /* (. instance-expr member-symbol)
@@ -55,14 +55,14 @@ enum class Dot : ISpecialForm {
              * (. instance-expr method-symbol args)
              */
             val method = '.' + form[2].toString()
-            val args = arrayOfNulls<Any>(form.size - 2)
+            val methodArgs = arrayOfNulls<Any>(form.size - 2)
             /* Add instance */
-            args[0] = first
+            methodArgs[0] = first
             /* Add rest args (if any) */
-            for (i in 1..args.size - 1) {
-                args[i] = evaluator.eval(form[i + 2], env)
+            for (i in 1..methodArgs.size - 1) {
+                methodArgs[i] = evaluator.eval(form[i + 2], env)
             }
-            return reflector.evalJavaMethod(method, args)
+            return reflector.evalJavaMethod(method, methodArgs)
         }
     }
 }

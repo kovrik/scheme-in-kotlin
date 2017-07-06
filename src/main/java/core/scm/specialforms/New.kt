@@ -14,12 +14,12 @@ enum class New : ISpecialForm {
         if (form.size < 2) {
             throw IllegalSyntaxException.of(toString(), form)
         }
-        val args = arrayOfNulls<Any>(form.size - 2)
-        for (i in args.indices) {
-            args[i] = evaluator.eval(form[i + 2], env)
+        val constructorArgs = arrayOfNulls<Any>(form.size - 2)
+        for (i in constructorArgs.indices) {
+            constructorArgs[i] = evaluator.eval(form[i + 2], env)
         }
         val clazz = form[1].toString()
-        return reflector.newInstance(clazz, args)
+        return reflector.newInstance(clazz, constructorArgs)
     }
 
     override fun toString() = "new"
