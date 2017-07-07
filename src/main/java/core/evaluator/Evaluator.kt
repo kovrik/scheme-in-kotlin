@@ -99,6 +99,16 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
              * Doesn't help much, so commenting it out for now
              * if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
             if (op === Environment.UNDEFINED) {
+                // TODO implement as a macro
+                /* Special case: constructor call If Symbol ends with . */
+                val symbolName = (this[0] as Symbol).name
+                if (symbolName.endsWith('.')) {
+                    val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
+                    val form = mutableListOf<Any?>(New.NEW, clazz)
+                    /* Add args (if any) */
+                    for (i in 1..size - 1) { form.add(this[i]) }
+                    return New.NEW.eval(form, env, this@Evaluator)
+                }
                 op = JavaMethodCall(this[0].toString())
             }
         }

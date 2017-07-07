@@ -369,14 +369,7 @@ open class Reader : IReader {
                     list.add(DOT)
                 }
             } else {
-                // TODO implement as a macro
-                /* Special case: constructor call If Symbol ends with . */
-                if (token is Symbol && token.name.endsWith('.')) {
-                    list.add(New.NEW)
-                    list.add(Symbol.intern(token.name.substring(0, token.name.length - 1)))
-                } else {
-                    list.add(token)
-                }
+                list.add(token)
             }
             i = reader.read()
             c = i.toChar()
