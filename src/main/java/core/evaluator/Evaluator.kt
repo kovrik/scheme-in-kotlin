@@ -58,9 +58,9 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
             /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
             throw cc
         }
-        when (result) {
-            is BigRatio -> return Utils.downcastNumber(result)
-            else        -> return result
+        return when (result) {
+            is BigRatio -> Utils.downcastNumber(result)
+            else        -> result
         }
     }
 
