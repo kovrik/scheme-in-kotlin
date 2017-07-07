@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
-import core.procedures.IFn
 import core.procedures.continuations.CalledContinuation
 import core.scm.*
 import core.scm.specialforms.ISpecialForm
