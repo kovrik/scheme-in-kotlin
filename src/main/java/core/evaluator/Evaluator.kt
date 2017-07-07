@@ -92,39 +92,49 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     private fun List<Any?>.eval(env: Environment): Any? {
         if (isEmpty()) throw IllegalSyntaxException.of("eval", this, "illegal empty application")
         var op = this[0]
-        if (op is Symbol) {
-            /* Lookup symbol */
-            op = env.findOrDefault(op, Environment.UNDEFINED)
-            /* Inline Special Forms and Pure functions
-             * Doesn't help much, so commenting it out for now
-             * if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
-            if (op === Environment.UNDEFINED) {
-                // TODO implement as a macro
-                /* Special case: constructor call If Symbol ends with . */
-                val symbolName = (this[0] as Symbol).name
-                if (symbolName.endsWith('.')) {
-                    val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
-                    val form = mutableListOf<Any?>(New.NEW, clazz)
-                    /* Add args (if any) */
-                    for (i in 1..size - 1) { form.add(this[i]) }
-                    return New.NEW.eval(form, env, this@Evaluator)
+        /* Evaluate operator */
+        when (op) {
+            is List<*>, is Map<*, *>, is Vector, is Set<*> -> op = eval(op, env)
+            is Symbol -> {
+                /* Lookup symbol */
+                op = env.findOrDefault(op, Environment.UNDEFINED)
+                /* Inline Special Forms and Pure functions
+                 * Doesn't help much, so commenting it out for now
+                 * if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
+                if (op === Environment.UNDEFINED) {
+                    // TODO implement as a macro
+                    /* Special case: constructor call If Symbol ends with . */
+                    val symbolName = (this[0] as Symbol).name
+                    if (symbolName.endsWith('.')) {
+                        val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
+                        val form = mutableListOf<Any?>(New.NEW, clazz)
+                        /* Add args (if any) */
+                        for (i in 1..size - 1) {
+                            form.add(this[i])
+                        }
+                        return New.NEW.eval(form, env, this@Evaluator)
+                    }
+                    op = JavaMethodCall(this[0].toString())
                 }
-                op = JavaMethodCall(this[0].toString())
             }
         }
-
-        if (op is ISpecialForm) return op.eval(this, env, this@Evaluator)
-        // TODO Do not evaluate if already evaluated?
-        op = eval(op, env)
-
-        /* If result is not a function, then raise an error */
-        if (op !is AFn<*, *>) throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
-
-        /* Scheme has applicative order, so evaluate all arguments first */
-        val args = arrayOfNulls<Any>(size - 1)
-        for (it in 1..args.size) { args[it - 1] = eval(this[it], env) }
-        /* Call AFn via helper method */
-        return (op as AFn<Any?, Any?>).invokeN(args)
+        /* Now decide how to evaluate everything else */
+        when (op) {
+            /* Special Forms have special evaluation rules */
+            is ISpecialForm -> return op.eval(this, env, this@Evaluator)
+            /* If operator is not a function, then raise an error */
+            !is AFn<*, *> -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
+            /* Operator is a valid invokable object */
+            else -> {
+                /* Scheme has applicative order, so evaluate all arguments first */
+                val args = arrayOfNulls<Any>(size - 1)
+                for (it in 1..args.size) {
+                    args[it - 1] = eval(this[it], env)
+                }
+                /* Finally, invoke operator (AFn) via helper method */
+                return (op as AFn<Any?, Any?>).invokeN(args)
+            }
+        }
     }
 
     /* Evaluate hash map */
