@@ -14,7 +14,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicLong
 
-class Evaluator(private val reflector: Reflector = Reflector()) {
+class Evaluator(private val reflector: Reflector = Reflector(),
+                private val macroexpander: Macroexpander = Macroexpander()) {
 
     companion object {
         /* Executor Service for Futures */
@@ -34,12 +35,7 @@ class Evaluator(private val reflector: Reflector = Reflector()) {
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
-    fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpand(sexp), env)
-
-    // TODO Implement
-    private fun macroexpand(sexp: Any): Any {
-        return sexp
-    }
+    fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpander.expand(sexp), env)
 
     /* Main eval */
     fun eval(sexp: Any?, env: Environment): Any? {
