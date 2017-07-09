@@ -431,11 +431,11 @@ object Utils {
         if (!isInteger(this)) {
             return this
         }
-        try {
-            return this.longValueExact()
+        return try {
+            this.longValueExact()
         } catch (e: ArithmeticException) {
             /* Down-casting has failed, ignore and cast to BigInteger then */
-            return this.toBigInteger()
+            this.toBigInteger()
         }
     }
 
