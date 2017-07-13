@@ -19,11 +19,10 @@ enum class Dot : ISpecialForm {
             throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
         // FIXME Optimize and cleanup
-        var first: Any? = form[1]
-        if (first is Symbol) {
-            first = env.findOrDefault(first, evaluator.eval(first, env))
+        val first = if (form[1] is Symbol) {
+            env.findOrDefault(form[1], evaluator.eval(form[1], env))
         } else {
-            first = evaluator.eval(first, env)
+            evaluator.eval(form[1], env)
         }
         if (first is Class<*>) {
             val statik = "${form[1]}/${form[2]}"
