@@ -26,6 +26,7 @@ class DelayedTest : AbstractTest() {
     @Test
     fun testEvalForce() {
         assertEquals(true, eval("(force (delay (= (+ 1 2) 3)))", env))
+        assertEquals(5L, eval("(force (delay 1 2 3 4 5))", env))
     }
 
     @Test
