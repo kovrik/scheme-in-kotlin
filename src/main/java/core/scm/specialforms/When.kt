@@ -17,12 +17,9 @@ enum class When : ISpecialForm {
         if (size < 3) {
             throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
         }
-        val test = form[1]
-        if (Utils.toBoolean(evaluator.eval(test, env))) {
-            for (i in 2..form.size - 2) {
-                evaluator.eval(form[i], env)
-            }
-            return Thunk(form[form.size - 1], env)
+        if (Utils.toBoolean(evaluator.eval(form[1], env))) {
+            for (i in 2..size - 2) { evaluator.eval(form[i], env) }
+            return Thunk(form[size - 1], env)
         }
         return Unit
     }
