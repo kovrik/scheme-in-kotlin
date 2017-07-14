@@ -12,8 +12,7 @@ import core.utils.Utils
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
-enum class Do : ISpecialForm {
-    DO;
+object Do : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
@@ -41,7 +40,7 @@ enum class Do : ISpecialForm {
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {
-                throw IllegalSyntaxException.of(Let.LET.toString(), form, "duplicate identifier: $variable")
+                throw IllegalSyntaxException.of(Let.toString(), form, "duplicate identifier: $variable")
             }
             tempEnv.put(variable, evaluator.eval(init, tempEnv))
         }
@@ -78,7 +77,7 @@ enum class Do : ISpecialForm {
             }
         }
         /* Test evaluated to #f */
-        return Begin.BEGIN.eval(clause, tempEnv, evaluator)
+        return Begin.eval(clause, tempEnv, evaluator)
     }
 
     override fun toString() = "do"

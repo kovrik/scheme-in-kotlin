@@ -6,8 +6,7 @@ import core.evaluator.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 
-enum class Dot : ISpecialForm {
-    DOT;
+object Dot : ISpecialForm {
 
     private val reflector = Reflector()
 

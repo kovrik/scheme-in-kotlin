@@ -8,14 +8,11 @@ import core.exceptions.ThrowableWrapper
 import core.scm.Cons
 import core.scm.Symbol
 
-enum class Try : ISpecialForm {
-    TRY;
+object Try : ISpecialForm {
 
-    companion object {
-        private val REFLECTOR = Reflector()
-        private val CATCH   = Symbol.intern("catch")
-        private val FINALLY = Symbol.intern("finally")
-    }
+    private val REFLECTOR = Reflector()
+    private val CATCH = Symbol.intern("catch")
+    private val FINALLY = Symbol.intern("finally")
 
     override fun toString() = "try"
 
@@ -39,7 +36,7 @@ enum class Try : ISpecialForm {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
-                        fin = Cons.list(Begin.BEGIN)
+                        fin = Cons.list(Begin)
                         (fin as Cons<Any?>).addAll(expr.subList(1, expr.size))
                     }
                     continue
@@ -54,7 +51,7 @@ enum class Try : ISpecialForm {
                     val clazz = REFLECTOR.getClazz(expr[1].toString())
                     var catchExpr: Any? = null
                     if (expr.size > 3) {
-                        catchExpr = Cons.list(Begin.BEGIN)
+                        catchExpr = Cons.list(Begin)
                         (catchExpr as Cons<Any?>).addAll(expr.subList(3, expr.size))
                     }
                     catches.put(clazz, catchExpr)

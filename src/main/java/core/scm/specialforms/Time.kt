@@ -15,8 +15,7 @@ import java.util.concurrent.TimeUnit
  * Syntax:
  * (time <expression1> ... <expression n>)
  */
-enum class Time : ISpecialForm {
-    TIME;
+object Time : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {

@@ -17,8 +17,7 @@ import core.scm.Thunk
  * The restriction is necessary because Scheme passes arguments by value rather than by name.
  * In the most common uses of letrec, all the <init>s are lambda expressions and the restriction is satisfied automatically.
  */
-enum class LetRec : ISpecialForm {
-    LETREC;
+object LetRec : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {

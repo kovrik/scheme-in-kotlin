@@ -10,8 +10,7 @@ import core.utils.Utils
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
-enum class If : ISpecialForm {
-    IF;
+object If : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size

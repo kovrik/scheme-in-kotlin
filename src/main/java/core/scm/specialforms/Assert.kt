@@ -5,12 +5,9 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
 
-enum class Assert : ISpecialForm {
-    ASSERT;
+object Assert : ISpecialForm {
 
-    companion object {
-        private val EMPTY = arrayOfNulls<StackTraceElement>(0)
-    }
+    private val EMPTY = arrayOfNulls<StackTraceElement>(0)
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2 || form.size > 3) {

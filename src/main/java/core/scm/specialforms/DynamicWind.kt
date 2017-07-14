@@ -7,8 +7,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.scm.Cons
 
-enum class DynamicWind : ISpecialForm {
-    DYNAMIC_WIND;
+object DynamicWind : ISpecialForm {
 
     override fun toString() = "dynamic-wind"
 

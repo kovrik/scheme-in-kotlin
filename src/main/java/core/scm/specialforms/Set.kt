@@ -8,8 +8,7 @@ import core.scm.Symbol
 /* Syntax:
  * (set! <variable> <expression>)
  */
-enum class Set : ISpecialForm {
-    SET;
+object Set : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) {
         if (form.size != 3) {

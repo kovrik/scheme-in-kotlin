@@ -5,12 +5,9 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 
-enum class Unquote : ISpecialForm {
-    UNQUOTE;
+object Unquote : ISpecialForm {
 
-    companion object {
-        val UNQUOTE_SYMBOL = Symbol.intern(UNQUOTE.toString())
-    }
+    val UNQUOTE_SYMBOL = Symbol.intern(toString())
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         // Implemented in quasiquote

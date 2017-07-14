@@ -20,7 +20,7 @@ open class Reader : IReader {
     }
 
     companion object {
-        private val DOT = Symbol.intern(Dot.DOT.toString())
+        private val DOT = Symbol.intern(Dot.toString())
         private val DEREF = Symbol.intern("deref")
 
         private const val LINE_BREAKS = "\n\r"

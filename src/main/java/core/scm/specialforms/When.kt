@@ -9,8 +9,7 @@ import core.utils.Utils
 /* Syntax:
  * (when <test> body...)
  */
-enum class When : ISpecialForm {
-    WHEN;
+object When : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size

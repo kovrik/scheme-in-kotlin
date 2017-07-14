@@ -10,8 +10,7 @@ import core.scm.Thunk
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-enum class LetSeq : ISpecialForm {
-    LETSEQ;
+object LetSeq : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {

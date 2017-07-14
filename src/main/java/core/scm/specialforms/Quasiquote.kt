@@ -19,8 +19,6 @@ import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 
 import core.scm.Symbol
-import core.scm.specialforms.Unquote.UNQUOTE
-import core.scm.specialforms.UnquoteSplicing.UNQUOTE_SPLICING
 
 import kotlin.collections.Set
 
@@ -28,12 +26,9 @@ import kotlin.collections.Set
  * (quasiquote <datum>)
  * `<datum>
  */
-enum class Quasiquote : ISpecialForm {
-    QUASIQUOTE;
+object Quasiquote : ISpecialForm {
 
-    companion object {
-        val QUASIQUOTE_SYMBOL = Symbol.intern(QUASIQUOTE.toString())
-    }
+    val QUASIQUOTE_SYMBOL = Symbol.intern(toString())
 
     private val setProc = SetProc()
 
@@ -72,7 +67,7 @@ enum class Quasiquote : ISpecialForm {
             /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
             if (isProperList(list) && Unquote.UNQUOTE_SYMBOL == list[0]) {
                 if (list.size != 2) {
-                    throw IllegalSyntaxException.of(UNQUOTE.toString(), expr, "unquote expects exactly one expression")
+                    throw IllegalSyntaxException.of(Unquote.toString(), expr, "unquote expects exactly one expression")
                 }
                 return evaluator.eval(list[1], env)
             }
@@ -100,13 +95,13 @@ enum class Quasiquote : ISpecialForm {
                 if (n > 0 && Unquote.UNQUOTE_SYMBOL == o) {
                     /* if UNQUOTE is just before the last element a */
                     if (n != list.size - 2) {
-                        throw IllegalSyntaxException.of(UNQUOTE.toString(), list, "expects exactly one expression")
+                        throw IllegalSyntaxException.of(Unquote.toString(), list, "expects exactly one expression")
                     }
                     /* Evaluate and append last element */
                     return Append.append(result, evaluator.eval(list[n + 1], env))
                 }
                 if (isProperList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
-                    throw IllegalSyntaxException.of(UNQUOTE_SPLICING.toString(), expr, "invalid context within quasiquote")
+                    throw IllegalSyntaxException.of(UnquoteSplicing.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
                 result = Append.append(result, list(o))

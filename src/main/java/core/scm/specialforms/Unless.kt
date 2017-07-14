@@ -9,8 +9,7 @@ import core.utils.Utils
 /* Syntax:
  * (unless <test> body...)
  */
-enum class Unless : ISpecialForm {
-    UNLESS;
+object Unless : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size

@@ -11,14 +11,11 @@ import core.scm.Symbol
  * '<datum>
  * <constant>
  */
-enum class Quote : ISpecialForm {
-    QUOTE;
+object Quote : ISpecialForm {
 
-    companion object {
-        val QUOTE_SYMBOL = Symbol.intern(QUOTE.toString())
+    val QUOTE_SYMBOL = Symbol.intern(toString())
 
-        fun quote(obj: Any) = Cons.list(QUOTE, obj)
-    }
+    fun quote(obj: Any) = Cons.list(this, obj)
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = form[1]
 

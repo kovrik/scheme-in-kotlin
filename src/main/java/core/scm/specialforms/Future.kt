@@ -8,8 +8,7 @@ import core.scm.Cons
 /* Syntax:
  * (future <expression>)
  */
-enum class Future : ISpecialForm {
-    FUTURE;
+object Future : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
@@ -17,7 +16,7 @@ enum class Future : ISpecialForm {
         }
         val future: core.scm.Future
         if (form.size > 2) {
-            val list: MutableList<Any?> = Cons.list(Begin.BEGIN)
+            val list: MutableList<Any?> = Cons.list(Begin)
             list.addAll(form.subList(1, form.size))
             future = core.scm.Future(list, env, evaluator)
         } else {

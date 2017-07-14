@@ -8,8 +8,7 @@ import core.utils.Utils
 /* Syntax:
  * (and <test1> ...)
  */
-enum class And : ISpecialForm {
-    AND;
+object And : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         var result: Any? = true

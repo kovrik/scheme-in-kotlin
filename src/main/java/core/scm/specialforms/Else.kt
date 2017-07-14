@@ -5,12 +5,9 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 
-enum class Else : ISpecialForm {
-    ELSE;
+object Else : ISpecialForm {
 
-    companion object {
-        val ELSE_SYMBOL = Symbol.intern("else")
-    }
+    val ELSE_SYMBOL = Symbol.intern(toString())
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         throw IllegalSyntaxException.of(toString(), form, "not allowed as an expression")

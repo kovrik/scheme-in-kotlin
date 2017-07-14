@@ -13,8 +13,7 @@ import core.procedures.equivalence.Eqv
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-enum class Case : ISpecialForm {
-    CASE;
+object Case : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         /* Save string representation of form before evaluation */
@@ -30,14 +29,14 @@ enum class Case : ISpecialForm {
                 if (i != form.size - 1) {
                     throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform")
                 }
-                return Begin.BEGIN.eval(subform, env, evaluator)
+                return Begin.eval(subform, env, evaluator)
             }
             if (datum !is List<*>) {
                 throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             }
             for (n in datum) {
                 if (Eqv.eqv(key, n)) {
-                    return Begin.BEGIN.eval(subform, env, evaluator)
+                    return Begin.eval(subform, env, evaluator)
                 }
             }
         }

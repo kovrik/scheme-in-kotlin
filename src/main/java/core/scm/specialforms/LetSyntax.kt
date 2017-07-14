@@ -4,8 +4,7 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 
 // TODO
-enum class LetSyntax : ISpecialForm {
-    LET_SYNTAX;
+object LetSyntax : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         throw UnsupportedOperationException("NOT IMPLEMENTED YET!")

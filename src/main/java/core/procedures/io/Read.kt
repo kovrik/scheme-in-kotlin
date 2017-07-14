@@ -12,7 +12,7 @@ class Read : AFn<Any?, Any>(name = "read", maxArgs = 1, restArgsType = InputPort
 
     override operator fun invoke(args: Array<out Any?>): Any {
         val inputPort: InputPort = if (args.isEmpty()) Repl.currentInputPort else args[0] as InputPort
-        val sexps = Cons.list<Any>(Begin.BEGIN)
+        val sexps = Cons.list<Any>(Begin)
         sexps.addAll(Reader(inputPort.inputStream).read())
         return Thunk(sexps)
     }

@@ -6,8 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.exceptions.ThrowableWrapper
 import core.exceptions.WrongTypeException
 
-enum class Throw : ISpecialForm {
-    THROW;
+object Throw : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {

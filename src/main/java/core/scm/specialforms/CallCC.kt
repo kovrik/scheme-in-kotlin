@@ -8,13 +8,9 @@ import core.procedures.continuations.CalledContinuation
 import core.procedures.continuations.Continuation
 import core.scm.Cons
 
-enum class CallCC : ISpecialForm {
-    CALL_CC {
-        override fun toString() = "call/cc"
-    },
-    CALL_WITH_CURRENT_CONTINUATION {
-        override fun toString() = "call-with-current-continuation"
-    };
+object CallCC : ISpecialForm {
+
+    override fun toString() = "call-with-current-continuation"
 
     /* Actual call-with-current-continuation */
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {

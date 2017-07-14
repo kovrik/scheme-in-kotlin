@@ -52,6 +52,7 @@ class DefaultEnvironment : Environment(null) {
         /* Standard Procedures */
         STANDARD_PROCEDURES.forEach { proc -> put(Symbol.intern(proc.name), proc) }
         /* Constants and special cases, synonyms*/
+        put(Symbol.intern("call/cc"), CallCC)
         put(Symbol.intern("pi"), Math.PI)
         put(Symbol.intern("nil"), null)
         put(Symbol.intern("null"), null)
@@ -408,45 +409,44 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_FLOAT,
                 Predicate.IS_FN)
 
-        private val SPECIAL_FORMS = arrayOf<ISpecialForm>(
-                Delay.DELAY,
-                Future.FUTURE,
-                Quote.QUOTE,
-                Set.SET,
-                Quasiquote.QUASIQUOTE,
-                Unquote.UNQUOTE,
-                UnquoteSplicing.UNQUOTE_SPLICING,
-                Time.TIME,
-                Assert.ASSERT,
+        private val SPECIAL_FORMS = arrayOf(
+                Delay,
+                Future,
+                Quote,
+                Set,
+                Quasiquote,
+                Unquote,
+                UnquoteSplicing,
+                Time,
+                Assert,
                 /* With TCO */
-                If.IF,
-                When.WHEN,
-                Unless.UNLESS,
-                Begin.BEGIN,
-                And.AND,
-                Or.OR,
-                Lambda.LAMBDA,
-                Define.DEFINE,
-                Let.LET,
-                LetRec.LETREC,
-                LetSeq.LETSEQ,
-                Do.DO,
-                Case.CASE,
-                Cond.COND,
-                Else.ELSE,
-                New.NEW,
-                Comment.COMMENT,
-                Dot.DOT,
-                Throw.THROW,
-                Try.TRY,
-                DynamicWind.DYNAMIC_WIND,
-                CallCC.CALL_WITH_CURRENT_CONTINUATION,
-                CallCC.CALL_CC,
+                If,
+                When,
+                Unless,
+                Begin,
+                And,
+                Or,
+                Lambda,
+                Define,
+                Let,
+                LetRec,
+                LetSeq,
+                Do,
+                Case,
+                Cond,
+                Else,
+                New,
+                Comment,
+                Dot,
+                Throw,
+                Try,
+                DynamicWind,
+                CallCC,
                 // TODO Macros
-                DefineSyntax.DEFINE_SYNTAX,
-                LetSyntax.LET_SYNTAX,
-                LetRecSyntax.LETREC_SYNTAX,
-                SyntaxRules.SYNTAX_RULES)
+                DefineSyntax,
+                LetSyntax,
+                LetRecSyntax,
+                SyntaxRules)
 
         private val LIBRARY_PROCEDURES = ArrayList<String>()
 

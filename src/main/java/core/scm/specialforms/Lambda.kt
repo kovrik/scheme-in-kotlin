@@ -16,8 +16,7 @@ import java.util.LinkedList
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
-enum class Lambda : ISpecialForm {
-    LAMBDA;
+object Lambda : ISpecialForm {
 
     override fun toString() = "lambda"
 
@@ -67,7 +66,7 @@ enum class Lambda : ISpecialForm {
             body = form[2]
         } else {
             /* Add implicit `begin` */
-            body = Cons.list(Begin.BEGIN)
+            body = Cons.list(Begin)
             (body as MutableList<Any?>).addAll(form.subList(2, form.size))
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)

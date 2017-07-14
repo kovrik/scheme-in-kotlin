@@ -22,8 +22,7 @@ import core.scm.Thunk
  * It may be more clear if we replace first elements with `begin` explicitly (in case, cond and do),
  * but it is ignored anyway, so why do one extra operation?
  */
-enum class Begin : ISpecialForm {
-    BEGIN;
+object Begin : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size <= 1) {

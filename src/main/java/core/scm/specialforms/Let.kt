@@ -12,8 +12,7 @@ import core.scm.Thunk
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-enum class Let : ISpecialForm {
-    LET;
+object Let : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {
@@ -61,7 +60,7 @@ enum class Let : ISpecialForm {
                 initValues.add(binding[1])
             }
             val lambdaBody = form[3]
-            val lambda = Cons.list(Lambda.LAMBDA, lambdaArgs, lambdaBody)
+            val lambda = Cons.list(Lambda, lambdaArgs, lambdaBody)
             val l = Cons.list<Cons<*>>()
             l.add(Cons.list(name, lambda))
 
@@ -69,9 +68,9 @@ enum class Let : ISpecialForm {
             body.addAll(initValues)
 
             /* Named let is implemented via letrec */
-            val letrec = Cons.list<Any>(LetRec.LETREC, l, body)
+            val letrec = Cons.list(LetRec, l, body)
             /* Letrec has TCO */
-            return LetRec.LETREC.eval(letrec, Environment(env), evaluator)
+            return LetRec.eval(letrec, Environment(env), evaluator)
         }
         throw IllegalSyntaxException.of(toString(), form)
     }

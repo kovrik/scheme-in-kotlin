@@ -5,8 +5,7 @@ import core.evaluator.Evaluator
 import core.evaluator.Reflector
 import core.exceptions.IllegalSyntaxException
 
-enum class New : ISpecialForm {
-    NEW;
+object New : ISpecialForm {
 
     private val reflector = Reflector()
 

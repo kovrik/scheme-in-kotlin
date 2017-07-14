@@ -12,8 +12,7 @@ import core.writer.Writer
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
-enum class Define : ISpecialForm {
-    DEFINE;
+object Define : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
@@ -33,7 +32,7 @@ enum class Define : ISpecialForm {
              *              |   0   | 1 definition           | 3 body      |
              */
             /* Construct lambda form */
-            val l = Cons.list<Any?>(Lambda.LAMBDA)
+            val l = Cons.list<Any?>(Lambda)
             /* Args */
             val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
             for (arg in lambdaArgs) {
@@ -53,7 +52,7 @@ enum class Define : ISpecialForm {
                 throw IllegalSyntaxException.of(toString(), form,
                                                 "not an identifier for procedure name: ${Writer.write(id)}")
             }
-            val lambda = Lambda.LAMBDA.eval(l, env, evaluator)
+            val lambda = Lambda.eval(l, env, evaluator)
             lambda.name = id.toString()
             env.put(id, lambda)
         } else {

@@ -9,8 +9,7 @@ import core.evaluator.Evaluator
  * Syntax:
  * (comment <expression1> ... <expression n>)
  */
-enum class Comment : ISpecialForm {
-    COMMENT;
+object Comment : ISpecialForm {
 
     override fun toString() = "comment"
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = Unit

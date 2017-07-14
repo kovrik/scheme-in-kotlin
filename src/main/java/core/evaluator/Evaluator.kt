@@ -103,10 +103,10 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                     val symbolName = (this[0] as Symbol).name
                     if (symbolName.endsWith('.')) {
                         val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
-                        val form = mutableListOf<Any?>(New.NEW, clazz)
+                        val form = mutableListOf<Any?>(New, clazz)
                         /* Add args (if any) */
                         for (i in 1..size - 1) { form.add(this[i]) }
-                        return New.NEW.eval(form, env, this@Evaluator)
+                        return New.eval(form, env, this@Evaluator)
                     }
                     op = JavaMethodCall(this[0].toString())
                 }

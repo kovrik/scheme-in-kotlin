@@ -8,8 +8,7 @@ import core.utils.Utils
 /* Syntax:
  * (or <test1> ...)
  */
-enum class Or : ISpecialForm {
-    OR;
+object Or : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         var result: Any? = false
