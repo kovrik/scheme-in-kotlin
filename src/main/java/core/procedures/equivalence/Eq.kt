@@ -16,11 +16,9 @@ class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = eq(arg1, arg2)
 
-    private fun eq(first: Any?, second: Any?): Boolean {
-        if (first is Symbol && second is Symbol) {
-            /* Check if 2 symbols are eq ignoring metadata */
-            return first == second
-        }
-        return EMPTY == first && EMPTY == second || first === second
+    private fun eq(first: Any?, second: Any?) = when {
+        /* Check if 2 symbols are eq ignoring metadata */
+        first is Symbol && second is Symbol -> first == second
+        else -> EMPTY == first && EMPTY == second || first === second
     }
 }
