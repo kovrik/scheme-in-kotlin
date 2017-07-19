@@ -23,11 +23,10 @@ class Keyword private constructor(override val name: String) :
         return (args[0] as Map<Any?, Any?>).getOrDefault(this, args.getOrNull(1))
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as Keyword?
-        return name == that!!.name
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null || javaClass != other.javaClass -> false
+        else -> name == (other as Keyword).name
     }
 
     override fun hashCode() = name.hashCode() + 1077096266

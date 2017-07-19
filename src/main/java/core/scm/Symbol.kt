@@ -41,7 +41,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
 
     override fun equals(other: Any?) = when {
         this === other -> true
-        other == null || other.javaClass != Symbol::class.java -> false
+        other == null || javaClass != other.javaClass -> false
         else -> name == (other as Symbol).name
     }
 
