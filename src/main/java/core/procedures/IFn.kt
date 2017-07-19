@@ -16,4 +16,9 @@ interface IFn<in T, out R> : () -> R,
     override operator fun invoke(arg1: T, arg2: T, arg3: T, arg4: T): R
 
     operator fun invoke(args: Array<out T>): R
+
+    /* Check args types */
+    fun checkArgs(args: Array<out T>)
+    fun checkArity(args: Array<out T>)
+    fun arity(): Int
 }

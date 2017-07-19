@@ -14,7 +14,7 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
                              /* Return true if function is pure (referentially transparent) */
                              open val isPure: Boolean = false) : IFn<T, R>, Comparator<T> {
 
-    protected var arity = if (minArgs == maxArgs) minArgs else -1
+    override fun arity() = if (minArgs == maxArgs) minArgs else -1
 
     override fun compare(o1: T, o2: T): Int {
         val result = invoke(o1, o2)
@@ -46,19 +46,17 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
         false -> "#<procedure:$name>"
     }
 
-    /**
-     * Checks the number of arguments and their types
-     */
-    private fun checkArgs(args: Array<out Any?>) {
-        /* Check arg count */
-        val argsSize = args.size
-        if (argsSize < minArgs || argsSize > maxArgs) throw ArityException(name, minArgs, maxArgs, argsSize)
-        /* Check arg types */
-        for (i in 0..argsSize - 1) {
+    override fun checkArity(args: Array<out T>) {
+        if (args.size < minArgs || args.size > maxArgs) throw ArityException(name, minArgs, maxArgs, args.size)
+    }
+
+    /* Check args types */
+    override fun checkArgs(args: Array<out T>) {
+        for (i in 0..mandatoryArgsTypes.size - 1) { Type.assertType(name, args[i], mandatoryArgsTypes[i]) }
+        for (i in mandatoryArgsTypes.size..args.size - 1) {
             when {
-                i < mandatoryArgsTypes.size              -> Type.assertType(name, args[i], mandatoryArgsTypes[i])
-                i == argsSize - 1 && lastArgType != null -> Type.assertType(name, args[i], lastArgType)
-                restArgsType != null                     -> Type.assertType(name, args[i], restArgsType)
+                lastArgType  != null && i == args.size - 1 -> Type.assertType(name, args[i], lastArgType)
+                restArgsType != null                       -> Type.assertType(name, args[i], restArgsType)
             }
         }
     }
@@ -69,15 +67,18 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
      * then calls invoke<N>() methods (where N is arity).
      * Calls variadic invoke() otherwise.
      */
-    fun invokeN(args: Array<T>): R {
-        checkArgs(args)
-        return when (arity) {
-            0    -> invoke()
-            1    -> invoke(args[0])
-            2    -> invoke(args[0], args[1])
-            3    -> invoke(args[0], args[1], args[2])
-            4    -> invoke(args[0], args[1], args[2], args[3])
-            else -> invoke(args)
+    companion object {
+        fun <T, R> invokeN(fn: IFn<*, *>, args: Array<out T>): R = with(fn as IFn<T, R>) {
+            checkArity(args)
+            checkArgs(args)
+            return when (arity()) {
+                0    -> invoke()
+                1    -> invoke(args[0])
+                2    -> invoke(args[0], args[1])
+                3    -> invoke(args[0], args[1], args[2])
+                4    -> invoke(args[0], args[1], args[2], args[3])
+                else -> invoke(args)
+            }
         }
     }
 }

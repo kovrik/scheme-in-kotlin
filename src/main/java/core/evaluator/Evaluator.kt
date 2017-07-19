@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
+import core.procedures.IFn
 import core.procedures.continuations.CalledContinuation
 import core.scm.*
 import core.scm.specialforms.ISpecialForm
@@ -117,12 +118,12 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             /* Special Forms have special evaluation rules */
             is ISpecialForm -> return op.eval(this, env, this@Evaluator)
             /* Operator is a valid invokable object */
-            is AFn<*, *> -> {
+            is IFn<*, *> -> {
                 /* Scheme has applicative order, so evaluate all arguments first */
                 val args = arrayOfNulls<Any>(size - 1)
                 for (it in 1..args.size) { args[it - 1] = eval(this[it], env) }
-                /* Finally, invoke operator (AFn) via helper method */
-                return (op as AFn<Any?, Any?>).invokeN(args)
+                /* Finally, invoke operator (IFn) via helper method */
+                return AFn.invokeN(op, args)
             }
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")

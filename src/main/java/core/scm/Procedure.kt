@@ -23,7 +23,6 @@ class Procedure(override var name: String,
         } else {
             this.minArgs = this.args.size
             this.maxArgs = this.args.size
-            this.arity   = this.args.size
         }
     }
 
@@ -90,4 +89,7 @@ class Procedure(override var name: String,
         }
         return env
     }
+
+    /* Lambdas have no arg type information, hence nothing to check */
+    override fun checkArgs(args: Array<out Any?>) = Unit
 }
