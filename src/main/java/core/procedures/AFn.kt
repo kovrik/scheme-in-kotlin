@@ -14,7 +14,7 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
                              /* Return true if function is pure (referentially transparent) */
                              open val isPure: Boolean = false) : IFn<T, R>, Comparator<T> {
 
-    private val arity = if (minArgs == maxArgs) minArgs else -1
+    protected var arity = if (minArgs == maxArgs) minArgs else -1
 
     override fun compare(o1: T, o2: T): Int {
         val result = invoke(o1, o2)

@@ -23,6 +23,7 @@ class Procedure(override var name: String,
         } else {
             this.minArgs = this.args.size
             this.maxArgs = this.args.size
+            this.arity   = this.args.size
         }
     }
 
