@@ -38,7 +38,7 @@ class MutableString : INamed, CharSequence {
 
     operator fun set(index: Int, ch: Char) = when {
         index >= length -> throw IndexOutOfBoundsException("string-set!: value out of range: $index")
-        else -> this.string.setCharAt(index, ch)
+        else            -> string[index] = ch
     }
 
     fun clear() = string.setLength(0)
