@@ -2,7 +2,7 @@ package core.procedures.characters
 
 import core.procedures.AFn
 
-class CharPredicate private constructor(override val name: String, private val predicate: (Char) -> Boolean) :
+class CharPredicate private constructor(override val name: String, inline private val predicate: (Char) -> Boolean) :
         AFn<Char?, Boolean>(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Char::class.javaObjectType)) {
 
     companion object {

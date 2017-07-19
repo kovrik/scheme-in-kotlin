@@ -11,7 +11,7 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-class Predicate private constructor(override val name: String, private val predicate: (Any?) -> Boolean) :
+class Predicate private constructor(override val name: String, inline private val predicate: (Any?) -> Boolean) :
         AFn<Any?, Boolean>(isPure = true, minArgs = 1, maxArgs = 1) {
 
     companion object {
