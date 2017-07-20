@@ -53,7 +53,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         }
 
         internal fun gcd(a: BigDecimal, b: BigDecimal): Number {
-            val scale = Math.max(a.scale(), b.scale())
+            val scale = maxOf(a.scale(), b.scale())
             if (scale == 0) {
                 return BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
             } else {

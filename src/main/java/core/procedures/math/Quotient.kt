@@ -21,7 +21,7 @@ open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minAr
     }
 
     private operator fun invoke(first: BigDecimal, second: BigDecimal): Number {
-        val scale = Math.max(first.scale(), second.scale())
+        val scale = maxOf(first.scale(), second.scale())
         if (scale > 0) {
             return first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE).setScale(1, Utils.ROUNDING_MODE)
         } else {

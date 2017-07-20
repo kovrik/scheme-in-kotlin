@@ -16,22 +16,20 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
             return args[0] as Number?
         }
         var result = args[0]!! as Number
-        for (arg in args) {
-            result = max(result, arg!! as Number)
-        }
+        args.forEach { result = max(result, it!! as Number) }
         return result
     }
 
     private fun max(f: Number, s: Number) = when {
-        f is Int        && s is Int        -> Math.max(f, s)
-        f is Long       && s is Long       -> Math.max(f, s)
-        f is Float      && s is Float      -> Math.max(f, s)
-        f is Double     && s is Double     -> Math.max(f, s)
-        f is BigRatio   && s is BigRatio   -> f.max(s)
-        f is BigInteger && s is BigInteger -> f.max(s)
-        f is BigDecimal && s is BigDecimal -> f.max(s)
-        f is BigDecimal                    -> f.max(Utils.toBigDecimal(s))
-        s is BigDecimal                    -> s.max(Utils.toBigDecimal(f))
+        f is Int        && s is Int        -> maxOf(f, s)
+        f is Long       && s is Long       -> maxOf(f, s)
+        f is Float      && s is Float      -> maxOf(f, s)
+        f is Double     && s is Double     -> maxOf(f, s)
+        f is BigRatio   && s is BigRatio   -> maxOf(f, s)
+        f is BigInteger && s is BigInteger -> maxOf(f, s)
+        f is BigDecimal && s is BigDecimal -> maxOf(f, s)
+        f is BigDecimal                    -> maxOf(f, Utils.toBigDecimal(s))
+        s is BigDecimal                    -> maxOf(s, Utils.toBigDecimal(f))
         f.toDouble() >= s.toDouble()       -> f
         else                               -> s
     }

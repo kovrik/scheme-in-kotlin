@@ -31,7 +31,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
         if (BigDecimal.ZERO.compareTo(a) == 0 && BigDecimal.ZERO.compareTo(b) == 0) {
             return BigDecimal.ZERO
         }
-        return if (Math.max(a.scale(), b.scale()) == 0) {
+        return if (maxOf(a.scale(), b.scale()) == 0) {
             BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
         } else {
             ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))

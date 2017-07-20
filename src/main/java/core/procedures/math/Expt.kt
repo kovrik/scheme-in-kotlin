@@ -194,7 +194,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, max
 
         private fun exptBigDec(n: BigDecimal, e: BigDecimal): Number {
             try {
-                val scale = Math.max(n.scale(), n.stripTrailingZeros().scale())
+                val scale = maxOf(n.scale(), n.stripTrailingZeros().scale())
                 return n.pow(e.intValueExact()).setScale(scale, Utils.ROUNDING_MODE)
             } catch (ex: ArithmeticException) {
                 // FIXME NEGATIVE_INFINITY and zero in some cases?

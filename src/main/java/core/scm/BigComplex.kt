@@ -31,8 +31,8 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val minScale = if (tre.scale() > 0 || tim.scale() > 0) 1 else 0
         val reScaleStripped = tre.stripTrailingZeros().scale()
         val imScaleStripped = tim.stripTrailingZeros().scale()
-        val reScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, reScaleStripped))
-        val imScale = Math.min(Utils.DEFAULT_SCALE, Math.max(minScale, imScaleStripped))
+        val reScale = minOf(Utils.DEFAULT_SCALE, maxOf(minScale, reScaleStripped))
+        val imScale = minOf(Utils.DEFAULT_SCALE, maxOf(minScale, imScaleStripped))
         this.re = if (reScaleStripped > 0) tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros() else tre.setScale(reScale, Utils.ROUNDING_MODE)
         this.im = if (imScaleStripped > 0) tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros() else tim.setScale(imScale, Utils.ROUNDING_MODE)
     }

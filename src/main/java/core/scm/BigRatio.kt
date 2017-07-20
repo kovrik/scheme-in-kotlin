@@ -82,7 +82,7 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun toBigDecimalInexact(): BigDecimal {
         val bigDecimal = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
-        val scale = Math.max(1, bigDecimal.scale())
+        val scale = maxOf(1, bigDecimal.scale())
         return bigDecimal.setScale(scale, Utils.ROUNDING_MODE)
     }
 
@@ -119,10 +119,6 @@ class BigRatio : Number, Comparable<BigRatio> {
     fun signum() = numerator.signum() * denominator.signum()
 
     fun reciprocal() = BigRatio(denominator, numerator)
-
-    fun max(other: BigRatio) = if (this > other) this else other
-
-    fun min(other: BigRatio) = if (this < other) this else other
 
     private fun quotient(): BigDecimal {
         val numerator = BigDecimal(numerator)

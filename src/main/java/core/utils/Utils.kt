@@ -165,7 +165,7 @@ object Utils {
 
     private fun processComplexNumber(number: String, exactness: Char?, radix: Int): Any? {
         /* Assume that we have a complex number and try to parse it */
-        val p = Math.max(number.lastIndexOf('+'), number.lastIndexOf('-'))
+        val p = maxOf(number.lastIndexOf('+'), number.lastIndexOf('-'))
         val r = number.substring(0, p)
         var re: Any? = 0L
         if (!r.isEmpty()) {
