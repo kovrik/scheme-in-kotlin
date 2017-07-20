@@ -25,14 +25,12 @@ class BigRatio : Number, Comparable<BigRatio> {
 
         fun valueOf(numerator: String, denominator: String) = valueOf(parseBigInteger(numerator), parseBigInteger(denominator))
 
-        fun valueOf(numerator: BigInteger, denominator: BigInteger): BigRatio {
-            return when {
-                BigInteger.ZERO == denominator -> throw ArithmeticException("Division by zero")
-                BigInteger.ZERO == numerator -> ZERO
-                BigInteger.ONE  == numerator && BigInteger.ONE == denominator -> ONE
-                BigInteger.ONE  == denominator -> BigRatio(numerator)
-                else -> BigRatio(numerator, denominator)
-            }
+        fun valueOf(numerator: BigInteger, denominator: BigInteger) = when {
+            BigInteger.ZERO == denominator -> throw ArithmeticException("Division by zero")
+            BigInteger.ZERO == numerator -> ZERO
+            BigInteger.ONE  == numerator && BigInteger.ONE == denominator -> ONE
+            BigInteger.ONE  == denominator -> BigRatio(numerator)
+            else -> BigRatio(numerator, denominator)
         }
 
         private fun parseBigInteger(number: String) = CONSTANTS.getOrDefault(number, BigInteger(number))
@@ -136,12 +134,11 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     override fun hashCode() = this.toString().hashCode()
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other == null) return false
-        if (other.javaClass != this.javaClass) return false
-        val b = other as BigRatio?
-        return compareTo(b!!) == 0
+    override fun equals(other: Any?) = when {
+        other === this -> true
+        other == null -> false
+        other.javaClass != this.javaClass -> false
+        else -> compareTo(other as BigRatio) == 0
     }
 
     override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else "$numerator/$denominator"

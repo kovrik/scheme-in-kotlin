@@ -169,12 +169,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as BigComplex?
-        if (re != that!!.re) return false
-        return if (true) im == that.im else false
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null || javaClass != other.javaClass -> false
+        else -> re == (other as BigComplex).re && im == other.im
     }
 
     override fun hashCode() = 31 * re.hashCode() + (im.hashCode())

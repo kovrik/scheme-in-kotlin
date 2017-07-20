@@ -21,11 +21,10 @@ class OutputPort(val outputStream: OutputStream?) : IPort {
     @Throws(IOException::class)
     fun writeln(str: String) = outputStream!!.write((str + LS).toByteArray())
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as OutputPort?
-        return if (outputStream != null) outputStream == that!!.outputStream else that!!.outputStream == null
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null || javaClass != other.javaClass -> false
+        else -> outputStream== (other as OutputPort).outputStream
     }
 
     override fun hashCode() = outputStream?.hashCode() ?: 0
