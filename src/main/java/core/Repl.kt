@@ -118,13 +118,7 @@ object Repl {
         currentOutputPort.writeln(errorMessage)
     }
 
-    private fun filterStackTrace(stackTraceElements: Array<StackTraceElement>): StackTraceElement? {
-        for (stackTraceElement in stackTraceElements) {
-            if (stackTraceElement.isNativeMethod) continue
-            val name = stackTraceElement.className
-            if (name.startsWith("sun.reflect") || name.startsWith("java.lang.reflect")) continue
-            return stackTraceElement
-        }
-        return null
+    private fun filterStackTrace(stackTraceElements: Array<StackTraceElement>) = stackTraceElements.firstOrNull {
+        !it.isNativeMethod && !it.className.startsWith("sun.reflect") && !it.className.startsWith("java.lang.reflect")
     }
 }
