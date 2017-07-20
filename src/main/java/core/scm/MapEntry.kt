@@ -17,17 +17,11 @@ class MapEntry(key: Any?, value: Any?) : MutableVector(arrayOf(key, value)), Map
 
     override fun toString() = "[${Writer.write(key)} ${Writer.write(value)}]"
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as MapEntry?
-        if (if (key != null) key != that!!.key else that!!.key != null) return false
-        return if (value != null) value == that.value else that.value == null
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null || javaClass != other.javaClass -> false
+        else -> key == (other as MapEntry).key && value == other.value
     }
 
-    override fun hashCode(): Int {
-        var result = if (key != null) key!!.hashCode() else 0
-        result = 31 * result + if (value != null) value!!.hashCode() else 0
-        return result
-    }
+    override fun hashCode() = 31 * (key?.hashCode() ?: 0) + (value?.hashCode() ?: 0)
 }

@@ -18,6 +18,5 @@ class Hashmap(val map: MutableMap<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1,
         map.put(key, value)
         return this
     }
-
 }
 
