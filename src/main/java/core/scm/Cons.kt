@@ -2,9 +2,9 @@ package core.scm
 
 import core.exceptions.WrongTypeException
 import core.writer.Writer
-import java.util.*
 
-class Cons<E> : LinkedList<E?> {
+// TODO Persistent Data Structures
+class Cons<E> : ArrayList<E?> {
 
     /* Is it a Proper List or an Improper one?
      * Proper lists just have this flag set to true, they don't end with empty list.
@@ -24,10 +24,10 @@ class Cons<E> : LinkedList<E?> {
 
     fun car() = when {
         isEmpty() -> throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
-        else      -> first
+        else      -> first()
     }
 
-    fun cdr() = if (isProperList) subList(1, size) else (last as Any)
+    fun cdr() = if (isProperList) subList(1, size) else (last() as Any)
 
     override fun toString() = toString(this)
 
@@ -118,8 +118,8 @@ class Cons<E> : LinkedList<E?> {
                 sb.append(Writer.write(list[0]))
                 var cdr = list.last()
                 while (cdr is Cons<*>) {
-                    sb.append(' ').append(Writer.write(cdr.first))
-                    cdr = cdr.last
+                    sb.append(' ').append(Writer.write(cdr.first()))
+                    cdr = cdr.last()
                 }
                 /* Dotted notation */
                 sb.append(" . ").append(Writer.write(cdr))

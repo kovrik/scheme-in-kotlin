@@ -14,7 +14,7 @@ class Reverse : AFn<Any?, Any?>(name = "reverse", isPure = true, minArgs = 1, ma
             is List<*> -> {
                 val result = Cons.list<Any>()
                 for (o in (arg as List<*>?)!!) {
-                    result.push(o)
+                    result.add(0, o)
                 }
                 return result
             }

@@ -381,7 +381,7 @@ open class Reader : IReader {
             dotPos != list.size - 1 -> throw IllegalSyntaxException("read: illegal use of '.'")
             /* Convert list into cons */
             else -> {
-                var cons = Cons.cons<Any?>(list[list.size - 2], list.last)
+                var cons = Cons.cons<Any?>(list[list.size - 2], list.last())
                 for (n in list.size - 3 downTo 0) { cons = Cons.cons(list[n], cons) }
                 cons
             }
