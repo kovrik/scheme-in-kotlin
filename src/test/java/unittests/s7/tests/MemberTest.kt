@@ -1,7 +1,7 @@
 package unittests.s7.tests
 
-import core.procedures.cons.ConsProc.Companion
 import core.procedures.cons.ConsProc.Companion.cons
+import core.scm.Cons
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 import org.junit.Assert.assertEquals
@@ -39,11 +39,11 @@ class MemberTest : AbstractTest() {
         assertEquals(list(MutableVector(arrayOf(1L, 2L, 3L)), MutableVector(arrayOf(1L, 2L))), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" x (vector 1 2)))) (member x lst))", env))
         assertEquals(list(MutableVector(arrayOf(1L, 2L, 3L)) as Any), eval("(let* ((x (vector 1 2 3)) (lst (list 1 \"hi\" (vector 1 2 3)))) (member x lst))", env))
         assertEquals(list(3L), eval("(member 3 . ('(1 2 3)))", env))
-        assertEquals(Companion.cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env))
+        assertEquals(Cons.cons(3L, 4L), eval("(member 3 . ('(1 2 3 . 4)))", env))
         assertEquals(list(3L), eval("(member . (3 '(1 2 3)))", env))
         assertEquals(false, eval("(member '(1 2) '(1 2))", env))
         assertEquals(list(list(1L, 2L) as Any), eval("(member '(1 2) '((1 2)))", env))
-        assertEquals(Companion.cons(4L, 5L), eval("(member 4 '(1 2 3 4 . 5))", env))
+        assertEquals(Cons.cons(4L, 5L), eval("(member 4 '(1 2 3 4 . 5))", env))
         try {
             eval("(member 3 '(1 2 . 3))", env)
             fail()

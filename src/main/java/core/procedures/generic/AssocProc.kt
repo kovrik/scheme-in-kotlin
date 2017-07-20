@@ -15,7 +15,7 @@ class AssocProc(override val name: String,
     private val get = Get()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        if (Cons.Companion.isProperList(arg2)) {
+        if (Cons.isProperList(arg2)) {
             val list = arg2 as List<*>?
             for (n in list!!.indices) {
                 val pair = list[n]
