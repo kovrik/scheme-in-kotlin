@@ -35,9 +35,9 @@ object Define : ISpecialForm {
             val l = Cons.list<Any?>(Lambda)
             /* Args */
             val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
-            for (arg in lambdaArgs) {
-                if (arg !is Symbol && !Cons.isPair(arg)) {
-                    throw IllegalSyntaxException.of(toString(), form, "not an identifier: ${Writer.write(arg)}")
+            lambdaArgs.forEach {
+                if (it !is Symbol && !Cons.isPair(it)) {
+                    throw IllegalSyntaxException.of(toString(), form, "not an identifier: ${Writer.write(it)}")
                 }
             }
             lambdaArgs.isProperList = Cons.isProperList(form[1])

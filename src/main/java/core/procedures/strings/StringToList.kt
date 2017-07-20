@@ -8,9 +8,7 @@ class StringToList : AFn<CharSequence?, List<Char?>>(name = "string->list", isPu
 
     override operator fun invoke(arg: CharSequence?): Cons<Char?> {
         val list = Cons.list<Char>()
-        for (c in arg!!.toString().toCharArray()) {
-            list.add(c)
-        }
+        arg!!.toString().toCharArray().forEach { list.add(it) }
         return list
     }
 }

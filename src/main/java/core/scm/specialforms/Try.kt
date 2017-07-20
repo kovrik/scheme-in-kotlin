@@ -72,9 +72,7 @@ object Try : ISpecialForm {
         /* Now Evaluate everything */
         try {
             var result: Any? = null
-            for (e in expressions) {
-                result = evaluator.eval(e, env)
-            }
+            expressions.forEach { result = evaluator.eval(it, env) }
             return result
         } catch (e: Throwable) {
             /* Unwrap if it is a ThrowableWrapper */

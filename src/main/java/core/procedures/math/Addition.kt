@@ -9,19 +9,10 @@ import java.math.BigInteger
 
 class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Number::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number? {
-        when (args.size) {
-            0 -> return 0L
-            1 -> return args[0] as Number?
-            else -> {
-                var result: Any? = 0L
-                for (arg in args) {
-                    arg!!
-                    result = add(result as Number, arg as Number)
-                }
-                return result as Number
-            }
-        }
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        0    -> 0L
+        1    -> args[0] as Number?
+        else -> args.fold(0L as Number?) { r, n -> Companion.add(r!!, n!! as Number) } as Number
     }
 
     companion object {

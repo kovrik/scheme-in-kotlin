@@ -25,19 +25,15 @@ object Case : ISpecialForm {
         for (i in 2..form.size - 1) {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             val datum = subform[0]
-            if (Else.ELSE_SYMBOL == datum) {
-                if (i != form.size - 1) {
-                    throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform")
-                }
-                return Begin.eval(subform, env, evaluator)
-            }
-            if (datum !is List<*>) {
-                throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
-            }
-            for (n in datum) {
-                if (Eqv.eqv(key, n)) {
+            when (datum) {
+                Else.ELSE_SYMBOL -> {
+                    if (i != form.size - 1) {
+                        throw IllegalSyntaxException.of(toString(), exprString, "else must be the last clause in subform")
+                    }
                     return Begin.eval(subform, env, evaluator)
                 }
+                is List<*> -> datum.firstOrNull { Eqv.eqv(key, it) }?.let { return Begin.eval(subform, env, evaluator) }
+                else       -> throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             }
         }
         return Unit

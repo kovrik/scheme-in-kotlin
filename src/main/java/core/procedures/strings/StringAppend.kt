@@ -4,17 +4,13 @@ import core.procedures.AFn
 
 class StringAppend : AFn<Any?, String>(name = "string-append", isPure = true, restArgsType = CharSequence::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): String {
-        if (args.isEmpty()) {
-            return ""
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args.isEmpty() -> ""
+        args.size == 1 -> args[0]!!.toString()
+        else -> {
+            val sb = StringBuilder()
+            args.forEach { sb.append(it!!) }
+            sb.toString()
         }
-        if (args.size == 1) {
-            return args[0]!!.toString()
-        }
-        val sb = StringBuilder()
-        for (arg in args) {
-            sb.append(arg!!)
-        }
-        return sb.toString()
     }
 }

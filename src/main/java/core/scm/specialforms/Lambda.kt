@@ -32,14 +32,12 @@ object Lambda : ISpecialForm {
             /* Check args for duplicates */
             if (!lambdaArgs.isEmpty()) {
                 val temp = HashSet<Any?>(lambdaArgs.size)
-                for (o in lambdaArgs) {
-                    if (o !is Symbol && !Cons.isPair(o)) {
-                        throw IllegalSyntaxException.of(toString(), form, "not an identifier: $o")
+                lambdaArgs.forEach {
+                    when {
+                        it !is Symbol && !Cons.isPair(it) -> throw IllegalSyntaxException.of(toString(), form, "not an identifier: $it")
+                        temp.contains(it) -> throw IllegalSyntaxException.of(toString(), form, "duplicate argument name: $it")
+                        else -> temp.add(it)
                     }
-                    if (temp.contains(o)) {
-                        throw IllegalSyntaxException.of(toString(), form, "duplicate argument name: $o")
-                    }
-                    temp.add(o)
                 }
             }
             /* (lambda (arg-id ...+) body ...+) OR

@@ -24,16 +24,13 @@ object Let : ISpecialForm {
             val localEnv = Environment(env)
             val bindings = form[1] as List<List<*>>
             /* Bind variables to fresh locations holding undefined values */
-            for (binding in bindings) {
-                localEnv.put(binding[0], Environment.UNDEFINED)
-            }
+            bindings.forEach { localEnv.put(it[0], Environment.UNDEFINED) }
             /* Evaluate inits */
-            for (binding in bindings) {
-                val (variable, init) = binding
-                if (localEnv[variable] !== Environment.UNDEFINED) {
-                    throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $variable")
+            bindings.forEach { (variable, init) ->
+                when {
+                    localEnv[variable] === Environment.UNDEFINED -> localEnv.put(variable, evaluator.eval(init, env))
+                    else -> throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $variable")
                 }
-                localEnv.put(variable, evaluator.eval(init, env))
             }
 
             /* Evaluate body */
@@ -52,12 +49,12 @@ object Let : ISpecialForm {
             val initValues = Cons.list<Any?>()
             val bindings = form[2] as List<*>
             for (binding in bindings) {
-                val arg = (binding as List<*>)[0]
+                val (arg, init) = binding as List<*>
                 if (lambdaArgs.contains(arg)) {
                     throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
-                initValues.add(binding[1])
+                initValues.add(init)
             }
             val lambdaBody = form[3]
             val lambda = Cons.list(Lambda, lambdaArgs, lambdaBody)

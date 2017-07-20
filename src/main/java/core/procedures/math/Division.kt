@@ -23,9 +23,7 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, rest
             return invoke(1L, args[0]!! as Number)
         }
         var result = args[0]!! as Number
-        for (d in 1..args.size - 1) {
-            result = invoke(result, args[d]!! as Number)
-        }
+        (1..args.size - 1).forEach { d -> result = invoke(result, args[d]!! as Number) }
         return result
     }
 

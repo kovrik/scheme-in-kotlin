@@ -10,18 +10,10 @@ import java.math.BigInteger
 
 class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsType = Number::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number? {
-        return when (args.size) {
-            0 -> 1L
-            1 -> args[0] as Number?
-            else -> {
-                var result: Any? = 1L
-                for (arg in args) {
-                    result = Companion(result as Number?, arg!! as Number?)
-                }
-                result as Number
-            }
-        }
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        0    -> 1L
+        1    -> args[0] as Number?
+        else -> args.fold(1L as Number?) { r, n -> Companion(r!!, n!! as Number) } as Number
     }
 
     companion object {

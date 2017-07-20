@@ -26,13 +26,9 @@ object LetRec : ISpecialForm {
         val localEnv = Environment(env)
         val bindings = form[1] as List<List<*>>
         /* Bind variables to fresh locations holding undefined values */
-        for (binding in bindings) {
-            localEnv.put(binding[0], Environment.UNDEFINED)
-        }
+        bindings.forEach { localEnv.put(it[0], Environment.UNDEFINED) }
         /* Evaluate inits */
-        for (binding in bindings) {
-            localEnv.put(binding[0], evaluator.eval(binding[1], localEnv))
-        }
+        bindings.forEach { localEnv.put(it[0], evaluator.eval(it[1], localEnv)) }
         /* Evaluate body */
         for (i in 2..form.size - 2) {
             evaluator.eval(form[i], localEnv)

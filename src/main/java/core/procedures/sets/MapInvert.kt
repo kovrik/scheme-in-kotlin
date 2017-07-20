@@ -8,9 +8,7 @@ class MapInvert : AFn<Any?, Map<*, *>>(name = "map-invert", isPure = true, minAr
 
     override operator fun invoke(args: Array<out Any?>): Map<*, *> {
         val result = Hashmap()
-        for ((key, value) in args[0]!! as Map<*, *>) {
-            result.put(value, key)
-        }
+        (args[0]!! as Map<*, *>).forEach { (k, v) -> result.put(v, k) }
         return result
     }
 }
