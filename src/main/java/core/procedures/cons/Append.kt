@@ -15,7 +15,7 @@ class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::
 
     override operator fun invoke(args: Array<out Any?>): Any? {
         var result: Any? = Cons.EMPTY
-        args.forEach { arg -> result = append(result, arg) }
+        args.forEach { result = append(result, it) }
         return result
     }
 }

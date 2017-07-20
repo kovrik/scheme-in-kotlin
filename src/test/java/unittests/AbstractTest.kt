@@ -29,6 +29,6 @@ abstract class AbstractTest {
     protected fun s(str: String) = Symbol.intern(str)
 
     protected fun assertAllEqual(expected: Any, forms: Array<String>, env: Environment) {
-        Arrays.stream(forms).forEach { form -> assertEquals(form, expected, eval(form, env)) }
+        Arrays.stream(forms).forEach { assertEquals(it, expected, eval(it, env)) }
     }
 }

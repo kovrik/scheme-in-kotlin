@@ -40,7 +40,7 @@ object Utils {
 
     private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>()
     init {
-        IntStream.rangeClosed(2, 16).forEach { r -> BIG_DECIMAL_RADICES.put(r, BigDecimal(r)) }
+        IntStream.rangeClosed(2, 16).forEach { BIG_DECIMAL_RADICES.put(it, BigDecimal(it)) }
     }
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10

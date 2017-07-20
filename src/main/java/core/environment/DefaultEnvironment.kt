@@ -48,9 +48,9 @@ class DefaultEnvironment : Environment(null) {
 
     init {
         /* Special Forms */
-        SPECIAL_FORMS.forEach { specialForm -> put(Symbol.intern(specialForm.toString()), specialForm) }
+        SPECIAL_FORMS.forEach { put(Symbol.intern(it.toString()), it) }
         /* Standard Procedures */
-        STANDARD_PROCEDURES.forEach { proc -> put(Symbol.intern(proc.name), proc) }
+        STANDARD_PROCEDURES.forEach { put(Symbol.intern(it.name), it) }
         /* Constants and special cases, synonyms*/
         put(Symbol.intern("call/cc"), CallCC)
         put(Symbol.intern("pi"), Math.PI)

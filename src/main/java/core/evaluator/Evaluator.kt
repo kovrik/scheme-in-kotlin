@@ -139,7 +139,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
 
     /* Evaluate vector */
     private fun Vector.eval(env: Environment): Vector {
-        indices.forEach { i -> array[i] = eval(array[i], env) }
+        indices.forEach { array[it] = eval(array[it], env) }
         return this
     }
 

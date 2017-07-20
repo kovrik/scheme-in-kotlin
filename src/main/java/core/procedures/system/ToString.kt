@@ -10,7 +10,7 @@ open class ToString : AFn<Any?, CharSequence>(name = "->string", isPure = true) 
         args.size == 1 -> str(args[0])
         else -> {
             val sb = StringBuilder()
-            args.forEach { arg -> sb.append(str(arg)) }
+            args.forEach { sb.append(str(it)) }
             sb.toString()
         }
     }

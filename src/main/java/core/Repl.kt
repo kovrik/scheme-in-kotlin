@@ -60,7 +60,7 @@ object Repl {
      */
     @Throws(IOException::class)
     private fun evaluateFile(filename: String, env: Environment) {
-        FileReader().read(File(filename)).forEach { expr -> evaluator.macroexpandAndEvaluate(expr, env) }
+        FileReader().read(File(filename)).forEach { evaluator.macroexpandAndEvaluate(it, env) }
     }
 
     /**
