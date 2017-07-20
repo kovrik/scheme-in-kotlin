@@ -18,17 +18,13 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, m
         while (restNumber.length > 1 && restNumber[0] == '#') {
             val ch = restNumber[1]
             if (Reader.isExactness(ch)) {
-                if (exactness != null) {
-                    return false
-                }
+                exactness?.let { return false }
                 exactness = ch
                 restNumber = restNumber.substring(2)
                 continue
             }
             if (Reader.isRadix(ch)) {
-                if (radixChar != null) {
-                    return false
-                }
+                radixChar?.let { return false }
                 radixChar = ch
                 restNumber = restNumber.substring(2)
                 override = true

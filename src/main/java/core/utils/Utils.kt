@@ -82,10 +82,7 @@ object Utils {
     /* Check if string represents a valid number and process it */
     fun preProcessNumber(number: String, exactness: Char?, radix: Int): Any? {
         /* First check if it is a special number */
-        val special = SPECIAL_NUMBERS[number]
-        if (special != null) {
-            return special
-        }
+        SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
         val last = number[number.length - 1]
         if (last == 'i' || last == 'I') {

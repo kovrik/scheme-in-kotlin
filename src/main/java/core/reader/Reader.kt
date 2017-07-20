@@ -62,7 +62,7 @@ open class Reader : IReader {
         try {
             var token = nextToken()
             while (token != null || tokens.isEmpty()) {
-                if (token != null) tokens.add(token)
+                token?.let { tokens.add(it) }
                 token = nextToken()
             }
         } catch (e: IOException) {
@@ -171,17 +171,13 @@ open class Reader : IReader {
             while (restNumber.length > 1 && restNumber[0] == '#') {
                 val ch = restNumber[1]
                 if (isExactness(ch)) {
-                    if (exactness != null) {
-                        throw IllegalSyntaxException("read: bad number: $number")
-                    }
+                    exactness?.let { throw IllegalSyntaxException("read: bad number: $number") }
                     exactness = ch
                     restNumber = restNumber.substring(2)
                     continue
                 }
                 if (isRadix(ch)) {
-                    if (radix != null) {
-                        throw IllegalSyntaxException("read: bad number: $number")
-                    }
+                    radix?.let { throw IllegalSyntaxException("read: bad number: $number") }
                     radix = ch
                     restNumber = restNumber.substring(2)
                     continue

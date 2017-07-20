@@ -92,9 +92,7 @@ object Try : ISpecialForm {
             throw ThrowableWrapper(e)
         } finally {
             /* And finally, evaluate finally block (if present) */
-            if (fin != null) {
-                evaluator.eval(fin, env)
-            }
+            fin?.let { evaluator.eval(fin, env) }
         }
     }
 }

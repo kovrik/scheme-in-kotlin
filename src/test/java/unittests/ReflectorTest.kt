@@ -10,6 +10,7 @@ import java.math.BigInteger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
+import kotlin.test.assertNotNull
 
 class ReflectorTest : AbstractTest() {
 
@@ -146,8 +147,8 @@ class ReflectorTest : AbstractTest() {
 
     @Test
     fun testEvalConstructors() {
-        assertTrue(eval("(new Object)", env) != null)
-        assertTrue(eval("(Object.)", env) != null)
+        assertNotNull(eval("(new Object)", env))
+        assertNotNull(eval("(Object.)", env))
         assertEquals("123", eval("(new String \"123\")", env))
         assertEquals("123", eval("(String. \"123\")", env))
         try {

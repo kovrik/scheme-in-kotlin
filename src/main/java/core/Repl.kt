@@ -109,13 +109,9 @@ object Repl {
             is ExInfoException -> errorMessage = e.toString()
             else -> {
                 val sb = StringBuilder(e.javaClass.simpleName)
-                if (e.message != null) {
-                    sb.append(": ").append(e.message)
-                }
-                val frame = filterStackTrace(e.stackTrace)
-                if (frame != null) {
-                    sb.append(" (").append(frame.fileName).append(':').append(frame.lineNumber).append(')')
-                }
+                e.message?.let { sb.append(": ").append(e.message) }
+                filterStackTrace(e.stackTrace)?.let { sb.append(" (").append(it.fileName).append(':')
+                                                        .append(it.lineNumber).append(')') }
                 errorMessage = sb.toString()
             }
         }

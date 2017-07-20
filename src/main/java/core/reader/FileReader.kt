@@ -16,10 +16,7 @@ class FileReader : Reader() {
             var i = reader.read()
             while (i != -1) {
                 reader.unread(i)
-                val token = nextToken()
-                if (token != null) {
-                    tokens.add(token)
-                }
+                nextToken()?.let { tokens.add(it) }
                 i = reader.read()
             }
         } catch (e: IOException) {
