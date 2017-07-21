@@ -46,7 +46,6 @@ class MemqTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("memq: wrong type argument in position 2 (expecting list): (a b . c)", e.message)
         }
-
         try {
             eval("(memq 'a '(c d f b . c))", env)
             fail()

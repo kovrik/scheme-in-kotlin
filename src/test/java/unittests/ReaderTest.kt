@@ -140,7 +140,6 @@ class ReaderTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: illegal use of '.'", e.message)
         }
-
         try {
             reader.readFirst("#(1 2 3 4 5 . 6)")
             fail()

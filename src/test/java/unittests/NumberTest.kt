@@ -99,10 +99,10 @@ class NumberTest : AbstractTest() {
         assertEquals(3.0009003601440574, eval("(/ 1.0 3332/9999)", env))
         try {
             eval("(+ nil nil)", env)
+            fail()
         } catch (e: NullPointerException) {
             // expected
         }
-
         // abs
         try {
             eval("(abs)", env)
@@ -110,14 +110,12 @@ class NumberTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("abs: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.message)
         }
-
         try {
             eval("(abs 1 2 3)", env)
             fail()
         } catch (e: ArityException) {
             assertEquals("abs: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 3)", e.message)
         }
-
         try {
             eval("(abs \"not-a-number\")", env)
             fail()
@@ -173,7 +171,6 @@ class NumberTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("quotient: type mismatch; (expected: Integer, given: 1.0E-4)", e.message)
         }
-
         try {
             eval("(quotient -10 0.0)", env)
             fail()
@@ -196,7 +193,6 @@ class NumberTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("remainder: type mismatch; (expected: Integer, given: 1.0E-4)", e.message)
         }
-
         try {
             eval("(remainder -10 0.0)", env)
             fail()
@@ -215,7 +211,6 @@ class NumberTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("modulo: type mismatch; (expected: Integer, given: 1.0E-4)", e.message)
         }
-
         try {
             eval("(modulo -10 0.0)", env)
             fail()
@@ -717,7 +712,6 @@ class NumberTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: bad exponent: 1e5", e.message)
         }
-
     }
 
     @Test
@@ -901,7 +895,6 @@ class NumberTest : AbstractTest() {
         } catch (e: ArithmeticException) {
             assertEquals("log: undefined for 0", e.message)
         }
-
         try {
             assertEquals(1L, eval("(log 0/1)", env))
             fail()

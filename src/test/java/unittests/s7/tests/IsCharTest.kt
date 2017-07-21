@@ -36,7 +36,6 @@ class IsCharTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.message)
         }
-
         try {
             eval("(char? #\\a #\\b)", env)
             fail()

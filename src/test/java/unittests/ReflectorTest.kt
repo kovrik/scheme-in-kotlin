@@ -18,6 +18,7 @@ class ReflectorTest : AbstractTest() {
     fun testEvalDot() {
         try {
             eval(".", env)
+            fail()
         } catch (e: IllegalSyntaxException) {
             // expected
         }
@@ -35,21 +36,18 @@ class ReflectorTest : AbstractTest() {
         } catch (e: RuntimeException) {
             // expected
         }
-
         try {
             eval("(. Longzzz valueOf -15)", env)
             fail()
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         try {
             eval("(Long/ 1)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             // expected
         }
-
         try {
             eval("(. Class getName)", env)
             fail()
@@ -71,14 +69,12 @@ class ReflectorTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             // expected
         }
-
         try {
             eval("Math/BOOM", env)
             fail()
         } catch (e: RuntimeException) {
             // expected
         }
-
         try {
             eval("java.awt.Point/x", env)
             fail()
@@ -115,28 +111,24 @@ class ReflectorTest : AbstractTest() {
         } catch (e: NullPointerException) {
             // expected
         }
-
         try {
             eval("(.toString nil)", env)
             fail()
         } catch (e: NullPointerException) {
             // expected
         }
-
         try {
             eval("(.toStringz 123)", env)
             fail()
         } catch (e: RuntimeException) {
             // expected
         }
-
         try {
             eval("(.-toString)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             // expected
         }
-
         try {
             eval("(.toString)", env)
             fail()

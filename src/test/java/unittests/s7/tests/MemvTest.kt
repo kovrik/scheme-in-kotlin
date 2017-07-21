@@ -40,35 +40,30 @@ class MemvTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("memv: wrong type argument in position 2 (expecting list): (a b . c)", e.message)
         }
-
         try {
             eval("(memv 'c '(a b . c))", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("memv: wrong type argument in position 2 (expecting list): (a b . c)", e.message)
         }
-
         try {
             eval("(memv 'a (list 'a 'b . 'c))", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("quote: bad syntax in form: quote", e.message)
         }
-
         try {
             eval("(memv)", env)
             fail()
         } catch (e: ArityException) {
             assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(memv 'a)", env)
             fail()
         } catch (e: ArityException) {
             assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 1)", e.message)
         }
-
         try {
             eval("(memv 'a 'b)", env)
             fail()

@@ -145,6 +145,7 @@ class VectorTest : AbstractTest() {
         sexp = "(begin (define v '(1 2 3))" + "       (vector-set! v 0 \"test\"))"
         try {
             eval(sexp, env)
+            fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("vector-set!: type mismatch; (expected: MutableVector, given: (1 2 3))", e.message)
         }

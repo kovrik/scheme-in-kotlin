@@ -33,14 +33,14 @@ class DelayedTest : AbstractTest() {
     fun testReentrantDelay() {
         eval("(define x 0)", env)
         val conundrum = "(define p" +
-                "  (delay" +
-                "    (if (= x 5)" +
-                "      x" +
-                "      (begin" +
-                "        (set! x (+ x 1))" +
-                "        (force p)" +
-                "        (set! x (+ x 1))" +
-                "        x))))"
+                        "  (delay" +
+                        "    (if (= x 5)" +
+                        "      x" +
+                        "      (begin" +
+                        "        (set! x (+ x 1))" +
+                        "        (force p)" +
+                        "        (set! x (+ x 1))" +
+                        "        x))))"
         eval(conundrum, env)
         try {
             eval("(force p)", env)

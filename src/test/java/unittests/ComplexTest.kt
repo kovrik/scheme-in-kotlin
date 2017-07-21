@@ -126,7 +126,6 @@ class ComplexTest : AbstractTest() {
         } catch (e: ArithmeticException) {
             assertEquals("angle: undefined for 0", e.message)
         }
-
     }
 
     @Test

@@ -37,7 +37,6 @@ object Dot : ISpecialForm {
                     }
                     throw e
                 }
-
             } else {
                 /* (. Classname-symbol method-symbol args) */
                 val methodArgs = arrayOfNulls<Any>(form.size - 3)

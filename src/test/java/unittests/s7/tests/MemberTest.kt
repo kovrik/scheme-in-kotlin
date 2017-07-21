@@ -50,14 +50,12 @@ class MemberTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("member: wrong type argument in position 2 (expecting list): (1 2 . 3)", e.message)
         }
-
         try {
             eval("(member 4 '(1 2 . 3))", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("member: wrong type argument in position 2 (expecting list): (1 2 . 3)", e.message)
         }
-
         try {
             eval("(member 4 '(1 2 3 . 4))", env)
             fail()

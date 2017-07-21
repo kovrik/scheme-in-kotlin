@@ -72,14 +72,12 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: Error) {
             assertEquals("BOOM", e.message)
         }
-
         try {
             eval("(force perr)", env)
             fail()
         } catch (e: Error) {
             assertEquals("BOOM", e.message)
         }
-
         try {
             eval("(delay)", env)
             fail()
@@ -88,18 +86,18 @@ class SpecialFormTest : AbstractTest() {
         }
 
         /* Check that re-entrant promises are not allowed
-     * See http://lambda-the-ultimate.org/node/4686A
-     */
+         * See http://lambda-the-ultimate.org/node/4686A
+         */
         eval("(define x 0)", env)
         val conundrum = "(define p" +
-                "  (delay" +
-                "    (if (= x 5)" +
-                "      x" +
-                "      (begin" +
-                "        (set! x (+ x 1))" +
-                "        (force p)" +
-                "        (set! x (+ x 1))" +
-                "        x))))"
+                         "  (delay" +
+                         "    (if (= x 5)" +
+                         "      x" +
+                         "      (begin" +
+                         "        (set! x (+ x 1))" +
+                         "        (force p)" +
+                         "        (set! x (+ x 1))" +
+                         "        x))))"
         eval(conundrum, env)
         try {
             eval("(force p)", env)
@@ -107,7 +105,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: ReentrantDelayException) {
             // success
         }
-
     }
 
     @Test
@@ -157,28 +154,24 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("define: bad syntax in form: (define)", e.message)
         }
-
         try {
             eval("(define 1)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("define: bad syntax in form: (define 1)", e.message)
         }
-
         try {
             eval("(define a)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("define: bad syntax in form: (define a)", e.message)
         }
-
         try {
             eval("(define a b c)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("define: bad syntax (multiple expressions after identifier) in form: (define a b c)", e.message)
         }
-
         // internal define
         assertEquals(45L, eval("(let ((x 5))(define foo (lambda (y) (bar x y)))(define bar (lambda (a b) (+ (* a b) a)))(foo (+ x 3)))", env))
         try {
@@ -218,7 +211,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("lambda: bad syntax in form: " + f1, e.message)
         }
-
         val f2 = "(lambda 1 2 3 4)"
         try {
             eval(f2, env)
@@ -226,7 +218,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("lambda: bad argument sequence (1) in form: " + f2, e.message)
         }
-
     }
 
     @Test
@@ -246,21 +237,18 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("if: bad syntax (has 0 parts after keyword) in form: (if)", e.message)
         }
-
         try {
             eval("(if 1)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("if: bad syntax (has 1 parts after keyword) in form: (if 1)", e.message)
         }
-
         try {
             eval("(if 1 2 3 4 5)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("if: bad syntax (has 5 parts after keyword) in form: (if 1 2 3 4 5)", e.message)
         }
-
     }
 
     @Test
@@ -288,13 +276,12 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: illegal use of '.'", e.message)
         }
-
-        //    try {
-        //      eval("'( . 1 2 3 4 5)", env);
-        //      fail();
-        //    } catch (IllegalSyntaxException e) {
-        //      assertEquals("read: illegal use of '.'", e.getMessage());
-        //    }
+        try {
+            eval("( . 1 2 3 4 5)", env)
+            fail()
+        } catch (e: RuntimeException) {
+            assertEquals("reflector: unable to find matching method 2 in class java.lang.Long", e.message)
+        }
     }
 
     @Test
@@ -307,21 +294,20 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
     }
 
     @Test
     fun testEvalDo() {
         val doTest1 = "(do ((vec (make-vector 5))" +
-                "     (i 0 (+ i 1)))" +
-                "    ((= i 5) vec)" +
-                "  (vector-set! vec i i))"
+                      "     (i 0 (+ i 1)))" +
+                      "    ((= i 5) vec)" +
+                      "  (vector-set! vec i i))"
         assertEquals(MutableVector(arrayOf(0L, 1L, 2L, 3L, 4L)), eval(doTest1, env))
 
         val doTest2 = "(let ((x '(1 3 5 7 9)))" +
-                "  (do ((x x (cdr x))" +
-                "       (sum 0 (+ sum (car x))))" +
-                "      ((empty? x) sum)))"
+                      "  (do ((x x (cdr x))" +
+                      "       (sum 0 (+ sum (car x))))" +
+                      "      ((empty? x) sum)))"
         assertEquals(25L, eval(doTest2, env))
 
         val doTest3 = "(do ((a 5)) ((= a 0) \"DONE\") (set! a (- a 1)))"
@@ -338,11 +324,11 @@ class SpecialFormTest : AbstractTest() {
         }
 
         /* Check that each iteration establishes bindings to fresh locations
-     * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
+         * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
         eval("(define lst '())", env)
         eval("(do ((i 1 (+ i 1)))" +
-                "    ((> i 4))" +
-                "  (set! lst (cons (lambda () i) lst)))", env)
+             "    ((> i 4))" +
+             "  (set! lst (cons (lambda () i) lst)))", env)
         assertEquals(list(4L, 3L, 2L, 1L), eval("(map (lambda (proc) (proc)) lst)", env))
     }
 
@@ -356,7 +342,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         try {
             eval("(let ((c 123) (c (+ 400 30 2))) (+ c b))", env)
             fail()
@@ -371,21 +356,18 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("let: bad syntax in form: (let ((c 123)))", e.message)
         }
-
         try {
             eval("(let ((z 1) (b (+ z 1))) b)", env)
             fail()
         } catch (e: RuntimeException) {
             // expected
         }
-
         try {
             eval("(let ((a a)) a)", env)
             fail()
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
     }
 
     @Test
@@ -398,7 +380,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("let: bad syntax (duplicate identifier: n) in form: (let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", e.message)
         }
-
     }
 
     @Test
@@ -411,14 +392,12 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("let*: bad syntax in form: (let* ((c 123)))", e.message)
         }
-
         try {
             eval("(let* ((a a)) a)", env)
             fail()
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
     }
 
     @Test
@@ -434,21 +413,18 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         try {
             eval("(letrec ((a a)) (set! a 1) a)", env)
             fail()
         } catch (e: RuntimeException) {
             // expected
         }
-
         try {
             eval("(eq? (letrec ((a a)) a) (if #f 0) (letrec ((a a)) a))", env)
             fail()
         } catch (e: RuntimeException) {
             // expected
         }
-
     }
 
     @Test
@@ -486,15 +462,12 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("case: bad syntax (source expression failed to match any pattern) in form: (case)", e.message)
         }
-
         try {
             eval("(case 1 1)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("case: bad syntax (invalid clause in subform) in form: (case 1 1)", e.message)
-
         }
-
         try {
             eval("(case (* 2 3) (else 'prime) ((1 4 6 8 9) 'composite))", env)
             fail()
@@ -518,8 +491,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(1L, eval("(and 1)", env))
         assertEquals(true, eval("(and (= 2 2) (> 2 1))", env))
         assertEquals(false, eval("(and (= 2 2) (< 2 1))", env))
-        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")),
-                eval("(and 1 2 'c '(f g)) ", env))
+        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(and 1 2 'c '(f g)) ", env))
     }
 
     @Test
@@ -528,8 +500,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(true, eval("(or (= 2 2) (> 2 1)) ", env))
         assertEquals(true, eval("(or (= 2 2) (< 2 1))", env))
         assertEquals(false, eval("(or #f #f #f)", env))
-        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")),
-                eval("(or '(f g) 1 2)", env))
+        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(or '(f g) 1 2)", env))
     }
 
     @Test
@@ -544,7 +515,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         val old = Repl.currentOutputPort
         val baos = ByteArrayOutputStream()
         Repl.currentOutputPort = OutputPort(PrintStream(baos))
@@ -575,7 +545,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Class::class.javaObjectType, eval("(class-of (class-of 'test))", env))
         assertEquals(MutableVector::class.javaObjectType, eval("(class-of #(1 2 3))", env))
         assertEquals(Cons::class.javaObjectType, eval("(class-of '(1 2 3))", env))
-        //    assertEquals(Cons.class, eval("(class-of '())", env));
+        assertEquals(Cons::class.javaObjectType, eval("(class-of '())", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of #t)", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of (= 1 2))", env))
         assertEquals(Addition::class.javaObjectType, eval("(class-of +)", env))
@@ -592,7 +562,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: Error) {
             assertEquals("boom", e.message)
         }
-
     }
 
     @Test
@@ -671,21 +640,18 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("unquote: bad syntax in form: unquote", e.message)
         }
-
         try {
             eval("(quasiquote (unquote 1 2))", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("unquote: bad syntax (unquote expects exactly one expression) in form: (unquote 1 2)", e.message)
         }
-
         try {
             eval("`[1 unquote 2]", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("read: illegal use of '.'", e.message)
         }
-
     }
 
     @Test
@@ -711,14 +677,12 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("lambda: bad syntax (duplicate argument name: a) in form: (lambda (a a) a)", e.message)
         }
-
         try {
             eval("(define (a b b) b)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("lambda: bad syntax (duplicate argument name: b) in form: (lambda (b b) b)", e.message)
         }
-
     }
 
     @Test
@@ -729,7 +693,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: ThrowableWrapper) {
             assertEquals(Exception::class.java, e.cause?.javaClass)
         }
-
         try {
             eval("(throw (new NullPointerException \"BOOM\"))", env)
             fail()
@@ -737,14 +700,12 @@ class SpecialFormTest : AbstractTest() {
             assertEquals(NullPointerException::class.java, e.cause?.javaClass)
             assertEquals("BOOM", e.cause?.message)
         }
-
         try {
             eval("(throw (new StackOverflowError))", env)
             fail()
         } catch (e: ThrowableWrapper) {
             assertEquals(StackOverflowError::class.java, e.cause?.javaClass)
         }
-
     }
 
     @Test

@@ -70,7 +70,6 @@ class ConsTest {
         } catch (e: IllegalArgumentException) {
             assertEquals("car: type mismatch; (expected: Pair, given: ())", e.message)
         }
-
         try {
             Car.car(list<Any>())
             fail()

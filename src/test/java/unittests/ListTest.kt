@@ -105,7 +105,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("car: type mismatch; (expected: Pair, given: ())", e.message)
         }
-
         try {
             eval("(car 1)", env)
             fail()
@@ -148,7 +147,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("set-car!: type mismatch; (expected: Pair, given: ())", e.message)
         }
-
         try {
             eval("(set-car! 5 1)", env)
             fail()
@@ -171,7 +169,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("set-cdr!: type mismatch; (expected: Pair, given: ())", e.message)
         }
-
         try {
             eval("(set-cdr! 5 1)", env)
             fail()
@@ -198,7 +195,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("append: type mismatch; (expected: List, given: 1)", e.message)
         }
-
         try {
             eval("(append '() '() 5 '())", env)
             fail()
@@ -219,7 +215,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("reverse: type mismatch; (expected: List or Vector or Set or String, given: 1)", e.message)
         }
-
         try {
             eval("(reverse '(1 2) '(3 4))", env)
             fail()
@@ -261,7 +256,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("list-ref: type mismatch; (expected: Pair, given: 1)", e.message)
         }
-
         try {
             eval("(list-ref '(1 2) 2.5)", env)
             fail()
@@ -281,7 +275,6 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("list->string: type mismatch; (expected: List, given: (1 . 2))", e.message)
         }
-
         try {
             eval("(list->string (list 1 2))", env)
             fail()
@@ -301,7 +294,6 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("length: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.message)
         }
-
         try {
             eval("(length 1)", env)
             fail()
@@ -326,7 +318,6 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("member: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(member 1 #())", env)
             fail()
@@ -355,7 +346,6 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("memq: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(memq 1 #())", env)
             fail()
@@ -386,7 +376,6 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(memv 1 #())", env)
             fail()
@@ -405,14 +394,12 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("assoc: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(assoc 1 #())", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertTrue(e.message!!.startsWith("assoc: type mismatch; (expected: List or Map, given:"))
         }
-
         try {
             eval("(assoc 1 '((a 2) 3))", env)
             fail()
@@ -433,14 +420,12 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("assq: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(assq 1 #())", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertTrue(e.message!!.startsWith("assq: type mismatch; (expected: List, given:"))
         }
-
         try {
             eval("(assq 1 '((a 2) 3))", env)
             fail()
@@ -458,14 +443,12 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("assv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-
         try {
             eval("(assv 1 #())", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertTrue(e.message!!.startsWith("assv: type mismatch; (expected: List, given:"))
         }
-
         try {
             eval("(assv 1 '((a 2) 3))", env)
             fail()
