@@ -8,15 +8,17 @@ class BitwiseTests : AbstractTest() {
 
     @Test
     fun testBitAnd() {
-        assertEquals(8L, eval("(bit-and #b1100 #b1001)", env))
-        assertEquals(8L, eval("(bit-and 12 9)", env))
+        assertEquals(-1L,   eval("(bit-and)", env))
+        assertEquals(5L,    eval("(bit-and 5)", env))
+        assertEquals(8L,    eval("(bit-and #b1100 #b1001)", env))
+        assertEquals(8L,    eval("(bit-and 12 9)", env))
         assertEquals("108", eval("(Integer/toHexString (bit-and #x0108 #xffff))", env))
-        assertEquals(195L, eval("(bit-and 235 199)", env))
+        assertEquals(195L,  eval("(bit-and 235 199)", env))
     }
 
     @Test
     fun testBitAndNot() {
-        assertEquals(4L, eval("(bit-and-not #b1100 #b1001)", env))
+        assertEquals(4L,    eval("(bit-and-not #b1100 #b1001)", env))
         assertEquals("100", eval("(Integer/toBinaryString (bit-and-not #b1100 #b1010))", env))
     }
 
@@ -37,13 +39,15 @@ class BitwiseTests : AbstractTest() {
     @Test
     fun testBitNot() {
         assertEquals(-8L, eval("(bit-not #b0111)", env))
-        assertEquals(7L, eval("(bit-not #b-1000)", env))
+        assertEquals(7L,  eval("(bit-not #b-1000)", env))
     }
 
     @Test
     fun testBitOr() {
-        assertEquals(13L, eval("(bit-or #b1100 #b1001)", env))
-        assertEquals(13L, eval("(bit-or 12 9)", env))
+        assertEquals(0L,     eval("(bit-or)", env))
+        assertEquals(5L,     eval("(bit-or 5)", env))
+        assertEquals(13L,    eval("(bit-or #b1100 #b1001)", env))
+        assertEquals(13L,    eval("(bit-or 12 9)", env))
         assertEquals("1110", eval("(Integer/toBinaryString (bit-or #b1100 #b1010))", env))
     }
 
@@ -57,22 +61,22 @@ class BitwiseTests : AbstractTest() {
     @Test
     fun testBitShiftLeft() {
         assertEquals(1024L, eval("(bit-shift-left 1 10)", env))
-        assertEquals(52L, eval("(bit-shift-left #b1101 2)", env))
+        assertEquals(52L,   eval("(bit-shift-left #b1101 2)", env))
     }
 
     @Test
     fun testBitShiftRight() {
         assertEquals(13L, eval("(bit-shift-right #b1101 0)", env))
-        assertEquals(6L, eval("(bit-shift-right #b1101 1)", env))
-        assertEquals(3L, eval("(bit-shift-right #b1101 2)", env))
-        assertEquals(1L, eval("(bit-shift-right #b1101 3)", env))
-        assertEquals(0L, eval("(bit-shift-right #b1101 4)", env))
+        assertEquals(6L,  eval("(bit-shift-right #b1101 1)", env))
+        assertEquals(3L,  eval("(bit-shift-right #b1101 2)", env))
+        assertEquals(1L,  eval("(bit-shift-right #b1101 3)", env))
+        assertEquals(0L,  eval("(bit-shift-right #b1101 4)", env))
     }
 
     @Test
     fun testBitTest() {
-        assertEquals(true, eval("(bit-test #b1001 0)", env))
-        assertEquals(true, eval("(bit-test #b1001 3)", env))
+        assertEquals(true,  eval("(bit-test #b1001 0)", env))
+        assertEquals(true,  eval("(bit-test #b1001 3)", env))
         assertEquals(false, eval("(bit-test #b1001 1)", env))
         assertEquals(false, eval("(bit-test #b1001 2)", env))
         assertEquals(false, eval("(bit-test #b1001 7)", env))
@@ -80,7 +84,9 @@ class BitwiseTests : AbstractTest() {
 
     @Test
     fun testBitXor() {
-        assertEquals(5L, eval("(bit-xor #b1100 #b1001)", env))
+        assertEquals(0L,    eval("(bit-xor)", env))
+        assertEquals(5L,    eval("(bit-xor 5)", env))
+        assertEquals(5L,    eval("(bit-xor #b1100 #b1001)", env))
         assertEquals("110", eval("(Integer/toBinaryString (bit-xor #b1100 #b1010))", env))
     }
 }

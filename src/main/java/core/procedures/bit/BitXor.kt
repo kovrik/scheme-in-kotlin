@@ -3,14 +3,7 @@ package core.procedures.bit
 import core.procedures.AFn
 import core.scm.Type
 
-open class BitXor : AFn<Any?, Long?>(name = "bit-xor", isPure = true, minArgs = 2, restArgsType = Type.BitOp::class.java) {
+open class BitXor : AFn<Any?, Long?>(name = "bit-xor", isPure = true, minArgs = 0, restArgsType = Type.BitOp::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Long {
-        args[0]!!
-        var result = (args[0] as Number).toLong()
-        for (i in 1..args.size - 1) {
-            result = result xor (args[i]!! as Number).toLong()
-        }
-        return result
-    }
+    override operator fun invoke(args: Array<out Any?>) = args.fold(0L) { r, n -> r xor (n!! as Number).toLong() }
 }
