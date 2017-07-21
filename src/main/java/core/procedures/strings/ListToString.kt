@@ -8,15 +8,14 @@ class ListToString : AFn<List<*>?, String>(name = "list->string", isPure = true,
                          mandatoryArgsTypes = arrayOf<Class<*>>(Type.ProperList::class.java)) {
 
     override operator fun invoke(arg: List<*>?): String {
-        val cs = arg!!
-        if (cs.isEmpty()) {
+        if (arg!!.isEmpty()) {
             return ""
         }
-        val sb = StringBuilder(cs.size)
-        for (c in cs) {
-            if (c !is Char) throw WrongTypeException(name, "Character", c)
-            sb.append(c)
-        }
-        return sb.toString()
+        return StringBuilder(arg.size).apply {
+            for (c in arg) {
+                if (c !is Char) throw WrongTypeException(name, "Character", c)
+                append(c)
+            }
+        }.toString()
     }
 }

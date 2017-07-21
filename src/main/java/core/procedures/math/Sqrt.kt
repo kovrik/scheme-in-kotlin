@@ -8,14 +8,14 @@ class Sqrt : AFn<Number?, Number>(name = "sqrt", isPure = true, minArgs = 1, max
     override operator fun invoke(arg: Number?) = sqrt(arg!!)
 
     companion object {
-        fun sqrt(number: Number?): Number {
-            if (number is BigComplex) {
-                if (number.im.signum() == 0) {
-                    return sqrt(number.re)
+        fun sqrt(number: Number?): Number = when (number) {
+            is BigComplex -> {
+                when {
+                    number.im.signum() == 0 -> sqrt(number.re)
+                    else -> number.sqrt()
                 }
-                return number.sqrt()
             }
-            return Math.sqrt(number!!.toDouble())
+            else -> Math.sqrt(number!!.toDouble())
         }
     }
 }

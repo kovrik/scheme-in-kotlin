@@ -7,10 +7,6 @@ class StringAppend : AFn<Any?, String>(name = "string-append", isPure = true, re
     override operator fun invoke(args: Array<out Any?>) = when {
         args.isEmpty() -> ""
         args.size == 1 -> args[0]!!.toString()
-        else -> {
-            val sb = StringBuilder()
-            args.forEach { sb.append(it!!) }
-            sb.toString()
-        }
+        else           -> StringBuilder().apply { args.forEach { append(it!!) } }.toString()
     }
 }

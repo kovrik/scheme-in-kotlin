@@ -131,17 +131,10 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate hash map */
-    private fun Map<*, *>.eval(env: Environment): Map<*, *> {
-        val result = Hashmap(size)
-        forEach { (key, value) -> result.put(eval(key, env), eval(value, env)) }
-        return result
-    }
+    private fun Map<*, *>.eval(env: Environment) = Hashmap(size).apply { this@eval.forEach { (k, v) -> put(eval(k, env), eval(v, env)) } }
 
     /* Evaluate vector */
-    private fun Vector.eval(env: Environment): Vector {
-        indices.forEach { array[it] = eval(array[it], env) }
-        return this
-    }
+    private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
 
     /* Evaluate set */
     private fun Set<Any?>.eval(env: Environment) = mapTo(HashSet<Any?>(size)) { eval(it, env) }

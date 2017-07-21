@@ -9,10 +9,9 @@ class StringFill : AFn<Any?, MutableString>(name = "string-fill!", minArgs = 2, 
     override operator fun invoke(arg1: Any?, arg2: Any?): MutableString {
         val s = arg1 as MutableString?
         val oldLength = s!!.length
-        s.clear()
-        for (i in 0..oldLength - 1) {
-            s.append(arg2)
+        return s.apply {
+            clear()
+            for (i in 0..oldLength - 1) { append(arg2) }
         }
-        return s
     }
 }

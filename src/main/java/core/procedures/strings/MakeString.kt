@@ -11,10 +11,6 @@ class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true,
     override operator fun invoke(args: Array<out Any?>): MutableString {
         val s = (args[0] as Number).toInt()
         val c = if (args.size == 1) Character.MIN_VALUE else args[1]
-        val string = MutableString(s)
-        for (i in 0..s - 1) {
-            string.append(c)
-        }
-        return string
+        return MutableString(s).apply { for (i in 0..s - 1) { append(c) } }
     }
 }
