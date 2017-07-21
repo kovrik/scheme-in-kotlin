@@ -16,11 +16,7 @@ abstract class AbstractTest {
 
     init {
         /* Eval lib procedures */
-        for (proc in env.libraryProcedures) {
-            for (p in reader.read(proc)!!) {
-                eval.macroexpandAndEvaluate(p, env)
-            }
-        }
+        env.libraryProcedures.flatMap { reader.read(it)!! }.forEach { eval.macroexpandAndEvaluate(it, env) }
     }
 
     /* Helper method: evaluates first S-expression */

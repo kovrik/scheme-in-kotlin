@@ -41,18 +41,14 @@ class SpecialFormTest : AbstractTest() {
         eval(m, env)
 
         val fs = longArrayOf(1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 9, 10, 11, 11, 12, 13)
-        for (i in fs.indices) {
-            assertEquals(fs[i], eval("(F $i)", env))
-        }
+        fs.indices.forEach { i -> assertEquals(fs[i], eval("(F $i)", env)) }
 
         val ms = longArrayOf(0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8, 9, 9, 10, 11, 11, 12, 12)
-        for (i in ms.indices) {
-            assertEquals(ms[i], eval("(M $i)", env))
-        }
+        ms.indices.forEach { i -> assertEquals(ms[i], eval("(M $i)", env)) }
 
         val letrec = "(letrec ((F (lambda (n) (if (= n 0) 1 (- n (M (F (- n 1)))))))" +
-                "(M (lambda (n) (if (= n 0) 0 (- n (F (M (- n 1))))))))" +
-                "(F 19))"
+                     "(M (lambda (n) (if (= n 0) 0 (- n (F (M (- n 1))))))))" +
+                     "(F 19))"
         assertEquals(12L, eval(letrec, env))
     }
 
@@ -554,9 +550,7 @@ class SpecialFormTest : AbstractTest() {
         Repl.currentOutputPort = OutputPort(PrintStream(baos))
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        for (proc in tempEnv.libraryProcedures) {
-            eval(proc, tempEnv)
-        }
+        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
         assertEquals(Unit, eval("(begin (display \"4 plus 1 equals \")(display (+ 4 1)))", tempEnv))
         Repl.currentOutputPort = old
@@ -766,14 +760,22 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (throw (new Exception)) (catch Exception e (set! a (inc a)))) a)", env))
         assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (finally (set! a (inc a)))) a)", env))
         assertEquals(6L, eval("(let ((a 0)) (try (set! a 5) (finally (set! a (inc a)))) a)", env))
-        val illegalSyntax = arrayOf("(try 1 2 (finally) 3 (catch Exception e) (finally))", "(try 1 2 3 (catch Exception e) (finally) (catch Exception e))", "(try 1 (catch Exception e) 2 3)", "(try 1 (catch Exception))", "(try 1 (catch))", "(try 1 (catch 1))", "(try 1 (catch a))", "(try 1 (catch Exception 123))")
+        val illegalSyntax = arrayOf("(try 1 2 (finally) 3 (catch Exception e) (finally))",
+                                    "(try 1 2 3 (catch Exception e) (finally) (catch Exception e))",
+                                    "(try 1 (catch Exception e) 2 3)",
+                                    "(try 1 (finally 1) 2 3)",
+                                    "(try 1 (catch Exception))",
+                                    "(try 1 (catch))",
+                                    "(try 1 (catch 1))",
+                                    "(try 1 (catch a))",
+                                    "(try 1 (catch Exception 123))")
         for (illegal in illegalSyntax) {
             try {
                 eval(illegal, env)
+                fail()
             } catch (e: IllegalSyntaxException) {
                 // success
             }
-
         }
     }
 
@@ -786,10 +788,10 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(null, eval("(begin (define nv 5) (set! nv nil) nv)", env))
         try {
             eval("some-undefined-identifier", env)
+            fail()
         } catch (e: UndefinedIdentifierException) {
             // expected
         }
-
         assertEquals(null, eval("(begin (define some-undefined-identifier nil) some-undefined-identifier)", env))
     }
 

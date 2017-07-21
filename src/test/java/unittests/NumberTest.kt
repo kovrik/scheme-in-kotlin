@@ -745,9 +745,7 @@ class NumberTest : AbstractTest() {
                                 14 to "ddddddddddddddddd",
                                 15 to "eeeeeeeeeeeeeeeee",
                                 16 to "ffffffffffffffff")
-        for ((key, value) in numbers) {
-            assertNotEquals(false, eval("(string->number \"$value\" $key)", env))
-        }
+        numbers.forEach { (k, v) -> assertNotEquals(false, eval("(string->number \"$v\" $k)", env)) }
     }
 
     @Test

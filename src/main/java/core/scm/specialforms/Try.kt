@@ -67,6 +67,9 @@ object Try : ISpecialForm {
                     }
                 }
             }
+            if (hadCatch) {
+                throw IllegalSyntaxException("try: only catch or finally clause can follow catch in try expression")
+            }
             expressions.add(e)
         }
         /* Now Evaluate everything */

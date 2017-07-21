@@ -128,14 +128,12 @@ class ListTest : AbstractTest() {
         } catch (e: IllegalArgumentException) {
             assertEquals("cdr: type mismatch; (expected: Pair, given: ())", e.message)
         }
-
         try {
             eval("(cdr 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
             assertEquals("cdr: type mismatch; (expected: Pair, given: 1)", e.message)
         }
-
     }
 
     @Test

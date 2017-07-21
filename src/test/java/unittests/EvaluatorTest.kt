@@ -126,9 +126,7 @@ class EvaluatorTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        for (proc in tempEnv.libraryProcedures) {
-            eval(proc, tempEnv)
-        }
+        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
 
         eval("(display 123)", tempEnv)

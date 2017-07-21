@@ -183,9 +183,7 @@ class RosettaCodeTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        for (proc in tempEnv.libraryProcedures) {
-            eval(proc, tempEnv)
-        }
+        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
         tempEnv.put(Symbol.intern("newline"), Newline())
 
@@ -237,9 +235,7 @@ class RosettaCodeTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        for (proc in tempEnv.libraryProcedures) {
-            eval(proc, tempEnv)
-        }
+        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         eval("(define // quotient)", tempEnv)
 
         eval("(define (y a a1 b c d e)" +
@@ -284,9 +280,7 @@ class RosettaCodeTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        for (proc in tempEnv.libraryProcedures) {
-            eval(proc, tempEnv)
-        }
+        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
 
         val quine = "((lambda (s) (display (list s (list (quote quote) s))))" + " (quote (lambda (s) (display (list s (list (quote quote) s))))))"
