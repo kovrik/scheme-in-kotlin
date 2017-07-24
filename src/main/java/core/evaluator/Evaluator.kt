@@ -120,7 +120,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             is IFn<*, *> -> {
                 /* Scheme has applicative order, so evaluate all arguments first */
                 val args = arrayOfNulls<Any>(size - 1)
-                for (it in 1..args.size) { args[it - 1] = eval(this[it], env) }
+                for (i in 1..args.size) { args[i - 1] = eval(this[i], env) }
                 /* Finally, invoke operator (IFn) via helper method */
                 return AFn.invokeN(op, args)
             }
