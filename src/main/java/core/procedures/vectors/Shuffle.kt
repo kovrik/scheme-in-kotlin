@@ -11,12 +11,8 @@ import kotlin.collections.toTypedArray
 
 class Shuffle : AFn<Collection<*>?, Vector>(name = "shuffle", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override operator fun invoke(arg: Collection<*>?): MutableVector {
-        if (arg is Collection<*>) {
-            val list = ArrayList(arg)
-            Collections.shuffle(list)
-            return MutableVector(list.toTypedArray())
-        }
-        throw WrongTypeException(name, Collection::class.java, arg)
+    override operator fun invoke(arg: Collection<*>?) = when (arg) {
+        is Collection<*> -> MutableVector(ArrayList(arg).apply(Collections::shuffle).toTypedArray())
+        else             -> throw WrongTypeException(name, Collection::class.java, arg)
     }
 }

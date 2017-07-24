@@ -9,18 +9,14 @@ class RandNth : AFn<Any?, Any?>(name = "rand-nth", isPure = true, minArgs = 1, m
     private val count = Count()
     private val get = Get()
 
-    override operator fun invoke(arg: Any?): Any? {
-        if (arg is Map<*, *>) {
-            throw UnsupportedOperationException("nth not supported on this type: ${arg.javaClass}")
+    override operator fun invoke(arg: Any?) = when {
+        arg is Map<*, *>      -> throw UnsupportedOperationException("nth not supported on this type: ${arg.javaClass}")
+        !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from ${arg?.javaClass}")
+        else -> count(arg).let {
+            when (it) {
+                0 -> throw IndexOutOfBoundsException()
+                else -> get(arg, Random().nextInt(it), null)
+            }
         }
-        if (!Utils.isSeqable(arg)) {
-            throw IllegalArgumentException("don't know how to create Sequence from ${arg?.javaClass}")
-        }
-        val bound = count(arg)
-        if (bound == 0) {
-            throw IndexOutOfBoundsException()
-        }
-        val index = Random().nextInt(bound)
-        return get(arg, index, null)
     }
 }

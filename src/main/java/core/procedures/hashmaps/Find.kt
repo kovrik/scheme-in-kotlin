@@ -8,11 +8,10 @@ import core.utils.Utils
 class Find : AFn<Any?, MapEntry?>(name = "find", isPure = true, maxArgs = 2, minArgs = 2,
                                   mandatoryArgsTypes = arrayOf(IAssoc::class.java, Any::class.java)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): MapEntry? {
-        val assoc = Utils.toAssoc(arg1)
-        if (assoc.containsKey(arg2!!)) {
-            return assoc.getEntry(arg2)
+    override operator fun invoke(arg1: Any?, arg2: Any?) = Utils.toAssoc(arg1).let {
+        when {
+            it.containsKey(arg2!!) -> it.getEntry(arg2)
+            else -> null
         }
-        return null
     }
 }

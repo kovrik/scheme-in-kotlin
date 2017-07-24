@@ -44,9 +44,7 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
                 }
             }
         }
-        val result = Cons.list<Any>(Symbol.intern("list"))
-        result.addAll(lists)
         /* Return Thunk that will be evaluated and produce results */
-        return Thunk(result)
+        return Thunk(Cons.list<Any>(Symbol.intern("list")).apply { addAll(lists)})
     }
 }

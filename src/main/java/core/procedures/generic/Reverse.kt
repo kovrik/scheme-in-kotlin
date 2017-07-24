@@ -9,27 +9,19 @@ import core.scm.Vector
 
 class Reverse : AFn<Any?, Any?>(name = "reverse", isPure = true, minArgs = 1, maxArgs = 1) {
 
-    override operator fun invoke(arg: Any?): Any? {
-        when (arg) {
-            is List<*> -> {
-                val result = Cons.list<Any>()
-                for (o in (arg as List<*>?)!!) {
-                    result.add(0, o)
-                }
-                return result
-            }
-            is Set<*> -> return Cons.list(arg as Collection<Any?>)
-            is Map.Entry<*, *> -> return MapEntry(arg.value, arg.key)
-            is Vector -> {
-                val array = arg.getArray()
-                val reversed = MutableVector(array.size, null)
+    override operator fun invoke(arg: Any?): Any? = when (arg) {
+        is List<*>         -> Cons.list<Any>().apply { for (o in (arg as List<*>?)!!) { add(0, o) } }
+        is Set<*>          -> Cons.list(arg as Collection<Any?>)
+        is Map.Entry<*, *> -> MapEntry(arg.value, arg.key)
+        is CharSequence    -> StringBuilder((arg as CharSequence?)!!).reverse().toString()
+        is Vector -> {
+            val array = arg.getArray()
+            MutableVector(array.size, null).apply {
                 for (i in array.indices) {
-                    reversed.array[i] = array[array.size - i - 1]
+                    this.array[i] = array[array.size - i - 1]
                 }
-                return reversed
             }
-            is CharSequence -> return StringBuilder((arg as CharSequence?)!!).reverse().toString()
-            else -> throw WrongTypeException(name, "List or Vector or Set or String", arg)
         }
+        else -> throw WrongTypeException(name, "List or Vector or Set or String", arg)
     }
 }

@@ -55,42 +55,17 @@ class Cons<E> : ArrayList<E?> {
         /* Empty list constant */
         val EMPTY = Cons<Nothing>()
 
-        fun <E> cons(car: E?, cdr: E?): Cons<E> {
-            if (cdr == null) return Cons(car, EMPTY) as Cons<E>
-            return Cons(car, cdr)
+        fun <E> cons(car: E?, cdr: E?) = when (cdr) {
+            null -> Cons(car, EMPTY)
+            else -> Cons(car, cdr)
         }
 
         fun <E> list(): Cons<E?> = Cons()
-
-        fun <E> list(e: E?): Cons<E?> {
-            val list = list<E?>()
-            list.add(e)
-            return list
-        }
-
-        fun <E> list(e1: E?, e2: E?): Cons<E?> {
-            val list = list<E?>(e1)
-            list.add(e2)
-            return list
-        }
-
-        fun <E> list(e1: E?, e2: E?, e3: E?): Cons<E?> {
-            val list = list<E?>(e1, e2)
-            list.add(e3)
-            return list
-        }
-
-        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?): Cons<E?> {
-            val list = list<E?>(e1, e2, e3)
-            list.add(e4)
-            return list
-        }
-
-        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?, e5: E?): Cons<E?> {
-            val list = list<E?>(e1, e2, e3, e4)
-            list.add(e5)
-            return list
-        }
+        fun <E> list(e: E?): Cons<E?> = list<E?>().apply { add(e) }
+        fun <E> list(e1: E?, e2: E?): Cons<E?> = list<E?>(e1).apply { add(e2) }
+        fun <E> list(e1: E?, e2: E?, e3: E?): Cons<E?> = list<E?>(e1, e2).apply { add(e3) }
+        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?): Cons<E?> = list<E?>(e1, e2, e3).apply { add(e4) }
+        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?, e5: E?): Cons<E?> = list<E?>(e1, e2, e3, e4).apply { add(e5) }
 
         fun <E> list(elements: Array<E?>) = if (elements.isEmpty()) EMPTY else list(elements.asList())
 

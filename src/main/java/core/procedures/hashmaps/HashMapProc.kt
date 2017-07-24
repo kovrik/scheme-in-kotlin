@@ -5,16 +5,12 @@ import core.scm.Hashmap
 
 class HashMapProc : AFn<Any?, Map<*, *>>(name = "hash-map", isPure = true) {
 
-    override operator fun invoke(args: Array<out Any?>): Map<*, *> {
-        if (args.size % 2 != 0) {
-            throw IllegalArgumentException("hash-map: no value supplied for key: ${args[args.size - 1]}")
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args.size % 2 == 0 -> Hashmap().apply {
+            for (i in 0..args.size - 1 step 2) {
+                put(args[i], args[i + 1])
+            }
         }
-        val result = Hashmap()
-        var i = 0
-        while (i < args.size) {
-            result.put(args[i], args[i + 1])
-            i += 2
-        }
-        return result
+        else -> throw IllegalArgumentException("hash-map: no value supplied for key: ${args[args.size - 1]}")
     }
 }

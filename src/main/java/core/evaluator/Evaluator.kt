@@ -75,13 +75,12 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate Symbol */
-    private fun Symbol.eval(env: Environment): Any? {
-        val result = env.findOrDefault(this, Environment.UNDEFINED)
-        return when {
-            result is ISpecialForm -> throw IllegalSyntaxException.of(result.toString(), this)
+    private fun Symbol.eval(env: Environment) = env.findOrDefault(this, Environment.UNDEFINED).let {
+        when (it) {
+            is ISpecialForm -> throw IllegalSyntaxException.of(it.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            result === Environment.UNDEFINED -> reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
-            else -> result
+            Environment.UNDEFINED -> reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
+            else -> it
         }
     }
 

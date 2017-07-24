@@ -10,27 +10,21 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
 
     override operator fun invoke(args: Array<out Any?>): Any? {
         val first = args[0]
-        when {
-            args.size == 1 -> return first
-            first is List<*> -> {
-                val list = Cons.list<Any?>()
-                list.addAll(first)
-                list.addAll(args.copyOfRange(1, args.size))
-                return list
+        return when {
+            args.size == 1 -> first
+            first is List<*> -> Cons.list<Any?>().apply {
+                addAll(first)
+                addAll(args.copyOfRange(1, args.size))
             }
-            first is Set<*> -> {
-                val set = HashSet<Any?>()
-                set.addAll(first as Collection<*>)
-                set.addAll(args.copyOfRange(1, args.size))
-                return set
+            first is Set<*> -> HashSet<Any?>().apply {
+                addAll(first as Collection<*>)
+                addAll(args.copyOfRange(1, args.size))
             }
-            first is Vector -> {
-                val vector = MutableVector(first.size + args.size - 1, null)
+            first is Vector -> MutableVector(first.size + args.size - 1, null).apply {
                 for (i in 0..first.size - 1) {
-                    vector[i] = first[i]
+                    this[i] = first[i]
                 }
-                System.arraycopy(args, 1, vector.getArray(), first.size, args.size - 1)
-                return vector
+                System.arraycopy(args, 1, this.getArray(), first.size, args.size - 1)
             }
             // TODO Map?
             else -> throw WrongTypeException(name, "List or Vector or Set", first)
