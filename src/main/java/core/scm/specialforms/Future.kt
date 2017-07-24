@@ -14,16 +14,13 @@ object Future : ISpecialForm {
         if (form.size < 2) {
             throw IllegalSyntaxException.of(toString(), form)
         }
-        val future: core.scm.Future
-        if (form.size > 2) {
-            val list: MutableList<Any?> = Cons.list(Begin)
+        return if (form.size > 2) {
+            val list = Cons.list<Any?>(Begin)
             list.addAll(form.subList(1, form.size))
-            future = core.scm.Future(list, env, evaluator)
+            core.scm.Future(list, env, evaluator).apply { Evaluator.executor.submit(this) }
         } else {
-            future = core.scm.Future(form[1], env, evaluator)
+            core.scm.Future(form[1], env, evaluator).apply { Evaluator.executor.submit(this) }
         }
-        Evaluator.executor.submit(future)
-        return future
     }
 
     override fun toString() = "future"

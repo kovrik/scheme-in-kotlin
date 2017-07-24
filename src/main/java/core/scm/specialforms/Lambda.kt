@@ -59,13 +59,11 @@ object Lambda : ISpecialForm {
             params = Cons.list(lambdaArgs)
             variadic = true
         }
-        val body: Any?
-        if (form.size == 3) {
-            body = form[2]
+        val body = if (form.size == 3) {
+            form[2]
         } else {
             /* Add implicit `begin` */
-            body = Cons.list(Begin)
-            (body as MutableList<Any?>).addAll(form.subList(2, form.size))
+            Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }

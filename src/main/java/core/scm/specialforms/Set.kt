@@ -14,12 +14,10 @@ object Set : ISpecialForm {
         if (form.size != 3) {
             throw IllegalSyntaxException.of(toString(), form, "has ${form.size - 1} parts after keyword")
         }
-        val identifier = form[1]
-        if (identifier !is Symbol) {
-            throw IllegalSyntaxException.of(toString(), form, "not an identifier: `$identifier`")
+        form[1].let {
+            if (it !is Symbol) throw IllegalSyntaxException.of(toString(), form, "not an identifier: `$it`")
+            env.findAndPut(it, evaluator.eval(form[2], env))
         }
-        env.findAndPut(identifier, evaluator.eval(form[2], env))
-        return Unit
     }
 
     override fun toString() = "set!"

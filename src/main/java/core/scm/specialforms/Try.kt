@@ -36,8 +36,8 @@ object Try : ISpecialForm {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
-                        fin = Cons.list(Begin)
-                        (fin as Cons<Any?>).addAll(expr.subList(1, expr.size))
+                        fin = Cons.list<Any?>(Begin)
+                        fin.addAll(expr.subList(1, expr.size))
                     }
                     continue
                 } else if (CATCH == op) {
@@ -51,8 +51,8 @@ object Try : ISpecialForm {
                     val clazz = REFLECTOR.getClazz(expr[1].toString())
                     var catchExpr: Any? = null
                     if (expr.size > 3) {
-                        catchExpr = Cons.list(Begin)
-                        (catchExpr as Cons<Any?>).addAll(expr.subList(3, expr.size))
+                        catchExpr = Cons.list<Any?>(Begin)
+                        catchExpr.addAll(expr.subList(3, expr.size))
                     }
                     catches.put(clazz, catchExpr)
                     val cb = expr[2]

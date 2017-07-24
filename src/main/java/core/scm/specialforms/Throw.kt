@@ -8,15 +8,16 @@ import core.exceptions.WrongTypeException
 
 object Throw : ISpecialForm {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
         if (form.size < 2) {
             throw IllegalSyntaxException.of(toString(), form)
         }
-        val obj = evaluator.eval(form[1], env)
-        if (obj !is Throwable) {
-            throw WrongTypeException(toString(), "Throwable", obj)
+        evaluator.eval(form[1], env).let {
+            when (it) {
+                is Throwable -> throw ThrowableWrapper(it)
+                else         -> throw WrongTypeException(toString(), "Throwable", it)
+            }
         }
-        throw ThrowableWrapper((obj as Throwable?)!!)
     }
 
     override fun toString() = "throw"

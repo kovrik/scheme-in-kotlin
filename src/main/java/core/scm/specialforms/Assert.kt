@@ -22,9 +22,7 @@ object Assert : ISpecialForm {
                 }
                 message = ": ${form[2].toString()}"
             }
-            val assertionError = AssertionError("assert failed $message")
-            assertionError.stackTrace = EMPTY
-            throw assertionError
+            throw AssertionError("assert failed $message").apply { stackTrace = EMPTY }
         }
         return true
     }

@@ -11,17 +11,15 @@ import core.utils.Utils
 object And : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        var result: Any? = true
         if (form.size > 1) {
             for (i in 1..form.size - 2) {
-                result = evaluator.eval(form[i], env)
-                if (!Utils.toBoolean(result)) {
-                    return result
+                if (!Utils.toBoolean(evaluator.eval(form[i], env))) {
+                    return false
                 }
             }
-            result = Thunk(form[form.size - 1], env)
+            return Thunk(form[form.size - 1], env)
         }
-        return result
+        return true
     }
 
     override fun toString() = "and"

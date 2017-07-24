@@ -22,23 +22,23 @@ object Let : ISpecialForm {
          * (let ((id expr) ...) body ...+) */
         if (form[1] is List<*>) {
             val localEnv = Environment(env)
-            val bindings = form[1] as List<List<*>>
+            val bindings = form[1] as List<*>
             /* Bind variables to fresh locations holding undefined values */
-            bindings.forEach { localEnv.put(it[0], Environment.UNDEFINED) }
+            bindings.forEach {
+                if (it !is List<*>) throw IllegalSyntaxException.of(toString(), form)
+                localEnv.put(it[0], Environment.UNDEFINED)
+            }
             /* Evaluate inits */
-            bindings.forEach { (variable, init) ->
+            bindings.forEach {
                 when {
-                    localEnv[variable] === Environment.UNDEFINED -> localEnv.put(variable, evaluator.eval(init, env))
-                    else -> throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $variable")
+                    it !is List<*> -> throw IllegalSyntaxException.of(toString(), form)
+                    localEnv[it[0]] === Environment.UNDEFINED -> localEnv.put(it[0], evaluator.eval(it[1], env))
+                    else -> throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: ${it[0]}")
                 }
             }
-
             /* Evaluate body */
-            for (i in 2..form.size - 2) {
-                evaluator.eval(form[i], localEnv)
-            }
+            for (i in 2..form.size - 2) { evaluator.eval(form[i], localEnv) }
             return Thunk(form[form.size - 1], localEnv)
-
         } else if (form[1] is Symbol) {
             // TODO Optimize and cleanup
             /* Named let:

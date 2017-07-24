@@ -11,17 +11,16 @@ import core.utils.Utils
 object Or : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        var result: Any? = false
         if (form.size > 1) {
             for (i in 1..form.size - 2) {
-                result = evaluator.eval(form[i], env)
+                val result = evaluator.eval(form[i], env)
                 if (Utils.toBoolean(result)) {
                     return result
                 }
             }
-            result = Thunk(form[form.size - 1], env)
+            return Thunk(form[form.size - 1], env)
         }
-        return result
+        return false
     }
 
     override fun toString() = "or"

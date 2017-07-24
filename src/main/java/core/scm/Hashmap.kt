@@ -14,9 +14,6 @@ class Hashmap(val map: MutableMap<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1,
 
     override fun getEntry(key: Any?) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
 
-    override fun assoc(key: Any?, value: Any?): Any {
-        map.put(key, value)
-        return this
-    }
+    override fun assoc(key: Any?, value: Any?) = apply { put(key, value) }
 }
 

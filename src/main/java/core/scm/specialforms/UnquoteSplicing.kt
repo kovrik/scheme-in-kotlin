@@ -9,8 +9,8 @@ object UnquoteSplicing : ISpecialForm {
 
     val UNQUOTE_SPLICING_SYMBOL = Symbol.intern(toString())
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        // Implemented in quasiquote
+    // Implemented in quasiquote
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
         throw IllegalSyntaxException.of(toString(), form, "not in quasiquote")
     }
 
