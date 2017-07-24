@@ -39,10 +39,7 @@ class BigRatio : Number, Comparable<BigRatio> {
     val numerator: BigInteger
     val denominator: BigInteger
 
-    private constructor(numerator: BigInteger) {
-        this.numerator = numerator
-        this.denominator = BigInteger.ONE
-    }
+    private constructor(numerator: BigInteger) : this(numerator, BigInteger.ONE)
 
     private constructor(numerator: BigInteger, denominator: BigInteger) {
         if (BigInteger.ZERO == denominator) {
