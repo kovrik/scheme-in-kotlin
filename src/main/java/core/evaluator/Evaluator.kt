@@ -12,7 +12,6 @@ import core.scm.specialforms.New
 import core.utils.Utils
 import core.writer.Writer
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicLong
 
 class Evaluator(private val reflector: Reflector = Reflector(),
@@ -22,13 +21,8 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)
         @Volatile var executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors(),
-                createThreadFactory(threadCounter))!!
-
-        private fun createThreadFactory(threadCounter: AtomicLong) = ThreadFactory { r ->
-            val t = Thread(r)
-            t.name = "executor-thread-${threadCounter.getAndIncrement()}"
-            t
-        }
+                { Thread(it, "executor-thread-${threadCounter.getAndIncrement()}") }
+        )
     }
 
     inner class JavaMethodCall(val method: String) : AFn<Any?, Any?>(name = method) {

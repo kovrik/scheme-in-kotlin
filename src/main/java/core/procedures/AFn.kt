@@ -16,14 +16,13 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
 
     override fun arity() = if (minArgs == maxArgs) minArgs else -1
 
-    override fun compare(o1: T, o2: T): Int {
-        val result = invoke(o1, o2)
-        if (result is Boolean) {
-            if (result) return -1
+    override fun compare(o1: T, o2: T): Int = invoke(o1, o2).let {
+        if (it is Boolean) {
+            if (it) return -1
             if (Utils.toBoolean(invoke(o2, o1))) return 1
             return 0
         }
-        return (result as Number).toInt()
+        return (it as Number).toInt()
     }
 
     override fun run() {

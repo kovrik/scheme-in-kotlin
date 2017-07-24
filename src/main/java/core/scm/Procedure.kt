@@ -31,63 +31,50 @@ class Procedure(override var name: String,
         else        -> Thunk(body, Environment(0, this.localEnvironment))
     }
 
-    override operator fun invoke(arg: Any?): Any? {
-        if (isBodyConst) {
-            return body
-        }
-        val environment = Environment(1, this.localEnvironment)
-        environment.put(args[0], arg)
-        return Thunk(body, environment)
+    override operator fun invoke(arg: Any?) = when {
+        isBodyConst -> body
+        else -> Thunk(body, Environment(1, this.localEnvironment).apply { put(args[0], arg) })
     }
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        if (isBodyConst) {
-            return body
-        }
-        val environment = Environment(2, this.localEnvironment)
-        environment.put(args[0], arg1)
-        environment.put(args[1], arg2)
-        return Thunk(body, environment)
+    override operator fun invoke(arg1: Any?, arg2: Any?) = when {
+        isBodyConst -> body
+        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+            put(args[0], arg1)
+            put(args[1], arg2)
+        })
     }
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
-        if (isBodyConst) {
-            return body
-        }
-        val environment = Environment(3, this.localEnvironment)
-        environment.put(args[0], arg1)
-        environment.put(args[1], arg2)
-        environment.put(args[2], arg3)
-        return Thunk(body, environment)
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = when {
+        isBodyConst -> body
+        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+            put(args[0], arg1)
+            put(args[1], arg2)
+            put(args[2], arg3)
+        })
     }
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?): Any? {
-        if (isBodyConst) {
-            return body
-        }
-        val environment = Environment(4, this.localEnvironment)
-        environment.put(args[0], arg1)
-        environment.put(args[1], arg2)
-        environment.put(args[2], arg3)
-        environment.put(args[3], arg4)
-        return Thunk(body, environment)
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?) = when {
+        isBodyConst -> body
+        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+            put(args[0], arg1)
+            put(args[1], arg2)
+            put(args[2], arg3)
+            put(args[3], arg4)
+        })
     }
 
     override operator fun invoke(args: Array<out Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
 
-    private fun bindArgs(values: Array<out Any?>): Environment {
+    private fun bindArgs(values: Array<out Any?>) = Environment(values.size, this.localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
-        val env = Environment(values.size, this.localEnvironment)
         for (i in 0..minArgs - 1) {
-            env.put(args[i], values[i])
+            put(args[i], values[i])
         }
-        /* If it is a variadic function, then evaluate rest param */
         if (minArgs != maxArgs) {
             /* Optional params: pass them as a list bound to the last param.
              * Everything AFTER mandatory params goes to that list. */
-            env.put(args[minArgs], values.copyOfRange(minArgs, values.size).asList())
+            put(args[minArgs], values.copyOfRange(minArgs, values.size).asList())
         }
-        return env
     }
 
     /* Lambdas have no arg type information, hence nothing to check */
