@@ -10,19 +10,13 @@ object Assert : ISpecialForm {
     private val EMPTY = arrayOfNulls<StackTraceElement>(0)
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (form.size < 2 || form.size > 3) {
-            throw IllegalSyntaxException.of(toString(), form)
+        val message = when (form.size) {
+            2 -> "assert failed"
+            3 -> "assert failed: \"${evaluator.eval(form[2], env) as? CharSequence ?: throw IllegalSyntaxException.of(toString(), form)}\""
+            else -> throw IllegalSyntaxException.of(toString(), form)
         }
-        val result = evaluator.eval(form[1], env)
-        if (!Utils.toBoolean(result)) {
-            var message = ""
-            if (form.size == 3) {
-                if (form[2] !is CharSequence) {
-                    throw IllegalSyntaxException.of(toString(), form)
-                }
-                message = ": ${form[2].toString()}"
-            }
-            throw AssertionError("assert failed $message").apply { stackTrace = EMPTY }
+        if (!Utils.toBoolean(evaluator.eval(form[1], env))) {
+            throw AssertionError(message).apply { stackTrace = EMPTY }
         }
         return true
     }
