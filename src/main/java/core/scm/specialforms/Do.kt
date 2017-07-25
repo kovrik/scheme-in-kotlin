@@ -57,8 +57,7 @@ object Do : ISpecialForm {
             for (e in body) {
                 /* Each iteration establishes bindings to fresh locations
                  * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
-                val environment = Environment(env)
-                environment.putAll(tempEnv)
+                val environment = Environment(env).apply { putAll(tempEnv) }
                 /* Evaluate using new fresh environment */
                 evaluator.eval(e, environment)
                 /* THen put results into tempEnv */

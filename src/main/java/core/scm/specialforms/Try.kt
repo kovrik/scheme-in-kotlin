@@ -36,8 +36,7 @@ object Try : ISpecialForm {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
-                        fin = Cons.list<Any?>(Begin)
-                        fin.addAll(expr.subList(1, expr.size))
+                        fin = Cons.list<Any?>(Begin).apply { addAll(expr.subList(1, expr.size)) }
                     }
                     continue
                 } else if (CATCH == op) {
@@ -49,17 +48,13 @@ object Try : ISpecialForm {
                         catchBindings = HashMap<Class<*>, Symbol>()
                     }
                     val clazz = REFLECTOR.getClazz(expr[1].toString())
-                    var catchExpr: Any? = null
-                    if (expr.size > 3) {
-                        catchExpr = Cons.list<Any?>(Begin)
-                        catchExpr.addAll(expr.subList(3, expr.size))
+                    val catchExpr = when {
+                        expr.size > 3 -> Cons.list<Any?>(Begin).apply { addAll(expr.subList(3, expr.size)) }
+                        else -> null
                     }
                     catches.put(clazz, catchExpr)
-                    val cb = expr[2]
-                    if (cb !is Symbol) {
-                        throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: $cb")
-                    }
-                    catchBindings.put(clazz, cb)
+                    val sym = expr[2] as? Symbol ?: throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
+                    catchBindings.put(clazz, sym)
                     continue
                 } else {
                     if (hadCatch) {

@@ -11,12 +11,10 @@ import core.scm.Symbol
 object Set : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) {
-        if (form.size != 3) {
-            throw IllegalSyntaxException.of(toString(), form, "has ${form.size - 1} parts after keyword")
-        }
-        form[1].let {
-            if (it !is Symbol) throw IllegalSyntaxException.of(toString(), form, "not an identifier: `$it`")
-            env.findAndPut(it, evaluator.eval(form[2], env))
+        when {
+            form.size != 3 -> throw IllegalSyntaxException.of(toString(), form, "has ${form.size - 1} parts after keyword")
+            form[1] is Symbol -> env.findAndPut(form[1], evaluator.eval(form[2], env))
+            else -> throw IllegalSyntaxException.of(toString(), form, "not an identifier: `${form[1]}`")
         }
     }
 

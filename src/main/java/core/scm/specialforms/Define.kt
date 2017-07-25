@@ -31,8 +31,6 @@ object Define : ISpecialForm {
              * form = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
              *              |   0   | 1 definition           | 3 body      |
              */
-            /* Construct lambda form */
-            val l = Cons.list<Any?>(Lambda)
             /* Args */
             val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
             lambdaArgs.forEach {
@@ -41,9 +39,12 @@ object Define : ISpecialForm {
                 }
             }
             lambdaArgs.isProperList = Cons.isProperList(form[1])
-            l.add(lambdaArgs)
-            /* Body */
-            l.addAll(form.subList(2, form.size))
+            /* Construct lambda form */
+            val l = Cons.list<Any?>(Lambda).apply {
+                add(lambdaArgs)
+                /* Body */
+                addAll(form.subList(2, form.size))
+            }
             /* Get procedure's name */
             // TODO (define (((a))) 1)
             // TODO (define ((a n) c) n)
@@ -52,8 +53,7 @@ object Define : ISpecialForm {
                 throw IllegalSyntaxException.of(toString(), form,
                                                 "not an identifier for procedure name: ${Writer.write(id)}")
             }
-            val lambda = Lambda.eval(l, env, evaluator)
-            lambda.name = id.toString()
+            val lambda = Lambda.eval(l, env, evaluator).apply { name = id.toString() }
             env.put(id, lambda)
         } else {
             throw IllegalSyntaxException.of(toString(), form)
