@@ -13,7 +13,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
-import java.util.stream.IntStream
 
 object Utils {
 
@@ -38,9 +37,8 @@ object Utils {
                                           'd' to 10, 'D' to 10,
                                           'x' to 16, 'X' to 16)
 
-    private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>()
-    init {
-        IntStream.rangeClosed(2, 16).forEach { BIG_DECIMAL_RADICES.put(it, BigDecimal(it)) }
+    private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>().apply {
+        (2..16).forEach { put(it, BigDecimal(it)) }
     }
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
@@ -50,23 +48,22 @@ object Utils {
                                              9  to 19, 10 to 18, 11 to 18, 12 to 17, 13 to 17, 14 to 16, 15 to 16,
                                              16 to 15)
 
-    private val RADIX_CHARS = HashMap<Int, String>()
-    init {
-        RADIX_CHARS.put(2,  "#+-.01")
-        RADIX_CHARS.put(3,  RADIX_CHARS[2] + "2")
-        RADIX_CHARS.put(4,  RADIX_CHARS[3] + "3")
-        RADIX_CHARS.put(5,  RADIX_CHARS[4] + "4")
-        RADIX_CHARS.put(6,  RADIX_CHARS[5] + "5")
-        RADIX_CHARS.put(7,  RADIX_CHARS[6] + "6")
-        RADIX_CHARS.put(8,  RADIX_CHARS[7] + "7")
-        RADIX_CHARS.put(9,  RADIX_CHARS[8] + "8")
-        RADIX_CHARS.put(10, RADIX_CHARS[9] + "9")
-        RADIX_CHARS.put(11, RADIX_CHARS[10] + "aA")
-        RADIX_CHARS.put(12, RADIX_CHARS[11] + "bB")
-        RADIX_CHARS.put(13, RADIX_CHARS[12] + "cC")
-        RADIX_CHARS.put(14, RADIX_CHARS[13] + "dD")
-        RADIX_CHARS.put(15, RADIX_CHARS[14] + "eE")
-        RADIX_CHARS.put(16, RADIX_CHARS[15] + "fF")
+    private val RADIX_CHARS = HashMap<Int, String>().apply {
+        put(2,  "#+-.01")
+        put(3,  this[2]  + "2")
+        put(4,  this[3]  + "3")
+        put(5,  this[4]  + "4")
+        put(6,  this[5]  + "5")
+        put(7,  this[6]  + "6")
+        put(8,  this[7]  + "7")
+        put(9,  this[8]  + "8")
+        put(10, this[9]  + "9")
+        put(11, this[10] + "aA")
+        put(12, this[11] + "bB")
+        put(13, this[12] + "cC")
+        put(14, this[13] + "dD")
+        put(15, this[14] + "eE")
+        put(16, this[15] + "fF")
     }
 
     /* Check if digit is valid for a number in a specific radix */
@@ -124,12 +121,10 @@ object Utils {
                     hasAtLeastOneDigit -> hasHashChar = true
                     else -> return Symbol.intern(number)
                 }
-                '/' -> {
-                    /* Check if it is a rational number and if it is valid */
-                    when {
-                        slashIndex > -1 || !isIntegral -> return Symbol.intern(number)
-                        else -> slashIndex = i
-                    }
+                /* Check if it is a rational number and if it is valid */
+                '/' -> when {
+                    slashIndex > -1 || !isIntegral -> return Symbol.intern(number)
+                    else -> slashIndex = i
                 }
                 else -> when {
                     isValidForRadix(c, radix) -> hasAtLeastOneDigit = true
@@ -140,7 +135,6 @@ object Utils {
         if (!hasAtLeastOneDigit) {
             return Symbol.intern(number)
         }
-
         if (hasHashChar) {
             if (HASH_REGEX.matches(n)) {
                 n = n.replace('#', '0')
@@ -149,7 +143,6 @@ object Utils {
                 return Symbol.intern(number)
             }
         }
-
         /* Rational and Integral numbers are exact by default */
         val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]!!
@@ -189,7 +182,7 @@ object Utils {
     /* Parse string into a number */
     private fun processNumber(number: String, r: Int, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
         var num = number
-        var result: Number?
+        var result: Number
         val dotPos = num.indexOf('.')
         if (useBigNum) {
             if (dotPos < 0) {

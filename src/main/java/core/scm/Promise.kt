@@ -24,7 +24,7 @@ class Promise : CompletableFuture<Any>(), IDeref {
     }
 
     override fun toString(): String {
-        val sb = StringBuilder("#<").append("promise")
+        val sb = StringBuilder("#<promise")
         when {
             isCompletedExceptionally -> sb.append("!error!")
             isDone -> {

@@ -189,16 +189,12 @@ open class Reader : IReader {
             }
             /* Check if this is a proper number */
             return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
-        } else {
-            /* Bad hash syntax: read token and throw exception */
-            val token = StringBuilder("#")
-            if (isValid(c.toInt())) {
-                token.append(c)
-            }
-            if (!Character.isWhitespace(c)) {
-                token.append(readUntilDelimiter())
-            }
-            throw IllegalSyntaxException("read: bad syntax: $token")
+        }
+        /* Bad hash syntax: read token and throw exception */
+        StringBuilder("#").let {
+            if (isValid(c.toInt())) { it.append(c) }
+            if (!Character.isWhitespace(c)) { it.append(readUntilDelimiter()) }
+            throw IllegalSyntaxException("read: bad syntax: $it")
         }
     }
 
