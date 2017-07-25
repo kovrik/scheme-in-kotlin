@@ -19,7 +19,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
         /* Pool of all interned symbols */
         private val POOL = InternPool<Symbol>()
 
-        fun intern(name: String?) = POOL.intern(Symbol(name!!))
+        fun intern(name: String) = POOL.intern(Symbol(name))
 
         private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
         /* Check if Symbol has Special Characters and needs to be escaped */
