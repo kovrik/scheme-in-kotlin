@@ -448,53 +448,51 @@ class DefaultEnvironment : Environment(null) {
                 LetRecSyntax,
                 SyntaxRules)
 
-        private val LIBRARY_PROCEDURES = ArrayList<String>()
-
-        init {
+        private val LIBRARY_PROCEDURES = ArrayList<String>().apply {
             /* Naive implementations (not via Continuations) */
             // TODO attach Metadata and mark these as pure?
-            LIBRARY_PROCEDURES.add("(define values list)")
-            LIBRARY_PROCEDURES.add("(define (call-with-values producer consumer) (apply consumer (producer)))")
+            add("(define values list)")
+            add("(define (call-with-values producer consumer) (apply consumer (producer)))")
 
-            LIBRARY_PROCEDURES.add("(define (add1 n) (+ n 1))")
-            LIBRARY_PROCEDURES.add("(define (inc  n) (+ n 1))")
-            LIBRARY_PROCEDURES.add("(define (dec  n) (- n 1))")
-            LIBRARY_PROCEDURES.add(
-                    "(define rationalize" +
-                            "  (letrec ((check (lambda (x) (when (not (real? x))" +
-                            "                                (error (string-append \"Wrong argument type. Expected: Real, actual: \"" +
-                            "                                                      (->string x))))))" +
-                            "           (find-between " +
-                            "            (lambda (lo hi)" +
-                            "              (if (integer? lo)" +
-                            "                  lo" +
-                            "                (let ((lo-int (floor lo))" +
-                            "                      (hi-int (floor hi)))" +
-                            "                  (if (< lo-int hi-int)" +
-                            "                      (+ 1 lo-int)" +
-                            "                    (+ lo-int" +
-                            "                       (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int))))))))))" +
-                            "           (do-find-between" +
-                            "            (lambda (lo hi)" +
-                            "              (cond" +
-                            "               ((negative? lo) (- (find-between (- hi) (- lo))))" +
-                            "               (else (find-between lo hi))))))" +
-                            "    (lambda (x within)" +
-                            "      (check x) (check within)" +
-                            "      (let* ((delta (abs within))" +
-                            "             (lo (- x delta))" +
-                            "             (hi (+ x delta)))" +
-                            "        (cond" +
-                            "         ((equal? x +nan.0) x)" +
-                            "         ((or (equal? x +inf.0) " +
-                            "              (equal? x -inf.0))" +
-                            "          (if (equal? delta +inf.0) +nan.0 x))" +
-                            "         ((equal? delta +inf.0) 0.0)" +
-                            "         ((not (= x x)) +nan.0)" +
-                            "         ((<= lo 0 hi) (if (exact? x) 0 0.0))" +
-                            "         ((or (inexact? lo) (inexact? hi))" +
-                            "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
-                            "         (else (do-find-between lo hi)))))))")
+            add("(define (add1 n) (+ n 1))")
+            add("(define (inc  n) (+ n 1))")
+            add("(define (dec  n) (- n 1))")
+            add("(define rationalize" +
+                "  (letrec ((check (lambda (x) " +
+                "                    (when (not (real? x))" +
+                "                      (error (string-append \"Wrong argument type. Expected: Real, actual: \"" +
+                "                                             (->string x))))))" +
+                "           (find-between " +
+                "            (lambda (lo hi)" +
+                "              (if (integer? lo)" +
+                "                  lo" +
+                "                (let ((lo-int (floor lo))" +
+                "                      (hi-int (floor hi)))" +
+                "                  (if (< lo-int hi-int)" +
+                "                      (+ 1 lo-int)" +
+                "                    (+ lo-int" +
+                "                       (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int))))))))))" +
+                "           (do-find-between" +
+                "            (lambda (lo hi)" +
+                "              (cond" +
+                "               ((negative? lo) (- (find-between (- hi) (- lo))))" +
+                "               (else (find-between lo hi))))))" +
+                "    (lambda (x within)" +
+                "      (check x) (check within)" +
+                "      (let* ((delta (abs within))" +
+                "             (lo (- x delta))" +
+                "             (hi (+ x delta)))" +
+                "        (cond" +
+                "         ((equal? x +nan.0) x)" +
+                "         ((or (equal? x +inf.0) " +
+                "              (equal? x -inf.0))" +
+                "          (if (equal? delta +inf.0) +nan.0 x))" +
+                "         ((equal? delta +inf.0) 0.0)" +
+                "         ((not (= x x)) +nan.0)" +
+                "         ((<= lo 0 hi) (if (exact? x) 0 0.0))" +
+                "         ((or (inexact? lo) (inexact? hi))" +
+                "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
+                "         (else (do-find-between lo hi)))))))")
         }
     }
 }

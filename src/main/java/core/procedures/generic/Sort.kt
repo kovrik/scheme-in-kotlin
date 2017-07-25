@@ -22,7 +22,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
             }
             throw WrongTypeException(name, "Collection of comparable elements", arg)
         }
-        val comparator: Comparator<Any?> = args[0] as Comparator<Any?>
+        val comparator = args[0] as Comparator<Any?>
         val arg = args[1]
         try {
             return when (arg) {
