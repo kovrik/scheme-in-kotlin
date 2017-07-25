@@ -71,7 +71,7 @@ object Do : ISpecialForm {
                 freshLocations.put(variable, evaluator.eval(s, tempEnv))
             }
             /* Now store results */
-            freshLocations.forEach { (k, v) -> tempEnv.put(k, v) }
+            freshLocations.forEach { k, v -> tempEnv.put(k, v) }
         }
         /* Test evaluated to #f */
         return Begin.eval(clause, tempEnv, evaluator)

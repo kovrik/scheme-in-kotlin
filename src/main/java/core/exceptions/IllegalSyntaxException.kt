@@ -7,7 +7,7 @@ class IllegalSyntaxException(message: String) : RuntimeException(message) {
     companion object {
 
         @JvmOverloads fun of(syntax: String, expression: Any, description: String? = null): IllegalSyntaxException {
-            val message: String = when (description) {
+            val message = when (description) {
                 null -> "$syntax: bad syntax in form: $expression"
                 else -> "$syntax: bad syntax ($description) in form: $expression"
             }

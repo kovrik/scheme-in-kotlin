@@ -45,12 +45,11 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     operator fun get(index: Int) = getArray()[index]
 
-    override operator fun invoke(arg: Number?): Any? {
-        val index = arg!!.toInt()
-        if (index >= array.size) {
-            throw IndexOutOfBoundsException("$name: value out of range: $index")
+    override operator fun invoke(arg: Number?) = arg!!.toInt().let {
+        when {
+            it < array.size -> array[it]
+            else -> throw IndexOutOfBoundsException("$name: value out of range: $it")
         }
-        return array[index]
     }
 
     override fun toString(): String {
@@ -88,12 +87,9 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         else -> throw WrongTypeException(name, Int::class.java, key)
     }
 
-    override fun getEntry(key: Any?): MapEntry? {
-        if (!Utils.isInteger(key)) {
-            throw WrongTypeException(name, Int::class.java, key)
-        }
-        val i = (key as Number).toInt()
-        return MapEntry(i, get(i))
+    override fun getEntry(key: Any?) = when {
+        Utils.isInteger(key) -> (key as Number).toInt().let { MapEntry(it, get(it)) }
+        else -> throw WrongTypeException(name, Int::class.java, key)
     }
 
     override fun assoc(key: Any?, value: Any?): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")

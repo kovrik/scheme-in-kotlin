@@ -6,9 +6,6 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
-import kotlin.collections.HashMap
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.text.isEmpty
 
 class Reflector {
@@ -30,9 +27,8 @@ class Reflector {
         private val CLASS_PACKAGE_MAPPING = hashMapOf("BigInteger" to "java.math.BigInteger",
                                                       "BigDecimal" to "java.math.BigDecimal")
 
-        private val BOXED = HashMap<Class<*>?, Class<*>?>()
-        init {
-            UNBOXED.forEach { (key, value) -> BOXED.put(value, key) }
+        private val BOXED = HashMap<Class<*>?, Class<*>?>().apply {
+            UNBOXED.forEach { key, value -> put(value, key) }
         }
     }
 
@@ -94,14 +90,9 @@ class Reflector {
         }
     }
 
-    private fun unboxIfPossible(clazz: Class<*>): Class<*> {
-        return UNBOXED.getOrDefault(clazz, clazz)
-    }
+    private fun unboxIfPossible(clazz: Class<*>) = UNBOXED.getOrDefault(clazz, clazz)
 
-    fun getClazz(name: String): Class<*> {
-        val clazz = _getClass(name) ?: throw RuntimeException("reflector: class not found: $name")
-        return clazz
-    }
+    fun getClazz(name: String) = _getClass(name) ?: throw RuntimeException("reflector: class not found: $name")
 
     fun _getClass(name: String): Class<*>? {
         try {
@@ -138,8 +129,7 @@ class Reflector {
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
-            val className = classAndField[0]
-            val fieldName = classAndField[1]
+            val (className, fieldName) = classAndField
             val c = getClazz(className)
             try {
                 val field = c.getField(fieldName)
@@ -182,14 +172,12 @@ class Reflector {
     /* Java Interop: instance method call */
     private fun evalJavaInstanceMethod(m: String, instance: Any?, args: Array<out Any?>): Any? {
         val methodName = m.substring(1)
-        val clazz = instance?.javaClass
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
             argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
         }
-        val method = getMethod(clazz, methodName, args, argTypes)
         try {
-            return method(instance, *args)
+            return getMethod(instance?.javaClass, methodName, args, argTypes).invoke(instance, *args)
         } catch (e: IllegalAccessException) {
             throw RuntimeException("reflector: unable to access method $methodName of $instance")
         } catch (e: InvocationTargetException) {
@@ -199,11 +187,9 @@ class Reflector {
 
     /* Java Interop: instance field */
     private fun evalJavaInstanceField(f: String, instance: Any?): Any? {
-        val clazz = instance?.javaClass
         val fieldName = f.substring(2)
         try {
-            val field = clazz?.getField(fieldName)
-            return field?.get(instance)
+            return instance?.javaClass?.getField(fieldName)?.get(instance)
         } catch (e: NoSuchFieldException) {
             throw RuntimeException("reflector: unable to find field $fieldName of $instance")
         } catch (e: IllegalAccessException) {
@@ -217,8 +203,7 @@ class Reflector {
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
         }
-        val className = classAndMethod[0]
-        val methodName = classAndMethod[1]
+        val (className, methodName) = classAndMethod
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
