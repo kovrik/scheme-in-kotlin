@@ -117,11 +117,7 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun reciprocal() = BigRatio(denominator, numerator)
 
-    private fun quotient(): BigDecimal {
-        val numerator = BigDecimal(numerator)
-        val denominator = BigDecimal(denominator)
-        return numerator.divide(denominator, 32, RoundingMode.HALF_EVEN)
-    }
+    private fun quotient() = BigDecimal(numerator).divide(BigDecimal(denominator), 32, RoundingMode.HALF_EVEN)
 
     override fun compareTo(other: BigRatio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
 
