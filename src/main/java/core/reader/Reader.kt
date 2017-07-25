@@ -188,8 +188,7 @@ open class Reader : IReader {
                 throw IllegalSyntaxException("read: bad number: $number")
             }
             /* Check if this is a proper number */
-            val result = preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
-            return result
+            return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
         } else {
             /* Bad hash syntax: read token and throw exception */
             val token = StringBuilder("#")
@@ -322,7 +321,7 @@ open class Reader : IReader {
         }
         if (isCodepoint && isValidForRadix(rest[0], radix)) {
             val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: no hex digit following \\u in string")
-            return codepoint.toInt().toChar()
+            return codepoint.toChar()
         }
         /* Must be a named char */
         val named = first.toChar() + rest
@@ -451,10 +450,9 @@ open class Reader : IReader {
      * <keyword> -> :<token>
      */
     @Throws(IOException::class)
-    private fun readKeyword(): Keyword {
-        val s = readUntilDelimiter()
-        if (s.isEmpty()) throw IllegalSyntaxException("read: illegal use of :")
-        return Keyword.intern(s)
+    private fun readKeyword() = readUntilDelimiter().let {
+        if (it.isEmpty()) throw IllegalSyntaxException("read: illegal use of :")
+        Keyword.intern(it)
     }
 
     /**

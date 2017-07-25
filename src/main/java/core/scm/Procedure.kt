@@ -28,17 +28,17 @@ class Procedure(override var name: String,
 
     override operator fun invoke() = when {
         isBodyConst -> body
-        else        -> Thunk(body, Environment(0, this.localEnvironment))
+        else        -> Thunk(body, Environment(0, localEnvironment))
     }
 
     override operator fun invoke(arg: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, this.localEnvironment).apply { put(args[0], arg) })
+        else -> Thunk(body, Environment(1, localEnvironment).apply { put(args[0], arg) })
     }
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+        else -> Thunk(body, Environment(1, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
         })
@@ -46,7 +46,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+        else -> Thunk(body, Environment(1, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
             put(args[2], arg3)
@@ -55,7 +55,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, this.localEnvironment).apply {
+        else -> Thunk(body, Environment(1, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
             put(args[2], arg3)
@@ -65,7 +65,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(args: Array<out Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
 
-    private fun bindArgs(values: Array<out Any?>) = Environment(values.size, this.localEnvironment).apply {
+    private fun bindArgs(values: Array<out Any?>) = Environment(values.size, localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
         for (i in 0..minArgs - 1) {
             put(args[i], values[i])

@@ -57,17 +57,16 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         if (getArray().isEmpty()) {
             return OPEN + CLOSE
         }
-        val sb = StringBuilder()
-        sb.append(OPEN)
-        for (i in 0..getArray().size - 1) {
+        val sb = StringBuilder(OPEN)
+        val lastIndex = getArray().size - 1
+        for (i in 0..lastIndex) {
             val e = getArray()[i]
             sb.append(if (e === this) "(this vector)" else Writer.write(e))
-            if (i == getArray().size - 1) {
-                return sb.append(CLOSE).toString()
+            if (i != lastIndex) {
+                sb.append(' ')
             }
-            sb.append(' ')
         }
-        return sb.toString()
+        return sb.append(CLOSE).toString()
     }
 
     override fun iterator() = array.asList().iterator()
