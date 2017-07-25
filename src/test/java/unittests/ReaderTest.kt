@@ -284,12 +284,10 @@ class ReaderTest : AbstractTest() {
         }
     }
 
-    @Ignore
     @Test
     fun testEscapeSequences() {
-        TODO("FIXME")
-        val escape = "\t\b\n\r\'\"\\"
-        val expected = "\t\b\n\r\'\"\\"
+        val escape = "\"\\\\\t\b\n\r\\\"\""
+        val expected = "\\\t\b\n\r\""
         assertEquals(expected, reader.readFirst(escape))
         try {
             reader.readFirst("\"\\u\"")
