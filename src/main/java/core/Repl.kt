@@ -71,26 +71,22 @@ object Repl {
         while (true) {
             try {
                 currentOutputPort.write(prompt)
-                /* Read and parse a list of S-expressions from Stdin */
-                val sexps = reader.read()
-                for (expr in sexps) {
-                    /* Macroexpand and then Evaluate each S-expression */
-                    val result = evaluator.macroexpandAndEvaluate(expr, env)
-                    /* Do not print and do not store void results */
-                    if (result === Unit) {
-                        continue
-                    }
-                    /* nil, on the other hand, is a valid result - print it, but not store it */
-                    if (result == null) {
-                        currentOutputPort.writeln(Writer.write(result))
-                        continue
-                    }
-                    /* Put result into environment */
-                    val id = getNextID()
-                    env.put(id, result)
-                    /* Print */
-                    currentOutputPort.writeln("$id = ${Writer.write(result)}")
+                /* Read, macroexpand and then Evaluate each S-expression */
+                val result = evaluator.macroexpandAndEvaluate(reader.read(), env)
+                /* Do not print and do not store void results */
+                if (result === Unit) {
+                    continue
                 }
+                /* nil, on the other hand, is a valid result - print it, but not store it */
+                if (result == null) {
+                    currentOutputPort.writeln(Writer.write(result))
+                    continue
+                }
+                /* Put result into environment */
+                val id = getNextID()
+                env.put(id, result)
+                /* Print */
+                currentOutputPort.writeln("$id = ${Writer.write(result)}")
             } catch (e: ThrowableWrapper) {
                 /* Unwrap */
                 error(e.cause ?: e)

@@ -57,20 +57,6 @@ open class Reader : IReader {
         fun isExactness(c: Char) = isExact(c) || isInexact(c)
     }
 
-    override fun read(): List<Any> {
-        val tokens = ArrayList<Any>()
-        try {
-            var token = nextToken()
-            while (token != null || tokens.isEmpty()) {
-                token?.let { tokens.add(it) }
-                token = nextToken()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return tokens
-    }
-
     @Throws(IOException::class)
     private fun readUntilDelimiter(): String {
         val token = StringBuilder()
@@ -83,9 +69,9 @@ open class Reader : IReader {
         return token.toString()
     }
 
-    /* Skip all null tokens and return the first non-null */
+    /* Return next non-null token */
     @Throws(IOException::class)
-    private fun nextNonNullToken(): Any {
+    override fun read(): Any {
         var token = nextToken()
         while (token == null) { token = nextToken() }
         return token
@@ -222,7 +208,7 @@ open class Reader : IReader {
             }
             else -> throw IllegalSyntaxException("read: unknown quotation type: $c")
         }
-        return Cons.list(quote, nextNonNullToken())
+        return Cons.list(quote, read())
     }
 
     /**
@@ -347,7 +333,7 @@ open class Reader : IReader {
             while (Character.isWhitespace(c)) { c = reader.read().toChar() }
             if (c == terminator) break
             reader.unread(c.toInt())
-            val token = nextNonNullToken()
+            val token = read()
             /* Check if current token is a dot */
             if (DOT == token) {
                 if (!allowImproperList || dotPos > -1) {
@@ -456,5 +442,5 @@ open class Reader : IReader {
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
-    private fun readDeref() = Cons.list(DEREF, nextNonNullToken())
+    private fun readDeref() = Cons.list(DEREF, read())
 }
