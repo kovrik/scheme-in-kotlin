@@ -36,7 +36,7 @@ object Repl {
     var currentInputPort  = InputPort(BufferedInputStream(System.`in`))
     var currentOutputPort = OutputPort(System.out)
 
-    private val reader = Reader(currentInputPort.inputStream)
+    internal val reader = Reader(currentInputPort.inputStream)
 
     private fun getNextID(): Symbol? {
         val i = symCounter.incrementAndGet()
