@@ -26,12 +26,11 @@ object Repl {
 
     private val symCounter = AtomicInteger(0)
     private val evaluator = Evaluator()
-    private val defaultEnvironment = DefaultEnvironment()
-    init {
-        val stringReader = StringReader()
+    private val environment = DefaultEnvironment().apply {
         /* Eval lib procedures */
-        defaultEnvironment.libraryProcedures.flatMap { stringReader.read(it)!! }
-                                            .forEach { evaluator.macroexpandAndEvaluate(it, defaultEnvironment) }
+        with (StringReader()) {
+            libraryProcedures.forEach { evaluator.eval(this.readOne(it), this@apply) }
+        }
     }
 
     var currentInputPort  = InputPort(BufferedInputStream(System.`in`))
@@ -50,8 +49,8 @@ object Repl {
     @Throws(IOException::class)
     @JvmStatic fun main(args: Array<String>) {
         when {
-            args.isEmpty() -> repl(WELCOME, PROMPT, defaultEnvironment)
-            else           -> evaluateFile(args[0], defaultEnvironment)
+            args.isEmpty() -> repl(WELCOME, PROMPT, environment)
+            else           -> evaluateFile(args[0], environment)
         }
     }
 

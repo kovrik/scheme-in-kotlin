@@ -20,7 +20,7 @@ abstract class AbstractTest {
     }
 
     /* Helper method: evaluates first S-expression */
-    protected fun eval(sexp: String, env: Environment) = eval.macroexpandAndEvaluate(reader.readFirst(sexp)!!, env)
+    protected fun eval(sexp: String, env: Environment) = eval.macroexpandAndEvaluate(reader.readOne(sexp)!!, env)
 
     protected fun s(str: String) = Symbol.intern(str)
 

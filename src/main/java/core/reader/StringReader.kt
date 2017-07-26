@@ -5,7 +5,7 @@ import java.io.PushbackReader
 
 class StringReader : Reader() {
 
-    fun readFirst(string: String): Any? {
+    fun readOne(string: String): Any? {
         reader = PushbackReader(java.io.StringReader(string), 1)
         try {
             return nextToken()
