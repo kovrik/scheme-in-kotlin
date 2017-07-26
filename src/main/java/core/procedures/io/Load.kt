@@ -12,10 +12,7 @@ class Load : AFn<CharSequence?, Any>(name = "load", minArgs = 1, maxArgs = 1,
 
     private val reader = FileReader()
 
-    override operator fun invoke(arg: CharSequence?): Any {
-        val file = File(arg.toString())
-        val sexps = Cons.list<Any>(Begin)
-        sexps.addAll(reader.read(file))
-        return Thunk(sexps)
-    }
+    override operator fun invoke(arg: CharSequence?) = Thunk(Cons.list<Any>(Begin).apply {
+        addAll(reader.read(File(arg.toString())))
+    })
 }

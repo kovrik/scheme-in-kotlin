@@ -10,7 +10,7 @@ import java.io.IOException
 class IsCharReady : AFn<Any?, Boolean>(name = "char-ready?", maxArgs = 1, restArgsType = InputPort::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): Boolean {
-        val inputPort: InputPort = if (args.isEmpty()) Repl.currentInputPort else args[0]!! as InputPort
+        val inputPort = if (args.isEmpty()) Repl.currentInputPort else args[0]!! as InputPort
         try {
             return inputPort.available() > 0
         } catch (e: IOException) {

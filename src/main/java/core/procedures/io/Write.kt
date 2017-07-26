@@ -12,7 +12,7 @@ class Write : AFn<Any?, Unit>(name = "write", minArgs = 1, maxArgs = 2,
                               mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java), restArgsType = OutputPort::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = try {
-        val outputPort: OutputPort = if (args.size == 1) Repl.currentOutputPort else args[1] as OutputPort
+        val outputPort = if (args.size == 1) Repl.currentOutputPort else args[1] as OutputPort
         outputPort.write(Writer.write(args[0]))
     } catch (e: IOException) {
         throw ThrowableWrapper(e)

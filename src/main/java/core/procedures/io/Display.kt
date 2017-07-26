@@ -12,10 +12,9 @@ open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
                                      restArgsType = OutputPort::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) {
-        val outputPort: OutputPort
-        when {
-            args.size == 1 -> outputPort = Repl.currentOutputPort
-            else -> outputPort = args[1]!! as OutputPort
+        val outputPort = when {
+            args.size == 1 -> Repl.currentOutputPort
+            else -> args[1]!! as OutputPort
         }
         val arg = args[0]!!
         try {
