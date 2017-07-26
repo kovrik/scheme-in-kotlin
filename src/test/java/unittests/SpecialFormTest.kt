@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.test.assertTrue
 
 class SpecialFormTest : AbstractTest() {
 
@@ -799,5 +800,19 @@ class SpecialFormTest : AbstractTest() {
         eval(fib, env)
         assertEquals(720L, eval("(fac 6)", env))
         assertEquals(8L, eval("(fib 6)", env))
+    }
+
+    @Test
+    fun testThunkForm() {
+        assertTrue(eval("(procedure? (thunk 1 2 3))", env) as Boolean)
+        assertEquals(3L, eval("((thunk 1 2 3))", env))
+        assertEquals(6L, eval("((thunk (+ 1 2 3)))", env))
+        assertEquals(1L, eval("((thunk (define x 1) x)))", env))
+        try {
+            eval("(thunk)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
     }
 }

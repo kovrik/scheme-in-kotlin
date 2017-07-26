@@ -442,6 +442,7 @@ class DefaultEnvironment : Environment(null) {
                 Try,
                 DynamicWind,
                 CallCC,
+                ThunkForm,
                 // TODO Macros
                 DefineSyntax,
                 LetSyntax,
