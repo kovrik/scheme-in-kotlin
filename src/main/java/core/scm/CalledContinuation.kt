@@ -1,4 +1,4 @@
-package core.procedures.continuations
+package core.scm
 
 class CalledContinuation internal constructor(val value: Any, val continuation: Continuation) : RuntimeException("CalledContinuationException") {
 

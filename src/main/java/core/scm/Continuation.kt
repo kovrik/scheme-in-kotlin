@@ -1,4 +1,4 @@
-package core.procedures.continuations
+package core.scm
 
 import core.procedures.AFn
 

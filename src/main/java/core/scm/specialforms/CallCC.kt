@@ -4,8 +4,8 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.WrongTypeException
 import core.procedures.IFn
-import core.procedures.continuations.CalledContinuation
-import core.procedures.continuations.Continuation
+import core.scm.CalledContinuation
+import core.scm.Continuation
 import core.scm.Cons
 
 object CallCC : ISpecialForm {
