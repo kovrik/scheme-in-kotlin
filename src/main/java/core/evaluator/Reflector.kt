@@ -75,11 +75,12 @@ class Reflector {
 
     private fun downcastArgs(args: Array<Any?>, parameterTypes: Array<Class<*>?>) {
         for (i in parameterTypes.indices) {
-            val parameterType = parameterTypes[i]
-            if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(parameterType, parameterType))) {
-                // cast to int
-                parameterTypes[i] = Int::class.java
-                args[i] = (args[i] as Number).toInt()
+            parameterTypes[i]?.let {
+                if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
+                    // cast to int
+                    parameterTypes[i] = Int::class.java
+                    args[i] = (args[i] as Number).toInt()
+                }
             }
         }
     }
@@ -172,7 +173,7 @@ class Reflector {
         val methodName = m.substring(1)
         val argTypes = arrayOfNulls<Class<*>>(args.size)
         for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
+            argTypes[i] = args[i]?.let { unboxIfPossible(it.javaClass) }
         }
         try {
             return getMethod(instance?.javaClass, methodName, args, argTypes).invoke(instance, *args)

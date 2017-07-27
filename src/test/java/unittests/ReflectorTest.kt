@@ -2,15 +2,12 @@ package unittests
 
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
+import org.junit.Assert.*
 import org.junit.Test
-
 import java.math.BigDecimal
 import java.math.BigInteger
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class ReflectorTest : AbstractTest() {
 
@@ -105,6 +102,7 @@ class ReflectorTest : AbstractTest() {
         assertEquals(Long::class.javaObjectType, eval("(. (+ 2 3 4) getClass)", env))
         assertEquals("123", eval("(.toString 123)", env))
         assertEquals(1, eval("(. (+ 1 2 3) compareTo (+ 1 2))", env))
+        assertNull(eval("(.get (new java.util.HashMap) (.get (new java.util.HashMap) 1))", env))
         try {
             eval("(.getClass nil)", env)
             fail()
