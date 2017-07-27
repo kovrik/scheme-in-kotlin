@@ -98,17 +98,17 @@ object Repl {
 
     @Throws(IOException::class)
     private fun error(e: Throwable) {
-        val errorMessage: String
-        when (e) {
-            is Error -> errorMessage = "Error: ${e.message}"
-            is ExInfoException -> errorMessage = e.toString()
-            else -> {
-                val sb = StringBuilder(e.javaClass.simpleName)
-                e.message?.let { sb.append(": ").append(e.message) }
-                filterStackTrace(e.stackTrace)?.let { sb.append(" (").append(it.fileName).append(':')
-                                                        .append(it.lineNumber).append(')') }
-                errorMessage = sb.toString()
-            }
+        val errorMessage = when (e) {
+            is Error ->  "Error: ${e.message}"
+            is ExInfoException -> e.toString()
+            else -> StringBuilder(e.javaClass.simpleName).apply {
+                e.message?.let {
+                    append(": ").append(e.message)
+                }
+                filterStackTrace(e.stackTrace)?.let {
+                    append(" (").append(it.fileName).append(':').append(it.lineNumber).append(')')
+                }
+            }.toString()
         }
         currentOutputPort.writeln(errorMessage)
     }
