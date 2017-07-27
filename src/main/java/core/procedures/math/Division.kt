@@ -10,12 +10,11 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, rest
 
     companion object {
         /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
-        fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal =
-            try {
-                num.divide(den, Utils.getMathContext(num, den))
-            } catch (e: ArithmeticException) {
-                num.divide(den, Utils.DEFAULT_CONTEXT)
-            }
+        fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
+            num.divide(den, Utils.getMathContext(num, den))
+        } catch (e: ArithmeticException) {
+            num.divide(den, Utils.DEFAULT_CONTEXT)
+        }
     }
 
     override operator fun invoke(args: Array<out Any?>): Number? {

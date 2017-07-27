@@ -9,12 +9,10 @@ import java.io.IOException
 
 class PeekChar : AFn<Any?, Char>(name = "peek-char", maxArgs = 1, restArgsType = InputPort::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Char {
+    override operator fun invoke(args: Array<out Any?>): Char = try {
         val inputPort = if (args.isEmpty()) Repl.currentInputPort else args[0] as InputPort
-        try {
-            return inputPort.peek().toChar()
-        } catch (e: IOException) {
-            throw ThrowableWrapper(e)
-        }
+        inputPort.peek().toChar()
+    } catch (e: IOException) {
+        throw ThrowableWrapper(e)
     }
 }

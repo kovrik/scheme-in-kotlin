@@ -94,15 +94,13 @@ class Reflector {
 
     fun getClazz(name: String) = _getClass(name) ?: throw RuntimeException("reflector: class not found: $name")
 
-    fun _getClass(name: String): Class<*>? {
-        try {
-            return when {
-                !name.contains('.') -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
-                else -> Class.forName(name)
-            }
-        } catch (e: ClassNotFoundException) {
-            return null
+    fun _getClass(name: String): Class<*>? = try {
+        when {
+            name.contains('.') -> Class.forName(name)
+            else -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
         }
+    } catch (e: ClassNotFoundException) {
+        null
     }
 
     fun newInstance(clazz: String, args: Array<Any?>): Any {

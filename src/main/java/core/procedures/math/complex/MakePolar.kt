@@ -11,10 +11,7 @@ import core.scm.Type
 class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, minArgs = 2, maxArgs = 2,
                       mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)) {
 
-    override operator fun invoke(arg1: Number?, arg2: Number?): Number {
-        /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
-        val m = arg1!!
-        val a = arg2!!
-        return Addition.add(Multiplication(m, Cos.cos(a)), BigComplex.I * Sin.sin(a) * m)!!
-    }
+    /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
+    override operator fun invoke(arg1: Number?, arg2: Number?) = Addition.add(Multiplication(arg1!!, Cos.cos(arg2!!)),
+                                                                              BigComplex.I * Sin.sin(arg2) * arg1)!!
 }

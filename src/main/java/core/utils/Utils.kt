@@ -405,13 +405,11 @@ object Utils {
         else -> result
     }
 
-    fun downcastNumber(number: Number): Number {
-        return when {
-            number is BigRatio && number.isDenominatorEqualToOne -> number.numerator.tryDowncast()
-            number is BigDecimal -> number.tryDowncast()
-            number is BigInteger -> number.tryDowncast()
-            else                 -> number
-        }
+    fun downcastNumber(number: Number) = when {
+        number is BigRatio && number.isDenominatorEqualToOne -> number.numerator.tryDowncast()
+        number is BigDecimal -> number.tryDowncast()
+        number is BigInteger -> number.tryDowncast()
+        else                 -> number
     }
 
     /* Try to downcast Big Decimal to a smaller type (if possible) */
@@ -446,11 +444,10 @@ object Utils {
         return this
     }
 
-    fun isBitOpSupported(obj: Any): Boolean {
-        if (!(obj is Byte || obj is Short || obj is Int || obj is Long)) {
-            throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
-        }
-        return true
+    fun isBitOpSupported(obj: Any) = if (obj is Byte || obj is Short || obj is Int || obj is Long) {
+        true
+    } else {
+        throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
     }
 
     /**

@@ -12,24 +12,24 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
 
     override operator fun invoke(args: Array<out Any?>): Number? {
         if (args.size == 1) {
-            when {
-                args[0] == null       -> return  null
-                Utils.isPositiveInfinity(args[0] as Number) -> return Double.NEGATIVE_INFINITY
-                Utils.isNegativeInfinity(args[0] as Number) -> return Double.POSITIVE_INFINITY
-                args[0] is BigDecimal -> return  (args[0] as BigDecimal).negate()
-                args[0] is BigInteger -> return  (args[0] as BigInteger).negate()
-                args[0] is BigRatio   -> return -(args[0] as BigRatio)
+            return when {
+                args[0] == null       -> null
+                Utils.isPositiveInfinity(args[0] as Number) -> Double.NEGATIVE_INFINITY
+                Utils.isNegativeInfinity(args[0] as Number) -> Double.POSITIVE_INFINITY
+                args[0] is BigDecimal -> (args[0] as BigDecimal).negate()
+                args[0] is BigInteger -> (args[0] as BigInteger).negate()
+                args[0] is BigRatio   -> -(args[0] as BigRatio)
                 args[0] is Long       -> try {
-                    return Math.negateExact(args[0] as Long)
+                    Math.negateExact(args[0] as Long) as Number
                 } catch (e: ArithmeticException) {
-                    return BigInteger.valueOf(args[0] as Long).negate()
+                    BigInteger.valueOf(args[0] as Long).negate()
                 }
                 args[0] is Int -> try {
-                    return Math.negateExact(args[0] as Int)
+                    Math.negateExact(args[0] as Int) as Number
                 } catch (e: ArithmeticException) {
-                    return Math.negateExact((args[0] as Int).toLong())
+                    Math.negateExact((args[0] as Int).toLong())
                 }
-                else -> return subtract(0L, args[0] as Number)
+                else -> subtract(0L, args[0] as Number)
             }
         }
         var result = args[0]
