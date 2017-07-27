@@ -194,7 +194,7 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testManyArgs() {
-        assertEquals(524794L, eval("(apply + (map inc (range 3 1024)))", env))
+        assertEquals(523776L, eval("(+ ${(1..1023).joinToString(" ")})", env))
     }
 
     @Test

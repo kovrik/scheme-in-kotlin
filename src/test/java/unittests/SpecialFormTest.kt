@@ -656,21 +656,6 @@ class SpecialFormTest : AbstractTest() {
     }
 
     @Test
-    fun testTime() {
-        val old = Repl.currentOutputPort
-        val baos = ByteArrayOutputStream()
-        Repl.currentOutputPort = OutputPort(PrintStream(baos))
-        val form = "(time" +
-                   " (define (perf n)" +
-                   "   (if (zero? n)" +
-                   "       \"DONE\"" +
-                   "     (perf (- n 1))))" +
-                   " (perf 10000))"
-        assertEquals("DONE", eval(form, env))
-        Repl.currentOutputPort = old
-    }
-
-    @Test
     fun testDuplicateArgumentsAreNotAllowed() {
         try {
             eval("(lambda (a a) a)", env)

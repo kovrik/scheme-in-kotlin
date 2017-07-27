@@ -16,7 +16,7 @@ class TCOTest : AbstractTest() {
                            "DONE"
                            (recur (- n 1))))"""
         eval(recur, env)
-        assertEquals("DONE", eval("(recur $ITERS)", env))
+        assertEquals("DONE", eval("(time (recur $ITERS))", env))
     }
 
     @Test
