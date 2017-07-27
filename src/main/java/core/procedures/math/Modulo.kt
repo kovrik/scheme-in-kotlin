@@ -11,11 +11,9 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, minArgs =
 
     private val REM = Remainder()
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        arg1!!
-        arg2!!
-        if (Utils.isZero(arg2)) throw ArithmeticException("modulo: undefined for 0")
-        return invoke(arg1 as Number, arg2 as Number)
+    override operator fun invoke(arg1: Any?, arg2: Any?): Number? = when {
+        Utils.isZero(arg2!!) -> throw ArithmeticException("modulo: undefined for 0")
+        else -> invoke(arg1!! as Number, arg2 as Number)
     }
 
     private operator fun invoke(first: BigDecimal, second: BigDecimal): BigDecimal {

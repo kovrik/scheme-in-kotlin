@@ -48,12 +48,9 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, min
             return BigRatio.valueOf(BigInteger.valueOf(a), BigInteger.valueOf(b))
         }
 
-        private fun bigDecimalToExact(number: BigDecimal): BigRatio {
-            val scale = number.scale()
-            return if (scale > 0)
-                BigRatio.valueOf(number.unscaledValue(), BigInteger.TEN.pow(scale))
-            else
-                BigRatio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE)
+        private fun bigDecimalToExact(number: BigDecimal) = when {
+            number.scale() > 0 -> BigRatio.valueOf(number.unscaledValue(), BigInteger.TEN.pow(number.scale()))
+            else -> BigRatio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-number.scale())), BigInteger.ONE)
         }
     }
 }

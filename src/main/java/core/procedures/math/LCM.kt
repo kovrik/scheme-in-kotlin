@@ -10,46 +10,35 @@ import java.math.BigInteger
 
 class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number {
-        if (args.isEmpty()) {
-            return 1L
+    override operator fun invoke(args: Array<out Any?>): Number = when {
+        args.isEmpty() -> 1L
+        args.size == 1 -> Abs.abs(args[0]!! as Number)
+        else -> {
+            var result = args[0]!! as Number
+            for (i in 1..args.size - 1) {
+                result = lcm(result, args[i]!! as Number)
+            }
+            result
         }
-        if (args.size == 1) {
-            return Abs.abs(args[0]!! as Number)
-        }
-        var result = args[0]!! as Number
-        for (i in 1..args.size - 1) {
-            result = lcm(result, args[i]!! as Number)
-        }
-        return result
     }
 
     private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(Companion.lcm(first.numerator, second.numerator),
                                                                           GCD.gcd(first.denominator, second.denominator))
 
-    private fun lcm(a: BigDecimal, b: BigDecimal): Number {
-        if (BigDecimal.ZERO.compareTo(a) == 0 && BigDecimal.ZERO.compareTo(b) == 0) {
-            return BigDecimal.ZERO
-        }
-        return if (maxOf(a.scale(), b.scale()) == 0) {
-            BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
-        } else {
-            ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))
-        }
+    private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {
+        a.signum() == 0 && b.signum() == 0 -> BigDecimal.ZERO
+        maxOf(a.scale(), b.scale()) == 0   -> BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
+        else -> ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))
     }
 
-    private fun lcm(a: Long, b: Long): Long {
-        if (a.toInt() == 0 && b.toInt() == 0) {
-            return 0L
-        }
-        return a / GCD.gcd(a, b) * b
+    private fun lcm(a: Long, b: Long) = when {
+        a.toInt() == 0 && b.toInt() == 0 -> 0L
+        else -> a / GCD.gcd(a, b) * b
     }
 
-    private fun lcm(a: Double, b: Double): Double {
-        if (a.toInt() == 0 && b.toInt() == 0) {
-            return 0.0
-        }
-        return a / GCD.gcd(a, b).toDouble() * b
+    private fun lcm(a: Double, b: Double) = when {
+        a.toInt() == 0 && b.toInt() == 0 -> 0.0
+        else -> a / GCD.gcd(a, b).toDouble() * b
     }
 
     private fun lcm(first: Number, second: Number): Number {

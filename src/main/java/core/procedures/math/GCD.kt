@@ -11,19 +11,16 @@ import java.math.BigInteger
 
 class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.Rational::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number {
-        if (args.isEmpty()) {
-            return 0L
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args.isEmpty() -> 0L
+        args.size == 1 -> Abs.abs(args[0]!! as Number)
+        else -> {
+            var result = args[0]!! as Number
+            for (i in 1..args.size - 1) {
+                result = gcd(result, args[i]!! as Number)
+            }
+            result
         }
-        if (args.size == 1) {
-            return Abs.abs(args[0]!! as Number)
-        }
-        args[0]!!
-        var result = args[0] as Number
-        for (i in 1..args.size - 1) {
-            result = gcd(result, args[i]!! as Number)
-        }
-        return result
     }
 
     companion object {
@@ -31,34 +28,27 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         private val NAME = "gcd"
 
         internal fun gcd(a: Long, b: Long): Long {
-            var a = a
-            var b = b
-            while (b > 0) {
-                val temp = b
-                b = a % b
-                a = temp
+            var alocal = a
+            var blocal = b
+            while (blocal > 0) {
+                val temp = blocal
+                blocal = alocal % blocal
+                alocal = temp
             }
-            return a
+            return alocal
         }
 
-        internal fun gcd(a: Double, b: Double): Number {
-            if (!a.isFinite()) throw WrongTypeException(NAME, "Integer", a)
-            if (!b.isFinite()) throw WrongTypeException(NAME, "Integer", b)
-            if (a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0) {
-                val aex = ToExact.toExact(a)
-                val bex = ToExact.toExact(b)
-                return ToInexact.toInexact(gcd(aex, bex))
-            }
-            return gcd(a.toLong(), b.toLong()).toDouble()
+        internal fun gcd(a: Double, b: Double) = when {
+            !a.isFinite() -> throw WrongTypeException(NAME, "Integer", a)
+            !b.isFinite() -> throw WrongTypeException(NAME, "Integer", b)
+            a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0 -> ToInexact.toInexact(gcd(ToExact.toExact(a),
+                                                                                                    ToExact.toExact(b)))
+            else -> gcd(a.toLong(), b.toLong()).toDouble()
         }
 
-        internal fun gcd(a: BigDecimal, b: BigDecimal): Number {
-            val scale = maxOf(a.scale(), b.scale())
-            if (scale == 0) {
-                return BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
-            } else {
-                return ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)))
-            }
+        internal fun gcd(a: BigDecimal, b: BigDecimal) = when {
+            maxOf(a.scale(), b.scale()) == 0 -> BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
+            else -> ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)))
         }
 
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
