@@ -8,7 +8,7 @@ class Procedure(override var name: String,
                 /* Array of arguments the procedure expects */
                 private val args: Array<Symbol?>,
                 /* Body form of the procedure */
-                private val body: Any?,
+                private val body: Any,
                 /* Lexical environment */
                 private val localEnvironment: Environment,
                 isVariadic: Boolean) : AFn<Any?, Any?>() {

@@ -7,6 +7,8 @@ import core.scm.Cons
 import core.scm.Procedure
 import core.scm.Symbol
 import java.util.LinkedList
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -60,7 +62,7 @@ object Lambda : ISpecialForm {
             variadic = true
         }
         val body = if (form.size == 3) {
-            form[2]
+            form[2]!!
         } else {
             /* Add implicit `begin` */
             Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
