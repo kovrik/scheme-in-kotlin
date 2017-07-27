@@ -12,13 +12,12 @@ import java.io.FileOutputStream
 class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", minArgs = 2, maxArgs = 2,
                                mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
-    override operator fun invoke(args: Array<out Any?>): Any {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         val outputPort = try {
-            OutputPort(FileOutputStream(args[0]!!.toString()))
+            OutputPort(FileOutputStream(arg1!!.toString()))
         } catch (e: FileNotFoundException) {
             throw ThrowableWrapper(e)
         }
-        val proc = args[1] as IFn<*, *>
-        return Thunk(Cons.list(proc, outputPort))
+        return Thunk(Cons.list(arg2, outputPort))
     }
 }
