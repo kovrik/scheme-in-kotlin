@@ -6,7 +6,7 @@ import org.junit.Test
 class TCOTest : AbstractTest() {
 
     companion object {
-        private const val ITERS = 100000L
+        private const val iterations = 10000L
     }
 
     @Test
@@ -16,20 +16,20 @@ class TCOTest : AbstractTest() {
                            "DONE"
                            (recur (- n 1))))"""
         eval(recur, env)
-        assertEquals("DONE", eval("(time (recur $ITERS))", env))
+        assertEquals("DONE", eval("(time (recur $iterations))", env))
     }
 
     @Test
     fun testOrTCO() {
         val recursive = "(define (recOr n) (or (zero? n) (recOr (- n 1))))"
         eval(recursive, env)
-        assertEquals(true, eval("(recOr $ITERS)", env))
+        assertEquals(true, eval("(recOr $iterations)", env))
     }
 
     @Test
     fun testDefineAndBeginTCO() {
-        val recursive = "(define (foo n) (if (= n $ITERS) n (foo (+ n 1)))"
+        val recursive = "(define (foo n) (if (= n $iterations) n (foo (+ n 1)))"
         eval(recursive, env)
-        assertEquals(ITERS, eval("(foo 5)", env))
+        assertEquals(iterations, eval("(foo 5)", env))
     }
 }
