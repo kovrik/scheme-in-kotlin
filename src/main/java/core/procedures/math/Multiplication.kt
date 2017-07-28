@@ -13,7 +13,7 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         0    -> 1L
         1    -> args[0] as Number?
-        else -> args.fold(1L as Number?) { r, n -> Companion(r!!, n!! as Number) } as Number
+        else -> args.reduce { f, s -> Companion(f!! as Number, s!! as Number) } as Number
     }
 
     companion object {

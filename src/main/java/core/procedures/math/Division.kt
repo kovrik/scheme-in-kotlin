@@ -17,13 +17,9 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, rest
         }
     }
 
-    override operator fun invoke(args: Array<out Any?>): Number? {
-        if (args.size == 1) {
-            return invoke(1L, args[0]!! as Number)
-        }
-        var result = args[0]!! as Number
-        (1..args.size - 1).forEach { d -> result = invoke(result, args[d]!! as Number) }
-        return result
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        1    -> invoke(1L, args[0]!! as Number)
+        else -> args.reduce { f, s -> invoke(f!! as Number, s!! as Number) } as Number
     }
 
     private operator fun invoke(arg1: Number, arg2: Number): Number {

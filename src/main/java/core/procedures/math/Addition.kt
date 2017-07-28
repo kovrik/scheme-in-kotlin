@@ -12,7 +12,7 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         0    -> 0L
         1    -> args[0] as Number?
-        else -> args.fold(0L as Number?) { r, n -> Companion.add(r!!, n!! as Number) } as Number
+        else -> args.reduce { f, s -> Companion.add(f!! as Number, s!! as Number) } as Number
     }
 
     companion object {

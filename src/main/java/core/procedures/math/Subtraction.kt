@@ -10,33 +10,27 @@ import java.math.BigInteger
 
 class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number? {
-        if (args.size == 1) {
-            return when {
-                args[0] == null       -> null
-                Utils.isPositiveInfinity(args[0] as Number) -> Double.NEGATIVE_INFINITY
-                Utils.isNegativeInfinity(args[0] as Number) -> Double.POSITIVE_INFINITY
-                args[0] is BigDecimal -> (args[0] as BigDecimal).negate()
-                args[0] is BigInteger -> (args[0] as BigInteger).negate()
-                args[0] is BigRatio   -> -(args[0] as BigRatio)
-                args[0] is Long       -> try {
-                    Math.negateExact(args[0] as Long) as Number
-                } catch (e: ArithmeticException) {
-                    BigInteger.valueOf(args[0] as Long).negate()
-                }
-                args[0] is Int -> try {
-                    Math.negateExact(args[0] as Int) as Number
-                } catch (e: ArithmeticException) {
-                    Math.negateExact((args[0] as Int).toLong())
-                }
-                else -> subtract(0L, args[0] as Number)
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        1 -> when {
+            args[0] == null -> null
+            Utils.isPositiveInfinity(args[0] as Number) -> Double.NEGATIVE_INFINITY
+            Utils.isNegativeInfinity(args[0] as Number) -> Double.POSITIVE_INFINITY
+            args[0] is BigDecimal -> (args[0] as BigDecimal).negate()
+            args[0] is BigInteger -> (args[0] as BigInteger).negate()
+            args[0] is BigRatio -> -(args[0] as BigRatio)
+            args[0] is Long -> try {
+                Math.negateExact(args[0] as Long) as Number
+            } catch (e: ArithmeticException) {
+                BigInteger.valueOf(args[0] as Long).negate()
             }
+            args[0] is Int -> try {
+                Math.negateExact(args[0] as Int) as Number
+            } catch (e: ArithmeticException) {
+                Math.negateExact((args[0] as Int).toLong())
+            }
+            else -> subtract(0L, args[0] as Number)
         }
-        var result = args[0]
-        for (i in 1..args.size - 1) {
-            result = subtract(result!! as Number, args[i]!! as Number)
-        }
-        return result as Number?
+        else -> args.reduce { f, s -> subtract(f!! as Number, s!! as Number) } as Number
     }
 
     private fun subtract(first: Number, second: Number): Number? {
