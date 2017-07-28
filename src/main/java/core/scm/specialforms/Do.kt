@@ -24,10 +24,7 @@ object Do : ISpecialForm {
         val tempEnv = Environment(env)
         val steps = Cons.list<Cons<*>>()
         for (b in bs) {
-            if (b !is List<*>) {
-                throw IllegalSyntaxException.of(toString(), form)
-            }
-            val binding = b
+            val binding = b as? List<*> ?: throw IllegalSyntaxException.of(toString(), form)
             /* Check that init value exists */
             if (binding.size < 2) {
                 throw IllegalSyntaxException.of(toString(), form)

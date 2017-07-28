@@ -48,11 +48,8 @@ object Define : ISpecialForm {
             /* Get procedure's name */
             // TODO (define (((a))) 1)
             // TODO (define ((a n) c) n)
-            id = id[0]
-            if (id !is Symbol) {
-                throw IllegalSyntaxException.of(toString(), form,
-                                                "not an identifier for procedure name: ${Writer.write(id)}")
-            }
+            id = id[0] as? Symbol ?: throw IllegalSyntaxException.of(toString(), form,
+                                                                     "not an identifier for procedure name: ${Writer.write(id)}")
             val lambda = Lambda.eval(l, env, evaluator).apply { name = id.toString() }
             env.put(id, lambda)
         } else {

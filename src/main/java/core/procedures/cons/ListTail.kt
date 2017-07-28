@@ -13,10 +13,7 @@ class ListTail : AFn<Any?, Any?>(name = "list-tail", minArgs = 2, maxArgs = 2,
         if (p == 0L) {
             return arg1
         }
-        if (arg1 !is List<*>) {
-            throw WrongTypeException(name, "List", arg1)
-        }
-        val list = arg1
+        val list = arg1 as? List<*> ?: throw WrongTypeException(name, "List", arg1)
         if (p >= list.size + 1) {
             throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
