@@ -8,11 +8,7 @@ import core.procedures.AFn
 class Continuation : AFn<Any?, Unit>(name = "continuation", minArgs = 1, maxArgs = 1) {
 
     var isInvoked = false
-        private set
-
-    fun invalidate() {
-        this.isInvoked = true
-    }
+        internal set
 
     override operator fun invoke(arg: Any?) = throw CalledContinuation(arg!!, this)
 

@@ -31,7 +31,7 @@ object CallCC : ISpecialForm {
             return ex.value
         } finally {
             /* One-shot continuations cannot be used more than once */
-            cont.invalidate()
+            cont.isInvoked = true
         }
     }
 }
