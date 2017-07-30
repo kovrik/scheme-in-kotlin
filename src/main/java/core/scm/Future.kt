@@ -15,15 +15,15 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
         try {
             return get()
         } catch (e: InterruptedException) {
-            if (e.cause is RuntimeException) {
-                throw e.cause as RuntimeException
+            when {
+                e.cause is RuntimeException -> throw e.cause as RuntimeException
+                else -> throw RuntimeException(e.message)
             }
-            throw RuntimeException(e.message)
         } catch (e: ExecutionException) {
-            if (e.cause is RuntimeException) {
-                throw e.cause as RuntimeException
+            when {
+                e.cause is RuntimeException -> throw e.cause as RuntimeException
+                else -> throw RuntimeException(e.message)
             }
-            throw RuntimeException(e.message)
         }
     }
 
