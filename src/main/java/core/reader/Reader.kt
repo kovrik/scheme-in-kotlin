@@ -123,10 +123,11 @@ open class Reader : IReader {
         val c = reader.read().toChar()
         if (c == '(') {
             /* Read Quoted vector #(...) */
-            val vector = readVector(')')
-            return when {
-                vector.isEmpty() -> vector
-                else -> Quote.quote(vector)
+            return readVector(')').let {
+                when {
+                    it.isEmpty() -> it
+                    else -> Quote.quote(it)
+                }
             }
         } else if (c == '{') {
             return readSet()
@@ -165,7 +166,8 @@ open class Reader : IReader {
                 throw IllegalSyntaxException("read: bad number: $number")
             }
             /* Check if this is a proper number */
-            return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?: throw IllegalSyntaxException("read: bad number: $number")
+            return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?:
+                                    throw IllegalSyntaxException("read: bad number: $number")
         }
         /* Bad hash syntax: read token and throw exception */
         StringBuilder("#").let {
@@ -206,14 +208,14 @@ open class Reader : IReader {
      * Read a comment
      * Syntax:
      * <comment> --> ;  <all subsequent characters up to a line break>
+     *
+     * Comments are ignored, always return null
      */
     @Throws(IOException::class)
-    private fun readComment(): String? {
-        var i = reader.read()
+    private fun readComment() = null.apply {
         /* Read everything until line break */
+        var i = reader.read()
         while (isValid(i) && !isLineBreak(i.toChar())) { i = reader.read() }
-        /* Comments are ignored, return null */
-        return null
     }
 
     /**
