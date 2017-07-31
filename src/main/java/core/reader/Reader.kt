@@ -234,7 +234,7 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readString(): String {
-        val string = StringBuilder()
+        val str = StringBuilder()
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '"') {
@@ -245,23 +245,23 @@ open class Reader : IReader {
                 if (next == 'u' || next == 'U') {
                     reader.unread(next.toInt())
                     val chr = readCharacter()
-                    if (chr == next) {
-                        throw IllegalSyntaxException("read: no hex digit following \\u in string")
+                    when (chr) {
+                        next -> throw IllegalSyntaxException("read: no hex digit following \\u in string")
+                        else -> str.append(chr)
                     }
-                    string.append(chr)
                 } else {
                     /* Check that escape sequence is valid */
-                    val escaped = ESCAPED[next] ?: throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
-                    string.append(escaped)
+                    str.append(ESCAPED[next] ?:
+                               throw IllegalSyntaxException("read: unknown escape sequence \\$next in string"))
                 }
             } else {
-                string.append(c)
+                str.append(c)
             }
             i = reader.read()
             c = i.toChar()
         }
         /* Always intern Strings read by Reader */
-        return string.toString().intern()
+        return str.toString().intern()
     }
 
     @Throws(IOException::class)
@@ -301,7 +301,8 @@ open class Reader : IReader {
             rest = first.toChar() + rest
             isCodepoint = true
         }
-        if (isCodepoint && isValidForRadix(rest[0], radix)) {
+        if (isCodepoint) {
+            if (!isValidForRadix(rest[0], radix)) throw IllegalSyntaxException("read: no hex digit following \\u in string")
             val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: no hex digit following \\u in string")
             return codepoint.toChar()
         }

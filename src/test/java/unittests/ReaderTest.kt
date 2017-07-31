@@ -317,13 +317,19 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadUnknownNamedCharacters() {
-        val unknown = arrayOf("qwerty", "unknown", "uu")
-        for (u in unknown) {
+        try {
+            reader.readOne("#\\qwerty")
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("read: bad character constant: #\\qwerty", e.message)
+        }
+        val nohex = arrayOf("ui", "unknown", "uu")
+        for (n in nohex) {
             try {
-                reader.readOne("#\\" + u)
+                reader.readOne("#\\" + n)
                 fail()
             } catch (e: IllegalSyntaxException) {
-                assertEquals("read: bad character constant: #\\" + u, e.message)
+                assertEquals("read: no hex digit following \\u in string", e.message)
             }
         }
     }
