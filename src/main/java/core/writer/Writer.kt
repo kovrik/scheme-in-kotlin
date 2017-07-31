@@ -73,14 +73,8 @@ object Writer {
         return sb.append('"').toString()
     }
 
-    private fun Char?.write(): String {
-        /* Check named characters */
-        val codepoint = CODEPOINTS[this]
-        return when (codepoint) {
-            null -> "#\\${this}"
-            else -> "#\\$codepoint"
-        }
-    }
+    /* Check named characters */
+    private fun Char?.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
 
     private fun Map<*, *>.write(): String {
         if (isEmpty()) return "{}"
