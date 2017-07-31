@@ -96,9 +96,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                     /* Special case: constructor call If Symbol ends with . */
                     val symbolName = (this[0] as Symbol).name
                     if (symbolName.endsWith('.')) {
-                        val clazz = Symbol.intern(symbolName.substring(0, symbolName.length - 1))
-                        val form = mutableListOf<Any?>(New, clazz)
-                        /* Add args (if any) */
+                        val form = mutableListOf<Any?>(New, Symbol.intern(symbolName.dropLast(1)))
                         for (i in 1..size - 1) { form.add(this[i]) }
                         return New.eval(form, env, this@Evaluator)
                     }
@@ -107,17 +105,15 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             }
         }
         /* Now decide how to evaluate everything else */
-        when (op) {
+        return when (op) {
             /* Special Forms have special evaluation rules */
-            is ISpecialForm -> return op.eval(this, env, this@Evaluator)
-            /* Operator is a valid invokable object */
-            is IFn<*, *> -> {
-                /* Scheme has applicative order, so evaluate all arguments first */
-                val args = arrayOfNulls<Any>(size - 1)
-                for (i in 1..args.size) { args[i - 1] = eval(this[i], env) }
-                /* Finally, invoke operator (IFn) via helper method */
-                return AFn.invokeN(op, args)
-            }
+            is ISpecialForm -> op.eval(this, env, this@Evaluator)
+            /* Op is a valid invokable object (procedure)
+             * Scheme has applicative order, so evaluate all arguments first
+             * and then invoke operator (IFn) via helper method */
+            is IFn<*, *> -> AFn.invokeN(op, arrayOfNulls<Any>(size - 1).apply {
+                for (i in 0..size - 1) { set(i, eval(this@eval[i + 1], env)) }
+            })
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
         }
