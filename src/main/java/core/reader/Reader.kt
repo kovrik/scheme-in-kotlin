@@ -37,6 +37,7 @@ open class Reader : IReader {
                                         '\\' to '\\')
 
         val NAMED_CHARS: Map<String, Char> = hashMapOf("newline"   to '\n',
+                                                       "linefeed"  to '\n',
                                                        "space"     to ' ',
                                                        "tab"       to '\t',
                                                        "return"    to '\r',
@@ -301,10 +302,7 @@ open class Reader : IReader {
         }
         /* Must be a named char */
         val named = first.toChar() + rest
-        return when (named) {
-            "linefeed" -> '\n'
-            else -> NAMED_CHARS[named] ?: throw IllegalSyntaxException("read: bad character constant: #\\$named")
-        }
+        return NAMED_CHARS[named] ?: throw IllegalSyntaxException("read: bad character constant: #\\$named")
     }
 
     /**

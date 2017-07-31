@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 object Writer {
 
     private val CODEPOINTS = HashMap<Char, String>().apply {
-        Reader.NAMED_CHARS.forEach { key, value -> put(value, key) }
+        Reader.NAMED_CHARS.forEach { key, value -> put(value, key) }.apply { put('\n', "newline") }
     }
 
     private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
