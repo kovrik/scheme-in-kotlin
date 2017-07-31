@@ -83,22 +83,12 @@ open class Reader : IReader {
     @Throws(IOException::class)
     fun nextToken(): Any? {
         val i = reader.read()
-        if (!isValid(i)) {
-            return null
-        }
         var c = i.toChar()
         /* Skip whitespaces until line break */
         while (isValid(c.toInt()) && Character.isWhitespace(c) && !isLineBreak(c)) { c = reader.read().toChar() }
         /* Check if there is anything to read */
         if (!isValid(c.toInt()) || isLineBreak(c)) {
             return null
-        }
-        /* Decimal number */
-        if (c != '#' && isValidForRadix(c, 10)) {
-            /* Read identifier, not a number */
-            val number = c + readUntilDelimiter()
-            /* Now check if it IS a valid number */
-            return preProcessNumber(number, null, 10)
         }
         return when (c) {
             '\'' -> readQuote(c)
@@ -115,13 +105,14 @@ open class Reader : IReader {
             ')'  -> throw IllegalSyntaxException("read: unexpected list terminator: $c")
             '}'  -> throw IllegalSyntaxException("read: unexpected terminator: $c")
             ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
-            else -> {
-                val s = c + readUntilDelimiter()
-                /* Read true and false as #t and #f */
-                when (s) {
-                    "true"  -> true
-                    "false" -> false
-                    else    -> Symbol.intern(s)
+            else -> (c + readUntilDelimiter()).let {
+                when {
+                    /* Decimal number */
+                    isValidForRadix(c, 10) -> preProcessNumber(it, null, 10)
+                    /* Read true and false as #t and #f */
+                    it == "true"           -> true
+                    it == "false"          -> false
+                    else                   -> Symbol.intern(it)
                 }
             }
         }
