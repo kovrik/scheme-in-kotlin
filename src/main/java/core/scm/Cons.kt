@@ -38,7 +38,7 @@ class Cons<E> : ArrayList<E?> {
         if (other == null) return false
         if (other !is List<*>) return false
         /* Two empty lists are always equal */
-        if (size == 0 && other.size == 0) return true
+        if (this.size == 0 && other.size == 0) return true
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
         if (other is Cons<*> && isProperList != other.isProperList) return false
