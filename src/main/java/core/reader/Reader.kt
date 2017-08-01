@@ -183,13 +183,13 @@ open class Reader : IReader {
         val quote = when (c) {
             '\'' -> Quote.QUOTE_SYMBOL
             '`'  -> Quasiquote.QUASIQUOTE_SYMBOL
-            ','  -> {
-                val next = reader.read().toChar()
-                if (next == '@') {
-                    UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL
-                } else {
-                    reader.unread(next.toInt())
-                    Unquote.UNQUOTE_SYMBOL
+            ','  -> reader.read().toChar().let {
+                when (it) {
+                    '@'  -> UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL
+                    else -> {
+                        reader.unread(it.toInt())
+                        Unquote.UNQUOTE_SYMBOL
+                    }
                 }
             }
             else -> throw IllegalSyntaxException("read: unknown quotation type: $c")
