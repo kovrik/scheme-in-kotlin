@@ -27,23 +27,21 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
         }
     }
 
-    override fun toString(): String {
-        val sb = StringBuilder("#<").append("future")
-        if (isDone) {
-            sb.append("!")
-            val value = try {
-                deref()
-            } catch (e: RuntimeException) {
-                sb.append("error!")
-                (e as? ThrowableWrapper)?.get() ?: e
+    override fun toString() = StringBuilder("#<future").apply {
+        when {
+            isDone -> {
+                append("!")
+                val value = try {
+                    deref()
+                } catch (e: RuntimeException) {
+                    append("error!")
+                    (e as? ThrowableWrapper)?.get() ?: e
+                }
+                append(if (value == this) "(this future)" else Writer.write(value)).append('>')
             }
-            sb.append(if (value == this) "(this future)" else Writer.write(value))
-        } else if (isCancelled) {
-            sb.append(":cancelled")
-        } else {
-            sb.append(":pending")
+            isCancelled -> append(":cancelled>")
+            else        -> append(":pending>")
         }
-        return sb.append(">").toString()
-    }
+    }.toString()
 }
 
