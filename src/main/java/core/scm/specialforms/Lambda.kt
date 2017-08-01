@@ -55,33 +55,27 @@ object Lambda : ISpecialForm {
         } else {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
-            if (lambdaArgs !is Symbol) {
-                throw IllegalSyntaxException("lambda: bad argument sequence ($lambdaArgs) in form: $form")
-            }
-            params = Cons.list(lambdaArgs)
+            params = Cons.list(lambdaArgs as? Symbol ?:
+                               throw IllegalSyntaxException("lambda: bad argument sequence ($lambdaArgs) in form: $form"))
             variadic = true
         }
-        val body = if (form.size == 3) {
-            form[2]!!
-        } else {
+        val body = when {
+            form.size == 3 -> form[2]!!
             /* Add implicit `begin` */
-            Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
+            else -> Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
-    fun <E> flatten(list: List<E>): List<E> {
-        val result = ArrayList<E>()
+    fun <E> flatten(list: List<E>) = ArrayList<E>().apply {
         val queue = LinkedList(list)
         while (!queue.isEmpty()) {
             val e = queue.remove()
-            if (e is List<*>) {
-                queue.addAll(e as List<E>)
-            } else {
-                result.add(e)
+            when (e) {
+                is List<*> -> queue.addAll(e as List<E>)
+                else -> add(e)
             }
         }
-        return result
     }
 }
