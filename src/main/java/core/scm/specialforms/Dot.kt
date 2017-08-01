@@ -51,7 +51,6 @@ object Dot : ISpecialForm {
              * (. instance-expr -field-symbol)
              * (. instance-expr method-symbol args)
              */
-            val method = '.' + form[2].toString()
             val methodArgs = arrayOfNulls<Any>(form.size - 2)
             /* Add instance */
             methodArgs[0] = first
@@ -59,6 +58,7 @@ object Dot : ISpecialForm {
             for (i in 1..methodArgs.size - 1) {
                 methodArgs[i] = evaluator.eval(form[i + 2], env)
             }
+            val method = '.' + form[2].toString()
             return reflector.evalJavaMethod(method, methodArgs)
         }
     }
