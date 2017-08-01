@@ -149,19 +149,11 @@ open class Reader : IReader {
             var restNumber = number
             while (restNumber.length > 1 && restNumber[0] == '#') {
                 val ch = restNumber[1]
-                if (isExactness(ch)) {
-                    exactness?.let { throw IllegalSyntaxException("read: bad number: $number") }
-                    exactness = ch
-                    restNumber = restNumber.substring(2)
-                    continue
+                when {
+                    isExactness(ch) -> exactness = exactness?.let { throw IllegalSyntaxException("read: bad number: $number") } ?: ch
+                    isRadix(ch)     -> radix = radix?.let { throw IllegalSyntaxException("read: bad number: $number") } ?: ch
                 }
-                if (isRadix(ch)) {
-                    radix?.let { throw IllegalSyntaxException("read: bad number: $number") }
-                    radix = ch
-                    restNumber = restNumber.substring(2)
-                    continue
-                }
-                break
+                restNumber = restNumber.drop(2)
             }
             if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
                 throw IllegalSyntaxException("read: bad number: $number")
