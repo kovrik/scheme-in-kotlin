@@ -29,7 +29,7 @@ object Repl {
     private val environment = DefaultEnvironment().apply {
         /* Eval lib procedures */
         with (StringReader()) {
-            libraryProcedures.forEach { evaluator.eval(this.readOne(it), this@apply) }
+            libraryProcedures.forEach { evaluator.eval(readOne(it), this@apply) }
         }
     }
 
@@ -38,28 +38,23 @@ object Repl {
 
     internal val reader = Reader(currentInputPort.inputStream)
 
-    private fun getNextID(): Symbol? {
-        val i = symCounter.incrementAndGet()
-        if (i == SYM_LIMIT) {
-            symCounter.set(0)
-        }
-        return Symbol.intern("$$i")
+    private fun getNextID() = symCounter.incrementAndGet().let {
+        if (it == SYM_LIMIT) symCounter.set(0)
+        Symbol.intern("$$it")
     }
 
     @Throws(IOException::class)
-    @JvmStatic fun main(args: Array<String>) {
-        when {
-            args.isEmpty() -> repl(WELCOME, PROMPT, environment)
-            else           -> evaluateFile(args[0], environment)
-        }
+    @JvmStatic fun main(args: Array<String>) = when {
+        args.isEmpty() -> repl(WELCOME, PROMPT, environment)
+        else           -> evaluateFile(args[0], environment)
     }
 
     /**
      * Read and evaluate a file and then exit
      */
     @Throws(IOException::class)
-    private fun evaluateFile(filename: String, env: Environment) {
-        FileReader().read(File(filename)).forEach { evaluator.macroexpandAndEvaluate(it, env) }
+    private fun evaluateFile(filename: String, env: Environment) = FileReader().read(File(filename)).forEach {
+        evaluator.macroexpandAndEvaluate(it, env)
     }
 
     /**
@@ -97,21 +92,18 @@ object Repl {
     }
 
     @Throws(IOException::class)
-    private fun error(e: Throwable) {
-        val errorMessage = when (e) {
-            is Error ->  "Error: ${e.message}"
-            is ExInfoException -> e.toString()
-            else -> StringBuilder(e.javaClass.simpleName).apply {
-                e.message?.let {
-                    append(": ").append(e.message)
-                }
-                filterStackTrace(e.stackTrace)?.let {
-                    append(" (").append(it.fileName).append(':').append(it.lineNumber).append(')')
-                }
-            }.toString()
-        }
-        currentOutputPort.writeln(errorMessage)
-    }
+    private fun error(e: Throwable) = when (e) {
+        is Error -> "Error: ${e.message}"
+        is ExInfoException -> e.toString()
+        else -> StringBuilder(e.javaClass.simpleName).apply {
+            e.message?.let {
+                append(": ").append(e.message)
+            }
+            filterStackTrace(e.stackTrace)?.let {
+                append(" (").append(it.fileName).append(':').append(it.lineNumber).append(')')
+            }
+        }.toString()
+    }.apply(currentOutputPort::writeln)
 
     private fun filterStackTrace(stackTraceElements: Array<StackTraceElement>) = stackTraceElements.firstOrNull {
         !it.isNativeMethod && !it.className.startsWith("sun.reflect") && !it.className.startsWith("java.lang.reflect")
