@@ -12,10 +12,7 @@ class ListToString : AFn<List<*>?, String>(name = "list->string", isPure = true,
             return ""
         }
         return StringBuilder(arg.size).apply {
-            for (c in arg) {
-                if (c !is Char) throw WrongTypeException(name, "Character", c)
-                append(c)
-            }
+            for (c in arg) { append(c as? Char ?: throw WrongTypeException(name, "Character", c)) }
         }.toString()
     }
 }

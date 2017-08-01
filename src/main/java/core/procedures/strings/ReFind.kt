@@ -10,21 +10,16 @@ class ReFind : AFn<Any?, Any?>(name = "re-find", isPure = true, minArgs = 1, max
 
     private val reGroups = ReGroups()
 
-    override operator fun invoke(args: Array<out Any?>): Any? {
-        if (args.size == 1) {
-            if (args[0] !is Matcher) {
-                throw WrongTypeException(name, Matcher::class.java, args[0])
-            }
-            val m = args[0] as Matcher
-            return if (m.find()) reGroups(args[0]) else null
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args.size == 1 -> {
+            val matcher = args[0] as? Matcher ?: throw WrongTypeException(name, Matcher::class.java, args[0])
+            if (matcher.find()) reGroups(args[0]) else null
         }
-        if (args[0] !is Pattern) {
-            throw WrongTypeException(name, Pattern::class.java, args[0])
+        else -> {
+            val pattern = args[0] as? Pattern ?: throw WrongTypeException(name, Pattern::class.java, args[0])
+            val chars = args[1] as? CharSequence ?: throw WrongTypeException(name, CharSequence::class.java, args[1])
+            val matcher = pattern.matcher(chars)
+            if (matcher.find()) matcher.group() else null
         }
-        if (args[1] !is CharSequence) {
-            throw WrongTypeException(name, CharSequence::class.java, args[1])
-        }
-        val matcher = (args[0] as Pattern).matcher(args[1] as CharSequence)
-        return if (matcher.find()) matcher.group() else null
     }
 }
