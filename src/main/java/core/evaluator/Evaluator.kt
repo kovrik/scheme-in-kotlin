@@ -5,7 +5,6 @@ import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
 import core.procedures.IFn
-import core.scm.CalledContinuation
 import core.scm.*
 import core.scm.specialforms.ISpecialForm
 import core.scm.specialforms.New
@@ -73,7 +72,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         when (it) {
             is ISpecialForm -> throw IllegalSyntaxException.of(it.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            Environment.UNDEFINED -> reflector._getClass(name) ?: reflector.evalJavaStaticField(toString())
+            Environment.UNDEFINED -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
             else -> it
         }
     }

@@ -93,9 +93,9 @@ class Reflector {
 
     private fun unboxIfPossible(clazz: Class<*>) = UNBOXED.getOrDefault(clazz, clazz)
 
-    fun getClazz(name: String) = _getClass(name) ?: throw RuntimeException("reflector: class not found: $name")
+    fun getClazz(name: String) = getClazzOrNull(name) ?: throw RuntimeException("reflector: class not found: $name")
 
-    fun _getClass(name: String): Class<*>? = try {
+    fun getClazzOrNull(name: String): Class<*>? = try {
         when {
             name.contains('.') -> Class.forName(name)
             else -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
