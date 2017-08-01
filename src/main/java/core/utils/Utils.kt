@@ -251,14 +251,13 @@ object Utils {
     private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean,
                                       useBigNum: Boolean, exp: Long?): Number? {
 
-        val num = processNumber(numerator, r, true, useBigNum, null)
-        val den = processNumber(denominator, r, true, useBigNum, null)
-        val number = BigRatio.valueOf(num.toString(), den.toString())
-        if (!exact) {
-            val result = ToInexact.toInexact(number)
-            return if (exp == null) result else Multiplication(result, Expt.expt(r, exp))
+        var number: Number? = BigRatio.valueOf(processNumber(numerator, r, true, useBigNum, null).toString(),
+                                               processNumber(denominator, r, true, useBigNum, null).toString())
+        exp?.let { number = Multiplication(number, Expt.expt(r, exp)) }
+        return when {
+            exact -> number
+            else  -> ToInexact.toInexact(number)
         }
-        return number
     }
 
     fun toBigDecimal(number: Number): BigDecimal = when (number) {

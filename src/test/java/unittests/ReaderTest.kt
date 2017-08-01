@@ -72,6 +72,12 @@ class ReaderTest : AbstractTest() {
         assertEquals(15000.0, reader.readOne("15e3"))
         assertEquals(BigRatio.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
                      reader.readOne("#e999999999999999999999999999999999999999999999999999999999999999999999.999"))
+        assertEquals(BigDecimal("500.0"), reader.readOne("1/2e3"))
+        assertEquals(BigDecimal("500.0"), reader.readOne("5/10e3"))
+        assertEquals(BigRatio.valueOf("-6000", "7"), reader.readOne("#e-12/14e3"))
+        assertEquals(BigRatio.valueOf("1000000", "1"), reader.readOne("#e+12/12e6"))
+        assertEquals(BigDecimal("0.08333333333333333"), reader.readOne("1/12e0"))
+        assertEquals(BigRatio.valueOf("1", "12"), reader.readOne("#e+1/12e0"))
 
         val badNumbers = arrayOf("#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##",
                                  "#e#i1", "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1")
