@@ -9,15 +9,15 @@ class ReGroups : AFn<Any?, Any?>(name = "re-groups", isPure = true, minArgs = 1,
                      mandatoryArgsTypes = arrayOf<Class<*>>(Matcher::class.java)) {
 
     override operator fun invoke(arg: Any?): Any? {
-        val m = arg!! as Matcher
-        val gc = m.groupCount()
-        if (gc == 0) {
-            return m.group()
+        val matcher = arg!! as Matcher
+        val groupCount = matcher.groupCount()
+        return when (groupCount) {
+            0    -> matcher.group()
+            else -> MutableVector(groupCount + 1, null).apply {
+                for (c in 0..groupCount) {
+                    getArray()[c] = matcher.group(c)
+                }
+            }
         }
-        val result = MutableVector(gc + 1, null)
-        for (c in 0..gc) {
-            result.getArray()[c] = m.group(c)
-        }
-        return result
     }
 }

@@ -1,5 +1,6 @@
 package core.procedures.strings
 
+import core.exceptions.IllegalSyntaxException
 import core.procedures.AFn
 import core.reader.Reader
 import core.utils.Utils
@@ -20,17 +21,14 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, m
             if (Reader.isExactness(ch)) {
                 exactness?.let { return false }
                 exactness = ch
-                restNumber = restNumber.substring(2)
-                continue
             }
             if (Reader.isRadix(ch)) {
                 radixChar?.let { return false }
                 radixChar = ch
-                restNumber = restNumber.substring(2)
                 override = true
-                continue
             }
-            break
+            restNumber = restNumber.substring(2)
+            continue
         }
         if (restNumber.isEmpty()) {
             return false
@@ -46,12 +44,11 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, m
                 radix = optRadix
             }
         }
-
         /* Read number */
-        val result = Utils.preProcessNumber(restNumber, exactness, radix)
-        if (result is Number) {
-            return result
+        return try {
+            Utils.preProcessNumber(restNumber, exactness, radix) as? Number ?: false
+        } catch (e: IllegalSyntaxException) {
+            false
         }
-        return false
     }
 }

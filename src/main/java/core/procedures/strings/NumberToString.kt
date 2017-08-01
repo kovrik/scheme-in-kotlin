@@ -10,7 +10,7 @@ class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true,
                            mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): String {
-        val o = args[0]!! as Number
+        val number = args[0]!! as Number
         val o1 = args.getOrNull(1)
         o1?.let {
             if (!(o1 == 2L || o1 == 8L || o1 == 10L || o1 == 16L)) {
@@ -18,37 +18,33 @@ class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true,
             }
         }
         val radix = if (o1 != null) (o1 as Number).toInt() else 10
-        if (o is Long) {
-            return java.lang.Long.toString(o, radix)
+        if (number is Long) {
+            return java.lang.Long.toString(number, radix)
         }
-        if (o is Double) {
+        if (number is Double) {
             if (radix != 10) {
                 throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
-            return o.toString()
+            return number.toString()
         }
-        if (o is BigDecimal) {
-            val bigDecimal = o
-            if (radix == 10) {
-                return bigDecimal.toString()
+        if (number is BigDecimal) {
+            val bigDecimal = number
+            return when {
+                radix == 10 -> bigDecimal.toString()
+                /* Check if it is integral */
+                Utils.isInteger(bigDecimal) -> bigDecimal.toBigInteger().toString(radix)
+                else -> throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
-            /* Check if it is integral */
-            if (Utils.isInteger(bigDecimal)) {
-                return bigDecimal.toBigInteger().toString(radix)
-            }
-            throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
         }
-        if (o is BigInteger) {
-            val bigInteger = o
-            if (radix == 10) {
-                return bigInteger.toString()
+        if (number is BigInteger) {
+            val bigInteger = number
+            return when {
+                radix == 10 -> bigInteger.toString()
+                /* Check if it is integral */
+                Utils.isInteger(bigInteger) -> bigInteger.toString(radix)
+                else -> throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
-            /* Check if it is integral */
-            if (Utils.isInteger(bigInteger)) {
-                return bigInteger.toString(radix)
-            }
-            throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
         }
-        return o.toString()
+        return number.toString()
     }
 }

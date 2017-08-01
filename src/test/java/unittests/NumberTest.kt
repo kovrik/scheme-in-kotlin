@@ -706,12 +706,8 @@ class NumberTest : AbstractTest() {
         assertEquals(false, eval("(string->number \"#e#b#\")", env))
         assertEquals(false, eval("(string->number \"#e#i#e\")", env))
         assertEquals(false, eval("(string->number \"1.1.1\")", env))
-        try {
-            eval("(string->number \"#b1e5\")", env)
-            fail()
-        } catch (e: IllegalSyntaxException) {
-            assertEquals("read: bad exponent: 1e5", e.message)
-        }
+        assertEquals(false, eval("(string->number \"#e#b-1010/101011e4\")", env))
+        assertEquals(false, eval("(string->number \"#b1e5\")", env))
     }
 
     @Test

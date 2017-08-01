@@ -13,13 +13,11 @@ class LastIndexOf : AFn<Any?, Int>(name = "last-index-of", isPure = true, minArg
         }
         if (args.size == 3) {
             val index = args[2]
-            if (!Utils.isReal(index)) {
-                throw WrongTypeException(name, "Real", index)
+            return when {
+                !Utils.isReal(index) -> throw WrongTypeException(name, "Real", index)
+                args[1] is Char      -> args[0].toString().lastIndexOf(args[1] as Char, (index as Number).toInt())
+                else                 -> args[0].toString().lastIndexOf(args[1].toString(), (index as Number).toInt())
             }
-            if (args[1] is Char) {
-                return args[0].toString().lastIndexOf((args[1] as Char), (index as Number).toInt())
-            }
-            return args[0].toString().lastIndexOf(args[1].toString(), (index as Number).toInt())
         }
         if (args[1] is Char) {
             return args[0].toString().lastIndexOf((args[1] as Char))

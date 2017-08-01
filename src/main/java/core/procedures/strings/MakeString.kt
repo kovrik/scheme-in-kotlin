@@ -9,8 +9,8 @@ class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true,
                        restArgsType = Char::class.javaObjectType) {
 
     override operator fun invoke(args: Array<out Any?>): MutableString {
-        val s = (args[0] as Number).toInt()
+        val length = (args[0] as Number).toInt()
         val c = if (args.size == 1) Character.MIN_VALUE else args[1]
-        return MutableString(s).apply { for (i in 0..s - 1) { append(c) } }
+        return MutableString(length).apply { for (i in 0..length - 1) { append(c) } }
     }
 }
