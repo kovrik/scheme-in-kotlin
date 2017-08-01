@@ -55,10 +55,7 @@ class Cons<E> : ArrayList<E?> {
         /* Empty list constant */
         val EMPTY = Cons<Nothing>()
 
-        fun <E> cons(car: E?, cdr: E?) = when (cdr) {
-            null -> Cons(car, EMPTY)
-            else -> Cons(car, cdr)
-        }
+        fun <E> cons(car: E?, cdr: E?) = Cons(car, cdr ?: EMPTY)
 
         fun <E> list(): Cons<E?> = Cons()
         fun <E> list(e: E?): Cons<E?> = list<E?>().apply { add(e) }
