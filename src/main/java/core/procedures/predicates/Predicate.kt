@@ -70,7 +70,7 @@ class Predicate private constructor(override val name: String, inline private va
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 
-        private fun isImmutable(o: Any?) = !(o is MutableString || o is MutableVector)
+        private fun isImmutable(o: Any?) = o !is MutableString && o !is MutableVector
 
         private fun isEmpty(o: Any?) = when (o) {
             is Collection<*> -> o.isEmpty()
@@ -79,10 +79,8 @@ class Predicate private constructor(override val name: String, inline private va
             else             -> false
         }
 
-        private fun isRealized(o: Any?) = when (o) {
-            is java.util.concurrent.Future<*> -> o.isDone
-            else -> throw WrongTypeException("realized?", "Delay or Promise or Future", o)
-        }
+        private fun isRealized(o: Any?) = (o as? java.util.concurrent.Future<*>)?.isDone ?:
+                                          throw WrongTypeException("realized?", "Delay or Promise or Future", o)
 
         private fun isProcedure(o: Any?) = o is IFn<*, *>  && o !is Symbol && o !is Keyword &&
                                            o !is Map<*, *> && o !is Vector && o !is Map.Entry<*, *>
