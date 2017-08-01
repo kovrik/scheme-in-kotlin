@@ -6,6 +6,8 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import java.math.BigDecimal
+import java.math.BigInteger
 import kotlin.text.isEmpty
 
 class Reflector {
@@ -24,8 +26,9 @@ class Reflector {
         )
 
         /* Some common classes that are not in java.lang. package could be resolved without package name */
-        private val CLASS_PACKAGE_MAPPING = hashMapOf("BigInteger" to "java.math.BigInteger",
-                                                      "BigDecimal" to "java.math.BigDecimal")
+        private val CLASS_PACKAGE_MAPPING = HashMap<String, String>().apply {
+            arrayOf(BigInteger::class.java, BigDecimal::class.java).forEach { put(it.simpleName, it.name) }
+        }
 
         private val BOXED = HashMap<Class<*>?, Class<*>?>().apply {
             UNBOXED.forEach { key, value -> put(value, key) }
