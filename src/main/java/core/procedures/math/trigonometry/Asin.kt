@@ -9,21 +9,17 @@ import java.math.BigInteger
 
 class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        /* Special cases */
-        when {
-            Utils.isZero(arg) -> return 0L
-            arg is BigDecimal -> return asin(arg)
-            arg is BigInteger -> return asin(arg)
-            arg is BigComplex -> return asin(arg)
-            arg is BigRatio   -> return asin(arg.toBigDecimal())
-            else -> {
-                val asin = Math.asin(arg.toDouble())
-                if (asin.isNaN()) {
-                    return asin(BigComplex(arg))
-                }
-                return asin
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> 0L
+        arg is BigDecimal -> asin(arg)
+        arg is BigInteger -> asin(arg)
+        arg is BigComplex -> asin(arg)
+        arg is BigRatio   -> asin(arg.toBigDecimal())
+        else -> {
+            val asin = Math.asin(arg!!.toDouble())
+            when {
+                asin.isNaN() -> asin(BigComplex(arg))
+                else -> asin
             }
         }
     }

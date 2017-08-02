@@ -8,19 +8,16 @@ import java.math.BigInteger
 
 class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        when (arg) {
-            is BigDecimal -> return acos(arg)
-            is BigInteger -> return acos(arg)
-            is BigComplex -> return acos(arg)
-            is BigRatio   -> return acos(arg.toBigDecimal())
-            else -> {
-                val acos = Math.acos(arg.toDouble())
-                if (acos.isNaN()) {
-                    return acos(BigComplex(arg))
-                }
-                return acos
+    override operator fun invoke(arg: Number?) = when (arg) {
+        is BigDecimal -> acos(arg)
+        is BigInteger -> acos(arg)
+        is BigComplex -> acos(arg)
+        is BigRatio   -> acos(arg.toBigDecimal())
+        else -> {
+            val acos = Math.acos(arg!!.toDouble())
+            when {
+                acos.isNaN() -> acos(BigComplex(arg))
+                else -> acos
             }
         }
     }

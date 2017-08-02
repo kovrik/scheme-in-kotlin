@@ -10,34 +10,28 @@ import java.math.BigInteger
 
 class Atan : AFn<Number?, Number>(name = "atan", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes =  arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        /* Special cases */
-        return when {
-            Utils.isZero(arg) -> 0L
-            arg is BigDecimal -> atan(arg)
-            arg is BigInteger -> atan(arg)
-            arg is BigComplex -> atan(arg)
-            arg is BigRatio   -> atan(arg.toBigDecimal())
-            else              -> Math.atan(arg.toDouble())
-        }
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> 0L
+        arg is BigDecimal -> atan(arg)
+        arg is BigInteger -> atan(arg)
+        arg is BigComplex -> atan(arg)
+        arg is BigRatio   -> atan(arg.toBigDecimal())
+        else              -> Math.atan(arg!!.toDouble())
     }
 
     companion object {
 
-        fun atan(bd: BigDecimal): Double {
-            val v = bd.toDouble()
+        fun atan(bd: BigDecimal) = bd.toDouble().let {
             when {
-                !v.isFinite() -> return Double.NaN
-                else -> return Math.atan(v)
+                !it.isFinite() -> Double.NaN
+                else           -> Math.atan(it)
             }
         }
 
-        fun atan(bi: BigInteger): Double {
-            val v = bi.toDouble()
-            return when {
-                !v.isFinite() -> Double.NaN
-                else -> Math.atan(v)
+        fun atan(bi: BigInteger) = bi.toDouble().let {
+            when {
+                !it.isFinite() -> Double.NaN
+                else           -> Math.atan(it)
             }
         }
 

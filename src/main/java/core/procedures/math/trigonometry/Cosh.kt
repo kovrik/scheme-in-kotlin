@@ -10,34 +10,28 @@ import java.math.BigInteger
 
 class Cosh : AFn<Number?, Number>(name = "cosh", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        /* Special cases */
-        return when {
-            Utils.isZero(arg) -> 1L
-            arg is BigDecimal -> cosh(arg)
-            arg is BigInteger -> cosh(arg)
-            arg is BigComplex -> cosh(arg)
-            arg is BigRatio   -> cosh(arg.toBigDecimal())
-            else -> Math.cosh(arg.toDouble())
-        }
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> 1L
+        arg is BigDecimal -> cosh(arg)
+        arg is BigInteger -> cosh(arg)
+        arg is BigComplex -> cosh(arg)
+        arg is BigRatio   -> cosh(arg.toBigDecimal())
+        else              -> Math.cosh(arg!!.toDouble())
     }
 
     companion object {
 
-        internal fun cosh(bd: BigDecimal): Double {
-            val v = bd.toDouble()
-            return when {
-                !v.isFinite() -> Double.NaN
-                else -> Math.cosh(v)
+        internal fun cosh(bd: BigDecimal) = bd.toDouble().let {
+            when {
+                !it.isFinite() -> Double.NaN
+                else           -> Math.cosh(it)
             }
         }
 
-        internal fun cosh(bi: BigInteger): Double {
-            val v = bi.toDouble()
-            return when {
-                !v.isFinite() -> Double.NaN
-                else -> Math.cosh(v)
+        internal fun cosh(bi: BigInteger) = bi.toDouble().let {
+            when {
+                !it.isFinite() -> Double.NaN
+                else           -> Math.cosh(it)
             }
         }
 

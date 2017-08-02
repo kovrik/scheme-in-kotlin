@@ -10,32 +10,26 @@ import java.math.BigInteger
 
 class Tanh : AFn<Number?, Number>(name = "tanh", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        /* Special cases */
-        return when {
-            Utils.isZero(arg) -> 0L
-            arg is BigDecimal -> tanh(arg)
-            arg is BigInteger -> tanh(arg)
-            arg is BigComplex -> tanh(arg)
-            arg is BigRatio   -> tanh(arg.toBigDecimal())
-            else -> Math.tanh(arg.toDouble())
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> 0L
+        arg is BigDecimal -> tanh(arg)
+        arg is BigInteger -> tanh(arg)
+        arg is BigComplex -> tanh(arg)
+        arg is BigRatio   -> tanh(arg.toBigDecimal())
+        else              -> Math.tanh(arg!!.toDouble())
+    }
+
+    private fun tanh(bd: BigDecimal) = bd.toDouble().let {
+        when {
+            !it.isFinite() -> Double.NaN
+            else           -> Math.tanh(it)
         }
     }
 
-    private fun tanh(bd: BigDecimal): Double {
-        val v = bd.toDouble()
-        return when {
-            !v.isFinite() -> Double.NaN
-            else -> Math.tanh(v)
-        }
-    }
-
-    private fun tanh(bi: BigInteger): Double {
-        val v = bi.toDouble()
-        return when {
-            !v.isFinite() -> Double.NaN
-            else -> Math.tanh(v)
+    private fun tanh(bi: BigInteger) = bi.toDouble().let {
+        when {
+            !it.isFinite() -> Double.NaN
+            else           -> Math.tanh(it)
         }
     }
 

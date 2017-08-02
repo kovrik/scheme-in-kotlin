@@ -10,32 +10,26 @@ import java.math.BigInteger
 
 class Tan : AFn<Number?, Number>(name = "tan", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?): Number {
-        arg!!
-        /* Special cases */
-        return when {
-            Utils.isZero(arg) -> 0L
-            arg is BigDecimal -> tan(arg)
-            arg is BigInteger -> tan(arg)
-            arg is BigComplex -> tan(arg)
-            arg is BigRatio   -> tan(arg.toBigDecimal())
-            else -> Math.tan(arg.toDouble())
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> 0L
+        arg is BigDecimal -> tan(arg)
+        arg is BigInteger -> tan(arg)
+        arg is BigComplex -> tan(arg)
+        arg is BigRatio   -> tan(arg.toBigDecimal())
+        else              -> Math.tan(arg!!.toDouble())
+    }
+
+    private fun tan(bd: BigDecimal) = bd.toDouble().let {
+        when {
+            !it.isFinite() -> Double.NaN
+            else           -> Math.tan(it)
         }
     }
 
-    private fun tan(bd: BigDecimal): Double {
-        val v = bd.toDouble()
-        return when {
-            !v.isFinite() -> Double.NaN
-            else -> Math.tan(v)
-        }
-    }
-
-    private fun tan(bi: BigInteger): Double {
-        val v = bi.toDouble()
-        return when {
-            !v.isFinite() -> Double.NaN
-            else -> Math.tan(v)
+    private fun tan(bi: BigInteger) = bi.toDouble().let {
+        when {
+            !it.isFinite() -> Double.NaN
+            else           -> Math.tan(it)
         }
     }
 

@@ -15,38 +15,30 @@ class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxAr
 
     companion object {
 
-        fun sin(number: Number): Number {
-            /* Special cases */
-            return when {
-                Utils.isZero(number) -> 0L
-                number is BigDecimal -> sin(number)
-                number is BigInteger -> sin(number)
-                number is BigComplex -> sin(number)
-                number is BigRatio   -> sin(number.toBigDecimal())
-                else -> Math.sin(number.toDouble())
+        fun sin(n: Number) = when {
+            Utils.isZero(n) -> 0L
+            n is BigDecimal -> sin(n)
+            n is BigInteger -> sin(n)
+            n is BigComplex -> sin(n)
+            n is BigRatio   -> sin(n.toBigDecimal())
+            else            -> Math.sin(n.toDouble())
+        }
+
+        fun sin(bd: BigDecimal) = bd.toDouble().let {
+            when {
+                !it.isFinite() -> Double.NaN
+                else           -> Math.sin(it)
             }
         }
 
-        fun sin(bd: BigDecimal): Double {
-            val v = bd.toDouble()
-            return when {
-                !v.isFinite() -> Double.NaN
-                else -> Math.sin(v)
+        fun sin(bi: BigInteger) = bi.toDouble().let {
+            when {
+                !it.isFinite() -> Double.NaN
+                else           -> Math.sin(it)
             }
         }
 
-        fun sin(bi: BigInteger): Double {
-            val v = bi.toDouble()
-            return when {
-                !v.isFinite() -> Double.NaN
-                else -> Math.sin(v)
-            }
-        }
-
-        fun sin(c: BigComplex): BigComplex {
-            val re = c.re
-            val im = c.im
-            return BigComplex(Multiplication(Sin.sin(re), Cosh.cosh(im)), Multiplication(Cos.cos(re), Sinh.sinh(im)))
-        }
+        fun sin(c: BigComplex) = BigComplex(Multiplication(Sin.sin(c.re), Cosh.cosh(c.im)),
+                                            Multiplication(Cos.cos(c.re), Sinh.sinh(c.im)))
     }
 }
