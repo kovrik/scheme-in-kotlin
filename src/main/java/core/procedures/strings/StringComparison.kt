@@ -7,16 +7,16 @@ class StringComparison private constructor(override val name: String,
         AFn<Any?, Boolean>(isPure = true, restArgsType = CharSequence::class.java) {
 
     companion object {
-        val STRING_EQ          = StringComparison("string=?",     { arg1, arg2 -> arg1 == arg2 })
-        val STRING_EQ_CI       = StringComparison("string-ci=?",  { arg1, arg2 -> arg1.equals(arg2, true) })
-        val STRING_LE          = StringComparison("string<?",     { arg1, arg2 -> arg1 <  arg2 })
-        val STRING_GR          = StringComparison("string>?",     { arg1, arg2 -> arg1 >  arg2 })
-        val STRING_LE_OR_EQ    = StringComparison("string<=?",    { arg1, arg2 -> arg1 <= arg2 })
-        val STRING_GR_OR_EQ    = StringComparison("string>=?",    { arg1, arg2 -> arg1 >= arg2 })
-        val STRING_LE_CI       = StringComparison("string-ci<?",  { arg1, arg2 -> arg1.toLowerCase() <  arg2.toLowerCase() })
-        val STRING_GR_CI       = StringComparison("string-ci>?",  { arg1, arg2 -> arg1.toLowerCase() >  arg2.toLowerCase() })
-        val STRING_LE_OR_EQ_CI = StringComparison("string-ci<=?", { arg1, arg2 -> arg1.toLowerCase() <= arg2.toLowerCase() })
-        val STRING_GR_OR_EQ_CI = StringComparison("string-ci>=?", { arg1, arg2 -> arg1.toLowerCase() >= arg2.toLowerCase() })
+        val STRING_EQ          = StringComparison("string=?",     { f, s -> f == s })
+        val STRING_EQ_CI       = StringComparison("string-ci=?",  { f, s -> f.equals(s, true) })
+        val STRING_LE          = StringComparison("string<?",     { f, s -> f <  s })
+        val STRING_GR          = StringComparison("string>?",     { f, s -> f >  s })
+        val STRING_LE_OR_EQ    = StringComparison("string<=?",    { f, s -> f <= s })
+        val STRING_GR_OR_EQ    = StringComparison("string>=?",    { f, s -> f >= s })
+        val STRING_LE_CI       = StringComparison("string-ci<?",  { f, s -> f.toLowerCase() <  s.toLowerCase() })
+        val STRING_GR_CI       = StringComparison("string-ci>?",  { f, s -> f.toLowerCase() >  s.toLowerCase() })
+        val STRING_LE_OR_EQ_CI = StringComparison("string-ci<=?", { f, s -> f.toLowerCase() <= s.toLowerCase() })
+        val STRING_GR_OR_EQ_CI = StringComparison("string-ci>=?", { f, s -> f.toLowerCase() >= s.toLowerCase() })
     }
 
     override operator fun invoke(args: Array<out Any?>) = when {
