@@ -6,13 +6,7 @@ import core.scm.Symbol
 
 class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
 
-    override operator fun invoke(args: Array<out Any?>): Boolean {
-        var result = true
-        for (i in 0..args.size - 2) {
-            result = result && eq(args[i], args[i + 1])
-        }
-        return result
-    }
+    override operator fun invoke(args: Array<out Any?>) = (0..args.size - 2).all { eq(args[it], args[it + 1]) }
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = eq(arg1, arg2)
 
