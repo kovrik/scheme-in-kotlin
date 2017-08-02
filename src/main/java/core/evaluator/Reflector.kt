@@ -63,13 +63,13 @@ class Reflector {
     }
 
     private fun getConstructor(clazz: Class<*>, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Constructor<*> {
-        try {
-            return clazz.getConstructor(*parameterTypes)
+        return try {
+            clazz.getConstructor(*parameterTypes)
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             downcastArgs(args, parameterTypes)
             try {
-                return clazz.getConstructor(*parameterTypes)
+                clazz.getConstructor(*parameterTypes)
             } catch (ex: NoSuchMethodException) {
                 throw RuntimeException("reflector: unable to find matching constructor for class ${clazz.name}")
             }
@@ -171,31 +171,33 @@ class Reflector {
         return result
     }
 
-    /* Java Interop: instance method call */
-    private fun evalJavaInstanceMethod(m: String, instance: Any?, args: Array<out Any?>): Any? {
-        val methodName = m.substring(1)
-        val argTypes = arrayOfNulls<Class<*>>(args.size)
-        for (i in args.indices) {
-            argTypes[i] = args[i]?.let { unboxIfPossible(it.javaClass) }
+    /* Java Interop: instance method call: (.toString (new Object)) */
+    private fun evalJavaInstanceMethod(methodName: String, instance: Any?, args: Array<out Any?>): Any? {
+        val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
+            for (i in args.indices) {
+                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+            }
         }
-        try {
-            return getMethod(instance?.javaClass, methodName, args, argTypes).invoke(instance, *args)
-        } catch (e: IllegalAccessException) {
-            throw RuntimeException("reflector: unable to access method $methodName of $instance")
-        } catch (e: InvocationTargetException) {
-            throw RuntimeException("reflector: reflection exception")
+        /* Remove leading . char */
+        return methodName.substring(1).let {
+            try {
+                getMethod(instance?.javaClass, it, args, argTypes).invoke(instance, *args)
+            } catch (e: IllegalAccessException) {
+                throw RuntimeException("reflector: unable to access method $it of $instance")
+            } catch (e: InvocationTargetException) {
+                throw RuntimeException("reflector: reflection exception")
+            }
         }
     }
 
-    /* Java Interop: instance field */
-    private fun evalJavaInstanceField(f: String, instance: Any?): Any? {
-        val fieldName = f.substring(2)
+    /* Java Interop: instance field: (.-x (new java.awt.Point 15 4)) */
+    private fun evalJavaInstanceField(field: String, instance: Any?) = field.substring(2).let {
         try {
-            return instance?.javaClass?.getField(fieldName)?.get(instance)
+            instance?.javaClass?.getField(it)?.get(instance)
         } catch (e: NoSuchFieldException) {
-            throw RuntimeException("reflector: unable to find field $fieldName of $instance")
+            throw RuntimeException("reflector: unable to find field $it of $instance")
         } catch (e: IllegalAccessException) {
-            throw RuntimeException("reflector: unable to access method $fieldName of $instance")
+            throw RuntimeException("reflector: unable to access method $it of $instance")
         }
     }
 
@@ -215,8 +217,8 @@ class Reflector {
         if (!Modifier.isStatic(method.modifiers)) {
             throw RuntimeException("reflector: unable to find static method $methodName of ${clazz.name}")
         }
-        try {
-            return method(null, *args)
+        return try {
+            method(null, *args)
         } catch (e: IllegalAccessException) {
             throw RuntimeException("reflector: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
