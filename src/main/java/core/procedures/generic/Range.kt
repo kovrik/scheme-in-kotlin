@@ -99,7 +99,6 @@ class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, 
     }
 
     private fun range(args: Array<out Any?>): List<Any?> {
-        val result = Cons.list<Number>()
         var start: Number = 0L
         var end:   Number = 0L
         var step:  Number = 1L
@@ -118,10 +117,11 @@ class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, 
         if (Utils.isNegative(step)) {
             pred = NumericalComparison.GREATER
         }
-        while (pred(cur, end)) {
-            result.add(cur!!)
-            cur = Addition.add(cur, step)
+        return Cons.list<Number>().apply {
+            while (pred(cur, end)) {
+                add(cur!!)
+                cur = Addition.add(cur, step)
+            }
         }
-        return result
     }
 }
