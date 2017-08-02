@@ -23,12 +23,8 @@ class NumericalComparison private constructor(override val name: String,
         return predicate(f as Comparable<Number>, s)
     }
 
-    override operator fun invoke(args: Array<out Any?>): Boolean {
-        for (i in 0..args.size - 2) {
-            if (!invoke(args[i], args[i + 1])) {
-                return false
-            }
-        }
-        return true
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args.size < 2 -> true
+        else -> (0..args.size - 2).none { !invoke(args[it], args[it + 1]) }
     }
 }
