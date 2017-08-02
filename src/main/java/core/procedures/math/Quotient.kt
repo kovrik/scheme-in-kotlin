@@ -13,19 +13,19 @@ open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minAr
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
         arg1!!
         arg2!!
-        when {
-            Utils.isOne(arg2)  -> return Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
+        return when {
+            Utils.isOne(arg2)  -> Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
             Utils.isZero(arg2) -> throw ArithmeticException("quotient: undefined for 0")
-            else               -> return invoke(arg1 as Number, arg2 as Number)
+            else               -> invoke(arg1 as Number, arg2 as Number)
         }
     }
 
     private operator fun invoke(first: BigDecimal, second: BigDecimal): Number {
         val scale = maxOf(first.scale(), second.scale())
-        if (scale > 0) {
-            return first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE).setScale(1, Utils.ROUNDING_MODE)
+        return if (scale > 0) {
+            first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE).setScale(1, Utils.ROUNDING_MODE)
         } else {
-            return first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE)
+            first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE)
         }
     }
 
