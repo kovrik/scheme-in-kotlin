@@ -24,7 +24,8 @@ class NumericalComparison private constructor(override val name: String,
     }
 
     override operator fun invoke(args: Array<out Any?>) = when {
-        args.size < 2 -> true
-        else -> (0..args.size - 2).all { invoke(args[it], args[it + 1]) }
+        args.size < 2  -> true
+        args.size == 2 -> invoke(args[0], args[1])
+        else           -> (0..args.size - 2).all { invoke(args[it], args[it + 1]) }
     }
 }

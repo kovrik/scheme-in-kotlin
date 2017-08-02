@@ -22,7 +22,8 @@ class CharComparison private constructor(override val name: String,
     }
 
     override operator fun invoke(args: Array<out Any?>) = when {
-        args.size < 2 -> true
-        else -> (0..args.size - 2).all { predicate(args[it] as Char, args[it + 1] as Char) }
+        args.size < 2  -> true
+        args.size == 2 -> predicate(args[0] as Char, args[1] as Char)
+        else           -> (0..args.size - 2).all { predicate(args[it] as Char, args[it + 1] as Char) }
     }
 }

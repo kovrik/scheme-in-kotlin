@@ -20,7 +20,8 @@ class StringComparison private constructor(override val name: String,
     }
 
     override operator fun invoke(args: Array<out Any?>) = when {
-        args.size < 2 -> true
-        else -> (0..args.size - 2).all { predicate(args[it].toString(), args[it + 1].toString()) }
+        args.size < 2  -> true
+        args.size == 2 -> predicate(args[0].toString(), args[1].toString())
+        else           -> (0..args.size - 2).all { predicate(args[it].toString(), args[it + 1].toString()) }
     }
 }
