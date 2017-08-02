@@ -14,13 +14,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
     override operator fun invoke(args: Array<out Any?>) = when {
         args.isEmpty() -> 0L
         args.size == 1 -> Abs.abs(args[0]!! as Number)
-        else -> {
-            var result = args[0]!! as Number
-            for (i in 1..args.size - 1) {
-                result = gcd(result, args[i]!! as Number)
-            }
-            result
-        }
+        else           -> args.fold(args[0]!! as Number) { r, n -> gcd(r, n!! as Number) }
     }
 
     companion object {

@@ -13,13 +13,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     override operator fun invoke(args: Array<out Any?>): Number = when {
         args.isEmpty() -> 1L
         args.size == 1 -> Abs.abs(args[0]!! as Number)
-        else -> {
-            var result = args[0]!! as Number
-            for (i in 1..args.size - 1) {
-                result = lcm(result, args[i]!! as Number)
-            }
-            result
-        }
+        else           -> args.fold(args[0]!! as Number) { r, n -> lcm(r, n!! as Number) }
     }
 
     private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(Companion.lcm(first.numerator, second.numerator),
