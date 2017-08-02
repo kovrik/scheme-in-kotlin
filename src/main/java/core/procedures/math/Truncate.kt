@@ -10,20 +10,17 @@ class Truncate : AFn<Number?, Number>(name = "truncate", isPure = true, minArgs 
 
     override operator fun invoke(arg: Number?): Number {
         arg!!
-        if (arg is Double || arg is Float) {
-            if (arg.toDouble() < 0) {
-                return Math.ceil(arg.toDouble())
-            } else {
-                return Math.floor(arg.toDouble())
+        return when (arg) {
+            is Double, is Float -> when {
+                arg.toDouble() < 0 -> Math.ceil(arg.toDouble())
+                else               -> Math.floor(arg.toDouble())
             }
-        } else if (arg is BigDecimal) {
-            return when {
+            is BigDecimal -> when {
                 arg.signum() < 0 -> arg.setScale(0, BigDecimal.ROUND_UP)
                 else             -> arg.setScale(0, BigDecimal.ROUND_DOWN)
             }
-        } else if (arg is BigRatio) {
-            return arg.truncate()
+            is BigRatio -> arg.truncate()
+            else -> arg
         }
-        return arg
     }
 }
