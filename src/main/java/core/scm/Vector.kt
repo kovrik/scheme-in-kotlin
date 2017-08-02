@@ -52,20 +52,19 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         }
     }
 
-    override fun toString(): String {
-        if (getArray().isEmpty()) {
-            return OPEN + CLOSE
-        }
-        val sb = StringBuilder(OPEN)
-        val lastIndex = getArray().size - 1
-        for (i in 0..lastIndex) {
-            val e = getArray()[i]
-            sb.append(if (e === this) "(this vector)" else Writer.write(e))
-            if (i != lastIndex) {
-                sb.append(' ')
+    override fun toString() = when {
+        getArray().isEmpty() -> OPEN + CLOSE
+        else -> StringBuilder(OPEN).apply {
+            val lastIndex = getArray().size - 1
+            for (i in 0..lastIndex) {
+                val e = getArray()[i]
+                append(if (e === this@Vector) "(this vector)" else Writer.write(e))
+                if (i != lastIndex) {
+                    append(' ')
+                }
             }
-        }
-        return sb.append(CLOSE).toString()
+            append(CLOSE)
+        }.toString()
     }
 
     override fun iterator() = array.asList().iterator()

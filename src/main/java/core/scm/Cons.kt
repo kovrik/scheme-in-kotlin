@@ -74,29 +74,24 @@ class Cons<E> : ArrayList<E?> {
         fun isPair(o: Any?) = o is List<*> && !o.isEmpty()
 
         /* Use this method to print all lists */
-        fun toString(list: List<*>): String {
-            if (list.isEmpty()) {
-                return "()"
-            }
-            /* Cons cell */
-            val sb = StringBuilder("(")
-            if (isProperList(list)) {
-                /* List */
+        fun toString(list: List<*>) = when {
+            list.isEmpty() -> "()"
+            isProperList(list) -> StringBuilder("(").apply {
                 for (i in 0..list.size - 2) {
-                    sb.append(if (list[i] === list) "(this list)" else Writer.write(list[i])).append(' ')
+                    append(if (list[i] === list) "(this list)" else Writer.write(list[i])).append(' ')
                 }
-                sb.append(Writer.write(list.last()))
-            } else {
-                sb.append(Writer.write(list[0]))
+                append(if (list.last() === list) "(this list)" else Writer.write(list.last())).append(')')
+            }.toString()
+            else -> StringBuilder("(").apply {
+                append(Writer.write(list.first()))
                 var cdr = list.last()
                 while (cdr is Cons<*>) {
-                    sb.append(' ').append(Writer.write(cdr.first()))
+                    append(' ').append(Writer.write(cdr.first()))
                     cdr = cdr.last()
                 }
                 /* Dotted notation */
-                sb.append(" . ").append(Writer.write(cdr))
-            }
-            return sb.append(')').toString()
+                append(" . ").append(Writer.write(cdr)).append(')')
+            }.toString()
         }
     }
 }

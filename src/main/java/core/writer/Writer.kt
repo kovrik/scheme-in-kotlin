@@ -58,52 +58,52 @@ object Writer {
         else                     -> toString()
     }
 
-    private fun CharSequence.write(): String {
-        /* Unescape Strings */
-        val sb = StringBuilder(length + 2)
-        sb.append('"')
-        for (i in 0..length - 1) {
-            val c = this[i]
+    private fun CharSequence.write() = StringBuilder(length + 2).apply {
+        append('"')
+        for (i in 0..this@write.length - 1) {
+            val c = this@write[i]
             val character = UNESCAPED[c]
             when (character) {
-                null -> sb.append(c)
-                else -> sb.append('\\').append(character)
+                null -> append(c)
+                else -> append('\\').append(character)
             }
         }
-        return sb.append('"').toString()
-    }
+        append('"')
+    }.toString()
 
     /* Check named characters */
     private fun Char?.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
 
-    private fun Map<*, *>.write(): String {
-        if (isEmpty()) return "{}"
-        val sb = StringBuilder().append('{')
-        var first = true
-        for ((key, value) in this) {
-            when {
-                first -> first = false
-                else -> sb.append(", ")
+    private fun Map<*, *>.write() = when {
+        isEmpty() -> "{}"
+        else -> StringBuilder("{").apply {
+            var first = true
+            for ((key, value) in this@write) {
+                when {
+                    first -> first = false
+                    else  -> append(", ")
+                }
+                append(if (key === this@write) "(this hashmap)" else write(key))
+                append(' ')
+                append(if (value === this@write) "(this hashmap)" else write(value))
             }
-            sb.append(if (key === this) "(this hashmap)" else write(key))
-            sb.append(' ')
-            sb.append(if (value === this) "(this hashmap)" else write(value))
-        }
-        return sb.append('}').toString()
+            append('}')
+        }.toString()
     }
 
-    private fun Set<*>.write(): String {
-        if (isEmpty()) return "#{}"
-        val sb = StringBuilder().append("#{")
-        var first = true
-        for (e in this) {
-            when {
-                first -> first = false
-                else -> sb.append(' ')
+    private fun Set<*>.write() = when {
+        isEmpty() -> "#{}"
+        else -> StringBuilder("#{").apply {
+            var first = true
+            for (e in this@write) {
+                when {
+                    first -> first = false
+                    else -> append(' ')
+                }
+                append(if (e === this@write) "(this set)" else write(e))
             }
-            sb.append(if (e === this) "(this set)" else write(e))
-        }
-        return sb.append('}').toString()
+            append('}')
+        }.toString()
     }
 
     private fun Throwable.write() = when (this) {
