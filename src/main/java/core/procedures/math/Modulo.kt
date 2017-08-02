@@ -16,21 +16,19 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, minArgs =
         else -> invoke(arg1!! as Number, arg2 as Number)
     }
 
-    private operator fun invoke(first: BigDecimal, second: BigDecimal): BigDecimal {
-        val remainder = first.remainder(second)
-        return when {
-            remainder.signum() == 0 -> remainder
-            first.signum() > 0 == second.signum() > 0 -> remainder
-            else -> second.add(remainder)
+    private operator fun invoke(first: BigDecimal, second: BigDecimal) = first.remainder(second).let {
+        when {
+            it.signum() == 0 -> it
+            first.signum() > 0 == second.signum() > 0 -> it
+            else -> second.add(it)
         }
     }
 
-    private operator fun invoke(first: BigInteger, second: BigInteger): BigInteger {
-        val remainder = first.remainder(second)
-        return when {
-            remainder.signum() == 0 -> remainder
-            first.signum() > 0 == second.signum() > 0 -> remainder
-            else -> second.add(remainder)
+    private operator fun invoke(first: BigInteger, second: BigInteger) = first.remainder(second).let {
+        when {
+            it.signum() == 0 -> it
+            first.signum() > 0 == second.signum() > 0 -> it
+            else -> second.add(it)
         }
     }
 

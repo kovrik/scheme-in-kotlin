@@ -10,22 +10,16 @@ import java.math.BigInteger
 open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
                           mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Number? {
-        arg1!!
-        arg2!!
-        return when {
-            Utils.isOne(arg2)  -> Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
-            Utils.isZero(arg2) -> throw ArithmeticException("quotient: undefined for 0")
-            else               -> invoke(arg1 as Number, arg2 as Number)
-        }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = when {
+        Utils.isOne(arg2)  -> Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)
+        Utils.isZero(arg2) -> throw ArithmeticException("quotient: undefined for 0")
+        else               -> invoke(arg1!! as Number, arg2!! as Number)
     }
 
-    private operator fun invoke(first: BigDecimal, second: BigDecimal): Number {
-        val scale = maxOf(first.scale(), second.scale())
-        return if (scale > 0) {
-            first.divide(second, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE).setScale(1, Utils.ROUNDING_MODE)
-        } else {
-            first.divideToIntegralValue(second).setScale(scale, Utils.ROUNDING_MODE)
+    private operator fun invoke(f: BigDecimal, s: BigDecimal) = maxOf(f.scale(), s.scale()).let {
+        when {
+            it > 0 -> f.divide(s, Utils.DEFAULT_CONTEXT).setScale(0, Utils.ROUNDING_MODE).setScale(1, Utils.ROUNDING_MODE)
+            else   -> f.divideToIntegralValue(s).setScale(it, Utils.ROUNDING_MODE)
         }
     }
 

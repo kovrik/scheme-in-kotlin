@@ -10,7 +10,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
-                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
 
     override operator fun invoke(arg1: Number?, arg2: Number?) = expt(arg1, arg2)
 

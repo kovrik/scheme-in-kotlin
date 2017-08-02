@@ -7,13 +7,14 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxArgs = 1,
+                                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = log(arg!!)
 
     companion object {
         /* If number has 307 digits or less, then can use Math.log(double) */
-        private val MAX_DIGITS = 307
+        private const val MAX_DIGITS = 307
         private val VALUE = Math.log(Math.pow(10.0, MAX_DIGITS.toDouble()))
 
         fun log(number: Number) = when {
@@ -27,13 +28,13 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxAr
         }
 
         /* Natural logarithm for Big numbers (greater than Double.MAX_VALUE) */
-        private fun logBig(number: BigDecimal): Number {
-            if (number.toDouble().isFinite()) {
-                return Math.log(number.toDouble())
+        private fun logBig(number: BigDecimal) = when {
+            number.toDouble().isFinite() -> Math.log(number.toDouble())
+            else -> {
+                val digits = integerDigits(number)
+                val num = number.movePointLeft(digits - digits.rem(MAX_DIGITS))
+                (digits / MAX_DIGITS) * VALUE + Math.log(num.toDouble())
             }
-            val digits = integerDigits(number)
-            val num = number.movePointLeft(digits - digits.rem(MAX_DIGITS))
-            return (digits / MAX_DIGITS) * VALUE + Math.log(num.toDouble())
         }
 
         /* Return number of digits of a given BigDecimal number */
