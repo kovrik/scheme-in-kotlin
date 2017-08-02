@@ -9,31 +9,31 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
 
     override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.size == 1 || args[0] == null) {
-            val arg = args[0] ?: args[1]
-            try {
-                return when (arg) {
-                    is List<*>   -> (arg as List<Comparable<Any?>>).toMutableList().apply { sort() }
-                    is Vector    -> Vector(arg.getArray().copyOf().apply { sort() })
-                    is Map<*, *> -> TreeMap(arg as Map<*, *>?)
-                    else         -> throw WrongTypeException(name, "Collection of comparable elements", arg)
+            return (args[0] ?: args[1]).let {
+                try {
+                    when (it) {
+                        is List<*>   -> (it as List<Comparable<Any?>>).toMutableList().apply { sort() }
+                        is Vector    -> Vector(it.getArray().copyOf().apply { sort() })
+                        is Map<*, *> -> TreeMap(it as Map<*, *>?)
+                        else         -> throw WrongTypeException(name, "Collection of comparable elements", it)
+                    }
+                } catch (e: ClassCastException) {
+                    throw WrongTypeException(name, "Collection of comparable elements", it)
                 }
-            } catch (e: ClassCastException) {
-                // ignore
             }
-            throw WrongTypeException(name, "Collection of comparable elements", arg)
         }
         val comparator = args[0] as Comparator<Any?>
-        val arg = args[1]
-        try {
-            return when (arg) {
-                is List<*>   -> (arg as List<Comparable<Any?>>).toMutableList().apply { sortWith(comparator) }
-                is Vector    -> Vector(arg.getArray().copyOf().apply { sortWith(comparator) } )
-                is Map<*, *> -> TreeMap<Any?, Any?>(comparator).apply { putAll(arg) }
-                else         -> throw WrongTypeException(name, "Collection of comparable elements", arg)
+        return args[1].let {
+            try {
+                when (it) {
+                    is List<*>   -> (it as List<Comparable<Any?>>).toMutableList().apply { sortWith(comparator) }
+                    is Vector    -> Vector(it.getArray().copyOf().apply { sortWith(comparator) } )
+                    is Map<*, *> -> TreeMap<Any?, Any?>(comparator).apply { putAll(it) }
+                    else         -> throw WrongTypeException(name, "Collection of comparable elements", it)
+                }
+            } catch (e: ClassCastException) {
+                throw WrongTypeException(name, "Collection of comparable elements", it)
             }
-        } catch (e: ClassCastException) {
-            // ignore
         }
-        throw WrongTypeException(name, "Collection of comparable elements", arg)
     }
 }

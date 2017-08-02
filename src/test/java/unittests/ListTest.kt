@@ -1,6 +1,7 @@
 package unittests
 
 import core.exceptions.ArityException
+import core.exceptions.WrongTypeException
 import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
@@ -508,6 +509,12 @@ class ListTest : AbstractTest() {
         assertEquals(Vector(), eval("(sort [])", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l '(1 2 3 4 5))) (map + l (sort > l)))", env))
         assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l  [1 2 3 4 5])) (map + l (sort > l)))", env))
+        try {
+            eval("(sort > [1 2 \"test\" 'a])", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
     }
 
     @Test
