@@ -15,12 +15,10 @@ class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxAr
 
         fun exp(number: Number?) = when {
             Utils.isZero(number) -> Utils.inexactnessTaint(1L, number)
-            number is Double || number is Float -> {
-                when {
-                    Utils.isNegativeInfinity(number) -> 0L
-                    !Utils.isFinite(number)          -> number
-                    else                             -> Math.exp(number.toDouble())
-                }
+            number is Double || number is Float -> when {
+                Utils.isNegativeInfinity(number) -> 0L
+                !Utils.isFinite(number)          -> number
+                else                             -> Math.exp(number.toDouble())
             }
             number is Long || number is Int || number is Short || number is Byte -> Math.exp(number.toDouble())
             number is BigRatio && number.isOne -> Math.exp(1.0)
