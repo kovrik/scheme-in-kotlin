@@ -79,7 +79,7 @@ object Try : ISpecialForm {
             for (clazz in catches.keys) {
                 if (clazz.isAssignableFrom(ex!!.javaClass)) {
                     /* Bind exception */
-                    env.put(catchBindings[clazz], e)
+                    env.put(catchBindings[clazz], ex)
                     /* Evaluate corresponding catch block */
                     return evaluator.eval(catches[clazz], env)
                 }

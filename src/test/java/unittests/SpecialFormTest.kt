@@ -707,6 +707,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (throw (new Exception)) (catch Exception e (set! a (inc a)))) a)", env))
         assertEquals(2L, eval("(let ((a 0)) (try (set! a (inc a)) (finally (set! a (inc a)))) a)", env))
         assertEquals(6L, eval("(let ((a 0)) (try (set! a 5) (finally (set! a (inc a)))) a)", env))
+        assertEquals(Exception::class.java, eval("(class (try (throw (new Exception)) (catch Exception e e)))", env))
         val illegalSyntax = arrayOf("(try 1 2 (finally) 3 (catch Exception e) (finally))",
                                     "(try 1 2 3 (catch Exception e) (finally) (catch Exception e))",
                                     "(try 1 (catch Exception e) 2 3)",
