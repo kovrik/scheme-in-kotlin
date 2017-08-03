@@ -20,36 +20,32 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
 
         operator fun invoke(first: Number?, second: Number?): Number {
             val (f, s) = Utils.upcast(first!!, second!!)
-            /* Special cases */
-            if (Utils.isZero(f)) {
-                if (!Utils.isFinite(s) && Utils.isInexact(f)) {
-                    return Double.NaN
-                }
-                return Utils.inexactnessTaint(f, s)
-            }
-            if (Utils.isZero(s)) {
-                if (!Utils.isFinite(f) && Utils.isInexact(s)) {
-                    return Double.NaN
-                }
-                return Utils.inexactnessTaint(s, f)
-            }
             return when {
-                /* Special cases */
-                Utils.isOne(f)                     -> Utils.inexactnessTaint(s, f)
-                Utils.isOne(s)                     -> Utils.inexactnessTaint(f, s)
-                f is BigComplex && s is BigComplex -> f * s
-                f is BigRatio   && s is BigRatio   -> f * s
-                f is BigDecimal && s is BigDecimal -> f.multiply(s)
-                f is BigInteger && s is BigInteger -> f.multiply(s)
-                f is Double     && s is Double     -> f * s
-                f is Float      && s is Float      -> f * s
-                else -> {
-                    val fl = f.toLong()
-                    val sl = s.toLong()
-                    try {
-                        return Math.multiplyExact(fl, sl)
-                    } catch (e: ArithmeticException) {
-                        return BigInteger.valueOf(fl).multiply(BigInteger.valueOf(sl))
+                Utils.isZero(f) -> when {
+                    !Utils.isFinite(s) && Utils.isInexact(f) -> Double.NaN
+                    else -> Utils.inexactnessTaint(f, s)
+                }
+                Utils.isZero(s) -> when {
+                    !Utils.isFinite(f) && Utils.isInexact(s) -> Double.NaN
+                    else -> Utils.inexactnessTaint(s, f)
+                }
+                else -> when {
+                    Utils.isOne(f) -> Utils.inexactnessTaint(s, f)
+                    Utils.isOne(s) -> Utils.inexactnessTaint(f, s)
+                    f is BigComplex && s is BigComplex -> f * s
+                    f is BigRatio   && s is BigRatio   -> f * s
+                    f is BigDecimal && s is BigDecimal -> f.multiply(s)
+                    f is BigInteger && s is BigInteger -> f.multiply(s)
+                    f is Double     && s is Double     -> f * s
+                    f is Float      && s is Float      -> f * s
+                    else -> {
+                        val fl = f.toLong()
+                        val sl = s.toLong()
+                        return try {
+                            Math.multiplyExact(fl, sl)
+                        } catch (e: ArithmeticException) {
+                            BigInteger.valueOf(fl).multiply(BigInteger.valueOf(sl))
+                        }
                     }
                 }
             }
