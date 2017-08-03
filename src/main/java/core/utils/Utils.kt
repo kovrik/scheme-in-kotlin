@@ -81,7 +81,7 @@ object Utils {
         /* First check if it is a special number */
         SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
-        val last = number[number.length - 1]
+        val last = number.last()
         if (last == 'i' || last == 'I') {
             return processComplexNumber(number, exactness, radix)
         }
