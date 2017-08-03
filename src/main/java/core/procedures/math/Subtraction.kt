@@ -52,10 +52,10 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
             else -> {
                 val fl = f.toLong()
                 val sl = s.toLong()
-                try {
-                    return Math.subtractExact(fl, sl)
+                return try {
+                    Math.subtractExact(fl, sl)
                 } catch (e: ArithmeticException) {
-                    return BigInteger.valueOf(fl).subtract(BigInteger.valueOf(sl))
+                    BigInteger.valueOf(fl).subtract(BigInteger.valueOf(sl))
                 }
             }
         }
