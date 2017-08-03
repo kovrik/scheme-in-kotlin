@@ -2,7 +2,6 @@ package core.evaluator
 
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
-import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
@@ -35,25 +34,25 @@ class Reflector {
         }
     }
 
-    private fun getMethod(clazz: Class<*>?, name: String, args: Array<out Any?>, parameterTypes: Array<Class<*>?>): Method {
+    private fun getMethod(clazz: Class<*>?, name: String, args: Array<out Any?>, types: Array<Class<*>?>): Method {
         clazz!!
         try {
-            return clazz.getMethod(name, *parameterTypes)
+            return clazz.getMethod(name, *types)
         } catch (e: NoSuchMethodException) {
             // no exact match found, try to find inexact match
             // FIXME Workaround: save state before downcasting
             val argsOld = args.copyOf()
-            val paramsOld = parameterTypes.copyOf()
-            downcastArgs(args as Array<Any?>, parameterTypes)
+            val paramsOld = types.copyOf()
+            downcastArgs(args as Array<Any?>, types)
             try {
-                return clazz.getMethod(name, *parameterTypes)
+                return clazz.getMethod(name, *types)
             } catch (ex: NoSuchMethodException) {
                 try {
                     // FIXME Workaround: restore previous state
                     // restore saved state
                     System.arraycopy(argsOld, 0, args, 0, argsOld.size)
-                    System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.size)
-                    val objectTypes = arrayOfNulls<Class<*>>(parameterTypes.size).apply { fill(Object::class.java) }
+                    System.arraycopy(paramsOld, 0, types, 0, paramsOld.size)
+                    val objectTypes = arrayOfNulls<Class<*>>(types.size).apply { fill(Object::class.java) }
                     return clazz.getMethod(name, *objectTypes)
                 } catch (ex2: NoSuchMethodException) {
                     throw RuntimeException("reflector: unable to find matching method $name in class ${clazz.name}")
@@ -62,30 +61,32 @@ class Reflector {
         }
     }
 
-    private fun getConstructor(clazz: Class<*>, args: Array<Any?>, parameterTypes: Array<Class<*>?>): Constructor<*> {
-        return try {
-            clazz.getConstructor(*parameterTypes)
-        } catch (e: NoSuchMethodException) {
-            // no exact match found, try to find inexact match
-            downcastArgs(args, parameterTypes)
-            try {
-                clazz.getConstructor(*parameterTypes)
-            } catch (ex: NoSuchMethodException) {
-                throw RuntimeException("reflector: unable to find matching constructor for class ${clazz.name}")
-            }
-        }
-    }
-
-    private fun downcastArgs(args: Array<Any?>, parameterTypes: Array<Class<*>?>) {
-        for (i in parameterTypes.indices) {
-            parameterTypes[i]?.let {
+    // TODO Delete and use downcastArgsCopy
+    private fun downcastArgs(args: Array<Any?>, types: Array<Class<*>?>) {
+        for (i in types.indices) {
+            types[i]?.let {
                 if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
                     // cast to int
-                    parameterTypes[i] = Int::class.java
+                    types[i] = Int::class.java
                     args[i] = (args[i] as Number).toInt()
                 }
             }
         }
+    }
+
+    private fun downcastArgsCopy(args: Array<Any?>, types: Array<Class<*>?>): Pair<Array<Any?>, Array<Class<*>?>> {
+        val newArgs  = args.copyOf()
+        val newTypes = types.copyOf()
+        for (i in types.indices) {
+            types[i]?.let {
+                if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
+                    // cast to int
+                    newTypes[i] = Int::class.java
+                    newArgs[i] = (args[i] as Number).toInt()
+                }
+            }
+        }
+        return Pair(newArgs, newTypes)
     }
 
     private fun unboxIfPossible(clazz: Class<*>) = UNBOXED.getOrDefault(clazz, clazz)
@@ -108,7 +109,15 @@ class Reflector {
             argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
         }
         try {
-            return getConstructor(c, args, argTypes).newInstance(*args)
+            return try {
+                c.getConstructor(*argTypes).newInstance(*args)
+            } catch (e: NoSuchMethodException) {
+                // no exact match found, try to find inexact match
+                val (newArgs, newTypes) = downcastArgsCopy(args, argTypes)
+                c.getConstructor(*newTypes).newInstance(*newArgs)
+            }
+        } catch (ex: NoSuchMethodException) {
+            throw RuntimeException("reflector: unable to find matching constructor for class ${c.name}")
         } catch (e: InstantiationException) {
             throw RuntimeException(e.message)
         } catch (e: InvocationTargetException) {
