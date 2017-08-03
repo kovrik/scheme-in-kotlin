@@ -32,25 +32,22 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpander.expand(sexp), env)
 
     /* Main eval */
-    fun eval(sexp: Any?, env: Environment): Any? {
-        var result: Any?
-        try {
-            /* TCO: This is our Trampoline */
-            result = evalIter(sexp, env)
-            while (result is Thunk) {
-                result = evalIter(result.expr, result.context ?: env)
-            }
-        } catch (cc: CalledContinuation) {
-            /* We have one-shot continuations only, not full continuations.
-             * It means that we can't use the same continuation multiple times. */
-            if (cc.continuation.isInvoked) throw ReentrantContinuationException()
-            /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
-            throw cc
+    fun eval(sexp: Any?, env: Environment): Any? = try {
+        /* TCO: This is our Trampoline */
+        var result = evalIter(sexp, env)
+        while (result is Thunk) {
+            result = evalIter(result.expr, result.context ?: env)
         }
-        return when (result) {
+        when (result) {
             is BigRatio -> Utils.downcastNumber(result)
-            else        -> result
+            else -> result
         }
+    } catch (cc: CalledContinuation) {
+        /* We have one-shot continuations only, not full continuations.
+         * It means that we can't use the same continuation multiple times. */
+        if (cc.continuation.isInvoked) throw ReentrantContinuationException()
+        /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
+        throw cc
     }
 
     /**
