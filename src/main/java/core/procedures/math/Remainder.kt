@@ -14,19 +14,18 @@ class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArg
     companion object {
         fun remainder(first: Number, second: Number): Number {
             val (f, s) = Utils.upcast(first, second)
-            when {
+            return when {
                 Utils.isZero(s)                      -> throw ArithmeticException("remainder: undefined for 0")
-                Utils.isZero(f)                      -> return Utils.inexactnessTaint(f, s)
-                f is BigRatio    && s is BigRatio    -> return Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
-                f is BigDecimal  && s is BigDecimal  -> return Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
-                f is BigInteger  && s is BigInteger  -> return Utils.toBigInteger(f).remainder(Utils.toBigInteger(s))
-                Utils.isExact(f) && Utils.isExact(s) -> return f.toLong() % s.toLong()
-                else -> {
-                    val result = f.toDouble() % s.toDouble()
-                    return when (result) {
-                        /* Don't want negative zero */
+                Utils.isZero(f)                      -> Utils.inexactnessTaint(f, s)
+                f is BigRatio    && s is BigRatio    -> Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
+                f is BigDecimal  && s is BigDecimal  -> Utils.toBigDecimal(f).remainder(Utils.toBigDecimal(s))
+                f is BigInteger  && s is BigInteger  -> Utils.toBigInteger(f).remainder(Utils.toBigInteger(s))
+                Utils.isExact(f) && Utils.isExact(s) -> f.toLong() % s.toLong()
+                else -> (f.toDouble() % s.toDouble()).let {
+                    /* Don't want negative zero */
+                    when (it) {
                         -0.0 -> 0.0
-                        else -> result
+                        else -> it
                     }
                 }
             }

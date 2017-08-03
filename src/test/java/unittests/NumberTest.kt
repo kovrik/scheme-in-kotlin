@@ -1,7 +1,6 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
 import core.exceptions.WrongTypeException
 import core.scm.BigComplex
@@ -158,13 +157,18 @@ class NumberTest : AbstractTest() {
     @Test
     fun testNumberTheoreticDivision() {
         // quotient
-        assertEquals(3L, eval("(quotient 13 4)", env))
-        assertEquals(3.0, eval("(quotient 13.0 4)", env))
-        assertEquals(1L, eval("(quotient 5 5)", env))
-        assertEquals(1.0, eval("(quotient 5.0 5)", env))
-        assertEquals(1.0, eval("(quotient -5 -5.0)", env))
-        assertEquals(-1L, eval("(quotient -5 5)", env))
+        assertEquals(3L,   eval("(quotient 13 4)", env))
+        assertEquals(3.0,  eval("(quotient 13.0 4)", env))
+        assertEquals(1L,   eval("(quotient 5 5)", env))
+        assertEquals(1.0,  eval("(quotient 5.0 5)", env))
+        assertEquals(1.0,  eval("(quotient -5 -5.0)", env))
+        assertEquals(-1L,  eval("(quotient -5 5)", env))
         assertEquals(-1.0, eval("(quotient -5 5.)", env))
+        assertEquals(-1.0, eval("(quotient -5 5.)", env))
+        assertEquals(BigDecimal("78"),  eval("(quotient (new BigDecimal \"234\") (new BigDecimal \"3\"))", env))
+        assertEquals(BigDecimal("78"),  eval("(quotient (new BigDecimal \"-234\") (new BigDecimal \"-3\"))", env))
+        assertEquals(BigDecimal("-78"), eval("(quotient (new BigDecimal \"234\") (new BigDecimal \"-3\"))", env))
+        assertEquals(BigDecimal("-78"), eval("(quotient (new BigDecimal \"-234\") (new BigDecimal \"3\"))", env))
         try {
             eval("(quotient -10 0.0001)", env)
             fail()
