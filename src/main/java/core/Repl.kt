@@ -84,7 +84,7 @@ object Repl {
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")
             } catch (e: ThrowableWrapper) {
                 /* Unwrap */
-                error(e.cause ?: e)
+                error(e.cause)
             } catch (e: Throwable) {
                 error(e)
             }

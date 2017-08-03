@@ -35,7 +35,7 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
                     deref()
                 } catch (e: RuntimeException) {
                     append("error!")
-                    (e as? ThrowableWrapper)?.get() ?: e
+                    (e as? ThrowableWrapper)?.cause ?: e
                 }
                 append(if (value == this) "(this future)" else Writer.write(value)).append('>')
             }

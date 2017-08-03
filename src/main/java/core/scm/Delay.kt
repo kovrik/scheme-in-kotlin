@@ -56,9 +56,9 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
                 val value = try {
                     get()
                 } catch (e: ExecutionException) {
-                    (e.cause as? ThrowableWrapper)?.get() ?: e.cause
+                    (e.cause as? ThrowableWrapper)?.cause ?: e.cause
                 } catch (e: RuntimeException) {
-                    (e as? ThrowableWrapper)?.get() ?: e
+                    (e as? ThrowableWrapper)?.cause ?: e
                 }
                 append("!error!").append(if (value === this) "(this delay)" else Writer.write(value)).append('>')
             }

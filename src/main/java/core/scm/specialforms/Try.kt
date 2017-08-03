@@ -77,7 +77,7 @@ object Try : ISpecialForm {
             val ex = if (e is ThrowableWrapper) e.cause else e
             /* Check if we had catch block for that type of exception (OR for any superclass) */
             for (clazz in catches.keys) {
-                if (clazz.isAssignableFrom(ex!!.javaClass)) {
+                if (clazz.isAssignableFrom(ex.javaClass)) {
                     /* Bind exception */
                     env.put(catchBindings[clazz], ex)
                     /* Evaluate corresponding catch block */
