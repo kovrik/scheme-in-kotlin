@@ -181,15 +181,14 @@ object Utils {
 
     /* Parse string into a number */
     private fun processNumber(number: String, r: Int, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
-        var num = number
         var result: Number
-        val dotPos = num.indexOf('.')
+        val dotPos = number.indexOf('.')
         if (useBigNum) {
             if (dotPos < 0) {
-                result = BigInteger(num, r)
+                result = BigInteger(number, r)
             } else {
                 /* Remove dot */
-                num = num.replace(".", "")
+                val num = number.replace(".", "")
                 /* Process radix */
                 var bigDecimal = if (r == 10) BigDecimal(num) else BigDecimal(BigInteger(num, r))
                 /* Process radix for a number with decimal point */
@@ -201,13 +200,13 @@ object Utils {
             }
         } else {
             if (dotPos < 0) {
-                result = num.toLong(r)
+                result = number.toLong(r)
             } else {
                 if (r == 10) {
-                    result = num.toDouble()
+                    result = number.toDouble()
                 } else {
                     /* Remove dot */
-                    num = num.replace(".", "")
+                    val num = number.replace(".", "")
                     result = num.toLong(r) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
                 }
             }
