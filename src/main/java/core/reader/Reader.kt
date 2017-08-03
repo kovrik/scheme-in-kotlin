@@ -59,16 +59,14 @@ open class Reader : IReader {
     }
 
     @Throws(IOException::class)
-    private fun readUntilDelimiter(): String {
-        val token = StringBuilder()
+    private fun readUntilDelimiter() = StringBuilder().apply {
         var i = reader.read()
         while (isValid(i) && !DELIMITERS.contains(i.toChar())) {
-            token.append(i.toChar())
+            append(i.toChar())
             i = reader.read()
         }
         reader.unread(i.toChar().toInt())
-        return token.toString()
-    }
+    }.toString()
 
     /* Return next non-null token */
     @Throws(IOException::class)
@@ -219,8 +217,7 @@ open class Reader : IReader {
      * <string element> --> <any character other than></any>" or \> | \" | \\
      */
     @Throws(IOException::class)
-    private fun readString(): String {
-        val str = StringBuilder()
+    private fun readString() = StringBuilder().apply {
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '"') {
@@ -233,37 +230,37 @@ open class Reader : IReader {
                     val chr = readCharacter()
                     when (chr) {
                         next -> throw IllegalSyntaxException("read: no hex digit following \\u in string")
-                        else -> str.append(chr)
+                        else -> append(chr)
                     }
                 } else {
                     /* Check that escape sequence is valid */
-                    str.append(ESCAPED[next] ?:
-                               throw IllegalSyntaxException("read: unknown escape sequence \\$next in string"))
+                    append(ESCAPED[next] ?:
+                            throw IllegalSyntaxException("read: unknown escape sequence \\$next in string"))
                 }
             } else {
-                str.append(c)
+                append(c)
             }
             i = reader.read()
             c = i.toChar()
         }
         /* Always intern Strings read by Reader */
-        return str.toString().intern()
-    }
+    }.toString().intern()
 
     @Throws(IOException::class)
     private fun readRegex(): Pattern {
-        val regex = StringBuilder()
-        var i = reader.read()
-        var c = i.toChar()
-        while (isValid(i) && c != '"') {
-            regex.append(c)
-            if (c == '\\') {
-                regex.append(reader.read().toChar())
+        val regex = StringBuilder().apply {
+            var i = reader.read()
+            var c = i.toChar()
+            while (isValid(i) && c != '"') {
+                append(c)
+                if (c == '\\') {
+                    append(reader.read().toChar())
+                }
+                i = reader.read()
+                c = i.toChar()
             }
-            i = reader.read()
-            c = i.toChar()
-        }
-        return Pattern.compile(regex.toString())
+        }.toString()
+        return Pattern.compile(regex)
     }
 
     /**
@@ -363,29 +360,31 @@ open class Reader : IReader {
      * <hashmap> -> {<key1> <value1>, ..., <keyN> <valueN>}
      */
     @Throws(IOException::class)
-    private fun readHashmap(): Map<Any?, Any?> {
-        val hashmap = Hashmap()
+    private fun readHashmap() = Hashmap().apply {
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
+            while (Character.isWhitespace(c) || c == ',') {
+                c = reader.read().toChar()
+            }
             if (c == '}') break
             reader.unread(c.toInt())
             val key = nextToken()
 
             /* Skip whitespaces and commas */
             c = reader.read().toChar()
-            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
+            while (Character.isWhitespace(c) || c == ',') {
+                c = reader.read().toChar()
+            }
             if (c == '}') break
             reader.unread(c.toInt())
             val value = nextToken()
 
-            hashmap.put(key, value)
+            put(key, value)
             i = reader.read()
             c = i.toChar()
         }
-        return hashmap
     }
 
     /**
@@ -394,20 +393,20 @@ open class Reader : IReader {
      * <set> -> #{<value1>, ..., <valueN>}
      */
     @Throws(IOException::class)
-    private fun readSet(): Set<Any?> {
-        val set = HashSet<Any?>()
+    private fun readSet() = HashSet<Any?>().apply {
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c) || c == ',') { c = reader.read().toChar() }
+            while (Character.isWhitespace(c) || c == ',') {
+                c = reader.read().toChar()
+            }
             if (c == '}') break
             reader.unread(c.toInt())
-            set.add(nextToken())
+            add(nextToken())
             i = reader.read()
             c = i.toChar()
         }
-        return set
     }
 
     /**
