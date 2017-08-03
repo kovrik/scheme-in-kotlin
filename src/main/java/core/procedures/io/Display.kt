@@ -1,11 +1,9 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.scm.OutputPort
 import core.writer.Writer
-import java.io.IOException
 
 open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
                                      mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java),
@@ -17,13 +15,9 @@ open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
             else -> args[1]!! as OutputPort
         }
         val arg = args[0]!!
-        try {
-            when (arg) {
-                is CharSequence, is Char -> outputPort.write(arg.toString())
-                else -> outputPort.write(Writer.write(arg))
-            }
-        } catch (e: IOException) {
-            throw ThrowableWrapper(e)
+        when (arg) {
+            is CharSequence, is Char -> outputPort.write(arg.toString())
+            else -> outputPort.write(Writer.write(arg))
         }
     }
 }

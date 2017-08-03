@@ -1,18 +1,13 @@
 package core.procedures.io
 
 import core.Repl
-import core.exceptions.ThrowableWrapper
 import core.procedures.AFn
 import core.scm.InputPort
 
-import java.io.IOException
-
 class PeekChar : AFn<Any?, Char>(name = "peek-char", maxArgs = 1, restArgsType = InputPort::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Char = try {
+    override operator fun invoke(args: Array<out Any?>): Char {
         val inputPort = if (args.isEmpty()) Repl.currentInputPort else args[0] as InputPort
-        inputPort.peek().toChar()
-    } catch (e: IOException) {
-        throw ThrowableWrapper(e)
+        return inputPort.peek().toChar()
     }
 }

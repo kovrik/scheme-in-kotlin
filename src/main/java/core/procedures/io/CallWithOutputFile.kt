@@ -10,7 +10,7 @@ import core.scm.specialforms.Try
 import java.io.FileOutputStream
 
 class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", minArgs = 2, maxArgs = 2,
-                               mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
+                                          mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Thunk {
         /* (try (proc out) (finally (close-output-port out)))*/
