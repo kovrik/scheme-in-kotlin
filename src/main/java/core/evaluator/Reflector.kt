@@ -53,8 +53,8 @@ class Reflector {
                     // restore saved state
                     System.arraycopy(argsOld, 0, args, 0, argsOld.size)
                     System.arraycopy(paramsOld, 0, parameterTypes, 0, paramsOld.size)
-                    castToObject(parameterTypes)
-                    return clazz.getMethod(name, *parameterTypes)
+                    val objectTypes = arrayOfNulls<Class<*>>(parameterTypes.size).apply { fill(Object::class.java) }
+                    return clazz.getMethod(name, *objectTypes)
                 } catch (ex2: NoSuchMethodException) {
                     throw RuntimeException("reflector: unable to find matching method $name in class ${clazz.name}")
                 }
@@ -85,12 +85,6 @@ class Reflector {
                     args[i] = (args[i] as Number).toInt()
                 }
             }
-        }
-    }
-
-    private fun castToObject(parameterTypes: Array<Class<*>?>) {
-        for (i in parameterTypes.indices) {
-            parameterTypes[i] = Object::class.java
         }
     }
 
