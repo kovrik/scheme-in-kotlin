@@ -10,9 +10,10 @@ import core.scm.Symbol
 
 object Try : ISpecialForm {
 
+    internal val CATCH = Symbol.intern("catch")
+    internal val FINALLY = Symbol.intern("finally")
+
     private val REFLECTOR = Reflector()
-    private val CATCH = Symbol.intern("catch")
-    private val FINALLY = Symbol.intern("finally")
 
     override fun toString() = "try"
 
