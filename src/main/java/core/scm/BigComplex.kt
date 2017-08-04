@@ -20,6 +20,8 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
 
         /* Convert Number to BigComplex */
         fun of(number: Number) = number as? BigComplex ?: BigComplex(number)
+
+        private val sqrt = Sqrt()
     }
 
     /* Real part */
@@ -140,7 +142,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Magnitude (Absolute value, Modulus) of Complex number
      * r = |z| = |a+bi| = sqrt(a^2 + b^2)
      */
-    fun magnitude() = Sqrt.sqrt(Addition.add(re.multiply(re), im.multiply(im)))
+    fun magnitude() = sqrt(Addition.add(re.multiply(re), im.multiply(im)))
 
     /**
      * Angle (Argument, Phase) of Complex number

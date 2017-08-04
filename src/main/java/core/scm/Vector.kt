@@ -12,11 +12,11 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     companion object {
         /* Scheme Vector syntax */
-        //  private static final String OPEN = "#(";
-        //  private static final String CLOSE = ")";
+//        private const val OPEN = "#("
+//        private const val CLOSE = ")"
         /* Alternative Clojure-style Vector syntax */
-        private val OPEN = "["
-        private val CLOSE = "]"
+        private const val OPEN = "["
+        private const val CLOSE = "]"
     }
 
     override val name = "vector"

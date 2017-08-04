@@ -31,6 +31,8 @@ object Quasiquote : ISpecialForm {
     val QUASIQUOTE_SYMBOL = Symbol.intern(toString())
 
     private val setProc = SetProc()
+    private val listToVector = ListToVector()
+    private val vectorToList = VectorToList()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size != 2) {
@@ -165,13 +167,13 @@ object Quasiquote : ISpecialForm {
         if (Unquote.UNQUOTE_SYMBOL == vector[0] || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == vector[0]) {
             throw IllegalSyntaxException.of(vector[0]!!.toString(), expr, "invalid context within quasiquote")
         }
-        val list = VectorToList.vectorToList(expr)
+        val list = vectorToList(expr)
         val result = quasiquoteList(0, list, env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
         if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
         }
-        return ListToVector.listToVector(result as List<*>)
+        return listToVector(result as List<*>)
     }
 
     private fun quasiquoteSet(expr: Any, env: Environment, evaluator: Evaluator): Any {

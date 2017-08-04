@@ -66,6 +66,9 @@ object Utils {
         put(16, this[15] + "fF")
     }
 
+    private val toInexact = ToInexact()
+    private val toExact   = ToExact()
+
     /* Check if digit is valid for a number in a specific radix */
     fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.contains(c)
 
@@ -228,7 +231,7 @@ object Utils {
 
     private fun processExactness(number: Number?, exact: Boolean): Number? {
         if (!exact) {
-            return ToInexact.toInexact(number)
+            return toInexact(number)
         }
         /* Racket's Reader does not convert into exact numbers 'properly':
          * #e2.3 returns 23/10
@@ -241,7 +244,7 @@ object Utils {
                 val scale = bigDecimal.scale()
                 return BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
             }
-            return ToExact.toExact(number)
+            return toExact(number)
         }
         return number
     }
@@ -255,7 +258,7 @@ object Utils {
         exp?.let { number = Multiplication(number, Expt.expt(r, exp)) }
         return when {
             exact -> number
-            else  -> ToInexact.toInexact(number)
+            else  -> toInexact(number)
         }
     }
 
@@ -399,7 +402,7 @@ object Utils {
      * See https://docs.racket-lang.org/guide/numbers.html
      */
     fun inexactnessTaint(result: Number, other: Number?) = when {
-        isInexact(other) && isExact(result) -> ToInexact.toInexact(result)
+        isInexact(other) && isExact(result) -> toInexact(result)
         else -> result
     }
 

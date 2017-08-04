@@ -21,6 +21,9 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
 
         private val NAME = "gcd"
 
+        private val toInexact = ToInexact()
+        private val toExact   = ToExact()
+
         internal fun gcd(a: Long, b: Long): Long {
             var alocal = a
             var blocal = b
@@ -35,14 +38,13 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         internal fun gcd(a: Double, b: Double) = when {
             !a.isFinite() -> throw WrongTypeException(NAME, "Integer", a)
             !b.isFinite() -> throw WrongTypeException(NAME, "Integer", b)
-            a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0 -> ToInexact.toInexact(gcd(ToExact.toExact(a),
-                                                                                                    ToExact.toExact(b)))
+            a.toLong().compareTo(a) != 0 || b.toLong().compareTo(b) != 0 -> toInexact(gcd(toExact(a), toExact(b)))
             else -> gcd(a.toLong(), b.toLong()).toDouble()
         }
 
         internal fun gcd(a: BigDecimal, b: BigDecimal) = when {
             maxOf(a.scale(), b.scale()) == 0 -> BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
-            else -> ToInexact.toInexact(gcd(ToExact.toExact(a), ToExact.toExact(b)))
+            else -> toInexact(gcd(toExact(a), toExact(b)))
         }
 
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)

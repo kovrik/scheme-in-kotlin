@@ -10,15 +10,11 @@ import java.math.BigInteger
 class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1,
                                        mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?) = toInexact(arg!!)
-
-    companion object {
-        fun toInexact(o: Any?): Number = when (o) {
-            is BigComplex -> BigComplex(toInexact(o.re), toInexact(o.im))
-            is BigRatio   -> o.toBigDecimalInexact()
-            is BigInteger -> BigDecimal(o.toString()).setScale(1, Utils.ROUNDING_MODE)
-            is BigDecimal -> o.setScale(maxOf(1, o.scale()), Utils.ROUNDING_MODE)
-            else          -> (o as Number).toDouble()
-        }
+    override operator fun invoke(arg: Number?): Number = when (arg) {
+        is BigComplex -> BigComplex(invoke(arg.re), invoke(arg.im))
+        is BigRatio   -> arg.toBigDecimalInexact()
+        is BigInteger -> BigDecimal(arg.toString()).setScale(1, Utils.ROUNDING_MODE)
+        is BigDecimal -> arg.setScale(maxOf(1, arg.scale()), Utils.ROUNDING_MODE)
+        else          -> arg!!.toDouble()
     }
 }

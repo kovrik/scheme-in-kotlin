@@ -7,9 +7,5 @@ import core.scm.Vector
 class VectorToList : AFn<Vector, List<*>>(name = "vector->list", isPure = true, minArgs = 1, maxArgs = 1,
                          mandatoryArgsTypes = arrayOf<Class<*>>(Vector::class.java)) {
 
-    override operator fun invoke(arg: Vector) = vectorToList(arg)
-
-    companion object {
-        fun vectorToList(v: Vector) = Cons.list(v.getArray())
-    }
+    override operator fun invoke(arg: Vector) = Cons.list(arg.getArray())
 }

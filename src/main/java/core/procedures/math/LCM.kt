@@ -10,6 +10,9 @@ import java.math.BigInteger
 
 class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
+    private val toInexact = ToInexact()
+    private val toExact   = ToExact()
+
     override operator fun invoke(args: Array<out Any?>): Number = when {
         args.isEmpty() -> 1L
         args.size == 1 -> Abs.abs(args[0]!! as Number)
@@ -22,7 +25,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {
         a.signum() == 0 && b.signum() == 0 -> BigDecimal.ZERO
         maxOf(a.scale(), b.scale()) == 0   -> BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
-        else -> ToInexact.toInexact(lcm(ToExact.toExact(a) as BigDecimal, ToExact.toExact(b) as BigDecimal))
+        else -> toInexact(lcm(toExact(a) as BigDecimal, toExact(b) as BigDecimal))
     }
 
     private fun lcm(a: Long, b: Long) = when {
