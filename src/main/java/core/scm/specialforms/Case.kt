@@ -15,6 +15,8 @@ import core.procedures.equivalence.Eqv
  */
 object Case : ISpecialForm {
 
+    val eqv = Eqv()
+
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         /* Save string representation of form before evaluation */
         val exprString = form.toString()
@@ -32,7 +34,7 @@ object Case : ISpecialForm {
                     }
                     return Begin.eval(subform, env, evaluator)
                 }
-                is List<*> -> datum.firstOrNull { Eqv.eqv(key, it) }?.let { return Begin.eval(subform, env, evaluator) }
+                is List<*> -> datum.firstOrNull { eqv.eqv(key, it) }?.let { return Begin.eval(subform, env, evaluator) }
                 else       -> throw IllegalSyntaxException.of(toString(), exprString, "invalid clause in subform")
             }
         }
