@@ -11,6 +11,8 @@ import java.math.BigDecimal
 
 class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
+    private val addition = Addition()
+
     // TODO Write Unit tests!!!
     override operator fun invoke(args: Array<out Any?>): List<Any?> {
         if (args.isEmpty()) {
@@ -120,7 +122,7 @@ class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, 
         return Cons.list<Number>().apply {
             while (pred(cur, end)) {
                 add(cur!!)
-                cur = Addition.add(cur, step)
+                cur = addition.add(cur, step)
             }
         }
     }
