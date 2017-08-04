@@ -9,10 +9,10 @@ class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::
     private val car = Car()
     private val cdr = Cdr()
 
-    override operator fun invoke(args: Array<out Any?>) = args.fold(Cons.EMPTY as Any?, this::append)
+    override operator fun invoke(args: Array<out Any?>) = args.fold(Cons.EMPTY as Any?, this::invoke)
 
-    fun append(first: Any?, second: Any?): Any? = when {
-        Cons.isPair(first) -> Cons.cons(car(first), append(cdr(first), second))
-        else -> second
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? = when {
+        Cons.isPair(arg1) -> Cons.cons(car(arg1), invoke(cdr(arg1), arg2))
+        else -> arg2
     }
 }

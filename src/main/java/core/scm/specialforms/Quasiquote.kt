@@ -13,11 +13,10 @@ import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
-import core.scm.Cons.Companion.isProperList
 import core.scm.Cons.Companion.isPair
+import core.scm.Cons.Companion.isProperList
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
-
 import core.scm.Symbol
 
 import kotlin.collections.Set
@@ -105,19 +104,19 @@ object Quasiquote : ISpecialForm {
                         throw IllegalSyntaxException.of(Unquote.toString(), list, "expects exactly one expression")
                     }
                     /* Evaluate and append last element */
-                    return append.append(result, evaluator.eval(list[n + 1], env))
+                    return append(result, evaluator.eval(list[n + 1], env))
                 }
                 if (isProperList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
                     throw IllegalSyntaxException.of(UnquoteSplicing.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
-                result = append.append(result, list(o))
+                result = append(result, list(o))
             } else {
                 val el = o
                 val op = el[0]
                 if (QUASIQUOTE_SYMBOL == op) {
                     /* Increase depth of quasiquotation */
-                    result = append.append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
+                    result = append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
                 } else if (Unquote.UNQUOTE_SYMBOL == op || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == op) {
                     if (el.size != 2) {
                         throw IllegalSyntaxException.of(op.toString(), expr, "expects exactly one expression")
@@ -136,14 +135,14 @@ object Quasiquote : ISpecialForm {
                         } else {
                             /* Unquote: append list with results */
                             /* `(,(list 1 2 3)) => `((1 2 3)) */
-                            result = append.append(result, list(eval))
+                            result = append(result, list(eval))
                         }
                     } else {
                         /* Decrease depth of quasiquotation */
-                        result = append.append(result, list(quasiquoteList(depth - 1, o, env, evaluator)))
+                        result = append(result, list(quasiquoteList(depth - 1, o, env, evaluator)))
                     }
                 } else {
-                    result = append.append(result, list(quasiquoteList(depth, o, env, evaluator)))
+                    result = append(result, list(quasiquoteList(depth, o, env, evaluator)))
                 }
             }
         }
