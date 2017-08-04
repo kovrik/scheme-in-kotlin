@@ -69,6 +69,7 @@ object Utils {
     private val toInexact = ToInexact()
     private val toExact   = ToExact()
     private val expt      = Expt()
+    private val multiplication = Multiplication()
 
     /* Check if digit is valid for a number in a specific radix */
     fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.contains(c)
@@ -224,7 +225,7 @@ object Utils {
             if (r == 10 && !exact) {
                 return (result.toString() + "E" + exp).toDouble()
             } else {
-                result = Multiplication(result, expt(r.toLong(), exp))
+                result = multiplication(result, expt(r.toLong(), exp))
             }
         }
         return processExactness(result, exact)
@@ -256,7 +257,7 @@ object Utils {
 
         var number: Number? = BigRatio.valueOf(processNumber(numerator, r, true, useBigNum, null).toString(),
                                                processNumber(denominator, r, true, useBigNum, null).toString())
-        exp?.let { number = Multiplication(number, expt(r, exp)) }
+        exp?.let { number = multiplication(number, expt(r, exp)) }
         return when {
             exact -> number
             else  -> toInexact(number)

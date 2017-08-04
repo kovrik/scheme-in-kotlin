@@ -6,7 +6,7 @@ import java.io.OutputStream
 class OutputPort(val outputStream: OutputStream?) : IPort {
 
     companion object {
-        private val LS = System.getProperty("line.separator")
+        private val LS = System.lineSeparator()
     }
 
     @Throws(IOException::class)

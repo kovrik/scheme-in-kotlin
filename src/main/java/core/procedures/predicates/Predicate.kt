@@ -58,8 +58,8 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_INEXACT = Predicate("inexact?", { Type.assertType("inexact?", it, Number::class.java) && Utils.isInexact(it) })
         val IS_IMMUTABLE = Predicate("immutable?", this::isImmutable)
         val IS_MUTABLE = Predicate("mutable?", this::isMutable)
-        val IS_EVEN = Predicate("even?", { Type.assertType("even?", it, Int::class.javaObjectType) && Utils.isZero(Remainder.remainder(it as Number, 2L)) })
-        val IS_ODD = Predicate("odd?", { Type.assertType("odd?", it, Int::class.javaObjectType) && !Utils.isZero(Remainder.remainder(it as Number, 2L)) })
+        val IS_EVEN = Predicate("even?", { Type.assertType("even?", it, Int::class.javaObjectType) && Utils.isZero(remainder(it as Number, 2L)) })
+        val IS_ODD = Predicate("odd?", { Type.assertType("odd?", it, Int::class.javaObjectType) && !Utils.isZero(remainder(it as Number, 2L)) })
         val IS_KEYWORD = Predicate("keyword?", { it is Keyword })
         val IS_ANY = Predicate("any?", { true })
         val IS_BLANK = Predicate("blank?", { Type.assertType("blank?", it, String::class.java) && it == null || it!!.toString().isEmpty() || it.toString().trim({ it <= ' ' }).isEmpty() })
@@ -84,6 +84,8 @@ class Predicate private constructor(override val name: String, inline private va
 
         private fun isProcedure(o: Any?) = o is IFn<*, *>  && o !is Symbol && o !is Keyword &&
                                            o !is Map<*, *> && o !is Vector && o !is Map.Entry<*, *>
+
+        private val remainder = Remainder()
     }
 
     override operator fun invoke(arg: Any?) = predicate(arg)

@@ -9,11 +9,14 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxArgs = 1,
+                                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = sin(arg!!)
 
     companion object {
+
+        private val multiplication = Multiplication()
 
         fun sin(n: Number) = when {
             Utils.isZero(n) -> 0L
@@ -38,7 +41,7 @@ class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxAr
             }
         }
 
-        fun sin(c: BigComplex) = BigComplex(Multiplication(Sin.sin(c.re), Cosh.cosh(c.im)),
-                                            Multiplication(Cos.cos(c.re), Sinh.sinh(c.im)))
+        fun sin(c: BigComplex) = BigComplex(multiplication(Sin.sin(c.re), Cosh.cosh(c.im)),
+                                            multiplication(Cos.cos(c.re), Sinh.sinh(c.im)))
     }
 }

@@ -2,7 +2,7 @@ package unittests.s7.tests
 
 import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
-import core.procedures.cons.ConsProc.Companion.cons
+import core.procedures.cons.ConsProc
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
@@ -12,6 +12,8 @@ import org.junit.Test
 import unittests.AbstractTest
 
 class MemvTest : AbstractTest() {
+
+    private val cons = ConsProc()
 
     @Test
     fun testMemv() {

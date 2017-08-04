@@ -15,20 +15,24 @@ import java.util.*
 
 class RosettaCodeTest : AbstractTest() {
 
+    companion object {
+        private val LS = System.lineSeparator()
+    }
+
     @Test
     fun testEvalGroupNumbers() {
         val group = "(let loop ((numbers '(3 -2 1 6 -5))" +
-                "           (nonneg '())" +
-                "           (neg '()))" +
-                "  (cond ((empty? numbers) (list nonneg neg))" +
-                "        ((>= (car numbers) 0)" +
-                "         (loop (cdr numbers)" +
-                "               (cons (car numbers) nonneg)" +
-                "               neg))" +
-                "        ((< (car numbers) 0)" +
-                "         (loop (cdr numbers)" +
-                "               nonneg" +
-                "               (cons (car numbers) neg)))))"
+                    "           (nonneg '())" +
+                    "           (neg '()))" +
+                    "  (cond ((empty? numbers) (list nonneg neg))" +
+                    "        ((>= (car numbers) 0)" +
+                    "         (loop (cdr numbers)" +
+                    "               (cons (car numbers) nonneg)" +
+                    "               neg))" +
+                    "        ((< (car numbers) 0)" +
+                    "         (loop (cdr numbers)" +
+                    "               nonneg" +
+                    "               (cons (car numbers) neg)))))"
 
         assertEquals(list(list(6L, 1L, 3L), list(-5L, -2L)), eval(group, env))
     }
@@ -37,10 +41,10 @@ class RosettaCodeTest : AbstractTest() {
     fun testFlattenList() {
 
         val flatten = "(define (flatten x)" +
-                "    (cond ((empty? x) '())" +
-                "          ((not (pair? x)) (list x))" +
-                "          (else (append (flatten (car x))" +
-                "                        (flatten (cdr x))))))"
+                      "    (cond ((empty? x) '())" +
+                      "          ((not (pair? x)) (list x))" +
+                      "          (else (append (flatten (car x))" +
+                      "                        (flatten (cdr x))))))"
         eval(flatten, env)
         assertEquals(list(arrayOf<Long?>(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)), eval("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))", env))
     }
@@ -49,25 +53,25 @@ class RosettaCodeTest : AbstractTest() {
     fun testQuickSort() {
 
         val splitby = "(define (split-by l p k)" +
-                "  (let loop ((low '())" +
-                "             (high '())" +
-                "             (l l))" +
-                "    (cond ((empty? l)" +
-                "           (k low high))" +
-                "          ((p (car l))" +
-                "           (loop low (cons (car l) high) (cdr l)))" +
-                "          (else" +
-                "           (loop (cons (car l) low) high (cdr l))))))"
+                      "  (let loop ((low '())" +
+                      "             (high '())" +
+                      "             (l l))" +
+                      "    (cond ((empty? l)" +
+                      "           (k low high))" +
+                      "          ((p (car l))" +
+                      "           (loop low (cons (car l) high) (cdr l)))" +
+                      "          (else" +
+                      "           (loop (cons (car l) low) high (cdr l))))))"
 
         val quick = "(define (quicksort l gt?)" +
-                "  (if (empty? l)" +
-                "      '()" +
-                "      (split-by (cdr l) " +
-                "                (lambda (x) (gt? x (car l)))" +
-                "                (lambda (low high)" +
-                "                  (append (quicksort low gt?)" +
-                "                          (list (car l))" +
-                "                          (quicksort high gt?))))))"
+                    "  (if (empty? l)" +
+                    "      '()" +
+                    "      (split-by (cdr l) " +
+                    "                (lambda (x) (gt? x (car l)))" +
+                    "                (lambda (low high)" +
+                    "                  (append (quicksort low gt?)" +
+                    "                          (list (car l))" +
+                    "                          (quicksort high gt?))))))"
 
         eval(splitby, env)
         eval(quick, env)
@@ -78,17 +82,17 @@ class RosettaCodeTest : AbstractTest() {
     fun testGnomeSort() {
 
         val gnome = "(define (gnome-sort-compar in-order input-list)" +
-                "  (let gnome ((p (list (car input-list)))" +
-                "              (n (cdr input-list)))" +
-                "    (if (empty? n)" +
-                "        p" +
-                "        (let ((prev-pot (car p))" +
-                "              (next-pot (car n)))" +
-                "          (if (in-order next-pot prev-pot)" +
-                "              (gnome (cons next-pot p) (cdr n))" +
-                "              (if (empty? (cdr p))" +
-                "                  (gnome (list next-pot) (cons prev-pot (cdr n)))" +
-                "                  (gnome (cdr p) (cons next-pot (cons prev-pot (cdr n))))))))))"
+                    "  (let gnome ((p (list (car input-list)))" +
+                    "              (n (cdr input-list)))" +
+                    "    (if (empty? n)" +
+                    "        p" +
+                    "        (let ((prev-pot (car p))" +
+                    "              (next-pot (car n)))" +
+                    "          (if (in-order next-pot prev-pot)" +
+                    "              (gnome (cons next-pot p) (cdr n))" +
+                    "              (if (empty? (cdr p))" +
+                    "                  (gnome (list next-pot) (cons prev-pot (cdr n)))" +
+                    "                  (gnome (cdr p) (cons next-pot (cons prev-pot (cdr n))))))))))"
         eval(gnome, env)
 
         val test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))"
@@ -100,18 +104,18 @@ class RosettaCodeTest : AbstractTest() {
     fun testHailstoneSeq() {
 
         val hailstone = "(define (hailstone n)" +
-                "  (if (= n 1) '(1)" +
-                "  (cons n (hailstone (if (even? n) (/ n 2) (+ 1 (* 3 n)))))))"
+                        "  (if (= n 1) '(1)" +
+                        "  (cons n (hailstone (if (even? n) (/ n 2) (+ 1 (* 3 n)))))))"
 
         val hailstoneLength = "(define (hailstone-length n)" +
-                "  (let aux ((n n) (r 1)) (if (= n 1) r" +
-                "  (aux (if (even? n) (/ n 2) (+ 1 (* 3 n))) (+ r 1)))))"
+                              "  (let aux ((n n) (r 1)) (if (= n 1) r" +
+                              "  (aux (if (even? n) (/ n 2) (+ 1 (* 3 n))) (+ r 1)))))"
 
         val hailstoneMax = "(define (hailstone-max a b)" +
-                "  (let aux ((i a) (j 0) (k 0))" +
-                "    (if (> i b) (list j k)" +
-                "      (let ((h (hailstone-length i)))" +
-                "        (if (> h k) (aux (+ i 1) i h) (aux (+ i 1) j k))))))"
+                           "  (let aux ((i a) (j 0) (k 0))" +
+                           "    (if (> i b) (list j k)" +
+                           "      (let ((h (hailstone-length i)))" +
+                           "        (if (> h k) (aux (+ i 1) i h) (aux (+ i 1) j k))))))"
 
         eval(hailstone, env)
         eval(hailstoneLength, env)
@@ -137,11 +141,11 @@ class RosettaCodeTest : AbstractTest() {
     @Test
     fun testEvalHornersRule() {
         val horner = "(define (horner lst x)" +
-                "  (define (*horner lst x acc)" +
-                "    (if (empty? lst)" +
-                "        acc" +
-                "        (*horner (cdr lst) x (+ (* acc x) (car lst)))))" +
-                "  (*horner (reverse lst) x 0))"
+                   "  (define (*horner lst x acc)" +
+                   "    (if (empty? lst)" +
+                   "        acc" +
+                   "        (*horner (cdr lst) x (+ (* acc x) (car lst)))))" +
+                   "  (*horner (reverse lst) x 0))"
         eval(horner, env)
         assertEquals(128L, eval("(horner '(-19 7 -4 6) 3)", env))
     }
@@ -150,15 +154,15 @@ class RosettaCodeTest : AbstractTest() {
     fun testDayOfWeek() {
 
         val dayOfWeek = "(define (day-of-week year month day)" +
-                "  (if (< month 3)" +
-                "    (begin" +
-                "      (set! month (+ month 12))" +
-                "      (set! year (- year 1)))" +
-                "  #f)" +
-                "(+ 1 " +
-                "   (remainder (+ 5 day (quotient (* (+ 1 month) 13) 5) " +
-                "                 year (quotient year 4) (* (quotient year 100) 6) (quotient year 400)) " +
-                "              7)))"
+                        "  (if (< month 3)" +
+                        "    (begin" +
+                        "      (set! month (+ month 12))" +
+                        "      (set! year (- year 1)))" +
+                        "  #f)" +
+                        "(+ 1 " +
+                        "   (remainder (+ 5 day (quotient (* (+ 1 month) 13) 5) " +
+                        "                 year (quotient year 4) (* (quotient year 100) 6) (quotient year 400)) " +
+                        "              7)))"
         eval(dayOfWeek, env)
         assertEquals(3L, eval("(day-of-week 2016 6 29)", env))
 
@@ -188,34 +192,34 @@ class RosettaCodeTest : AbstractTest() {
         tempEnv.put(Symbol.intern("newline"), Newline())
 
         val hanoi = "(define (hanoi n a b c) " +
-                "  (if (> n 0)" +
-                "    (begin" +
-                "      (hanoi (- n 1) a c b)" +
-                "      (display \"Move disk from pole \")" +
-                "      (display a)" +
-                "      (display \" to pole \")" +
-                "      (display b)" +
-                "      (newline)" +
-                "      (hanoi (- n 1) c b a))" +
-                " #t))"
+                    "  (if (> n 0)" +
+                    "    (begin" +
+                    "      (hanoi (- n 1) a c b)" +
+                    "      (display \"Move disk from pole \")" +
+                    "      (display a)" +
+                    "      (display \" to pole \")" +
+                    "      (display b)" +
+                    "      (newline)" +
+                    "      (hanoi (- n 1) c b a))" +
+                    " #t))"
         eval(hanoi, tempEnv)
         eval("(hanoi 4 1 2 3)", tempEnv)
 
         val solution = "Move disk from pole 1 to pole 3" + LS +
-                "Move disk from pole 1 to pole 2" + LS +
-                "Move disk from pole 3 to pole 2" + LS +
-                "Move disk from pole 1 to pole 3" + LS +
-                "Move disk from pole 2 to pole 1" + LS +
-                "Move disk from pole 2 to pole 3" + LS +
-                "Move disk from pole 1 to pole 3" + LS +
-                "Move disk from pole 1 to pole 2" + LS +
-                "Move disk from pole 3 to pole 2" + LS +
-                "Move disk from pole 3 to pole 1" + LS +
-                "Move disk from pole 2 to pole 1" + LS +
-                "Move disk from pole 3 to pole 2" + LS +
-                "Move disk from pole 1 to pole 3" + LS +
-                "Move disk from pole 1 to pole 2" + LS +
-                "Move disk from pole 3 to pole 2"
+                       "Move disk from pole 1 to pole 2" + LS +
+                       "Move disk from pole 3 to pole 2" + LS +
+                       "Move disk from pole 1 to pole 3" + LS +
+                       "Move disk from pole 2 to pole 1" + LS +
+                       "Move disk from pole 2 to pole 3" + LS +
+                       "Move disk from pole 1 to pole 3" + LS +
+                       "Move disk from pole 1 to pole 2" + LS +
+                       "Move disk from pole 3 to pole 2" + LS +
+                       "Move disk from pole 3 to pole 1" + LS +
+                       "Move disk from pole 2 to pole 1" + LS +
+                       "Move disk from pole 3 to pole 2" + LS +
+                       "Move disk from pole 1 to pole 3" + LS +
+                       "Move disk from pole 1 to pole 2" + LS +
+                       "Move disk from pole 3 to pole 2"
 
         assertEquals(solution, baos.toString().trim { it <= ' ' })
         Repl.currentOutputPort = old
@@ -225,13 +229,13 @@ class RosettaCodeTest : AbstractTest() {
     fun testIntegerRoots() {
 
         val integerRoots = "(define (root a b)" +
-                "  (if (< b 2)" +
-                "      b" +
-                "    (let* ((a1 (- a 1))" +
-                "           (c 1)" +
-                "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
-                "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-                "      (y a a1 b c d e))))"
+                           "  (if (< b 2)" +
+                           "      b" +
+                           "    (let* ((a1 (- a 1))" +
+                           "           (c 1)" +
+                           "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
+                           "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+                           "      (y a a1 b c d e))))"
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
@@ -239,10 +243,10 @@ class RosettaCodeTest : AbstractTest() {
         eval("(define // quotient)", tempEnv)
 
         eval("(define (y a a1 b c d e)" +
-                "  (if (or (= c d) (= c e))" +
-                "      (min d e)" +
-                "    (y a a1 b d e (// (+ (* a1 e)" +
-                "                         (// b (expt e a1))) a))))", tempEnv)
+             "  (if (or (= c d) (= c e))" +
+             "      (min d e)" +
+             "    (y a a1 b d e (// (+ (* a1 e)" +
+             "                         (// b (expt e a1))) a))))", tempEnv)
 
         eval(integerRoots, tempEnv)
         assertEquals(2L, eval("(root 3 25)", tempEnv))
@@ -261,12 +265,12 @@ class RosettaCodeTest : AbstractTest() {
     @Test
     fun testIntegerRootsIteration() {
         val code = "(let* ((// quotient)" +
-                "       (a  3)" +
-                "       (a1 2)" +
-                "       (b 100000000000000000000000000000000000000000000000000000000000000000)" +
-                "       (d 3549465341104592045951592)" +
-                "       (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-                "   e)"
+                   "       (a  3)" +
+                   "       (a1 2)" +
+                   "       (b 100000000000000000000000000000000000000000000000000000000000000000)" +
+                   "       (d 3549465341104592045951592)" +
+                   "       (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+                   "   e)"
 
         assertEquals(BigInteger("2366310230048836102686780"), eval(code, env))
     }
@@ -283,7 +287,8 @@ class RosettaCodeTest : AbstractTest() {
         tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
 
-        val quine = "((lambda (s) (display (list s (list (quote quote) s))))" + " (quote (lambda (s) (display (list s (list (quote quote) s))))))"
+        val quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
+                    " (quote (lambda (s) (display (list s (list (quote quote) s))))))"
         eval(quine, tempEnv)
         assertEquals(quine, baos.toString().trim { it <= ' ' })
 
@@ -309,17 +314,13 @@ class RosettaCodeTest : AbstractTest() {
     fun testHaversineFormula() {
         eval("(define earth-radius 6371)", env)
         eval("(define (distance lat1 long1 lat2 long2)" +
-                "  (define (h a b) (expt (sin (/ (- b a) 2)) 2))" +
-                "  (* 2 earth-radius " +
-                "     (asin (sqrt (+ (h lat1 lat2) " +
-                "                    (* (cos lat1) (cos lat2) (h long1 long2)))))))", env)
+             "  (define (h a b) (expt (sin (/ (- b a) 2)) 2))" +
+             "  (* 2 earth-radius " +
+             "     (asin (sqrt (+ (h lat1 lat2) " +
+             "                    (* (cos lat1) (cos lat2) (h long1 long2)))))))", env)
         eval("(define (deg-to-rad d m s) " + "  (* (/ pi 180) (+ d (/ m 60) (/ s 3600))))", env)
         assertEquals(2886.444442837984,
                 eval("(distance (deg-to-rad 36  7.2 0) (deg-to-rad  86 40.2 0)" +
                      "          (deg-to-rad 33 56.4 0) (deg-to-rad 118 24.0 0))", env))
-    }
-
-    companion object {
-        private val LS = System.getProperty("line.separator")
     }
 }

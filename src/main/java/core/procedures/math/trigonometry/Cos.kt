@@ -16,6 +16,8 @@ class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxAr
 
     companion object {
 
+        private val multiplication = Multiplication()
+
         fun cos(number: Number) = when {
             Utils.isZero(number) -> 1L
             number is BigDecimal -> cos(number)
@@ -39,7 +41,7 @@ class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxAr
             }
         }
 
-        fun cos(c: BigComplex) = BigComplex(Multiplication(Cos.cos(c.re), Cosh.cosh(c.im)),
-                                            Multiplication(-1.0, Multiplication(Sin.sin(c.re), Sinh.sinh(c.im))))
+        fun cos(c: BigComplex) = BigComplex(multiplication(Cos.cos(c.re), Cosh.cosh(c.im)),
+                                            multiplication(-1.0, multiplication(Sin.sin(c.re), Sinh.sinh(c.im))))
     }
 }

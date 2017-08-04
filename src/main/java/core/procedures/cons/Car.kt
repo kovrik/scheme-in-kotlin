@@ -7,12 +7,8 @@ import core.scm.Type
 class Car : AFn<Any?, Any?>(name = "car", isPure = true, minArgs = 1, maxArgs = 1,
                             mandatoryArgsTypes = arrayOf<Class<*>>(Type.Pair::class.java)) {
 
-    override operator fun invoke(arg: Any?) = car(arg)
-
-    companion object {
-        fun car(o: Any?) = when (o) {
-            is Cons<*> -> o.car()
-            else       -> (o as List<*>)[0]
-        }
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is Cons<*> -> arg.car()
+        else -> (arg as List<*>)[0]
     }
 }

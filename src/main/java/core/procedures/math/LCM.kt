@@ -12,7 +12,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
 
     private val toInexact = ToInexact()
     private val toExact   = ToExact()
-    private val abs = Abs()
+    private val abs       = Abs()
 
     override operator fun invoke(args: Array<out Any?>): Number = when {
         args.isEmpty() -> 1L
@@ -20,12 +20,14 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
         else           -> args.fold(args[0]!! as Number) { r, n -> lcm(r, n!! as Number) }
     }
 
-    private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(Companion.lcm(first.numerator, second.numerator),
+    private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(lcm(first.numerator, second.numerator),
                                                                           GCD.gcd(first.denominator, second.denominator))
+
+    fun lcm(first: BigInteger, second: BigInteger): BigInteger = first.multiply(second.divide(GCD.gcd(first, second)))
 
     private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {
         a.signum() == 0 && b.signum() == 0 -> BigDecimal.ZERO
-        maxOf(a.scale(), b.scale()) == 0   -> BigDecimal(Companion.lcm(a.toBigInteger(), b.toBigInteger()))
+        maxOf(a.scale(), b.scale()) == 0   -> BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()))
         else -> toInexact(lcm(toExact(a) as BigDecimal, toExact(b) as BigDecimal))
     }
 
@@ -46,12 +48,8 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
             f is Float      && s is Float      -> lcm(f.toDouble(), s.toDouble())
             f is BigRatio   && s is BigRatio   -> lcm(f, s)
             f is BigDecimal && s is BigDecimal -> lcm(f, s)
-            f is BigInteger && s is BigInteger -> Companion.lcm(f, s)
+            f is BigInteger && s is BigInteger -> lcm(f, s)
             else                               -> lcm(f.toLong(), s.toLong())
         }
-    }
-
-    companion object {
-        internal fun lcm(first: BigInteger, second: BigInteger) = first.multiply(second.divide(GCD.gcd(first, second)))
     }
 }

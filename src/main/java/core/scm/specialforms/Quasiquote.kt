@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.procedures.cons.Append
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
-import core.procedures.cons.ConsProc.Companion.cons
+import core.procedures.cons.ConsProc
 import core.procedures.generic.First
 import core.procedures.sets.SetProc
 import core.procedures.vectors.ListToVector
@@ -34,6 +34,9 @@ object Quasiquote : ISpecialForm {
     private val listToVector = ListToVector()
     private val vectorToList = VectorToList()
     private val first        = First()
+    private val car          = Car()
+    private val cdr          = Cdr()
+    private val cons         = ConsProc()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size != 2) {
@@ -146,11 +149,11 @@ object Quasiquote : ISpecialForm {
         if (!isList) {
             /* In the case of a pair, if the cdr of the relevant quoted pair is empty,
              * then expr need not produce a list, and its result is used directly in place of the quoted pair */
-            if (!isPair(Cdr.cdr(result))) {
+            if (!isPair(cdr(result))) {
                 return (result as List<*>)[0]
             } else {
                 // TODO Is car(cdr(result)) correct?
-                return cons(Car.car(result), Car.car(Cdr.cdr(result)))
+                return cons(car(result), car(cdr(result)))
             }
         }
         return result

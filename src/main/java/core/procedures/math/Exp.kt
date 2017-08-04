@@ -8,23 +8,19 @@ import java.math.BigDecimal
 class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxArgs = 1,
                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?) = exp(arg)
+    private val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
-    companion object {
-        val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
+    private val expt = Expt()
 
-        private val expt = Expt()
-
-        fun exp(number: Number?) = when {
-            Utils.isZero(number) -> Utils.inexactnessTaint(1L, number)
-            number is Double || number is Float -> when {
-                Utils.isNegativeInfinity(number) -> 0L
-                !Utils.isFinite(number)          -> number
-                else                             -> Math.exp(number.toDouble())
-            }
-            number is Long || number is Int || number is Short || number is Byte -> Math.exp(number.toDouble())
-            number is BigRatio && number.isOne -> Math.exp(1.0)
-            else -> expt(E, number!!)
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg) -> Utils.inexactnessTaint(1L, arg)
+        arg is Double || arg is Float -> when {
+            Utils.isNegativeInfinity(arg) -> 0L
+            !Utils.isFinite(arg)          -> arg
+            else                          -> Math.exp(arg.toDouble())
         }
+        arg is Long || arg is Int || arg is Short || arg is Byte -> Math.exp(arg.toDouble())
+        arg is BigRatio && arg.isOne -> Math.exp(1.0)
+        else -> expt(E, arg!!)
     }
 }

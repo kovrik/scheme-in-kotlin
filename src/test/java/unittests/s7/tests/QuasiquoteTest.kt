@@ -13,6 +13,11 @@ import unittests.AbstractTest
 
 class QuasiquoteTest : AbstractTest() {
 
+    companion object {
+        private val LS = System.lineSeparator()
+        private val cons = ConsProc()
+    }
+
     @Test
     fun testQuasiquote() {
         assertEquals(list(1L, 2L, 3L), eval("`(1 2 3)", env))
@@ -25,7 +30,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(list(1L, 2L, 81L, 3L, 4L), eval("`(1 2 ,(* 9 9) 3 4)", env))
         assertEquals(list(1L, 2L, 3L), eval("`(1 ,(+ 1 1) 3)", env))
         assertEquals(list(3L), eval("`(,(+ 1 2))", env))
-        assertEquals(ConsProc.cons(s("a"), s("b")), eval("`(,'a . ,'b)", env))
+        assertEquals(cons(s("a"), s("b")), eval("`(,'a . ,'b)", env))
         assertEquals(s("foo"), eval("`(,@'() . foo)", env))
         assertEquals(list(1L, 2L), eval("`(1 , 2)", env))
         assertEquals(list(1L, 2L, 3L), eval("`(1 ,@ (list 2 3))", env))
@@ -71,9 +76,5 @@ class QuasiquoteTest : AbstractTest() {
                 // expected
             }
         }
-    }
-
-    companion object {
-        private val LS = System.getProperty("line.separator")
     }
 }

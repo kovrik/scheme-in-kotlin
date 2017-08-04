@@ -1,6 +1,6 @@
 package unittests.s7.tests
 
-import core.procedures.cons.ConsProc.Companion.cons
+import core.procedures.cons.ConsProc
 import core.scm.Cons
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
@@ -10,6 +10,8 @@ import org.junit.Test
 import unittests.AbstractTest
 
 class MemberTest : AbstractTest() {
+
+    private val cons = ConsProc()
 
     @Test
     fun testMember() {

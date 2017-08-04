@@ -25,6 +25,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
 
         private val toInexact = ToInexact()
         private val toExact   = ToExact()
+        private val lcm       = LCM()
 
         internal fun gcd(a: Long, b: Long): Long {
             var alocal = a
@@ -52,7 +53,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
 
         internal fun gcd(first: BigRatio, second: BigRatio) = BigRatio.valueOf(first.numerator.gcd(second.numerator),
-                                                                               LCM.lcm(first.denominator, second.denominator))
+                                                                               lcm.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
             val (f, s) = Utils.upcast(first, second)

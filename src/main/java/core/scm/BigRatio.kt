@@ -1,8 +1,6 @@
 package core.scm
 
-import core.procedures.math.Division
 import core.utils.Utils
-
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -75,10 +73,17 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun abs() = BigRatio(numerator.abs(), denominator.abs())
 
-    fun toBigDecimal() = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
+    /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
+    fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
+        num.divide(den, Utils.getMathContext(num, den))
+    } catch (e: ArithmeticException) {
+        num.divide(den, Utils.DEFAULT_CONTEXT)
+    }
+
+    fun toBigDecimal() = safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
 
     fun toBigDecimalInexact(): BigDecimal {
-        val bigDecimal = Division.safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
+        val bigDecimal = safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
         val scale = maxOf(1, bigDecimal.scale())
         return bigDecimal.setScale(scale, Utils.ROUNDING_MODE)
     }

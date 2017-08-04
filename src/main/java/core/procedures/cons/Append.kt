@@ -7,8 +7,12 @@ import core.scm.Type
 class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::class.java, lastArgType = Any::class.java) {
 
     companion object {
+
+        private val car = Car()
+        private val cdr = Cdr()
+
         fun append(first: Any?, second: Any?): Any? = when {
-            Cons.isPair(first) -> Cons.cons(Car.car(first), append(Cdr.cdr(first), second))
+            Cons.isPair(first) -> Cons.cons(car(first), append(cdr(first), second))
             else               -> second
         }
     }

@@ -23,6 +23,9 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
 
         private val sqrt = Sqrt()
         private val expt = Expt()
+        private val exp  = Exp()
+        private val log  = Log()
+        private val multiplication = Multiplication()
     }
 
     /* Real part */
@@ -126,10 +129,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         }
         val r = magnitude()
         val t = angle()
-        val A = Multiplication(expt(r, c), Exp.exp(Multiplication(t, d.negate())))
-        val B = Addition.add(Multiplication(c, t), Multiplication(d, Log.log(r)))
-        val re = Multiplication(A, Cos.cos(B!!))
-        val im = Multiplication(A, Sin.sin(B))
+        val A = multiplication(expt(r, c), exp(multiplication(t, d.negate())))
+        val B = Addition.add(multiplication(c, t), multiplication(d, log(r)))
+        val re = multiplication(A, Cos.cos(B!!))
+        val im = multiplication(A, Sin.sin(B))
         return BigComplex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
     }
 
@@ -137,7 +140,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Natural logarithm of Complex number
      * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
      */
-    fun log(): BigComplex = BigComplex(Log.log(magnitude()), angle())
+    fun log(): BigComplex = BigComplex(log(magnitude()), angle())
 
     /**
      * Magnitude (Absolute value, Modulus) of Complex number
