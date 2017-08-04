@@ -30,9 +30,10 @@ object Quasiquote : ISpecialForm {
 
     val QUASIQUOTE_SYMBOL = Symbol.intern(toString())
 
-    private val setProc = SetProc()
+    private val setProc      = SetProc()
     private val listToVector = ListToVector()
     private val vectorToList = VectorToList()
+    private val first        = First()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size != 2) {
@@ -184,7 +185,7 @@ object Quasiquote : ISpecialForm {
         }
         /* `#(unquote 1)  syntax is not valid */
         /* `,@#(list 1 2) syntax is not valid */
-        val first = First.first(set)
+        val first = first(set)
         if (Unquote.UNQUOTE_SYMBOL == first || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == first) {
             throw IllegalSyntaxException.of(first.toString(), expr, "invalid context within quasiquote")
         }

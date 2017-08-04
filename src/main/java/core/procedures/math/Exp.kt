@@ -13,6 +13,8 @@ class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxAr
     companion object {
         val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 
+        private val expt = Expt()
+
         fun exp(number: Number?) = when {
             Utils.isZero(number) -> Utils.inexactnessTaint(1L, number)
             number is Double || number is Float -> when {
@@ -22,7 +24,7 @@ class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxAr
             }
             number is Long || number is Int || number is Short || number is Byte -> Math.exp(number.toDouble())
             number is BigRatio && number.isOne -> Math.exp(1.0)
-            else -> Expt.expt(E, number!!)
+            else -> expt(E, number!!)
         }
     }
 }

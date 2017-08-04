@@ -8,18 +8,14 @@ import java.math.BigInteger
 
 class Abs : AFn<Number?, Number>(name = "abs", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
 
-    override operator fun invoke(arg: Number?) = abs(arg!!)
-
-    companion object {
-        fun abs(number: Number): Number = when (number) {
-            is Long       -> Math.abs(number)
-            is Int        -> Math.abs(number)
-            is Double     -> Math.abs(number)
-            is Float      -> Math.abs(number)
-            is BigInteger -> number.abs()
-            is BigDecimal -> number.abs()
-            is BigRatio   -> number.abs()
-            else          -> Math.abs(number.toLong())
-        }
+    override operator fun invoke(arg: Number?): Number = when (arg) {
+        is Long       -> Math.abs(arg)
+        is Int        -> Math.abs(arg)
+        is Double     -> Math.abs(arg)
+        is Float      -> Math.abs(arg)
+        is BigInteger -> arg.abs()
+        is BigDecimal -> arg.abs()
+        is BigRatio   -> arg.abs()
+        else          -> Math.abs(arg!!.toLong())
     }
 }

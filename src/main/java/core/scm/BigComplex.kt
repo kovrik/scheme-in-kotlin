@@ -22,6 +22,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         fun of(number: Number) = number as? BigComplex ?: BigComplex(number)
 
         private val sqrt = Sqrt()
+        private val expt = Expt()
     }
 
     /* Real part */
@@ -125,7 +126,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         }
         val r = magnitude()
         val t = angle()
-        val A = Multiplication(Expt.expt(r, c), Exp.exp(Multiplication(t, d.negate())))
+        val A = Multiplication(expt(r, c), Exp.exp(Multiplication(t, d.negate())))
         val B = Addition.add(Multiplication(c, t), Multiplication(d, Log.log(r)))
         val re = Multiplication(A, Cos.cos(B!!))
         val im = Multiplication(A, Sin.sin(B))
