@@ -9,15 +9,14 @@ open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
                                      mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java),
                                      restArgsType = OutputPort::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>) {
-        val outputPort = when {
-            args.size == 1 -> Repl.currentOutputPort
-            else -> args[1]!! as OutputPort
-        }
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        1    -> Repl.currentOutputPort
+        else -> args[1]!! as OutputPort
+    }.let {
         val arg = args[0]!!
         when (arg) {
-            is CharSequence, is Char -> outputPort.write(arg.toString())
-            else -> outputPort.write(Writer.write(arg))
+            is CharSequence, is Char -> it.write(arg.toString())
+            else -> it.write(Writer.write(arg))
         }
     }
 }
