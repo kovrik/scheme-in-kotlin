@@ -24,7 +24,7 @@ object Lambda : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
         if (form.size < 3) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         val params: List<Symbol?>
         var variadic = false
@@ -36,8 +36,8 @@ object Lambda : ISpecialForm {
                 val temp = HashSet<Any?>(lambdaArgs.size)
                 lambdaArgs.forEach {
                     when {
-                        it !is Symbol && !Cons.isPair(it) -> throw IllegalSyntaxException.of(toString(), form, "not an identifier: $it")
-                        temp.contains(it) -> throw IllegalSyntaxException.of(toString(), form, "duplicate argument name: $it")
+                        it !is Symbol && !Cons.isPair(it) -> throw IllegalSyntaxException(toString(), form, "not an identifier: $it")
+                        temp.contains(it) -> throw IllegalSyntaxException(toString(), form, "duplicate argument name: $it")
                         else -> temp.add(it)
                     }
                 }

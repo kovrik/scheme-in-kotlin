@@ -16,13 +16,13 @@ object Define : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         var id: Any? = form[1]
         /* Variable definition: (define <id> <value>) */
         if (id is Symbol) {
             if (form.size > 3) {
-                throw IllegalSyntaxException.of(toString(), form, "multiple expressions after identifier")
+                throw IllegalSyntaxException(toString(), form, "multiple expressions after identifier")
             }
             env.put(id, evaluator.eval(form[2], env))
         } else if (id is Cons<*>) {
@@ -35,7 +35,7 @@ object Define : ISpecialForm {
             val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
             lambdaArgs.forEach {
                 if (it !is Symbol && !Cons.isPair(it)) {
-                    throw IllegalSyntaxException.of(toString(), form, "not an identifier: ${Writer.write(it)}")
+                    throw IllegalSyntaxException(toString(), form, "not an identifier: ${Writer.write(it)}")
                 }
             }
             lambdaArgs.isProperList = Cons.isProperList(form[1])
@@ -48,12 +48,12 @@ object Define : ISpecialForm {
             /* Get procedure's name */
             // TODO (define (((a))) 1)
             // TODO (define ((a n) c) n)
-            id = id[0] as? Symbol ?: throw IllegalSyntaxException.of(toString(), form,
-                                                                     "not an identifier for procedure name: ${Writer.write(id)}")
+            id = id[0] as? Symbol ?: throw IllegalSyntaxException(toString(), form,
+                                                                  "not an identifier for procedure name: ${Writer.write(id)}")
             val lambda = Lambda.eval(l, env, evaluator).apply { name = id.toString() }
             env.put(id, lambda)
         } else {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         return id
     }

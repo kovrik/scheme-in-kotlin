@@ -11,7 +11,7 @@ object Unquote : ISpecialForm {
 
     // Implemented in quasiquote
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
-        throw IllegalSyntaxException.of(toString(), form, "not in quasiquote")
+        throw IllegalSyntaxException(toString(), form, "not in quasiquote")
     }
 
     override fun toString() = "unquote"

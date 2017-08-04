@@ -12,7 +12,7 @@ object Future : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         return if (form.size > 2) {
             val list = Cons.list<Any?>(Begin)

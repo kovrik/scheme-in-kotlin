@@ -14,7 +14,7 @@ object ThunkForm : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         /* Return a nullary function (lambda) that evaluates the given body */
         val body = when (form.size) {

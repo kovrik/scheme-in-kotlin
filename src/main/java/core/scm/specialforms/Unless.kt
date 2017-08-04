@@ -14,7 +14,7 @@ object Unless : ISpecialForm {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
         if (size < 3) {
-            throw IllegalSyntaxException.of(toString(), form, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException(toString(), form, "has ${size - 1} parts after keyword")
         }
         if (!Utils.toBoolean(evaluator.eval(form[1], env))) {
             for (i in 2..size - 2) { evaluator.eval(form[i], env) }

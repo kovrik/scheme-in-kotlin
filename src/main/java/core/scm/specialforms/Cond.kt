@@ -17,11 +17,11 @@ object Cond : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         for (i in 1..form.size - 1) {
-            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException.of(toString(), form, "invalid clause in subform")
+            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), form, "invalid clause in subform")
             val clause = subform[0]
             if (Else.ELSE_SYMBOL == clause) {
                 if (i != form.size - 1) {
-                    throw IllegalSyntaxException.of(toString(), form, "else must be the last clause in subform")
+                    throw IllegalSyntaxException(toString(), form, "else must be the last clause in subform")
                 }
                 return Begin.eval(subform, env, evaluator)
             }

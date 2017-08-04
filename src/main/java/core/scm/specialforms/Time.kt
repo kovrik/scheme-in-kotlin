@@ -19,7 +19,7 @@ object Time : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         val start = System.nanoTime()
         for (i in 1..form.size - 2) {

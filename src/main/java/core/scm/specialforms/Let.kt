@@ -16,7 +16,7 @@ object Let : ISpecialForm {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {
-            throw IllegalSyntaxException.of(toString(), form)
+            throw IllegalSyntaxException(toString(), form)
         }
         /* Normal let:
          * (let ((id expr) ...) body ...+) */
@@ -25,15 +25,15 @@ object Let : ISpecialForm {
             val bindings = form[1] as List<*>
             /* Bind variables to fresh locations holding undefined values */
             bindings.forEach {
-                if (it !is List<*>) throw IllegalSyntaxException.of(toString(), form)
+                if (it !is List<*>) throw IllegalSyntaxException(toString(), form)
                 localEnv.put(it[0], Environment.UNDEFINED)
             }
             /* Evaluate inits */
             bindings.forEach {
                 when {
-                    it !is List<*> -> throw IllegalSyntaxException.of(toString(), form)
+                    it !is List<*> -> throw IllegalSyntaxException(toString(), form)
                     localEnv[it[0]] === Environment.UNDEFINED -> localEnv.put(it[0], evaluator.eval(it[1], env))
-                    else -> throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: ${it[0]}")
+                    else -> throw IllegalSyntaxException(toString(), form, "duplicate identifier: ${it[0]}")
                 }
             }
             /* Evaluate body */
@@ -43,7 +43,7 @@ object Let : ISpecialForm {
             // TODO Optimize and cleanup
             /* Named let:
              * (let proc-id ((arg-id init-expr) ...) body ...+) */
-            val name = form[1] as? Symbol ?: throw IllegalSyntaxException.of(toString(), form)
+            val name = form[1] as? Symbol ?: throw IllegalSyntaxException(toString(), form)
             /* Construct lambda */
             val lambdaArgs = Cons.list<Any?>()
             val initValues = Cons.list<Any?>()
@@ -51,7 +51,7 @@ object Let : ISpecialForm {
             for (binding in bindings) {
                 val (arg, init) = binding as List<*>
                 if (lambdaArgs.contains(arg)) {
-                    throw IllegalSyntaxException.of(toString(), form, "duplicate identifier: $arg")
+                    throw IllegalSyntaxException(toString(), form, "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
                 initValues.add(init)
@@ -69,7 +69,7 @@ object Let : ISpecialForm {
             /* Letrec has TCO */
             return LetRec.eval(letrec, Environment(env), evaluator)
         }
-        throw IllegalSyntaxException.of(toString(), form)
+        throw IllegalSyntaxException(toString(), form)
     }
 
     override fun toString() = "let"

@@ -10,7 +10,7 @@ object Else : ISpecialForm {
     val ELSE_SYMBOL = Symbol.intern(toString())
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
-        throw IllegalSyntaxException.of(toString(), form, "not allowed as an expression")
+        throw IllegalSyntaxException(toString(), form, "not allowed as an expression")
     }
 
     override fun toString() = "else"
