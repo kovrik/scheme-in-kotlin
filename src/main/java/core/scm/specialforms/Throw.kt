@@ -3,7 +3,6 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.ThrowableWrapper
 import core.exceptions.WrongTypeException
 
 object Throw : ISpecialForm {
@@ -14,7 +13,7 @@ object Throw : ISpecialForm {
         }
         evaluator.eval(form[1], env).let {
             when (it) {
-                is Throwable -> throw ThrowableWrapper(it)
+                is Throwable -> throw it
                 else         -> throw WrongTypeException(toString(), "Throwable", it)
             }
         }

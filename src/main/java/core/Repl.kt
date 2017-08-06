@@ -4,7 +4,6 @@ import core.environment.DefaultEnvironment
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.ExInfoException
-import core.exceptions.ThrowableWrapper
 import core.reader.FileReader
 import core.reader.Reader
 import core.reader.StringReader
@@ -82,9 +81,6 @@ object Repl {
                 env.put(id, result)
                 /* Print */
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")
-            } catch (e: ThrowableWrapper) {
-                /* Unwrap */
-                error(e.cause)
             } catch (e: Throwable) {
                 error(e)
             }

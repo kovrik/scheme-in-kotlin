@@ -4,7 +4,6 @@ import core.Repl
 import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantDelayException
-import core.exceptions.ThrowableWrapper
 import core.exceptions.UndefinedIdentifierException
 import core.procedures.io.Display
 import core.procedures.math.Addition
@@ -676,21 +675,20 @@ class SpecialFormTest : AbstractTest() {
         try {
             eval("(throw (new Exception))", env)
             fail()
-        } catch (e: ThrowableWrapper) {
-            assertEquals(Exception::class.java, e.cause?.javaClass)
+        } catch (e: Exception) {
+            // expected
         }
         try {
             eval("(throw (new NullPointerException \"BOOM\"))", env)
             fail()
-        } catch (e: ThrowableWrapper) {
-            assertEquals(NullPointerException::class.java, e.cause?.javaClass)
-            assertEquals("BOOM", e.cause?.message)
+        } catch (e: NullPointerException) {
+            // expected
         }
         try {
             eval("(throw (new StackOverflowError))", env)
             fail()
-        } catch (e: ThrowableWrapper) {
-            assertEquals(StackOverflowError::class.java, e.cause?.javaClass)
+        } catch (e: StackOverflowError) {
+            // expected
         }
     }
 

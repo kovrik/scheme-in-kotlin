@@ -4,9 +4,7 @@ import core.Repl
 import core.environment.Environment
 import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.ThrowableWrapper
 
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -27,11 +25,7 @@ object Time : ISpecialForm {
         }
         val result = evaluator.eval(form[form.size - 1], env)
         val diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
-        try {
-            Repl.currentOutputPort.writeln("elapsed time: $diff ms")
-        } catch (e: IOException) {
-            throw ThrowableWrapper(e)
-        }
+        Repl.currentOutputPort.writeln("elapsed time: $diff ms")
         return result
     }
 

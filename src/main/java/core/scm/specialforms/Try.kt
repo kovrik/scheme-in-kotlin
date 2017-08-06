@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.evaluator.Evaluator
 import core.evaluator.Reflector
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.ThrowableWrapper
 import core.scm.Cons
 import core.scm.Symbol
 
@@ -70,19 +69,17 @@ object Try : ISpecialForm {
             expressions.forEach { result = evaluator.eval(it, env) }
             return result
         } catch (e: Throwable) {
-            /* Unwrap if it is a ThrowableWrapper */
-            val ex = if (e is ThrowableWrapper) e.cause else e
             /* Check if we had catch block for that type of exception (OR for any superclass) */
             for (clazz in catches.keys) {
-                if (clazz.isAssignableFrom(ex.javaClass)) {
+                if (clazz.isAssignableFrom(e.javaClass)) {
                     /* Bind exception */
-                    env.put(catchBindings[clazz], ex)
+                    env.put(catchBindings[clazz], e)
                     /* Evaluate corresponding catch block */
                     return evaluator.eval(catches[clazz], env)
                 }
             }
             /* Unexpected exception, re-throw it */
-            throw ThrowableWrapper(e)
+            throw e
         } finally {
             /* And finally, evaluate finally block (if present) */
             fin?.let { evaluator.eval(fin, env) }

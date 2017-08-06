@@ -3,23 +3,10 @@ package core.scm
 import core.writer.Writer
 
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.ExecutionException
 
 class Promise : CompletableFuture<Any>(), IDeref {
 
-    override fun deref(): Any? = try {
-        get()
-    } catch (e: InterruptedException) {
-        when {
-            e.cause is RuntimeException -> throw e.cause as RuntimeException
-            else -> throw RuntimeException(e.message)
-        }
-    } catch (e: ExecutionException) {
-        when {
-            e.cause is RuntimeException -> throw e.cause as RuntimeException
-            else -> throw RuntimeException(e.message)
-        }
-    }
+    override fun deref(): Any? = get()
 
     override fun toString() = StringBuilder("#<promise").apply {
         when {
