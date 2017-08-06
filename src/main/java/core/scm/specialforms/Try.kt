@@ -28,9 +28,8 @@ object Try : ISpecialForm {
         val expressions = ArrayList<Any?>()
         /* Init and check syntax */
         for (i in 1..form.size - 1) {
-            val e = form[i]
-            if (e is List<*> && !e.isEmpty()) {
-                val expr = e
+            val expr = form[i]
+            if (expr is List<*> && !expr.isEmpty()) {
                 val op = expr[0]
                 if (FINALLY == op) {
                     if (i != form.size - 1) {
@@ -54,7 +53,8 @@ object Try : ISpecialForm {
                         else -> null
                     }
                     catches.put(clazz, catchExpr)
-                    val sym = expr[2] as? Symbol ?: throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
+                    val sym = expr[2] as? Symbol ?:
+                              throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
                     catchBindings.put(clazz, sym)
                     continue
                 } else {
@@ -66,7 +66,7 @@ object Try : ISpecialForm {
             if (hadCatch) {
                 throw IllegalSyntaxException("try: only catch or finally clause can follow catch in try expression")
             }
-            expressions.add(e)
+            expressions.add(expr)
         }
         /* Now Evaluate everything */
         try {
