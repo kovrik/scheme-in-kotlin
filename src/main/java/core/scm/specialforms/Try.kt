@@ -31,7 +31,7 @@ object Try : ISpecialForm {
             val expr = form[i]
             if (expr is List<*> && !expr.isEmpty()) {
                 val op = expr[0]
-                if (FINALLY == op) {
+                if (op == FINALLY) {
                     if (i != form.size - 1) {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
@@ -39,7 +39,7 @@ object Try : ISpecialForm {
                         fin = Cons.list<Any?>(Begin).apply { addAll(expr.subList(1, expr.size)) }
                     }
                     continue
-                } else if (CATCH == op) {
+                } else if (op == CATCH) {
                     if (expr.size < 3) {
                         throw IllegalSyntaxException("catch: bad syntax in form: $expr")
                     }
@@ -57,10 +57,6 @@ object Try : ISpecialForm {
                               throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
                     catchBindings.put(clazz, sym)
                     continue
-                } else {
-                    if (hadCatch) {
-                        throw IllegalSyntaxException("try: only catch or finally clause can follow catch in try expression")
-                    }
                 }
             }
             if (hadCatch) {
