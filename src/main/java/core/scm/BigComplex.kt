@@ -27,6 +27,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         private val log  = Log()
         private val multiplication = Multiplication()
         private val addition = Addition()
+        private val atan = Atan()
     }
 
     /* Real part */
@@ -169,10 +170,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
                 else -> throw ArithmeticException("Undefined for 0+0i")
             }
         } else if (re.signum() < 0) {
-            val atan = Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
+            val atan = atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
             return if (im.signum() >= 0) atan + Math.PI else atan - Math.PI
         } else {
-            return Atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
+            return atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
         }
     }
 
