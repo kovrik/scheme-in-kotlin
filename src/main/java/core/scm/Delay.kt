@@ -20,14 +20,12 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
             isCompletedExceptionally || isDone -> return value
             /* Do not allow delay to be forced twice */
             !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
-            else -> {
-                try {
-                    /* Always run delay in the current thread */
-                    complete(evaluator.eval(expr, env))
-                    return get()
-                } catch (e: Exception) {
-                    completeExceptionally(e)
-                }
+            else -> try {
+                /* Always run delay in the current thread */
+                complete(evaluator.eval(expr, env))
+                return get()
+            } catch (e: Exception) {
+                completeExceptionally(e)
                 return value
             }
         }
