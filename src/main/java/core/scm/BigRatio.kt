@@ -12,8 +12,8 @@ class BigRatio : Number, Comparable<BigRatio> {
         val ZERO = BigRatio(BigInteger.ZERO)
         val ONE  = BigRatio(BigInteger.ONE)
 
-        private val CONSTANTS = hashMapOf("-2" to BigInteger("-2").negate(),
-                                          "-1" to BigInteger.ONE.negate(),
+        private val CONSTANTS = hashMapOf("-2" to BigInteger("-2"),
+                                          "-1" to BigInteger("-1"),
                                           "0"  to BigInteger.ZERO,
                                           "1"  to BigInteger.ONE,
                                           "2"  to BigInteger("2"),
