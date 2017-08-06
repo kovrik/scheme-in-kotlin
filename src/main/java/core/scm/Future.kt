@@ -11,19 +11,17 @@ import java.util.concurrent.FutureTask
 open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
         FutureTask<Any?>(Callable { evaluator.eval(expr, env) }), IDeref {
 
-    override fun deref(): Any? {
-        try {
-            return get()
-        } catch (e: InterruptedException) {
-            when {
-                e.cause is RuntimeException -> throw e.cause as RuntimeException
-                else -> throw RuntimeException(e.message)
-            }
-        } catch (e: ExecutionException) {
-            when {
-                e.cause is RuntimeException -> throw e.cause as RuntimeException
-                else -> throw RuntimeException(e.message)
-            }
+    override fun deref() = try {
+        get()
+    } catch (e: InterruptedException) {
+        when {
+            e.cause is RuntimeException -> throw e.cause as RuntimeException
+            else -> throw RuntimeException(e.message)
+        }
+    } catch (e: ExecutionException) {
+        when {
+            e.cause is RuntimeException -> throw e.cause as RuntimeException
+            else -> throw RuntimeException(e.message)
         }
     }
 
