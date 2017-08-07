@@ -34,10 +34,10 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
             else -> {
                 val fl = f.toLong()
                 val sl = s.toLong()
-                try {
-                    return Math.addExact(fl, sl)
+                return try {
+                    Math.addExact(fl, sl)
                 } catch (e: ArithmeticException) {
-                    return BigInteger.valueOf(fl).add(BigInteger.valueOf(sl))
+                    BigInteger.valueOf(fl).add(BigInteger.valueOf(sl))
                 }
             }
         }
