@@ -12,7 +12,6 @@ import core.procedures.sets.SetProc
 import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Cons
-import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.isPair
 import core.scm.Cons.Companion.isProperList
 import core.scm.Cons.Companion.list
@@ -74,7 +73,7 @@ object Quasiquote : SpecialForm("quasiquote") {
         for (i in expr.indices) {
             val o = expr[i]
             /* Append quoted forms recursively */
-            if (o !is List<*> || o == EMPTY) {
+            if (o !is List<*> || o.isEmpty()) {
                 /* Check special cases: `(1 unquote 2) => `(1 . 2) */
                 if (i > 0 && o == Unquote.symbol) {
                     /* if UNQUOTE is just before the last element a */
