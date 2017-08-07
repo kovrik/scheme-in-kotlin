@@ -16,18 +16,18 @@ class MemberProc(override val name: String, inline private val predicate: AFn<An
     private val cdr = Cdr()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        val list = arg2 as List<*>?
-        if (list!!.isEmpty()) {
+        val list = arg2!! as List<*>
+        if (list.isEmpty()) {
             return false
         }
         var p = 0
-        var cons: Any? = list
+        var cons: Any = list
         while (cons is List<*> && !cons.isEmpty()) {
-            p += 1
             if (Utils.toBoolean(predicate(arg1, car(cons)))) {
                 return cons
             }
             cons = cdr(cons)
+            p += 1
         }
         /* Not found */
         if (p == list.size) {
