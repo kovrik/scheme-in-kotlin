@@ -279,7 +279,7 @@ class SpecialFormTest : AbstractTest() {
         try {
             eval("( . 1 2 3 4 5)", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchMethodException) {
             assertEquals("reflector: unable to find matching method 2 in class java.lang.Long", e.message)
         }
     }

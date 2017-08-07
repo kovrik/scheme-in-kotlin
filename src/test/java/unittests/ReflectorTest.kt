@@ -30,7 +30,7 @@ class ReflectorTest : AbstractTest() {
         try {
             eval("(Longzz/valueOf -15)", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: ClassNotFoundException) {
             // expected
         }
         try {
@@ -69,13 +69,13 @@ class ReflectorTest : AbstractTest() {
         try {
             eval("Math/BOOM", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchFieldException) {
             // expected
         }
         try {
             eval("java.awt.Point/x", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchFieldException) {
             // expected
         }
     }
@@ -88,7 +88,7 @@ class ReflectorTest : AbstractTest() {
         try {
             eval("(.-z point)", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchFieldException) {
             // expected
         }
     }
@@ -118,7 +118,7 @@ class ReflectorTest : AbstractTest() {
         try {
             eval("(.toStringz 123)", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchMethodException) {
             // expected
         }
         try {
@@ -144,7 +144,7 @@ class ReflectorTest : AbstractTest() {
         try {
             eval("(String. (new Object))", env)
             fail()
-        } catch (e: RuntimeException) {
+        } catch (e: NoSuchMethodException) {
             // expected
         }
     }

@@ -28,12 +28,9 @@ object Dot : SpecialForm(".") {
                 /* try static field first */
                 try {
                     return reflector.evalJavaStaticField(statik)
-                } catch (e: RuntimeException) {
-                    if (e.cause is NoSuchFieldException) {
-                        /* now try static no-args static method */
-                        return reflector.evalJavaMethod(statik, arrayOf<Any?>())
-                    }
-                    throw e
+                } catch (e: NoSuchFieldException) {
+                    /* now try static no-args static method */
+                    return reflector.evalJavaMethod(statik, arrayOf<Any?>())
                 }
             } else {
                 /* (. Classname-symbol method-symbol args) */

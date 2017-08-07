@@ -55,7 +55,7 @@ class Reflector {
                     val objectTypes = arrayOfNulls<Class<*>>(types.size).apply { fill(Object::class.java) }
                     return clazz.getMethod(name, *objectTypes)
                 } catch (ex2: NoSuchMethodException) {
-                    throw RuntimeException("reflector: unable to find matching method $name in class ${clazz.name}")
+                    throw NoSuchMethodException("reflector: unable to find matching method $name in class ${clazz.name}")
                 }
             }
         }
@@ -91,7 +91,7 @@ class Reflector {
 
     private fun unboxIfPossible(clazz: Class<*>) = UNBOXED.getOrDefault(clazz, clazz)
 
-    fun getClazz(name: String) = getClazzOrNull(name) ?: throw RuntimeException("reflector: class not found: $name")
+    fun getClazz(name: String) = getClazzOrNull(name) ?: throw ClassNotFoundException("reflector: class not found: $name")
 
     fun getClazzOrNull(name: String): Class<*>? = try {
         when {
@@ -117,9 +117,9 @@ class Reflector {
                 c.getConstructor(*newTypes).newInstance(*newArgs)
             }
         } catch (ex: NoSuchMethodException) {
-            throw RuntimeException("reflector: unable to find matching constructor for class ${c.name}")
+            throw NoSuchMethodException("reflector: unable to find matching constructor for class ${c.name}")
         } catch (e: IllegalAccessException) {
-            throw RuntimeException("reflector: unable to access constructor for class $clazz")
+            throw IllegalAccessException("reflector: unable to access constructor for class $clazz")
         }
     }
 
@@ -135,13 +135,13 @@ class Reflector {
             try {
                 val field = c.getField(fieldName)
                 if (!Modifier.isStatic(field.modifiers)) {
-                    throw RuntimeException("reflector: unable to find static field $fieldName of $className")
+                    throw NoSuchFieldException("reflector: unable to find static field $fieldName of $className")
                 }
                 return field.get(c)
             } catch (e: NoSuchFieldException) {
-                throw RuntimeException("reflector: unable to find static field $fieldName in class $className", e)
+                throw NoSuchFieldException("reflector: unable to find static field $fieldName in class $className")
             } catch (e: IllegalAccessException) {
-                throw RuntimeException("reflector: unable to access static field $fieldName in class $className")
+                throw IllegalAccessException("reflector: unable to access static field $fieldName in class $className")
             }
         }
         throw UndefinedIdentifierException(s)
@@ -182,7 +182,7 @@ class Reflector {
             try {
                 getMethod(instance?.javaClass, it, args, argTypes).invoke(instance, *args)
             } catch (e: IllegalAccessException) {
-                throw RuntimeException("reflector: unable to access method $it of $instance")
+                throw IllegalAccessException("reflector: unable to access method $it of $instance")
             } catch (e: InvocationTargetException) {
                 throw RuntimeException("reflector: reflection exception")
             }
@@ -194,9 +194,9 @@ class Reflector {
         try {
             instance?.javaClass?.getField(it)?.get(instance)
         } catch (e: NoSuchFieldException) {
-            throw RuntimeException("reflector: unable to find field $it of $instance")
+            throw NoSuchFieldException("reflector: unable to find field $it of $instance")
         } catch (e: IllegalAccessException) {
-            throw RuntimeException("reflector: unable to access method $it of $instance")
+            throw IllegalAccessException("reflector: unable to access method $it of $instance")
         }
     }
 
@@ -219,7 +219,7 @@ class Reflector {
         return try {
             method(null, *args)
         } catch (e: IllegalAccessException) {
-            throw RuntimeException("reflector: unable to access static method $methodName of ${clazz.name}")
+            throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
             throw RuntimeException("reflector: reflection exception")
         }
