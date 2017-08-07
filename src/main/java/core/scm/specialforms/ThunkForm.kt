@@ -21,6 +21,6 @@ object ThunkForm : SpecialForm("thunk") {
             2    -> form[1]
             else -> Cons.list<Any>(Begin).apply { addAll(form.subList(1, form.size)) }
         }
-        return Procedure("", arrayOfNulls(0), Thunk(body, env), env, false)
+        return Procedure("", emptyArray(), Thunk(body, env), env, false)
     }
 }

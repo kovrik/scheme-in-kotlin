@@ -25,7 +25,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
     internal val array: Array<Any?>
 
     constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
-        array = arrayOfNulls<Any>(0)
+        array = emptyArray()
     }
 
     constructor(size: Int, init: Any?) {

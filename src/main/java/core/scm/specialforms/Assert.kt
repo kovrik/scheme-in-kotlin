@@ -7,7 +7,7 @@ import core.utils.Utils
 
 object Assert : SpecialForm("assert") {
 
-    private val EMPTY = arrayOfNulls<StackTraceElement>(0)
+    private val EMPTY = emptyArray<StackTraceElement>()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val message = when (form.size) {
