@@ -118,10 +118,6 @@ class Reflector {
             }
         } catch (ex: NoSuchMethodException) {
             throw RuntimeException("reflector: unable to find matching constructor for class ${c.name}")
-        } catch (e: InstantiationException) {
-            throw RuntimeException(e.message)
-        } catch (e: InvocationTargetException) {
-            throw RuntimeException(e.message)
         } catch (e: IllegalAccessException) {
             throw RuntimeException("reflector: unable to access constructor for class $clazz")
         }
