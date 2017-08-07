@@ -16,7 +16,7 @@ import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.isPair
 import core.scm.Cons.Companion.isProperList
 import core.scm.Cons.Companion.list
-import core.scm.MutableVector
+import core.scm.Vector
 
 import kotlin.collections.Set
 
@@ -35,93 +35,74 @@ object Quasiquote : SpecialForm("quasiquote") {
     private val cons         = ConsProc()
     private val append       = Append()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (form.size != 2) {
-            throw IllegalSyntaxException(toString(), form)
-        }
-        return quasiquote(form[1]!!, env, evaluator)
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
+        2    -> quasiquote(form[1]!!, env, evaluator)
+        else -> throw IllegalSyntaxException(toString(), form)
     }
 
     /**
      * Implement Quasiquotation using Append and List:
-
+     *
      * 1. wrap each element, except for unquote-splicing forms, in a call to LIST
      * 2. APPEND the results
      * - quoted elements get processed recursively
      * - unquoted elements are passed to the call to LIST unprocessed
      * - unquote-splicing forms are inserted directly into the APPEND form
-
+     *
      * http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf
      */
     // TODO Simplify
-    private fun quasiquote(expr: Any, env: Environment, evaluator: Evaluator): Any? {
-        if (expr is MutableVector) {
-            /* Vector quasiquotation */
-            return quasiquoteVector(expr, env, evaluator)
-        } else if (expr is Set<*>) {
-            /* Set quasiquotation */
-            return quasiquoteSet(expr, env, evaluator)
-        } else if (expr is List<*>) {
-            val list = expr
-            if (list.isEmpty()) {
-                /* Nothing to process */
-                return list
-            }
-            /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-            if (isProperList(list) && Unquote.symbol == list[0]) {
-                if (list.size != 2) {
-                    throw IllegalSyntaxException(Unquote.toString(), expr, "unquote expects exactly one expression")
-                }
-                return evaluator.eval(list[1], env)
-            }
-            /* `,@(list 1 2) syntax is not valid */
-            if (isProperList(list) && list.size > 0 && UnquoteSplicing.symbol == list[0]) {
-                throw IllegalSyntaxException(list[0].toString(), expr, "invalid context within quasiquote")
-            }
-            /* List quasiquotation */
-            return quasiquoteList(0, expr, env, evaluator)
+    private fun quasiquote(expr: Any, env: Environment, evaluator: Evaluator): Any? = when {
+        /* Nothing to process */
+        expr is Collection<*> && expr.isEmpty() -> expr
+        /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
+        expr is List<*> && isProperList(expr) && expr[0] == Unquote.symbol -> when (expr.size) {
+            2    -> evaluator.eval(expr[1], env)
+            else -> throw IllegalSyntaxException(Unquote.toString(), expr, "unquote expects exactly one expression")
         }
+        expr is Vector  -> quasiquoteVector(expr, env, evaluator)
+        expr is Set<*>  -> quasiquoteSet(expr, env, evaluator)
+        expr is List<*> -> quasiquoteList(0, expr, env, evaluator)
         /* (quasiquote datum) => (quote datum) */
-        return expr
+        else -> expr
     }
 
     // TODO Optimize and simplify
-    private fun quasiquoteList(depth: Int, expr: Any, env: Environment, evaluator: Evaluator): Any? {
-        val list = expr as List<*>
-        val isList = isProperList(list)
+    private fun quasiquoteList(depth: Int, expr: List<*>, env: Environment, evaluator: Evaluator): Any? {
+        val isList = isProperList(expr)
         var result: Any? = list<Any>()
-        for (n in list.indices) {
-            val o = list[n]
+        for (i in expr.indices) {
+            val o = expr[i]
             /* Append quoted forms recursively */
-            if (o !is List<*> || EMPTY == o) {
+            if (o !is List<*> || o == EMPTY) {
                 /* Check special cases: `(1 unquote 2) => `(1 . 2) */
-                if (n > 0 && Unquote.symbol == o) {
+                if (i > 0 && o == Unquote.symbol) {
                     /* if UNQUOTE is just before the last element a */
-                    if (n != list.size - 2) {
-                        throw IllegalSyntaxException(Unquote.toString(), list, "expects exactly one expression")
+                    if (i != expr.size - 2) {
+                        throw IllegalSyntaxException(Unquote.toString(), expr, "expects exactly one expression")
                     }
                     /* Evaluate and append last element */
-                    return append(result, evaluator.eval(list[n + 1], env))
+                    return append(result, evaluator.eval(expr[i + 1], env))
                 }
-                if (isProperList(expr) && UnquoteSplicing.symbol == o) {
+                /* `,@(list 1 2) syntax is not valid */
+                if (isList && o == UnquoteSplicing.symbol) {
                     throw IllegalSyntaxException(UnquoteSplicing.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
                 result = append(result, list(o))
             } else {
-                val el = o
-                val op = el[0]
-                if (symbol == op) {
+                val op = o[0]
+                if (op == Quasiquote.symbol) {
                     /* Increase depth of quasiquotation */
                     result = append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
-                } else if (Unquote.symbol == op || UnquoteSplicing.symbol == op) {
-                    if (el.size != 2) {
+                } else if (op == Unquote.symbol || op == UnquoteSplicing.symbol) {
+                    if (o.size != 2) {
                         throw IllegalSyntaxException(op.toString(), expr, "expects exactly one expression")
                     }
                     if (depth == 0) {
                         /* Level of quasiquotation is 0 - evaluate! */
-                        val eval = evaluator.eval(el[1], env)
-                        if (UnquoteSplicing.symbol == op) {
+                        val eval = evaluator.eval(o[1], env)
+                        if (op == UnquoteSplicing.symbol) {
                             /* Unquote Splicing: splice and append elements into resulting list */
                             /* `(,@(list 1 2 3)) => `(1 2 3) */
                             if (eval is Collection<*>) {
@@ -157,19 +138,13 @@ object Quasiquote : SpecialForm("quasiquote") {
     }
 
     // TODO Optimize vector->list and list-<vector conversions
-    private fun quasiquoteVector(expr: Any, env: Environment, evaluator: Evaluator): Any {
-        val vector = expr as MutableVector
-        if (vector.size == 0) {
-            /* Nothing to process */
-            return vector
-        }
+    private fun quasiquoteVector(expr: Vector, env: Environment, evaluator: Evaluator): Any {
         /* `#(unquote 1)  syntax is not valid */
         /* `,@#(list 1 2) syntax is not valid */
-        if (Unquote.symbol == vector[0] || UnquoteSplicing.symbol == vector[0]) {
-            throw IllegalSyntaxException(vector[0]!!.toString(), expr, "invalid context within quasiquote")
+        if (expr[0] == Unquote.symbol || expr[0] == UnquoteSplicing.symbol) {
+            throw IllegalSyntaxException(expr[0]!!.toString(), expr, "invalid context within quasiquote")
         }
-        val list = vectorToList(expr)
-        val result = quasiquoteList(0, list, env, evaluator)
+        val result = quasiquoteList(0, vectorToList(expr), env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
         if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
@@ -177,20 +152,14 @@ object Quasiquote : SpecialForm("quasiquote") {
         return listToVector(result as List<*>)
     }
 
-    private fun quasiquoteSet(expr: Any, env: Environment, evaluator: Evaluator): Any {
-        val set = expr as Set<*>
-        if (set.isEmpty()) {
-            /* Nothing to process */
-            return set
-        }
+    private fun quasiquoteSet(expr: Set<*>, env: Environment, evaluator: Evaluator): Any {
         /* `#(unquote 1)  syntax is not valid */
         /* `,@#(list 1 2) syntax is not valid */
-        val first = first(set)
-        if (Unquote.symbol == first || UnquoteSplicing.symbol == first) {
+        val first = first(expr)
+        if (first == Unquote.symbol || first == UnquoteSplicing.symbol) {
             throw IllegalSyntaxException(first.toString(), expr, "invalid context within quasiquote")
         }
-        val list = Cons.list(set)
-        val result = quasiquoteList(0, list, env, evaluator)
+        val result = quasiquoteList(0, Cons.list(expr), env, evaluator)
         // FIXME throw "illegal use of '.'" in Reader instead
         if (!isProperList(result)) {
             throw IllegalSyntaxException("read: illegal use of '.'")
