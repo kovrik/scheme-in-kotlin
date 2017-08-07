@@ -8,7 +8,7 @@ import core.utils.Utils
 /* Syntax:
  * (or <test1> ...)
  */
-object Or : ISpecialForm {
+object Or : SpecialForm("or") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size > 1) {
@@ -22,6 +22,4 @@ object Or : ISpecialForm {
         }
         return false
     }
-
-    override fun toString() = "or"
 }

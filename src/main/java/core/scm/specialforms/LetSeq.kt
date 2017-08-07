@@ -10,7 +10,7 @@ import core.scm.Thunk
  *
  * <bindings>: ((<variable1> <init1>) ...)
  */
-object LetSeq : ISpecialForm {
+object LetSeq : SpecialForm("let*") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3 || form[1] !is List<*>) {
@@ -27,6 +27,4 @@ object LetSeq : ISpecialForm {
         for (i in 2..form.size - 2) { evaluator.eval(form[i], localEnv) }
         return Thunk(form[form.size - 1], localEnv)
     }
-
-    override fun toString() = "let*"
 }

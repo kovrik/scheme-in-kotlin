@@ -10,7 +10,7 @@ import core.utils.Utils
  * (if <test> <consequent> <alternate>)
  * (if <test> <consequent>)
  */
-object If : ISpecialForm {
+object If : SpecialForm("if") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
@@ -22,6 +22,4 @@ object If : ISpecialForm {
         else
             Thunk(form[3], env)
     }
-
-    override fun toString() = "if"
 }

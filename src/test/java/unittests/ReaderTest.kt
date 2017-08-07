@@ -193,16 +193,16 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadQuote() {
-        assertEquals(list(Quote.QUOTE_SYMBOL, 1L), reader.readOne("'1"))
-        assertEquals(list(Quote.QUOTE_SYMBOL, list<Any?>(1L, "test")), reader.readOne("'(1 \"test\")"))
-        assertEquals(list(Quote.QUOTE_SYMBOL, list(s(Quote.toString()), 1L)), reader.readOne("''1"))
+        assertEquals(list(Quote.symbol, 1L), reader.readOne("'1"))
+        assertEquals(list(Quote.symbol, list<Any?>(1L, "test")), reader.readOne("'(1 \"test\")"))
+        assertEquals(list(Quote.symbol, list(s(Quote.toString()), 1L)), reader.readOne("''1"))
     }
 
     @Test
     fun testReadQuasiquote() {
-        assertEquals(list(Quasiquote.QUASIQUOTE_SYMBOL, 1L), reader.readOne("`1"))
-        assertEquals(list(Quasiquote.QUASIQUOTE_SYMBOL, list<Any?>(1L, "test")), reader.readOne("`(1 \"test\")"))
-        assertEquals(list(Quasiquote.QUASIQUOTE_SYMBOL, list(s(Quote.toString()), 1L)), reader.readOne("`'1"))
+        assertEquals(list(Quasiquote.symbol, 1L), reader.readOne("`1"))
+        assertEquals(list(Quasiquote.symbol, list<Any?>(1L, "test")), reader.readOne("`(1 \"test\")"))
+        assertEquals(list(Quasiquote.symbol, list(s(Quote.toString()), 1L)), reader.readOne("`'1"))
     }
 
     @Test

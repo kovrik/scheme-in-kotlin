@@ -8,7 +8,7 @@ import core.utils.Utils
 /* Syntax:
  * (and <test1> ...)
  */
-object And : ISpecialForm {
+object And : SpecialForm("and") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size > 1) {
@@ -21,6 +21,4 @@ object And : ISpecialForm {
         }
         return true
     }
-
-    override fun toString() = "and"
 }

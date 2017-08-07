@@ -5,7 +5,7 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
 
-object Throw : ISpecialForm {
+object Throw : SpecialForm("throw") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
         if (form.size < 2) {
@@ -18,6 +18,4 @@ object Throw : ISpecialForm {
             }
         }
     }
-
-    override fun toString() = "throw"
 }

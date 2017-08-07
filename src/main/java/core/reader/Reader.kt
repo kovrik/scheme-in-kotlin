@@ -179,14 +179,14 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun readQuote(c: Char): List<*> {
         val quote = when (c) {
-            '\'' -> Quote.QUOTE_SYMBOL
-            '`'  -> Quasiquote.QUASIQUOTE_SYMBOL
+            '\'' -> Quote.symbol
+            '`'  -> Quasiquote.symbol
             ','  -> reader.read().toChar().let {
                 when (it) {
-                    '@'  -> UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL
+                    '@'  -> UnquoteSplicing.symbol
                     else -> {
                         reader.unread(it.toInt())
-                        Unquote.UNQUOTE_SYMBOL
+                        Unquote.symbol
                     }
                 }
             }

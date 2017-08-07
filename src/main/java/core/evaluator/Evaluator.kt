@@ -6,7 +6,7 @@ import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
 import core.procedures.IFn
 import core.scm.*
-import core.scm.specialforms.ISpecialForm
+import core.scm.specialforms.SpecialForm
 import core.scm.specialforms.New
 import core.utils.Utils
 import core.writer.Writer
@@ -67,7 +67,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     /* Evaluate Symbol */
     private fun Symbol.eval(env: Environment) = env.findOrDefault(this, Environment.UNDEFINED).let {
         when (it) {
-            is ISpecialForm -> throw IllegalSyntaxException(it.toString(), this)
+            is SpecialForm -> throw IllegalSyntaxException(it.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
             Environment.UNDEFINED -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
             else -> it
@@ -86,7 +86,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                 op = env.findOrDefault(op, Environment.UNDEFINED)
                 /* Inline Special Forms and Pure functions
                  * Doesn't help much, so commenting it out for now
-                 * if (op is ISpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
+                 * if (op is SpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
                 if (op === Environment.UNDEFINED) {
                     // TODO implement as a macro
                     /* Special case: constructor call If Symbol ends with . */
@@ -103,7 +103,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         /* Now decide how to evaluate everything else */
         return when (op) {
             /* Special Forms have special evaluation rules */
-            is ISpecialForm -> op.eval(this, env, this@Evaluator)
+            is SpecialForm -> op.eval(this, env, this@Evaluator)
             /* Op is a valid invokable object (procedure)
              * Scheme has applicative order, so evaluate all arguments first
              * and then invoke operator (IFn) via helper method */

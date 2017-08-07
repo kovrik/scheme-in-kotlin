@@ -13,13 +13,13 @@ import core.utils.Utils
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-object Cond : ISpecialForm {
+object Cond : SpecialForm("cond") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         for (i in 1..form.size - 1) {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), form, "invalid clause in subform")
             val clause = subform[0]
-            if (Else.ELSE_SYMBOL == clause) {
+            if (Else.symbol == clause) {
                 if (i != form.size - 1) {
                     throw IllegalSyntaxException(toString(), form, "else must be the last clause in subform")
                 }
@@ -31,6 +31,4 @@ object Cond : ISpecialForm {
         }
         return Unit
     }
-
-    override fun toString() = "cond"
 }

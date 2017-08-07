@@ -7,9 +7,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.scm.Cons
 
-object DynamicWind : ISpecialForm {
-
-    override fun toString() = "dynamic-wind"
+object DynamicWind : SpecialForm("dynamic-wind") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size

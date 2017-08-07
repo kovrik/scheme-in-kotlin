@@ -255,7 +255,7 @@ class SpecialFormTest : AbstractTest() {
     fun testEvalQuote() {
         assertEquals(0L, eval("'0", env))
         assertEquals("test", eval("'\"test\"", env))
-        assertEquals(Cons.list(Quote.QUOTE_SYMBOL, "test"), eval("''\"test\"", env))
+        assertEquals(Cons.list(Quote.symbol, "test"), eval("''\"test\"", env))
         assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env))
         assertEquals(Symbol.intern("0eab"), eval("'0eab", env))
         assertEquals(Symbol.intern("000eab"), eval("'000eab", env))

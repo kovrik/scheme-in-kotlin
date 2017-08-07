@@ -7,14 +7,12 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.scm.Symbol
 
-object Try : ISpecialForm {
+object Try : SpecialForm("try") {
 
     internal val CATCH = Symbol.intern("catch")
     internal val FINALLY = Symbol.intern("finally")
 
-    private val REFLECTOR = Reflector()
-
-    override fun toString() = "try"
+    private val reflector = Reflector()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.isEmpty()) {
@@ -46,7 +44,7 @@ object Try : ISpecialForm {
                     if (catches.isEmpty()) {
                         catchBindings = HashMap<Class<*>, Symbol>()
                     }
-                    val clazz = REFLECTOR.getClazz(expr[1].toString())
+                    val clazz = reflector.getClazz(expr[1].toString())
                     val catchExpr = when {
                         expr.size > 3 -> Cons.list<Any?>(Begin).apply { addAll(expr.subList(3, expr.size)) }
                         else -> null

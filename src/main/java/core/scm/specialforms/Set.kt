@@ -8,7 +8,7 @@ import core.scm.Symbol
 /* Syntax:
  * (set! <variable> <expression>)
  */
-object Set : ISpecialForm {
+object Set : SpecialForm("set!") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) {
         when {
@@ -17,6 +17,4 @@ object Set : ISpecialForm {
             else -> throw IllegalSyntaxException(toString(), form, "not an identifier: `${form[1]}`")
         }
     }
-
-    override fun toString() = "set!"
 }

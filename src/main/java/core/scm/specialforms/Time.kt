@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * Syntax:
  * (time <expression1> ... <expression n>)
  */
-object Time : ISpecialForm {
+object Time : SpecialForm("time") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
@@ -28,6 +28,4 @@ object Time : ISpecialForm {
         Repl.currentOutputPort.writeln("elapsed time: $diff ms")
         return result
     }
-
-    override fun toString() = "time"
 }

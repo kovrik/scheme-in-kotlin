@@ -12,7 +12,7 @@ import core.writer.Writer
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)
  */
-object Define : ISpecialForm {
+object Define : SpecialForm("define") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
@@ -57,6 +57,4 @@ object Define : ISpecialForm {
         }
         return id
     }
-
-    override fun toString() = "define"
 }

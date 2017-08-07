@@ -5,7 +5,7 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
 
-object Assert : ISpecialForm {
+object Assert : SpecialForm("assert") {
 
     private val EMPTY = arrayOfNulls<StackTraceElement>(0)
 
@@ -21,6 +21,4 @@ object Assert : ISpecialForm {
         }
         return true
     }
-
-    override fun toString() = "assert"
 }

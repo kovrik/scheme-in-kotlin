@@ -17,7 +17,6 @@ import core.scm.Cons.Companion.isPair
 import core.scm.Cons.Companion.isProperList
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
-import core.scm.Symbol
 
 import kotlin.collections.Set
 
@@ -25,9 +24,7 @@ import kotlin.collections.Set
  * (quasiquote <datum>)
  * `<datum>
  */
-object Quasiquote : ISpecialForm {
-
-    val QUASIQUOTE_SYMBOL = Symbol.intern(toString())
+object Quasiquote : SpecialForm("quasiquote") {
 
     private val setProc      = SetProc()
     private val listToVector = ListToVector()
@@ -71,14 +68,14 @@ object Quasiquote : ISpecialForm {
                 return list
             }
             /* Evaluate case when Quasiquote is immediately followed by Unquote: `,(+ 1 2) => 3 */
-            if (isProperList(list) && Unquote.UNQUOTE_SYMBOL == list[0]) {
+            if (isProperList(list) && Unquote.symbol == list[0]) {
                 if (list.size != 2) {
                     throw IllegalSyntaxException(Unquote.toString(), expr, "unquote expects exactly one expression")
                 }
                 return evaluator.eval(list[1], env)
             }
             /* `,@(list 1 2) syntax is not valid */
-            if (isProperList(list) && list.size > 0 && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == list[0]) {
+            if (isProperList(list) && list.size > 0 && UnquoteSplicing.symbol == list[0]) {
                 throw IllegalSyntaxException(list[0].toString(), expr, "invalid context within quasiquote")
             }
             /* List quasiquotation */
@@ -98,7 +95,7 @@ object Quasiquote : ISpecialForm {
             /* Append quoted forms recursively */
             if (o !is List<*> || EMPTY == o) {
                 /* Check special cases: `(1 unquote 2) => `(1 . 2) */
-                if (n > 0 && Unquote.UNQUOTE_SYMBOL == o) {
+                if (n > 0 && Unquote.symbol == o) {
                     /* if UNQUOTE is just before the last element a */
                     if (n != list.size - 2) {
                         throw IllegalSyntaxException(Unquote.toString(), list, "expects exactly one expression")
@@ -106,7 +103,7 @@ object Quasiquote : ISpecialForm {
                     /* Evaluate and append last element */
                     return append(result, evaluator.eval(list[n + 1], env))
                 }
-                if (isProperList(expr) && UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == o) {
+                if (isProperList(expr) && UnquoteSplicing.symbol == o) {
                     throw IllegalSyntaxException(UnquoteSplicing.toString(), expr, "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
@@ -114,17 +111,17 @@ object Quasiquote : ISpecialForm {
             } else {
                 val el = o
                 val op = el[0]
-                if (QUASIQUOTE_SYMBOL == op) {
+                if (symbol == op) {
                     /* Increase depth of quasiquotation */
                     result = append(result, list(quasiquoteList(depth + 1, o, env, evaluator)))
-                } else if (Unquote.UNQUOTE_SYMBOL == op || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == op) {
+                } else if (Unquote.symbol == op || UnquoteSplicing.symbol == op) {
                     if (el.size != 2) {
                         throw IllegalSyntaxException(op.toString(), expr, "expects exactly one expression")
                     }
                     if (depth == 0) {
                         /* Level of quasiquotation is 0 - evaluate! */
                         val eval = evaluator.eval(el[1], env)
-                        if (UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == op) {
+                        if (UnquoteSplicing.symbol == op) {
                             /* Unquote Splicing: splice and append elements into resulting list */
                             /* `(,@(list 1 2 3)) => `(1 2 3) */
                             if (eval is Collection<*>) {
@@ -168,7 +165,7 @@ object Quasiquote : ISpecialForm {
         }
         /* `#(unquote 1)  syntax is not valid */
         /* `,@#(list 1 2) syntax is not valid */
-        if (Unquote.UNQUOTE_SYMBOL == vector[0] || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == vector[0]) {
+        if (Unquote.symbol == vector[0] || UnquoteSplicing.symbol == vector[0]) {
             throw IllegalSyntaxException(vector[0]!!.toString(), expr, "invalid context within quasiquote")
         }
         val list = vectorToList(expr)
@@ -189,7 +186,7 @@ object Quasiquote : ISpecialForm {
         /* `#(unquote 1)  syntax is not valid */
         /* `,@#(list 1 2) syntax is not valid */
         val first = first(set)
-        if (Unquote.UNQUOTE_SYMBOL == first || UnquoteSplicing.UNQUOTE_SPLICING_SYMBOL == first) {
+        if (Unquote.symbol == first || UnquoteSplicing.symbol == first) {
             throw IllegalSyntaxException(first.toString(), expr, "invalid context within quasiquote")
         }
         val list = Cons.list(set)
@@ -200,6 +197,4 @@ object Quasiquote : ISpecialForm {
         }
         return setProc(result)
     }
-
-    override fun toString() = "quasiquote"
 }

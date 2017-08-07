@@ -5,7 +5,7 @@ import core.evaluator.Evaluator
 import core.evaluator.Reflector
 import core.exceptions.IllegalSyntaxException
 
-object New : ISpecialForm {
+object New : SpecialForm("new") {
 
     private val reflector = Reflector()
 
@@ -18,6 +18,4 @@ object New : ISpecialForm {
         val clazz = form[1].toString()
         return reflector.newInstance(clazz, constructorArgs)
     }
-
-    override fun toString() = "new"
 }

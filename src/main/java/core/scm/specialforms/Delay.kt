@@ -8,7 +8,7 @@ import core.scm.Cons
 /* Syntax:
  * (delay <expression>)
  */
-object Delay : ISpecialForm {
+object Delay : SpecialForm("delay") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when {
         form.size < 2  -> throw IllegalSyntaxException(toString(), form)
@@ -18,6 +18,4 @@ object Delay : ISpecialForm {
             core.scm.Delay(it, env, evaluator)
         }
     }
-
-    override fun toString() = "delay"
 }

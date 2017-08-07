@@ -12,7 +12,7 @@ import core.utils.Utils
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),
  * <clause>:   (<test> <expression> ...),
  **/
-object Do : ISpecialForm {
+object Do : SpecialForm("do") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
@@ -73,6 +73,4 @@ object Do : ISpecialForm {
         /* Test evaluated to #f */
         return Begin.eval(clause, tempEnv, evaluator)
     }
-
-    override fun toString() = "do"
 }

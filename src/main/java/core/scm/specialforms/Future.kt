@@ -8,7 +8,7 @@ import core.scm.Cons
 /* Syntax:
  * (future <expression>)
  */
-object Future : ISpecialForm {
+object Future : SpecialForm("future") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
@@ -22,6 +22,4 @@ object Future : ISpecialForm {
             core.scm.Future(form[1], env, evaluator).apply { Evaluator.executor.submit(this) }
         }
     }
-
-    override fun toString() = "future"
 }

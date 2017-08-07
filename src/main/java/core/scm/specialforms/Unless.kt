@@ -9,7 +9,7 @@ import core.utils.Utils
 /* Syntax:
  * (unless <test> body...)
  */
-object Unless : ISpecialForm {
+object Unless : SpecialForm("unless") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
@@ -22,6 +22,4 @@ object Unless : ISpecialForm {
         }
         return Unit
     }
-
-    override fun toString() = "unless"
 }

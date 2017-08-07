@@ -6,11 +6,9 @@ import core.evaluator.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 
-object Dot : ISpecialForm {
+object Dot : SpecialForm(".") {
 
     private val reflector = Reflector()
-
-    override fun toString() = "."
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size

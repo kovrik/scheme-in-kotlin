@@ -13,7 +13,7 @@ import core.procedures.equivalence.Eqv
  * Last clause may be:
  * (else <expression1> <expression2> ...)
  */
-object Case : ISpecialForm {
+object Case : SpecialForm("case") {
 
     val eqv = Eqv()
 
@@ -28,7 +28,7 @@ object Case : ISpecialForm {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), exprString, "invalid clause in subform")
             val datum = subform[0]
             when (datum) {
-                Else.ELSE_SYMBOL -> {
+                Else.symbol -> {
                     if (i != form.size - 1) {
                         throw IllegalSyntaxException(toString(), exprString, "else must be the last clause in subform")
                     }
@@ -40,6 +40,4 @@ object Case : ISpecialForm {
         }
         return Unit
     }
-
-    override fun toString() = "case"
 }

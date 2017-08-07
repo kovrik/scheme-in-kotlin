@@ -10,7 +10,7 @@ import core.scm.Thunk
 /* Syntax:
  * (thunk <body> ...)
  */
-object ThunkForm : ISpecialForm {
+object ThunkForm : SpecialForm("thunk") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
@@ -23,6 +23,4 @@ object ThunkForm : ISpecialForm {
         }
         return Procedure("", arrayOfNulls(0), Thunk(body, env), env, false)
     }
-
-    override fun toString() = "thunk"
 }

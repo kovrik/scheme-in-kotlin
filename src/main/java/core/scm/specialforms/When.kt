@@ -9,7 +9,7 @@ import core.utils.Utils
 /* Syntax:
  * (when <test> body...)
  */
-object When : ISpecialForm {
+object When : SpecialForm("when") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
@@ -22,6 +22,4 @@ object When : ISpecialForm {
         }
         return Unit
     }
-
-    override fun toString() = "when"
 }

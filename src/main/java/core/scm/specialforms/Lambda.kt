@@ -18,9 +18,7 @@ import kotlin.collections.HashSet
  * <variable>
  * (<variable1> ... <variablen> . <variablen+1>)
  */
-object Lambda : ISpecialForm {
-
-    override fun toString() = "lambda"
+object Lambda : SpecialForm("lambda") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
         if (form.size < 3) {
