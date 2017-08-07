@@ -11,20 +11,16 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
 
     override fun deref() = get()
 
-    override fun toString() = StringBuilder("#<future").apply {
-        when {
-            isDone -> {
-                append("!")
-                val value = try {
-                    deref()
-                } catch (e: Throwable) {
-                    append("error!").append(e)
-                }
-                append(if (value == this) "(this future)" else Writer.write(value)).append('>')
+    override fun toString() = when {
+        isDone -> StringBuilder("#<future!").apply {
+            try {
+                deref().let { append(if (it == this) "(this future)" else Writer.write(it)) }
+            } catch (e: Throwable) {
+                append("error!").append(e)
             }
-            isCancelled -> append(":cancelled>")
-            else        -> append(":pending>")
-        }
-    }.toString()
+        }.append('>').toString()
+        isCancelled -> "#<future:cancelled>"
+        else        -> "#<future:pending>"
+    }
 }
 

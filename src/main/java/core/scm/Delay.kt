@@ -37,20 +37,18 @@ class Delay(private val expr: Any?, private val env: Environment, private val ev
             throw e.cause!!
         }
 
-    override fun toString() = StringBuilder("#<delay").apply{
-        when {
-            isCompletedExceptionally -> {
-                val value = try {
-                    get()
-                } catch (e: Throwable) {
-                    e
-                }
-                append("!error!").append(if (value === this) "(this delay)" else Writer.write(value)).append('>')
+    override fun toString() = when {
+        isCompletedExceptionally -> StringBuilder("#<delay!error!").apply {
+            val value = try {
+                get()
+            } catch (e: Throwable) {
+                e
             }
-            isDone -> append("!").append(if (value === this) Writer.write("(this delay)") else Writer.write(value))
-            isCancelled  -> append(":cancelled>")
-            forced.get() -> append(":running>")
-            else         -> append(":pending>")
-        }
-    }.toString()
+            append(if (value === this) "(this delay)" else Writer.write(value)).append('>')
+        }.toString()
+        isDone       -> StringBuilder("#<delay!").append(Writer.write(if (value === this) "(this delay)" else value)).toString()
+        isCancelled  -> "#<delay:cancelled>"
+        forced.get() -> "#<delay:running>"
+        else         -> "#<delay:pending>"
+    }
 }
