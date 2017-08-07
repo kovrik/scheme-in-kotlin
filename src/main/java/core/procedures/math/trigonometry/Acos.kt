@@ -6,7 +6,8 @@ import core.scm.BigRatio
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1,
+                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when (arg) {
         is BigDecimal -> acos(arg)

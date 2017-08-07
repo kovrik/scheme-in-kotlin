@@ -16,7 +16,7 @@ class Round : AFn<Number?, Number>(name = "round", isPure = true, minArgs = 1, m
     private fun round(number: Number) = when (number) {
         is Long, is Int, is Short, is Byte, is BigInteger -> number
         is BigDecimal -> if (number.scale() == 0) number.round(MathContext.UNLIMITED) else number.round(Utils.DEFAULT_CONTEXT)
-        is BigRatio -> number.round()
-        else -> Math.rint(number.toDouble())
+        is BigRatio   -> number.round()
+        else          -> Math.rint(number.toDouble())
     }
 }

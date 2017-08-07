@@ -11,21 +11,21 @@ import java.math.BigInteger
 
 class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.Rational::class.java) {
 
-    private val abs = Abs()
 
-    override operator fun invoke(args: Array<out Any?>) = when {
-        args.isEmpty() -> 0L
-        args.size == 1 -> abs(args[0]!! as Number)
-        else           -> args.fold(args[0]!! as Number) { r, n -> gcd(r, n!! as Number) }
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        0    -> 0L
+        1    -> abs(args[0]!! as Number)
+        else -> args.fold(args[0]!! as Number) { r, n -> gcd(r, n!! as Number) }
     }
 
     companion object {
 
-        private val NAME = "gcd"
+        private const val NAME = "gcd"
 
         private val toInexact = ToInexact()
         private val toExact   = ToExact()
         private val lcm       = LCM()
+        private val abs       = Abs()
 
         internal fun gcd(a: Long, b: Long): Long {
             var alocal = a
