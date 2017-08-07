@@ -10,16 +10,9 @@ import core.scm.Cons
  */
 object Future : SpecialForm("future") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (form.size < 2) {
-            throw IllegalSyntaxException(toString(), form)
-        }
-        return if (form.size > 2) {
-            val list = Cons.list<Any?>(Begin)
-            list.addAll(form.subList(1, form.size))
-            core.scm.Future(list, env, evaluator).apply { Evaluator.executor.submit(this) }
-        } else {
-            core.scm.Future(form[1], env, evaluator).apply { Evaluator.executor.submit(this) }
-        }
-    }
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
+        1    -> throw IllegalSyntaxException(toString(), form)
+        2    -> form[1]
+        else -> Cons.list<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
+    }.let { core.scm.Future(it, env, evaluator).apply { Evaluator.executor.submit(this) } }
 }
