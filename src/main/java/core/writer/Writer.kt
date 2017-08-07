@@ -44,8 +44,8 @@ object Writer {
     private fun Map.Entry<*, *>.write() = "[${write(key)} ${write(value)}]"
 
     private fun Symbol.write() = when {
-        isEscape -> '|' + toString() + '|'
-        else -> toString()
+        escape -> '|' + toString() + '|'
+        else   -> toString()
     }
 
     private fun Number.write(): String = when (this) {

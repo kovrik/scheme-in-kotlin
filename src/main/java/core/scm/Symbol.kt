@@ -21,16 +21,17 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
 
         fun intern(name: String) = POOL.intern(Symbol(name))
 
-        private val SPECIAL_CHARS = "()[]{}\",'`;|\\"
-        /* Check if Symbol has Special Characters and needs to be escaped */
-        private fun hasSpecialChars(name: String) = when {
+        private const val SPECIAL_CHARS = "()[]{}\",'`;|\\"
+    }
+
+    /* Check if Symbol has Special Characters and needs to be escaped */
+    internal val escape: Boolean by lazy {
+        when {
             name.isEmpty() || Character.isDigit(name[0]) -> true
             name[0] == '#' && (name.length == 1 || name[1] != '%') -> true
             else -> name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.contains(it) }
         }
     }
-
-    val isEscape: Boolean = hasSpecialChars(name)
 
     override fun meta() = meta
 
