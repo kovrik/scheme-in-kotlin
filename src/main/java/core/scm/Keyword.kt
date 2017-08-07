@@ -14,7 +14,7 @@ class Keyword private constructor(override val name: String) :
         fun intern(value: String) = POOL.intern(Keyword(value))
     }
 
-    override fun toString() = ':' + name
+    override fun toString() = ":$name"
 
     override operator fun invoke(args: Array<out Any?>) = when {
         args.isEmpty() || args.size > 2 -> throw ArityException(toString() + " Keyword", 1, 2, args.size)
