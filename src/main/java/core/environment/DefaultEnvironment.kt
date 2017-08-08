@@ -368,6 +368,7 @@ class DefaultEnvironment : Environment(null) {
                 BoxCas(),
                 object : BoxCas() { override val name = "compare-and-set!" },
                 Reset(),
+                Swap(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
@@ -510,6 +511,14 @@ class DefaultEnvironment : Environment(null) {
                 "         ((or (inexact? lo) (inexact? hi))" +
                 "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
                 "         (else (do-find-between lo hi)))))))")
+
+            add("(define (swap! b fn . args)" +
+                "  (let while ()" +
+                "    (let* ((old-val @b)" +
+                "           (new-val (apply fn old-val args)))" +
+                "      (if (box-cas! b old-val new-val)" +
+                "          new-val" +
+                "          (while)))))")
         }
     }
 }
