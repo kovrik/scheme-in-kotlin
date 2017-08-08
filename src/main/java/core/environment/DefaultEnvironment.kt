@@ -41,6 +41,7 @@ import core.procedures.vectors.*
 import core.scm.Symbol
 import core.scm.specialforms.*
 import core.scm.specialforms.Set
+import core.scm.specialforms.Swap
 
 class DefaultEnvironment : Environment(null) {
 
@@ -368,7 +369,7 @@ class DefaultEnvironment : Environment(null) {
                 BoxCas(),
                 object : BoxCas() { override val name = "compare-and-set!" },
                 Reset(),
-                Swap(),
+//                Swap(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
@@ -460,6 +461,7 @@ class DefaultEnvironment : Environment(null) {
                 DynamicWind,
                 CallCC,
                 ThunkForm,
+                Swap,
                 // TODO Macros
                 DefineSyntax,
                 LetSyntax,
@@ -512,13 +514,13 @@ class DefaultEnvironment : Environment(null) {
                 "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
                 "         (else (do-find-between lo hi)))))))")
 
-            add("(define (swap! b fn . args)" +
-                "  (let while ()" +
-                "    (let* ((old-val @b)" +
-                "           (new-val (apply fn old-val args)))" +
-                "      (if (box-cas! b old-val new-val)" +
-                "          new-val" +
-                "          (while)))))")
+//            add("(define (swap! b fn . args)" +
+//                "  (let while ()" +
+//                "    (let* ((old-val @b)" +
+//                "           (new-val (apply fn old-val args)))" +
+//                "      (if (box-cas! b old-val new-val)" +
+//                "          new-val" +
+//                "          (while)))))")
         }
     }
 }
