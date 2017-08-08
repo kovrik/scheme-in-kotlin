@@ -90,7 +90,6 @@ object Utils {
         if (last == 'i' || last == 'I') {
             return processComplexNumber(number, exactness, radix)
         }
-
         /* Read exponent mark if present */
         var exactness = exactness
         val exponentRegex      = if (radix == 16) EXPONENT16_REGEX else EXPONENT_REGEX
@@ -100,9 +99,9 @@ object Utils {
         if (exponentRegex.matches(number)) {
             val split = number.split(exponentMarksRegex).dropLastWhile { it.isEmpty() }.toTypedArray()
             n = split[0]
-            val exponent = split[1]
-            try {
-                exp = processNumber(exponent, radix, true, false, null) as? Long ?: throw IllegalSyntaxException("read: bad exponent: $number")
+            exp = try {
+                processNumber(split[1], radix, true, false, null) as? Long ?:
+                              throw IllegalSyntaxException("read: bad exponent: $number")
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: $number")
             }
@@ -465,18 +464,18 @@ object Utils {
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
+        null               -> emptyList<Any?>().asSequence()
         is Iterable<*>     -> obj.asSequence()
         is CharSequence    -> obj.asSequence()
         is Map<*, *>       -> mapIterator(obj).asSequence()
         is Map.Entry<*, *> -> MapEntry(obj).asSequence()
-        null               -> emptyList<Any?>().asSequence()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
     fun toAssoc(obj: Any?): IAssoc = when (obj) {
+        null                -> Hashmap()
         is IAssoc           -> obj
         is Map.Entry<*, *>  -> MapEntry(obj)
-        null                -> Hashmap()
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
@@ -489,30 +488,28 @@ object Utils {
     /**
      * Up-cast two numbers to the same type
      */
-    fun upcast(f: Number, s: Number): Pair<Number, Number> {
-        return when {
-            f.javaClass == s.javaClass   -> Pair(f, s)
-            !isFinite(f) || !isFinite(s) -> Pair(f, s)
-            isInexact(f) || isInexact(s) -> when {
-                f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
-                f is BigRatio   || s is BigRatio   -> Pair(f.toDouble(),    s.toDouble())
-                f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
-                f is BigInteger || s is BigInteger -> Pair(toBigDecimal(f), toBigDecimal(s))
-                f is Double     || s is Double     -> Pair(f.toDouble(),    s.toDouble())
-                f is Float      || s is Float      -> Pair(f.toFloat(),     s.toFloat())
-                else                               -> Pair(f, s)
-            }
-            else -> when {
-                f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
-                f is BigRatio   || s is BigRatio   -> Pair(toBigRatio(f),   toBigRatio(s))
-                f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
-                f is BigInteger || s is BigInteger -> Pair(toBigInteger(f), toBigInteger(s))
-                f is Long       || s is Long       -> Pair(f.toLong(),      s.toLong())
-                f is Int        || s is Int        -> Pair(f.toInt(),       s.toInt())
-                f is Short      || s is Short      -> Pair(f.toShort(),     s.toShort())
-                f is Byte       || s is Byte       -> Pair(f.toByte(),      s.toByte())
-                else                               -> Pair(f, s)
-            }
+    fun upcast(f: Number, s: Number): Pair<Number, Number> = when {
+        f.javaClass == s.javaClass   -> Pair(f, s)
+        !isFinite(f) || !isFinite(s) -> Pair(f, s)
+        isInexact(f) || isInexact(s) -> when {
+            f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
+            f is BigRatio   || s is BigRatio   -> Pair(f.toDouble(),    s.toDouble())
+            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> Pair(toBigDecimal(f), toBigDecimal(s))
+            f is Double     || s is Double     -> Pair(f.toDouble(),    s.toDouble())
+            f is Float      || s is Float      -> Pair(f.toFloat(),     s.toFloat())
+            else                               -> Pair(f, s)
+        }
+        else -> when {
+            f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
+            f is BigRatio   || s is BigRatio   -> Pair(toBigRatio(f),   toBigRatio(s))
+            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> Pair(toBigInteger(f), toBigInteger(s))
+            f is Long       || s is Long       -> Pair(f.toLong(),      s.toLong())
+            f is Int        || s is Int        -> Pair(f.toInt(),       s.toInt())
+            f is Short      || s is Short      -> Pair(f.toShort(),     s.toShort())
+            f is Byte       || s is Byte       -> Pair(f.toByte(),      s.toByte())
+            else                               -> Pair(f, s)
         }
     }
 }
