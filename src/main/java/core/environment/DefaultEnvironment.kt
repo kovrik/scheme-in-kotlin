@@ -2,10 +2,7 @@ package core.environment
 
 import core.procedures.AFn
 import core.procedures.bit.*
-import core.procedures.box.BoxCas
-import core.procedures.box.BoxProc
-import core.procedures.box.SetBox
-import core.procedures.box.Unbox
+import core.procedures.box.*
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -370,6 +367,7 @@ class DefaultEnvironment : Environment(null) {
                 SetBox(),
                 BoxCas(),
                 object : BoxCas() { override val name = "compare-and-set!" },
+                Reset(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
