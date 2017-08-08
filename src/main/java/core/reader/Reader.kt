@@ -20,7 +20,6 @@ open class Reader : IReader {
     }
 
     companion object {
-        private val DOT = Symbol.intern(Dot.toString())
         private val DEREF = Symbol.intern("deref")
 
         private const val LINE_BREAKS = "\n\r"
@@ -316,7 +315,7 @@ open class Reader : IReader {
             reader.unread(c.toInt())
             val token = read()
             /* Check if current token is a dot */
-            if (DOT == token) {
+            if (token == Dot.symbol) {
                 if (!allowImproperList || dotPos > -1) {
                     throw IllegalSyntaxException("read: illegal use of '.'")
                 }
@@ -324,7 +323,7 @@ open class Reader : IReader {
                 dotPos = list.size
                 /* Dot Special Form is allowed as the first element of a list */
                 if (dotPos == 0) {
-                    list.add(DOT)
+                    list.add(Dot.symbol)
                 }
             } else {
                 list.add(token)

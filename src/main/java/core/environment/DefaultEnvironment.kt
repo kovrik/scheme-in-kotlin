@@ -52,14 +52,18 @@ class DefaultEnvironment : Environment(null) {
         /* Standard Procedures */
         STANDARD_PROCEDURES.forEach { put(Symbol.intern(it.name), it) }
         /* Constants and special cases, synonyms*/
-        put(Symbol.intern("call/cc"), CallCC)
-        put(Symbol.intern("pi"), Math.PI)
-        put(Symbol.intern("nil"), null)
-        put(Symbol.intern("null"), null)
-        put(Symbol.intern("eof"), null)
-        put(Symbol.intern("call/cc"), get(Symbol.intern("call-with-current-continuation")))
-        put(Symbol.intern("def"), get(Symbol.intern("define")))
-        put(Symbol.intern("fn"), get(Symbol.intern("lambda")))
+        put(Symbol.intern("call/cc"),   CallCC)
+        put(Symbol.intern("pi"),        Math.PI)
+        put(Symbol.intern("euler.0"),   Math.E)
+        put(Symbol.intern("phi.0"),     1.618033988749895)
+        put(Symbol.intern("gamma.0"),   0.5772156649015329)
+        put(Symbol.intern("catalan.0"), 0.915965594177219)
+        put(Symbol.intern("nil"),       null)
+        put(Symbol.intern("null"),      null)
+        put(Symbol.intern("eof"),       null)
+        put(Symbol.intern("call/cc"),   get(CallCC.symbol))
+        put(Symbol.intern("def"),       get(Define.symbol))
+        put(Symbol.intern("fn"),        get(Lambda.symbol))
     }
 
     companion object {
