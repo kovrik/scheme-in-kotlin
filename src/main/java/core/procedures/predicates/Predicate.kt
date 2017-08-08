@@ -67,6 +67,8 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_DECIMAL = Predicate("decimal?", { it is BigDecimal })
         val IS_FLOAT = Predicate("float?", { it is Float || it is Double })
         val IS_FN = Predicate("fn?", this::isProcedure)
+        val IS_BOX = Predicate("box?", { it is Box<*> })
+        val IS_ATOM = Predicate("atom?", { it is Box<*> })
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 

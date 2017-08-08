@@ -2,6 +2,10 @@ package core.environment
 
 import core.procedures.AFn
 import core.procedures.bit.*
+import core.procedures.box.BoxCas
+import core.procedures.box.BoxProc
+import core.procedures.box.SetBox
+import core.procedures.box.Unbox
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -359,6 +363,14 @@ class DefaultEnvironment : Environment(null) {
                 BitXor(),
                 object : BitXor() { override val name = "bitwise-xor" },
 
+                /* Boxes (Atoms) */
+                BoxProc(),
+                object : BoxProc() { override val name = "atom" },
+                Unbox(),
+                SetBox(),
+                BoxCas(),
+                object : BoxCas() { override val name = "compare-and-set!" },
+
                 /* Predicates */
                 Predicate.IS_NULL,
                 Predicate.IS_NIL,
@@ -411,7 +423,9 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_CLASS,
                 Predicate.IS_DECIMAL,
                 Predicate.IS_FLOAT,
-                Predicate.IS_FN)
+                Predicate.IS_FN,
+                Predicate.IS_BOX,
+                Predicate.IS_ATOM)
 
         private val SPECIAL_FORMS = arrayOf(
                 Delay,
