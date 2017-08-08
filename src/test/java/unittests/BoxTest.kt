@@ -53,4 +53,16 @@ class BoxTest : AbstractTest() {
         assertEquals(20L, eval("(let ((b (box (+ 1 2 3)))) (swap! b (lambda (n1 n2 n3) (+ n1 n2 n3)) 7 7))", env))
         assertEquals(20L, eval("(let ((b (box (+ 1 2 3)))) (swap! b (lambda (n . rest) (apply + n rest)) 7 7))", env))
     }
+
+    @Test
+    fun testEvalIsBox() {
+        assertEquals(true,  eval("(box?  (box  nil))", env))
+        assertEquals(true,  eval("(atom? (box  nil))", env))
+        assertEquals(true,  eval("(box?  (atom nil))", env))
+        assertEquals(true,  eval("(atom? (atom nil))", env))
+        assertEquals(false, eval("(box?  1)", env))
+        assertEquals(false, eval("(atom? 1)", env))
+        assertEquals(false, eval("(box?  (delay 1))", env))
+        assertEquals(false, eval("(atom? (promise))", env))
+    }
 }
