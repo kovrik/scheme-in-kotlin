@@ -378,9 +378,9 @@ object Utils {
         else          -> false
     }
 
-    fun isNonNegative(o: Any) = !isNegative(o)
+    fun isNonNegative(o: Any?) = !isNegative(o)
 
-    fun isExactNonNegativeInteger(o: Any) = isExact(o) && isInteger(o) && isNonNegative(o)
+    fun isExactNonNegativeInteger(o: Any?) = isExact(o) && isInteger(o) && isNonNegative(o)
 
     fun isReal(o: Any?) = o is Number && o !is BigComplex
 

@@ -1101,4 +1101,114 @@ class NumberTest : AbstractTest() {
             }
         }
     }
+
+    @Test
+    fun testIsNan() {
+        assertEquals(true,  eval("(nan? +nan.0)", env))
+        assertEquals(true,  eval("(nan? -nan.0)", env))
+        assertEquals(false, eval("(nan? +inf.0)", env))
+        assertEquals(false, eval("(nan? 0)", env))
+        try {
+            eval("(nan? 'a)", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
+    }
+
+    @Test
+    fun testIsFinite() {
+        assertEquals(true,  eval("(finite? 0)", env))
+        assertEquals(false, eval("(finite? +inf.0)", env))
+        assertEquals(false, eval("(finite? -inf.0)", env))
+        assertEquals(false, eval("(finite? -nan.0)", env))
+        try {
+            eval("(finite? 1+2i)", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
+        try {
+            eval("(finite? 'a)", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
+    }
+
+    @Test
+    fun testIsInfinite() {
+        assertEquals(false, eval("(infinite? 0)", env))
+        assertEquals(true,  eval("(infinite? +inf.0)", env))
+        assertEquals(true,  eval("(infinite? -inf.0)", env))
+        assertEquals(false, eval("(infinite? -nan.0)", env))
+        try {
+            eval("(infinite? 1+2i)", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
+        try {
+            eval("(infinite? 'a)", env)
+            fail()
+        } catch (e: WrongTypeException) {
+            // expected
+        }
+    }
+
+    @Test
+    fun testIsNatural() {
+        assertEquals(true,  eval("(exact-nonnegative-integer?  1)", env))
+        assertEquals(false, eval("(exact-nonnegative-integer? -1)", env))
+        assertEquals(false, eval("(exact-nonnegative-integer? 'a)", env))
+        assertEquals(true,  eval("(natural?  1)", env))
+        assertEquals(false, eval("(natural? -1)", env))
+        assertEquals(false, eval("(natural? 'a)", env))
+    }
+
+    @Test
+    fun testIsPositiveInteger() {
+        assertEquals(true,  eval("(positive-integer?  1)",    env))
+        assertEquals(true,  eval("(positive-integer?  1.0)",  env))
+        assertEquals(false, eval("(positive-integer?  1.3)",  env))
+        assertEquals(false, eval("(positive-integer?  0)",    env))
+        assertEquals(false, eval("(positive-integer? -1)",    env))
+        assertEquals(false, eval("(positive-integer?  1+2i)", env))
+        assertEquals(false, eval("(positive-integer? 'a)",    env))
+    }
+
+    @Test
+    fun testIsNegativeInteger() {
+        assertEquals(true,  eval("(negative-integer? -1)",    env))
+        assertEquals(true,  eval("(negative-integer? -1.0)",  env))
+        assertEquals(false, eval("(negative-integer? 1.3)",   env))
+        assertEquals(false, eval("(negative-integer? 0)",     env))
+        assertEquals(false, eval("(negative-integer? 1)",     env))
+        assertEquals(false, eval("(negative-integer? 1+2i)",  env))
+        assertEquals(false, eval("(negative-integer? 'a)",    env))
+    }
+
+    @Test
+    fun testIsNonPositiveInteger() {
+        assertEquals(true,  eval("(nonpositive-integer? -1)",    env))
+        assertEquals(true,  eval("(nonpositive-integer? -1.0)",  env))
+        assertEquals(true,  eval("(nonpositive-integer? 0)",     env))
+        assertEquals(true,  eval("(nonpositive-integer? 0.0)",   env))
+        assertEquals(false, eval("(nonpositive-integer? 1.3)",   env))
+        assertEquals(false, eval("(nonpositive-integer? 1)",     env))
+        assertEquals(false, eval("(nonpositive-integer? 1+2i)",  env))
+        assertEquals(false, eval("(nonpositive-integer? 'a)",    env))
+    }
+
+    @Test
+    fun testIsNonNegativeInteger() {
+        assertEquals(true,  eval("(nonnegative-integer?  1)",    env))
+        assertEquals(true,  eval("(nonnegative-integer?  1.0)",  env))
+        assertEquals(true,  eval("(nonnegative-integer?  0)",    env))
+        assertEquals(true,  eval("(nonnegative-integer?  0.0)",  env))
+        assertEquals(false, eval("(nonnegative-integer?  1.3)",  env))
+        assertEquals(false, eval("(nonnegative-integer?  -1)",   env))
+        assertEquals(false, eval("(nonnegative-integer?  1+2i)", env))
+        assertEquals(false, eval("(nonnegative-integer? 'a)",    env))
+    }
 }
