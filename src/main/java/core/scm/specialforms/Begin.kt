@@ -24,13 +24,13 @@ import core.scm.Thunk
  */
 object Begin : SpecialForm("begin") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (form.size <= 1) {
-            return Unit
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = when {
+        form.size <= 1 -> Unit
+        else -> {
+            for (i in 1..form.size - 2) {
+                evaluator.eval(form[i], env)
+            }
+            Thunk(form[form.size - 1], env)
         }
-        for (i in 1..form.size - 2) {
-            evaluator.eval(form[i], env)
-        }
-        return Thunk(form[form.size - 1], env)
     }
 }

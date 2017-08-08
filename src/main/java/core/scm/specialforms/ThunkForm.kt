@@ -13,11 +13,9 @@ import core.scm.Thunk
 object ThunkForm : SpecialForm("thunk") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        if (form.size < 2) {
-            throw IllegalSyntaxException(toString(), form)
-        }
         /* Return a nullary function (lambda) that evaluates the given body */
         val body = when (form.size) {
+            1    -> throw IllegalSyntaxException(toString(), form)
             2    -> form[1]
             else -> Cons.list<Any>(Begin).apply { addAll(form.subList(1, form.size)) }
         }

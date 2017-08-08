@@ -32,8 +32,7 @@ object Do : SpecialForm("do") {
             val (variable, init) = binding
             if (binding.size == 3) {
                 /* Put pair of Var and Step */
-                val step = binding[2]
-                steps.add(Cons.cons(variable, step))
+                steps.add(Cons.cons(variable, binding[2]))
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {
@@ -46,12 +45,10 @@ object Do : SpecialForm("do") {
         if (clause.isEmpty()) {
             throw IllegalSyntaxException(toString(), form)
         }
-        val test = clause[0]
-        val body = form.subList(3, form.size)
         /* While test evaluates to #f */
-        while (!Utils.toBoolean(evaluator.eval(test, tempEnv))) {
+        while (!Utils.toBoolean(evaluator.eval(clause[0], tempEnv))) {
             /* Evaluate command expressions */
-            for (e in body) {
+            for (e in form.subList(3, form.size)) {
                 /* Each iteration establishes bindings to fresh locations
                  * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
                 val environment = Environment(env).apply { putAll(tempEnv) }
@@ -63,12 +60,10 @@ object Do : SpecialForm("do") {
             /* Evaluate steps */
             val freshLocations = HashMap<Any?, Any?>(steps.size)
             for (step in steps) {
-                val variable = step!!.car()
-                val s = step.cdr()
-                freshLocations.put(variable, evaluator.eval(s, tempEnv))
+                freshLocations.put(step!!.car(), evaluator.eval(step.cdr(), tempEnv))
             }
             /* Now store results */
-            freshLocations.forEach { k, v -> tempEnv.put(k, v) }
+            tempEnv.putAll(freshLocations)
         }
         /* Test evaluated to #f */
         return Begin.eval(clause, tempEnv, evaluator)

@@ -6,8 +6,8 @@ import core.exceptions.IllegalSyntaxException
 
 object Unquote : SpecialForm("unquote") {
 
-    // Implemented in quasiquote
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
+        // Implemented in quasiquote
         throw IllegalSyntaxException(toString(), form, "not in quasiquote")
     }
 }
