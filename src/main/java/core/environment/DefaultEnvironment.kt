@@ -157,6 +157,7 @@ class DefaultEnvironment : Environment(null) {
                 ObjectsAppend(),
                 ObjectsLength(),
                 ObjectsToList(),
+                ObjectsRef(),
                 Subobjects(),
 
                 /* System */
