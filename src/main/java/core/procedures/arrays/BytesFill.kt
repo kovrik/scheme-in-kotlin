@@ -1,9 +1,9 @@
-package core.procedures.bytes
+package core.procedures.arrays
 
 import core.procedures.AFn
 
 class BytesFill : AFn<Any?, ByteArray>(name = "bytes-fill!", isPure = true, minArgs = 2, maxArgs = 2,
-                                       mandatoryArgsTypes = arrayOf<Class<*>>(ByteArray::class.java, Byte::class.java)) {
+                                       mandatoryArgsTypes = arrayOf<Class<*>>(ByteArray::class.java, Number::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): ByteArray {
         val b = (arg2 as Number).toByte()
