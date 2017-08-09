@@ -80,6 +80,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_ATOM = Predicate("atom?", { it is Box<*> })
         val IS_BYTE = Predicate("byte?", Utils::isByte)
         val IS_BYTES = Predicate("bytes?", { it is ByteArray })
+        val IS_VOID = Predicate("void?", { it is Unit })
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 

@@ -467,7 +467,8 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_BOX,
                 Predicate.IS_ATOM,
                 Predicate.IS_BYTE,
-                Predicate.IS_BYTES)
+                Predicate.IS_BYTES,
+                Predicate.IS_VOID)
 
         private val SPECIAL_FORMS = arrayOf(
                 Delay,

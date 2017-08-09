@@ -36,17 +36,20 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalEmpty() {
-        assertEquals(true, eval("(nil?   null)", env))
-        assertEquals(true, eval("(nil?   nil)", env))
-        assertEquals(true, eval("(null?  nil)", env))
-        assertEquals(true, eval("(null?  null)", env))
+        assertEquals(true,  eval("(nil?   null)", env))
+        assertEquals(true,  eval("(nil?   nil)", env))
+        assertEquals(true,  eval("(null?  nil)", env))
+        assertEquals(true,  eval("(null?  null)", env))
         assertEquals(false, eval("(null?  '())", env))
-        assertEquals(true, eval("(empty? '())", env))
+        assertEquals(true,  eval("(empty? '())", env))
         assertEquals(false, eval("(null?  '(1 2 3))", env))
         assertEquals(false, eval("(empty? '(1 2 3))", env))
         assertEquals(false, eval("(null?  1)", env))
         assertEquals(false, eval("(empty? 1)", env))
-        assertEquals(true, eval("(empty? (cdr '(1)))", env))
+        assertEquals(true,  eval("(empty? (cdr '(1)))", env))
+        assertEquals(true,  eval("(void? (void 1 2))", env))
+        assertEquals(false, eval("(void? null)", env))
+        assertEquals(false, eval("(void? 1)", env))
     }
 
     @Test
