@@ -4,7 +4,10 @@ import core.procedures.AFn
 import core.procedures.arrays.*
 import core.procedures.bit.*
 import core.procedures.box.*
-import core.procedures.bytes.*
+import core.procedures.bytes.BytesToString
+import core.procedures.bytes.ListToBytes
+import core.procedures.bytes.MakeBytes
+import core.procedures.bytes.StringToBytes
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -90,6 +93,7 @@ class DefaultEnvironment : Environment(null) {
                 BytesSet(),
                 BytesAppend(),
                 BytesLength(),
+                BytesRef(),
                 BytesToList(),
                 Subbytes(),
                 Shorts(),
@@ -98,6 +102,7 @@ class DefaultEnvironment : Environment(null) {
                 ShortsAppend(),
                 ShortsLength(),
                 ShortsToList(),
+                ShortsRef(),
                 Subshorts(),
                 Ints(),
                 IntsFill(),
@@ -105,6 +110,7 @@ class DefaultEnvironment : Environment(null) {
                 IntsAppend(),
                 IntsLength(),
                 IntsToList(),
+                IntsRef(),
                 Subints(),
                 Longs(),
                 LongsFill(),
@@ -112,6 +118,7 @@ class DefaultEnvironment : Environment(null) {
                 LongsAppend(),
                 LongsLength(),
                 LongsToList(),
+                LongsRef(),
                 Sublongs(),
                 Doubles(),
                 DoublesFill(),
@@ -119,6 +126,7 @@ class DefaultEnvironment : Environment(null) {
                 DoublesAppend(),
                 DoublesLength(),
                 DoublesToList(),
+                DoublesRef(),
                 Subdoubles(),
                 Floats(),
                 FloatsFill(),
@@ -126,6 +134,7 @@ class DefaultEnvironment : Environment(null) {
                 FloatsAppend(),
                 FloatsLength(),
                 FloatsToList(),
+                FloatsRef(),
                 Subfloats(),
                 Chars(),
                 CharsFill(),
@@ -133,6 +142,7 @@ class DefaultEnvironment : Environment(null) {
                 CharsAppend(),
                 CharsLength(),
                 CharsToList(),
+                CharsRef(),
                 Subchars(),
                 Booleans(),
                 BooleansAppend(),
@@ -140,6 +150,7 @@ class DefaultEnvironment : Environment(null) {
                 BooleansSet(),
                 BooleansLength(),
                 BooleansToList(),
+                BooleansRef(),
                 Subbooleans(),
                 Objects(),
                 ObjectsSet(),
@@ -432,7 +443,6 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Bytes */
                 MakeBytes(),
-                BytesRef(),
                 BytesToString(),
                 ListToBytes(),
                 StringToBytes(),
