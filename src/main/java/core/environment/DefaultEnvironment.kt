@@ -229,6 +229,8 @@ class DefaultEnvironment : Environment(null) {
                 CharPredicate.IS_CHAR_UPPER_CASE,
                 CharPredicate.IS_CHAR_LOWER_CASE,
                 CharPredicate.IS_CHAR_NUMERIC,
+                CharPredicate.IS_CHAR_TITLE_CASE,
+                CharPredicate.IS_CHAR_ISO_CONTROL,
                 CharProc.CHAR_TO_INTEGER,
                 CharProc.CHAR_UPCASE,
                 CharProc.CHAR_DOWNCASE,
