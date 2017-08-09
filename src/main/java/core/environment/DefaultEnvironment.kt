@@ -46,6 +46,7 @@ import core.procedures.meta.WIthMeta
 import core.procedures.predicates.Predicate
 import core.procedures.sets.*
 import core.procedures.strings.*
+import core.procedures.symbols.Gensym
 import core.procedures.symbols.StringToSymbol
 import core.procedures.symbols.SymbolToString
 import core.procedures.system.*
@@ -289,6 +290,7 @@ class DefaultEnvironment : Environment(null) {
                 SymbolToString(),
                 StringToSymbol(),
                 object : StringToSymbol() { override val name = "symbol" },
+                Gensym(),
 
                 /* Vectors */
                 MakeVector(),

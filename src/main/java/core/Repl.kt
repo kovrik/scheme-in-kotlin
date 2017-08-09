@@ -19,11 +19,11 @@ import java.util.concurrent.atomic.AtomicInteger
 
 object Repl {
 
-    private const val SYM_LIMIT = 25
+    private const val RES_SYM_LIMIT = 25
     private const val WELCOME = "Welcome to Scheme in Kotlin!"
     private const val PROMPT = "> "
 
-    private val symCounter = AtomicInteger(0)
+    private val resCounter = AtomicInteger(0)
     private val evaluator = Evaluator()
     private val environment = DefaultEnvironment().apply {
         /* Eval lib procedures */
@@ -37,8 +37,8 @@ object Repl {
 
     internal val reader = Reader(currentInputPort.inputStream)
 
-    private fun getNextID() = symCounter.incrementAndGet().let {
-        if (it == SYM_LIMIT) symCounter.set(0)
+    private fun getNextResID() = resCounter.incrementAndGet().let {
+        if (it == RES_SYM_LIMIT) resCounter.set(0)
         Symbol.intern("$$it")
     }
 
@@ -77,7 +77,7 @@ object Repl {
                     continue
                 }
                 /* Put result into environment */
-                val id = getNextID()
+                val id = getNextResID()
                 env.put(id, result)
                 /* Print */
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")

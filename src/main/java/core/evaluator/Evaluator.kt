@@ -11,12 +11,17 @@ import core.scm.specialforms.New
 import core.utils.Utils
 import core.writer.Writer
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class Evaluator(private val reflector: Reflector = Reflector(),
                 private val macroexpander: Macroexpander = Macroexpander()) {
 
     companion object {
+        /* Used by gensym to generate unique symbol ids */
+        private val id = AtomicInteger(0)
+        internal fun nextID() = id.incrementAndGet()
+
         /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)
         @Volatile var executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors(),
