@@ -452,6 +452,8 @@ object Utils {
         throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
     }
 
+    fun isByte(o: Any?) = (o is Number && o.toByte().toInt() == o.toInt())
+
     /**
      * Converts any Object to boolean.
      * Returns FALSE only if value is FALSE itself or null.

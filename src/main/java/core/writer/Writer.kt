@@ -4,6 +4,7 @@ import core.exceptions.ExInfoException
 import core.reader.Reader
 import core.scm.Cons
 import core.scm.Symbol
+import java.util.*
 import java.util.regex.Pattern
 
 object Writer {
@@ -30,10 +31,14 @@ object Writer {
         is Map<*, *>       -> o.write()
         is Map.Entry<*, *> -> o.write()
         is Set<*>          -> o.write()
+        is ByteArray       -> o.write()
         else               -> o.toString()
     }
 
-    private fun Class<*>.write() = "#<class:$name>"
+    private fun Class<*>.write() = when {
+        this.isArray -> "#<class:$simpleName>"
+        else -> "#<class:$name>"
+    }
 
     private fun Pattern.write() = "#\"${this}\""
 
@@ -110,4 +115,6 @@ object Writer {
         is ExInfoException -> toString()
         else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
     }
+
+    private fun ByteArray.write() = Arrays.toString(this)
 }

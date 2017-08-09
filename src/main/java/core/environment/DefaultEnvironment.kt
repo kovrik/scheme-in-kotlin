@@ -3,6 +3,16 @@ package core.environment
 import core.procedures.AFn
 import core.procedures.bit.*
 import core.procedures.box.*
+import core.procedures.bytes.Bytes
+import core.procedures.bytes.BytesAppend
+import core.procedures.bytes.BytesFill
+import core.procedures.bytes.BytesLength
+import core.procedures.bytes.BytesRef
+import core.procedures.bytes.BytesSet
+import core.procedures.bytes.BytesToList
+import core.procedures.bytes.BytesToString
+import core.procedures.bytes.ListToBytes
+import core.procedures.bytes.MakeBytes
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -93,6 +103,7 @@ class DefaultEnvironment : Environment(null) {
                 Pst(),
                 Eval(),
                 RandomProc(),
+                CryptoRandomBytes(),
                 HashCode(),
                 object : HashCode() { override val name = "hash" },
                 ToString(), object : ToString() { override val name = "str" },
@@ -361,6 +372,18 @@ class DefaultEnvironment : Environment(null) {
                 BitXor(),
                 object : BitXor() { override val name = "bitwise-xor" },
 
+                /* Bytes */
+                MakeBytes(),
+                Bytes(),
+                BytesLength(),
+                BytesRef(),
+                BytesSet(),
+                BytesFill(),
+                BytesAppend(),
+                BytesToList(),
+                BytesToString(),
+                ListToBytes(),
+
                 /* Boxes (Atoms) */
                 BoxProc(),
                 object : BoxProc() { override val name = "atom" },
@@ -434,7 +457,9 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_FLOAT,
                 Predicate.IS_FN,
                 Predicate.IS_BOX,
-                Predicate.IS_ATOM)
+                Predicate.IS_ATOM,
+                Predicate.IS_BYTE,
+                Predicate.IS_BYTES)
 
         private val SPECIAL_FORMS = arrayOf(
                 Delay,

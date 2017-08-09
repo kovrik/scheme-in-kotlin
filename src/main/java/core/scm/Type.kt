@@ -27,7 +27,9 @@ object Type {
             ExactNonNegativeInteger::class.java to Utils::isExactNonNegativeInteger,
             Real::class.java                    to Utils::isReal,
             BitOp::class.java                   to Utils::isBitOpSupported,
-            IAssoc::class.java                  to Utils::isAssoc
+            IAssoc::class.java                  to Utils::isAssoc,
+            Byte::class.java                    to Utils::isByte,
+            Byte::class.javaObjectType          to Utils::isByte
     )
 
     fun assertType(name: String, o: Any?, expected: Class<*>) = when {
