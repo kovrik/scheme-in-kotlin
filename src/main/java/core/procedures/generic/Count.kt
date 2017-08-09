@@ -10,6 +10,7 @@ open class Count : AFn<Any?, Int>(name = "count", isPure = true, minArgs = 1, ma
         is Map<*, *>       -> arg.size
         is Collection<*>   -> arg.size
         is CharSequence    -> arg.length
-        else               -> throw WrongTypeException(name, "List or Map or Vector or Set or String", arg)
+        is ByteArray       -> arg.size
+        else               -> throw WrongTypeException(name, "List or Map or Vector or Set or String or ByteArray", arg)
     }
 }

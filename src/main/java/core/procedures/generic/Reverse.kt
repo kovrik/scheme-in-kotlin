@@ -14,6 +14,7 @@ class Reverse : AFn<Any?, Any?>(name = "reverse", isPure = true, minArgs = 1, ma
         is Set<*>          -> Cons.list(arg as Collection<Any?>)
         is Map.Entry<*, *> -> MapEntry(arg.value, arg.key)
         is CharSequence    -> StringBuilder((arg as CharSequence?)!!).reverse().toString()
+        is ByteArray       -> arg.copyOf().apply { reverse() }
         is Vector -> {
             val array = arg.getArray()
             MutableVector(array.size, null).apply {

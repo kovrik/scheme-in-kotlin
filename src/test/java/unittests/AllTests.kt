@@ -29,6 +29,7 @@ import unittests.s7.S7Tests
         KeywordTest::class,
         ReflectorTest::class,
         BoxTest::class,
+        BytesTest::class,
         /* S7 Test Suite: https://ccrma.stanford.edu/software/snd/snd/s7.html */
         S7Tests::class)
 class AllTests

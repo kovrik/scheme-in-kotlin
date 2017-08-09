@@ -12,6 +12,7 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArg
         is List<*>   -> Cons.list<Any>()
         is Set<*>    -> HashSet<Any>()
         is Vector    -> MutableVector()
+        is ByteArray -> ByteArray(0)
         is Map<*, *> -> Hashmap()
         else         -> null
     }

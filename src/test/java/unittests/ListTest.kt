@@ -299,7 +299,7 @@ class ListTest : AbstractTest() {
             eval("(length 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("length: type mismatch; (expected: List or Map or Vector or Set or String, given: 1)", e.message)
+            // expected
         }
     }
 

@@ -461,7 +461,8 @@ object Utils {
      */
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
-    fun isSeqable(obj: Any?) = obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> || obj is Map.Entry<*, *>
+    fun isSeqable(obj: Any?) = obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> ||
+                               obj is Map.Entry<*, *> || obj is ByteArray
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
@@ -471,6 +472,7 @@ object Utils {
         is CharSequence    -> obj.asSequence()
         is Map<*, *>       -> mapIterator(obj).asSequence()
         is Map.Entry<*, *> -> MapEntry(obj).asSequence()
+        is ByteArray       -> obj.asSequence()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
