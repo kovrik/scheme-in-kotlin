@@ -87,6 +87,8 @@ class BytesTest : AbstractTest() {
     @Test
     fun testStringToBytes() {
         assertTrue(byteArrayOf(65, 112, 112, 108, 101) contentEquals eval("(string->bytes \"Apple\")", env) as ByteArray)
+        assertTrue(byteArrayOf(65, 112, 112, 108, 101) contentEquals eval("(string->bytes \"Apple\" \"US-ASCII\")", env) as ByteArray)
+        assertTrue(byteArrayOf(-2, -1, 0, 65, 0, 112, 0, 112, 0, 108, 0, 101) contentEquals eval("(string->bytes \"Apple\" \"UTF-16\")", env) as ByteArray)
         assertEquals("λ Apple", eval("(bytes->string (string->bytes \"λ Apple\"))", env))
     }
 }
