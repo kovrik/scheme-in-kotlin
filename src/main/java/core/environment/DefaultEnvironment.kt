@@ -1,6 +1,7 @@
 package core.environment
 
 import core.procedures.AFn
+import core.procedures.arrays.*
 import core.procedures.bit.*
 import core.procedures.box.*
 import core.procedures.bytes.*
@@ -100,6 +101,8 @@ class DefaultEnvironment : Environment(null) {
                 CharsSet(),
                 Booleans(),
                 BooleansSet(),
+                Objects(),
+                ObjectsSet(),
 
                 /* System */
                 Exit(),

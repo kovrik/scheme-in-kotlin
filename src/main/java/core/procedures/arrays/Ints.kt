@@ -1,4 +1,4 @@
-package core.procedures.interop
+package core.procedures.arrays
 
 import core.procedures.AFn
 
