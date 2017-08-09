@@ -464,7 +464,7 @@ object Utils {
     fun isSeqable(obj: Any?) = obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> ||
                                obj is Map.Entry<*, *> || obj is ByteArray || obj is ShortArray || obj is IntArray ||
                                obj is LongArray || obj is DoubleArray || obj is FloatArray || obj is BooleanArray ||
-                               obj is CharArray
+                               obj is CharArray || obj is Array<*>
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
@@ -482,6 +482,7 @@ object Utils {
         is FloatArray      -> obj.asSequence()
         is BooleanArray    -> obj.asSequence()
         is CharArray       -> obj.asSequence()
+        is Array<*>        -> obj.asSequence()
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 

@@ -35,7 +35,39 @@ class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 
             if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.length) {
                 return arg1[arg2.toInt()]
             }
+        } else if (arg1 is BooleanArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is CharArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
         } else if (arg1 is ByteArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is ShortArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is IntArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is LongArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is DoubleArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is FloatArray) {
+            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+                return arg1[arg2.toInt()]
+            }
+        } else if (arg1 is Array<*>) {
             if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
