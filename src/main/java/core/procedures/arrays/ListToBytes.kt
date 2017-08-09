@@ -1,4 +1,4 @@
-package core.procedures.bytes
+package core.procedures.arrays
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn

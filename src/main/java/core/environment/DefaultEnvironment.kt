@@ -5,7 +5,6 @@ import core.procedures.arrays.*
 import core.procedures.bit.*
 import core.procedures.box.*
 import core.procedures.bytes.BytesToString
-import core.procedures.bytes.ListToBytes
 import core.procedures.bytes.StringToBytes
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
@@ -95,6 +94,7 @@ class DefaultEnvironment : Environment(null) {
                 BytesRef(),
                 BytesToList(),
                 MakeBytes(),
+                ListToBytes(),
                 Subbytes(),
                 Shorts(),
                 ShortsFill(),
@@ -104,6 +104,7 @@ class DefaultEnvironment : Environment(null) {
                 ShortsToList(),
                 ShortsRef(),
                 MakeShorts(),
+                ListToShorts(),
                 Subshorts(),
                 Ints(),
                 IntsFill(),
@@ -113,6 +114,7 @@ class DefaultEnvironment : Environment(null) {
                 IntsToList(),
                 IntsRef(),
                 MakeInts(),
+                ListToInts(),
                 Subints(),
                 Longs(),
                 LongsFill(),
@@ -122,6 +124,7 @@ class DefaultEnvironment : Environment(null) {
                 LongsToList(),
                 LongsRef(),
                 MakeLongs(),
+                ListToLongs(),
                 Sublongs(),
                 Doubles(),
                 DoublesFill(),
@@ -131,6 +134,7 @@ class DefaultEnvironment : Environment(null) {
                 DoublesToList(),
                 DoublesRef(),
                 MakeDoubles(),
+                ListToDoubles(),
                 Subdoubles(),
                 Floats(),
                 FloatsFill(),
@@ -140,6 +144,7 @@ class DefaultEnvironment : Environment(null) {
                 FloatsToList(),
                 FloatsRef(),
                 MakeFloats(),
+                ListToFloats(),
                 Subfloats(),
                 Chars(),
                 CharsFill(),
@@ -149,6 +154,7 @@ class DefaultEnvironment : Environment(null) {
                 CharsToList(),
                 CharsRef(),
                 MakeChars(),
+                ListToChars(),
                 Subchars(),
                 Booleans(),
                 BooleansAppend(),
@@ -158,6 +164,7 @@ class DefaultEnvironment : Environment(null) {
                 BooleansToList(),
                 BooleansRef(),
                 MakeBooleans(),
+                ListToBooleans(),
                 Subbooleans(),
                 Objects(),
                 ObjectsSet(),
@@ -166,6 +173,7 @@ class DefaultEnvironment : Environment(null) {
                 ObjectsToList(),
                 ObjectsRef(),
                 MakeObjects(),
+                ListToObjects(),
                 Subobjects(),
 
                 /* System */
