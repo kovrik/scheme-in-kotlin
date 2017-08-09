@@ -1,8 +1,8 @@
-package core.procedures.bytes
+package core.procedures.interop
 
 import core.procedures.AFn
 
-class Bytes : AFn<Any?, ByteArray>(name = "bytes", isPure = true, restArgsType = Byte::class.java) {
+class Bytes : AFn<Any?, ByteArray>(name = "bytes", isPure = true, restArgsType = Number::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): ByteArray {
         val bytes = ByteArray(args.size)

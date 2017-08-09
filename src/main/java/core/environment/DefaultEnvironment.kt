@@ -3,18 +3,7 @@ package core.environment
 import core.procedures.AFn
 import core.procedures.bit.*
 import core.procedures.box.*
-import core.procedures.bytes.Bytes
-import core.procedures.bytes.BytesAppend
-import core.procedures.bytes.BytesFill
-import core.procedures.bytes.BytesLength
-import core.procedures.bytes.BytesRef
-import core.procedures.bytes.BytesSet
-import core.procedures.bytes.BytesToList
-import core.procedures.bytes.BytesToString
-import core.procedures.bytes.ListToBytes
-import core.procedures.bytes.MakeBytes
-import core.procedures.bytes.StringToBytes
-import core.procedures.bytes.Subbytes
+import core.procedures.bytes.*
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -95,6 +84,14 @@ class DefaultEnvironment : Environment(null) {
                 CharType(),
                 BigIntegerType(),
                 BigDecimalType(),
+                Bytes(),
+                Shorts(),
+                Ints(),
+                Longs(),
+                Doubles(),
+                Floats(),
+                Chars(),
+                Booleans(),
 
                 /* System */
                 Exit(),
@@ -380,7 +377,6 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Bytes */
                 MakeBytes(),
-                Bytes(),
                 BytesLength(),
                 BytesRef(),
                 BytesSet(),

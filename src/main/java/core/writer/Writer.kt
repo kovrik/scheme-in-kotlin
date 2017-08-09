@@ -32,6 +32,13 @@ object Writer {
         is Map.Entry<*, *> -> o.write()
         is Set<*>          -> o.write()
         is ByteArray       -> o.write()
+        is ShortArray      -> o.write()
+        is IntArray        -> o.write()
+        is LongArray       -> o.write()
+        is DoubleArray     -> o.write()
+        is FloatArray      -> o.write()
+        is CharArray       -> o.write()
+        is BooleanArray    -> o.write()
         else               -> o.toString()
     }
 
@@ -116,5 +123,12 @@ object Writer {
         else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
     }
 
-    private fun ByteArray.write() = Arrays.toString(this)
+    private fun ByteArray.write()    = Arrays.toString(this)
+    private fun ShortArray.write()   = Arrays.toString(this)
+    private fun IntArray.write()     = Arrays.toString(this)
+    private fun LongArray.write()    = Arrays.toString(this)
+    private fun DoubleArray.write()  = Arrays.toString(this)
+    private fun FloatArray.write()   = Arrays.toString(this)
+    private fun CharArray.write()    = Arrays.toString(this)
+    private fun BooleanArray.write() = Arrays.toString(this)
 }
