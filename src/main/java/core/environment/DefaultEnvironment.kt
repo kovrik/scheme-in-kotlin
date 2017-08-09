@@ -13,6 +13,8 @@ import core.procedures.bytes.BytesToList
 import core.procedures.bytes.BytesToString
 import core.procedures.bytes.ListToBytes
 import core.procedures.bytes.MakeBytes
+import core.procedures.bytes.StringToBytes
+import core.procedures.bytes.Subbytes
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
 import core.procedures.characters.CharProc
@@ -383,6 +385,8 @@ class DefaultEnvironment : Environment(null) {
                 BytesToList(),
                 BytesToString(),
                 ListToBytes(),
+                Subbytes(),
+                StringToBytes(),
 
                 /* Boxes (Atoms) */
                 BoxProc(),

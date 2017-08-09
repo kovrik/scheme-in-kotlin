@@ -76,4 +76,17 @@ class BytesTest : AbstractTest() {
         assertEquals("", eval("(bytes->string (bytes))", env))
         assertEquals("Apple", eval("(bytes->string (bytes 65 112 112 108 101))", env))
     }
+
+    @Test
+    fun testSubbytes() {
+        assertTrue(byteArrayOf(1, 2, 3, 4) contentEquals eval("(subbytes (bytes 1 2 3 4) 0)", env) as ByteArray)
+        assertTrue(byteArrayOf(2, 3, 4) contentEquals eval("(subbytes (bytes 1 2 3 4) 1)", env) as ByteArray)
+        assertTrue(byteArrayOf(2, 3) contentEquals eval("(subbytes (bytes 1 2 3 4) 1 3)", env) as ByteArray)
+    }
+
+    @Test
+    fun testStringToBytes() {
+        assertTrue(byteArrayOf(65, 112, 112, 108, 101) contentEquals eval("(string->bytes \"Apple\")", env) as ByteArray)
+        assertEquals("λ Apple", eval("(bytes->string (string->bytes \"λ Apple\"))", env))
+    }
 }
