@@ -6,7 +6,6 @@ import core.procedures.bit.*
 import core.procedures.box.*
 import core.procedures.bytes.BytesToString
 import core.procedures.bytes.ListToBytes
-import core.procedures.bytes.MakeBytes
 import core.procedures.bytes.StringToBytes
 import core.procedures.characters.CharComparison
 import core.procedures.characters.CharPredicate
@@ -95,6 +94,7 @@ class DefaultEnvironment : Environment(null) {
                 BytesLength(),
                 BytesRef(),
                 BytesToList(),
+                MakeBytes(),
                 Subbytes(),
                 Shorts(),
                 ShortsFill(),
@@ -103,6 +103,7 @@ class DefaultEnvironment : Environment(null) {
                 ShortsLength(),
                 ShortsToList(),
                 ShortsRef(),
+                MakeShorts(),
                 Subshorts(),
                 Ints(),
                 IntsFill(),
@@ -111,6 +112,7 @@ class DefaultEnvironment : Environment(null) {
                 IntsLength(),
                 IntsToList(),
                 IntsRef(),
+                MakeInts(),
                 Subints(),
                 Longs(),
                 LongsFill(),
@@ -119,6 +121,7 @@ class DefaultEnvironment : Environment(null) {
                 LongsLength(),
                 LongsToList(),
                 LongsRef(),
+                MakeLongs(),
                 Sublongs(),
                 Doubles(),
                 DoublesFill(),
@@ -127,6 +130,7 @@ class DefaultEnvironment : Environment(null) {
                 DoublesLength(),
                 DoublesToList(),
                 DoublesRef(),
+                MakeDoubles(),
                 Subdoubles(),
                 Floats(),
                 FloatsFill(),
@@ -135,6 +139,7 @@ class DefaultEnvironment : Environment(null) {
                 FloatsLength(),
                 FloatsToList(),
                 FloatsRef(),
+                MakeFloats(),
                 Subfloats(),
                 Chars(),
                 CharsFill(),
@@ -143,6 +148,7 @@ class DefaultEnvironment : Environment(null) {
                 CharsLength(),
                 CharsToList(),
                 CharsRef(),
+                MakeChars(),
                 Subchars(),
                 Booleans(),
                 BooleansAppend(),
@@ -151,6 +157,7 @@ class DefaultEnvironment : Environment(null) {
                 BooleansLength(),
                 BooleansToList(),
                 BooleansRef(),
+                MakeBooleans(),
                 Subbooleans(),
                 Objects(),
                 ObjectsSet(),
@@ -158,6 +165,7 @@ class DefaultEnvironment : Environment(null) {
                 ObjectsLength(),
                 ObjectsToList(),
                 ObjectsRef(),
+                MakeObjects(),
                 Subobjects(),
 
                 /* System */
@@ -443,7 +451,6 @@ class DefaultEnvironment : Environment(null) {
                 object : BitXor() { override val name = "bitwise-xor" },
 
                 /* Bytes */
-                MakeBytes(),
                 BytesToString(),
                 ListToBytes(),
                 StringToBytes(),
