@@ -9,66 +9,52 @@ class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 
     override operator fun invoke(args: Array<out Any?>) = invoke(args[0], args[1], args.getOrNull(2))
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
-        if (arg1 is Map<*, *>) {
-            return (arg1 as Map<Any?, Any?>).getOrDefault(arg2, arg3)
-        } else if (arg1 is Map.Entry<*, *>) {
-            if (Utils.isInteger(arg2)) {
+        when (arg1) {
+            is Map<*, *> -> return (arg1 as Map<Any?, Any?>).getOrDefault(arg2, arg3)
+            is Map.Entry<*, *> -> if (Utils.isInteger(arg2)) {
                 val i = (arg2 as Number).toInt()
                 when (i) {
                     0 -> return arg1.key
                     1 -> return arg1.value
                 }
             }
-        } else if (arg1 is List<*>) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is List<*> -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is Set<*>) {
-            if (arg1.contains(arg2)) {
+            is Set<*> -> if (arg1.contains(arg2)) {
                 return arg2
             }
-        } else if (arg1 is Vector) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is Vector -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is CharSequence) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.length) {
+            is CharSequence -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.length) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is BooleanArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is BooleanArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is CharArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is CharArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is ByteArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is ByteArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is ShortArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is ShortArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is IntArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is IntArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is LongArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is LongArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is DoubleArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is DoubleArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is FloatArray) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is FloatArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-        } else if (arg1 is Array<*>) {
-            if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is Array<*> -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
         }
