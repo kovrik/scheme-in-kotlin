@@ -23,15 +23,16 @@ class WrongTypeException : IllegalArgumentException {
                                                   Type.Rational::class.java   to "Rational",
                                                   BigComplex::class.java      to "Complex",
                                                   CharSequence::class.java    to "String",
-                                                  StringBuilder::class.java   to "MutableString",
-                                                  MutableString::class.java   to "MutableString",
+                                                  StringBuilder::class.java   to "Mutable String",
+                                                  MutableString::class.java   to "Mutable String",
                                                   IFn::class.java             to "Procedure",
                                                   AFn::class.java             to "Procedure",
                                                   Type.ProperList::class.java to "List",
                                                   IPort::class.java           to "Port",
-                                                  Map.Entry::class.java       to "MapEntry",
+                                                  Map.Entry::class.java       to "Map Entry",
                                                   IAssoc::class.java          to "Associative",
-                                                  IDeref::class.java          to "Delay or Promise or Future"
+                                                  IDeref::class.java          to "Delay or Promise or Future",
+                                                  MutableHashmap::class.java  to "Mutable Hashmap"
         )
     }
 }

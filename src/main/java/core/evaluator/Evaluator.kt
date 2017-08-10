@@ -6,8 +6,8 @@ import core.exceptions.ReentrantContinuationException
 import core.procedures.AFn
 import core.procedures.IFn
 import core.scm.*
-import core.scm.specialforms.SpecialForm
 import core.scm.specialforms.New
+import core.scm.specialforms.SpecialForm
 import core.utils.Utils
 import core.writer.Writer
 import java.util.concurrent.Executors
@@ -121,7 +121,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate hash map */
-    private fun Map<*, *>.eval(env: Environment) = Hashmap(size).apply { this@eval.forEach { k, v -> put(eval(k, env), eval(v, env)) } }
+    private fun Map<*, *>.eval(env: Environment) = MutableHashmap(size).apply {
+        this@eval.forEach { k, v -> put(eval(k, env), eval(v, env)) }
+    }
 
     /* Evaluate vector */
     private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }

@@ -1,15 +1,14 @@
 package unittests
 
 import core.exceptions.WrongTypeException
+import core.scm.Cons.Companion.list
 import core.scm.MutableString
 import core.scm.Symbol
 import core.scm.Vector
 import core.writer.Writer
-import org.junit.Test
-
-import core.scm.Cons.Companion.list
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Test
 
 class StringTest : AbstractTest() {
 
@@ -105,21 +104,21 @@ class StringTest : AbstractTest() {
             eval("(string-fill! \"\" #\\a)", env)
             fail()
         } catch (e: WrongTypeException) {
-            assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"\")", e.message)
+            assertEquals("string-fill!: type mismatch; (expected: Mutable String, given: \"\")", e.message)
         }
 
         try {
             eval("(string-fill! \"z\" #\\a)", env)
             fail()
         } catch (e: WrongTypeException) {
-            assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"z\")", e.message)
+            assertEquals("string-fill!: type mismatch; (expected: Mutable String, given: \"z\")", e.message)
         }
 
         try {
             eval("(string-fill! \"test1\" #\\a)", env)
             fail()
         } catch (e: WrongTypeException) {
-            assertEquals("string-fill!: type mismatch; (expected: MutableString, given: \"test1\")", e.message)
+            assertEquals("string-fill!: type mismatch; (expected: Mutable String, given: \"test1\")", e.message)
         }
 
         assertEquals(MutableString(""), eval("(string-fill! (make-string 0) #\\a)", env))
@@ -225,7 +224,7 @@ class StringTest : AbstractTest() {
             eval("(let ((s \"a\"  )) (string-set! s 0 #\\z) s)", env)
             fail()
         } catch (e: WrongTypeException) {
-            assertEquals("string-set!: type mismatch; (expected: MutableString, given: \"a\")", e.message)
+            assertEquals("string-set!: type mismatch; (expected: Mutable String, given: \"a\")", e.message)
         }
 
         try {
@@ -253,7 +252,7 @@ class StringTest : AbstractTest() {
             eval("(string-set! '(1 2 3) 2 #\\z)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("string-set!: type mismatch; (expected: MutableString, given: (1 2 3))", e.message)
+            assertEquals("string-set!: type mismatch; (expected: Mutable String, given: (1 2 3))", e.message)
         }
 
         try {

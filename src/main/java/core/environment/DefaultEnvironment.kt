@@ -419,6 +419,8 @@ class DefaultEnvironment : Environment(null) {
                 /* Hashmaps */
                 Find(),
                 HashMapProc(),
+                HashMapImmutableProc(),
+                HashMapToImmutableHashMap(),
                 Put(),
                 Key(),
                 Keys(),

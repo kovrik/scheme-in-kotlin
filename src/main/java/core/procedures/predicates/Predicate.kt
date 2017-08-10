@@ -85,8 +85,9 @@ class Predicate private constructor(override val name: String, inline private va
         private fun isMutable(o: Any?) = !isImmutable(o)
 
         private fun isImmutable(o: Any?) = when {
-            Vector::class.java == o?.javaClass -> true
-            String::class.java == o?.javaClass -> true
+            Vector::class.java  == o?.javaClass -> true
+            String::class.java  == o?.javaClass -> true
+            Hashmap::class.java == o?.javaClass -> true
             else -> false
         }
 

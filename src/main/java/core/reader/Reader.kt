@@ -367,7 +367,7 @@ open class Reader : IReader {
      * <hashmap> -> {<key1> <value1>, ..., <keyN> <valueN>}
      */
     @Throws(IOException::class)
-    private fun readHashmap() = Hashmap().apply {
+    private fun readHashmap() = MutableHashmap().apply {
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {
