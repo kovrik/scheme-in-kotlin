@@ -1,11 +1,6 @@
 package unittests
 
-import core.exceptions.WrongTypeException
 import core.scm.Cons
-import core.scm.MutableString
-import core.scm.Symbol
-import core.scm.Vector
-import core.writer.Writer
 import org.junit.Test
 
 import org.junit.Assert.assertEquals
@@ -79,7 +74,7 @@ class BytesTest : AbstractTest() {
     }
 
     @Test
-    fun testSubbytes() {
+    fun testSubBytes() {
         assertTrue(byteArrayOf(1, 2, 3, 4) contentEquals eval("(subbytes (bytes 1 2 3 4) 0)", env) as ByteArray)
         assertTrue(byteArrayOf(2, 3, 4) contentEquals eval("(subbytes (bytes 1 2 3 4) 1)", env) as ByteArray)
         assertTrue(byteArrayOf(2, 3) contentEquals eval("(subbytes (bytes 1 2 3 4) 1 3)", env) as ByteArray)
