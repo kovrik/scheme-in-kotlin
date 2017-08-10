@@ -11,50 +11,50 @@ class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?): Any? {
         when (arg1) {
             is Map<*, *> -> return (arg1 as Map<Any?, Any?>).getOrDefault(arg2, arg3)
-            is Map.Entry<*, *> -> if (Utils.isInteger(arg2)) {
+            is Map.Entry<*, *> -> if (Utils.isExactNonNegativeInteger(arg2)) {
                 val i = (arg2 as Number).toInt()
                 when (i) {
                     0 -> return arg1.key
                     1 -> return arg1.value
                 }
             }
-            is List<*> -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is List<*> -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
             is Set<*> -> if (arg1.contains(arg2)) {
                 return arg2
             }
-            is Vector -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is Vector -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is CharSequence -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.length) {
+            is CharSequence -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.length) {
                 return arg1[arg2.toInt()]
             }
-            is BooleanArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is BooleanArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is CharArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is CharArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is ByteArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is ByteArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is ShortArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is ShortArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is IntArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is IntArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is LongArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is LongArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is DoubleArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is DoubleArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is FloatArray -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is FloatArray -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
-            is Array<*> -> if (Utils.isInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
+            is Array<*> -> if (Utils.isExactNonNegativeInteger(arg2) && (arg2 as Number).toInt() < arg1.size) {
                 return arg1[arg2.toInt()]
             }
         }
