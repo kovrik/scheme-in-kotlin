@@ -198,6 +198,8 @@ class DefaultEnvironment : Environment(null) {
                 SubArrays.Subbooleans(),
                 SubArrays.Subobjects(),
 
+                ToArray(),
+
                 /* System */
                 Exit(),
                 IsInstance(),
