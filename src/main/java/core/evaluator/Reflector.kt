@@ -182,7 +182,7 @@ class Reflector {
             try {
                 getMethod(instance?.javaClass, it, args, argTypes).invoke(instance, *args)
             } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("reflector: unable to access method $it of $instance")
+                throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
             } catch (e: InvocationTargetException) {
                 throw RuntimeException("reflector: reflection exception")
             }
@@ -194,9 +194,9 @@ class Reflector {
         try {
             instance?.javaClass?.getField(it)?.get(instance)
         } catch (e: NoSuchFieldException) {
-            throw NoSuchFieldException("reflector: unable to find field $it of $instance")
+            throw NoSuchFieldException("reflector: unable to find field $it of ${instance?.javaClass?.name}")
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access method $it of $instance")
+            throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
         }
     }
 
