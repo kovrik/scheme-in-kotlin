@@ -38,7 +38,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, localEnvironment).apply {
+        else -> Thunk(body, Environment(2, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
         })
@@ -46,7 +46,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, localEnvironment).apply {
+        else -> Thunk(body, Environment(3, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
             put(args[2], arg3)
@@ -55,7 +55,7 @@ class Procedure(override var name: String,
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?) = when {
         isBodyConst -> body
-        else -> Thunk(body, Environment(1, localEnvironment).apply {
+        else -> Thunk(body, Environment(4, localEnvironment).apply {
             put(args[0], arg1)
             put(args[1], arg2)
             put(args[2], arg3)
