@@ -21,7 +21,7 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArg
         is LongArray    -> LongArray(0)
         is DoubleArray  -> DoubleArray(0)
         is FloatArray   -> FloatArray(0)
-        is Array<*>     -> arrayOf(0)
+        is Array<*>     -> arrayOf<Any?>()
         else            -> null
     }
 }
