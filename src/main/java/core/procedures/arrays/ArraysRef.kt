@@ -8,117 +8,90 @@ object ArraysRef {
     class BytesRef : AFn<Any?, Byte>(name = "bytes-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(ByteArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Byte {
-            val bytes = arg1 as ByteArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as ByteArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= bytes.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return bytes[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class BooleansRef : AFn<Any?, Boolean>(name = "booleans-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(BooleanArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {
-            val booleans = arg1 as BooleanArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as BooleanArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= booleans.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return booleans[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class CharsRef : AFn<Any?, Char>(name = "chars-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(CharArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Char {
-            val chars = arg1 as CharArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as CharArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= chars.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return chars[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class DoublesRef : AFn<Any?, Double>(name = "doubles-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(DoubleArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Double {
-            val doubles = arg1 as DoubleArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as DoubleArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= doubles.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return doubles[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class FloatsRef : AFn<Any?, Float>(name = "floats-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(FloatArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Float {
-            val floats = arg1 as FloatArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as FloatArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= floats.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return floats[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class IntsRef : AFn<Any?, Int>(name = "ints-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(IntArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Int {
-            val ints = arg1 as IntArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as IntArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= ints.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return ints[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class LongsRef : AFn<Any?, Long>(name = "longs-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(LongArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Long {
-            val longs = arg1 as LongArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as LongArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= longs.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return longs[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class ObjectsRef : AFn<Any?, Any?>(name = "objects-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(Array<Any?>::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-            val objects = arg1 as Array<*>
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as Array<*>).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= objects.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return objects[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 
     class ShortsRef : AFn<Any?, Short>(name = "shorts-ref", isPure = true, minArgs = 2, maxArgs = 2,
             mandatoryArgsTypes = arrayOf(ShortArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
-        override operator fun invoke(arg1: Any?, arg2: Any?): Short {
-            val shorts = arg1 as ShortArray
+        override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as ShortArray).let {
             val pos = (arg2 as Number).toInt()
-            if (pos >= shorts.size) {
-                throw IndexOutOfBoundsException("$name: value out of range: $pos")
-            }
-            return shorts[pos]
+            if (pos >= it.size) throw IndexOutOfBoundsException("$name: value out of range: $pos")
+            it[pos]
         }
     }
 }

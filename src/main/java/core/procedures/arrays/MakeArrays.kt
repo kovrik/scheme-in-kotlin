@@ -12,7 +12,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): BooleanArray {
             val length = (args[0] as Number).toInt()
             val boolean = if (args.size == 1) false else args[1] as Boolean
-            return BooleanArray(length).apply { for (i in 0..length - 1) { set(i, boolean) } }
+            return BooleanArray(length).apply { fill(boolean) }
         }
     }
 
@@ -23,7 +23,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): ByteArray {
             val length = (args[0] as Number).toInt()
             val byte = if (args.size == 1) Byte.MIN_VALUE else (args[1] as Number).toByte()
-            return ByteArray(length).apply { for (i in 0..length - 1) { set(i, byte) } }
+            return ByteArray(length).apply { fill(byte) }
         }
     }
 
@@ -34,7 +34,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): CharArray {
             val length = (args[0] as Number).toInt()
             val char = if (args.size == 1) Character.MIN_VALUE else (args[1] as Number).toChar()
-            return CharArray(length).apply { for (i in 0..length - 1) { set(i, char) } }
+            return CharArray(length).apply { fill(char) }
         }
     }
 
@@ -45,7 +45,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): DoubleArray {
             val length = (args[0] as Number).toInt()
             val double = if (args.size == 1) Double.MIN_VALUE else (args[1] as Number).toDouble()
-            return DoubleArray(length).apply { for (i in 0..length - 1) { set(i, double) } }
+            return DoubleArray(length).apply { fill(double) }
         }
     }
 
@@ -56,7 +56,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): FloatArray {
             val length = (args[0] as Number).toInt()
             val float = if (args.size == 1) Float.MIN_VALUE else (args[1] as Number).toFloat()
-            return FloatArray(length).apply { for (i in 0..length - 1) { set(i, float) } }
+            return FloatArray(length).apply { fill(float) }
         }
     }
 
@@ -67,7 +67,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): IntArray {
             val length = (args[0] as Number).toInt()
             val int = if (args.size == 1) Int.MIN_VALUE else (args[1] as Number).toInt()
-            return IntArray(length).apply { for (i in 0..length - 1) { set(i, int) } }
+            return IntArray(length).apply { fill(int) }
         }
     }
 
@@ -78,7 +78,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): LongArray {
             val length = (args[0] as Number).toInt()
             val long = if (args.size == 1) Long.MIN_VALUE else (args[1] as Number).toLong()
-            return LongArray(length).apply { for (i in 0..length - 1) { set(i, long) } }
+            return LongArray(length).apply { fill(long) }
         }
     }
 
@@ -89,7 +89,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): Array<*> {
             val length = (args[0] as Number).toInt()
             val obj = if (args.size == 1) null else args[1]
-            return arrayOfNulls<Any?>(length).apply { for (i in 0..length - 1) { set(i, obj) } }
+            return arrayOfNulls<Any?>(length).apply { fill(obj) }
         }
     }
 
@@ -100,7 +100,7 @@ object MakeArrays {
         override operator fun invoke(args: Array<out Any?>): ShortArray {
             val length = (args[0] as Number).toInt()
             val short = if (args.size == 1) Short.MIN_VALUE else (args[1] as Number).toShort()
-            return ShortArray(length).apply { for (i in 0..length - 1) { set(i, short) } }
+            return ShortArray(length).apply { fill(short) }
         }
     }
 }
