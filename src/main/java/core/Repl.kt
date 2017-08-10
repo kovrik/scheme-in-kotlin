@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 object Repl {
 
-    private const val RES_SYM_LIMIT = 25
+    private const val RES_SYM_LIMIT = 10
     private const val WELCOME = "Welcome to Scheme in Kotlin!"
     private const val PROMPT = "> "
 
