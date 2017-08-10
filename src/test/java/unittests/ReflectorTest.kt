@@ -162,4 +162,13 @@ class ReflectorTest : AbstractTest() {
         assertEquals(BigDecimal("-123.456"), eval("(bigdec -123.456)", env))
         assertTrue(eval("(boolean 98)", env) as Boolean)
     }
+
+    @Test
+    fun testIsAccessible() {
+        assertEquals(1L, eval("(let ((a (new java.util.ArrayList)))" +
+                              "  (.add a 1)" +
+                              "  (.add a 2)" +
+                              "  (.add a 2)" +
+                              "  (.next (.iterator a)))", env))
+    }
 }

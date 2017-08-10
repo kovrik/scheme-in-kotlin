@@ -179,10 +179,16 @@ class Reflector {
         }
         /* Remove leading . char */
         return methodName.substring(1).let {
+            val m = getMethod(instance?.javaClass, it, args, argTypes)
             try {
-                getMethod(instance?.javaClass, it, args, argTypes).invoke(instance, *args)
+                m.invoke(instance, *args)
             } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+                m.isAccessible = true
+                try {
+                    m.invoke(instance, *args)
+                } catch (e: IllegalAccessException) {
+                    throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+                }
             } catch (e: InvocationTargetException) {
                 throw RuntimeException("reflector: reflection exception")
             }
@@ -192,11 +198,17 @@ class Reflector {
     /* Java Interop: instance field: (.-x (new java.awt.Point 15 4)) */
     private fun evalJavaInstanceField(field: String, instance: Any?) = field.substring(2).let {
         try {
-            instance?.javaClass?.getField(it)?.get(instance)
-        } catch (e: NoSuchFieldException) {
-            throw NoSuchFieldException("reflector: unable to find field $it of ${instance?.javaClass?.name}")
+            val f = instance?.javaClass?.getField(it)
+            try {
+                f?.get(instance)
+            } catch (e: IllegalAccessException) {
+                f?.isAccessible = true
+                f?.get(instance)
+            }
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+        } catch (e: NoSuchFieldException) {
+            throw NoSuchFieldException("reflector: unable to find field $it of ${instance?.javaClass?.name}")
         }
     }
 
@@ -219,7 +231,12 @@ class Reflector {
         return try {
             method(null, *args)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
+            method.isAccessible = true
+            try {
+                method.invoke(null, *args)
+            } catch (e: IllegalAccessException) {
+                throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
+            }
         } catch (e: InvocationTargetException) {
             throw RuntimeException("reflector: reflection exception")
         }
