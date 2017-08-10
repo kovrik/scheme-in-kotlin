@@ -82,6 +82,8 @@ object Repl {
                 /* Print */
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")
             } catch (e: Throwable) {
+                /* Store caught exception in $e var */
+                env.put(Symbol.intern("\$e"), e)
                 error(e)
             }
         }
