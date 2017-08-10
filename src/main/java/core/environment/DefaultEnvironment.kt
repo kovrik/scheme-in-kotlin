@@ -177,6 +177,7 @@ class DefaultEnvironment : Environment(null) {
                 MakeArrays.MakeChars(),
                 MakeArrays.MakeBooleans(),
                 MakeArrays.MakeObjects(),
+                MakeArrays.MakeArray(),
 
                 SubArrays.Subbytes(),
                 SubArrays.Subshorts(),

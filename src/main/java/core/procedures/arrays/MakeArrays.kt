@@ -103,4 +103,36 @@ object MakeArrays {
             return ShortArray(length).apply { fill(short) }
         }
     }
+
+    class MakeArray : AFn<Any?, Any>(name = "make-array", isPure = true, minArgs = 2,
+            mandatoryArgsTypes = arrayOf<Class<*>>(Class::class.java, Type.ExactNonNegativeInteger::class.java),
+            restArgsType = Type.ExactNonNegativeInteger::class.java) {
+
+        override operator fun invoke(args: Array<out Any?>): Any {
+            val clazz = args[0] as Class<*>
+            return when (args.size) {
+                2 -> {
+                    val size = (args[1] as Number).toInt()
+                    when (clazz) {
+                        Boolean::class.java -> BooleanArray(size)
+                        Char::class.java    -> CharArray(size)
+                        Byte::class.java    -> ByteArray(size)
+                        Short::class.java   -> ShortArray(size)
+                        Int::class.java     -> IntArray(size)
+                        Float::class.java   -> FloatArray(size)
+                        Long::class.java    -> LongArray(size)
+                        Double::class.java  -> DoubleArray(size)
+                        else                -> java.lang.reflect.Array.newInstance(clazz, size)
+                    }
+                }
+                else -> {
+                    val dims = IntArray(args.size - 1)
+                    for (i in 1..args.size - 1) {
+                        dims[i - 1] = (args[i] as Number).toInt()
+                    }
+                    java.lang.reflect.Array.newInstance(clazz, *dims)
+                }
+            }
+        }
+    }
 }
