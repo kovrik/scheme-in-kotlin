@@ -110,11 +110,15 @@ class Reflector {
         }
         try {
             return try {
-                c.getConstructor(*argTypes).newInstance(*args)
+                val ctor = c.getConstructor(*argTypes)
+                ctor.isAccessible = true
+                ctor.newInstance(*args)
             } catch (e: NoSuchMethodException) {
                 // no exact match found, try to find inexact match
                 val (newArgs, newTypes) = downcastArgsCopy(args, argTypes)
-                c.getConstructor(*newTypes).newInstance(*newArgs)
+                val ctor = c.getConstructor(*newTypes)
+                ctor.isAccessible = true
+                ctor.newInstance(*newArgs)
             }
         } catch (ex: NoSuchMethodException) {
             throw NoSuchMethodException("reflector: unable to find matching constructor for class ${c.name}")
