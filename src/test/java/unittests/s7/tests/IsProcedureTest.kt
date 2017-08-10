@@ -2,27 +2,44 @@ package unittests.s7.tests
 
 import core.exceptions.ArityException
 import core.exceptions.IllegalSyntaxException
-import org.junit.Test
-import unittests.AbstractTest
-
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Test
+import unittests.AbstractTest
 
 class IsProcedureTest : AbstractTest() {
 
     @Test
     fun testIsProcedure() {
-        assertEquals(true, eval("(procedure? car)", env))
-        assertEquals(true, eval("(procedure? procedure?)", env))
-        assertEquals(true, eval("(procedure? (lambda (x) x))", env))
-        assertEquals(true, eval("(let ((a (lambda (x) x))) (procedure? a))", env))
-        assertEquals(true, eval("(letrec ((a (lambda () (procedure? a)))) (a))", env))
-        assertEquals(true, eval("(let () (define (hi) 1) (procedure? hi))", env))
+        assertEquals(true,  eval("(procedure? car)", env))
+        assertEquals(true,  eval("(procedure? procedure?)", env))
+        assertEquals(true,  eval("(procedure? (lambda (x) x))", env))
+        assertEquals(true,  eval("(fn? car)", env))
+        assertEquals(true,  eval("(fn? procedure?)", env))
+        assertEquals(true,  eval("(fn? (lambda (x) x))", env))
+        assertEquals(true,  eval("(ifn? car)", env))
+        assertEquals(true,  eval("(ifn? procedure?)", env))
+        assertEquals(true,  eval("(ifn? (lambda (x) x))", env))
+        assertEquals(true,  eval("(let ((a (lambda (x) x))) (procedure? a))", env))
+        assertEquals(true,  eval("(letrec ((a (lambda () (procedure? a)))) (a))", env))
+        assertEquals(true,  eval("(let () (define (hi) 1) (procedure? hi))", env))
+        assertEquals(false, eval("(fn?  'a)", env))
+        assertEquals(true,  eval("(ifn? 'a)", env))
+        assertEquals(false, eval("(fn?  :a)", env))
+        assertEquals(true,  eval("(ifn? :a)", env))
+        assertEquals(false, eval("(fn?  {})", env))
+        assertEquals(true,  eval("(ifn? {})", env))
+        assertEquals(false, eval("(fn?  (first {:a 1}))", env))
+        assertEquals(true,  eval("(ifn? (first {:a 1}))", env))
+        assertEquals(false, eval("(fn?  [])", env))
+        assertEquals(true,  eval("(ifn? [])", env))
+        assertEquals(false, eval("(fn?  '())", env))
+        assertEquals(false, eval("(ifn? '())", env))
         val falses = arrayOf("(procedure? 'car)", "(procedure? '(lambda (x) x))",
-                "(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", "(procedure? 'and)", "(procedure? 'let)",
-                "(procedure? 'quasiquote)", "(procedure? 'cond)", "(procedure? 'do)", "(procedure? 'set!)",
-                "(procedure? \"hi\")", "(procedure? '(1 2))", "(procedure? #(1 2))", "(procedure? {})",
-                "(procedure? (find {1 2 3 4} 1))", "(procedure? [1 2 3])")
+                             "(let ((a 1)) (let ((a (lambda () (procedure? a)))) (a)))", "(procedure? 'and)",
+                             "(procedure? 'let)", "(procedure? 'quasiquote)", "(procedure? 'cond)", "(procedure? 'do)",
+                             "(procedure? 'set!)", "(procedure? \"hi\")", "(procedure? '(1 2))", "(procedure? #(1 2))",
+                             "(procedure? {})", "(procedure? (find {1 2 3 4} 1))", "(procedure? [1 2 3])")
         assertAllEqual(false, falses, env)
         try {
             eval("(procedure? begin)", env)
