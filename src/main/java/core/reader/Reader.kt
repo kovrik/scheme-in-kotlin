@@ -96,7 +96,7 @@ open class Reader : IReader {
             '#'  -> readHash()
             '('  -> readList(true, ')')
             '{'  -> readHashmap()
-            '['  -> readVector(']')
+            '['  -> readVectorMutable(']')
             ';'  -> readComment()
             '"'  -> readString()
             ':'  -> readKeyword()
@@ -120,8 +120,8 @@ open class Reader : IReader {
     private fun readHash(): Any {
         val c = reader.read().toChar()
         if (c == '(') {
-            /* Read Quoted vector #(...) */
-            return readVector(')').let {
+            /* Read Quoted Immutable Vector #(...) */
+            return readVectorImmutable(')').let {
                 when {
                     it.isEmpty() -> it
                     else -> Quote.quote(it)
@@ -346,12 +346,20 @@ open class Reader : IReader {
     }
 
     /**
-     * Read vector
+     * Read mutable vector
+     * Syntax:
+     * <vector> -> [<vector_contents>]
+     */
+    @Throws(IOException::class)
+    private fun readVectorMutable(terminator: Char) = MutableVector(readList(false, terminator).toTypedArray())
+
+    /**
+     * Read immutable vector
      * Syntax:
      * <vector> -> #(<vector_contents>)
      */
     @Throws(IOException::class)
-    private fun readVector(terminator: Char) = MutableVector(readList(false, terminator).toTypedArray())
+    private fun readVectorImmutable(terminator: Char) = Vector(readList(false, terminator).toTypedArray())
 
     /**
      * Read hashmap

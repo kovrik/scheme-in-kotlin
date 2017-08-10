@@ -22,13 +22,13 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalIsList() {
-        assertEquals(true, eval("(list? '())", env))
-        assertEquals(true, eval("(list? '(1 2 3))", env))
+        assertEquals(true,  eval("(list? '())", env))
+        assertEquals(true,  eval("(list? '(1 2 3))", env))
         assertEquals(false, eval("(list? #(1 2 3))", env))
         assertEquals(false, eval("(list? (cons 1 2))", env))
         assertEquals(false, eval("(list? 2)", env))
-        assertEquals(true, eval("(list? (car '((1 2 3))))", env))
-        assertEquals(true, eval("(list? (cdr '((1 2 3))))", env))
+        assertEquals(true,  eval("(list? (car '((1 2 3))))", env))
+        assertEquals(true,  eval("(list? (cdr '((1 2 3))))", env))
         assertEquals(false, eval("(list? (car '((1 . 2))))", env))
         assertEquals(false, eval("(list? (vector-ref #((1 2 3 . 4)) 0))", env))
         assertEquals(false, eval("(list? (vector-ref #((1 . 2)) 0))", env))

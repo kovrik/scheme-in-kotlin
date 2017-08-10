@@ -84,7 +84,11 @@ class Predicate private constructor(override val name: String, inline private va
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 
-        private fun isImmutable(o: Any?) = o !is MutableString && o !is MutableVector
+        private fun isImmutable(o: Any?) = when {
+            Vector::class.java == o?.javaClass -> true
+            String::class.java == o?.javaClass -> true
+            else -> false
+        }
 
         private fun isEmpty(o: Any?) = when (o) {
             is Collection<*> -> o.isEmpty()

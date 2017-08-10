@@ -543,7 +543,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Char::class.javaObjectType, eval("(class-of #\\A)", env))
         assertEquals(Symbol::class.javaObjectType, eval("(class-of 'test)", env))
         assertEquals(Class::class.javaObjectType, eval("(class-of (class-of 'test))", env))
-        assertEquals(MutableVector::class.javaObjectType, eval("(class-of #(1 2 3))", env))
+        assertEquals(Vector::class.javaObjectType, eval("(class-of #(1 2 3))", env))
         assertEquals(Cons::class.javaObjectType, eval("(class-of '(1 2 3))", env))
         assertEquals(Cons::class.javaObjectType, eval("(class-of '())", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of #t)", env))
