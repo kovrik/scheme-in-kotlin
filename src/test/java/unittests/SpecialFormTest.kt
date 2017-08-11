@@ -84,27 +84,6 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("delay: bad syntax in form: (delay)", e.message)
         }
-
-        /* Check that re-entrant promises are not allowed
-         * See http://lambda-the-ultimate.org/node/4686A
-         */
-        eval("(define x 0)", env)
-        val conundrum = "(define p" +
-                         "  (delay" +
-                         "    (if (= x 5)" +
-                         "      x" +
-                         "      (begin" +
-                         "        (set! x (+ x 1))" +
-                         "        (force p)" +
-                         "        (set! x (+ x 1))" +
-                         "        x))))"
-        eval(conundrum, env)
-        try {
-            eval("(force p)", env)
-            fail()
-        } catch (e: ReentrantDelayException) {
-            // success
-        }
     }
 
     @Test

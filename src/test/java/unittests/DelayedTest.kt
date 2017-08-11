@@ -31,6 +31,9 @@ class DelayedTest : AbstractTest() {
 
     @Test
     fun testReentrantDelay() {
+        /* Check that re-entrant promises are not allowed
+         * See http://lambda-the-ultimate.org/node/4686A
+         */
         eval("(define x 0)", env)
         val conundrum = "(define p" +
                         "  (delay" +
