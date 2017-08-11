@@ -19,9 +19,11 @@ class StringComparison private constructor(override val name: String,
         val STRING_GR_OR_EQ_CI = StringComparison("string-ci>=?", { f, s -> f.toLowerCase() >= s.toLowerCase() })
     }
 
+    override operator fun invoke(arg1: Any?, arg2: Any?) = predicate(arg1.toString(), arg2.toString())
+
     override operator fun invoke(args: Array<out Any?>) = when {
         args.size < 2  -> true
-        args.size == 2 -> predicate(args[0].toString(), args[1].toString())
-        else           -> (0..args.size - 2).all { predicate(args[it].toString(), args[it + 1].toString()) }
+        args.size == 2 -> invoke(args[0], args[1])
+        else           -> (0..args.size - 2).all { invoke(args[it], args[it + 1]) }
     }
 }
