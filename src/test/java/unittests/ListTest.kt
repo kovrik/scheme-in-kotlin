@@ -515,7 +515,7 @@ class ListTest : AbstractTest() {
         try {
             eval("(sort > [1 2 \"test\" 'a])", env)
             fail()
-        } catch (e: WrongTypeException) {
+        } catch (e: ClassCastException) {
             // expected
         }
     }

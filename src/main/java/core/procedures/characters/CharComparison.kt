@@ -21,9 +21,11 @@ class CharComparison private constructor(override val name: String,
         val CHAR_GR_OR_EQ_CI = CharComparison("char-ci>=?", { f, s -> f!!.toLowerCase() >= s!!.toLowerCase() })
     }
 
+    override operator fun invoke(arg1: Any?, arg2: Any?) = predicate(arg1 as Char, arg2 as Char)
+
     override operator fun invoke(args: Array<out Any?>) = when {
         args.size < 2  -> true
-        args.size == 2 -> predicate(args[0] as Char, args[1] as Char)
-        else           -> (0..args.size - 2).all { predicate(args[it] as Char, args[it + 1] as Char) }
+        args.size == 2 -> invoke(args[0], args[1])
+        else           -> (0..args.size - 2).all { invoke(args[it], args[it + 1]) }
     }
 }
