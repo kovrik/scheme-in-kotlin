@@ -21,6 +21,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     override val name = "vector"
 
+    // TODO Check access and immutability
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
@@ -38,12 +39,17 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         array = Arrays.copyOf(elements, elements.size)
     }
 
+    constructor(vector: Vector) : super(minArgs = 1, maxArgs = 1,
+                                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+        array = vector.array.copyOf()
+    }
+
     override val size: Int
         get() = array.size
 
     override fun contains(element: Any?) = array.contains(element)
 
-    operator fun get(index: Int) = getArray()[index]
+    operator fun get(index: Int) = array[index]
 
     override operator fun invoke(arg: Number?) = arg!!.toInt().let {
         when {
@@ -53,11 +59,11 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
     }
 
     override fun toString() = when {
-        getArray().isEmpty() -> OPEN + CLOSE
+        array.isEmpty() -> OPEN + CLOSE
         else -> StringBuilder(OPEN).apply {
-            val lastIndex = getArray().size - 1
+            val lastIndex = array.size - 1
             for (i in 0..lastIndex) {
-                val e = getArray()[i]
+                val e = array[i]
                 append(if (e === this@Vector) "(this vector)" else Writer.write(e))
                 if (i != lastIndex) {
                     append(' ')
@@ -77,9 +83,9 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     override fun containsAll(elements: Collection<*>) = elements.all { contains(it) }
 
-    override fun hashCode() = getArray().hashCode()
+    override fun hashCode() = array.hashCode()
 
-    override fun equals(other: Any?) = other is Vector && Arrays.equals(getArray(), other.getArray())
+    override fun equals(other: Any?) = other is Vector && Arrays.equals(array, other.array)
 
     override fun containsKey(key: Any?) = when {
         Utils.isInteger(key) -> size > (key as Number).toInt()

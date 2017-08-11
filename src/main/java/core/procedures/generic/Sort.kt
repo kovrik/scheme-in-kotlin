@@ -2,6 +2,7 @@ package core.procedures.generic
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.scm.MutableVector
 import core.scm.Vector
 import java.util.*
 
@@ -13,7 +14,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
                 try {
                     when (it) {
                         is List<*>   -> (it as List<Comparable<Any?>>).toMutableList().apply { sort() }
-                        is Vector    -> Vector(it.getArray().copyOf().apply { sort() })
+                        is Vector    -> MutableVector(it).apply { array.sort() }
                         is ByteArray -> it.copyOf().apply { sort() }
                         is Map<*, *> -> TreeMap(it as Map<*, *>?)
                         else         -> throw WrongTypeException(name, "Collection of comparable elements", it)
@@ -28,7 +29,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
             try {
                 when (it) {
                     is List<*>   -> (it as List<Comparable<Any?>>).toMutableList().apply { sortWith(comparator) }
-                    is Vector    -> Vector(it.getArray().copyOf().apply { sortWith(comparator) } )
+                    is Vector    -> MutableVector(it).apply { array.sortWith(comparator) }
                     is ByteArray -> it.copyOf().apply { sortedWith(comparator) }
                     is Map<*, *> -> TreeMap<Any?, Any?>(comparator).apply { putAll(it) }
                     else         -> throw WrongTypeException(name, "Collection of comparable elements", it)

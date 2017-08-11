@@ -15,7 +15,7 @@ class ReGroups : AFn<Any?, Any?>(name = "re-groups", isPure = true, minArgs = 1,
             0    -> matcher.group()
             else -> MutableVector(groupCount + 1, null).apply {
                 for (c in 0..groupCount) {
-                    getArray()[c] = matcher.group(c)
+                    array[c] = matcher.group(c)
                 }
             }
         }

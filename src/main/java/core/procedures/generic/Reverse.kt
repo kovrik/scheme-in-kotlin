@@ -23,14 +23,7 @@ class Reverse : AFn<Any?, Any?>(name = "reverse", isPure = true, minArgs = 1, ma
         is DoubleArray     -> arg.copyOf().apply { reverse() }
         is FloatArray      -> arg.copyOf().apply { reverse() }
         is Array<*>        -> arg.copyOf().apply { reverse() }
-        is Vector -> {
-            val array = arg.getArray()
-            MutableVector(array.size, null).apply {
-                for (i in array.indices) {
-                    this.array[i] = array[array.size - i - 1]
-                }
-            }
-        }
+        is Vector          -> MutableVector(arg).apply  { array.reverse() }
         else -> throw WrongTypeException(name, "List or Vector or Set or String", arg)
     }
 }

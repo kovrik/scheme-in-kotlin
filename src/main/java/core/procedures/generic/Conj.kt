@@ -22,7 +22,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
             }
             is Vector -> MutableVector(first.size + args.size - 1, null).apply {
                 for (i in 0..first.size - 1) { this[i] = first[i] }
-                System.arraycopy(args, 1, this.getArray(), first.size, args.size - 1)
+                System.arraycopy(args, 1, this.array, first.size, args.size - 1)
             }
             is ByteArray -> ByteArray(first.size + args.size - 1).apply {
                 for (i in 0..first.size - 1) { this[i] = first[i] }
@@ -33,10 +33,6 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
             is CharArray -> CharArray(first.size + args.size - 1).apply {
-                for (i in 0..first.size - 1) { this[i] = first[i] }
-                System.arraycopy(args, 1, this, first.size, args.size - 1)
-            }
-            is ByteArray -> ByteArray(first.size + args.size - 1).apply {
                 for (i in 0..first.size - 1) { this[i] = first[i] }
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
@@ -57,6 +53,10 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
             is FloatArray -> FloatArray(first.size + args.size - 1).apply {
+                for (i in 0..first.size - 1) { this[i] = first[i] }
+                System.arraycopy(args, 1, this, first.size, args.size - 1)
+            }
+            is Array<*> -> arrayOfNulls<Any?>(first.size + args.size - 1).apply {
                 for (i in 0..first.size - 1) { this[i] = first[i] }
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }

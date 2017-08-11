@@ -8,7 +8,7 @@ class VectorToImmutableVector : AFn<Vector?, Vector>(name = "vector->immutable-v
                                     mandatoryArgsTypes = arrayOf<Class<*>>(Vector::class.java)) {
 
     override operator fun invoke(arg: Vector?) = when (arg) {
-        is MutableVector -> Vector(arg.getArray())
+        is MutableVector -> Vector(arg)
         else -> arg as Vector
     }
 }
