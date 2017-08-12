@@ -32,8 +32,7 @@ object LetRec : SpecialForm("letrec") {
         }
         /* Evaluate inits */
         bindings.forEach {
-            if (it !is List<*>) throw IllegalSyntaxException(toString(), form)
-            localEnv.put(it[0], evaluator.eval(it[1], localEnv))
+            with (it as List<*>) { localEnv.put(it[0], evaluator.eval(it[1], localEnv)) }
         }
         /* Evaluate body */
         for (i in 2..form.size - 2) {
