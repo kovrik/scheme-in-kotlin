@@ -2,6 +2,7 @@ package unittests
 
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
+import core.scm.Vector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -211,5 +212,19 @@ class VectorTest : AbstractTest() {
         } catch (e: IndexOutOfBoundsException) {
             // success
         }
+    }
+
+    @Test
+    fun testVectorNext() {
+        assertEquals(null, eval("(next [])", env))
+        assertEquals(null, eval("(next [1])", env))
+        assertEquals(Vector(arrayOf(2L, 3L)), eval("(next [1 2 3])", env))
+    }
+
+    @Test
+    fun testVectorRest() {
+        assertEquals(Vector(), eval("(rest [])", env))
+        assertEquals(Vector(), eval("(rest [1])", env))
+        assertEquals(Vector(arrayOf(2L, 3L)), eval("(rest [1 2 3])", env))
     }
 }

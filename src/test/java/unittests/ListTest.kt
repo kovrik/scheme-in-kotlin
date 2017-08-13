@@ -1,7 +1,6 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.exceptions.WrongTypeException
 import core.scm.Cons
 import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
@@ -493,11 +492,17 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalNext() {
-        assertEquals(null, eval("(next '())", env))
-        assertEquals(Cons.EMPTY, eval("(next '(1))", env))
+        assertEquals(null,         eval("(next nil)", env))
+        assertEquals(null,         eval("(next '())", env))
+        assertEquals(null,         eval("(next '(1))", env))
         assertEquals(list(3L, 4L), eval("(next '(2 3 4))", env))
-        assertEquals(null, eval("(rest '())", env))
-        assertEquals(Cons.EMPTY, eval("(rest '(1))", env))
+    }
+
+    @Test
+    fun testEvalRest() {
+        assertEquals(Cons.EMPTY,   eval("(rest nil)", env))
+        assertEquals(Cons.EMPTY,   eval("(rest '())", env))
+        assertEquals(Cons.EMPTY,   eval("(rest '(1))", env))
         assertEquals(list(3L, 4L), eval("(rest '(2 3 4))", env))
     }
 

@@ -113,4 +113,18 @@ class HashmapTest : AbstractTest() {
         assertEquals(null, eval("(find [:a :b :c :d] 5)", env))
         assertEquals(null, eval("(find nil 5)", env))
     }
+
+    @Test
+    fun testHashmapNext() {
+        assertEquals(null, eval("(next {})", env))
+        assertEquals(null, eval("(next {:a 1})", env))
+        assertEquals(1,    eval("(count (next {:a 1 :b 2}))", env))
+    }
+
+    @Test
+    fun testHashmapRest() {
+        assertEquals(emptySet<Any?>(), eval("(rest {})", env))
+        assertEquals(emptySet<Any?>(), eval("(rest {:a 1})", env))
+        assertEquals(1, eval("(count (rest {:a 1 :b 2}))", env))
+    }
 }

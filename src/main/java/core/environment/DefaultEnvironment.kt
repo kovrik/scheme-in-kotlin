@@ -450,7 +450,7 @@ class DefaultEnvironment : Environment(null) {
                 First(),
                 Second(),
                 Next(),
-                object : Next() { override val name = "rest" },
+                Rest(),
                 RandNth(),
                 Take(),
 
