@@ -183,13 +183,13 @@ class Reflector {
         }
         /* Remove leading . char */
         return methodName.substring(1).let {
-            val m = getMethod(instance?.javaClass, it, args, argTypes)
+            val method = getMethod(instance?.javaClass, it, args, argTypes)
             try {
-                m.invoke(instance, *args)
+                method(instance, *args)
             } catch (e: IllegalAccessException) {
-                m.isAccessible = true
+                method.isAccessible = true
                 try {
-                    m.invoke(instance, *args)
+                    method(instance, *args)
                 } catch (e: IllegalAccessException) {
                     throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
                 }
@@ -237,7 +237,7 @@ class Reflector {
         } catch (e: IllegalAccessException) {
             method.isAccessible = true
             try {
-                method.invoke(null, *args)
+                method(null, *args)
             } catch (e: IllegalAccessException) {
                 throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
             }
