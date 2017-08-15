@@ -73,7 +73,7 @@ object Writer {
 
     private fun CharSequence.write() = StringBuilder(length + 2).apply {
         append('"')
-        for (i in 0..this@write.length - 1) {
+        for (i in 0 until this@write.length) {
             val c = this@write[i]
             val character = UNESCAPED[c]
             when (character) {

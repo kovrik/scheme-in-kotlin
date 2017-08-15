@@ -11,7 +11,7 @@ class StringFill : AFn<Any?, MutableString>(name = "string-fill!", minArgs = 2, 
         val oldLength = s!!.length
         return s.apply {
             clear()
-            for (i in 0..oldLength - 1) { append(arg2) }
+            for (i in 0 until oldLength) { append(arg2) }
         }
     }
 }
