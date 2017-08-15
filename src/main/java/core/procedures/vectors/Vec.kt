@@ -12,7 +12,7 @@ class Vec : AFn<Any?, MutableVector>(name = "vec", isPure = true, minArgs = 1, m
             is CharSequence -> {
                 val size = arg.length
                 val vector = MutableVector(size, null)
-                for (i in 0..size - 1) { vector[i] = arg[i] }
+                for (i in 0 until size) { vector[i] = arg[i] }
                 return vector
             }
             else -> throw WrongTypeException(name, "List or Vector or String", arg)

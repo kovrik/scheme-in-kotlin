@@ -7,7 +7,7 @@ class HashMapImmutableProc : AFn<Any?, Map<*, *>>(name = "hash-map-immutable", i
 
     override operator fun invoke(args: Array<out Any?>) = when {
         args.size % 2 == 0 -> MutableHashmap().apply {
-            for (i in 0..args.size - 1 step 2) {
+            for (i in 0 until args.size step 2) {
                 put(args[i], args[i + 1])
             }
         }.toImmutableMap()

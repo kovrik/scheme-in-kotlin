@@ -98,7 +98,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                     val symbolName = (this[0] as Symbol).name
                     if (symbolName.endsWith('.')) {
                         val form = mutableListOf<Any?>(New, Symbol.intern(symbolName.dropLast(1)))
-                        for (i in 1..size - 1) { form.add(this[i]) }
+                        for (i in 1 until size) { form.add(this[i]) }
                         return New.eval(form, env, this@Evaluator)
                     }
                     op = JavaMethodCall(this[0].toString())
@@ -113,7 +113,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
              * Scheme has applicative order, so evaluate all arguments first
              * and then invoke operator (IFn) via helper method */
             is IFn<*, *> -> AFn.invokeN(op, arrayOfNulls<Any>(size - 1).apply {
-                for (i in 0..size - 1) { set(i, eval(this@eval[i + 1], env)) }
+                for (i in 0 until size) { set(i, eval(this@eval[i + 1], env)) }
             })
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
@@ -129,5 +129,5 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
 
     /* Evaluate set */
-    private fun Set<Any?>.eval(env: Environment) = mapTo(HashSet<Any?>(size)) { eval(it, env) }
+    private fun Set<Any?>.eval(env: Environment) = mapTo(HashSet(size)) { eval(it, env) }
 }

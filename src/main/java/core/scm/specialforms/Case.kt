@@ -24,7 +24,7 @@ object Case : SpecialForm("case") {
             throw IllegalSyntaxException(toString(), exprString, "source expression failed to match any pattern")
         }
         val key = evaluator.eval(form[1], env)
-        for (i in 2..form.size - 1) {
+        for (i in 2 until form.size) {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), exprString, "invalid clause in subform")
             val datum = subform[0]
             when (datum) {

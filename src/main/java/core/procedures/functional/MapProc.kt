@@ -21,7 +21,7 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
         }
         val size = count(args[1])
         val iterators = HashMap<Int, Iterator<*>>(args.size - 1)
-        for (i in 1..args.size - 1) {
+        for (i in 1 until args.size) {
             /* Check type */
             iterators.put(i, Utils.toSequence(args[i]).iterator())
             /* Check size */
@@ -31,11 +31,11 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
         }
 
         val lists = ArrayList<MutableList<Any?>>(size)
-        for (i in 0..size - 1) {
+        for (i in 0 until size) {
             /* Add procedure as first element */
             lists.add(Cons.list(args[0]))
             /* Now add each Nth element of all lists */
-            for (n in 1..args.size - 1) {
+            for (n in 1 until args.size) {
                 val e = iterators[n]!!.next()
                 if (e is List<*> || e is Symbol) {
                     lists[i].add(Quote.quote(e))

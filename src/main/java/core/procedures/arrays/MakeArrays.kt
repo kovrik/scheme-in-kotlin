@@ -127,7 +127,7 @@ object MakeArrays {
                 }
                 else -> {
                     val dims = IntArray(args.size - 1)
-                    for (i in 1..args.size - 1) {
+                    for (i in 1 until args.size) {
                         dims[i - 1] = (args[i] as Number).toInt()
                     }
                     java.lang.reflect.Array.newInstance(clazz, *dims)

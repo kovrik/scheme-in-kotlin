@@ -8,7 +8,7 @@ class BitAndNot : AFn<Any?, Long>(name = "bit-and-not", isPure = true, minArgs =
     override operator fun invoke(args: Array<out Any?>): Long {
         args[0]!!
         var result = (args[0] as Number).toLong()
-        for (i in 1..args.size - 1) {
+        for (i in 1 until args.size) {
             result = result and (args[i]!! as Number).toLong().inv()
         }
         return result

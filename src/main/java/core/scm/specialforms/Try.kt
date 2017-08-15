@@ -9,7 +9,7 @@ import core.scm.Symbol
 
 object Try : SpecialForm("try") {
 
-    internal val CATCH = Symbol.intern("catch")
+    private  val CATCH = Symbol.intern("catch")
     internal val FINALLY = Symbol.intern("finally")
 
     private val reflector = Reflector()
@@ -24,7 +24,7 @@ object Try : SpecialForm("try") {
         var fin: Any? = null
         val expressions = ArrayList<Any?>()
         /* Init and check syntax */
-        for (i in 1..form.size - 1) {
+        for (i in 1 until form.size) {
             val expr = form[i]
             if (expr is List<*> && !expr.isEmpty()) {
                 val op = expr[0]
@@ -42,7 +42,7 @@ object Try : SpecialForm("try") {
                     }
                     hadCatch = true
                     if (catches.isEmpty()) {
-                        catchBindings = HashMap<Class<*>, Symbol>()
+                        catchBindings = HashMap()
                     }
                     val clazz = reflector.getClazz(expr[1].toString())
                     val catchExpr = when {

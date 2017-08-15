@@ -26,7 +26,7 @@ object Swap : SpecialForm("swap!") {
             val oldVal = box.deref()
             val rest = Cons.list<Any?>(oldVal)
             if (form.size > 3) {
-                for (i in 3..form.size - 1) {
+                for (i in 3 until form.size) {
                     rest.add(evaluator.eval(form[i], env))
                 }
             }

@@ -51,8 +51,8 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
 
     /* Check args types */
     override fun checkArgs(args: Array<out T>) {
-        for (i in 0..mandatoryArgsTypes.size - 1) { Type.assertType(name, args[i], mandatoryArgsTypes[i]) }
-        for (i in mandatoryArgsTypes.size..args.size - 1) {
+        for (i in 0 until mandatoryArgsTypes.size) { Type.assertType(name, args[i], mandatoryArgsTypes[i]) }
+        for (i in mandatoryArgsTypes.size until args.size) {
             when {
                 lastArgType  != null && i == args.size - 1 -> Type.assertType(name, args[i], lastArgType)
                 restArgsType != null                       -> Type.assertType(name, args[i], restArgsType)

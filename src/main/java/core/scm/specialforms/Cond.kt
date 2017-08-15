@@ -16,7 +16,7 @@ import core.utils.Utils
 object Cond : SpecialForm("cond") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        for (i in 1..form.size - 1) {
+        for (i in 1 until form.size) {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), form, "invalid clause in subform")
             val clause = subform[0]
             if (Else.symbol == clause) {

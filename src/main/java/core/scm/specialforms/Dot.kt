@@ -26,11 +26,11 @@ object Dot : SpecialForm(".") {
             if (form.size == 3) {
                 /* (. Classname-symbol member-symbol) */
                 /* try static field first */
-                try {
-                    return reflector.evalJavaStaticField(statik)
+                return try {
+                    reflector.evalJavaStaticField(statik)
                 } catch (e: NoSuchFieldException) {
                     /* now try static no-args static method */
-                    return reflector.evalJavaMethod(statik, arrayOf<Any?>())
+                    reflector.evalJavaMethod(statik, arrayOf())
                 }
             } else {
                 /* (. Classname-symbol method-symbol args) */
@@ -50,7 +50,7 @@ object Dot : SpecialForm(".") {
             /* Add instance */
             methodArgs[0] = first
             /* Add rest args (if any) */
-            for (i in 1..methodArgs.size - 1) {
+            for (i in 1 until methodArgs.size) {
                 methodArgs[i] = evaluator.eval(form[i + 2], env)
             }
             val method = '.' + form[2].toString()
