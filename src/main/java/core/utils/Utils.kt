@@ -91,7 +91,6 @@ object Utils {
             return processComplexNumber(number, exactness, radix)
         }
         /* Read exponent mark if present */
-        var exactness = exactness
         val exponentRegex      = if (radix == 16) EXPONENT16_REGEX else EXPONENT_REGEX
         val exponentMarksRegex = if (radix == 16) EXPONENT16_MARKS_REGEX else EXPONENT_MARKS_REGEX
         var exp: Long? = null
@@ -105,7 +104,6 @@ object Utils {
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: $number")
             }
-            exactness = exactness ?: 'i'
         }
         /* Validate all digits */
         var hasSign = 0
@@ -142,13 +140,15 @@ object Utils {
         if (hasHashChar) {
             if (HASH_REGEX.matches(n)) {
                 n = n.replace('#', '0')
-                exactness = exactness ?: 'i'
             } else {
                 return Symbol.intern(number)
             }
         }
+        val exact = when (exactness) {
+            null -> exp == null && !hasHashChar && (hasSlash || isIntegral)
+            else -> Reader.isExact(exactness)
+        }
         /* Rational and Integral numbers are exact by default */
-        val exact = if (exactness != null) Reader.isExact(exactness) else hasSlash || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]!!
         if (hasSlash) {
             val (numerator, denominator) = n.split('/')
