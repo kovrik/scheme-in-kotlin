@@ -112,7 +112,7 @@ object Utils {
         var hasAtLeastOneDigit = false
         var isIntegral = true
         var hasHashChar = false
-        var slashIndex = -1
+        var hasSlash = false
         var i = -1
         for (c in n.toCharArray()) {
             i += 1
@@ -127,8 +127,8 @@ object Utils {
                 }
                 /* Check if it is a rational number and if it is valid */
                 '/' -> when {
-                    slashIndex > -1 || !isIntegral -> return Symbol.intern(number)
-                    else -> slashIndex = i
+                    hasSlash || !isIntegral -> return Symbol.intern(number)
+                    else -> hasSlash = true
                 }
                 else -> when {
                     isValidForRadix(c, radix) -> hasAtLeastOneDigit = true
@@ -148,11 +148,10 @@ object Utils {
             }
         }
         /* Rational and Integral numbers are exact by default */
-        val exact = if (exactness != null) Reader.isExact(exactness) else slashIndex > -1 || isIntegral
+        val exact = if (exactness != null) Reader.isExact(exactness) else hasSlash || isIntegral
         val threshold = RADIX_THRESHOLDS[radix]!!
-        if (slashIndex > -1) {
-            val numerator = n.substring(0, slashIndex)
-            val denominator = n.substring(slashIndex + 1)
+        if (hasSlash) {
+            val (numerator, denominator) = n.split('/')
             val useBigNum = numerator.length > threshold + hasSign || denominator.length > threshold + hasSign
             return processRationalNumber(numerator, denominator, radix, exact, useBigNum, exp)
         }
