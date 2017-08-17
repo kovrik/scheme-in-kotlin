@@ -3,6 +3,7 @@ package core.evaluator
 import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
+import core.exceptions.UndefinedIdentifierException
 import core.procedures.AFn
 import core.procedures.IFn
 import core.scm.*
@@ -74,7 +75,10 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         when (it) {
             is SpecialForm -> throw IllegalSyntaxException(it.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            Environment.UNDEFINED -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
+            Environment.UNDEFINED -> when (Character.isJavaIdentifierStart(this.name[0])) {
+                true  -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
+                false -> throw UndefinedIdentifierException(this.name)
+            }
             else -> it
         }
     }

@@ -56,17 +56,14 @@ class NumberTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
         assertEquals(BigComplex(BigDecimal("255.0"), BigDecimal("2987.9375")), eval("#x#iFf+BaB.fI", env))
-        try {
-            eval("+#", env)
-            fail()
-        } catch (e: UndefinedIdentifierException) {
-            // expected
-        }
-        try {
-            eval("+1#1", env)
-            fail()
-        } catch (e: RuntimeException) {
-            // expected
+
+        arrayOf("+#", "1e1/2", "1e#", "1e.", "1..", "/1", "+1#1", "__1", "--", "-#.1", "1/2/3").forEach {
+            try {
+                eval(it, env)
+                fail()
+            } catch (e: UndefinedIdentifierException) {
+                // expected
+            }
         }
     }
 
