@@ -75,9 +75,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         when (it) {
             is SpecialForm -> throw IllegalSyntaxException(it.toString(), this)
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            Environment.UNDEFINED -> when (Character.isJavaIdentifierStart(this.name[0])) {
+            Environment.UNDEFINED -> when (Character.isJavaIdentifierStart(name[0])) {
                 true  -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
-                false -> throw UndefinedIdentifierException(this.name)
+                false -> throw UndefinedIdentifierException(name)
             }
             else -> it
         }
