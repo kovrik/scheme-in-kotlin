@@ -163,17 +163,17 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
     fun angle(): Number {
         val re = re
         val im = im
-        if (re.signum() == 0) {
-            return when {
+        return when {
+            re.signum() == 0 -> when {
                 im.signum() > 0 ->  Math.PI / 2
                 im.signum() < 0 -> -Math.PI / 2
                 else -> throw ArithmeticException("Undefined for 0+0i")
             }
-        } else if (re.signum() < 0) {
-            val atan = atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
-            return if (im.signum() >= 0) atan + Math.PI else atan - Math.PI
-        } else {
-            return atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
+            re.signum() < 0 -> {
+                val atan = atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
+                if (im.signum() >= 0) atan + Math.PI else atan - Math.PI
+            }
+            else -> atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
         }
     }
 
