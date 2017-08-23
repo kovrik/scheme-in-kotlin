@@ -66,7 +66,7 @@ object Lambda : SpecialForm("lambda") {
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
-    fun <E> flatten(list: List<E>) = ArrayList<E>().apply {
+    private fun <E> flatten(list: List<E>) = ArrayList<E>().apply {
         val queue = LinkedList(list)
         while (!queue.isEmpty()) {
             val e = queue.remove()
