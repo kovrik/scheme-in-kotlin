@@ -104,9 +104,10 @@ class Reflector {
 
     fun newInstance(clazz: String, args: Array<Any?>): Any {
         val c = getClazz(clazz)
-        val argTypes = arrayOfNulls<Class<*>>(args.size)
-        for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
+        val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
+            for (i in args.indices) {
+                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+            }
         }
         try {
             return try {
@@ -224,9 +225,10 @@ class Reflector {
         }
         val (className, methodName) = classAndMethod
         val clazz = getClazz(className)
-        val argTypes = arrayOfNulls<Class<*>>(args.size)
-        for (i in args.indices) {
-            argTypes[i] = unboxIfPossible(args[i]!!.javaClass)
+        val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
+            for (i in args.indices) {
+                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+            }
         }
         val method = getMethod(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
