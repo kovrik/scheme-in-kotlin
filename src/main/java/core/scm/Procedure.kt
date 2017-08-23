@@ -67,7 +67,7 @@ class Procedure(override var name: String,
 
     private fun bindArgs(values: Array<out Any?>) = Environment(values.size, localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
-        for (i in 0..minArgs - 1) {
+        for (i in 0 until minArgs) {
             put(args[i], values[i])
         }
         if (minArgs != maxArgs) {
