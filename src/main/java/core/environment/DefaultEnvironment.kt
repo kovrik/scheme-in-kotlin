@@ -668,6 +668,8 @@ class DefaultEnvironment : Environment(null) {
             add("(define (negate f) (fn args (not (apply f args))))")
             add("(define complement negate)")
 
+            add("(def (partial f . args1) (fn args2 (apply f (append args1 args2))))")
+
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +
 //                "    (let* ((old-val @b)" +

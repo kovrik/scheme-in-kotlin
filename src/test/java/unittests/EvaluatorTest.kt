@@ -241,4 +241,16 @@ class EvaluatorTest : AbstractTest() {
         assertEquals(false, eval("(not-empty? [])", tempEnv))
         assertEquals(true,  eval("(not-empty? [1 2 3])", tempEnv))
     }
+
+    @Test
+    fun testPartial() {
+        eval("(def hundred-times (partial * 100))", env)
+        assertEquals(100L, eval("(hundred-times)", env))
+        assertEquals(500L, eval("(hundred-times 5)", env))
+        assertEquals(600L, eval("(hundred-times 1 2 3)", env))
+
+        eval("(def is-string (partial instance? String))", env)
+        assertEquals(true,  eval("(is-string \"test\")", env))
+        assertEquals(false, eval("(is-string 12345678)", env))
+    }
 }
