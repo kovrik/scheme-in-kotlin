@@ -654,6 +654,19 @@ class DefaultEnvironment : Environment(null) {
                 "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
                 "         (else (do-find-between lo hi)))))))")
 
+            // FIXME naive memoize implementation
+            add("(define (memoize f)" +
+                "  (let ((mem (atom {})))" +
+                "    (fn args" +
+                "      (let ((e (find @mem args)))" +
+                "        (if e" +
+                "          (val e)" +
+                "          (let* ((ret (apply f args))" +
+                "                 (o   @mem)" +
+                "                 (n   (put o args ret)))" +
+                "            (box-cas! mem o n)" +
+                "          ret))))))")
+
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +
 //                "    (let* ((old-val @b)" +

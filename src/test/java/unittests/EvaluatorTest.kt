@@ -11,6 +11,8 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+import java.math.BigDecimal
+import java.math.BigInteger
 
 class EvaluatorTest : AbstractTest() {
 
@@ -203,5 +205,22 @@ class EvaluatorTest : AbstractTest() {
         assertEquals(1,   eval("(count #{(+ 1 2)})", env))
         assertEquals(3L,  eval("(first #{(+ 1 2)})", env))
         assertEquals(15L, eval("(first #{(apply + [1 2 3 4 5])})", env))
+    }
+
+    @Test
+    fun testMemoize() {
+        val memoizedFibonacci = "(def m-fib (memoize (fn (n)" +
+                                "             (cond" +
+                                "              ((= n 0) 1)" +
+                                "              ((= n 1) 1)" +
+                                "              (else (+ (m-fib (dec n)) (m-fib (- n 2))))))))"
+        eval(memoizedFibonacci, env)
+        val fib500 = "225591516161936330872512695036072072046011324913758190588638866418474627738686883405015987052796968498626"
+
+//        val fib1000 ="703303677114228158218352548771835497701812698363587327426049050871545371181969335797422494945" +
+//                     "626117334877504492417659910881863632654502236471060120533741212738673391111981393731255987676" +
+//                     "90091902245245323403501"
+        assertEquals(BigInteger(fib500), eval("(m-fib 500)", env))
+//        assertEquals(BigInteger(fib1000), eval("(m-fib 1000)", env))
     }
 }
