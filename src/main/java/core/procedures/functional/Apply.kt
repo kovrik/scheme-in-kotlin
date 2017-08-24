@@ -18,7 +18,7 @@ class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = a
         val last = args[args.size - 1]
         Utils.toSequence(last).forEach {
             when (it) {
-                is List<*>, is Symbol -> sexp.add(Quote.quote(it))
+                is Collection<*>, is Map<*, *>, is Symbol -> sexp.add(Quote.quote(it))
                 else -> sexp.add(it)
             }
         }
