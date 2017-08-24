@@ -126,7 +126,6 @@ class EvaluatorTest : AbstractTest() {
         Repl.currentOutputPort = OutputPort(PrintStream(baos))
 
         val tempEnv = DefaultEnvironment()
-        /* Eval lib procedures */
         tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
         tempEnv.put(Symbol.intern("display"), Display())
 
@@ -221,5 +220,25 @@ class EvaluatorTest : AbstractTest() {
 //                     "90091902245245323403501"
         assertEquals(BigInteger(fib500), eval("(m-fib 500)", env))
 //        assertEquals(BigInteger(fib1000), eval("(m-fib 1000)", env))
+    }
+
+    @Test
+    fun testComplement() {
+        val tempEnv = DefaultEnvironment().apply { libraryProcedures.forEach { eval(it, this) } }
+
+        eval("(def c (negate identity))",  tempEnv)
+        assertEquals(true,  eval("(c #f)", tempEnv))
+        assertEquals(false, eval("(c #t)", tempEnv))
+        assertEquals(false, eval("(c  1)", tempEnv))
+        assertEquals(false, eval("(c 'a)", tempEnv))
+
+        eval("(def c (complement zero?))",   tempEnv)
+        assertEquals(false, eval("(c 0)",    tempEnv))
+        assertEquals(true,  eval("(c 1)",    tempEnv))
+        assertEquals(true,  eval("(c 1+2i)", tempEnv))
+
+        eval("(def not-empty? (complement empty?))", tempEnv)
+        assertEquals(false, eval("(not-empty? [])", tempEnv))
+        assertEquals(true,  eval("(not-empty? [1 2 3])", tempEnv))
     }
 }

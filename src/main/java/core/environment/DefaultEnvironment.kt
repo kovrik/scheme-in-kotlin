@@ -665,6 +665,9 @@ class DefaultEnvironment : Environment(null) {
                 "            (swap! mem put args ret)" +
                 "          ret))))))")
 
+            add("(define (negate f) (fn args (not (apply f args))))")
+            add("(define complement negate)")
+
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +
 //                "    (let* ((old-val @b)" +
