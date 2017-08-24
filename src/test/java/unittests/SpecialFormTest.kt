@@ -3,7 +3,6 @@ package unittests
 import core.Repl
 import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.ReentrantDelayException
 import core.exceptions.UndefinedIdentifierException
 import core.procedures.io.Display
 import core.procedures.math.Addition
