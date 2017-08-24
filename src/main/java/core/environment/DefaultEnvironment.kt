@@ -661,10 +661,8 @@ class DefaultEnvironment : Environment(null) {
                 "      (let ((e (find @mem args)))" +
                 "        (if e" +
                 "          (val e)" +
-                "          (let* ((ret (apply f args))" +
-                "                 (o   @mem)" +
-                "                 (n   (put o args ret)))" +
-                "            (box-cas! mem o n)" +
+                "          (let ((ret (apply f args)))" +
+                "            (swap! mem put args ret)" +
                 "          ret))))))")
 
 //            add("(define (swap! b fn . args)" +
