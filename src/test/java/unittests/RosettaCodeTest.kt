@@ -228,19 +228,16 @@ class RosettaCodeTest : AbstractTest() {
     @Test
     fun testIntegerRoots() {
 
-        val integerRoots = "(define (root a b)" +
-                           "  (if (< b 2)" +
-                           "      b" +
-                           "    (let* ((a1 (- a 1))" +
-                           "           (c 1)" +
-                           "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
-                           "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-                           "      (y a a1 b c d e))))"
-
-        val tempEnv = DefaultEnvironment()
-        /* Eval lib procedures */
-        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
+        val tempEnv = DefaultEnvironment().apply { libraryProcedures.forEach { eval(it, this) } }
         eval("(define // quotient)", tempEnv)
+        eval("(define (root a b)" +
+             "  (if (< b 2)" +
+             "      b" +
+             "    (let* ((a1 (- a 1))" +
+             "           (c 1)" +
+             "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
+             "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
+             "      (y a a1 b c d e))))", tempEnv)
 
         eval("(define (y a a1 b c d e)" +
              "  (if (or (= c d) (= c e))" +
@@ -248,7 +245,6 @@ class RosettaCodeTest : AbstractTest() {
              "    (y a a1 b d e (// (+ (* a1 e)" +
              "                         (// b (expt e a1))) a))))", tempEnv)
 
-        eval(integerRoots, tempEnv)
         assertEquals(2L, eval("(root 3 25)", tempEnv))
         assertEquals(125L, eval("(root 3 (* 2 (expt 1000 2)))", tempEnv))
         assertEquals(BigInteger.valueOf(10000000L), eval("(root 3 (expt 1000 7))", tempEnv))
