@@ -11,7 +11,6 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
-import java.math.BigDecimal
 import java.math.BigInteger
 
 class EvaluatorTest : AbstractTest() {
