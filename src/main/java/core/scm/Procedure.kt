@@ -13,9 +13,6 @@ class Procedure(override var name: String,
                 private val localEnvironment: Environment,
                 isVariadic: Boolean) : AFn<Any?, Any?>() {
 
-    /* Is body a constant? If it is, then no need to evaluate it */
-    private val isBodyConst: Boolean = body !is Symbol && body !is Collection<*> && body !is Map<*, *>
-
     init {
         if (isVariadic) {
             /* Do not count `rest` arg */
@@ -26,44 +23,29 @@ class Procedure(override var name: String,
         }
     }
 
-    override operator fun invoke() = when {
-        isBodyConst -> body
-        else        -> Thunk(body, Environment(0, localEnvironment))
-    }
+    override operator fun invoke() = Thunk(body, Environment(0, localEnvironment))
 
-    override operator fun invoke(arg: Any?) = when {
-        isBodyConst -> body
-        else -> Thunk(body, Environment(1, localEnvironment).apply { put(args[0], arg) })
-    }
+    override operator fun invoke(arg: Any?) = Thunk(body, Environment(1, localEnvironment).apply { put(args[0], arg) })
 
-    override operator fun invoke(arg1: Any?, arg2: Any?) = when {
-        isBodyConst -> body
-        else -> Thunk(body, Environment(2, localEnvironment).apply {
-            put(args[0], arg1)
-            put(args[1], arg2)
-        })
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?) = Thunk(body, Environment(2, localEnvironment).apply {
+        put(args[0], arg1)
+        put(args[1], arg2)
+    })
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = when {
-        isBodyConst -> body
-        else -> Thunk(body, Environment(3, localEnvironment).apply {
-            put(args[0], arg1)
-            put(args[1], arg2)
-            put(args[2], arg3)
-        })
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = Thunk(body, Environment(3, localEnvironment).apply {
+        put(args[0], arg1)
+        put(args[1], arg2)
+        put(args[2], arg3)
+    })
 
-    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?) = when {
-        isBodyConst -> body
-        else -> Thunk(body, Environment(4, localEnvironment).apply {
-            put(args[0], arg1)
-            put(args[1], arg2)
-            put(args[2], arg3)
-            put(args[3], arg4)
-        })
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?, arg4: Any?) = Thunk(body, Environment(4, localEnvironment).apply {
+        put(args[0], arg1)
+        put(args[1], arg2)
+        put(args[2], arg3)
+        put(args[3], arg4)
+    })
 
-    override operator fun invoke(args: Array<out Any?>) = if (isBodyConst) body else Thunk(body, bindArgs(args))
+    override operator fun invoke(args: Array<out Any?>) = Thunk(body, bindArgs(args))
 
     private fun bindArgs(values: Array<out Any?>) = Environment(values.size, localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
