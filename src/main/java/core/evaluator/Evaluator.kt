@@ -27,7 +27,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         private val threadCounter = AtomicLong(0)
         @Volatile var executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors(),
                 { Thread(it, "executor-thread-${threadCounter.getAndIncrement()}") }
-        )
+        )!!
     }
 
     inner class JavaMethodCall(val method: String) : AFn<Any?, Any?>(name = method) {
