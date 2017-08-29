@@ -202,15 +202,15 @@ object Utils {
                 result = bigDecimal
             }
         } else {
-            if (dotPos < 0) {
-                result = number.toLong(r)
+            result = if (dotPos < 0) {
+                number.toLong(r)
             } else {
                 if (r == 10) {
-                    result = number.toDouble()
+                    number.toDouble()
                 } else {
                     /* Remove dot */
                     val num = number.replace(".", "")
-                    result = num.toLong(r) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
+                    num.toLong(r) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
                 }
             }
         }
@@ -280,16 +280,11 @@ object Utils {
         else          -> BigInteger(number.toString())
     }
 
-    fun toBigRatio(number: Number) = when (number) {
+    private fun toBigRatio(number: Number) = when (number) {
         is BigRatio   -> number
         is BigInteger -> BigRatio.valueOf(toBigInteger(number), BigInteger.ONE)
         is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
         else          -> BigRatio.valueOf(number.toString(), "1")
-    }
-
-    fun toBigComplex(number: Number) = when (number) {
-        is BigComplex -> number
-        else          -> BigComplex.of(number)
     }
 
     fun isRational(o: Any?) = when (o) {
@@ -504,23 +499,23 @@ object Utils {
         f.javaClass == s.javaClass   -> Pair(f, s)
         !isFinite(f) || !isFinite(s) -> Pair(f, s)
         isInexact(f) || isInexact(s) -> when {
-            f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
-            f is BigRatio   || s is BigRatio   -> Pair(f.toDouble(),    s.toDouble())
-            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> Pair(toBigDecimal(f), toBigDecimal(s))
-            f is Double     || s is Double     -> Pair(f.toDouble(),    s.toDouble())
-            f is Float      || s is Float      -> Pair(f.toFloat(),     s.toFloat())
+            f is BigComplex || s is BigComplex -> Pair(BigComplex.of(f), BigComplex.of(s))
+            f is BigRatio   || s is BigRatio   -> Pair(f.toDouble(),     s.toDouble())
+            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f),  toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> Pair(toBigDecimal(f),  toBigDecimal(s))
+            f is Double     || s is Double     -> Pair(f.toDouble(),     s.toDouble())
+            f is Float      || s is Float      -> Pair(f.toFloat(),      s.toFloat())
             else                               -> Pair(f, s)
         }
         else -> when {
-            f is BigComplex || s is BigComplex -> Pair(toBigComplex(f), toBigComplex(s))
-            f is BigRatio   || s is BigRatio   -> Pair(toBigRatio(f),   toBigRatio(s))
-            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f), toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> Pair(toBigInteger(f), toBigInteger(s))
-            f is Long       || s is Long       -> Pair(f.toLong(),      s.toLong())
-            f is Int        || s is Int        -> Pair(f.toInt(),       s.toInt())
-            f is Short      || s is Short      -> Pair(f.toShort(),     s.toShort())
-            f is Byte       || s is Byte       -> Pair(f.toByte(),      s.toByte())
+            f is BigComplex || s is BigComplex -> Pair(BigComplex.of(f), BigComplex.of(s))
+            f is BigRatio   || s is BigRatio   -> Pair(toBigRatio(f),    toBigRatio(s))
+            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f),  toBigDecimal(s))
+            f is BigInteger || s is BigInteger -> Pair(toBigInteger(f),  toBigInteger(s))
+            f is Long       || s is Long       -> Pair(f.toLong(),       s.toLong())
+            f is Int        || s is Int        -> Pair(f.toInt(),        s.toInt())
+            f is Short      || s is Short      -> Pair(f.toShort(),      s.toShort())
+            f is Byte       || s is Byte       -> Pair(f.toByte(),       s.toByte())
             else                               -> Pair(f, s)
         }
     }
