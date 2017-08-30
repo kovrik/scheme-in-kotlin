@@ -9,7 +9,7 @@ import core.scm.Symbol
 import core.utils.Utils
 
 /* Syntax:
- * (dotimes <expression1> <expression2> ...)
+ * (dotimes (var limit [result]) <body>...)
  */
 object Dotimes : SpecialForm("dotimes") {
 
