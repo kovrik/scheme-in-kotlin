@@ -1,0 +1,35 @@
+package core.scm.specialforms
+
+import core.environment.Environment
+import core.evaluator.Evaluator
+import core.exceptions.IllegalSyntaxException
+import core.exceptions.WrongTypeException
+import core.scm.Cons
+import core.scm.Symbol
+import core.utils.Utils
+
+/* Syntax:
+ * (dotimes <expression1> <expression2> ...)
+ */
+object Dotimes : SpecialForm("dotimes") {
+
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size < 3) {
+            throw IllegalSyntaxException(toString(), form)
+        }
+        val binding = form[1] as List<*>
+        val s = binding[0] as? Symbol ?: throw WrongTypeException(toString(), "Symbol", binding[0])
+
+        val limit = evaluator.eval(binding[1], env)
+        if (!Utils.isReal(limit)) throw WrongTypeException(toString(), "Real", limit)
+
+        val localEnv = Environment(env)
+        val body = Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
+        // TODO What if greater than Long.MAX_VALUE?
+        for (i in 0 until (limit as Number).toLong()) {
+            localEnv.put(s, i)
+            evaluator.eval(body, localEnv)
+        }
+        return binding.getOrNull(2)?.let { evaluator.eval(it, env) }
+    }
+}

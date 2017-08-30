@@ -590,6 +590,7 @@ class DefaultEnvironment : Environment(null) {
                 LetRec,
                 LetSeq,
                 Do,
+                Dotimes,
                 Case,
                 Cond,
                 Else,
