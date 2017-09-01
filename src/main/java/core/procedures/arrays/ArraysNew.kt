@@ -46,15 +46,21 @@ object ArraysNew {
         }
     }
 
+    open class Shorts : AFn<Any?, ShortArray>(name = "shorts", isPure = true, restArgsType = Number::class.java) {
+        override operator fun invoke(args: Array<out Any?>) = ShortArray(args.size).apply {
+            for (i in 0 until args.size) { this[i] = (args[i] as Number).toShort() }
+        }
+    }
+
     open class Objects : AFn<Any?, Array<*>>(name = "objects", isPure = true, restArgsType = Any::class.javaObjectType) {
         override operator fun invoke(args: Array<out Any?>) = arrayOfNulls<Any?>(args.size).apply {
             for (i in 0 until args.size) { this[i] = args[i] }
         }
     }
 
-    open class Shorts : AFn<Any?, ShortArray>(name = "shorts", isPure = true, restArgsType = Number::class.java) {
-        override operator fun invoke(args: Array<out Any?>) = ShortArray(args.size).apply {
-            for (i in 0 until args.size) { this[i] = (args[i] as Number).toShort() }
+    open class ArrayNew : AFn<Any?, Array<*>>(name = "array", isPure = true, restArgsType = Any::class.javaObjectType) {
+        override operator fun invoke(args: Array<out Any?>) = arrayOfNulls<Any?>(args.size).apply {
+            for (i in 0 until args.size) { this[i] = args[i] }
         }
     }
 }
