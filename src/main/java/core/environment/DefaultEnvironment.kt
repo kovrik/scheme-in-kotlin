@@ -238,6 +238,7 @@ class DefaultEnvironment : Environment(null) {
                 Division(),
                 Abs(),
                 Sqrt(),
+                Sgn(),
                 Expt(),
                 Exp(),
                 Log(),
@@ -275,6 +276,8 @@ class DefaultEnvironment : Environment(null) {
                 Asin(),
                 Acos(),
                 Atan(),
+                DegreesToRadians(),
+                RadiansToDegrees(),
 
                 /* Comparison & Equality */
                 NumericalComparison.EQUAL,
@@ -637,6 +640,7 @@ class DefaultEnvironment : Environment(null) {
             add("(define (add1 n) (+ n 1))")
             add("(define (inc  n) (+ n 1))")
             add("(define (dec  n) (- n 1))")
+            add("(define (sqr  n) (* n n))")
             add("(define rationalize" +
                 "  (letrec ((check (lambda (x) " +
                 "                    (when (not (real? x))" +
