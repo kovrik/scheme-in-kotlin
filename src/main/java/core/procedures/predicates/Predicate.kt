@@ -28,6 +28,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_FUTURE_CANCELLED = Predicate("future-cancelled?", { Type.assertType("future-cancelled?", it, java.util.concurrent.Future::class.java) && (it as java.util.concurrent.Future<*>).isCancelled })
         val IS_DELAY = Predicate("delay?", { it is Delay })
         val IS_REALIZED = Predicate("realized?", this::isRealized)
+        val IS_DELAY_FORCED = Predicate("delay-forced?", { it is Delay && it.isForced()})
         val IS_CHAR = Predicate("char?", { it is Char })
         val IS_STRING = Predicate("string?", { it is CharSequence })
         val IS_VECTOR = Predicate("vector?", { it is Vector })

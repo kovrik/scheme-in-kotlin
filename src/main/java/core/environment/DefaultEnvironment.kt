@@ -521,6 +521,7 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_FUTURE_CANCELLED,
                 Predicate.IS_DELAY,
                 Predicate.IS_REALIZED,
+                Predicate.IS_DELAY_FORCED,
                 Predicate.IS_CHAR,
                 Predicate.IS_STRING,
                 Predicate.IS_VECTOR,

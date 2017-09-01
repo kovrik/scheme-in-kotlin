@@ -14,6 +14,8 @@ open class Delay(private val expr: Any?, private val env: Environment, private v
 
     private val forced = AtomicBoolean(false)
 
+    fun isForced() = forced.get()
+
     override fun deref(): Any? = when {
         isCancelled -> null
         isCompletedExceptionally || isDone -> value
