@@ -82,6 +82,9 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_BYTE = Predicate("byte?", Utils::isByte)
         val IS_BYTES = Predicate("bytes?", { it is ByteArray })
         val IS_VOID = Predicate("void?", { it is Unit })
+        val IS_THREAD = Predicate("thread?", { it is Thread })
+        val IS_THREAD_RUNNING = Predicate("thread-running?", { Type.assertType("thread-running?", it, Thread::class.java) && (it as Thread).isAlive })
+        val IS_THREAD_DEAD = Predicate("thread-dead?", { Type.assertType("thread-dead?", it, Thread::class.java) && !(it as Thread).isAlive })
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 

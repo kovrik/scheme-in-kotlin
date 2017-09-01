@@ -40,6 +40,7 @@ object Writer {
         is CharArray       -> o.write()
         is BooleanArray    -> o.write()
         is Array<*>        -> o.write()
+        is Thread          -> o.write()
         else               -> o.toString()
     }
 
@@ -47,6 +48,8 @@ object Writer {
         this.isArray -> "#<class:$simpleName>"
         else -> "#<class:$name>"
     }
+
+    private fun Thread.write() = "#<thread>"
 
     private fun Pattern.write() = "#\"${this}\""
 

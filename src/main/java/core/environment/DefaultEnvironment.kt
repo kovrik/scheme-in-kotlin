@@ -225,6 +225,9 @@ class DefaultEnvironment : Environment(null) {
                 Deliver(),
                 Deref(),
                 FutureCancel(),
+                CurrentThread(),
+                ThreadWait(),
+                ThreadInterrupt(),
 
                 /* Math */
                 Negation(),
@@ -565,9 +568,13 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_ATOM,
                 Predicate.IS_BYTE,
                 Predicate.IS_BYTES,
-                Predicate.IS_VOID)
+                Predicate.IS_VOID,
+                Predicate.IS_THREAD,
+                Predicate.IS_THREAD_RUNNING,
+                Predicate.IS_THREAD_DEAD)
 
         private val SPECIAL_FORMS = arrayOf(
+                ThreadForm,
                 Delay,
                 Future,
                 Quote,
