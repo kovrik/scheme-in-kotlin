@@ -49,7 +49,10 @@ object Writer {
         else -> "#<class:$name>"
     }
 
-    private fun Thread.write() = "#<thread>"
+    private fun Thread.write() = when {
+        name.isEmpty() -> "#<thread>"
+        else           -> "#<thread:$name>"
+    }
 
     private fun Pattern.write() = "#\"${this}\""
 

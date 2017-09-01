@@ -5,6 +5,7 @@ import core.evaluator.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.IFn
 import core.scm.Cons
+import core.scm.Symbol
 
 /* Syntax:
  * (thread <expression>)
@@ -20,6 +21,9 @@ object ThreadForm : SpecialForm("thread") {
             is IFn<*, *> -> Runnable { evaluator.eval(Cons.list(body), env) }
             else         -> throw IllegalSyntaxException(toString(), form)
         }
-        return Thread(runnable).apply { start() }
+        return when (form[1]) {
+            is Symbol -> Thread(runnable, form[1].toString()).apply { start() }
+            else      -> Thread(runnable, "").apply { start() }
+        }
     }
 }
