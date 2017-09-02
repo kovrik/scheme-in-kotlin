@@ -265,6 +265,7 @@ class DefaultEnvironment : Environment(null) {
                 Angle(),
                 MakePolar(),
                 MakeRectangular(),
+                Conjugate(),
 
                 /* Trigonometry */
                 Sin(),
