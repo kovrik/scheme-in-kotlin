@@ -504,6 +504,8 @@ class DefaultEnvironment : Environment(null) {
                 BoxCas(),
                 object : BoxCas() { override val name = "compare-and-set!" },
                 Reset(),
+                MakeWeakBox(),
+                WeakBoxValue(),
 //                Swap(),
 
                 /* Predicates */
@@ -571,6 +573,7 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_DECIMAL,
                 Predicate.IS_FLOAT,
                 Predicate.IS_BOX,
+                Predicate.IS_WEAK_BOX,
                 Predicate.IS_ATOM,
                 Predicate.IS_BYTE,
                 Predicate.IS_ARRAY,

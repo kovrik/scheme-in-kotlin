@@ -79,6 +79,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_FN = Predicate("fn?", this::isProcedure)
         val IS_IFN = Predicate("ifn?", { it is IFn<*, *> })
         val IS_BOX = Predicate("box?", { it is Box<*> })
+        val IS_WEAK_BOX = Predicate("weak-box?", { it is WeakBox<*> })
         val IS_ATOM = Predicate("atom?", { it is Box<*> })
         val IS_BYTE = Predicate("byte?", Utils::isByte)
         val IS_ARRAY = Predicate("array?", { it != null && it::class.java.isArray })
