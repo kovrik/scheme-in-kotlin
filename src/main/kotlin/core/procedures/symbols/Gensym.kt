@@ -1,6 +1,6 @@
 package core.procedures.symbols
 
-import core.evaluator.Evaluator
+import core.Evaluator
 import core.procedures.AFn
 import core.scm.Symbol
 

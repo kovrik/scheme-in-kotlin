@@ -1,4 +1,4 @@
-package core.evaluator
+package core
 
 import core.environment.Environment
 import core.exceptions.IllegalSyntaxException

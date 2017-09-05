@@ -1,8 +1,8 @@
 package core.scm.specialforms
 
 import core.environment.Environment
-import core.evaluator.Evaluator
-import core.evaluator.Reflector
+import core.Evaluator
+import core.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.scm.Symbol

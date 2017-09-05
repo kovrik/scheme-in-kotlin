@@ -2,7 +2,7 @@ package core.scm.specialforms
 
 import core.Repl
 import core.environment.Environment
-import core.evaluator.Evaluator
+import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 
 import java.util.concurrent.TimeUnit

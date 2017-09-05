@@ -2,7 +2,7 @@ package unittests
 
 import core.environment.DefaultEnvironment
 import core.environment.Environment
-import core.evaluator.Evaluator
+import core.Evaluator
 import core.reader.StringReader
 import core.scm.Symbol
 import org.junit.Assert.assertEquals

@@ -1,7 +1,7 @@
 package core.scm.specialforms
 
 import core.environment.Environment
-import core.evaluator.Evaluator
+import core.Evaluator
 import core.scm.Thunk
 
 /* Syntax:

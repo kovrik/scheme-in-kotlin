@@ -1,7 +1,7 @@
 package core.scm
 
 import core.environment.Environment
-import core.evaluator.Evaluator
+import core.Evaluator
 import core.exceptions.ReentrantDelayException
 import java.util.concurrent.atomic.AtomicBoolean
 

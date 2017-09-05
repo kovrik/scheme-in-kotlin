@@ -1,4 +1,4 @@
-package core.evaluator
+package core
 
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException

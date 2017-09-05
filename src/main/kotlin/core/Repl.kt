@@ -2,7 +2,6 @@ package core
 
 import core.environment.DefaultEnvironment
 import core.environment.Environment
-import core.evaluator.Evaluator
 import core.exceptions.ExInfoException
 import core.reader.FileReader
 import core.reader.Reader

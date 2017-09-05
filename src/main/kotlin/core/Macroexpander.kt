@@ -1,4 +1,4 @@
-package core.evaluator
+package core
 
 class Macroexpander {
 
