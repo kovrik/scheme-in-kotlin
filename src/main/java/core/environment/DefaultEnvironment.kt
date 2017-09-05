@@ -641,6 +641,7 @@ class DefaultEnvironment : Environment(null) {
             add("(define (call-with-values producer consumer) (apply consumer (producer)))")
 
             add("(define (add1 n) (+ n 1))")
+            add("(define (sub1 n) (- n 1))")
             add("(define (inc  n) (+ n 1))")
             add("(define (dec  n) (- n 1))")
             add("(define (sqr  n) (* n n))")
