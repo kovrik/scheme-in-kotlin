@@ -592,7 +592,7 @@ class DefaultEnvironment : Environment(null) {
 
         private val SPECIAL_FORMS = arrayOf(
                 ThreadForm,
-                Delay,
+                DelayForm,
                 LazyForm,
                 FutureForm,
                 Quote,
