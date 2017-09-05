@@ -594,7 +594,7 @@ class DefaultEnvironment : Environment(null) {
                 ThreadForm,
                 Delay,
                 LazyForm,
-                Future,
+                FutureForm,
                 Quote,
                 Set,
                 Quasiquote,
