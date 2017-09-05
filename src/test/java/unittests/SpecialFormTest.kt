@@ -465,28 +465,57 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalAnd() {
-        assertEquals(true, eval("(and)", env))
-        assertEquals(1L, eval("(and 1)", env))
-        assertEquals(true, eval("(and (= 2 2) (> 2 1))", env))
+        assertEquals(true,  eval("(and)", env))
+        assertEquals(1L,    eval("(and 1)", env))
+        assertEquals(true,  eval("(and (= 2 2) (> 2 1))", env))
         assertEquals(false, eval("(and (= 2 2) (< 2 1))", env))
         assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(and 1 2 'c '(f g)) ", env))
     }
 
     @Test
+    fun testEvalNand() {
+        assertEquals(false, eval("(nand)", env))
+        assertEquals(true,  eval("(nand #f #f)", env))
+        assertEquals(true,  eval("(nand #f #t)", env))
+        assertEquals(true,  eval("(nand #t #f)", env))
+        assertEquals(false, eval("(nand #t #t)", env))
+        assertEquals(true,  eval("(nand #f (error \"BOOM\"))", env))
+    }
+
+    @Test
     fun testEvalOr() {
         assertEquals(false, eval("(or)", env))
-        assertEquals(true, eval("(or (= 2 2) (> 2 1)) ", env))
-        assertEquals(true, eval("(or (= 2 2) (< 2 1))", env))
+        assertEquals(true,  eval("(or (= 2 2) (> 2 1)) ", env))
+        assertEquals(true,  eval("(or (= 2 2) (< 2 1))", env))
         assertEquals(false, eval("(or #f #f #f)", env))
         assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(or '(f g) 1 2)", env))
+    }
+
+    @Test
+    fun testEvalXor() {
+        assertEquals(11L,   eval("(xor 11 #f)", env))
+        assertEquals(22L,   eval("(xor #f 22)", env))
+        assertEquals(false, eval("(xor 11 22)", env))
+        assertEquals(false, eval("(xor #f #f)", env))
+    }
+
+    @Test
+    fun testEvalNor() {
+        assertEquals(true,  eval("(nor)", env))
+        assertEquals(false, eval("(nor 1)", env))
+        assertEquals(true,  eval("(nor #f #f)", env))
+        assertEquals(false, eval("(nor #f 1)", env))
+        assertEquals(false, eval("(nor 1 #f)", env))
+        assertEquals(false, eval("(nor #t #T)", env))
+        assertEquals(false, eval("(nor #t (error \"BOOM\"))", env))
     }
 
     @Test
     fun testEvalBegin() {
         assertEquals(Unit, eval("(begin)", env))
         assertEquals(Unit, eval("(begin (begin))", env))
-        assertEquals(1L, eval("(begin 1)", env))
-        assertEquals(3L, eval("(begin 1 2 3)", env))
+        assertEquals(1L,   eval("(begin 1)", env))
+        assertEquals(3L,   eval("(begin 1 2 3)", env))
         try {
             eval("(begin (set! x 5) (+ x 1))", env)
             fail()

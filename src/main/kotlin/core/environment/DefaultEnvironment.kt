@@ -3,6 +3,8 @@ package core.environment
 import core.procedures.AFn
 import core.procedures.arrays.*
 import core.procedures.bit.*
+import core.procedures.booleans.Not
+import core.procedures.booleans.Xor
 import core.procedures.box.*
 import core.procedures.bytes.BytesToString
 import core.procedures.bytes.StringToBytes
@@ -229,8 +231,11 @@ class DefaultEnvironment : Environment(null) {
                 ThreadWait(),
                 ThreadInterrupt(),
 
+                /* Booleans */
+                Not(),
+                Xor(),
+
                 /* Math */
-                Negation(),
                 Addition(),
                 Subtraction(),
                 Multiplication(),
@@ -608,7 +613,9 @@ class DefaultEnvironment : Environment(null) {
                 Unless,
                 Begin,
                 And,
+                Nand,
                 Or,
+                Nor,
                 Lambda,
                 Define,
                 Let,
