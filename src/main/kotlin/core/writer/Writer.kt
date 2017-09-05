@@ -45,8 +45,8 @@ object Writer {
     }
 
     private fun Class<*>.write() = when {
-        this.isArray -> "#<class:$simpleName>"
-        else -> "#<class:$name>"
+        isArray -> "#<class:$simpleName>"
+        else    -> "#<class:$name>"
     }
 
     private fun Thread.write() = when {
