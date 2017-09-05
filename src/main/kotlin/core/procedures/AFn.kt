@@ -32,7 +32,7 @@ abstract class AFn<T, out R>(var minArgs: Int = 0,
     @Throws(Exception::class)
     override fun call(): Any? = invoke()
 
-    override operator fun invoke(): R = throw ArityException(name, minArgs, maxArgs, 1)
+    override operator fun invoke(): R = throw ArityException(name, minArgs, maxArgs, 0)
     override operator fun invoke(arg: T): R = throw ArityException(name, minArgs, maxArgs, 1)
     override operator fun invoke(arg1: T, arg2: T): R = throw ArityException(name, minArgs, maxArgs, 2)
     override operator fun invoke(arg1: T, arg2: T, arg3: T): R = throw ArityException(name, minArgs, maxArgs, 3)
