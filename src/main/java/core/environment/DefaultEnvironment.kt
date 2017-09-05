@@ -58,7 +58,6 @@ class DefaultEnvironment : Environment(null) {
         /* Standard Procedures */
         STANDARD_PROCEDURES.forEach { put(Symbol.intern(it.name), it) }
         /* Constants and special cases, synonyms*/
-        put(Symbol.intern("call/cc"),   CallCC)
         put(Symbol.intern("pi"),        Math.PI)
         put(Symbol.intern("euler.0"),   Math.E)
         put(Symbol.intern("phi.0"),     1.618033988749895)
