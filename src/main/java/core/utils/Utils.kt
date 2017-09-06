@@ -38,7 +38,7 @@ object Utils {
                                           'x' to 16, 'X' to 16)
 
     private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>().apply {
-        (2..16).forEach { put(it, BigDecimal(it)) }
+        (Character.MIN_RADIX..Character.MAX_RADIX).forEach { put(it, BigDecimal(it)) }
     }
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
@@ -46,24 +46,16 @@ object Utils {
     /* Threshold after which we switch to BigDecimals */
     private val RADIX_THRESHOLDS = hashMapOf(2  to 63, 3  to 39, 4  to 31, 5  to 27, 6  to 24, 7  to 22, 8  to 21,
                                              9  to 19, 10 to 18, 11 to 18, 12 to 17, 13 to 17, 14 to 16, 15 to 16,
-                                             16 to 15)
+                                             16 to 15, 17 to 15, 18 to 15, 19 to 14, 20 to 14, 21 to 14, 22 to 14,
+                                             23 to 13, 24 to 13, 25 to 13, 26 to 13, 27 to 13, 28 to 13, 29 to 12,
+                                             30 to 12, 31 to 12, 32 to 12, 33 to 12, 34 to 12, 35 to 12, 36 to 12)
 
+    private const val alphabet = "23456789abcdefghijklmnopqrstuvwxyz"
     private val RADIX_CHARS = HashMap<Int, String>().apply {
         put(2,  "#+-.01")
-        put(3,  this[2]  + "2")
-        put(4,  this[3]  + "3")
-        put(5,  this[4]  + "4")
-        put(6,  this[5]  + "5")
-        put(7,  this[6]  + "6")
-        put(8,  this[7]  + "7")
-        put(9,  this[8]  + "8")
-        put(10, this[9]  + "9")
-        put(11, this[10] + "aA")
-        put(12, this[11] + "bB")
-        put(13, this[12] + "cC")
-        put(14, this[13] + "dD")
-        put(15, this[14] + "eE")
-        put(16, this[15] + "fF")
+        alphabet.forEachIndexed { i, c ->
+            put(i + 3, this[i + 2] + c + c.toUpperCase())
+        }
     }
 
     private val toInexact = ToInexact()
@@ -87,7 +79,7 @@ object Utils {
         SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
         val last = number.last()
-        if (last == 'i' || last == 'I') {
+        if ((last == 'i' || last == 'I') && (number.contains('+') || number.contains('-'))) {
             return processComplexNumber(number, exactness, radix)
         }
         /* Read exponent mark if present */

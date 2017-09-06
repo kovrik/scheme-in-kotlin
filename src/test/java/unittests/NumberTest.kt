@@ -764,6 +764,13 @@ class NumberTest : AbstractTest() {
 
         assertEquals("-3a885", eval("(number->string -239749 16)", env))
         assertEquals("-777777777777777777777777777777777777", eval("(number->string #x-fffffffffffffffffffffffffff 8)", env))
+
+        "123456789abcdefghijklmnopqrstuvwxyz".forEachIndexed { i, c ->
+            assertEquals("$c", eval("(number->string (string->number \"$c\" ${i + 2}) ${i + 2})", env))
+        }
+        "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".forEachIndexed { i, c ->
+            assertEquals("$c".toLowerCase(), eval("(number->string (string->number \"$c\" ${i + 2}) ${i + 2})", env))
+        }
     }
 
     @Test
@@ -830,7 +837,27 @@ class NumberTest : AbstractTest() {
                                 13 to "cccccccccccccccccc",
                                 14 to "ddddddddddddddddd",
                                 15 to "eeeeeeeeeeeeeeeee",
-                                16 to "ffffffffffffffff")
+                                16 to "ffffffffffffffff",
+                                17 to "gggggggggggggggg",
+                                18 to "hhhhhhhhhhhhhhhh",
+                                19 to "iiiiiiiiiiiiiii",
+                                20 to "jjjjjjjjjjjjjjj",
+                                21 to "kkkkkkkkkkkkkkk",
+                                22 to "lllllllllllllll",
+                                23 to "mmmmmmmmmmmmmm",
+                                24 to "nnnnnnnnnnnnnn",
+                                25 to "oooooooooooooo",
+                                26 to "pppppppppppppp",
+                                27 to "qqqqqqqqqqqqqq",
+                                28 to "rrrrrrrrrrrrrr",
+                                29 to "sssssssssssss",
+                                30 to "ttttttttttttt",
+                                31 to "uuuuuuuuuuuuu",
+                                32 to "vvvvvvvvvvvvv",
+                                33 to "wwwwwwwwwwwww",
+                                34 to "xxxxxxxxxxxxx",
+                                35 to "yyyyyyyyyyyyy",
+                                36 to "zzzzzzzzzzzzz")
         numbers.forEach { k, v -> assertNotEquals(false, eval("(string->number \"$v\" $k)", env)) }
     }
 
