@@ -4,11 +4,19 @@ import core.environment.Environment
 import core.Evaluator
 import core.writer.Writer
 import java.util.concurrent.FutureTask
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
         FutureTask<Any?>({ evaluator.eval(expr, env) }), IDeref {
 
     override fun deref() = get()
+
+    override fun deref(timeout: Long, timeoutVal: Any?): Any? = try {
+        get(timeout, TimeUnit.MILLISECONDS)
+    } catch (e: TimeoutException) {
+        timeoutVal
+    }
 
     override fun toString() = when {
         isDone -> StringBuilder("#<future!").apply {

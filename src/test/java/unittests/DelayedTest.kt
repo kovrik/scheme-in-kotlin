@@ -2,6 +2,7 @@ package unittests
 
 import core.exceptions.ReentrantDelayException
 import core.exceptions.WrongTypeException
+import core.scm.Keyword
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -61,6 +62,7 @@ class DelayedTest : AbstractTest() {
         assertEquals(true,  eval("(let ((p (promise))) (promise?  p))", env))
         assertEquals(true,  eval("(let ((p (promise))) (deliver p 1) (realized? p))", env))
         assertEquals(12L,   eval("(let ((p (promise))) (deliver p (+ 1 2 3)) (+ @p (deref p)))", env))
+        assertEquals(Keyword.intern("timeout"), eval("(deref (promise) 1 :timeout)", env))
     }
 
     @Test
@@ -81,6 +83,7 @@ class DelayedTest : AbstractTest() {
         assertEquals(6L,    eval("(let ((f (future (+ 1 2 3)))) @f)", env))
         assertEquals(true,  eval("(let ((f (future (+ 1 2 3)))) @f (future-done? f))", env))
         assertEquals(true,  eval("(let ((f (future (sleep 5000)))) (future-cancel f) (future-cancelled? f))", env));
+        assertEquals(Keyword.intern("timeout"), eval("(deref (future (sleep 1000000)) 1 :timeout)", env))
         try {
             eval("(realized? 123)", env)
             fail()

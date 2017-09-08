@@ -7,6 +7,8 @@ import core.writer.Writer
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class Delay(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) :
@@ -25,6 +27,23 @@ open class Delay(private val expr: Any?, private val env: Environment, private v
             /* Always run delay in the current thread */
             complete(evaluator.eval(expr, env))
             get()
+        } catch (e: Throwable) {
+            completeExceptionally(e)
+            value
+        }
+    }
+
+    override fun deref(timeout: Long, timeoutVal: Any?): Any? = when {
+        isCancelled -> null
+        isCompletedExceptionally || isDone -> value
+        /* Do not allow delay to be forced twice */
+        !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
+        else -> try {
+            /* Always run delay in the current thread */
+            complete(evaluator.eval(expr, env))
+            get(timeout, TimeUnit.MILLISECONDS)
+        } catch (e: TimeoutException) {
+            timeoutVal
         } catch (e: Throwable) {
             completeExceptionally(e)
             value
