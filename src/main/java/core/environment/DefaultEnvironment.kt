@@ -43,6 +43,9 @@ import core.procedures.symbols.Gensym
 import core.procedures.symbols.StringToSymbol
 import core.procedures.symbols.SymbolToString
 import core.procedures.system.*
+import core.procedures.time.CurrentMilliseconds
+import core.procedures.time.CurrentSeconds
+import core.procedures.time.NanoTime
 import core.procedures.vectors.*
 import core.scm.Symbol
 import core.scm.specialforms.*
@@ -221,6 +224,11 @@ class DefaultEnvironment : Environment(null) {
                 Identity(),
                 Num(),
                 Sleep(),
+
+                /* Time */
+                CurrentSeconds(),
+                CurrentMilliseconds(),
+                NanoTime(),
 
                 /* Delayed */
                 Force(),
