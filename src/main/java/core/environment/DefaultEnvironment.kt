@@ -71,6 +71,7 @@ class DefaultEnvironment : Environment(null) {
         put(Symbol.intern("call/cc"),   get(CallCC.symbol))
         put(Symbol.intern("def"),       get(Define.symbol))
         put(Symbol.intern("fn"),        get(Lambda.symbol))
+        put(Symbol.intern("\$e"),       Unit)
     }
 
     companion object {
