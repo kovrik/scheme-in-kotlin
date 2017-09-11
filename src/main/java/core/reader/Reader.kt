@@ -431,6 +431,7 @@ open class Reader : IReader {
 
     /**
      * Deref shortcut
+     * Syntax:
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
@@ -438,6 +439,7 @@ open class Reader : IReader {
 
     /**
      * Syntax shortcut
+     * Syntax:
      * #'template -> (syntax template)
      */
     @Throws(IOException::class)
