@@ -26,8 +26,12 @@ object Time : SpecialForm("time") {
         val threadCpuTime = threadMXBean.getThreadCpuTime(threadId)
 
         val gcBeans = ManagementFactory.getGarbageCollectorMXBeans()
-        var gcCount = 0L
-        var gcTimeMillis = 0L
+        var gcCountStart = 0L
+        var gcTimeMillisStart = 0L
+        for (gcBean in gcBeans) {
+            gcCountStart += gcBean.collectionCount
+            gcTimeMillisStart += gcBean.collectionTime
+        }
 
         val nanos = System.nanoTime()
 
@@ -36,13 +40,17 @@ object Time : SpecialForm("time") {
         }
         val result = evaluator.eval(form[form.size - 1], env)
 
+        var gcCountEnd = 0L
+        var gcTimeMillisEnd = 0L
         for (gcBean in gcBeans) {
-            gcCount += gcBean.collectionCount
-            gcTimeMillis += gcBean.collectionTime
+            gcCountEnd += gcBean.collectionCount
+            gcTimeMillisEnd += gcBean.collectionTime
         }
 
         val cpuTime = TimeUnit.NANOSECONDS.toMillis(threadMXBean.getThreadCpuTime(threadId) - threadCpuTime)
         val realTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - nanos)
+        val gcTimeMillis = gcTimeMillisEnd - gcTimeMillisStart
+        val gcCount = gcCountEnd - gcCountStart
 
         Repl.currentOutputPort.writeln("CPU Time: $cpuTime ms; Real Time: $realTime ms;" +
                                        " GC Time: $gcTimeMillis ms; GC Count: $gcCount")
