@@ -20,7 +20,7 @@ open class Reader : IReader {
     }
 
     companion object {
-        private val DEREF = Symbol.intern("deref")
+        private val DEREF  = Symbol.intern("deref")
 
         private const val LINE_BREAKS = "\n\r"
         private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
@@ -137,6 +137,8 @@ open class Reader : IReader {
             return false
         } else if (c == '"') {
             return readRegex()
+        } else if (c == '\'') {
+            return readSyntax()
         } else if (isRadix(c) || isExactness(c)) {
             /* Read identifier, not a number */
             val number = "#" + c + readUntilDelimiter()
@@ -433,4 +435,11 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readDeref() = Cons.list(DEREF, read())
+
+    /**
+     * Syntax shortcut
+     * #'template -> (syntax template)
+     */
+    @Throws(IOException::class)
+    private fun readSyntax() = Syntax(read())
 }

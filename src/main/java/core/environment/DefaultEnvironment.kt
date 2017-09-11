@@ -602,7 +602,8 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_VOID,
                 Predicate.IS_THREAD,
                 Predicate.IS_THREAD_RUNNING,
-                Predicate.IS_THREAD_DEAD)
+                Predicate.IS_THREAD_DEAD,
+                Predicate.IS_SYNTAX)
 
         private val SPECIAL_FORMS = arrayOf(
                 ThreadForm,
@@ -644,6 +645,7 @@ class DefaultEnvironment : Environment(null) {
                 CallCC,
                 ThunkForm,
                 Swap,
+                SyntaxForm,
                 // TODO Macros
                 DefineSyntax,
                 LetSyntax,
