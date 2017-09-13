@@ -195,7 +195,10 @@ class Reflector {
                     throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
                 }
             } catch (e: InvocationTargetException) {
-                throw RuntimeException("reflector: reflection exception")
+                when (e.cause) {
+                    null -> throw RuntimeException("reflector: invocation target exception")
+                    else -> throw e.cause as Throwable
+                }
             }
         }
     }
@@ -244,7 +247,10 @@ class Reflector {
                 throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
             }
         } catch (e: InvocationTargetException) {
-            throw RuntimeException("reflector: reflection exception")
+            when (e.cause) {
+                null -> throw RuntimeException("reflector: invocation target exception")
+                else -> throw e.cause as Throwable
+            }
         }
     }
 }
