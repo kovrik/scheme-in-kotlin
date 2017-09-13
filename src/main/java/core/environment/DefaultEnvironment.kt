@@ -37,6 +37,7 @@ import core.procedures.math.trigonometry.*
 import core.procedures.meta.MetaProc
 import core.procedures.meta.WIthMeta
 import core.procedures.predicates.Predicate
+import core.procedures.seqs.Repeat
 import core.procedures.sets.*
 import core.procedures.strings.*
 import core.procedures.symbols.Gensym
@@ -521,6 +522,9 @@ class DefaultEnvironment : Environment(null) {
                 MakeWeakBox(),
                 WeakBoxValue(),
 //                Swap(),
+
+                /* Seqs */
+                Repeat(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
