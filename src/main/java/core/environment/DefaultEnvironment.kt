@@ -378,6 +378,7 @@ class DefaultEnvironment : Environment(null) {
                 Newline(),
                 Load(),
                 Read(),
+                ReadSyntax(),
                 Write(),
                 ReadChar(),
                 PeekChar(),
