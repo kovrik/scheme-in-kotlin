@@ -446,15 +446,16 @@ object Utils {
      */
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
-    fun isSeqable(obj: Any?) = obj == null || obj is Iterable<*> || obj is CharSequence || obj is Map<*, *> ||
-                               obj is Map.Entry<*, *> || obj is ByteArray || obj is ShortArray || obj is IntArray ||
-                               obj is LongArray || obj is DoubleArray || obj is FloatArray || obj is BooleanArray ||
-                               obj is CharArray || obj is Array<*>
+    fun isSeqable(obj: Any?) = obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
+                               obj is Map<*, *> || obj is Map.Entry<*, *> || obj is ByteArray || obj is ShortArray ||
+                               obj is IntArray  || obj is LongArray || obj is DoubleArray || obj is FloatArray ||
+                               obj is BooleanArray || obj is CharArray || obj is Array<*>
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
         null               -> emptyList<Any?>().asSequence()
+        is Sequence<*>     -> obj
         is Iterable<*>     -> obj.asSequence()
         is CharSequence    -> obj.asSequence()
         is Map<*, *>       -> mapIterator(obj).asSequence()

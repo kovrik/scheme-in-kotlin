@@ -91,7 +91,7 @@ object Writer {
     }.toString()
 
     /* Check named characters */
-    private fun Char?.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
+    private fun Char.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
 
     private fun Map<*, *>.write() = when {
         isEmpty() -> "{}"
