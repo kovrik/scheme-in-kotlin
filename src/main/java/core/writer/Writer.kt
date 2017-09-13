@@ -23,6 +23,7 @@ object Writer {
         is Class<*>        -> o.write()
         is List<*>         -> o.write()
         is Number          -> o.write()
+        is Sequence<*>     -> o.write()
         is CharSequence    -> o.write()
         is Char            -> o.write()
         is Pattern         -> o.write()
@@ -76,6 +77,8 @@ object Writer {
         Float.NEGATIVE_INFINITY  -> "-inf.0"
         else                     -> toString()
     }
+
+    private fun Sequence<*>.write() = joinToString(separator = " ", prefix = "(", postfix = ")")
 
     private fun CharSequence.write() = StringBuilder(length + 2).apply {
         append('"')
