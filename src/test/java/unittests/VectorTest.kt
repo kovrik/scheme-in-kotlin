@@ -16,6 +16,13 @@ class VectorTest : AbstractTest() {
     }
 
     @Test
+    fun testEmptyVector() {
+        assertEquals(true,  eval("(identical? #() #())", env))
+        assertEquals(true,  eval("(identical? [] [])",   env))
+        assertEquals(false, eval("(identical? [] #())",  env))
+    }
+
+    @Test
     fun testEvalVector() {
         assertEquals(MutableVector(), eval("#()", env))
         assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("#(1 2 3 )", env))

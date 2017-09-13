@@ -353,7 +353,12 @@ open class Reader : IReader {
      * <vector> -> [<vector_contents>]
      */
     @Throws(IOException::class)
-    private fun readVectorMutable(terminator: Char) = MutableVector(readList(false, terminator).toTypedArray())
+    private fun readVectorMutable(terminator: Char) = readList(false, terminator).let {
+        when {
+            it.isEmpty() -> MutableVector.EMPTY
+            else -> MutableVector(it.toTypedArray())
+        }
+    }
 
     /**
      * Read immutable vector
@@ -361,7 +366,12 @@ open class Reader : IReader {
      * <vector> -> #(<vector_contents>)
      */
     @Throws(IOException::class)
-    private fun readVectorImmutable(terminator: Char) = Vector(readList(false, terminator).toTypedArray())
+    private fun readVectorImmutable(terminator: Char) = readList(false, terminator).let {
+        when {
+            it.isEmpty() -> Vector.EMPTY
+            else -> Vector(it.toTypedArray())
+        }
+    }
 
     /**
      * Read hashmap

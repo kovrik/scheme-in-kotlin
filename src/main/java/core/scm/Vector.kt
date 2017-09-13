@@ -17,6 +17,8 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         /* Alternative Clojure-style Vector syntax */
         private const val OPEN = "["
         private const val CLOSE = "]"
+
+        val EMPTY = Vector(0, null)
     }
 
     override val name = "vector"

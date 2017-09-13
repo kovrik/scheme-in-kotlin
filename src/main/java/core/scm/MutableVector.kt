@@ -6,6 +6,10 @@ import core.utils.Utils
 /* Mutable Vector */
 open class MutableVector : Vector {
 
+    companion object {
+        val EMPTY = MutableVector(0, null)
+    }
+
     constructor() : super()
 
     constructor(size: Int, init: Any?) : super(size, init)
