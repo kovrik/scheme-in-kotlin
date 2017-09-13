@@ -721,6 +721,7 @@ class DefaultEnvironment : Environment(null) {
 
             add("(def (partial f . args1) (fn args2 (apply f (append args1 args2))))")
             add("(def (const arg) (fn rest arg))")
+            add("(def (constantly arg) (fn rest arg))")
 
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +
