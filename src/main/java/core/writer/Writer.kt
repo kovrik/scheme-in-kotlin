@@ -78,7 +78,7 @@ object Writer {
         else                     -> toString()
     }
 
-    private fun Sequence<*>.write() = joinToString(separator = " ", prefix = "(", postfix = ")")
+    private fun Sequence<*>.write() = toList().write()
 
     private fun CharSequence.write() = StringBuilder(length + 2).apply {
         append('"')
