@@ -656,6 +656,7 @@ class DefaultEnvironment : Environment(null) {
                 ThunkForm,
                 Swap,
                 SyntaxForm,
+                Locking,
                 // TODO Macros
                 DefineSyntax,
                 LetSyntax,
