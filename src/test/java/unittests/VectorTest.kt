@@ -29,10 +29,10 @@ class VectorTest : AbstractTest() {
         assertEquals(MutableVector(), eval("(vector)", env))
         assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("(vector 1 2 3)", env))
         assertEquals(MutableVector(arrayOf(1L, 2L, 3L)), eval("(vector 1 2 (+ 1 2))", env))
-        assertEquals(MutableVector(arrayOf(3L, 2L, 1L)), eval("(reverse (vector 1 2 3))", env))
-        assertEquals(MutableVector(arrayOf(2L, 1L)), eval("(reverse (vector 1 2))", env))
-        assertEquals(MutableVector(arrayOf(1L)), eval("(reverse (vector 1))", env))
-        assertEquals(MutableVector(), eval("(reverse (vector))", env))
+        assertEquals(listOf(3L, 2L, 1L), eval("(reverse (vector 1 2 3))", env))
+        assertEquals(listOf(3L, 2L),     eval("(reverse (vector 2 3))", env))
+        assertEquals(listOf(3L),         eval("(reverse (vector 3))", env))
+        assertEquals(emptyList<Any?>(),  eval("(reverse (vector))", env))
         assertEquals(7L, eval("([(+ 1 2) (+ 3 4)] 1)", env))
     }
 
@@ -217,7 +217,7 @@ class VectorTest : AbstractTest() {
             eval("([0 (+ 2 3) 10] 10)", env)
             fail()
         } catch (e: IndexOutOfBoundsException) {
-            // success
+            // expected
         }
     }
 
@@ -225,13 +225,13 @@ class VectorTest : AbstractTest() {
     fun testVectorNext() {
         assertEquals(null, eval("(next [])", env))
         assertEquals(null, eval("(next [1])", env))
-        assertEquals(Vector(arrayOf(2L, 3L)), eval("(next [1 2 3])", env))
+        assertEquals(listOf(2L, 3L), (eval("(next [1 2 3])", env) as Sequence<*>).toList())
     }
 
     @Test
     fun testVectorRest() {
-        assertEquals(Vector(), eval("(rest [])", env))
-        assertEquals(Vector(), eval("(rest [1])", env))
-        assertEquals(Vector(arrayOf(2L, 3L)), eval("(rest [1 2 3])", env))
+        assertEquals(emptyList<Any?>(), (eval("(rest [])",  env) as Sequence<*>).toList())
+        assertEquals(emptyList<Any?>(), (eval("(rest [1])", env) as Sequence<*>).toList())
+        assertEquals(listOf(2L, 3L),    (eval("(rest [1 2 3])", env) as Sequence<*>).toList())
     }
 }

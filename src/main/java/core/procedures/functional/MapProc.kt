@@ -2,7 +2,7 @@ package core.procedures.functional
 
 import core.procedures.AFn
 import core.procedures.IFn
-import core.procedures.generic.Count
+import core.procedures.seqs.Count
 import core.scm.Cons
 import core.scm.Symbol
 import core.scm.Thunk
@@ -13,6 +13,7 @@ open class MapProc : AFn<Any?, Any>(name = "map", minArgs = 2, mandatoryArgsType
 
     private val count = Count()
 
+    // TODO Make it work with Sequences!
     // TODO Very naive implementation. Re-implement and optimize
     override operator fun invoke(args: Array<out Any?>): Thunk {
         /* Check that all lists/vectors are of the same size */

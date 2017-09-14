@@ -3,6 +3,7 @@ package core.procedures.generic
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.equivalence.Equal
+import core.procedures.seqs.Get
 import core.scm.Cons
 import core.utils.Utils
 import core.writer.Writer

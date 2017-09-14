@@ -97,6 +97,9 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_THREAD_RUNNING = Predicate("thread-running?", { Type.assertType("thread-running?", it, Thread::class.java) && (it as Thread).isAlive })
         val IS_THREAD_DEAD = Predicate("thread-dead?", { Type.assertType("thread-dead?", it, Thread::class.java) && !(it as Thread).isAlive })
         val IS_SYNTAX = Predicate("syntax?", { it is Syntax })
+        val IS_SEQUENCE = Predicate("sequence?", { it is Sequence<*> })
+        val IS_SEQ = Predicate("seq?", { Utils.isSeqable(it) })
+        val IS_SEQABLE = Predicate("seqable?", { Utils.isSeqable(it) })
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 

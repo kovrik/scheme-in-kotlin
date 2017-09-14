@@ -98,8 +98,8 @@ class HashmapTest : AbstractTest() {
         assertEquals(1L, eval("(val (first {:a 1 :b 2 :c 3}))", env))
         assertEquals(1L, eval("(get (first {:a 1 :b 2 :c 3}) 1)", env))
         assertEquals(1L, eval("(nth (first {:a 1 :b 2 :c 3}) 1)", env))
-        assertEquals(MapEntry(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env))
-        assertEquals(MutableVector(arrayOf(Keyword.intern("a"), 1L)), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env))
+        assertEquals(listOf(1L, Keyword.intern("a")), eval("(reverse (first {:a 1 :b 2 :c 3}))", env))
+        assertEquals(listOf(Keyword.intern("a"), 1L), eval("(reverse (reverse (first {:a 1 :b 2 :c 3})))", env))
     }
 
     @Test
@@ -123,8 +123,8 @@ class HashmapTest : AbstractTest() {
 
     @Test
     fun testHashmapRest() {
-        assertEquals(emptySet<Any?>(), eval("(rest {})", env))
-        assertEquals(emptySet<Any?>(), eval("(rest {:a 1})", env))
+        assertEquals(emptyList<Any?>(), (eval("(rest {})", env) as Sequence<*>).toList())
+        assertEquals(emptyList<Any?>(), (eval("(rest {:a 1})", env) as Sequence<*>).toList())
         assertEquals(1, eval("(count (rest {:a 1 :b 2}))", env))
     }
 }

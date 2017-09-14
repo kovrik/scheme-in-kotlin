@@ -1,4 +1,4 @@
-package core.procedures.generic
+package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
@@ -12,6 +12,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
         if (args.size == 1 || args[0] == null) {
             return (args[0] ?: args[1]).let {
                 when (it) {
+                    is Sequence<*>  -> (it as Sequence<Comparable<Any?>>).sortedWith(naturalOrder())
                     is List<*>      -> (it as List<Comparable<Any?>>).toMutableList().apply { sort() }
                     is Vector       -> MutableVector(it).apply { array.sort() }
                     is CharArray    -> it.copyOf().apply { sort() }
@@ -31,6 +32,7 @@ class Sort : AFn<Any?, Any?>(name = "sort", isPure = true, minArgs = 1, maxArgs 
         val comparator = args[0] as Comparator<Any?>
         return args[1].let {
             when (it) {
+                is Sequence<*>  -> (it as Sequence<Comparable<Any?>>).sortedWith(comparator)
                 is List<*>      -> (it as List<Comparable<Any?>>).toMutableList().apply { sortWith(comparator) }
                 is Vector       -> MutableVector(it).apply { array.sortWith(comparator) }
                 is CharArray    -> it.copyOf().sortedWith(comparator).toTypedArray()

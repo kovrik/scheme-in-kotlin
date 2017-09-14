@@ -7,7 +7,7 @@ import core.procedures.cons.Append
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.cons.ConsProc
-import core.procedures.generic.First
+import core.procedures.seqs.First
 import core.procedures.sets.SetProc
 import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList

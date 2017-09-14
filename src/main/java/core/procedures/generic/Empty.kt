@@ -9,6 +9,7 @@ import core.scm.Vector
 class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Any? = when (arg) {
+        is Sequence<*>   -> emptySequence<Any?>()
         is List<*>       -> Cons.list<Any>()
         is Set<*>        -> HashSet<Any>()
         is Vector        -> Vector.EMPTY

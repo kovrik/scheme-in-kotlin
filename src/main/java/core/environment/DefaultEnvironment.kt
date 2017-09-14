@@ -37,7 +37,7 @@ import core.procedures.math.trigonometry.*
 import core.procedures.meta.MetaProc
 import core.procedures.meta.WIthMeta
 import core.procedures.predicates.Predicate
-import core.procedures.seqs.Repeat
+import core.procedures.seqs.*
 import core.procedures.sets.*
 import core.procedures.strings.*
 import core.procedures.symbols.Gensym
@@ -524,6 +524,8 @@ class DefaultEnvironment : Environment(null) {
 //                Swap(),
 
                 /* Seqs */
+                Seq(),
+                Drop(),
                 Repeat(),
 
                 /* Predicates */
@@ -608,7 +610,10 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_THREAD,
                 Predicate.IS_THREAD_RUNNING,
                 Predicate.IS_THREAD_DEAD,
-                Predicate.IS_SYNTAX)
+                Predicate.IS_SYNTAX,
+                Predicate.IS_SEQUENCE,
+                Predicate.IS_SEQ,
+                Predicate.IS_SEQABLE)
 
         private val SPECIAL_FORMS = arrayOf(
                 ThreadForm,

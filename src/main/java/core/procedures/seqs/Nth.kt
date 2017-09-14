@@ -1,4 +1,4 @@
-package core.procedures.generic
+package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
@@ -22,9 +22,11 @@ class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 
             throw WrongTypeException(name, Int::class.java, index)
         }
         val i = (args[1] as Number).toInt()
-        val size = count(col)
-        if (size <= i && args.size < 3) {
-            throw IndexOutOfBoundsException("$name: value out of range: $i")
+        if (col !is Sequence<*>) {
+            val size = count(col)
+            if (size <= i && args.size < 3) {
+                throw IndexOutOfBoundsException("$name: value out of range: $i")
+            }
         }
         return get(args)
     }

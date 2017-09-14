@@ -1,4 +1,4 @@
-package core.procedures.generic
+package core.procedures.seqs
 
 import core.procedures.AFn
 import core.utils.Utils

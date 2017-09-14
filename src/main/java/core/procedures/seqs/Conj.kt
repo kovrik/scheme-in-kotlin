@@ -1,4 +1,4 @@
-package core.procedures.generic
+package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
@@ -12,6 +12,10 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
         if (args.size == 1) return args[0]
         val first = args[0]
         return when (first) {
+            is Sequence<*> -> Cons.list<Any?>().apply {
+                addAll(first)
+                addAll(args.copyOfRange(1, args.size))
+            }
             is List<*> -> Cons.list<Any?>().apply {
                 addAll(first)
                 addAll(args.copyOfRange(1, args.size))
