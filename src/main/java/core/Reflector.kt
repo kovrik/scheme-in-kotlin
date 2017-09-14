@@ -139,6 +139,7 @@ class Reflector {
             val c = getClazz(className)
             try {
                 val field = c.getField(fieldName)
+                field.isAccessible = true;
                 if (!Modifier.isStatic(field.modifiers)) {
                     throw NoSuchFieldException("reflector: unable to find static field $fieldName of $className")
                 }
@@ -186,14 +187,10 @@ class Reflector {
         return methodName.substring(1).let {
             val method = getMethod(instance?.javaClass, it, args, argTypes)
             try {
+                method.isAccessible = true
                 method(instance, *args)
             } catch (e: IllegalAccessException) {
-                method.isAccessible = true
-                try {
-                    method(instance, *args)
-                } catch (e: IllegalAccessException) {
-                    throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
-                }
+                throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
             } catch (e: InvocationTargetException) {
                 when (e.cause) {
                     null -> throw RuntimeException("reflector: invocation target exception")
@@ -207,12 +204,8 @@ class Reflector {
     private fun evalJavaInstanceField(field: String, instance: Any?) = field.substring(2).let {
         try {
             val f = instance?.javaClass?.getField(it)
-            try {
-                f?.get(instance)
-            } catch (e: IllegalAccessException) {
-                f?.isAccessible = true
-                f?.get(instance)
-            }
+            f?.isAccessible = true
+            f?.get(instance)
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
         } catch (e: NoSuchFieldException) {
@@ -238,14 +231,10 @@ class Reflector {
             throw RuntimeException("reflector: unable to find static method $methodName of ${clazz.name}")
         }
         return try {
+            method.isAccessible = true
             method(null, *args)
         } catch (e: IllegalAccessException) {
-            method.isAccessible = true
-            try {
-                method(null, *args)
-            } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
-            }
+            throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
                 null -> throw RuntimeException("reflector: invocation target exception")
