@@ -217,6 +217,7 @@ class DefaultEnvironment : Environment(null) {
                 Pst(),
                 Eval(),
                 RandomProc(),
+                RandProc(),
                 CryptoRandomBytes(),
                 HashCode(),
                 object : HashCode() { override val name = "hash" },

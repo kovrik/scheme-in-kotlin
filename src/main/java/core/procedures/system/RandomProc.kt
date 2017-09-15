@@ -11,19 +11,28 @@ class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, maxArgs = 2
     override operator fun invoke(args: Array<out Any?>): Number = when {
         args.isEmpty() -> Math.random()
         args.size == 1 -> {
-            if (args[0] !is Long || (args[0] as Long) < 1 || args[0] as Long > Int.MAX_VALUE) {
-                throw WrongTypeException(name, "Integer (1 to ${Int.MAX_VALUE})", args[0])
+            if (args[0] !is Long || (args[0] as Long) < 0 || args[0] as Long > Int.MAX_VALUE) {
+                throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[0])
             }
-            Random().nextInt((args[0] as Long).toInt()).toLong()
+            val bound = (args[0] as Long).toInt()
+            when (bound) {
+                0 -> 0
+                else -> Random().nextInt(bound).toLong()
+            }
         }
         else -> {
-            if (args[0] !is Long || (args[0] as Long) < 1 || args[0] as Long > Int.MAX_VALUE) {
-                throw WrongTypeException(name, "Integer (1 to ${Int.MAX_VALUE})", args[0])
+            if (args[0] !is Long || (args[0] as Long) < 0 || args[0] as Long > Int.MAX_VALUE) {
+                throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[0])
             }
-            if (args[1] !is Long || (args[1] as Long) < 1 || args[1] as Long > Int.MAX_VALUE) {
-                throw WrongTypeException(name, "Integer (1 to ${Int.MAX_VALUE})", args[1])
+            if (args[1] !is Long || (args[1] as Long) < 0 || args[1] as Long > Int.MAX_VALUE) {
+                throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[1])
             }
-            ThreadLocalRandom.current().nextInt((args[0] as Long).toInt(), (args[1] as Long).toInt()).toLong()
+            val origin = (args[0] as Long).toInt()
+            val bound  = (args[1] as Long).toInt()
+            when (origin) {
+                bound -> origin
+                else  -> ThreadLocalRandom.current().nextInt(origin, bound).toLong()
+            }
         }
     }
 }
