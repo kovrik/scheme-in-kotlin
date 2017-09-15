@@ -18,10 +18,7 @@ class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true,
             }
         }
         val radix = if (o1 != null) (o1 as Number).toInt() else 10
-        if (number is Long) {
-            return java.lang.Long.toString(number, radix)
-        }
-        if (number is Double) {
+        if (Utils.isInexact(number)) {
             if (radix != 10) {
                 throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
@@ -43,6 +40,9 @@ class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true,
                 else -> throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
             }
         }
-        return number.toString()
+        return when (number) {
+            is Long, is Int, is Short, is Byte -> java.lang.Long.toString(number.toLong(), radix)
+            else -> number.toString()
+        }
     }
 }
