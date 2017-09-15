@@ -385,6 +385,7 @@ class DefaultEnvironment : Environment(null) {
                 ReadChar(),
                 ReadByte(),
                 ReadLine(),
+                ReadString(),
                 PeekChar(),
                 WriteChar(),
                 IsCharReady(),
