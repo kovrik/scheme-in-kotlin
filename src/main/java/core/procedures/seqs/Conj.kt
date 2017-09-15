@@ -12,10 +12,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
         if (args.size == 1) return args[0]
         val first = args[0]
         return when (first) {
-            is Sequence<*> -> Cons.list<Any?>().apply {
-                addAll(first)
-                addAll(args.copyOfRange(1, args.size))
-            }
+            is Sequence<*> -> first.plus(args.copyOfRange(1, args.size))
             is List<*> -> Cons.list<Any?>().apply {
                 addAll(first)
                 addAll(args.copyOfRange(1, args.size))
