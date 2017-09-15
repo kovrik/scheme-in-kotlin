@@ -383,6 +383,7 @@ class DefaultEnvironment : Environment(null) {
                 ReadSyntax(),
                 Write(),
                 ReadChar(),
+                ReadByte(),
                 PeekChar(),
                 WriteChar(),
                 IsCharReady(),
