@@ -473,6 +473,7 @@ class DefaultEnvironment : Environment(null) {
                 Sort(),
                 object : Count() { override val name = "length" },
                 Conj(),
+                Into(),
                 Empty(),
                 Range(),
                 First(),

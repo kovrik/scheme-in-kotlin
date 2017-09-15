@@ -21,7 +21,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 addAll(first as Collection<*>)
                 addAll(args.copyOfRange(1, args.size))
             }
-            is Vector -> MutableVector(first.size + args.size - 1, null).apply {
+            is Vector -> MutableVector(first.size + args.size - 1).apply {
                 for (i in 0 until first.size) { this[i] = first[i] }
                 System.arraycopy(args, 1, this.array, first.size, args.size - 1)
             }
@@ -62,7 +62,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
             // TODO Map?
-            else -> throw WrongTypeException(name, "List or Vector or Set or Array", first)
+            else -> throw WrongTypeException(name, "Seqable", first)
         }
     }
 }

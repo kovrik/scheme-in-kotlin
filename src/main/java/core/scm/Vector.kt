@@ -31,8 +31,10 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
         array = emptyArray()
     }
 
+    constructor(size: Int) : this(size, null)
+
     constructor(size: Int, init: Any?) {
-        array = arrayOfNulls<Any>(size)
+        array = arrayOfNulls(size)
         array.fill(init)
     }
 

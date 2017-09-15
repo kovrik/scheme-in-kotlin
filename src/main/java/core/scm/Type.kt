@@ -13,6 +13,7 @@ object Type {
     object Rational
     object Real
     object BitOp
+    object Seqable
 
     private val TYPE_PREDICATES = hashMapOf(
             String::class.java                  to { o: Any? -> o is CharSequence },
@@ -29,7 +30,8 @@ object Type {
             BitOp::class.java                   to Utils::isBitOpSupported,
             IAssoc::class.java                  to Utils::isAssoc,
             Byte::class.java                    to Utils::isByte,
-            Byte::class.javaObjectType          to Utils::isByte
+            Byte::class.javaObjectType          to Utils::isByte,
+            Seqable::class.java                 to Utils::isSeqable
     )
 
     fun assertType(name: String, o: Any?, expected: Class<*>) = when {
