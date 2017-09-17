@@ -16,6 +16,8 @@ open class MutableVector : Vector {
 
     constructor(size: Int, init: Any?) : super(size, init)
 
+    constructor(coll: Collection<Any?>) : super(coll)
+
     constructor(elements: Array<out Any?>) : super(elements)
 
     constructor(vector: Vector) : super(vector)
