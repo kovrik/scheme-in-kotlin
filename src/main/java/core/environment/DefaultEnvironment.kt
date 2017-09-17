@@ -467,21 +467,9 @@ class DefaultEnvironment : Environment(null) {
                 IsSuperset(),
 
                 /* Generic */
-                Count(),
-                Get(),
-                Nth(),
-                Sort(),
-                object : Count() { override val name = "length" },
-                Conj(),
-                Into(),
                 Empty(),
                 Range(),
-                First(),
-                Second(),
-                Next(),
-                Rest(),
                 RandNth(),
-                Take(),
 
                 /* Keywords */
                 KeywordProc(),
@@ -530,9 +518,21 @@ class DefaultEnvironment : Environment(null) {
 //                Swap(),
 
                 /* Seqs */
-                Seq(),
                 Drop(),
+                Conj(),
+                Count(),
+                object : Count() { override val name = "length" },
+                First(),
+                Get(),
+                Into(),
+                Nth(),
+                Next(),
                 Repeat(),
+                Rest(),
+                Second(),
+                Seq(),
+                Sort(),
+                Take(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
