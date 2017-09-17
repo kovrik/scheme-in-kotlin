@@ -529,6 +529,7 @@ class DefaultEnvironment : Environment(null) {
                 Nth(),
                 Next(),
                 Repeat(),
+                Repeatedly(),
                 Rest(),
                 Second(),
                 Seq(),
