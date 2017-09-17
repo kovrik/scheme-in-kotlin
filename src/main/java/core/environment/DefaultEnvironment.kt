@@ -521,6 +521,7 @@ class DefaultEnvironment : Environment(null) {
                 Drop(),
                 Conj(),
                 Count(),
+                Cycle(),
                 object : Count() { override val name = "length" },
                 First(),
                 Get(),

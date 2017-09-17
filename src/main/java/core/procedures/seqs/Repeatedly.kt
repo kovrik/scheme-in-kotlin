@@ -9,12 +9,14 @@ open class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = tru
                                                lastArgType = IFn::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
-        1 -> LazySeq(generateSequence { AFn.invokeN<Any?, Any?>((args[0] as IFn<*, *>), emptyArray()) }.drop(1))
+        1 -> LazySeq(generateSequence<Any>(Unit, {
+            AFn.invokeN<Any?, Any?>((args[0] as IFn<*, *>), emptyArray())
+        }).drop(1))
         else -> {
             Type.assertType(name, args[0], Type.Real::class.java)
-            LazySeq(generateSequence {
+            LazySeq(generateSequence<Any>(Unit, {
                 AFn.invokeN<Any?, Any?>(args[1] as IFn<*, *>, emptyArray())
-            }).drop(1).take((args[0] as Number).toInt())
+            })).drop(1).take((args[0] as Number).toInt())
         }
     }
 }
