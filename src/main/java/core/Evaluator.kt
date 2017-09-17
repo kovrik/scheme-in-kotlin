@@ -41,8 +41,15 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     fun eval(sexp: Any?, env: Environment): Any? = try {
         /* TCO: This is our Trampoline */
         var result = evalIter(sexp, env)
-        while (result is Thunk) {
-            result = evalIter(result.expr, result.context ?: env)
+        while (result is Thunk || result is LazySeq<*>) {
+            when (result) {
+                is Thunk -> result = evalIter(result.expr, result.context ?: env)
+                // TODO more elegant solution?
+                is LazySeq<*> -> {
+                    val lazyseq = result
+                    result = lazyseq.seq.map { eval(it, lazyseq.context ?: env) }
+                }
+            }
         }
         when (result) {
             is BigRatio -> Utils.downcastNumber(result)

@@ -525,6 +525,7 @@ class DefaultEnvironment : Environment(null) {
                 First(),
                 Get(),
                 Into(),
+                Iterate(),
                 Nth(),
                 Next(),
                 Repeat(),
