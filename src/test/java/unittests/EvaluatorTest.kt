@@ -199,10 +199,16 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalSet() {
-        assertTrue(eval("#{}", env) is Set<*>)
-        assertEquals(1,   eval("(count #{(+ 1 2)})", env))
-        assertEquals(3L,  eval("(first #{(+ 1 2)})", env))
-        assertEquals(15L, eval("(first #{(apply + [1 2 3 4 5])})", env))
+        assertEquals(true,  eval("#{}", env) is Set<*>)
+        assertEquals(1,     eval("(count #{(+ 1 2)})", env))
+        assertEquals(3L,    eval("(first #{(+ 1 2)})", env))
+        assertEquals(15L,   eval("(first #{(apply + [1 2 3 4 5])})", env))
+        assertEquals(null,  eval("(#{nil} nil)", env))
+        assertEquals(null,  eval("(#{1 2 3} false)", env))
+        assertEquals(false, eval("(#{false} false)", env))
+        assertEquals(1L,    eval("(#{1 2 3} 1)", env))
+        assertEquals(null,  eval("(#{1 2 3} 10)", env))
+        assertEquals("str", eval("(#{\"a\" \"str\" 1} \"str\")", env))
     }
 
     @Test
