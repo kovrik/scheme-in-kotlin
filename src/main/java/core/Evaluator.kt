@@ -34,6 +34,14 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         override fun invoke(args: Array<out Any?>) = reflector.evalJavaMethod(method, args)
     }
 
+    // TOOD Move into a separate class?
+    private class InvokableSet(private val set: Set<*>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 1) {
+        override fun invoke(arg: Any?) = when (set.contains(arg)) {
+            true -> arg
+            else -> null
+        }
+    }
+
     /* Macroexpand S-expression, evaluate it and then return the result */
     fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpander.expand(sexp), env)
 
@@ -96,7 +104,8 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         var op = this[0]
         /* Evaluate operator */
         when (op) {
-            is List<*>, is Map<*, *>, is Vector, is Set<*> -> op = eval(op, env)
+            is List<*>, is Map<*, *>, is Vector -> op = eval(op, env)
+            is Set<*> -> op = InvokableSet(op.eval(env))
             is Symbol -> {
                 /* Lookup symbol */
                 op = env.findOrDefault(op, Environment.UNDEFINED)
