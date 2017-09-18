@@ -752,6 +752,13 @@ class DefaultEnvironment : Environment(null) {
                 "   ((pred (first coll)) (every? pred (next coll)))" +
                 "   (else false))")
 
+            add("(define (butlast s)" +
+                "  (let loop ((ret '()) " +
+                "             (s    s))" +
+                "    (if (next s)" +
+                "      (loop (conj ret (first s)) (next s))" +
+                "      (seq ret))))")
+
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +
 //                "    (let* ((old-val @b)" +

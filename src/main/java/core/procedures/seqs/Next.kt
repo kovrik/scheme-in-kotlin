@@ -9,8 +9,8 @@ open class Next : AFn<Any?, Any?>(name = "next", isPure = true, minArgs = 1, max
     override operator fun invoke(arg: Any?): Any? = when (arg) {
         null                  -> null
         !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from ${arg.javaClass}")
-        is Sequence<*>        -> arg.drop(1)
-        is Map.Entry<*, *>    -> Utils.toSequence(arg).drop(1)
+        is Sequence<*>        -> arg.drop(1).let { if (it.iterator().hasNext()) it else null }
+        is Map.Entry<*, *>    -> Utils.toSequence(arg).let { if (!it.iterator().hasNext()) null else it.drop(1) }
         is Set<*>             -> if (arg.size   < 2) null else arg.asSequence().drop(1)
         is Map<*, *>          -> if (arg.size   < 2) null else arg.asSequence().drop(1)
         is List<*>            -> if (arg.size   < 2) null else arg.asSequence().drop(1)

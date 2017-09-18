@@ -495,7 +495,11 @@ class ListTest : AbstractTest() {
         assertEquals(null,         eval("(next nil)", env))
         assertEquals(null,         eval("(next '())", env))
         assertEquals(null,         eval("(next '(1))", env))
+        assertEquals(null,         eval("(next (seq '()))", env))
+        assertEquals(null,         eval("(next (seq '(1)))", env))
+        assertEquals(1,            eval("(count (take 1 (next (repeat 5))))", env))
         assertEquals(list(3L, 4L), (eval("(next '(2 3 4))", env) as Sequence<*>).toList())
+        assertEquals(list(3L, 4L, 5L), (eval("(next (next (seq '(1 2 3 4 5))))", env) as Sequence<*>).toList())
     }
 
     @Test
