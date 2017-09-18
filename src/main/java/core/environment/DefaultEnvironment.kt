@@ -519,6 +519,7 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Seqs */
                 Drop(),
+                Concat(),
                 Conj(),
                 Count(),
                 Cycle(),
