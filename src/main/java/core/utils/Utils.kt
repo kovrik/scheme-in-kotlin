@@ -472,6 +472,15 @@ object Utils {
         else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
+    fun isEmpty(o: Any?) = when (o) {
+        null             -> true
+        is Sequence<*>   -> !o.iterator().hasNext()
+        is Collection<*> ->  o.isEmpty()
+        is CharSequence  ->  o.isEmpty()
+        is Map<*, *>     ->  o.isEmpty()
+        else             ->  false
+    }
+
     fun toAssoc(obj: Any?): IAssoc = when (obj) {
         null                -> Hashmap()
         is IAssoc           -> obj

@@ -19,7 +19,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_NIL = Predicate("nil?", Objects::isNull)
         val IS_EOF = Predicate("eof-object?", Objects::isNull)
         val IS_SOME = Predicate("some?", Objects::nonNull)
-        val IS_EMPTY = Predicate("empty?", { it == null || isEmpty(it) })
+        val IS_EMPTY = Predicate("empty?", Utils::isEmpty)
         val IS_PAIR = Predicate("pair?", Cons.Companion::isPair)
         val IS_LIST = Predicate("list?", Cons.Companion::isProperList)
         val IS_PROMISE = Predicate("promise?", { it is CompletableFuture<*> || Delay::class.java == it!!.javaClass })
@@ -108,13 +108,6 @@ class Predicate private constructor(override val name: String, inline private va
             String::class.java  == o?.javaClass -> true
             Hashmap::class.java == o?.javaClass -> true
             else -> false
-        }
-
-        private fun isEmpty(o: Any?) = when (o) {
-            is Collection<*> -> o.isEmpty()
-            is CharSequence  -> o.isEmpty()
-            is Map<*, *>     -> o.isEmpty()
-            else             -> false
         }
 
         private fun isRealized(o: Any?) = (o as? java.util.concurrent.Future<*>)?.isDone ?:
