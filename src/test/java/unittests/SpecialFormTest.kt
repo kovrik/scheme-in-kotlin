@@ -358,6 +358,15 @@ class SpecialFormTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("let: bad syntax (duplicate identifier: n) in form: (let fact ((n 5) (n 1)) (if (= n 0) acc (fact (- n 1) (* n n))))", e.message)
         }
+
+        eval("(define (duplicate pos lst)" +
+             "  (let dup ((i 0)" +
+             "            (lst lst))" +
+             "   (cond" +
+             "    ((= i pos) (cons (car lst) lst))" +
+             "    (else (cons (car lst) (dup (+ i 1) (cdr lst)))))))", env)
+        assertEquals(list("apple", "cheese burger!", "cheese burger!", "banana"),
+                     eval("(duplicate 1 (list \"apple\" \"cheese burger!\" \"banana\"))", env))
     }
 
     @Test
