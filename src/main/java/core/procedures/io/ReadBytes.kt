@@ -6,7 +6,6 @@ import core.scm.InputPort
 import core.scm.Type
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.nio.charset.Charset
 
 class ReadBytes : AFn<Any?, ByteArray>(name = "read-bytes", minArgs = 1, maxArgs = 2,
                                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
@@ -17,7 +16,7 @@ class ReadBytes : AFn<Any?, ByteArray>(name = "read-bytes", minArgs = 1, maxArgs
             1    -> BufferedReader(InputStreamReader(Repl.currentInputPort.inputStream))
             else -> BufferedReader(InputStreamReader((args[0] as InputPort).inputStream))
         }.read(it, 0, (args[0] as Number).toInt())
-        String(it).toByteArray(Charset.forName("UTF-8"))
+        String(it).toByteArray(Charsets.UTF_8)
     }
 }
 
