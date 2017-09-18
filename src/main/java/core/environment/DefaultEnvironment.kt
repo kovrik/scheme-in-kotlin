@@ -536,6 +536,7 @@ class DefaultEnvironment : Environment(null) {
                 Second(),
                 Seq(),
                 Sort(),
+//                Some(),
                 Take(),
 
                 /* Predicates */
@@ -738,6 +739,18 @@ class DefaultEnvironment : Environment(null) {
             add("(def (partial f . args1) (fn args2 (apply f (append args1 args2))))")
             add("(def (const arg) (fn rest arg))")
             add("(def (constantly arg) (fn rest arg))")
+
+            // TODO Implement these in Kotlin?
+            add("(define (some pred coll)" +
+                "  (if (not (empty? coll))" +
+                "    (or (pred (first coll)) (some pred (next coll)))" +
+                "   null))")
+
+            add("(define (every? pred coll)" +
+                "  (cond" +
+                "   ((empty? coll) true)" +
+                "   ((pred (first coll)) (every? pred (next coll)))" +
+                "   (else false))")
 
 //            add("(define (swap! b fn . args)" +
 //                "  (let while ()" +

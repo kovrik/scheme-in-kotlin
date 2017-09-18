@@ -74,7 +74,6 @@ class SeqTest : AbstractTest() {
         }
     }
 
-    @Ignore
     @Test
     fun testSome() {
         assertEquals(true, eval("(some even? '(1 2 3 4))", env))
@@ -84,21 +83,18 @@ class SeqTest : AbstractTest() {
         assertEquals("three", eval("(some {2 \"two\" 3 \"three\"} [nil 3 2])", env))
         assertEquals("nothing", eval("(some {nil \"nothing\" 2 \"two\" 3 \"three\"} [nil 3 2])", env))
         assertEquals("two", eval("(some {2 \"two\" 3 nil} [nil 3 2])", env))
-        // FIXME support lambdas and other forms that return thunks
+        assertEquals(true, eval("(some (lambda (n) (= n 1/2)) (range -5 5 0.5))", env))
     }
 
-    @Ignore
     @Test
     fun testEvery() {
         assertEquals(true,  eval("(every? true?  '())", env))
         assertEquals(true,  eval("(every? false? '())", env))
         assertEquals(true,  eval("(every? {1 \"one\" 2 \"two\"} [1 2])", env))
         assertEquals(false, eval("(every? {1 \"one\" 2 \"two\"} [1 2 3])", env))
-        // FIXME
-//        assertEquals(true,  eval("(every? #{1 2} [1 2])", env))
-//        assertEquals(false, eval("(every? #{1 2} [1 2 3])", env))
         assertEquals(true,  eval("(every? even? '(2 4 6))", env))
         assertEquals(false, eval("(every? even? '(1 2 3))", env))
-        // FIXME support lambdas and other forms that return thunks
+        assertEquals(true,  eval("(every? #{1 2} [1 2])", env))
+        assertEquals(false, eval("(every? #{1 2} [1 2 3])", env))
     }
 }

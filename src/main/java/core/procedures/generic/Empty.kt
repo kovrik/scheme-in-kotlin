@@ -1,17 +1,14 @@
 package core.procedures.generic
 
 import core.procedures.AFn
-import core.scm.Cons
-import core.scm.Hashmap
-import core.scm.MutableVector
-import core.scm.Vector
+import core.scm.*
 
 class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArgs = 1) {
 
     override operator fun invoke(arg: Any?): Any? = when (arg) {
         is Sequence<*>   -> emptySequence<Any?>()
         is List<*>       -> Cons.list<Any>()
-        is Set<*>        -> HashSet<Any>()
+        is Set<*>        -> MutableHashSet<Any?>()
         is Vector        -> Vector.EMPTY
         is MutableVector -> MutableVector.EMPTY
         is Map<*, *>     -> Hashmap()

@@ -34,14 +34,6 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         override fun invoke(args: Array<out Any?>) = reflector.evalJavaMethod(method, args)
     }
 
-    // TOOD Move into a separate class?
-    private class InvokableSet(private val set: Set<*>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 1) {
-        override fun invoke(arg: Any?) = when (set.contains(arg)) {
-            true -> arg
-            else -> null
-        }
-    }
-
     /* Macroexpand S-expression, evaluate it and then return the result */
     fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpander.expand(sexp), env)
 
@@ -105,7 +97,6 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         /* Evaluate operator */
         when (op) {
             is List<*>, is Map<*, *>, is Vector -> op = eval(op, env)
-            is Set<*> -> op = InvokableSet(op.eval(env))
             is Symbol -> {
                 /* Lookup symbol */
                 op = env.findOrDefault(op, Environment.UNDEFINED)
@@ -149,5 +140,5 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
 
     /* Evaluate set */
-    private fun Set<Any?>.eval(env: Environment) = mapTo(HashSet(size)) { eval(it, env) }
+    private fun Set<*>.eval(env: Environment) = mapTo(MutableHashSet(size)) { eval(it, env) }
 }

@@ -412,7 +412,7 @@ open class Reader : IReader {
      * <set> -> #{<value1>, ..., <valueN>}
      */
     @Throws(IOException::class)
-    private fun readSet() = HashSet<Any?>().apply {
+    private fun readSet() = MutableHashSet<Any?>().apply {
         var i = reader.read()
         var c = i.toChar()
         while (isValid(i) && c != '}') {
@@ -422,7 +422,7 @@ open class Reader : IReader {
             }
             if (c == '}') break
             reader.unread(c.toInt())
-            add(nextToken())
+            set.add(nextToken())
             i = reader.read()
             c = i.toChar()
         }
