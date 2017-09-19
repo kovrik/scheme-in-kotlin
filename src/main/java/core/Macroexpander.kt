@@ -3,7 +3,7 @@ package core
 class Macroexpander {
 
     // TODO
-    fun expand(sexp: Any): Any {
+    fun expand(sexp: Any?): Any? {
         return sexp
     }
 }

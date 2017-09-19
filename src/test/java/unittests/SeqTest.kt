@@ -3,7 +3,6 @@ package unittests
 import core.exceptions.WrongTypeException
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
-import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
@@ -12,6 +11,7 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testRepeat() {
+        assertEquals(list<Any?>(null, null, null), eval("(into '() (take 3 (repeat nil)))", env))
         assertEquals(list<Any>(), eval("(into '() (take 0 (repeat 3)))", env))
         assertEquals(list(3L, 3L, 3L, 3L, 3L), eval("(into '() (take 5 (repeat 3)))", env))
         assertEquals(9, eval("(count (rest (take 10 (repeat 5))))", env))

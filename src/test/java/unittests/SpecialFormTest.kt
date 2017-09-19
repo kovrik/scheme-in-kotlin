@@ -567,6 +567,8 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Addition::class.javaObjectType, eval("(class-of +)", env))
         assertEquals(Procedure::class.javaObjectType, eval("(class-of (lambda (n) n))", env))
         assertEquals(Delay::class.javaObjectType, eval("(class-of (delay (+ 1 2)))", env))
+        assertEquals(null, eval("(class-of nil)", env))
+        assertEquals(null, eval("(class-of (first '(nil)))", env))
     }
 
     @Test

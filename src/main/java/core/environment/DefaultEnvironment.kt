@@ -69,8 +69,6 @@ class DefaultEnvironment : Environment(null) {
         put(Symbol.intern("phi.0"),     1.618033988749895)
         put(Symbol.intern("gamma.0"),   0.5772156649015329)
         put(Symbol.intern("catalan.0"), 0.915965594177219)
-        put(Symbol.intern("nil"),       null)
-        put(Symbol.intern("null"),      null)
         put(Symbol.intern("eof"),       null)
         put(Symbol.intern("call/cc"),   get(CallCC.symbol))
         put(Symbol.intern("def"),       get(Define.symbol))

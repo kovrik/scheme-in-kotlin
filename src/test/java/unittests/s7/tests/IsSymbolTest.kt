@@ -11,7 +11,7 @@ class IsSymbolTest : AbstractTest() {
 
     @Test
     fun testIsSymbol() {
-        val trues = arrayOf("(symbol? 't)  ", "(symbol? 'foo)", "(symbol? (car '(a b)))", "(symbol? 'nil)",
+        val trues = arrayOf("(symbol? 't)  ", "(symbol? 'foo)", "(symbol? (car '(a b)))",
                 "(symbol? 'car)", "(symbol? '_)", "(symbol? '|)", "(symbol? '|')",
                 "(symbol? 'sym0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789)",
                 "(symbol? (vector-ref '[1 a 34] 1))", "(symbol? (string->symbol \"if\"))", "(symbol? 'quote)",

@@ -69,9 +69,9 @@ open class Reader : IReader {
 
     /* Return next non-null token */
     @Throws(IOException::class)
-    override fun read(): Any {
+    override fun read(): Any? {
         var token = nextToken()
-        while (token == null) { token = nextToken() }
+        while (token == Unit) { token = nextToken() }
         return token
     }
 
@@ -86,7 +86,7 @@ open class Reader : IReader {
         while (isValid(c.toInt()) && Character.isWhitespace(c) && !isLineBreak(c)) { c = reader.read().toChar() }
         /* Check if there is anything to read */
         if (!isValid(c.toInt()) || isLineBreak(c)) {
-            return null
+            return Unit
         }
         return when (c) {
             '\'' -> readQuote(c)
@@ -110,6 +110,8 @@ open class Reader : IReader {
                     /* Read true and false as #t and #f */
                     it == "true"           -> true
                     it == "false"          -> false
+                    it == "nil"            -> null
+                    it == "null"           -> null
                     else                   -> Symbol.intern(it)
                 }
             }
@@ -201,10 +203,10 @@ open class Reader : IReader {
      * Syntax:
      * <comment> --> ;  <all subsequent characters up to a line break>
      *
-     * Comments are ignored, always return null
+     * Comments are ignored, always return Unit
      */
     @Throws(IOException::class)
-    private fun readComment() = null.apply {
+    private fun readComment() = Unit.apply {
         /* Read everything until line break */
         var i = reader.read()
         while (isValid(i) && !isLineBreak(i.toChar())) { i = reader.read() }

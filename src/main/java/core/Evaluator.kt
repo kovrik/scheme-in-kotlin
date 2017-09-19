@@ -35,7 +35,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
-    fun macroexpandAndEvaluate(sexp: Any, env: Environment) = eval(macroexpander.expand(sexp), env)
+    fun macroexpandAndEvaluate(sexp: Any?, env: Environment) = eval(macroexpander.expand(sexp), env)
 
     /* Main eval */
     fun eval(sexp: Any?, env: Environment): Any? = try {

@@ -4,10 +4,10 @@ import java.io.*
 
 class FileReader : Reader() {
 
-    fun read(file: File): List<Any> = run {
+    fun read(file: File): List<Any?> = run {
         reader = PushbackReader(BufferedReader(java.io.FileReader(file)), 1)
         reader.use {
-            ArrayList<Any>().apply {
+            mutableListOf<Any?>().apply {
                 var i = reader.read()
                 while (i != -1) {
                     reader.unread(i)

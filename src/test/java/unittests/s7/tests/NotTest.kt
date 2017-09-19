@@ -13,7 +13,7 @@ class NotTest : AbstractTest() {
         assertEquals(true, eval("(not (not #t))", env))
         val falses = arrayOf(
                 "(not #t)", "(not 0)", "(not 1)", "(not '())", "(not 't)", "(not (list))", "(not (list 3))",
-                "(not 'nil)", "(not not)", "(not \"\")", "(not 'lambda)", "(not 'quote)", "(not 'and)", "(not 'case)")
+                "(not not)", "(not \"\")", "(not 'lambda)", "(not 'quote)", "(not 'and)", "(not 'case)")
         assertAllEqual(false, falses, env)
     }
 }

@@ -185,9 +185,9 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadWhitespace() {
-        assertEquals(null, reader.readOne(""))
-        assertEquals(null, reader.readOne("\t"))
-        assertEquals(null, reader.readOne("\n\r"))
+        assertEquals(Unit, reader.readOne(""))
+        assertEquals(Unit, reader.readOne("\t"))
+        assertEquals(Unit, reader.readOne("\n\r"))
         assertEquals(list(s("+"), 1L, 2L, 3L), reader.readOne("(+ 1 2 \t \n     \r 3\t\n\r)"))
     }
 
@@ -207,9 +207,9 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadComment() {
-        assertEquals(null, reader.readOne(";test"))
-        assertEquals(null, reader.readOne(";test\ttest"))
-        assertEquals(null, reader.readOne(";test\t\ntest"))
+        assertEquals(Unit, reader.readOne(";test"))
+        assertEquals(Unit, reader.readOne(";test\ttest"))
+        assertEquals(Unit, reader.readOne(";test\t\ntest"))
         assertEquals(reader.readOne("1"), reader.readOne("1; wefewffewfwfwe \t \t few fwe f wf wfw ;w effw efw e "))
         assertEquals(reader.readOne("1"), reader.readOne("1 ; test"))
         assertEquals(reader.readOne("'(1 \"a\" 5)"), reader.readOne("'(1 \"a\" 5) ; test"))
