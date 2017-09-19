@@ -40,6 +40,11 @@ class SeqTest : AbstractTest() {
         assertEquals(list<Any>(), eval("(into '() (take 0 (iterate inc 0)))", env))
         assertEquals(list(0L, 1L, 2L, 3L, 4L), eval("(into '() (take 5 (iterate inc 0)))", env))
         assertEquals(list(0L, 2L, 4L, 6L, 8L), eval("(into '() (take 5 (iterate (partial + 2) 0)))", env))
+
+        eval("(def powers-of-two (iterate (partial * 2) 1))", env)
+        assertEquals(1024L, eval("(nth powers-of-two 10)", env))
+        assertEquals(listOf(1L, 2L, 4L, 8L, 16L, 32L, 64L, 128L, 256L, 512L),
+                     eval("(into '() (take 10 powers-of-two))", env))
         try {
             eval("(+ (iterate inc 0))", env)
             fail()
