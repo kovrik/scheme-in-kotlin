@@ -106,4 +106,10 @@ class SeqTest : AbstractTest() {
         assertEquals(null,         eval("(butlast (butlast (butlast (butlast [1 2 3]))))", env))
         assertEquals(null,         eval("(butlast nil)", env))
     }
+
+    @Test
+    fun testRange() {
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (take 0 (range)))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L), eval("(into '() (take 4 (range)))", env))
+    }
 }

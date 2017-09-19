@@ -9,14 +9,16 @@ import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Range : AFn<Any?, List<Any?>>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
+class Range : AFn<Any?, Any?>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
     private val addition = Addition()
 
+    // TODO Return Sequences!
     // TODO Write Unit tests!!!
-    override operator fun invoke(args: Array<out Any?>): List<Any?> {
+    override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.isEmpty()) {
-            return Cons.EMPTY
+            // TODO Big Numbers
+            return generateSequence(0L, { it + 1L })
         }
         var fraction = args[0] is BigRatio
         if (args.size == 3) {
