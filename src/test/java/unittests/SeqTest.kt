@@ -53,6 +53,7 @@ class SeqTest : AbstractTest() {
         assertEquals(MutableVector(), eval("(into [] (take 0 (cycle [1 2 3])))", env))
         assertEquals(0, eval("(count (take 10 (cycle [])))", env))
         assertEquals(MutableVector(arrayOf(0L, 1L, 2L, 0L, 1L)), eval("(into [] (take 5 (cycle '(0 1 2))))", env))
+        assertEquals(listOf(null, null, null, null, null), eval("(into '() (take 5 (cycle [nil nil])))", env))
         try {
             eval("(+ (iterate inc 0))", env)
             fail()
