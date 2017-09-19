@@ -1,6 +1,7 @@
 package unittests
 
 import core.exceptions.WrongTypeException
+import core.scm.BigRatio
 import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 import org.junit.Test
@@ -127,7 +128,17 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testRange() {
-        assertEquals(emptyList<Nothing>(),   eval("(into '() (take 0 (range)))", env))
-        assertEquals(listOf(0L, 1L, 2L, 3L), eval("(into '() (take 4 (range)))", env))
+        assertEquals(emptyList<Nothing>(),       eval("(into '() (take 0 (range)))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L),     eval("(into '() (take 4 (range)))", env))
+        assertEquals(listOf(-3L, -2L, -1L, 0L, 1L, 2L), eval("(into '() (range -3 3))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(into '() (range 5))", env))
+        assertEquals(listOf(0L, -1L, -2L, -3L, -4L), eval("(into '() (range 0 -5 -1))", env))
+        assertEquals(listOf(2L, 3L, 4L),         eval("(into '() (range 2 5))", env))
+        assertEquals(listOf(0L, 2L, 4L, 6L),     eval("(into '() (range 0 8 2))", env))
+        assertEquals(listOf(0.0, 2.5),           eval("(into '() (range 0 5 2.5))", env))
+        assertEquals(listOf(0.0, 1.0, 2.0, 3.0), eval("(into '() (range 0 4 1.0))", env))
+        assertEquals(listOf(0.0, 0.3, 0.6, 0.8999999999999999), eval("(into '() (range 0 1 0.3))", env))
+        assertEquals(listOf(0L, BigRatio.valueOf("1", "2"), BigRatio.ONE, BigRatio.valueOf("3", "2")),
+                     eval("(into '() (range 0 2 1/2))", env))
     }
 }
