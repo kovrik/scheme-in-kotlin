@@ -757,13 +757,10 @@ class DefaultEnvironment : Environment(null) {
                 "      (loop (conj ret (first s)) (next s))" +
                 "      (seq ret))))")
 
-//            add("(define (swap! b fn . args)" +
-//                "  (let while ()" +
-//                "    (let* ((old-val @b)" +
-//                "           (new-val (apply fn old-val args)))" +
-//                "      (if (box-cas! b old-val new-val)" +
-//                "          new-val" +
-//                "          (while)))))")
+            add("(def (last s)" +
+                "  (if (next s)" +
+                "    (last (next s))" +
+                "    (first s)))")
         }
     }
 }

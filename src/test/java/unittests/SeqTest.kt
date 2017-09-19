@@ -105,6 +105,18 @@ class SeqTest : AbstractTest() {
     }
 
     @Test
+    fun testLast() {
+        assertEquals(null, eval("(last  [])", env))
+        assertEquals(null, eval("(last '())", env))
+        assertEquals(1L,   eval("(last  [1])", env))
+        assertEquals(1L,   eval("(last '(1))", env))
+        assertEquals(1L,   eval("(last  [5 4 3 2 1])", env))
+        assertEquals(1L,   eval("(last '(5 4 3 2 1))", env))
+        assertEquals(14L,  eval("(last (range 0 16 2))", env))
+        assertEquals(3L,   eval("(last (take 5 (repeat 3)))", env))
+    }
+
+    @Test
     fun testButlast() {
         assertEquals(list(1L, 2L), eval("(into '() (butlast [1 2 3]))", env))
         assertEquals(list(1L),     eval("(into '() (butlast (butlast [1 2 3])))", env))
