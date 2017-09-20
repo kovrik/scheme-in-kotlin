@@ -174,6 +174,7 @@ class EvaluatorTest : AbstractTest() {
         assertEquals(list(3, 2, 4), eval("(into '() (map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") )))", env))
         assertEquals(list(12L, 15L, 16L), eval("(into '() (map * '(2 3 4) '(6 5 4)))", env))
         assertEquals(list(0, 1, 2), eval("(into '() (map length '(() (a) (a b))))", env))
+        assertEquals(list(1L, 2L, 3L, 4L, 5L), eval("(into '() (take 5 (map inc (range))))", env))
     }
 
     @Test
