@@ -4,128 +4,134 @@ import core.procedures.AFn
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
 import core.scm.BigRatio
-import core.scm.Cons
 import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
+import java.math.BigInteger
 
 class Range : AFn<Any?, Any?>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
 
     private val addition = Addition()
 
-    // TODO Return Sequences!
-    // TODO Write Unit tests!!!
     override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.isEmpty()) {
-            // TODO Big Numbers
-            return generateSequence(0L, { it + 1L })
+            return range()
         }
         var fraction = args[0] is BigRatio
         if (args.size == 3) {
             fraction = fraction || args[2] is BigRatio
         }
-        var big = args[0] is BigDecimal
-        if (args.size == 2) {
-            big = big || args[1] is BigDecimal
-        }
-        if (args.size == 3) {
-            big = big || args[1] is BigDecimal || args[2] is BigDecimal
-        }
+        val big = args.any { it is BigDecimal || it is BigInteger }
         if (fraction || big) {
-            return range(args)
+            return when (args.size) {
+                1    -> range(0L, args[0] as Number)
+                2    -> range(args[0] as Number, args[1] as Number)
+                else -> range(args[0] as Number, args[1] as Number, args[2] as Number)
+            }
         }
-
         var exact = Utils.isExactInteger(args[0])
         if (args.size == 3) {
             exact = exact && Utils.isExactInteger(args[2])
         }
-        val result = Cons.list<Number>()
-        if (exact) {
-            var start = 0L
-            var end   = 0L
-            var step  = 1L
-            if (args.size == 1) {
-                end = if (args[0] is Double) Math.ceil(args[0] as Double).toLong() else (args[0] as Number).toLong()
-            } else if (args.size == 2) {
-                start = (args[0] as Number).toLong()
-                end   = if (args[1] is Double) Math.ceil(args[1] as Double).toLong() else (args[1] as Number).toLong()
-            } else if (args.size == 3) {
-                start = (args[0] as Number).toLong()
-                step  = (args[2] as Number).toLong()
-                if (step > 0) {
-                    end = if (args[1] is Double) Math.ceil(args[1] as Double).toLong() else (args[1] as Number).toLong()
-                } else {
-                    end = if (args[1] is Double) Math.floor(args[1] as Double).toLong() else (args[1] as Number).toLong()
-                }
+        return when {
+            exact -> when (args.size) {
+                1    -> rangeLong(0L, (args[0] as Number).toLong())
+                2    -> rangeLong((args[0] as Number).toLong(), (args[1] as Number).toLong())
+                else -> rangeLong((args[0] as Number).toLong(), (args[1] as Number).toLong(), (args[2] as Number).toLong())
             }
-            if (step >= 0) {
-                var n = start
-                while (n < end) {
-                    result.add(n)
-                    n += step
-                }
-            } else {
-                var n = start
-                while (n > end) {
-                    result.add(n)
-                    n += step
-                }
-            }
-        } else {
-            var start = 0.0
-            var end   = 0.0
-            var step  = 1.0
-            if (args.size == 1) {
-                end   = (args[0] as Number).toDouble()
-            } else if (args.size == 2) {
-                start = (args[0] as Number).toDouble()
-                end   = (args[1] as Number).toDouble()
-            } else if (args.size == 3) {
-                start = (args[0] as Number).toDouble()
-                end   = (args[1] as Number).toDouble()
-                step  = (args[2] as Number).toDouble()
-            }
-            if (step >= 0) {
-                var n = start
-                while (n < end) {
-                    result.add(n)
-                    n += step
-                }
-            } else {
-                var n = start
-                while (n > end) {
-                    result.add(n)
-                    n += step
-                }
+            else -> when (args.size) {
+                1    -> rangeDouble(0.0, (args[0] as Number).toDouble())
+                2    -> rangeDouble((args[0] as Number).toDouble(), (args[1] as Number).toDouble())
+                else -> rangeDouble((args[0] as Number).toDouble(), (args[1] as Number).toDouble(), (args[2] as Number).toDouble())
             }
         }
-        return result
     }
 
-    private fun range(args: Array<out Any?>): List<Any?> {
-        var start: Number = 0L
-        var end:   Number = 0L
-        var step:  Number = 1L
-        if (args.size == 1) {
-            end   = args[0] as Number
-        } else if (args.size == 2) {
-            start = args[0] as Number
-            end   = args[1] as Number
-        } else if (args.size == 3) {
-            start = args[0] as Number
-            end   = args[1] as Number
-            step  = args[2] as Number
-        }
-        var cur: Number? = start
-        var pred = NumericalComparison.LESS
-        if (Utils.isNegative(step)) {
-            pred = NumericalComparison.GREATER
-        }
-        return Cons.list<Number>().apply {
-            while (pred(cur, end)) {
-                add(cur!!)
-                cur = addition.add(cur, step)
+    private fun range() = object : Sequence<Number> {
+        override fun iterator() = object : Iterator<Number> {
+
+            private var big = false
+            private var next: Number = 0L
+
+            override fun hasNext() = true
+
+            override fun next(): Number {
+                val result = next
+                next = if (big) {
+                    addition.add(next, 1L)!!
+                } else {
+                    try {
+                        Math.addExact(next.toLong(), 1L)
+                    } catch (e: ArithmeticException) {
+                        big = true
+                        addition.add(next, 1L)!!
+                    }
+                }
+                return result
             }
+        }
+    }
+
+    private fun range(start: Number = 0L, end: Number = 1L, step: Number = 1L): Sequence<Number> {
+        val pred = when (Utils.isNegative(step)) {
+            true  -> NumericalComparison.GREATER
+            false -> NumericalComparison.LESS
+        }
+        if (!pred(start, end)) {
+            return emptySequence()
+        }
+        return generateSequence(start, {
+            val result = addition.add(it, step)
+            when {
+                pred(result, end) -> result
+                else -> null
+            }
+        })
+    }
+
+    private fun rangeLong(start: Long = 0L, end: Long = 1L, step: Long = 1L) = when (step > 0) {
+        true -> when (start < end) {
+            true -> generateSequence(start, {
+                val result = it + step
+                when (result < end) {
+                    true  -> result
+                    false -> null
+                }
+            })
+            else -> emptySequence()
+        }
+        false -> when (start > end) {
+            true -> generateSequence(start, {
+                val result = it + step
+                when (result > end) {
+                    true  -> result
+                    false -> null
+                }
+            })
+            else -> emptySequence()
+        }
+    }
+
+    private fun rangeDouble(start: Double = 0.0, end: Double = 1.0, step: Double = 1.0) = when (step > 0) {
+        true -> when (start < end) {
+            true -> generateSequence(start, {
+                val result = it + step
+                when (result < end) {
+                    true  -> result
+                    false -> null
+                }
+            })
+            else -> emptySequence()
+        }
+        false -> when (start > end) {
+            true -> generateSequence(start, {
+                val result = it + step
+                when (result > end) {
+                    true  -> result
+                    false -> null
+                }
+            })
+            else -> emptySequence()
         }
     }
 }
