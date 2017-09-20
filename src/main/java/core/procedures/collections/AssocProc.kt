@@ -1,4 +1,4 @@
-package core.procedures.generic
+package core.procedures.collections
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn

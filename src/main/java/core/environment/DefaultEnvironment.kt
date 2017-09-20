@@ -24,7 +24,7 @@ import core.procedures.functional.Apply
 import core.procedures.functional.ForEach
 import core.procedures.functional.MapProc
 import core.procedures.functional.VoidProc
-import core.procedures.generic.*
+import core.procedures.collections.*
 import core.procedures.hashmaps.*
 import core.procedures.interop.*
 import core.procedures.io.*
