@@ -4,7 +4,7 @@ class Cycle<T> constructor(private val sequence : Sequence<T>) : Sequence<T> {
 
     override fun iterator(): Iterator<T> = object : Iterator<T> {
 
-        private var iterator = sequence.iterator()
+        private @Volatile var iterator = sequence.iterator()
 
         override fun next(): T {
             val result = iterator.next()
