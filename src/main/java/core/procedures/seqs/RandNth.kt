@@ -1,8 +1,6 @@
-package core.procedures.generic
+package core.procedures.seqs
 
 import core.procedures.AFn
-import core.procedures.seqs.Count
-import core.procedures.seqs.Get
 import core.utils.Utils
 import java.util.*
 
