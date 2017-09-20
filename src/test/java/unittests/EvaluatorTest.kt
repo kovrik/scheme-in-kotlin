@@ -166,14 +166,14 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalMap() {
-        assertEquals(list(2L, 3L, 4L, 5L, 6L), eval("(map (lambda (n) (+ n 1)) '(1 2 3 4 5))", env))
+        assertEquals(list(2L, 3L, 4L, 5L, 6L), eval("(into '() (map (lambda (n) (+ n 1)) '(1 2 3 4 5)))", env))
         assertEquals(list(11L, 102L, 1003L, 10004L),
-                eval("(map (lambda (number1 number2) (+ number1 number2)) '(1 2 3 4) '(10 100 1000 10000))", env))
+                eval("(into '() (map (lambda (number1 number2) (+ number1 number2)) '(1 2 3 4) '(10 100 1000 10000)))", env))
 
-        assertEquals(list(1L, 4L), eval("(map car '((1 2 3) (4 5 6)))", env))
-        assertEquals(list(3, 2, 4), eval("(map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") ))", env))
-        assertEquals(list(12L, 15L, 16L), eval("(map * '(2 3 4) '(6 5 4))", env))
-        assertEquals(list(0, 1, 2), eval("(map length '(() (a) (a b)))", env))
+        assertEquals(list(1L, 4L),  eval("(into '() (map car '((1 2 3) (4 5 6))))", env))
+        assertEquals(list(3, 2, 4), eval("(into '() (map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") )))", env))
+        assertEquals(list(12L, 15L, 16L), eval("(into '() (map * '(2 3 4) '(6 5 4)))", env))
+        assertEquals(list(0, 1, 2), eval("(into '() (map length '(() (a) (a b))))", env))
     }
 
     @Test
@@ -181,7 +181,7 @@ class EvaluatorTest : AbstractTest() {
         assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env))
         assertEquals(list(list(Symbol.intern("a"), 1L), list(Symbol.intern("b"), 2L), list(
                 Symbol.intern("c"), 3L)),
-                eval("(apply map list '((a b c) (1 2 3)))", env))
+                eval("(into '() (apply map list '((a b c) (1 2 3))))", env))
 
         eval("(define (sqr x) (* x x))", env)
         assertEquals(385L, eval("(apply + (map sqr '(1 2 3 4 5 6 7 8 9 10)))", env))

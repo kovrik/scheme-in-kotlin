@@ -307,7 +307,7 @@ class SpecialFormTest : AbstractTest() {
         eval("(do ((i 1 (+ i 1)))" +
              "    ((> i 4))" +
              "  (set! lst (cons (lambda () i) lst)))", env)
-        assertEquals(list(4L, 3L, 2L, 1L), eval("(map (lambda (proc) (proc)) lst)", env))
+        assertEquals(list(4L, 3L, 2L, 1L), eval("(into '() (map (lambda (proc) (proc)) lst))", env))
     }
 
     @Test

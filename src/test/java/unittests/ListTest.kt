@@ -519,8 +519,8 @@ class ListTest : AbstractTest() {
         assertEquals(listOf(1L, 2L, 3L, 4L, 5L), (eval("(sort   [5 4 3 2 1])", env) as Sequence<*>).toList())
         assertEquals(listOf(5L, 4L, 3L, 2L, 1L), (eval("(sort > [5 4 3 2 1])", env) as Sequence<*>).toList())
         assertEquals(emptyList<Any?>(), (eval("(sort [])", env) as Sequence<*>).toList())
-        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l '(1 2 3 4 5))) (map + l (sort > l)))", env))
-        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(let ((l  [1 2 3 4 5])) (map + l (sort > l)))", env))
+        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l '(1 2 3 4 5))) (map + l (sort > l))))", env))
+        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l  [1 2 3 4 5])) (map + l (sort > l))))", env))
         try {
             (eval("(sort > [1 2 \"test\" 'a])", env) as Sequence<*>).toList()
             fail()
