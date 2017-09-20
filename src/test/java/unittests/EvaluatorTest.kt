@@ -191,6 +191,8 @@ class EvaluatorTest : AbstractTest() {
     @Test
     fun testForEach() {
         assertEquals(Unit, eval("(for-each length '(() (a) (a b)))", env))
+        assertEquals(45L,  eval("(let ((a 0)) (for-each (lambda (n) (set! a (+ a n))) (range 10)) a)", env))
+        assertEquals(10L,  eval("(begin (define a 0) (for-each (lambda (n) (set! a (inc a))) (range 10)) a)", env))
     }
 
     @Test
