@@ -104,10 +104,10 @@ object Quasiquote : SpecialForm("quasiquote") {
                         if (op == UnquoteSplicing.symbol) {
                             /* Unquote Splicing: splice and append elements into resulting list */
                             /* `(,@(list 1 2 3)) => `(1 2 3) */
-                            if (eval is Collection<*>) {
-                                (result as MutableList<Any?>).addAll((eval as Collection<*>?)!!)
-                            } else {
-                                result = eval
+                            when (eval) {
+                                is Sequence<*>   -> (result as MutableList<Any?>).addAll((eval.toList()))
+                                is Collection<*> -> (result as MutableList<Any?>).addAll((eval as Collection<*>?)!!)
+                                else -> result = eval
                             }
                         } else {
                             /* Unquote: append list with results */
