@@ -140,13 +140,24 @@ class SeqTest : AbstractTest() {
         assertEquals(listOf(0.0, 0.3, 0.6, 0.8999999999999999), eval("(into '() (range 0 1 0.3))", env))
         assertEquals(listOf(0L, BigRatio.valueOf("1", "2"), BigRatio.ONE, BigRatio.valueOf("3", "2")),
                      eval("(into '() (range 0 2 1/2))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 0))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 0.0))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range (bigint 0)))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 0/1))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 5 5))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 5.0 5.0))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range 5 5 1/2))", env))
-        assertEquals(listOf<Nothing>(),     eval("(into '() (range (bigint 5) (bigint 5)))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 0))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 0.0))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range (bigint 0)))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 0/1))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 5 5))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 5.0 5.0))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range 5 5 1/2))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (range (bigint 5) (bigint 5)))", env))
+    }
+
+    @Test
+    fun testFlatten() {
+        assertEquals(listOf<Nothing>(), eval("(flatten (range 0))", env))
+        assertEquals(listOf<Nothing>(), eval("(flatten '())", env))
+        assertEquals(listOf<Nothing>(), eval("(flatten [])", env))
+        assertEquals(listOf<Nothing>(), eval("(flatten #{})", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten '(0 (1) ((2)) (((3))) ((((4))))))", env))
+        // FIXME
+//        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten (list 0 [1] #{ [2] } (range 3 4) '((((4))))))", env))
     }
 }

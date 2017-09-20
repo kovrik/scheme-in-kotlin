@@ -402,9 +402,6 @@ class DefaultEnvironment : Environment(null) {
                 MemberProc("member", Equal()),
                 MemberProc("memq", Eq()),
                 MemberProc("memv", Eqv()),
-                AssocProc("assoc", Equal()),
-                AssocProc("assq", Eq()),
-                AssocProc("assv", Eqv()),
                 ConsProc(),
                 Car(),
                 Cdr(),
@@ -465,9 +462,10 @@ class DefaultEnvironment : Environment(null) {
                 IsSuperset(),
 
                 /* Generic */
+                AssocProc("assoc", Equal()),
+                AssocProc("assq", Eq()),
+                AssocProc("assv", Eqv()),
                 Empty(),
-                Range(),
-                RandNth(),
 
                 /* Keywords */
                 KeywordProc(),
@@ -523,11 +521,14 @@ class DefaultEnvironment : Environment(null) {
                 CycleProc(),
                 object : Count() { override val name = "length" },
                 First(),
+                Flatten(),
                 Get(),
                 Into(),
                 Iterate(),
                 Nth(),
                 Next(),
+                Range(),
+                RandNth(),
                 RepeatProc(),
                 Repeatedly(),
                 Rest(),

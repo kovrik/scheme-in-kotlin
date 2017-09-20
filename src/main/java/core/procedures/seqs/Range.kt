@@ -13,7 +13,7 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, maxArgs = 3, restAr
 
     private val addition = Addition()
 
-    override operator fun invoke(args: Array<out Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Sequence<Number> {
         if (args.isEmpty()) {
             return range()
         }
