@@ -3,6 +3,7 @@ package unittests
 import core.exceptions.WrongTypeException
 import core.scm.BigRatio
 import core.scm.Cons.Companion.list
+import core.scm.Keyword
 import core.scm.MutableVector
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -172,5 +173,12 @@ class SeqTest : AbstractTest() {
         assertEquals(false, eval("(coll? \"test\")", env))
         assertEquals(false, eval("(coll? 5)",   env))
         assertEquals(false, eval("(coll? nil)", env))
+    }
+
+    @Test
+    fun testFilter() {
+        assertEquals(listOf(0L, 2L, 4L, 6L, 8L), eval("(filter even? (range 10))", env))
+        assertEquals(listOf(2L, 3L), eval("(filter #{0 1 2 3} #{2 3 4 5})", env))
+        assertEquals(listOf(1L, MutableVector(), Keyword.intern("a")), eval("(filter some? '(1 nil [] :a nil))", env))
     }
 }

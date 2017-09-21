@@ -762,6 +762,18 @@ class DefaultEnvironment : Environment(null) {
                 "  (if (next s)" +
                 "    (last (next s))" +
                 "    (first s)))")
+
+            // FIXME Return lazy sequence!
+            add("(define (filter pred coll)" +
+                "  (let ((s (seq coll)))" +
+                "    (if s" +
+                "        (let ((f (first s))" +
+                "              (r (rest s)))" +
+                "          (if (pred f)" +
+                "              (cons f (filter pred r))" +
+                "              (filter pred r)))" +
+                "        '())))")
+
         }
     }
 }
