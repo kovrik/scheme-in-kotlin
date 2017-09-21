@@ -160,4 +160,17 @@ class SeqTest : AbstractTest() {
         // FIXME
 //        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten (list 0 [1] #{ [2] } (range 3 4) '((((4))))))", env))
     }
+
+    @Test
+    fun testIsColl() {
+        assertEquals(true,  eval("(coll?  {})", env))
+        assertEquals(true,  eval("(coll? #{})", env))
+        assertEquals(true,  eval("(coll?  [])", env))
+        assertEquals(true,  eval("(coll? '())", env))
+        assertEquals(true,  eval("(coll? (range))", env))
+        assertEquals(true,  eval("(coll? (seq \"test\"))", env))
+        assertEquals(false, eval("(coll? \"test\")", env))
+        assertEquals(false, eval("(coll? 5)",   env))
+        assertEquals(false, eval("(coll? nil)", env))
+    }
 }

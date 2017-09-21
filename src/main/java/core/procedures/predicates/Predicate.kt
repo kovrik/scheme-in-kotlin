@@ -35,7 +35,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_SET = Predicate("set?", { it is Set<*> })
         val IS_MAP = Predicate("map?", { it is Map<*, *> })
         val IS_MAP_ENTRY = Predicate("map-entry?", { it is Map.Entry<*, *> })
-        val IS_COLL = Predicate("coll?", { it is Collection<*> || it is Map<*, *> })
+        val IS_COLL = Predicate("coll?", { it is Collection<*> || it is Map<*, *> || it is Sequence<*> })
         val IS_SYMBOL = Predicate("symbol?", { it is Symbol })
         val IS_BOOLEAN = Predicate("boolean?", { it is Boolean })
         val IS_TRUE = Predicate("true?", { it is Boolean && it })
