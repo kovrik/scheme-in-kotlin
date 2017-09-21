@@ -183,4 +183,43 @@ class SeqTest : AbstractTest() {
         assertEquals(listOf(2L, 3L), eval("(filter #{0 1 2 3} #{2 3 4 5})", env))
         assertEquals(listOf(1L, MutableVector(), Keyword.intern("a")), eval("(filter some? '(1 nil [] :a nil))", env))
     }
+
+    @Test
+    fun testDropLast() {
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (drop-last  []))", env))
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (drop-last '()))", env))
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (drop-last  [1]))", env))
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (drop-last '(1)))", env))
+        assertEquals(listOf(5L, 4L, 3L, 2L), eval("(into '() (drop-last  [5 4 3 2 1]))", env))
+        assertEquals(listOf(5L, 4L, 3L, 2L), eval("(into '() (drop-last '(5 4 3 2 1)))", env))
+        assertEquals(listOf(0L, 3L, 6L, 9L, 12L), eval("(into '() (drop-last (range 0 16 3)))", env))
+        assertEquals(listOf(3L, 3L, 3L, 3L), eval("(into '() (drop-last (take 5 (repeat 3))))", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L), eval("(into '() (drop-last (take 5 (map inc (range)))))", env))
+
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 3  []))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 3 '()))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 3  [1]))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 3 '(1)))", env))
+        assertEquals(listOf(5L, 4L),       eval("(into '() (drop-last 3  [5 4 3 2 1]))", env))
+        assertEquals(listOf(5L, 4L),       eval("(into '() (drop-last 3 '(5 4 3 2 1)))", env))
+        assertEquals(listOf(0L, 3L, 6L),   eval("(into '() (drop-last 3 (range 0 16 3)))", env))
+        assertEquals(listOf(3L, 3L),       eval("(into '() (drop-last 3 (take 5 (repeat 3))))", env))
+        assertEquals(listOf(1L, 2L),       eval("(into '() (drop-last 3 (take 5 (map inc (range)))))", env))
+
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30  []))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 '()))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30  [1]))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 '(1)))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30  [5 4 3 2 1]))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 '(5 4 3 2 1)))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 (range 0 16 3)))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 (take 5 (repeat 3))))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (drop-last 30 (take 5 (map inc (range)))))", env))
+
+        assertEquals(listOf(5L, 4L, 3L, 2L, 1L), eval("(into '() (drop-last 0 '(5 4 3 2 1)))", env))
+        assertEquals(listOf(0L, 3L, 6L, 9L, 12L, 15L), eval("(into '() (drop-last 0 (range 0 16 3)))", env))
+
+        assertEquals(listOf(5L, 4L, 3L, 2L, 1L), eval("(into '() (drop-last -10 '(5 4 3 2 1)))", env))
+        assertEquals(listOf(0L, 3L, 6L, 9L, 12L, 15L), eval("(into '() (drop-last -10 (range 0 16 3)))", env))
+    }
 }
