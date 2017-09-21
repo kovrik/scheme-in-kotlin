@@ -515,12 +515,13 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Seqs */
                 Butlast(),
-                Drop(),
                 Concat(),
                 Conj(),
                 Count(),
                 CycleProc(),
                 object : Count() { override val name = "length" },
+                Drop(),
+                DropLast(),
                 First(),
                 Flatten(),
                 Get(),
