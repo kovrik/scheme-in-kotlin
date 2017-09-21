@@ -46,7 +46,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         val den = denominator.divide(g)
         // to ensure invariant that denominator is positive
         if (den.signum() < 0) {
-            this.numerator = numerator.negate()
+            this.numerator = numerator.divide(g).negate()
             this.denominator = den.negate()
         } else {
             this.numerator = numerator.divide(g)

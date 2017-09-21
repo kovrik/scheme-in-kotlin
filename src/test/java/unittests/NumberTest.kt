@@ -87,6 +87,10 @@ class NumberTest : AbstractTest() {
         assertEquals(BigInteger("-85070591730234615856620279821087277056"), eval("(* Long/MAX_VALUE Long/MIN_VALUE)", env))
         assertEquals(BigRatio.valueOf("9223372036854775807", "-9223372036854775808"), eval("(/ Long/MAX_VALUE Long/MIN_VALUE)", env))
 
+        assertEquals(1L, eval("(/ -5 -5)", env))
+        assertEquals(3L, eval("(/ -15 -5)", env))
+        assertEquals(BigRatio.valueOf("1", "3"), eval("(/ -5 -15)", env))
+
         assertEquals(5L, eval("(abs 5)", env))
         assertEquals(5L, eval("(abs -5)", env))
 
@@ -450,6 +454,11 @@ class NumberTest : AbstractTest() {
         assertEquals(5L, eval("(gcd 5 10)", env))
         assertEquals(1L, eval("(gcd 3 6 8)", env))
 
+        assertEquals(5L, eval("(gcd  5  5)", env))
+        assertEquals(5L, eval("(gcd -5  5)", env))
+        assertEquals(5L, eval("(gcd  5 -5)", env))
+        assertEquals(5L, eval("(gcd -5 -5)", env))
+
         assertEquals(3.0, eval("(gcd 3.0 6)", env))
         assertEquals(40000.0, eval("(gcd 200000.0 40000.0)", env))
         assertEquals(BigDecimal("8.8817841970012523233890533447265625E-16"), eval("(gcd 3.3 6)", env))
@@ -488,6 +497,11 @@ class NumberTest : AbstractTest() {
         assertEquals(10L,  eval("(lcm 5 10)", env))
         assertEquals(24L,  eval("(lcm 3 6 8)", env))
         assertEquals(24.0, eval("(lcm 3 6 8.0)", env))
+
+        assertEquals(5L, eval("(lcm  5  5)", env))
+        assertEquals(5L, eval("(lcm -5  5)", env))
+        assertEquals(5L, eval("(lcm  5 -5)", env))
+        assertEquals(5L, eval("(lcm -5 -5)", env))
 
         assertEquals(6.0, eval("(lcm 3.0 6)", env))
         assertEquals(200000.0, eval("(lcm 200000.0 40000.0)", env))

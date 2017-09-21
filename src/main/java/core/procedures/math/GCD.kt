@@ -28,8 +28,8 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         private val abs       = Abs()
 
         internal fun gcd(a: Long, b: Long): Long {
-            var alocal = a
-            var blocal = b
+            var alocal = Math.abs(a)
+            var blocal = Math.abs(b)
             while (blocal > 0) {
                 val temp = blocal
                 blocal = alocal % blocal
@@ -45,15 +45,15 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
             else -> gcd(a.toLong(), b.toLong()).toDouble()
         }
 
-        internal fun gcd(a: BigDecimal, b: BigDecimal) = when {
+        private fun gcd(a: BigDecimal, b: BigDecimal) = when {
             maxOf(a.scale(), b.scale()) == 0 -> BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
             else -> toInexact(gcd(toExact(a), toExact(b)))
         }
 
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
 
-        internal fun gcd(first: BigRatio, second: BigRatio) = BigRatio.valueOf(first.numerator.gcd(second.numerator),
-                                                                               lcm.lcm(first.denominator, second.denominator))
+        private fun gcd(first: BigRatio, second: BigRatio) = BigRatio.valueOf(first.numerator.gcd(second.numerator),
+                                                                              lcm.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
             val (f, s) = Utils.upcast(first, second)

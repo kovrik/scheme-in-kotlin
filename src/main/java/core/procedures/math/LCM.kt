@@ -23,7 +23,11 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(lcm(first.numerator, second.numerator),
                                                                           GCD.gcd(first.denominator, second.denominator))
 
-    fun lcm(first: BigInteger, second: BigInteger): BigInteger = first.multiply(second.divide(GCD.gcd(first, second)))
+    fun lcm(first: BigInteger, second: BigInteger): BigInteger {
+        val f = first.abs()
+        val s = second.abs()
+        return f.multiply(s.divide(GCD.gcd(f, s)))
+    }
 
     private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {
         a.signum() == 0 && b.signum() == 0 -> BigDecimal.ZERO
@@ -44,12 +48,12 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     private fun lcm(first: Number, second: Number): Number {
         val (f, s) = Utils.upcast(first, second)
         return when {
-            f is Double     && s is Double     -> lcm(f, s)
-            f is Float      && s is Float      -> lcm(f.toDouble(), s.toDouble())
+            f is Double     && s is Double     -> lcm(Math.abs(f), Math.abs(s))
+            f is Float      && s is Float      -> lcm(Math.abs(f.toDouble()), Math.abs(s.toDouble()))
             f is BigRatio   && s is BigRatio   -> lcm(f, s)
             f is BigDecimal && s is BigDecimal -> lcm(f, s)
             f is BigInteger && s is BigInteger -> lcm(f, s)
-            else                               -> lcm(f.toLong(), s.toLong())
+            else                               -> lcm(Math.abs(f.toLong()), Math.abs(s.toLong()))
         }
     }
 }
