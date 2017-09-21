@@ -540,6 +540,7 @@ class DefaultEnvironment : Environment(null) {
                 Sort(),
 //                Some(),
                 Take(),
+                TakeLast(),
 
                 /* Predicates */
                 Predicate.IS_NULL,
