@@ -514,6 +514,7 @@ class DefaultEnvironment : Environment(null) {
 //                Swap(),
 
                 /* Seqs */
+                Butlast(),
                 Drop(),
                 Concat(),
                 Conj(),
@@ -751,13 +752,6 @@ class DefaultEnvironment : Environment(null) {
                 "   ((empty? coll) true)" +
                 "   ((pred (first coll)) (every? pred (next coll)))" +
                 "   (else false))")
-
-            add("(define (butlast s)" +
-                "  (let loop ((ret '()) " +
-                "             (s    s))" +
-                "    (if (next s)" +
-                "      (loop (conj ret (first s)) (next s))" +
-                "      (seq ret))))")
 
             // FIXME Return lazy sequence!
             add("(define (filter pred coll)" +

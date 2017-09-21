@@ -121,6 +121,7 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testButlast() {
+        assertEquals(list(1L, 2L, 3L, 4L), eval("(into '() (butlast (map (fn (n) (+ n 1)) (range 5))))", env))
         assertEquals(list(1L, 2L), eval("(into '() (butlast [1 2 3]))", env))
         assertEquals(list(1L),     eval("(into '() (butlast (butlast [1 2 3])))", env))
         assertEquals(null,         eval("(butlast (butlast (butlast [1 2 3])))", env))
