@@ -525,6 +525,7 @@ class DefaultEnvironment : Environment(null) {
                 Get(),
                 Into(),
                 Iterate(),
+                Last(),
                 Nth(),
                 Next(),
                 Range(),
@@ -757,11 +758,6 @@ class DefaultEnvironment : Environment(null) {
                 "    (if (next s)" +
                 "      (loop (conj ret (first s)) (next s))" +
                 "      (seq ret))))")
-
-            add("(def (last s)" +
-                "  (if (next s)" +
-                "    (last (next s))" +
-                "    (first s)))")
 
             // FIXME Return lazy sequence!
             add("(define (filter pred coll)" +

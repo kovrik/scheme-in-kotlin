@@ -116,6 +116,7 @@ class SeqTest : AbstractTest() {
         assertEquals(1L,   eval("(last '(5 4 3 2 1))", env))
         assertEquals(14L,  eval("(last (range 0 16 2))", env))
         assertEquals(3L,   eval("(last (take 5 (repeat 3)))", env))
+        assertEquals(5L, eval("(last (take 5 (map inc (range))))", env))
     }
 
     @Test
