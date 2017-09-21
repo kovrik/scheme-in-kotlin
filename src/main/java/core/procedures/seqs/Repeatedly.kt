@@ -5,8 +5,8 @@ import core.procedures.IFn
 import core.scm.ThunkSeq
 import core.scm.Type
 
-open class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = true, minArgs = 1, maxArgs = 2,
-                                               lastArgType = IFn::class.java) {
+class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = true, minArgs = 1, maxArgs = 2,
+                                          lastArgType = IFn::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1 -> ThunkSeq(generateSequence<Any>(Unit, {
