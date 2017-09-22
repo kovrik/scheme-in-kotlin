@@ -518,6 +518,7 @@ class DefaultEnvironment : Environment(null) {
                 Butlast(),
                 Concat(),
                 Conj(),
+                ConsSeqProc(),
                 Count(),
                 CycleProc(),
                 object : Count() { override val name = "length" },
