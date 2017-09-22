@@ -69,7 +69,7 @@ class Cons<E> : ArrayList<E?> {
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
 
         /* Return true if o is a Proper List */
-        fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList
+        fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
 
         fun isPair(o: Any?) = o is List<*> && !o.isEmpty()
 
