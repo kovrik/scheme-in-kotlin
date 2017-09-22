@@ -21,7 +21,7 @@ class MemberProc(override val name: String, inline private val predicate: AFn<An
             return false
         }
         var p = 0
-        var cons: Any = list
+        var cons: Any? = list
         while (cons is List<*> && !cons.isEmpty()) {
             if (Utils.toBoolean(predicate(arg1, car(cons)))) {
                 return cons

@@ -403,6 +403,7 @@ class DefaultEnvironment : Environment(null) {
                 MemberProc("memq", Eq()),
                 MemberProc("memv", Eqv()),
                 ConsProc(),
+                PairProc(),
                 Car(),
                 Cdr(),
                 SetCar(),

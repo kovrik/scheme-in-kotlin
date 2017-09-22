@@ -22,6 +22,7 @@ object Writer {
         is Symbol          -> o.write()
         is Class<*>        -> o.write()
         is List<*>         -> o.write()
+        is Pair<*, *>      -> o.write()
         is Number          -> o.write()
         is Sequence<*>     -> o.write()
         is CharSequence    -> o.write()
@@ -60,6 +61,25 @@ object Writer {
     private fun Regex.write() = "#\"${this}\""
 
     private fun List<*>.write() = Cons.toString(this)
+
+    private fun Pair<*, *>.write() = StringBuilder("(").apply {
+        append(Writer.write(first))
+        var cdr = second
+        while (cdr is Pair<*, *> || cdr is Cons<*>) {
+            when (cdr) {
+                is Cons<*> -> {
+                    append(' ').append(Writer.write(cdr.first()))
+                    cdr = cdr.last()
+                }
+                is Pair<*, *> -> {
+                    append(' ').append(Writer.write(cdr.first))
+                    cdr = cdr.second
+                }
+            }
+        }
+        /* Dotted notation */
+        append(" . ").append(Writer.write(cdr)).append(')')
+    }.toString()
 
     private fun Map.Entry<*, *>.write() = "[${write(key)} ${write(value)}]"
 

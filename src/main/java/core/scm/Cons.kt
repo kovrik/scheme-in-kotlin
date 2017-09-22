@@ -71,7 +71,7 @@ class Cons<E> : ArrayList<E?> {
         /* Return true if o is a Proper List */
         fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
 
-        fun isPair(o: Any?) = o is List<*> && !o.isEmpty()
+        fun isPair(o: Any?) = o is Pair<*, *> || o is List<*> && !o.isEmpty()
 
         /* Use this method to print all lists */
         fun toString(list: List<*>) = when {
@@ -85,9 +85,17 @@ class Cons<E> : ArrayList<E?> {
             else -> StringBuilder("(").apply {
                 append(Writer.write(list.first()))
                 var cdr = list.last()
-                while (cdr is Cons<*>) {
-                    append(' ').append(Writer.write(cdr.first()))
-                    cdr = cdr.last()
+                while (cdr is Pair<*, *> || cdr is Cons<*>) {
+                    when (cdr) {
+                        is Cons<*> -> {
+                            append(' ').append(Writer.write(cdr.first()))
+                            cdr = cdr.last()
+                        }
+                        is Pair<*, *> -> {
+                            append(' ').append(Writer.write(cdr.first))
+                            cdr = cdr.second
+                        }
+                    }
                 }
                 /* Dotted notation */
                 append(" . ").append(Writer.write(cdr)).append(')')

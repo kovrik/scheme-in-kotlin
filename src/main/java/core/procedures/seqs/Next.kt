@@ -10,6 +10,7 @@ class Next : AFn<Any?, Any?>(name = "next", isPure = true, minArgs = 1, maxArgs 
         null                  -> null
         !Utils.isSeqable(arg) -> throw IllegalArgumentException("don't know how to create Sequence from ${arg.javaClass}")
         is Sequence<*>        -> arg.drop(1).let { if (it.iterator().hasNext()) it else null }
+        is Pair<*, *>         -> sequenceOf(arg.second)
         is Map.Entry<*, *>    -> Utils.toSequence(arg).let { if (!it.iterator().hasNext()) null else it.drop(1) }
         is Set<*>             -> if (arg.size   < 2) null else arg.asSequence().drop(1)
         is Map<*, *>          -> if (arg.size   < 2) null else arg.asSequence().drop(1)

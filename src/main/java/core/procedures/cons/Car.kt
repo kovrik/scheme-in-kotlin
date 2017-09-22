@@ -8,7 +8,8 @@ class Car : AFn<Any?, Any?>(name = "car", isPure = true, minArgs = 1, maxArgs = 
                             mandatoryArgsTypes = arrayOf<Class<*>>(Type.Pair::class.java)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
-        is Cons<*> -> arg.car()
-        else -> (arg as List<*>)[0]
+        is Cons<*>    -> arg.car()
+        is Pair<*, *> -> arg.first
+        else          -> (arg as List<*>)[0]
     }
 }

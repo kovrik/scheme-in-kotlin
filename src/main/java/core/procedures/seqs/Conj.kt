@@ -53,6 +53,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 for (i in 0 until first.size) { this[i] = first[i] }
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
+            is Pair<*, *> -> throw UnsupportedOperationException("conj: Pairs are not supported!")
             // TODO Map?
             else -> throw WrongTypeException(name, "Seqable", first)
         }
