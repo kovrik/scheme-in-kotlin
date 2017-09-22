@@ -1,6 +1,7 @@
 package core.writer
 
 import core.exceptions.ExInfoException
+import core.procedures.predicates.Predicate
 import core.reader.Reader
 import core.scm.Cons
 import core.scm.MutablePair
@@ -61,7 +62,34 @@ object Writer {
 
     private fun Regex.write() = "#\"${this}\""
 
-    private fun List<*>.write() = Cons.toString(this)
+    /* Use this method to print all lists */
+    private fun List<*>.write() = when {
+        this.isEmpty() -> "()"
+        Predicate.isProperList(this) -> StringBuilder("(").apply {
+            for (i in 0..this@write.size - 2) {
+                append(if (this@write[i] === this@write) "(this list)" else Writer.write(this@write[i])).append(' ')
+            }
+            append(if (this@write.last() === this@write) "(this list)" else Writer.write(this@write.last())).append(')')
+        }.toString()
+        else -> StringBuilder("(").apply {
+            append(Writer.write(this@write.first()))
+            var cdr = this@write.last()
+            while (cdr is MutablePair || cdr is Cons<*>) {
+                when (cdr) {
+                    is Cons<*> -> {
+                        append(' ').append(Writer.write(cdr.first()))
+                        cdr = cdr.last()
+                    }
+                    is MutablePair -> {
+                        append(' ').append(Writer.write(cdr.first))
+                        cdr = cdr.second
+                    }
+                }
+            }
+            /* Dotted notation */
+            append(" . ").append(Writer.write(cdr)).append(')')
+        }.toString()
+    }
 
     private fun MutablePair.write() = StringBuilder("(").apply {
         append(Writer.write(first))
