@@ -1,10 +1,11 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
-import core.scm.Cons.Companion.EMPTY
 import core.scm.Symbol
 
 class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
+
+    private val empty = emptyList<Nothing>()
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         2    -> eq(args[0], args[1])
@@ -16,6 +17,6 @@ class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
     private fun eq(first: Any?, second: Any?) = when {
         /* Check if 2 symbols are eq ignoring metadata */
         first is Symbol && second is Symbol -> first == second
-        else -> EMPTY == first && EMPTY == second || first === second
+        else -> empty == first && empty == second || first === second
     }
 }

@@ -2,9 +2,10 @@ package core.procedures.collections
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.cons.Car
 import core.procedures.equivalence.Equal
+import core.procedures.predicates.Predicate
 import core.procedures.seqs.Get
-import core.scm.Cons
 import core.utils.Utils
 import core.writer.Writer
 
@@ -13,15 +14,16 @@ class AssocProc(override val name: String,
                 inline private val predicate: AFn<Any?, Boolean>) :
         AFn<Any?, Any?>(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java)) {
 
+    private val car = Car()
     private val get = Get()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        if (Cons.isProperList(arg2)) {
+        if (Predicate.isProperList(arg2)) {
             val list = arg2 as List<*>?
             for (n in list!!.indices) {
                 val pair = list[n]
-                if (Cons.isPair(pair)) {
-                    if (Utils.toBoolean(predicate(arg1, (pair as Cons<*>).car()))) {
+                if (Predicate.isPair(pair)) {
+                    if (Utils.toBoolean(predicate(arg1, car(pair)))) {
                         return pair
                     }
                 } else {

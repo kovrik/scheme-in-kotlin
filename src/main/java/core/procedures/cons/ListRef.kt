@@ -1,7 +1,7 @@
 package core.procedures.cons
 
 import core.procedures.AFn
-import core.scm.Cons
+import core.procedures.predicates.Predicate
 import core.scm.Type
 
 class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, minArgs = 2, maxArgs = 2,
@@ -16,8 +16,7 @@ class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, minArgs = 2, m
             throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
-//        if (list is Cons<*> && !list.isProperList) {
-        if (!Cons.isProperList(list)) {
+        if (!Predicate.isProperList(list)) {
             if (p == 0L) {
                 return car(list)
             }

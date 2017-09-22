@@ -5,6 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
 import core.utils.Utils
+import core.writer.Writer
 
 /* Syntax:
  * (when <test> body...)
@@ -14,7 +15,7 @@ object When : SpecialForm("when") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
         if (size < 3) {
-            throw IllegalSyntaxException(toString(), form, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException(toString(), Writer.write(form), "has ${size - 1} parts after keyword")
         }
         if (Utils.toBoolean(evaluator.eval(form[1], env))) {
             for (i in 2..size - 2) { evaluator.eval(form[i], env) }

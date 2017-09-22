@@ -9,7 +9,7 @@ class Cdr : AFn<Any?, Any?>(name = "cdr", isPure = true, minArgs = 1, maxArgs = 
                             mandatoryArgsTypes = arrayOf<Class<*>>(Type.Pair::class.java)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
-        is Cons<*>     -> arg.cdr()
+        is Cons<*>     -> if (arg.isProperList) arg.subList(1, arg.size) else (arg.last() as Any)
         is MutablePair -> arg.second
         else           -> (arg as List<*>).subList(1, arg.size)
     }

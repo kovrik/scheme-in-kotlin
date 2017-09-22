@@ -3,7 +3,6 @@ package core.scm.specialforms
 import core.Evaluator
 import core.environment.Environment
 import core.procedures.booleans.Not
-import core.scm.Cons
 import core.scm.Thunk
 import core.utils.Utils
 
@@ -21,7 +20,7 @@ object Nand : SpecialForm("nand") {
                     return true
                 }
             }
-            return Thunk(Cons.list(not, form[form.size - 1]), env)
+            return Thunk(listOf(not, form[form.size - 1]), env)
         }
         return false
     }

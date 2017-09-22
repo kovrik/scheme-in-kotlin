@@ -11,10 +11,10 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
         val first = args[0]
         return when (first) {
             is Sequence<*> -> first.plus(args.copyOfRange(1, args.size))
-            is List<*>     -> Cons.list<Any?>(first.plus(args.copyOfRange(1, args.size)))
+            is List<*>     -> listOf(first.plus(args.copyOfRange(1, args.size)))
             is Set<*>      -> MutableHashSet(first.plus(args.copyOfRange(1, args.size)))
             is Vector      -> MutableVector(first.plus(args.copyOfRange(1, args.size)))
-            is ByteArray -> ByteArray(first.size + args.size - 1).apply {
+            is ByteArray   -> ByteArray(first.size + args.size - 1).apply {
                 for (i in 0 until first.size) { this[i] = first[i] }
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }

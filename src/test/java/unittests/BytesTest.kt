@@ -57,8 +57,8 @@ class BytesTest : AbstractTest() {
 
     @Test
     fun testBytesToList() {
-        assertEquals(Cons.list<Byte>(), eval("(bytes->list (bytes))", env))
-        assertEquals(Cons.list<Byte>(1, 2, 3), eval("(bytes->list (bytes 1 2 3))", env))
+        assertEquals(emptyList<Byte>(), eval("(bytes->list (bytes))", env))
+        assertEquals(listOf<Byte>(1, 2, 3), eval("(bytes->list (bytes 1 2 3))", env))
     }
 
     @Test

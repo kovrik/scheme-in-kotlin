@@ -4,7 +4,6 @@ import core.exceptions.IllegalSyntaxException
 import core.reader.StringReader
 import core.scm.BigComplex
 import core.scm.BigRatio
-import core.scm.Cons.Companion.list
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.specialforms.Quasiquote
@@ -169,12 +168,12 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testReadList() {
-        assertEquals(list<Any>(), reader.readOne("()"))
-        assertEquals(list(0L), reader.readOne("(0)"))
-        assertEquals(list(1L, 2L, 3L), reader.readOne("(1 2 3)"))
-        assertEquals(list<Any?>(1L, "test", 3L), reader.readOne("(1 \"test\" 3)"))
-        assertEquals(list(1L, MutableVector(arrayOf(2L)), 3L), reader.readOne("(1 [2] 3)"))
-        assertEquals(list(1L, list(2L), 3L), reader.readOne("(1 (2) 3)"))
+        assertEquals(emptyList<Nothing>(), reader.readOne("()"))
+        assertEquals(listOf(0L), reader.readOne("(0)"))
+        assertEquals(listOf(1L, 2L, 3L), reader.readOne("(1 2 3)"))
+        assertEquals(listOf<Any?>(1L, "test", 3L), reader.readOne("(1 \"test\" 3)"))
+        assertEquals(listOf(1L, MutableVector(arrayOf(2L)), 3L), reader.readOne("(1 [2] 3)"))
+        assertEquals(listOf(1L, listOf(2L), 3L), reader.readOne("(1 (2) 3)"))
         try {
             reader.readOne(")")
             fail()
@@ -188,21 +187,21 @@ class ReaderTest : AbstractTest() {
         assertEquals(Unit, reader.readOne(""))
         assertEquals(Unit, reader.readOne("\t"))
         assertEquals(Unit, reader.readOne("\n\r"))
-        assertEquals(list(s("+"), 1L, 2L, 3L), reader.readOne("(+ 1 2 \t \n     \r 3\t\n\r)"))
+        assertEquals(listOf(s("+"), 1L, 2L, 3L), reader.readOne("(+ 1 2 \t \n     \r 3\t\n\r)"))
     }
 
     @Test
     fun testReadQuote() {
-        assertEquals(list(Quote.symbol, 1L), reader.readOne("'1"))
-        assertEquals(list(Quote.symbol, list<Any?>(1L, "test")), reader.readOne("'(1 \"test\")"))
-        assertEquals(list(Quote.symbol, list(s(Quote.toString()), 1L)), reader.readOne("''1"))
+        assertEquals(listOf(Quote.symbol, 1L), reader.readOne("'1"))
+        assertEquals(listOf(Quote.symbol, listOf<Any?>(1L, "test")), reader.readOne("'(1 \"test\")"))
+        assertEquals(listOf(Quote.symbol, listOf(s(Quote.toString()), 1L)), reader.readOne("''1"))
     }
 
     @Test
     fun testReadQuasiquote() {
-        assertEquals(list(Quasiquote.symbol, 1L), reader.readOne("`1"))
-        assertEquals(list(Quasiquote.symbol, list<Any?>(1L, "test")), reader.readOne("`(1 \"test\")"))
-        assertEquals(list(Quasiquote.symbol, list(s(Quote.toString()), 1L)), reader.readOne("`'1"))
+        assertEquals(listOf(Quasiquote.symbol, 1L), reader.readOne("`1"))
+        assertEquals(listOf(Quasiquote.symbol, listOf<Any?>(1L, "test")), reader.readOne("`(1 \"test\")"))
+        assertEquals(listOf(Quasiquote.symbol, listOf(s(Quote.toString()), 1L)), reader.readOne("`'1"))
     }
 
     @Test

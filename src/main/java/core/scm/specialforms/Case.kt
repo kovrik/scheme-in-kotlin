@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.equivalence.Eqv
+import core.writer.Writer
 
 /* Syntax:
  * (case <key> <clause1> <clause2> ...)
@@ -19,7 +20,7 @@ object Case : SpecialForm("case") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         /* Save string representation of form before evaluation */
-        val exprString = form.toString()
+        val exprString = Writer.write(form)
         if (form.size <= 1) {
             throw IllegalSyntaxException(toString(), exprString, "source expression failed to match any pattern")
         }

@@ -4,7 +4,6 @@ import core.Repl
 import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.io.Display
-import core.scm.Cons.Companion.list
 import core.scm.OutputPort
 import core.scm.Symbol
 import org.junit.Assert.*
@@ -166,22 +165,22 @@ class EvaluatorTest : AbstractTest() {
 
     @Test
     fun testEvalMap() {
-        assertEquals(list(2L, 3L, 4L, 5L, 6L), eval("(into '() (map (lambda (n) (+ n 1)) '(1 2 3 4 5)))", env))
-        assertEquals(list(11L, 102L, 1003L, 10004L),
+        assertEquals(listOf(2L, 3L, 4L, 5L, 6L), eval("(into '() (map (lambda (n) (+ n 1)) '(1 2 3 4 5)))", env))
+        assertEquals(listOf(11L, 102L, 1003L, 10004L),
                 eval("(into '() (map (lambda (number1 number2) (+ number1 number2)) '(1 2 3 4) '(10 100 1000 10000)))", env))
 
-        assertEquals(list(1L, 4L),  eval("(into '() (map car '((1 2 3) (4 5 6))))", env))
-        assertEquals(list(3, 2, 4), eval("(into '() (map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") )))", env))
-        assertEquals(list(12L, 15L, 16L), eval("(into '() (map * '(2 3 4) '(6 5 4)))", env))
-        assertEquals(list(0, 1, 2), eval("(into '() (map length '(() (a) (a b))))", env))
-        assertEquals(list(1L, 2L, 3L, 4L, 5L), eval("(into '() (take 5 (map inc (range))))", env))
+        assertEquals(listOf(1L, 4L),  eval("(into '() (map car '((1 2 3) (4 5 6))))", env))
+        assertEquals(listOf(3, 2, 4), eval("(into '() (map length '( (1 4 0) (C G) (\"The\" \"Way\" \"Out\" \"Is\") )))", env))
+        assertEquals(listOf(12L, 15L, 16L), eval("(into '() (map * '(2 3 4) '(6 5 4)))", env))
+        assertEquals(listOf(0, 1, 2), eval("(into '() (map length '(() (a) (a b))))", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L), eval("(into '() (take 5 (map inc (range))))", env))
         assertEquals(listOf(0L, 0L, 1L, 0L, 1L, 2L, 0L, 1L, 2L, 3L), eval("(flatten (map range (range 5)))", env))
     }
 
     @Test
     fun testEvalApply() {
         assertEquals(32L, eval("(apply + 1 -2 3 '(10 20))", env))
-        assertEquals(list(list(Symbol.intern("a"), 1L), list(Symbol.intern("b"), 2L), list(
+        assertEquals(listOf(listOf(Symbol.intern("a"), 1L), listOf(Symbol.intern("b"), 2L), listOf(
                 Symbol.intern("c"), 3L)),
                 eval("(into '() (apply map list '((a b c) (1 2 3))))", env))
 

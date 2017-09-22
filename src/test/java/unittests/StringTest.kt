@@ -1,7 +1,6 @@
 package unittests
 
 import core.exceptions.WrongTypeException
-import core.scm.Cons.Companion.list
 import core.scm.MutableString
 import core.scm.Symbol
 import core.scm.Vector
@@ -159,9 +158,9 @@ class StringTest : AbstractTest() {
 
     @Test
     fun testStringToList() {
-        assertEquals(list('a', 'b', 'c'), eval("(string->list \"abc\")", env))
-        assertEquals(list('a'), eval("(string->list \"a\")", env))
-        assertEquals(list<Any>(), eval("(string->list \"\")", env))
+        assertEquals(listOf('a', 'b', 'c'), eval("(string->list \"abc\")", env))
+        assertEquals(listOf('a'), eval("(string->list \"a\")", env))
+        assertEquals(listOf<Any>(), eval("(string->list \"\")", env))
         try {
             eval("(string->list (cons 1 2))", env)
             fail()

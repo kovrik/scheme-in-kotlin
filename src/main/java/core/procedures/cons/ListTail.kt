@@ -2,7 +2,7 @@ package core.procedures.cons
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.scm.Cons
+import core.procedures.predicates.Predicate
 import core.scm.Type
 
 class ListTail : AFn<Any?, Any?>(name = "list-tail", minArgs = 2, maxArgs = 2,
@@ -20,7 +20,7 @@ class ListTail : AFn<Any?, Any?>(name = "list-tail", minArgs = 2, maxArgs = 2,
             throw IndexOutOfBoundsException("$name: value out of range: $p")
         }
         /* Cons cell */
-        if (!Cons.isProperList(list)) {
+        if (!Predicate.isProperList(list)) {
             if (p == 1L) {
                 return cdr(list)
             } else {

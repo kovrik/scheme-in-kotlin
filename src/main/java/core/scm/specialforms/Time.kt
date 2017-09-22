@@ -4,6 +4,7 @@ import core.Repl
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
+import core.writer.Writer
 
 import java.lang.management.ManagementFactory
 import java.util.concurrent.TimeUnit
@@ -18,7 +19,7 @@ object Time : SpecialForm("time") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 2) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
 
         val threadMXBean = ManagementFactory.getThreadMXBean()

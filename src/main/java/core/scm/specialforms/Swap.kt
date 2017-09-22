@@ -7,7 +7,6 @@ import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.procedures.functional.Apply
 import core.scm.Box
-import core.scm.Cons
 
 object Swap : SpecialForm("swap!") {
 
@@ -24,13 +23,13 @@ object Swap : SpecialForm("swap!") {
 
         while (true) {
             val oldVal = box.deref()
-            val rest = Cons.list<Any?>(oldVal)
+            val rest = mutableListOf(oldVal)
             if (form.size > 3) {
                 for (i in 3 until form.size) {
                     rest.add(evaluator.eval(form[i], env))
                 }
             }
-            val applyForm  = Cons.list(apply, fn, Cons.list(Quote, rest))
+            val applyForm  = listOf(apply, fn, listOf(Quote, rest))
             val newVal = evaluator.eval(applyForm, env)
             if (box.compareAndSet(oldVal, newVal)) {
                 return newVal

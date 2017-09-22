@@ -21,8 +21,8 @@ object Writer {
         is Unit            -> "#<void>"
         is Boolean         -> if (o) "#t" else "#f"
         is Symbol          -> o.write()
-        is Class<*>        -> o.write()
         is List<*>         -> o.write()
+        is Class<*>        -> o.write()
         is MutablePair     -> o.write()
         is Number          -> o.write()
         is Sequence<*>     -> o.write()

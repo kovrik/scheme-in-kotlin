@@ -4,9 +4,9 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
-import core.scm.Cons
 import core.scm.Symbol
 import core.utils.Utils
+import core.writer.Writer
 
 /* Syntax:
  * (dotimes (var limit [result]) <body>...)
@@ -15,7 +15,7 @@ object Dotimes : SpecialForm("dotimes") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         val binding = form[1] as List<*>
         val s = binding[0] as? Symbol ?: throw WrongTypeException(toString(), "Symbol", binding[0])
@@ -24,7 +24,7 @@ object Dotimes : SpecialForm("dotimes") {
         if (!Utils.isReal(limit)) throw WrongTypeException(toString(), "Real", limit)
 
         val localEnv = Environment(env)
-        val body = Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
+        val body = mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         // TODO What if greater than Long.MAX_VALUE?
         for (i in 0 until (limit as Number).toLong()) {
             localEnv.put(s, i)

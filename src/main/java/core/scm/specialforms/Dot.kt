@@ -5,6 +5,7 @@ import core.Evaluator
 import core.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
+import core.writer.Writer
 
 object Dot : SpecialForm(".") {
 
@@ -13,7 +14,7 @@ object Dot : SpecialForm(".") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         val size = form.size
         if (size < 3) {
-            throw IllegalSyntaxException(toString(), form, "has ${size - 1} parts after keyword")
+            throw IllegalSyntaxException(toString(), Writer.write(form), "has ${size - 1} parts after keyword")
         }
         // FIXME Optimize and cleanup
         val first = if (form[1] is Symbol) {

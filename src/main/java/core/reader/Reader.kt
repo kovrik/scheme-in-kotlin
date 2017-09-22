@@ -195,7 +195,7 @@ open class Reader : IReader {
             }
             else -> throw IllegalSyntaxException("read: unknown quotation type: $c")
         }
-        return Cons.list(quote, read())
+        return listOf(quote, read())
     }
 
     /**
@@ -303,15 +303,15 @@ open class Reader : IReader {
      * <list> -> (<list_contents>)
      */
     @Throws(IOException::class)
-    private fun readList(allowImproperList: Boolean, terminator: Char): Cons<*> {
+    private fun readList(allowImproperList: Boolean, terminator: Char): List<*> {
         /* Remember position of a dot (if we meet it) */
         var dotPos = -1
         var i = reader.read()
         var c = i.toChar()
         /* Skip whitespaces */
         while (Character.isWhitespace(c)) { c = reader.read().toChar() }
-        if (c == terminator) return Cons.EMPTY
-        val list: Cons<Any?> = Cons.list()
+        if (c == terminator) return emptyList<Nothing>()
+        val list = mutableListOf<Any?>()
         while (isValid(i) && c != terminator) {
             /* Skip whitespaces */
             while (Character.isWhitespace(c)) { c = reader.read().toChar() }
@@ -447,7 +447,7 @@ open class Reader : IReader {
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
-    private fun readDeref() = Cons.list(DEREF, read())
+    private fun readDeref() = listOf(DEREF, read())
 
     /**
      * Syntax shortcut

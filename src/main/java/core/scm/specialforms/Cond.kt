@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
+import core.writer.Writer
 
 /* Syntax:
  * (cond <clause1> <clause2> ...)
@@ -17,11 +18,11 @@ object Cond : SpecialForm("cond") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         for (i in 1 until form.size) {
-            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), form, "invalid clause in subform")
+            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form), "invalid clause in subform")
             val clause = subform[0]
             if (Else.symbol == clause) {
                 if (i != form.size - 1) {
-                    throw IllegalSyntaxException(toString(), form, "else must be the last clause in subform")
+                    throw IllegalSyntaxException(toString(), Writer.write(form), "else must be the last clause in subform")
                 }
                 return Begin.eval(subform, env, evaluator)
             }

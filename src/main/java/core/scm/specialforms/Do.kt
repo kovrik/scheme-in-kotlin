@@ -5,6 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Cons
 import core.utils.Utils
+import core.writer.Writer
 
 /* Syntax:
  * (do <bindings> <clause> <body>)
@@ -16,18 +17,18 @@ object Do : SpecialForm("do") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         // TODO Replace with call to LET
         /* Init bindings */
-        val bs = form[1] as? List<*> ?: throw IllegalSyntaxException(toString(), form)
+        val bs = form[1] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
         val tempEnv = Environment(env)
-        val steps = Cons.list<Cons<*>>()
+        val steps = mutableListOf<Cons<*>>()
         for (b in bs) {
-            val binding = b as? List<*> ?: throw IllegalSyntaxException(toString(), form)
+            val binding = b as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
             /* Check that init value exists */
             if (binding.size < 2) {
-                throw IllegalSyntaxException(toString(), form)
+                throw IllegalSyntaxException(toString(), Writer.write(form))
             }
             val (variable, init) = binding
             if (binding.size == 3) {
@@ -36,14 +37,14 @@ object Do : SpecialForm("do") {
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {
-                throw IllegalSyntaxException(Let.toString(), form, "duplicate identifier: $variable")
+                throw IllegalSyntaxException(Let.toString(), Writer.write(form), "duplicate identifier: $variable")
             }
             tempEnv.put(variable, evaluator.eval(init, tempEnv))
         }
 
-        val clause = form[2] as? List<*> ?: throw IllegalSyntaxException(toString(), form)
+        val clause = form[2] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
         if (clause.isEmpty()) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         /* While test evaluates to #f */
         while (!Utils.toBoolean(evaluator.eval(clause[0], tempEnv))) {
@@ -60,7 +61,7 @@ object Do : SpecialForm("do") {
             /* Evaluate steps */
             val freshLocations = HashMap<Any?, Any?>(steps.size)
             for (step in steps) {
-                freshLocations.put(step!!.car(), evaluator.eval(step.cdr(), tempEnv))
+                freshLocations.put(step.first(), evaluator.eval(step.drop(1), tempEnv))
             }
             /* Now store results */
             tempEnv.putAll(freshLocations)

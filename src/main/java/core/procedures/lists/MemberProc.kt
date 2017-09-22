@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
-import core.scm.Cons
+import core.procedures.predicates.Predicate
 import core.utils.Utils
 import core.writer.Writer
 
@@ -31,7 +31,7 @@ class MemberProc(override val name: String, inline private val predicate: AFn<An
         }
         /* Not found */
         if (p == list.size) {
-            if (!Cons.isProperList(list)) {
+            if (!Predicate.isProperList(list)) {
                 throw WrongTypeException("$name: wrong type argument in position $p (expecting list): ${Writer.write(list)}")
             }
             return false

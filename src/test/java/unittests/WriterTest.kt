@@ -1,11 +1,7 @@
 package unittests
 
-import core.scm.Cons
 import core.writer.Writer
 import org.junit.Test
-
-
-import core.scm.Cons.Companion.EMPTY
 import org.junit.Assert.assertEquals
 
 class WriterTest {
@@ -27,8 +23,7 @@ class WriterTest {
     @Test
     fun testWriteNil() {
         assertEquals("nil", Writer.write(null as Any?))
-        assertEquals("()", Writer.write(EMPTY))
-        assertEquals("()", Writer.write(Cons.list<Any>()))
+        assertEquals("()", Writer.write(listOf<Any?>()))
         assertEquals("()", Writer.write(emptyList<Any?>()))
         assertEquals("()", Writer.write(listOf(1, 2, 3).subList(3, 3)))
     }

@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
+import core.writer.Writer
 
 object Assert : SpecialForm("assert") {
 
@@ -13,8 +14,8 @@ object Assert : SpecialForm("assert") {
         val message = when (form.size) {
             2 -> "assert failed"
             3 -> "assert failed: \"${evaluator.eval(form[2], env) as? CharSequence ?:
-                 throw IllegalSyntaxException(toString(), form)}\""
-            else -> throw IllegalSyntaxException(toString(), form)
+                 throw IllegalSyntaxException(toString(), Writer.write(form))}\""
+            else -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         if (!Utils.toBoolean(evaluator.eval(form[1], env))) {
             throw AssertionError(message).apply { stackTrace = EMPTY }

@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.Reflector
 import core.exceptions.IllegalSyntaxException
+import core.writer.Writer
 
 object New : SpecialForm("new") {
 
@@ -11,7 +12,7 @@ object New : SpecialForm("new") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 2) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         val constructorArgs = arrayOfNulls<Any>(form.size - 2)
         constructorArgs.indices.forEach { i -> constructorArgs[i] = evaluator.eval(form[i + 2], env) }

@@ -1,6 +1,7 @@
 package core.scm
 
 import core.exceptions.WrongTypeException
+import core.procedures.predicates.Predicate
 import core.utils.Utils
 
 object Type {
@@ -18,8 +19,8 @@ object Type {
     private val TYPE_PREDICATES = hashMapOf(
             String::class.java                  to { o: Any? -> o is CharSequence },
             MutableString::class.java           to { o: Any? -> o is StringBuilder || o is MutableString },
-            ProperList::class.java              to Cons.Companion::isProperList,
-            Pair::class.java                    to Cons.Companion::isPair,
+            ProperList::class.java              to Predicate.Companion::isProperList,
+            Pair::class.java                    to Predicate.Companion::isPair,
             Rational::class.java                to Utils::isRational,
             Long::class.java                    to Utils::isInteger,
             Long::class.javaObjectType          to Utils::isInteger,

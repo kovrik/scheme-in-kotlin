@@ -3,9 +3,9 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.Cons
 import core.scm.Symbol
 import core.scm.Thunk
+import core.writer.Writer
 
 /* Syntax:
  * (let <bindings> <body>)
@@ -16,7 +16,7 @@ object Let : SpecialForm("let") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         /* Normal let:
          * (let ((id expr) ...) body ...+) */
@@ -25,15 +25,15 @@ object Let : SpecialForm("let") {
             val bindings = form[1] as List<*>
             /* Bind variables to fresh locations holding undefined values */
             bindings.forEach {
-                if (it !is List<*>) throw IllegalSyntaxException(toString(), form)
+                if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
                 localEnv.put(it[0], Environment.UNDEFINED)
             }
             /* Evaluate inits */
             bindings.forEach {
                 when {
-                    it !is List<*> -> throw IllegalSyntaxException(toString(), form)
+                    it !is List<*> -> throw IllegalSyntaxException(toString(), Writer.write(form))
                     localEnv[it[0]] === Environment.UNDEFINED -> localEnv.put(it[0], evaluator.eval(it[1], env))
-                    else -> throw IllegalSyntaxException(toString(), form, "duplicate identifier: ${it[0]}")
+                    else -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: ${it[0]}")
                 }
             }
             /* Evaluate body */
@@ -43,32 +43,32 @@ object Let : SpecialForm("let") {
             // TODO Optimize and cleanup
             /* Named let:
              * (let proc-id ((arg-id init-expr) ...) body ...+) */
-            val name = form[1] as? Symbol ?: throw IllegalSyntaxException(toString(), form)
+            val name = form[1] as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form))
             /* Construct lambda */
-            val lambdaArgs = Cons.list<Any?>()
-            val initValues = Cons.list<Any?>()
+            val lambdaArgs = mutableListOf<Any?>()
+            val initValues = mutableListOf<Any?>()
             val bindings = form[2] as List<*>
             for (binding in bindings) {
                 val (arg, init) = binding as List<*>
                 if (lambdaArgs.contains(arg)) {
-                    throw IllegalSyntaxException(toString(), form, "duplicate identifier: $arg")
+                    throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
                 initValues.add(init)
             }
             val lambdaBody = form[3]
-            val lambda = Cons.list(Lambda, lambdaArgs, lambdaBody)
-            val l = Cons.list<Cons<*>>()
-            l.add(Cons.list(name, lambda))
+            val lambda = listOf(Lambda, lambdaArgs, lambdaBody)
+            val l = mutableListOf<List<*>>()
+            l.add(listOf(name, lambda))
 
-            val body = Cons.list<Any?>(name)
+            val body = mutableListOf<Any?>(name)
             body.addAll(initValues)
 
             /* Named let is implemented via letrec */
-            val letrec = Cons.list(LetRec, l, body)
+            val letrec = listOf(LetRec, l, body)
             /* Letrec has TCO */
             return LetRec.eval(letrec, Environment(env), evaluator)
         }
-        throw IllegalSyntaxException(toString(), form)
+        throw IllegalSyntaxException(toString(), Writer.write(form))
     }
 }

@@ -6,7 +6,6 @@ import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.scm.CalledContinuation
 import core.scm.Continuation
-import core.scm.Cons
 
 object CallCC : SpecialForm("call-with-current-continuation") {
 
@@ -19,7 +18,7 @@ object CallCC : SpecialForm("call-with-current-continuation") {
         val cont = Continuation()
         try {
             /* Pass Continuation to the Procedure: (proc cont) */
-            return evaluator.eval(Cons.list(proc, cont), env)
+            return evaluator.eval(listOf(proc, cont), env)
         } catch (ex: CalledContinuation) {
             if (ex.continuation != cont) {
                 /* Not our continuation, throw it further */

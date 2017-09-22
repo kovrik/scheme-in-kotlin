@@ -3,9 +3,10 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.Cons
+import core.procedures.predicates.Predicate
 import core.scm.Procedure
 import core.scm.Symbol
+import core.writer.Writer
 import java.util.LinkedList
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -22,7 +23,7 @@ object Lambda : SpecialForm("lambda") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
         if (form.size < 3) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         val params: List<Symbol?>
         var variadic = false
@@ -34,15 +35,15 @@ object Lambda : SpecialForm("lambda") {
                 val temp = HashSet<Any?>(lambdaArgs.size)
                 lambdaArgs.forEach {
                     when {
-                        it !is Symbol && !Cons.isPair(it) -> throw IllegalSyntaxException(toString(), form, "not an identifier: $it")
-                        temp.contains(it) -> throw IllegalSyntaxException(toString(), form, "duplicate argument name: $it")
+                        it !is Symbol && !Predicate.isPair(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                        temp.contains(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
                         else -> temp.add(it)
                     }
                 }
             }
             /* (lambda (arg-id ...+) body ...+) OR
              * (lambda (arg-id ...+ . rest-id) body ...+) */
-            if (Cons.isProperList(lambdaArgs)) {
+            if (Predicate.isProperList(lambdaArgs)) {
                 /* args is a proper list, hence non-variadic lambda */
                 params = lambdaArgs as List<Symbol>
             } else {
@@ -53,14 +54,14 @@ object Lambda : SpecialForm("lambda") {
         } else {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
-            params = Cons.list(lambdaArgs as? Symbol ?:
-                               throw IllegalSyntaxException("lambda: bad argument sequence ($lambdaArgs) in form: $form"))
+            params = listOf(lambdaArgs as? Symbol ?:
+                            throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($lambdaArgs)"))
             variadic = true
         }
         val body = when {
             form.size == 3 -> form[2]!!
             /* Add implicit `begin` */
-            else -> Cons.list<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
+            else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
     }

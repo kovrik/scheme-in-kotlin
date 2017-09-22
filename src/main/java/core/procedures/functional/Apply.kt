@@ -2,7 +2,6 @@ package core.procedures.functional
 
 import core.procedures.AFn
 import core.procedures.IFn
-import core.scm.Cons
 import core.scm.Symbol
 import core.scm.Thunk
 import core.scm.specialforms.Quote
@@ -12,7 +11,7 @@ class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = a
 
     // TODO Make it work with Sequences!
     override operator fun invoke(args: Array<out Any?>): Any {
-        val sexp = Cons.list(args[0])
+        val sexp = mutableListOf(args[0])
         if (args.size > 2) {
             sexp.addAll(args.copyOfRange(1, args.size - 1))
         }

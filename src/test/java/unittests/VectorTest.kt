@@ -1,8 +1,6 @@
 package unittests
 
-import core.scm.Cons.Companion.list
 import core.scm.MutableVector
-import core.scm.Vector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -165,8 +163,8 @@ class VectorTest : AbstractTest() {
     @Test
     fun testEvalVectorToList() {
 
-        assertEquals(list<Any?>(1L, 2L, "test"), eval("(vector->list #(1 2 \"test\"))", env))
-        assertEquals(list<Any>(), eval("(vector->list #())", env))
+        assertEquals(listOf(1L, 2L, "test"), eval("(vector->list #(1 2 \"test\"))", env))
+        assertEquals(listOf<Any>(), eval("(vector->list #())", env))
 
         try {
             eval("(vector->list '(1 2 3))", env)

@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.Evaluator
 import core.Reflector
 import core.exceptions.IllegalSyntaxException
-import core.scm.Cons
 import core.scm.Symbol
 
 object Try : SpecialForm("try") {
@@ -33,7 +32,7 @@ object Try : SpecialForm("try") {
                         throw IllegalSyntaxException("try: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
-                        fin = Cons.list<Any?>(Begin).apply { addAll(expr.subList(1, expr.size)) }
+                        fin = mutableListOf<Any?>(Begin).apply { addAll(expr.subList(1, expr.size)) }
                     }
                     continue
                 } else if (op == CATCH) {
@@ -46,7 +45,7 @@ object Try : SpecialForm("try") {
                     }
                     val clazz = reflector.getClazz(expr[1].toString())
                     val catchExpr = when {
-                        expr.size > 3 -> Cons.list<Any?>(Begin).apply { addAll(expr.subList(3, expr.size)) }
+                        expr.size > 3 -> mutableListOf<Any?>(Begin).apply { addAll(expr.subList(3, expr.size)) }
                         else -> null
                     }
                     catches.put(clazz, catchExpr)

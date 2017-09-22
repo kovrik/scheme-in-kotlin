@@ -25,7 +25,7 @@ class ContinuationsTest : AbstractTest() {
                       "             ((empty? lst) '())" +
                       "             (else (exit #f)))))))"
         eval(listadd, env)
-        assertEquals(Cons.list(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env))
+        assertEquals(listOf(2L, 3L, 4L), eval("(lstadd1 '(1 2 3))", env))
         assertEquals(false, eval("(lstadd1 '(1 2 . 3))", env))
     }
 

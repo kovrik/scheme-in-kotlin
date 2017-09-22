@@ -78,10 +78,10 @@ class HashmapTest : AbstractTest() {
 
     @Test
     fun testHashmapKeysValues() {
-        assertEquals(Cons.list(1L, 2L, 3L), eval("(keys {1 + 2 - 3 /})", env))
-        assertEquals(Cons.EMPTY, eval("(keys {})", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(into '() (keys {1 + 2 - 3 /}))", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (keys {}))", env))
         assertEquals(6L, eval("(apply + (vals (zipmap '[+ - /] '(1 2 3))))", env))
-        assertEquals(Cons.EMPTY, eval("(vals {})", env))
+        assertEquals(emptyList<Nothing>(), eval("(into '() (vals {}))", env))
         assertEquals(emptyMap<Any?, Any?>(), eval("(zipmap [] '())", env))
         assertEquals(emptyMap<Any?, Any?>(), eval("(zipmap nil nil)", env))
         assertEquals(3L, eval("(get (zipmap \"test\" [1 2 3 4]) #\\s)", env))

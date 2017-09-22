@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
+import core.writer.Writer
 
 /* Syntax:
  * (let* <bindings> <body>)
@@ -14,13 +15,13 @@ object LetSeq : SpecialForm("let*") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3 || form[1] !is List<*>) {
-            throw IllegalSyntaxException(toString(), form)
+            throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         val localEnv = Environment(env)
         val bindings = form[1] as List<*>
         /* Evaluate inits */
         bindings.forEach {
-            if (it !is List<*>) throw IllegalSyntaxException(toString(), form)
+            if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
             localEnv.put(it[0], evaluator.eval(it[1], localEnv))
         }
         /* Evaluate body */

@@ -7,9 +7,7 @@ import core.exceptions.UndefinedIdentifierException
 import core.procedures.io.Display
 import core.procedures.math.Addition
 import core.scm.*
-import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
-import core.scm.Cons.Companion.list
 import core.scm.specialforms.Quote
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
@@ -62,7 +60,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(false, eval("(future?  (delay 1.0))", env))
         assertEquals(true, eval("(future?  (future 1.0))", env))
         assertEquals(3L, eval("(force (delay (+ 1 2)))", env))
-        assertEquals(list(3L, 3L), eval("(let ((p (delay (+ 1 2))))(list (force p) (force p)))", env))
+        assertEquals(listOf(3L, 3L), eval("(let ((p (delay (+ 1 2))))(list (force p) (force p)))", env))
 
         eval("(define perr (delay (error \"BOOM\")))", env)
         try {
@@ -97,12 +95,12 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(6L, eval("((lambda (n) (+ n 1)) 5)", env))
 
         // rest arguments
-        assertEquals(list(1L, 2L, 3L), eval("((lambda x x) 1 2 3)", env))
-        assertEquals(EMPTY, eval("((lambda x x))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("((lambda x x) 1 2 3)", env))
+        assertEquals(emptyList<Nothing>(), eval("((lambda x x))", env))
         assertEquals(1L, eval("((lambda x (car x)) 1 2 3)", env))
         assertEquals(1L, eval("((lambda (f s . rs) f) 1 2 3 4)", env))
         assertEquals(2L, eval("((lambda (f s . rs) s) 1 2 3 4)", env))
-        assertEquals(list(3L, 4L), eval("((lambda (f s . rs) rs) 1 2 3 4)", env))
+        assertEquals(listOf(3L, 4L), eval("((lambda (f s . rs) rs) 1 2 3 4)", env))
     }
 
     @Test
@@ -117,11 +115,11 @@ class SpecialFormTest : AbstractTest() {
 
         // variadic
         eval("(define edlv (lambda args args))", env)
-        assertEquals(Cons.list(1L, 2L, 3L, 4L, 5L), eval("(edlv 1 2 3 4 5)", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L), eval("(edlv 1 2 3 4 5)", env))
 
         // variadic define
         eval("(define (edv1 first second . rest) rest)", env)
-        assertEquals(Cons.list(2L, 3L, 4L, 5L), eval("(edv1 0 1 2 3 4 5)", env))
+        assertEquals(listOf(2L, 3L, 4L, 5L), eval("(edv1 0 1 2 3 4 5)", env))
 
         eval("(define (edv2 first second . rest) second)", env)
         assertEquals(1L, eval("(edv2 0 1 2 3 4 5)", env))
@@ -176,7 +174,7 @@ class SpecialFormTest : AbstractTest() {
                 "  (+ 1 (test2)))"
         eval(d2, env)
         assertEquals(9L, eval("(test-internal-define2)", env))
-        assertEquals(list(3L, 4L, 5L), eval("((lambda (a b c . d) d) 0 1 2 3 4 5)", env))
+        assertEquals(listOf(3L, 4L, 5L), eval("((lambda (a b c . d) d) 0 1 2 3 4 5)", env))
         // TODO Check Definition context
     }
 
@@ -194,7 +192,7 @@ class SpecialFormTest : AbstractTest() {
             eval(f2, env)
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("lambda: bad argument sequence (1) in form: " + f2, e.message)
+            assertEquals("lambda: bad syntax (bad argument sequence: (1)) in form: (lambda 1 2 3 4)", e.message)
         }
     }
 
@@ -233,8 +231,8 @@ class SpecialFormTest : AbstractTest() {
     fun testEvalQuote() {
         assertEquals(0L, eval("'0", env))
         assertEquals("test", eval("'\"test\"", env))
-        assertEquals(Cons.list(Quote.symbol, "test"), eval("''\"test\"", env))
-        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env))
+        assertEquals(listOf(Quote.symbol, "test"), eval("''\"test\"", env))
+        assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("'(+ 1 2)", env))
         assertEquals(Symbol.intern("0eab"), eval("'0eab", env))
         assertEquals(Symbol.intern("000eab"), eval("'000eab", env))
     }
@@ -307,7 +305,7 @@ class SpecialFormTest : AbstractTest() {
         eval("(do ((i 1 (+ i 1)))" +
              "    ((> i 4))" +
              "  (set! lst (cons (lambda () i) lst)))", env)
-        assertEquals(list(4L, 3L, 2L, 1L), eval("(into '() (map (lambda (proc) (proc)) lst))", env))
+        assertEquals(listOf(4L, 3L, 2L, 1L), eval("(into '() (map (lambda (proc) (proc)) lst))", env))
     }
 
     @Test
@@ -365,7 +363,7 @@ class SpecialFormTest : AbstractTest() {
              "   (cond" +
              "    ((= i pos) (cons (car lst) lst))" +
              "    (else (cons (car lst) (dup (+ i 1) (cdr lst)))))))", env)
-        assertEquals(list("apple", "cheese burger!", "cheese burger!", "banana"),
+        assertEquals(listOf("apple", "cheese burger!", "cheese burger!", "banana"),
                      eval("(duplicate 1 (list \"apple\" \"cheese burger!\" \"banana\"))", env))
     }
 
@@ -478,7 +476,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(1L,    eval("(and 1)", env))
         assertEquals(true,  eval("(and (= 2 2) (> 2 1))", env))
         assertEquals(false, eval("(and (= 2 2) (< 2 1))", env))
-        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(and 1 2 'c '(f g)) ", env))
+        assertEquals(listOf<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(and 1 2 'c '(f g)) ", env))
     }
 
     @Test
@@ -497,7 +495,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(true,  eval("(or (= 2 2) (> 2 1)) ", env))
         assertEquals(true,  eval("(or (= 2 2) (< 2 1))", env))
         assertEquals(false, eval("(or #f #f #f)", env))
-        assertEquals(Cons.list<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(or '(f g) 1 2)", env))
+        assertEquals(listOf<Any>(Symbol.intern("f"), Symbol.intern("g")), eval("(or '(f g) 1 2)", env))
     }
 
     @Test
@@ -560,8 +558,6 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Symbol::class.javaObjectType, eval("(class-of 'test)", env))
         assertEquals(Class::class.javaObjectType, eval("(class-of (class-of 'test))", env))
         assertEquals(Vector::class.javaObjectType, eval("(class-of #(1 2 3))", env))
-        assertEquals(Cons::class.javaObjectType, eval("(class-of '(1 2 3))", env))
-        assertEquals(Cons::class.javaObjectType, eval("(class-of '())", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of #t)", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of (= 1 2))", env))
         assertEquals(Addition::class.javaObjectType, eval("(class-of +)", env))
@@ -605,52 +601,52 @@ class SpecialFormTest : AbstractTest() {
         assertEquals("test", eval("(quasiquote \"test\")", env))
         assertEquals("test", eval("`\"test\"", env))
         assertEquals(Symbol.intern("quote"), eval("(quasiquote quote)", env))
-        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env))
+        assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env))
         assertEquals(3L, eval("`,(+ 1 2)", env))
         assertEquals(13L, eval("`,(+ 1 (* 3 4))", env))
         assertEquals(13L, eval("(quasiquote ,(+ 1 (* 3 4)))", env))
         assertEquals(13L, eval("(quasiquote (unquote (+ 1 (* 3 4))))", env))
-        assertEquals(list(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env))
-        assertEquals(list(1L, list(Symbol.intern("quasiquote"), list(Symbol.intern("unquote"), list(
+        assertEquals(listOf(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env))
+        assertEquals(listOf(1L, listOf(Symbol.intern("quasiquote"), listOf(Symbol.intern("unquote"), listOf(
                 Symbol.intern("+"), 1L, 5L))), 4L),
                 eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env))
 
-        assertEquals(list(1L, list(Symbol.intern("quasiquote"), list(Symbol.intern("unquote"), list(
+        assertEquals(listOf(1L, listOf(Symbol.intern("quasiquote"), listOf(Symbol.intern("unquote"), listOf(
                 Symbol.intern("+"), 1L, MutableVector(arrayOf(
                 Symbol.intern("+"), 2L, 3L))))), 4L),
                 eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env))
 
-        assertEquals(list(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
-        assertEquals(list(Symbol.intern("list"), Symbol.intern("a"), list(
+        assertEquals(listOf(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
+        assertEquals(listOf(Symbol.intern("list"), Symbol.intern("a"), listOf(
                 Symbol.intern("quote"), Symbol.intern("a"))),
                 eval("(let ((name 'a)) `(list ,name ',name))", env))
 
-        assertEquals(list(arrayOf<Any?>(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b"))),
+        assertEquals(listOf(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
                 eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
 
-        assertEquals(cons(list(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
+        assertEquals(cons(listOf(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
         assertEquals(5L, eval("`,(+ 2 3)", env))
 
-        assertEquals(list(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env))
-        assertEquals(list(1L, 2L, 7L), eval("`(1 2 ,`,(+ 3 4))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env))
+        assertEquals(listOf(1L, 2L, 7L), eval("`(1 2 ,`,(+ 3 4))", env))
         assertEquals(1L, eval("`,`,`,`,`,1", env))
         assertEquals(1L, eval("`,`,`,`,`,`1", env))
         assertEquals(3L, eval("`,`,`,`,`,(+ 1 2)", env))
-        assertEquals(list(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
+        assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
 
         assertEquals(MutableVector(arrayOf(1L, 5L)), eval("`[1 ,(+ 2 3)]", env))
-        assertEquals(MutableVector(arrayOf(1L, list(Symbol.intern("quasiquote"), list(
-                Symbol.intern("unquote"), list(1L, 5L))))),
+        assertEquals(MutableVector(arrayOf(1L, listOf(Symbol.intern("quasiquote"), listOf(
+                Symbol.intern("unquote"), listOf(1L, 5L))))),
                 eval("`[1 `,(1 ,(+ 2 3))]", env))
 
         assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env))
         assertEquals(cons(Symbol.intern("unquote-splicing"), Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
         assertEquals(cons(Symbol.intern("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
 
-        assertEquals(EMPTY, eval("`()", env))
+        assertEquals(emptyList<Nothing>(), eval("`()", env))
         assertEquals(MutableVector(), eval("`#()", env))
-        assertEquals(list(1L, 2L, list(EMPTY)), eval("`(1 2 ())", env))
-        assertEquals(list(1L, 2L, list(Symbol.intern("quote"), EMPTY)), eval("`(1 2 '())", env))
+        assertEquals(listOf(1L, 2L, emptyList<Nothing>()), eval("`(1 2 ())", env))
+        assertEquals(listOf(1L, 2L, listOf(Symbol.intern("quote"), emptyList<Nothing>())), eval("`(1 2 '())", env))
 
         try {
             eval("unquote", env)

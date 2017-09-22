@@ -1,9 +1,9 @@
 package core.scm
 
-import core.exceptions.WrongTypeException
+import core.procedures.predicates.Predicate
 import core.writer.Writer
 
-// TODO Persistent Data Structures
+@Deprecated(message = "Use Kotlin/Java collections and/or MutablePair")
 class Cons<E> : ArrayList<E?> {
 
     /* Is it a Proper List or an Improper one?
@@ -15,7 +15,7 @@ class Cons<E> : ArrayList<E?> {
     private constructor(c: Collection<E>) : super(c)
     private constructor(car: E?, cdr: E?) : super() {
         add(car)
-        isProperList = isProperList(cdr)
+        isProperList = Predicate.isProperList(cdr)
         when {
             isProperList -> when (cdr) {
                 is Sequence<*> -> addAll(cdr as Sequence<E>)
@@ -24,13 +24,6 @@ class Cons<E> : ArrayList<E?> {
             else -> add(cdr)
         }
     }
-
-    fun car() = when {
-        isEmpty() -> throw WrongTypeException("car", Type.Pair::class.java, EMPTY)
-        else      -> first()
-    }
-
-    fun cdr() = if (isProperList) subList(1, size) else (last() as Any)
 
     override fun toString() = toString(this)
 
@@ -59,31 +52,14 @@ class Cons<E> : ArrayList<E?> {
         /* Empty list constant */
         val EMPTY = Cons<Nothing>()
 
-        fun <E> cons(car: E?, cdr: E?) = Cons(car, cdr ?: EMPTY)
-
-        fun <E> list(): Cons<E?> = Cons()
-        fun <E> list(e: E?): Cons<E?> = list<E?>().apply { add(e) }
-        fun <E> list(e1: E?, e2: E?): Cons<E?> = list<E?>(e1).apply { add(e2) }
-        fun <E> list(e1: E?, e2: E?, e3: E?): Cons<E?> = list<E?>(e1, e2).apply { add(e3) }
-        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?): Cons<E?> = list<E?>(e1, e2, e3).apply { add(e4) }
-        fun <E> list(e1: E?, e2: E?, e3: E?, e4: E?, e5: E?): Cons<E?> = list<E?>(e1, e2, e3, e4).apply { add(e5) }
-
-        fun <E> list(elements: Array<E?>) = if (elements.isEmpty()) EMPTY else list(elements.asList())
+        fun <E> cons(car: E?, cdr: E?) = Cons(car, cdr ?: emptyList<Nothing>())
 
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
-
-        /* Return true if o is a Proper List */
-        fun isProperList(o: Any?) = when (o) {
-            is MutablePair -> false
-            else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
-        }
-
-        fun isPair(o: Any?) = o is MutablePair || o is List<*> && !o.isEmpty()
 
         /* Use this method to print all lists */
         fun toString(list: List<*>) = when {
             list.isEmpty() -> "()"
-            isProperList(list) -> StringBuilder("(").apply {
+            Predicate.isProperList(list) -> StringBuilder("(").apply {
                 for (i in 0..list.size - 2) {
                     append(if (list[i] === list) "(this list)" else Writer.write(list[i])).append(' ')
                 }

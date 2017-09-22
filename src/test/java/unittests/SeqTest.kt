@@ -2,7 +2,6 @@ package unittests
 
 import core.exceptions.WrongTypeException
 import core.scm.BigRatio
-import core.scm.Cons.Companion.list
 import core.scm.Keyword
 import core.scm.MutableVector
 import org.junit.Test
@@ -13,9 +12,9 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testRepeat() {
-        assertEquals(list<Any?>(null, null, null), eval("(into '() (take 3 (repeat nil)))", env))
-        assertEquals(list<Any>(), eval("(into '() (take 0 (repeat 3)))", env))
-        assertEquals(list(3L, 3L, 3L, 3L, 3L), eval("(into '() (take 5 (repeat 3)))", env))
+        assertEquals(listOf<Any?>(null, null, null), eval("(into '() (take 3 (repeat nil)))", env))
+        assertEquals(listOf<Any>(), eval("(into '() (take 0 (repeat 3)))", env))
+        assertEquals(listOf(3L, 3L, 3L, 3L, 3L), eval("(into '() (take 5 (repeat 3)))", env))
         assertEquals(9, eval("(count (rest (take 10 (repeat 5))))", env))
         try {
             eval("(+ (repeat 3))", env)
@@ -27,8 +26,8 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testRepeatedly() {
-        assertEquals(list<Any>(), eval("(into '() (take 0 (repeatedly (lambda () 1))))", env))
-        assertEquals(list(3L, 3L, 3L, 3L, 3L), eval("(into '() (take 5 (repeatedly (lambda () 3))))", env))
+        assertEquals(listOf<Any>(), eval("(into '() (take 0 (repeatedly (lambda () 1))))", env))
+        assertEquals(listOf(3L, 3L, 3L, 3L, 3L), eval("(into '() (take 5 (repeatedly (lambda () 3))))", env))
         try {
             eval("(+ (repeatedly 3))", env)
             fail()
@@ -39,9 +38,9 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testIterate() {
-        assertEquals(list<Any>(), eval("(into '() (take 0 (iterate inc 0)))", env))
-        assertEquals(list(0L, 1L, 2L, 3L, 4L), eval("(into '() (take 5 (iterate inc 0)))", env))
-        assertEquals(list(0L, 2L, 4L, 6L, 8L), eval("(into '() (take 5 (iterate (partial + 2) 0)))", env))
+        assertEquals(listOf<Any>(), eval("(into '() (take 0 (iterate inc 0)))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(into '() (take 5 (iterate inc 0)))", env))
+        assertEquals(listOf(0L, 2L, 4L, 6L, 8L), eval("(into '() (take 5 (iterate (partial + 2) 0)))", env))
 
         eval("(def powers-of-two (iterate (partial * 2) 1))", env)
         assertEquals(1024L, eval("(nth powers-of-two 10)", env))
@@ -71,9 +70,9 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testConcat() {
-        assertEquals(list<Nothing>(), eval("(into '() (concat [] '() #{}))", env))
+        assertEquals(listOf<Nothing>(), eval("(into '() (concat [] '() #{}))", env))
         assertEquals(MutableVector(arrayOf(1L, 2L, 3L, 4L)), eval("(into [] (concat [1 2] [3 4]))", env))
-        assertEquals(list(0L, 5L, 5L, 5L, 5L), eval("(into '() (take 5 (concat [0] (repeat 5))))", env))
+        assertEquals(listOf(0L, 5L, 5L, 5L, 5L), eval("(into '() (take 5 (concat [0] (repeat 5))))", env))
         try {
             eval("(+ (concat []))", env)
             fail()
@@ -121,9 +120,9 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testButlast() {
-        assertEquals(list(1L, 2L, 3L, 4L), eval("(into '() (butlast (map (fn (n) (+ n 1)) (range 5))))", env))
-        assertEquals(list(1L, 2L), eval("(into '() (butlast [1 2 3]))", env))
-        assertEquals(list(1L),     eval("(into '() (butlast (butlast [1 2 3])))", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L), eval("(into '() (butlast (map (fn (n) (+ n 1)) (range 5))))", env))
+        assertEquals(listOf(1L, 2L), eval("(into '() (butlast [1 2 3]))", env))
+        assertEquals(listOf(1L),     eval("(into '() (butlast (butlast [1 2 3])))", env))
         assertEquals(null,         eval("(butlast (butlast (butlast [1 2 3])))", env))
         assertEquals(null,         eval("(butlast (butlast (butlast (butlast [1 2 3]))))", env))
         assertEquals(null,         eval("(butlast nil)", env))

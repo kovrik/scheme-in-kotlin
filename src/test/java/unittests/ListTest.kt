@@ -2,12 +2,9 @@ package unittests
 
 import core.exceptions.ArityException
 import core.scm.Cons
-import core.scm.Cons.Companion.EMPTY
 import core.scm.Cons.Companion.cons
-import core.scm.Cons.Companion.list
 import core.scm.MutableVector
 import core.scm.Symbol
-import core.scm.Vector
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -15,8 +12,8 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalList() {
-        assertEquals(Cons::class.java, eval("(class-of (list 1 2 3 4 5))", env))
-        assertEquals(list(1L, 2L, 3L), eval("(list 1 2 3)", env))
+        assertEquals(true, eval("(list? (list 1 2 3 4 5))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(list 1 2 3)", env))
     }
 
     @Test
@@ -122,9 +119,9 @@ class ListTest : AbstractTest() {
         assertEquals(2L, eval("(cdr (cons 1 2))", env))
         assertEquals("test", eval("(cdr (cons 2 \"test\"))", env))
         assertEquals(cons(2L, 3L), eval("(cdr (cons 1 (cons 2 3)))", env))
-        assertEquals(list(2L, 3L), eval("(cdr '(1 2 3))", env))
-        assertEquals(Cons.EMPTY, eval("(cdr '(1))", env))
-        assertEquals(Cons.EMPTY, eval("(cdr (list 1))", env))
+        assertEquals(listOf(2L, 3L), eval("(cdr '(1 2 3))", env))
+        assertEquals(emptyList<Nothing>(), eval("(cdr '(1))", env))
+        assertEquals(emptyList<Nothing>(), eval("(cdr (list 1))", env))
         try {
             eval("(cdr '())", env)
             fail()
@@ -162,9 +159,9 @@ class ListTest : AbstractTest() {
     @Test
     fun testSetCdr() {
         assertEquals(Unit, eval("(set-cdr! '(1) 2)", env))
-        assertEquals(3L, eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env))
-        assertEquals("test", eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env))
-        assertEquals(list(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env))
+        assertEquals(listOf(3L), eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env))
+        assertEquals(listOf("test"), eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env))
+        assertEquals(listOf(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env))
         assertEquals(3L, eval("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))", env))
         assertEquals(2L, eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr (cons 1 2)))", env))
         try {
@@ -186,13 +183,13 @@ class ListTest : AbstractTest() {
         assertEquals("test", eval("(append '() \"test\")", env))
         assertEquals(5L, eval("(append '() 5)", env))
         assertEquals(cons(1L, 5L), eval("(append '(1) 5)", env))
-        assertEquals(list(1L, 2L, 3L), eval("(append '(1) '(2 3))", env))
-        assertEquals(list(1L, 2L, 2L, 3L), eval("(append '(1 2) '(2 3))", env))
-        assertEquals(list(1L, 2L, 3L, 4L, 5L), eval("(append '(1) '(2) '(3 4) '(5))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(append '(1) '(2 3))", env))
+        assertEquals(listOf(1L, 2L, 2L, 3L), eval("(append '(1 2) '(2 3))", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L), eval("(append '(1) '(2) '(3 4) '(5))", env))
         assertEquals(cons(1L, 2L), eval("(append '() (cons 1 2))", env))
         assertEquals(cons(1L, cons(1L, 2L)), eval("(append '(1) (cons 1 2))", env))
         assertEquals(cons(1L, cons(1L, cons(1L, 2L))), eval("(append '(1 1) (cons 1 2))", env))
-        assertEquals(EMPTY, eval("(append '() '() '() '())", env))
+        assertEquals(emptyList<Nothing>(), eval("(append '() '() '() '())", env))
         try {
             eval("(append 1 '())", env)
             fail()
@@ -209,10 +206,10 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testReverse() {
-        assertEquals(EMPTY, eval("(reverse '())", env))
-        assertEquals(list(1L), eval("(reverse '(1))", env))
-        assertEquals(list(1L, 2L, 3L), eval("(reverse '(3 2 1))", env))
-        assertEquals(list(1L, 2L, 3L), eval("(reverse (reverse '(1 2 3)))", env))
+        assertEquals(emptyList<Nothing>(), eval("(reverse '())", env))
+        assertEquals(listOf(1L), eval("(reverse '(1))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(reverse '(3 2 1))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(reverse (reverse '(1 2 3)))", env))
         try {
             eval("(reverse 1)", env)
             fail()
@@ -229,15 +226,15 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testListTail() {
-        assertEquals(list(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env))
+        assertEquals(listOf(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env))
         assertEquals(2L, eval("(list-tail (cons 1 2) 1)", env))
         assertEquals(Symbol.intern("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env))
 
         eval("(define a '(1 2 3 4))", env)
         eval("(define b (list-tail (cdr a) 2))", env)
         eval("(set-cdr! b '(33 44))", env)
-        assertEquals(list(arrayOf<Any?>(1L, 2L, 3L, 4L, 33L, 44L)), eval("a", env))
-        assertEquals(list(4L, 33L, 44L), eval("b", env))
+        assertEquals(listOf(1L, 2L, 3L, 4L, 33L, 44L), eval("a", env))
+        assertEquals(listOf(4L, 33L, 44L), eval("b", env))
         try {
             eval("(list-tail 1 2)", env)
             fail()
@@ -253,7 +250,7 @@ class ListTest : AbstractTest() {
         assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env))
         assertEquals(Symbol.intern("c"), eval("(list-ref (list 'a 'b 'c) 2)", env))
         assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env))
-        assertEquals(list(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env))
+        assertEquals(listOf(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env))
         try {
             eval("(list-ref 1 2)", env)
             fail()
@@ -312,10 +309,10 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(member 0 '(1 2 3))", env))
         assertEquals(false, eval("(member \"test\" '(1 2 3))", env))
 
-        assertEquals(list(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env))
-        assertEquals(list(2L, 3L), eval("(member 2 '(1 2 3))", env))
-        assertEquals(list(3L), eval("(member 3 '(1 2 3))", env))
-        assertEquals(list(list(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env))
+        assertEquals(listOf(2L, 3L), eval("(member 2 '(1 2 3))", env))
+        assertEquals(listOf(3L), eval("(member 3 '(1 2 3))", env))
+        assertEquals(listOf(listOf(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env))
         try {
             eval("(member)", env)
             fail()
@@ -336,13 +333,13 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(memq 0 '(1 2 3))", env))
         assertEquals(false, eval("(memq \"test\" '(1 2 3))", env))
 
-        assertEquals(list(1L, 2L, 3L), eval("(memq 1 '(1 2 3))", env))
-        assertEquals(list(2L, 3L), eval("(memq 2 '(1 2 3))", env))
-        assertEquals(list(3L), eval("(memq 3 '(1 2 3))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(memq 1 '(1 2 3))", env))
+        assertEquals(listOf(2L, 3L), eval("(memq 2 '(1 2 3))", env))
+        assertEquals(listOf(3L), eval("(memq 3 '(1 2 3))", env))
         assertEquals(false, eval("(memq (list 'a) '(b (a) c))", env))
 
-        assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
-        assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
         assertEquals(false, eval("(memq 'a '(b c d))", env))
         try {
             eval("(memq)", env)
@@ -364,16 +361,16 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(memv 0 '(1 2 3))", env))
         assertEquals(false, eval("(memv \"test\" '(1 2 3))", env))
 
-        assertEquals(list(1L, 2L, 3L), eval("(memv 1 '(1 2 3))", env))
-        assertEquals(list(2L, 3L), eval("(memv 2 '(1 2 3))", env))
-        assertEquals(list(3L), eval("(memv 3 '(1 2 3))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(memv 1 '(1 2 3))", env))
+        assertEquals(listOf(2L, 3L), eval("(memv 2 '(1 2 3))", env))
+        assertEquals(listOf(3L), eval("(memv 3 '(1 2 3))", env))
         assertEquals(false, eval("(memv (list 'a) '(b (a) c))", env))
 
-        assertEquals(list(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
-        assertEquals(list(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
         assertEquals(false, eval("(memv 'a '(b c d))", env))
 
-        assertEquals(list(101L, 102L), eval("(memv 101 '(100 101 102))", env))
+        assertEquals(listOf(101L, 102L), eval("(memv 101 '(100 101 102))", env))
         try {
             eval("(memv)", env)
             fail()
@@ -391,7 +388,7 @@ class ListTest : AbstractTest() {
     @Test
     fun testEvalAssoc() {
         eval("(define e '((a 1) (b 2) (c 3)))", env)
-        assertEquals(list(list(Symbol.intern("a")) as Any), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env))
+        assertEquals(listOf(listOf(Symbol.intern("a")) as Any), eval("(assoc (list 'a) '(((a)) ((b)) ((c))))", env))
         try {
             eval("(assoc)", env)
             fail()
@@ -415,8 +412,8 @@ class ListTest : AbstractTest() {
     @Test
     fun testEvalAssq() {
         eval("(define e '((a 1) (b 2) (c 3)))", env)
-        assertEquals(list(Symbol.intern("a"), 1L), eval("(assq 'a e)", env))
-        assertEquals(list(Symbol.intern("b"), 2L), eval("(assq 'b e)", env))
+        assertEquals(listOf(Symbol.intern("a"), 1L), eval("(assq 'a e)", env))
+        assertEquals(listOf(Symbol.intern("b"), 2L), eval("(assq 'b e)", env))
         assertEquals(false, eval("(assq 'd e)", env))
         try {
             eval("(assq)", env)
@@ -440,7 +437,7 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testEvalAssv() {
-        assertEquals(list(5L, 7L), eval("(assv 5 '((2 3) (5 7) (11 13)))", env))
+        assertEquals(listOf(5L, 7L), eval("(assv 5 '((2 3) (5 7) (11 13)))", env))
         try {
             eval("(assv)", env)
             fail()
@@ -466,11 +463,11 @@ class ListTest : AbstractTest() {
         assertEquals(null, eval("(first '())", env))
         assertEquals(1L, eval("(first '(1))", env))
         assertEquals(2L, eval("(first '(2 3 4))", env))
-        assertEquals(Cons.EMPTY, eval("(first '(() 3 4))", env))
+        assertEquals(emptyList<Nothing>(), eval("(first '(() 3 4))", env))
         assertEquals(null, eval("(first [])", env))
         assertEquals(1L, eval("(first [1])", env))
         assertEquals(2L, eval("(first [2 3 4])", env))
-        assertEquals(Cons.EMPTY, eval("(first ['() 3 4])", env))
+        assertEquals(emptyList<Nothing>(), eval("(first ['() 3 4])", env))
         assertEquals(null, eval("(first #{})", env))
         assertEquals(1L, eval("(first #{1})", env))
         assertEquals(null, eval("(first \"\")", env))
@@ -482,25 +479,25 @@ class ListTest : AbstractTest() {
         assertEquals(null, eval("(second '())", env))
         assertEquals(null, eval("(second '(1))", env))
         assertEquals(3L, eval("(second '(2 3 4))", env))
-        assertEquals(Cons.EMPTY, eval("(second '(3 () 3 4))", env))
+        assertEquals(emptyList<Nothing>(), eval("(second '(3 () 3 4))", env))
         assertEquals(null, eval("(second [])", env))
         assertEquals(null, eval("(second [1])", env))
         assertEquals(3L, eval("(second [2 3 4])", env))
-        assertEquals(Cons.EMPTY, eval("(second [3 '() 3 4])", env))
+        assertEquals(emptyList<Nothing>(), eval("(second [3 '() 3 4])", env))
         assertEquals(null, eval("(second \"\")", env))
         assertEquals('e', eval("(second \"test\")", env))
     }
 
     @Test
     fun testEvalNext() {
-        assertEquals(null,         eval("(next nil)", env))
-        assertEquals(null,         eval("(next '())", env))
-        assertEquals(null,         eval("(next '(1))", env))
-        assertEquals(null,         eval("(next (seq '()))", env))
-        assertEquals(null,         eval("(next (seq '(1)))", env))
-        assertEquals(1,            eval("(count (take 1 (next (repeat 5))))", env))
-        assertEquals(list(3L, 4L), (eval("(next '(2 3 4))", env) as Sequence<*>).toList())
-        assertEquals(list(3L, 4L, 5L), (eval("(next (next (seq '(1 2 3 4 5))))", env) as Sequence<*>).toList())
+        assertEquals(null, eval("(next nil)", env))
+        assertEquals(null, eval("(next '())", env))
+        assertEquals(null, eval("(next '(1))", env))
+        assertEquals(null, eval("(next (seq '()))", env))
+        assertEquals(null, eval("(next (seq '(1)))", env))
+        assertEquals(1,    eval("(count (take 1 (next (repeat 5))))", env))
+        assertEquals(listOf(3L, 4L), (eval("(next '(2 3 4))", env) as Sequence<*>).toList())
+        assertEquals(listOf(3L, 4L, 5L), (eval("(next (next (seq '(1 2 3 4 5))))", env) as Sequence<*>).toList())
     }
 
     @Test
@@ -508,20 +505,20 @@ class ListTest : AbstractTest() {
         assertEquals(0, eval("(count (rest nil))", env))
         assertEquals(0, eval("(count (rest '()))", env))
         assertEquals(0, eval("(count (rest '(1)))", env))
-        assertEquals(list(3L, 4L), (eval("(rest '(2 3 4))", env) as Sequence<*>).toList())
+        assertEquals(listOf(3L, 4L), (eval("(rest '(2 3 4))", env) as Sequence<*>).toList())
     }
 
     @Test
     fun testEvalSort() {
-        assertEquals(list(1L, 2L, 3L, 4L, 5L), (eval("(sort   '(5 4 3 2 1))", env) as Sequence<*>).toList())
-        assertEquals(list(5L, 4L, 3L, 2L, 1L), (eval("(sort > '(5 4 3 2 1))", env) as Sequence<*>).toList())
-        assertEquals(list(5L, 4L, 3L, 2L, 1L), (eval("(sort > '(5 4 3 2 1))", env) as Sequence<*>).toList())
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L), (eval("(sort   '(5 4 3 2 1))", env) as Sequence<*>).toList())
+        assertEquals(listOf(5L, 4L, 3L, 2L, 1L), (eval("(sort > '(5 4 3 2 1))", env) as Sequence<*>).toList())
+        assertEquals(listOf(5L, 4L, 3L, 2L, 1L), (eval("(sort > '(5 4 3 2 1))", env) as Sequence<*>).toList())
         assertEquals(emptyList<Any?>(), (eval("(sort '())", env) as Sequence<*>).toList())
         assertEquals(listOf(1L, 2L, 3L, 4L, 5L), (eval("(sort   [5 4 3 2 1])", env) as Sequence<*>).toList())
         assertEquals(listOf(5L, 4L, 3L, 2L, 1L), (eval("(sort > [5 4 3 2 1])", env) as Sequence<*>).toList())
         assertEquals(emptyList<Any?>(), (eval("(sort [])", env) as Sequence<*>).toList())
-        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l '(1 2 3 4 5))) (map + l (sort > l))))", env))
-        assertEquals(list(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l  [1 2 3 4 5])) (map + l (sort > l))))", env))
+        assertEquals(listOf(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l '(1 2 3 4 5))) (map + l (sort > l))))", env))
+        assertEquals(listOf(6L, 6L, 6L, 6L, 6L), eval("(into '() (let ((l  [1 2 3 4 5])) (map + l (sort > l))))", env))
         try {
             (eval("(sort > [1 2 \"test\" 'a])", env) as Sequence<*>).toList()
             fail()
@@ -540,14 +537,14 @@ class ListTest : AbstractTest() {
         assertEquals(0, eval("(count (take  0 #(1 2 3 4 5)))", env))
         assertEquals(0, eval("(count (take -3  {1 2 3 4}))", env))
         assertEquals(0, eval("(count (take  0  {1 2 3 4}))", env))
-        assertEquals(list<Any?>(1L), (eval("(take  1 '(1 2 3 4 5))", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L), (eval("(take  1  [1 2 3 4 5])", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L), (eval("(take  1 #(1 2 3 4 5))", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L), (eval("(take  3 '(1 2 3 4 5))", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L), (eval("(take  3  [1 2 3 4 5])", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L), (eval("(take  3 #(1 2 3 4 5))", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30 '(1 2 3 4 5))", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30  [1 2 3 4 5])", env) as Sequence<*>).toList())
-        assertEquals(list<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30 #(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L), (eval("(take  1 '(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L), (eval("(take  1  [1 2 3 4 5])", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L), (eval("(take  1 #(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L), (eval("(take  3 '(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L), (eval("(take  3  [1 2 3 4 5])", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L), (eval("(take  3 #(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30 '(1 2 3 4 5))", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30  [1 2 3 4 5])", env) as Sequence<*>).toList())
+        assertEquals(listOf<Any?>(1L, 2L, 3L, 4L, 5L), (eval("(take  30 #(1 2 3 4 5))", env) as Sequence<*>).toList())
     }
 }
