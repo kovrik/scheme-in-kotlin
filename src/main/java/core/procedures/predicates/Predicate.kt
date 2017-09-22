@@ -118,10 +118,10 @@ class Predicate private constructor(override val name: String, inline private va
 
         private val remainder = Remainder()
 
-        public fun isPair(o: Any?) = o is MutablePair || o is List<*> && !o.isEmpty()
+        fun isPair(o: Any?) = o is MutablePair || o is List<*> && !o.isEmpty()
 
         /* Return true if o is a Proper List */
-        public fun isProperList(o: Any?) = when (o) {
+        fun isProperList(o: Any?) = when (o) {
             is MutablePair -> false
             else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
         }
