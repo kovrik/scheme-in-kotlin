@@ -79,6 +79,7 @@ class ListTest : AbstractTest() {
         assertEquals(true, eval("(equal? '(3) conslist))", env))
         assertEquals(Cons.cons(null, 1L),   eval("(cons nil 1)",   env))
         assertEquals(Cons.cons(null, null), eval("(cons nil nil)", env))
+        assertEquals(listOf(listOf(0L), 0L, 1L, 2L, 3L, 4L), eval("(cons '(0) (range 5))", env))
     }
 
     @Test

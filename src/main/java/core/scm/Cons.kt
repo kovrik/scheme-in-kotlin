@@ -17,8 +17,11 @@ class Cons<E> : ArrayList<E?> {
         add(car)
         isProperList = isProperList(cdr)
         when {
-            isProperList -> addAll(cdr as List<E>)
-            else         -> add(cdr)
+            isProperList -> when (cdr) {
+                is Sequence<*> -> addAll(cdr as Sequence<E>)
+                else -> addAll(cdr as List<E>)
+            }
+            else -> add(cdr)
         }
     }
 
