@@ -45,6 +45,7 @@ class Cons<E> : ArrayList<E?> {
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
         if (other is Cons<*> && isProperList != other.isProperList) return false
+        if (other is Pair<*, *> && isProperList) return false
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
@@ -72,7 +73,10 @@ class Cons<E> : ArrayList<E?> {
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
 
         /* Return true if o is a Proper List */
-        fun isProperList(o: Any?) = o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
+        fun isProperList(o: Any?) = when (o) {
+            is Pair<*, *> -> false
+            else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
+        }
 
         fun isPair(o: Any?) = o is Pair<*, *> || o is List<*> && !o.isEmpty()
 
