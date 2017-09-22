@@ -3,6 +3,7 @@ package core.writer
 import core.exceptions.ExInfoException
 import core.reader.Reader
 import core.scm.Cons
+import core.scm.MutablePair
 import core.scm.Symbol
 import java.util.*
 import java.util.regex.Pattern
@@ -22,7 +23,7 @@ object Writer {
         is Symbol          -> o.write()
         is Class<*>        -> o.write()
         is List<*>         -> o.write()
-        is Pair<*, *>      -> o.write()
+        is MutablePair     -> o.write()
         is Number          -> o.write()
         is Sequence<*>     -> o.write()
         is CharSequence    -> o.write()
@@ -62,16 +63,16 @@ object Writer {
 
     private fun List<*>.write() = Cons.toString(this)
 
-    private fun Pair<*, *>.write() = StringBuilder("(").apply {
+    private fun MutablePair.write() = StringBuilder("(").apply {
         append(Writer.write(first))
         var cdr = second
-        while (cdr is Pair<*, *> || cdr is Cons<*>) {
+        while (cdr is MutablePair || cdr is Cons<*>) {
             when (cdr) {
                 is Cons<*> -> {
                     append(' ').append(Writer.write(cdr.first()))
                     cdr = cdr.last()
                 }
-                is Pair<*, *> -> {
+                is MutablePair -> {
                     append(' ').append(Writer.write(cdr.first))
                     cdr = cdr.second
                 }

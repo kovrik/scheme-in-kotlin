@@ -1,6 +1,7 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.scm.MutablePair
 import core.utils.Utils
 import java.util.*
 
@@ -18,7 +19,7 @@ class Flatten : AFn<Any?, Any?>(name = "flatten", minArgs = 1) {
             when (e) {
                 // FIXME: see testFlatten()
                 is Sequence<*> -> queue.addAll(e)
-                is Pair<*, *> -> {
+                is MutablePair -> {
                     queue.add(e.first)
                     queue.add(e.second)
                 }

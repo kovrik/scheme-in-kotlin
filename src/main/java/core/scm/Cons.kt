@@ -45,7 +45,7 @@ class Cons<E> : ArrayList<E?> {
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
         if (other is Cons<*> && isProperList != other.isProperList) return false
-        if (other is Pair<*, *> && isProperList) return false
+        if (other is MutablePair && isProperList) return false
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
@@ -74,11 +74,11 @@ class Cons<E> : ArrayList<E?> {
 
         /* Return true if o is a Proper List */
         fun isProperList(o: Any?) = when (o) {
-            is Pair<*, *> -> false
+            is MutablePair -> false
             else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
         }
 
-        fun isPair(o: Any?) = o is Pair<*, *> || o is List<*> && !o.isEmpty()
+        fun isPair(o: Any?) = o is MutablePair || o is List<*> && !o.isEmpty()
 
         /* Use this method to print all lists */
         fun toString(list: List<*>) = when {
@@ -92,13 +92,13 @@ class Cons<E> : ArrayList<E?> {
             else -> StringBuilder("(").apply {
                 append(Writer.write(list.first()))
                 var cdr = list.last()
-                while (cdr is Pair<*, *> || cdr is Cons<*>) {
+                while (cdr is MutablePair || cdr is Cons<*>) {
                     when (cdr) {
                         is Cons<*> -> {
                             append(' ').append(Writer.write(cdr.first()))
                             cdr = cdr.last()
                         }
-                        is Pair<*, *> -> {
+                        is MutablePair -> {
                             append(' ').append(Writer.write(cdr.first))
                             cdr = cdr.second
                         }

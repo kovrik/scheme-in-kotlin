@@ -447,7 +447,7 @@ object Utils {
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
     fun isSeqable(obj: Any?) = obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
-                               obj is Pair<*, *> || obj is Map<*, *> || obj is Map.Entry<*, *> || obj.javaClass.isArray
+                               obj is MutablePair || obj is Map<*, *> || obj is Map.Entry<*, *> || obj.javaClass.isArray
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
@@ -456,7 +456,7 @@ object Utils {
         is Sequence<*>     -> obj
         is Iterable<*>     -> obj.asSequence()
         is CharSequence    -> obj.asSequence()
-        is Pair<*, *>      -> sequenceOf(obj.first, obj.second)
+        is MutablePair     -> sequenceOf(obj.first, obj.second)
         is Map<*, *>       -> mapIterator(obj).asSequence()
         is Map.Entry<*, *> -> MapEntry(obj).asSequence()
         is ByteArray       -> obj.asSequence()

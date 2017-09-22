@@ -2,10 +2,7 @@ package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.scm.Cons
-import core.scm.MutableHashSet
-import core.scm.MutableVector
-import core.scm.Vector
+import core.scm.*
 
 class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
 
@@ -53,7 +50,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
                 for (i in 0 until first.size) { this[i] = first[i] }
                 System.arraycopy(args, 1, this, first.size, args.size - 1)
             }
-            is Pair<*, *> -> throw UnsupportedOperationException("conj: Pairs are not supported!")
+            is MutablePair -> throw UnsupportedOperationException("conj: Pairs are not supported!")
             // TODO Map?
             else -> throw WrongTypeException(name, "Seqable", first)
         }
