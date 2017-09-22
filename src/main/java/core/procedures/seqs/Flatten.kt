@@ -18,6 +18,10 @@ class Flatten : AFn<Any?, Any?>(name = "flatten", minArgs = 1) {
             when (e) {
                 // FIXME: see testFlatten()
                 is Sequence<*> -> queue.addAll(e)
+                is Pair<*, *> -> {
+                    queue.add(e.first)
+                    queue.add(e.second)
+                }
                 is Iterable<*> -> queue.addAll(e)
                 else           -> result.add(e)
             }
