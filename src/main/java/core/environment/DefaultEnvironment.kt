@@ -635,6 +635,7 @@ class DefaultEnvironment : Environment(null) {
                 ThreadForm,
                 DelayForm,
                 LazyForm,
+                LazySeqForm,
                 FutureForm,
                 Quote,
                 Set,
@@ -757,17 +758,16 @@ class DefaultEnvironment : Environment(null) {
                 "   ((pred (first coll)) (every? pred (next coll)))" +
                 "   (else false))")
 
-            // FIXME Return lazy sequence!
             add("(define (filter pred coll)" +
-                "  (let ((s (seq coll)))" +
-                "    (if s" +
-                "        (let ((f (first s))" +
-                "              (r (rest s)))" +
-                "          (if (pred f)" +
-                "              (cons f (filter pred r))" +
-                "              (filter pred r)))" +
-                "        '())))")
-
+                "  (lazy-seq" +
+                "    (let ((s (seq coll)))" +
+                "      (if s" +
+                "          (let ((f (first s))" +
+                "                (r (rest s)))" +
+                "            (if (pred f)" +
+                "                (cons-seq f (filter pred r))" +
+                "                (filter pred r)))" +
+                "          '()))))")
         }
     }
 }

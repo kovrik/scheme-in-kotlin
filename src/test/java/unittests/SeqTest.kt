@@ -179,9 +179,10 @@ class SeqTest : AbstractTest() {
 
     @Test
     fun testFilter() {
-        assertEquals(listOf(0L, 2L, 4L, 6L, 8L), eval("(filter even? (range 10))", env))
-        assertEquals(listOf(2L, 3L), eval("(filter #{0 1 2 3} #{2 3 4 5})", env))
-        assertEquals(listOf(1L, MutableVector(), Keyword.intern("a")), eval("(filter some? '(1 nil [] :a nil))", env))
+        assertEquals(listOf(0L, 2L, 4L, 6L, 8L), eval("(into '() (filter even? (range 10)))", env))
+        assertEquals(listOf(0L, 2L, 4L, 6L, 8L), eval("(into '() (take 5 (filter even? (range))))", env))
+        assertEquals(listOf(2L, 3L), eval("(into '() (filter #{0 1 2 3} #{2 3 4 5}))", env))
+        assertEquals(listOf(1L, MutableVector(), Keyword.intern("a")), eval("(into '() (filter some? '(1 nil [] :a nil)))", env))
     }
 
     @Test
@@ -262,5 +263,18 @@ class SeqTest : AbstractTest() {
 
         assertEquals(emptyList<Nothing>(), eval("(into '() (take-last -10 '(5 4 3 2 1)))", env))
         assertEquals(emptyList<Nothing>(), eval("(into '() (take-last -10 (range 0 16 3)))", env))
+    }
+
+    @Test
+    fun testLazySeq() {
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (lazy-seq nil))", env))
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (lazy-seq '()))", env))
+        assertEquals(emptyList<Nothing>(),   eval("(into '() (lazy-seq []))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L), eval("(into '() (take 4 (lazy-seq (range))))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L), eval("(into '() (take 4 (lazy-seq (range 5))))", env))
+        assertEquals(listOf(0L, 1L),         eval("(into '() (take 4 (lazy-seq (range 2))))", env))
+
+        eval("(define (rfib a b) (lazy-seq (cons-seq a (rfib b (+ a b)))))\n", env)
+        assertEquals(listOf(0L, 1L, 1L, 2L, 3L), eval("(into '() (take 5 (rfib 0 1)))", env))
     }
 }
