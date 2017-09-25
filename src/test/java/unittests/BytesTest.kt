@@ -1,6 +1,5 @@
 package unittests
 
-import core.scm.Cons
 import org.junit.Test
 
 import org.junit.Assert.assertEquals

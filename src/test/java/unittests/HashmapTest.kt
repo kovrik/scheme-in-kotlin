@@ -1,7 +1,6 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.scm.Cons
 import core.scm.Keyword
 import core.scm.MapEntry
 import core.scm.MutableVector

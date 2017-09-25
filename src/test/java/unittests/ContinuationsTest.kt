@@ -3,7 +3,6 @@ package unittests
 import core.Repl
 import core.exceptions.ReentrantContinuationException
 import core.scm.Continuation
-import core.scm.Cons
 import core.scm.OutputPort
 import core.scm.Symbol
 import org.junit.Test
