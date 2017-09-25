@@ -29,25 +29,28 @@ object Lambda : SpecialForm("lambda") {
         val variadic: Boolean
         /* Check if args is a List or not */
         val args = form[1]
-        if (args is List<*>) {
-            variadic = !Predicate.isProperList(args)
-            params = if (variadic) {
-                /* (lambda (arg-id ...+ . rest-id) body ...+) */
-                /* args is an improper list, hence variadic lambda */
-                flatten(args as List<Symbol>)
-            } else {
-                /* (lambda (arg-id ...+) body ...+) OR */
-                /* args is a proper list, hence non-variadic lambda */
-                args as List<Symbol>
+        when (args) {
+            is List<*> -> {
+                variadic = !Predicate.isProperList(args)
+                params = if (variadic) {
+                    /* (lambda (arg-id ...+ . rest-id) body ...+) */
+                    /* args is an improper list, hence variadic lambda */
+                    flatten(args as List<Symbol>)
+                } else {
+                    /* (lambda (arg-id ...+) body ...+) OR */
+                    /* args is a proper list, hence non-variadic lambda */
+                    args as List<Symbol>
+                }
+                /* Check args for duplicates */
+                validateArgs(params, form)
             }
-            /* Check args for duplicates */
-            validateArgs(params, form)
-        } else {
-            /* Variadic arity */
-            /* (lambda rest-id body ...+) */
-            params = listOf(args as? Symbol ?:
-                    throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)"))
-            variadic = true
+            is Symbol -> {
+                /* Variadic arity */
+                /* (lambda rest-id body ...+) */
+                params = listOf(args)
+                variadic = true
+            }
+            else -> throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)")
         }
         val body = when {
             form.size == 3 -> form[2]!!
@@ -68,7 +71,6 @@ object Lambda : SpecialForm("lambda") {
                 }
             }
         }
-
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
