@@ -6,7 +6,7 @@ import core.procedures.predicates.Predicate
 class Cons<E> : ArrayList<E?> {
 
     companion object {
-        val EMPTY = Cons<Nothing>()
+        private val EMPTY = Cons<Nothing>()
         fun <E> cons(car: E?, cdr: E?) = Cons(car, cdr ?: emptyList<Nothing>())
         fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
     }
