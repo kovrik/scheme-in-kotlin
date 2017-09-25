@@ -1,10 +1,10 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
+import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
+import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
-import core.scm.Cons
 import core.scm.Symbol
 import core.writer.Writer
 
@@ -14,6 +14,8 @@ import core.writer.Writer
  * (define (<variable> . <formal>) <body>)
  */
 object Define : SpecialForm("define") {
+
+    private val cdr = Cdr()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) {
@@ -32,17 +34,15 @@ object Define : SpecialForm("define") {
              * form = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
              *              |   0   | 1 definition           | 3 body      |
              */
-            /* Args */
-            val lambdaArgs = Cons.list((form[1] as List<Any>).subList(1, (form[1] as List<Any>).size) as Collection<Any>)
-            lambdaArgs.forEach {
+            id.subList(1, id.size).forEach {
                 if (it !is Symbol && !Predicate.isPair(it)) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                 }
             }
-            lambdaArgs.isProperList = Predicate.isProperList(form[1])
             /* Construct lambda form */
             val l = mutableListOf<Any?>(Lambda).apply {
-                add(lambdaArgs)
+                /* Args */
+                add(cdr(id))
                 /* Body */
                 addAll(form.subList(2, form.size))
             }
