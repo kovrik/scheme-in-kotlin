@@ -51,7 +51,7 @@ object Lambda : SpecialForm("lambda") {
         }
         val body = when {
             form.size == 3 -> form[2]!!
-        /* Add implicit `begin` */
+            /* Add implicit `begin` */
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
