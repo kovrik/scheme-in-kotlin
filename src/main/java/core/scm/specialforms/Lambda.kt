@@ -1,7 +1,7 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
+import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.predicates.Predicate
 import core.scm.Procedure
@@ -26,44 +26,49 @@ object Lambda : SpecialForm("lambda") {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         val params: List<Symbol?>
-        var variadic = false
+        val variadic: Boolean
         /* Check if args is a List or not */
-        val lambdaArgs = form[1]
-        if (lambdaArgs is List<*>) {
-            /* Check args for duplicates */
-            if (!lambdaArgs.isEmpty()) {
-                val temp = HashSet<Any?>(lambdaArgs.size)
-                lambdaArgs.forEach {
-                    when {
-                        it !is Symbol && !Predicate.isPair(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
-                        temp.contains(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
-                        else -> temp.add(it)
-                    }
-                }
-            }
-            /* (lambda (arg-id ...+) body ...+) OR
-             * (lambda (arg-id ...+ . rest-id) body ...+) */
-            if (Predicate.isProperList(lambdaArgs)) {
-                /* args is a proper list, hence non-variadic lambda */
-                params = lambdaArgs as List<Symbol>
-            } else {
+        val args = form[1]
+        if (args is List<*>) {
+            variadic = !Predicate.isProperList(args)
+            params = if (variadic) {
+                /* (lambda (arg-id ...+ . rest-id) body ...+) */
                 /* args is an improper list, hence variadic lambda */
-                params = flatten(lambdaArgs as List<Symbol>)
-                variadic = true
+                flatten(args as List<Symbol>)
+            } else {
+                /* (lambda (arg-id ...+) body ...+) OR */
+                /* args is a proper list, hence non-variadic lambda */
+                args as List<Symbol>
             }
+            /* Check args for duplicates */
+            validateArgs(params, form)
         } else {
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
-            params = listOf(lambdaArgs as? Symbol ?:
-                            throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($lambdaArgs)"))
+            params = listOf(args as? Symbol ?:
+                    throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)"))
             variadic = true
         }
         val body = when {
             form.size == 3 -> form[2]!!
-            /* Add implicit `begin` */
+        /* Add implicit `begin` */
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
+    }
+
+    private fun validateArgs(params: List<Any?>, form: List<Any?>) {
+        if (!params.isEmpty()) {
+            val temp = HashSet<Any?>()
+            params.forEach {
+                when {
+                    it !is Symbol && !Predicate.isPair(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                    temp.contains(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
+                    else -> temp.add(it)
+                }
+            }
+        }
+
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
