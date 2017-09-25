@@ -3,7 +3,6 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.Cons
 import core.utils.Utils
 import core.writer.Writer
 
@@ -23,7 +22,7 @@ object Do : SpecialForm("do") {
         /* Init bindings */
         val bs = form[1] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
         val tempEnv = Environment(env)
-        val steps = mutableListOf<Cons<*>>()
+        val steps = mutableListOf<Pair<*, *>>()
         for (b in bs) {
             val binding = b as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
             /* Check that init value exists */
@@ -33,7 +32,7 @@ object Do : SpecialForm("do") {
             val (variable, init) = binding
             if (binding.size == 3) {
                 /* Put pair of Var and Step */
-                steps.add(Cons.cons(variable, binding[2]))
+                steps.add(Pair(variable, binding[2]))
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {
@@ -60,9 +59,7 @@ object Do : SpecialForm("do") {
             }
             /* Evaluate steps */
             val freshLocations = HashMap<Any?, Any?>(steps.size)
-            for (step in steps) {
-                freshLocations.put(step.first(), evaluator.eval(step.drop(1), tempEnv))
-            }
+            for (step in steps) { freshLocations.put(step.first, evaluator.eval(step.second, tempEnv)) }
             /* Now store results */
             tempEnv.putAll(freshLocations)
         }
