@@ -338,10 +338,10 @@ open class Reader : IReader {
         return when {
             /* Was it a proper list or dot is the first element? */
             dotPos < 1 -> list
-            /* Validate dot position */
-            dotPos != list.size - 1 -> throw IllegalSyntaxException("read: illegal use of '.'")
-            /* Convert list into cons */
             else -> {
+                /* Validate dot position */
+                if (dotPos != list.size - 1) throw IllegalSyntaxException("read: illegal use of '.'")
+                /* Convert list into cons */
                 var cons = Cons.cons<Any?>(list[list.size - 2], list.last())
                 for (n in list.size - 3 downTo 0) { cons = Cons.cons(list[n], cons) }
                 cons
