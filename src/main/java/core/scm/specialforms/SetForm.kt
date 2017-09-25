@@ -1,7 +1,7 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
+import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.writer.Writer
@@ -9,7 +9,7 @@ import core.writer.Writer
 /* Syntax:
  * (set! <variable> <expression>)
  */
-object Set : SpecialForm("set!") {
+object SetForm : SpecialForm("set!") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) {
         when {

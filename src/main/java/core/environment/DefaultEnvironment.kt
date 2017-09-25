@@ -50,7 +50,7 @@ import core.procedures.time.NanoTime
 import core.procedures.vectors.*
 import core.scm.Symbol
 import core.scm.specialforms.*
-import core.scm.specialforms.Set
+import core.scm.specialforms.SetForm
 import core.scm.specialforms.Swap
 
 class DefaultEnvironment : Environment(null) {
@@ -638,7 +638,7 @@ class DefaultEnvironment : Environment(null) {
                 LazySeqForm,
                 FutureForm,
                 Quote,
-                Set,
+                SetForm,
                 Quasiquote,
                 Unquote,
                 UnquoteSplicing,
