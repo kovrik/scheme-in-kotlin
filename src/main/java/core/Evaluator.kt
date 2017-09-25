@@ -6,6 +6,7 @@ import core.exceptions.ReentrantContinuationException
 import core.exceptions.UndefinedIdentifierException
 import core.procedures.AFn
 import core.procedures.IFn
+import core.procedures.predicates.Predicate
 import core.scm.*
 import core.scm.specialforms.New
 import core.scm.specialforms.SpecialForm
@@ -93,6 +94,8 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     /* Evaluate list */
     private fun List<Any?>.eval(env: Environment): Any? {
         if (isEmpty()) throw IllegalSyntaxException("eval", Writer.write(this), "illegal empty application")
+        /* Improper lists are not allowed */
+        if (!Predicate.isProperList(this)) throw IllegalSyntaxException("eval", Writer.write(this))
         var op = this[0]
         /* Evaluate operator */
         when (op) {

@@ -246,11 +246,14 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(6L, eval("(+ . (1 . (2 3)))", env))
         assertEquals(6L, eval("(+ . (1 . (2 . (3))))", env))
         assertEquals(6L, eval("(+ . (1 . (2 . (3 . ()))))", env))
-        try {
-            eval("'(1 2 3 . 4 5)", env)
-            fail()
-        } catch (e: IllegalSyntaxException) {
-            assertEquals("read: illegal use of '.'", e.message)
+        val illegals = arrayOf("'(1 2 3 . 4 5)", "(+ . 1)", "(+ . (2 . (3 . 4)))")
+        illegals.forEach {
+            try {
+                eval(it, env)
+                fail()
+            } catch (e: IllegalSyntaxException) {
+                // expected
+            }
         }
         try {
             eval("( . 1 2 3 4 5)", env)
