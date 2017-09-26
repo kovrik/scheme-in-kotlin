@@ -139,7 +139,7 @@ class Reflector {
             val c = getClazz(className)
             try {
                 val field = c.getField(fieldName)
-                field.isAccessible = true;
+                field.isAccessible = true
                 if (!Modifier.isStatic(field.modifiers)) {
                     throw NoSuchFieldException("reflector: unable to find static field $fieldName of $className")
                 }
