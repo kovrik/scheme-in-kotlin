@@ -3,30 +3,26 @@ package core.scm
 import core.procedures.predicates.Predicate
 
 @Deprecated(message = "Use Kotlin/Java collections and/or MutablePair")
-class Cons<E> : ArrayList<E?> {
+class Cons<E> private constructor(car: E?, cdr: E?) : ArrayList<E?>() {
 
     companion object {
-        private val EMPTY = Cons<Nothing>()
         fun <E> cons(car: E?, cdr: E?) = Cons(car, cdr ?: emptyList<Nothing>())
-        fun <E> list(c: Collection<E?>) = if (c.isEmpty()) EMPTY else Cons(c)
     }
 
     /* Is it a Proper List or an Improper one?
      * Proper lists just have this flag set to true, they don't end with empty list.
      **/
-    var isProperList = true
+    val isProperList: Boolean
 
-    private constructor() : super()
-    private constructor(c: Collection<E>) : super(c)
-    private constructor(car: E?, cdr: E?) : super() {
+    init {
         add(car)
         isProperList = Predicate.isProperList(cdr)
-        when {
-            isProperList -> when (cdr) {
+        when (isProperList) {
+            true -> when (cdr) {
                 is Sequence<*> -> addAll(cdr as Sequence<E>)
                 else -> addAll(cdr as List<E>)
             }
-            else -> add(cdr)
+            false -> add(cdr)
         }
     }
 
@@ -41,7 +37,6 @@ class Cons<E> : ArrayList<E?> {
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
         if (other is Cons<*> && isProperList != other.isProperList) return false
-        if (other is MutablePair && isProperList) return false
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
