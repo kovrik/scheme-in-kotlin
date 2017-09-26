@@ -2,7 +2,7 @@ package core.scm
 
 import core.procedures.predicates.Predicate
 
-@Deprecated(message = "Use Kotlin/Java collections and/or MutablePair")
+@Deprecated(message = "Use Kotlin/Java collections and/or Pair/MutablePair")
 class Cons<E> private constructor(car: E?, cdr: E?) : ArrayList<E?>() {
 
     companion object {
