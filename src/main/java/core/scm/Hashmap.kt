@@ -8,9 +8,6 @@ class Hashmap(val map: Map<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArg
                                              Map<Any?, Any?> by map, IAssoc {
 
     constructor() : this(mapOf())
-    constructor(size: Int) : this(LinkedHashMap(size))
-
-    fun toMutableMap() = this.toMap(MutableHashmap())
 
     /* Maps are functions of their keys */
     override fun invoke(args: Array<out Any?>) = map.getOrDefault(args[0], args.getOrNull(1))
