@@ -8,7 +8,7 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArg
     override operator fun invoke(arg: Any?): Any? = when (arg) {
         is Sequence<*>   -> emptySequence<Any?>()
         is List<*>       -> mutableListOf<Any?>()
-        is Set<*>        -> MutableHashSet<Any?>()
+        is Set<*>        -> MutableSet<Any?>()
         is Vector        -> Vector.EMPTY
         is MutableVector -> MutableVector.EMPTY
         is Map<*, *>     -> Hashmap()

@@ -141,5 +141,5 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
 
     /* Evaluate set */
-    private fun Set<*>.eval(env: Environment) = mapTo(MutableHashSet(size)) { eval(it, env) }
+    private fun Set<*>.eval(env: Environment) = mapTo(MutableSet(size)) { eval(it, env) }
 }
