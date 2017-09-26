@@ -5,8 +5,7 @@ import core.Evaluator
 import core.exceptions.ReentrantDelayException
 import java.util.concurrent.atomic.AtomicBoolean
 
-open class Lazy(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) :
-        Delay(expr, env, evaluator) {
+class Lazy(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) : Delay(expr, env, evaluator) {
 
     private val forced = AtomicBoolean(false)
 
