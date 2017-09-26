@@ -21,6 +21,7 @@ class Predicate private constructor(override val name: String, inline private va
         val IS_SOME = Predicate("some?", Objects::nonNull)
         val IS_EMPTY = Predicate("empty?", Utils::isEmpty)
         val IS_PAIR = Predicate("pair?", this::isPair)
+        val IS_MPAIR = Predicate("mpair?", { it is MutablePair<*, *> })
         val IS_LIST = Predicate("list?", this::isProperList)
         val IS_PROMISE = Predicate("promise?", { it is CompletableFuture<*> || Delay::class.java == it!!.javaClass })
         val IS_FUTURE = Predicate("future?", { it is java.util.concurrent.Future<*> && it !is Delay && it !is Promise })
@@ -104,6 +105,7 @@ class Predicate private constructor(override val name: String, inline private va
         private fun isMutable(o: Any?) = !isImmutable(o)
 
         private fun isImmutable(o: Any?) = when {
+            Pair::class.java    == o?.javaClass -> true
             Vector::class.java  == o?.javaClass -> true
             String::class.java  == o?.javaClass -> true
             Hashmap::class.java == o?.javaClass -> true
@@ -118,11 +120,12 @@ class Predicate private constructor(override val name: String, inline private va
 
         private val remainder = Remainder()
 
-        fun isPair(o: Any?) = o is MutablePair || o is List<*> && !o.isEmpty()
+        fun isPair(o: Any?) = o is Pair<*, *> || o is List<*> && !o.isEmpty()
 
         /* Return true if o is a Proper List */
         fun isProperList(o: Any?) = when (o) {
-            is MutablePair -> false
+            is Pair<*, *> -> false
+            is MutablePair<*, *> -> false
             else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
         }
     }

@@ -447,28 +447,30 @@ object Utils {
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
     fun isSeqable(obj: Any?) = obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
-                               obj is MutablePair || obj is Map<*, *> || obj is Map.Entry<*, *> || obj.javaClass.isArray
+                               obj is Pair<*, *> || obj is MutablePair<*, *> || obj is Map<*, *> || obj is Map.Entry<*, *> ||
+                               obj.javaClass.isArray
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
-        null               -> emptyList<Any?>().asSequence()
-        is Sequence<*>     -> obj
-        is Iterable<*>     -> obj.asSequence()
-        is CharSequence    -> obj.asSequence()
-        is MutablePair     -> sequenceOf(obj.first, obj.second)
-        is Map<*, *>       -> mapIterator(obj).asSequence()
-        is Map.Entry<*, *> -> MapEntry(obj).asSequence()
-        is ByteArray       -> obj.asSequence()
-        is ShortArray      -> obj.asSequence()
-        is IntArray        -> obj.asSequence()
-        is LongArray       -> obj.asSequence()
-        is DoubleArray     -> obj.asSequence()
-        is FloatArray      -> obj.asSequence()
-        is BooleanArray    -> obj.asSequence()
-        is CharArray       -> obj.asSequence()
-        is Array<*>        -> obj.asSequence()
-        else               -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
+        null                 -> emptyList<Any?>().asSequence()
+        is Sequence<*>       -> obj
+        is Iterable<*>       -> obj.asSequence()
+        is CharSequence      -> obj.asSequence()
+        is Pair<*, *>        -> sequenceOf(obj.first, obj.second)
+        is MutablePair<*, *> -> sequenceOf(obj.first, obj.second)
+        is Map<*, *>         -> mapIterator(obj).asSequence()
+        is Map.Entry<*, *>   -> MapEntry(obj).asSequence()
+        is ByteArray         -> obj.asSequence()
+        is ShortArray        -> obj.asSequence()
+        is IntArray          -> obj.asSequence()
+        is LongArray         -> obj.asSequence()
+        is DoubleArray       -> obj.asSequence()
+        is FloatArray        -> obj.asSequence()
+        is BooleanArray      -> obj.asSequence()
+        is CharArray         -> obj.asSequence()
+        is Array<*>          -> obj.asSequence()
+        else                 -> throw IllegalArgumentException("don't know how to create Sequence from ${obj.javaClass}")
     }
 
     fun isEmpty(o: Any?) = when (o) {

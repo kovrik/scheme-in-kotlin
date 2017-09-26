@@ -29,8 +29,7 @@ import core.procedures.hashmaps.*
 import core.procedures.interop.*
 import core.procedures.io.*
 import core.procedures.keywords.KeywordProc
-import core.procedures.lists.ListProc
-import core.procedures.lists.MemberProc
+import core.procedures.lists.*
 import core.procedures.math.*
 import core.procedures.math.complex.*
 import core.procedures.math.trigonometry.*
@@ -404,10 +403,13 @@ class DefaultEnvironment : Environment(null) {
                 MemberProc("memv", Eqv()),
                 ConsProc(),
                 PairProc(),
+                Mcons(),
                 Car(),
                 Cdr(),
-                SetCar(),
-                SetCdr(),
+                Mcar(),
+                Mcdr(),
+                SetMcar(),
+                SetMcdr(),
                 Append(),
                 Reverse(),
                 ListTail(),
@@ -553,6 +555,7 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_FN,
                 Predicate.IS_IFN,
                 Predicate.IS_PAIR,
+                Predicate.IS_MPAIR,
                 Predicate.IS_LIST,
                 Predicate.IS_SET,
                 Predicate.IS_MAP,

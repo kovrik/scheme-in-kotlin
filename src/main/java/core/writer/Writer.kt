@@ -18,34 +18,35 @@ object Writer {
     private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
 
     fun write(o: Any?): String = when (o) {
-        null               -> "nil"
-        is Unit            -> "#<void>"
-        is Boolean         -> if (o) "#t" else "#f"
-        is Symbol          -> o.write()
-        is List<*>         -> o.write()
-        is Class<*>        -> o.write()
-        is MutablePair     -> o.write()
-        is Number          -> o.write()
-        is Sequence<*>     -> o.write()
-        is CharSequence    -> o.write()
-        is Char            -> o.write()
-        is Pattern         -> o.write()
-        is Regex           -> o.write()
-        is Throwable       -> o.write()
-        is Map<*, *>       -> o.write()
-        is Map.Entry<*, *> -> o.write()
-        is Set<*>          -> o.write()
-        is ByteArray       -> o.write()
-        is ShortArray      -> o.write()
-        is IntArray        -> o.write()
-        is LongArray       -> o.write()
-        is DoubleArray     -> o.write()
-        is FloatArray      -> o.write()
-        is CharArray       -> o.write()
-        is BooleanArray    -> o.write()
-        is Array<*>        -> o.write()
-        is Thread          -> o.write()
-        else               -> o.toString()
+        null                 -> "nil"
+        is Unit              -> "#<void>"
+        is Boolean           -> if (o) "#t" else "#f"
+        is Symbol            -> o.write()
+        is List<*>           -> o.write()
+        is Class<*>          -> o.write()
+        is Pair<*, *>        -> o.write()
+        is MutablePair<*, *> -> o.write()
+        is Number            -> o.write()
+        is Sequence<*>       -> o.write()
+        is CharSequence      -> o.write()
+        is Char              -> o.write()
+        is Pattern           -> o.write()
+        is Regex             -> o.write()
+        is Throwable         -> o.write()
+        is Map<*, *>         -> o.write()
+        is Map.Entry<*, *>   -> o.write()
+        is Set<*>            -> o.write()
+        is ByteArray         -> o.write()
+        is ShortArray        -> o.write()
+        is IntArray          -> o.write()
+        is LongArray         -> o.write()
+        is DoubleArray       -> o.write()
+        is FloatArray        -> o.write()
+        is CharArray         -> o.write()
+        is BooleanArray      -> o.write()
+        is Array<*>          -> o.write()
+        is Thread            -> o.write()
+        else                 -> o.toString()
     }
 
     private fun Class<*>.write() = when {
@@ -74,41 +75,18 @@ object Writer {
         else -> StringBuilder("(").apply {
             append(Writer.write(this@write.first()))
             var cdr = this@write.last()
-            while (cdr is MutablePair || cdr is Cons<*>) {
-                when (cdr) {
-                    is Cons<*> -> {
-                        append(' ').append(Writer.write(cdr.first()))
-                        cdr = cdr.last()
-                    }
-                    is MutablePair -> {
-                        append(' ').append(Writer.write(cdr.first))
-                        cdr = cdr.second
-                    }
-                }
+            while (cdr is Cons<*>) {
+                append(' ').append(Writer.write(cdr.first()))
+                cdr = cdr.last()
             }
             /* Dotted notation */
             append(" . ").append(Writer.write(cdr)).append(')')
         }.toString()
     }
 
-    private fun MutablePair.write() = StringBuilder("(").apply {
-        append(Writer.write(first))
-        var cdr = second
-        while (cdr is MutablePair || cdr is Cons<*>) {
-            when (cdr) {
-                is Cons<*> -> {
-                    append(' ').append(Writer.write(cdr.first()))
-                    cdr = cdr.last()
-                }
-                is MutablePair -> {
-                    append(' ').append(Writer.write(cdr.first))
-                    cdr = cdr.second
-                }
-            }
-        }
-        /* Dotted notation */
-        append(" . ").append(Writer.write(cdr)).append(')')
-    }.toString()
+    private fun Pair<*, *>.write() = "(pair ${Writer.write(first)} ${Writer.write(second)})"
+
+    private fun MutablePair<*, *>.write() = "(mcons ${Writer.write(first)} ${Writer.write(second)})"
 
     private fun Map.Entry<*, *>.write() = "[${write(key)} ${write(value)}]"
 

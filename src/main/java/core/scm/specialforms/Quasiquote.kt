@@ -3,7 +3,7 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.procedures.cons.Append
+import core.procedures.lists.Append
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.cons.ConsProc

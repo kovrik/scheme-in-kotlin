@@ -1,7 +1,8 @@
-package core.procedures.cons
+package core.procedures.lists
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.scm.Type
 

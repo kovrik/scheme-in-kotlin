@@ -1,6 +1,8 @@
-package core.procedures.cons
+package core.procedures.lists
 
 import core.procedures.AFn
+import core.procedures.cons.Car
+import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.scm.Cons
 import core.scm.Type

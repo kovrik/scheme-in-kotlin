@@ -1,4 +1,3 @@
 package core.scm
 
-@Deprecated(message = "Implemented just for the compatibility with R5RS")
-data class MutablePair(var first: Any?, var second: Any?)
+data class MutablePair<A, B>(var first: A, var second: B)

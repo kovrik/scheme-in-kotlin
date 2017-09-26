@@ -19,7 +19,11 @@ class Flatten : AFn<Any?, Any?>(name = "flatten", minArgs = 1) {
             when (e) {
                 // FIXME: see testFlatten()
                 is Sequence<*> -> queue.addAll(e)
-                is MutablePair -> {
+                is Pair<*, *> -> {
+                    queue.add(e.first)
+                    queue.add(e.second)
+                }
+                is MutablePair<*, *> -> {
                     queue.add(e.first)
                     queue.add(e.second)
                 }

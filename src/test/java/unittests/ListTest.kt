@@ -3,6 +3,7 @@ package unittests
 import core.exceptions.ArityException
 import core.scm.Cons
 import core.scm.Cons.Companion.cons
+import core.scm.MutablePair
 import core.scm.MutableVector
 import core.scm.Symbol
 import org.junit.Assert.*
@@ -137,44 +138,43 @@ class ListTest : AbstractTest() {
     }
 
     @Test
-    fun testSetCar() {
-        assertEquals(Unit, eval("(set-car! '(1) 2)", env))
-        assertEquals(3L, eval("(let ((a '(1))) (set-car! a 3) (car a)))", env))
-        assertEquals("test", eval("(let ((a '(1 2 3))) (set-car! a \"test\") (car a)))", env))
-        assertEquals("test", eval("(let ((a (cons 3 4))) (set-car! a \"test\") (car a)))", env))
+    fun testSetMcar() {
+        assertEquals(Unit,     eval("(set-mcar! (mcons 1 '()) 2)", env))
+        assertEquals(3L,       eval("(let ((a (mcons 1 '()))) (set-mcar! a 3) (mcar a))", env))
+        assertEquals("test",   eval("(let ((a (mcons 1 '(2 3)))) (set-mcar! a \"test\") (mcar a))", env))
+        assertEquals("test",   eval("(let ((a (mcons 3 4))) (set-mcar! a \"test\") (mcar a))", env))
         try {
-            eval("(set-car! '() 1)", env)
+            eval("(set-mcar! '() 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("set-car!: type mismatch; (expected: Pair, given: ())", e.message)
+            assertEquals("set-mcar!: type mismatch; (expected: MutablePair, given: ())", e.message)
         }
         try {
-            eval("(set-car! 5 1)", env)
+            eval("(set-mcar! 5 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("set-car!: type mismatch; (expected: Pair, given: 5)", e.message)
+            assertEquals("set-mcar!: type mismatch; (expected: MutablePair, given: 5)", e.message)
         }
     }
 
     @Test
-    fun testSetCdr() {
-        assertEquals(Unit, eval("(set-cdr! '(1) 2)", env))
-        assertEquals(listOf(3L), eval("(let ((a '(1))) (set-cdr! a 3) (cdr a)))", env))
-        assertEquals(listOf("test"), eval("(let ((a '(1))) (set-cdr! a \"test\") (cdr a)))", env))
-        assertEquals(listOf(2L, 3L, 4L), eval("(let ((a '(1))) (set-cdr! a '(2 3 4)) (cdr a)))", env))
-        assertEquals(3L, eval("(let ((a (cons 1 2))) (set-cdr! a 3) (cdr a)))", env))
-        assertEquals(2L, eval("(let ((a (cons 1 2))) (set-cdr! a '(3 4 5)) (cdr (cons 1 2)))", env))
+    fun testSetMcdr() {
+        assertEquals(3L,                 eval("(let ((a (mcons 1 '()))) (set-mcdr! a 3) (mcdr a))", env))
+        assertEquals("test",             eval("(let ((a (mcons 1 '()))) (set-mcdr! a \"test\") (mcdr a))", env))
+        assertEquals(listOf(2L, 3L, 4L), eval("(let ((a (mcons 1 '()))) (set-mcdr! a '(2 3 4)) (mcdr a))", env))
+        assertEquals(3L, eval("(let ((a (mcons 1 2))) (set-mcdr! a 3) (mcdr a))", env))
+        assertEquals(2L, eval("(let ((a (mcons 1 2))) (set-mcdr! a '(3 4 5)) (mcdr (mcons 1 2))", env))
         try {
-            eval("(set-cdr! '() 1)", env)
+            eval("(set-mcdr! '() 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("set-cdr!: type mismatch; (expected: Pair, given: ())", e.message)
+            assertEquals("set-mcdr!: type mismatch; (expected: MutablePair, given: ())", e.message)
         }
         try {
-            eval("(set-cdr! 5 1)", env)
+            eval("(set-mcdr! 5 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("set-cdr!: type mismatch; (expected: Pair, given: 5)", e.message)
+            assertEquals("set-mcdr!: type mismatch; (expected: MutablePair, given: 5)", e.message)
         }
     }
 
@@ -232,9 +232,7 @@ class ListTest : AbstractTest() {
 
         eval("(define a '(1 2 3 4))", env)
         eval("(define b (list-tail (cdr a) 2))", env)
-        eval("(set-cdr! b '(33 44))", env)
-        assertEquals(listOf(1L, 2L, 3L, 4L, 33L, 44L), eval("a", env))
-        assertEquals(listOf(4L, 33L, 44L), eval("b", env))
+        assertEquals(listOf(4L), eval("b", env))
         try {
             eval("(list-tail 1 2)", env)
             fail()
