@@ -1,6 +1,7 @@
 package core.reader
 
 import core.exceptions.IllegalSyntaxException
+import core.procedures.delayed.Deref
 import core.scm.*
 import core.scm.specialforms.*
 import core.utils.Utils.getRadixByChar
@@ -20,7 +21,7 @@ open class Reader : IReader {
     }
 
     companion object {
-        private val DEREF  = Symbol.intern("deref")
+        private val deref = Deref()
 
         private const val LINE_BREAKS = "\n\r"
         private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
@@ -447,7 +448,7 @@ open class Reader : IReader {
      * \@f -> (deref f)
      */
     @Throws(IOException::class)
-    private fun readDeref() = listOf(DEREF, read())
+    private fun readDeref() = listOf(deref, read())
 
     /**
      * Syntax shortcut
