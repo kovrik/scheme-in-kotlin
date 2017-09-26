@@ -11,7 +11,7 @@ class Procedure(override var name: String,
                 private val body: Any,
                 /* Lexical environment */
                 private val localEnvironment: Environment,
-                isVariadic: Boolean) : AFn<Any?, Any?>() {
+                private val isVariadic: Boolean) : AFn<Any?, Any?>() {
 
     init {
         if (isVariadic) {
@@ -52,7 +52,7 @@ class Procedure(override var name: String,
         for (i in 0 until minArgs) {
             put(args[i], values[i])
         }
-        if (minArgs != maxArgs) {
+        if (isVariadic) {
             /* Optional params: pass them as a list bound to the last param.
              * Everything AFTER mandatory params goes to that list. */
             put(args[minArgs], values.copyOfRange(minArgs, values.size).asList())
