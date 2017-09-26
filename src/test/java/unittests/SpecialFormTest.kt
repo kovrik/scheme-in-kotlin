@@ -8,7 +8,10 @@ import core.procedures.io.Display
 import core.procedures.math.Addition
 import core.scm.*
 import core.scm.Cons.Companion.cons
+import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
+import core.scm.specialforms.Unquote
+import core.scm.specialforms.UnquoteSplicing
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -603,25 +606,24 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(15.5, eval("`15.5", env))
         assertEquals("test", eval("(quasiquote \"test\")", env))
         assertEquals("test", eval("`\"test\"", env))
-        assertEquals(Symbol.intern("quote"), eval("(quasiquote quote)", env))
+        assertEquals(Quote.symbol, eval("(quasiquote quote)", env))
         assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("`(+ 1 2)", env))
         assertEquals(3L, eval("`,(+ 1 2)", env))
         assertEquals(13L, eval("`,(+ 1 (* 3 4))", env))
         assertEquals(13L, eval("(quasiquote ,(+ 1 (* 3 4)))", env))
         assertEquals(13L, eval("(quasiquote (unquote (+ 1 (* 3 4))))", env))
         assertEquals(listOf(1L, 3L, 4L), eval("`(1 ,(+ 1 2) 4)", env))
-        assertEquals(listOf(1L, listOf(Symbol.intern("quasiquote"), listOf(Symbol.intern("unquote"), listOf(
+        assertEquals(listOf(1L, listOf(Quasiquote.symbol, listOf(Unquote.symbol, listOf(
                 Symbol.intern("+"), 1L, 5L))), 4L),
                 eval("`(1 `,(+ 1 ,(+ 2 3)) 4)", env))
 
-        assertEquals(listOf(1L, listOf(Symbol.intern("quasiquote"), listOf(Symbol.intern("unquote"), listOf(
+        assertEquals(listOf(1L, listOf(Quasiquote.symbol, listOf(Unquote.symbol, listOf(
                 Symbol.intern("+"), 1L, MutableVector(arrayOf(
                 Symbol.intern("+"), 2L, 3L))))), 4L),
                 eval("`(1 `,(+ 1 ,'[+ 2 3]) 4)", env))
 
         assertEquals(listOf(Symbol.intern("list"), 3L, 4L), eval("`(list ,(+ 1 2) 4)", env))
-        assertEquals(listOf(Symbol.intern("list"), Symbol.intern("a"), listOf(
-                Symbol.intern("quote"), Symbol.intern("a"))),
+        assertEquals(listOf(Symbol.intern("list"), Symbol.intern("a"), listOf(Quote.symbol, Symbol.intern("a"))),
                 eval("(let ((name 'a)) `(list ,name ',name))", env))
 
         assertEquals(listOf(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
@@ -638,18 +640,18 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
 
         assertEquals(MutableVector(arrayOf(1L, 5L)), eval("`[1 ,(+ 2 3)]", env))
-        assertEquals(MutableVector(arrayOf(1L, listOf(Symbol.intern("quasiquote"), listOf(
-                Symbol.intern("unquote"), listOf(1L, 5L))))),
+        assertEquals(MutableVector(arrayOf(1L, listOf(Quasiquote.symbol, listOf(
+                Unquote.symbol, listOf(1L, 5L))))),
                 eval("`[1 `,(1 ,(+ 2 3))]", env))
 
         assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env))
-        assertEquals(cons(Symbol.intern("unquote-splicing"), Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
-        assertEquals(cons(Symbol.intern("unquote"), cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
+        assertEquals(cons(UnquoteSplicing.symbol, Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
+        assertEquals(cons(Unquote.symbol, cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
 
         assertEquals(emptyList<Nothing>(), eval("`()", env))
         assertEquals(MutableVector(), eval("`#()", env))
         assertEquals(listOf(1L, 2L, emptyList<Nothing>()), eval("`(1 2 ())", env))
-        assertEquals(listOf(1L, 2L, listOf(Symbol.intern("quote"), emptyList<Nothing>())), eval("`(1 2 '())", env))
+        assertEquals(listOf(1L, 2L, listOf(Quote.symbol, emptyList<Nothing>())), eval("`(1 2 '())", env))
 
         try {
             eval("unquote", env)
