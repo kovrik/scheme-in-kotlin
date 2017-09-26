@@ -31,10 +31,6 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         )!!
     }
 
-    inner class JavaMethodCall(private val method: String) : AFn<Any?, Any?>(name = method) {
-        override fun invoke(args: Array<out Any?>) = reflector.evalJavaMethod(method, args)
-    }
-
     /* Macroexpand S-expression, evaluate it and then return the result */
     fun macroexpandAndEvaluate(sexp: Any?, env: Environment) = eval(macroexpander.expand(sexp), env)
 
@@ -115,7 +111,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                         for (i in 1 until size) { form.add(this[i]) }
                         return New.eval(form, env, this@Evaluator)
                     }
-                    op = JavaMethodCall(this[0].toString())
+                    op = object : AFn<Any?, Any?>() {
+                        override fun invoke(args: Array<out Any?>) = reflector.evalJavaMethod(symbolName, args)
+                    }
                 }
             }
         }
