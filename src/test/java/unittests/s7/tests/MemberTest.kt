@@ -30,7 +30,7 @@ class MemberTest : AbstractTest() {
         assertEquals(listOf(listOf<Any>() as Any), eval("(member '() '(1 2 ()))", env))
         assertEquals(listOf(MutableVector(), 3L), eval("(member #() '(1 () 2 #() 3))", env))
         assertEquals(listOf(cons(1L, 2L), cons(3L, 4L)), eval("(let ((x (cons 1 2))) (member x (list (cons 1 2) (cons 3 4))))", env))
-        // FIXME assertEquals(list(list(1L, 2L) as Any), eval("(let ((x (list 1 2))) (member x (list (cons 1 2) (list 1 2))))", env))
+        assertEquals(listOf(listOf(1L, 2L) as Any), eval("(let ((x (list 1 2))) (member x (list (cons 1 2) (list 1 2))))", env))
         assertEquals(listOf(listOf(s("quote"), s("a")), s("b"), s("c")), eval("(member ''a '('a b c))", env))
         assertEquals(listOf(s("a"), s("a"), s("a")), eval("(member 'a '(a a a)))", env))
         assertEquals(listOf(s("a"), s("a")), eval("(member 'a '(b a a))", env))

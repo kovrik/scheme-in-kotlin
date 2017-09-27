@@ -36,7 +36,7 @@ class Cons<E> private constructor(car: E?, cdr: E?) : ArrayList<E?>() {
         if (this.size == 0 && other.size == 0) return true
         if (this.size != other.size) return false
         /* Improper lists are not equal to Proper lists, even if they have the same elements */
-        if (other is Cons<*> && isProperList != other.isProperList) return false
+        if (isProperList != Predicate.isProperList(other)) return false
         val thisIterator = this.iterator()
         val otherIterator = other.iterator()
         while (thisIterator.hasNext() && otherIterator.hasNext()) {
