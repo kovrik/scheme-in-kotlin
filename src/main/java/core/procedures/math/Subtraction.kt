@@ -41,7 +41,6 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
             Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> Double.NaN
             !Utils.isFinite(f)                 -> f
             !Utils.isFinite(s)                 -> s
-            Utils.isZero(f)                    -> Utils.inexactnessTaint(f, s)
             Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
             f is BigComplex && s is BigComplex -> f.minus(s)
             f is BigRatio   && s is BigRatio   -> f.minus(s)
