@@ -21,7 +21,7 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, maxArgs = 3, restAr
         if (args.size == 3) {
             fraction = fraction || args[2] is BigRatio
         }
-        val big = args.any { it is BigDecimal || it is BigInteger }
+        val big = args.any { it is BigDecimal || it is BigInteger || it is BigRatio }
         if (fraction || big) {
             return when (args.size) {
                 1    -> range(0L, args[0] as Number)
