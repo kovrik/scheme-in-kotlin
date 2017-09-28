@@ -91,4 +91,11 @@ class DelayedTest : AbstractTest() {
             // success
         }
     }
+
+    @Test
+    fun testIsLazySeqRealized() {
+        assertEquals(false, eval("(realized? (lazy-seq (range 5)))", env))
+        assertEquals(false, eval("(let ((s (lazy-seq (range)))) (take 1 s) (realized? s))", env))
+        assertEquals(true,  eval("(let ((s (lazy-seq (range)))) (str (take 1 s)) (realized? s))", env))
+    }
 }

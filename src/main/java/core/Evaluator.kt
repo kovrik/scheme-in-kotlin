@@ -11,6 +11,7 @@ import core.scm.*
 import core.scm.specialforms.New
 import core.scm.specialforms.SpecialForm
 import core.utils.Utils
+import core.utils.cached
 import core.writer.Writer
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -42,9 +43,12 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             when (result) {
                 is Thunk -> result = evalIter(result.expr, result.context ?: env)
                 // TODO more elegant solution?
+                /* Wrap LazySeq in a Caching Seq */
+                is LazySeq -> result.cached()
                 is ThunkSeq<*> -> {
-                    val lazyseq = result
-                    result = lazyseq.seq.map { eval(it, lazyseq.context ?: env) }
+                    /* Evaluate thunk sequence and wrap it in a Caching Seq */
+                    val thunks = result
+                    result = thunks.map { eval(it, thunks.context ?: env) }.cached()
                 }
             }
         }

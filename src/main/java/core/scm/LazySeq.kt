@@ -9,6 +9,8 @@ class LazySeq(private val form: List<Any?>, private val env: Environment, privat
 
     private val realized = AtomicBoolean(false)
 
+    fun isRealized() = realized.get()
+
     private val seq: Sequence<Any?> by lazy {
         when (form.size) {
             1    -> emptySequence<Nothing>()
@@ -16,7 +18,7 @@ class LazySeq(private val form: List<Any?>, private val env: Environment, privat
         }
     }
 
-    // FIXME race condition
+    // FIXME race condition?
     override fun iterator(): Iterator<Any?> {
         if (realized.compareAndSet(false, true)) {
             for (i in 1..form.size - 2) { evaluator.eval(form[i], env) }

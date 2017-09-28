@@ -276,5 +276,10 @@ class SeqTest : AbstractTest() {
 
         eval("(define (rfib a b) (lazy-seq (cons-seq a (rfib b (+ a b)))))\n", env)
         assertEquals(listOf(0L, 1L, 1L, 2L, 3L), eval("(into '() (take 5 (rfib 0 1)))", env))
+
+        assertEquals(1L, eval("(let* ((b (atom 0))" +
+                              "       (work (map (lambda (n) (swap! b inc)) [nil])))" +
+                              "  (str work) (str work) (str work)" +
+                              "  @b)", env))
     }
 }
