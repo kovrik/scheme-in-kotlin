@@ -34,7 +34,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(0.5403023058681398, eval("(cos 1/1)", env))
         assertEquals(0.5403023058681398, eval("(cos 1.0)", env))
         assertEquals(-1.0, eval("(cos pi)", env))
-        assertEquals(-0.666276021279824, eval("(cos 2.3)", env))
+        assertEquals(-0.666276021279824, eval("(cos 2.3)", env) as Double, 0.000000000000001)
         assertEquals(BigComplex(BigDecimal("0.8337300251311492"), BigDecimal("-0.9888977057628651")), eval("(cos 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("5.439580991019764"), BigDecimal("-8.429751080849945")), eval("(cos -1-3i)", env))
         //    assertEquals(-0.1285197485957309, eval("(cos 99999999999999999999999999999999999999999999999999999999999999)", env));
