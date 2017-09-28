@@ -97,7 +97,7 @@ object Repl {
                 append(": ").append(e.message)
             }
             filterStackTrace(e.stackTrace)?.let {
-                append(" (").append(it.fileName).append(':').append(it.lineNumber).append(')')
+                append(" (").append(it.fileName ?: "NO_SOURCE_FILE").append(':').append(it.lineNumber).append(')')
             }
         }.toString()
     }.apply(currentOutputPort::writeln)
