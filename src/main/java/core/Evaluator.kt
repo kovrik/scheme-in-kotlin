@@ -43,8 +43,6 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             when (result) {
                 is Thunk -> result = evalIter(result.expr, result.context ?: env)
                 // TODO more elegant solution?
-                /* Wrap LazySeq in a Caching Seq */
-                is LazySeq -> result.cached()
                 is ThunkSeq<*> -> {
                     /* Evaluate thunk sequence and wrap it in a Caching Seq */
                     val thunks = result
