@@ -8,4 +8,3 @@ class Concat : AFn<Any?, Any?>(name = "concat") {
 
     override operator fun invoke(args: Array<out Any?>) = ThunkSeq(args.map { Utils.toSequence(it) }.reduce { f, s -> f.plus(s) })
 }
-
