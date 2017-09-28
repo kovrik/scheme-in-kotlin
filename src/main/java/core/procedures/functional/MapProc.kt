@@ -25,7 +25,7 @@ open class MapProc : AFn<Any?, Any?>(name = "map", minArgs = 2, mandatoryArgsTyp
                     }
                 }
             }
-        }.asSequence())
+        })
         else -> ThunkSeq(object : Sequence<Any?> {
             override fun iterator(): Iterator<Any?> = object : Iterator<Any?> {
 
@@ -41,6 +41,6 @@ open class MapProc : AFn<Any?, Any?>(name = "map", minArgs = 2, mandatoryArgsTyp
                     }
                 }
             }
-        }.asSequence())
+        })
     }
 }
