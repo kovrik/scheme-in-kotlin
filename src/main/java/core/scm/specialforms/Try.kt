@@ -21,7 +21,7 @@ object Try : SpecialForm("try") {
         val catches = LinkedHashMap<Class<*>, Any?>()
         var catchBindings: MutableMap<Class<*>, Symbol> = HashMap()
         var fin: Any? = null
-        val expressions = ArrayList<Any?>()
+        val expressions = mutableListOf<Any?>()
         /* Init and check syntax */
         for (i in 1 until form.size) {
             val expr = form[i]

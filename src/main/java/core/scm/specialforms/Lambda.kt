@@ -8,7 +8,6 @@ import core.scm.Procedure
 import core.scm.Symbol
 import core.writer.Writer
 import java.util.LinkedList
-import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 /* Syntax:
@@ -74,7 +73,7 @@ object Lambda : SpecialForm("lambda") {
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
-    private fun <E> flatten(list: List<E>) = ArrayList<E>().apply {
+    private fun <E> flatten(list: List<E>) = mutableListOf<E>().apply {
         val queue = LinkedList(list)
         while (!queue.isEmpty()) {
             val e = queue.remove()

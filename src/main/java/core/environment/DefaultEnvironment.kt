@@ -683,7 +683,7 @@ class DefaultEnvironment : Environment(null) {
                 LetRecSyntax,
                 SyntaxRules)
 
-        private val LIBRARY_PROCEDURES = ArrayList<String>().apply {
+        private val LIBRARY_PROCEDURES = mutableListOf<String>().apply {
             /* Naive implementations (not via Continuations) */
             // TODO attach Metadata and mark these as pure?
             add("(define values list)")
