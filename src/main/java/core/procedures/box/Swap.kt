@@ -8,6 +8,6 @@ class Swap : AFn<Any?, Any?>(name = "swap!", minArgs = 2,
                              mandatoryArgsTypes = arrayOf<Class<*>>(Box::class.java, IFn::class.java)) {
 
     override fun invoke(arg1: Any?, arg2: Any?) {
-        TODO("Have to implement in Java, not in Scheme!")
+        TODO("TBD. Use Scheme version for now")
     }
 }
