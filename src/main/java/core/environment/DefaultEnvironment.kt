@@ -751,9 +751,9 @@ class DefaultEnvironment : Environment(null) {
 
             // TODO Implement these in Kotlin?
             add("(define (some pred coll)" +
-                "  (if (not (empty? coll))" +
-                "    (or (pred (first coll)) (some pred (rest coll)))" +
-                "   null))")
+                "  (if (empty? coll)" +
+                "    null" +
+                "    (or (pred (first coll)) (some pred (rest coll)))))")
 
             add("(define (every? pred coll)" +
                 "  (cond" +
