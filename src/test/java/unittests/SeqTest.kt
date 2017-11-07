@@ -160,8 +160,7 @@ class SeqTest : AbstractTest() {
         assertEquals(listOf<Nothing>(), eval("(flatten [])", env))
         assertEquals(listOf<Nothing>(), eval("(flatten #{})", env))
         assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten '(0 (1) ((2)) (((3))) ((((4))))))", env))
-        // FIXME
-//        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten (list 0 [1] #{ [2] } (range 3 4) '((((4))))))", env))
+        assertEquals(listOf(0L, 1L, 2L, 3L, 4L), eval("(flatten (list 0 [1] #{ [2] } (range 3 4) '((((4))))))", env))
     }
 
     @Test
