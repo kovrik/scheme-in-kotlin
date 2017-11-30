@@ -2,50 +2,33 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.scm.BigComplex
-import core.scm.BigRatio
 import core.utils.Utils
 
 import java.math.BigDecimal
-import java.math.BigInteger
+import kotlin.math.PI
+import kotlin.math.atan
+import kotlin.math.ln
 
 class Atan : AFn<Number?, Number>(name = "atan", isPure = true, minArgs = 1, maxArgs = 1,
                                   mandatoryArgsTypes =  arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 0L
-        arg is BigDecimal -> atan(arg)
-        arg is BigInteger -> atan(arg)
         arg is BigComplex -> atan(arg)
-        arg is BigRatio   -> atan(arg.toBigDecimal())
-        else              -> Math.atan(arg!!.toDouble())
+        else              -> atan(arg!!.toDouble())
     }
 
-    fun atan(bd: BigDecimal) = bd.toDouble().let {
-        when {
-            !it.isFinite() -> Double.NaN
-            else           -> Math.atan(it)
-        }
-    }
-
-    fun atan(bi: BigInteger) = bi.toDouble().let {
-        when {
-            !it.isFinite() -> Double.NaN
-            else           -> Math.atan(it)
-        }
-    }
-
-    fun atan(c: BigComplex): Number {
+    private fun atan(c: BigComplex): Number {
         val r = c.re
         val i = c.im
         val a = r.toDouble()
-        if (!a.isFinite()) {
-            return Double.NaN
+        if (!Utils.isFinite(a)) {
+            return a
         }
         val b = i.toDouble()
-        if (!b.isFinite()) {
-            return Double.NaN
+        if (!Utils.isFinite(b)) {
+            return b
         }
-
         val a2 = a * a
         val b2 = b * b
         val re = when {
@@ -53,23 +36,23 @@ class Atan : AFn<Number?, Number>(name = "atan", isPure = true, minArgs = 1, max
             r.signum() == 0 && i > BigDecimal.ONE.negate() && i < BigDecimal.ONE -> 0.0
             /* when x = 0 and 1 < y^2
              * re(arctan(x + iy)) = pi/2 */
-            r.signum() == 0 && i.multiply(i) > BigDecimal.ONE -> Math.PI / 2
+            r.signum() == 0 && i.multiply(i) > BigDecimal.ONE -> PI / 2
             /* when x > 0
              * re(arctan(x + iy)) = pi/4 - (1/2) arctan ( (1 - x^2 - y^2)/(2x) ) */
-            r.signum() > 0 -> Math.PI / 4 - 0.5 * Math.atan((1.0 - a2 - b2) / (2 * a))
+            r.signum() > 0 -> PI / 4 - 0.5 * atan((1.0 - a2 - b2) / (2 * a))
             /* when x < 0
              * re(arctan(x + iy)) = -pi/4 - (1/2) arctan ( (1 - x^2 - y^2)/(2x) ) */
-            else -> -Math.PI / 4 - 0.5 * Math.atan((1.0 - a2 - b2) / (2 * a))
+            else -> -PI / 4 - 0.5 * atan((1.0 - a2 - b2) / (2 * a))
         }
 
-        if (!re.isFinite()) {
-            return Double.NaN
+        if (!Utils.isFinite(re)) {
+            return re
         }
 
         /* im(arctan(x + iy)) = -(1/4) ln ((1 - x^2 - y^2)^2 + (2x)^2) + (1/2) ln ((1 + y)^2 + x^2) */
-        val im = -0.25 * Math.log((1.0 - a2 - b2) * (1.0 - a2 - b2) + 4 * a2) + 0.5 * Math.log((1 + b) * (1 + b) + a2)
-        if (!im.isFinite()) {
-            return Double.NaN
+        val im = -0.25 * ln((1.0 - a2 - b2) * (1.0 - a2 - b2) + 4 * a2) + 0.5 * ln((1 + b) * (1 + b) + a2)
+        if (!Utils.isFinite(im)) {
+            return im
         }
         return BigComplex(re, im)
     }

@@ -13,6 +13,9 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
+import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.sign
 
 object Utils {
 
@@ -202,7 +205,7 @@ object Utils {
                 } else {
                     /* Remove dot */
                     val num = number.replace(".", "")
-                    num.toLong(r) / Math.pow(r.toDouble(), (num.length - dotPos).toDouble())
+                    num.toLong(r) / r.toDouble().pow(num.length - dotPos)
                 }
             }
         }
@@ -302,7 +305,7 @@ object Utils {
         is Long, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
         is BigRatio    -> o.isDenominatorEqualToOne
-        is Double      -> o == Math.floor(o) && o.isFinite()
+        is Double      -> o == floor(o) && o.isFinite()
         else           -> false
     }
 
@@ -310,14 +313,14 @@ object Utils {
 
     fun isZero(o: Any?) = when (o) {
         null          -> false
-        is Long       -> o.compareTo(0L) == 0
-        is Double     -> Math.signum(o) == 0.0
+        is Long       -> o.sign == 0
+        is Double     -> o.sign == 0.0
         is BigRatio   -> o.signum() == 0
         is BigDecimal -> o.signum() == 0
-        is Int        -> Integer.signum(o) == 0
-        is Short      -> Integer.signum(o.toInt()) == 0
-        is Byte       -> Integer.signum(o.toInt()) == 0
-        is Float      -> Math.signum(o) == 0f
+        is Int        -> o.sign == 0
+        is Short      -> o.toInt().sign == 0
+        is Byte       -> o.toInt().sign == 0
+        is Float      -> o.sign == 0f
         is BigInteger -> o.signum() == 0
         else          -> false
     }
@@ -338,28 +341,28 @@ object Utils {
 
     fun isPositive(o: Any?) = when (o) {
         null          -> false
-        is Long       -> o > 0
-        is Double     -> Math.signum(o) == 1.0
+        is Long       -> o.sign == 1
+        is Double     -> o.sign == 1.0
         is BigRatio   -> o.signum() == 1
         is BigDecimal -> o.signum() == 1
-        is Int        -> Integer.signum(o) == 1
-        is Short      -> Integer.signum(o.toInt()) == 1
-        is Byte       -> Integer.signum(o.toInt()) == 1
-        is Float      -> Math.signum(o) == 1f
+        is Int        -> o.sign == 1
+        is Short      -> o.toInt().sign == 1
+        is Byte       -> o.toInt().sign == 1
+        is Float      -> o.sign == 1f
         is BigInteger -> o.signum() == 1
         else          -> false
     }
 
     fun isNegative(o: Any?) = when (o) {
         null          -> false
-        is Long       -> o < 0
-        is Double     -> Math.signum(o) == -1.0
+        is Long       -> o.sign == -1
+        is Double     -> o.sign == -1.0
         is BigRatio   -> o.signum() == -1
         is BigDecimal -> o.signum() == -1
-        is Int        -> Integer.signum(o) == -1
-        is Short      -> Integer.signum(o.toInt()) == -1
-        is Byte       -> Integer.signum(o.toInt()) == -1
-        is Float      -> Math.signum(o) == -1f
+        is Int        -> o.sign == -1
+        is Short      -> o.toInt().sign == -1
+        is Byte       -> o.toInt().sign == -1
+        is Float      -> o.sign == -1f
         is BigInteger -> o.signum() == -1
         else          -> false
     }

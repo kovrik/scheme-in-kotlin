@@ -51,6 +51,8 @@ import core.scm.Symbol
 import core.scm.specialforms.*
 import core.scm.specialforms.SetForm
 import core.scm.specialforms.Swap
+import kotlin.math.E
+import kotlin.math.PI
 
 class DefaultEnvironment : Environment(null) {
 
@@ -63,8 +65,8 @@ class DefaultEnvironment : Environment(null) {
         /* Standard Procedures */
         STANDARD_PROCEDURES.forEach { put(Symbol.intern(it.name), it) }
         /* Constants and special cases, synonyms*/
-        put(Symbol.intern("pi"),        Math.PI)
-        put(Symbol.intern("euler.0"),   Math.E)
+        put(Symbol.intern("pi"),        PI)
+        put(Symbol.intern("euler.0"),   E)
         put(Symbol.intern("phi.0"),     1.618033988749895)
         put(Symbol.intern("gamma.0"),   0.5772156649015329)
         put(Symbol.intern("catalan.0"), 0.915965594177219)

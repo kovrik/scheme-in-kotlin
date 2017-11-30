@@ -3,45 +3,29 @@ package core.procedures.math.trigonometry
 import core.procedures.AFn
 import core.procedures.math.Multiplication
 import core.scm.BigComplex
-import core.scm.BigRatio
 import core.utils.Utils
-
-import java.math.BigDecimal
-import java.math.BigInteger
+import kotlin.math.cos
+import kotlin.math.cosh
+import kotlin.math.sin
+import kotlin.math.sinh
 
 class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxArgs = 1,
                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?) = cos(arg!!)
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg!!) -> 1L
+        arg is BigComplex   -> Cos.cos(arg)
+        else                -> cos(arg.toDouble())
+    }
 
     companion object {
 
         private val multiplication = Multiplication()
 
-        fun cos(number: Number) = when {
-            Utils.isZero(number) -> 1L
-            number is BigDecimal -> cos(number)
-            number is BigInteger -> cos(number)
-            number is BigComplex -> Cos.cos(number)
-            number is BigRatio   -> cos(number.toBigDecimal())
-            else                 -> Math.cos(number.toDouble())
+        fun cos(c: BigComplex): BigComplex {
+            val x = c.re.toDouble()
+            val y = c.im.toDouble()
+            return BigComplex(multiplication(cos(x), cosh(y)), multiplication(-1.0, multiplication(sin(x), sinh(y))))
         }
-
-        fun cos(bd: BigDecimal) = bd.toDouble().let {
-            when {
-                !it.isFinite() -> Double.NaN
-                else           -> Math.cos(it)
-            }
-        }
-
-        fun cos(bi: BigInteger) = bi.toDouble().let {
-            when {
-                !it.isFinite() -> Double.NaN
-                else           -> Math.cos(it)
-            }
-        }
-
-        fun cos(c: BigComplex) = BigComplex(multiplication(Cos.cos(c.re), Cosh.cosh(c.im)),
-                                            multiplication(-1.0, multiplication(Sin.sin(c.re), Sinh.sinh(c.im))))
     }
 }

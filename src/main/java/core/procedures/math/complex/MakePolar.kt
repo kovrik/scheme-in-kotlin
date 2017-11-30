@@ -13,8 +13,10 @@ class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, minAr
 
     private val addition = Addition()
     private val multiplication = Multiplication()
+    private val sin = Sin()
+    private val cos = Cos()
 
     /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
-    override operator fun invoke(arg1: Number?, arg2: Number?) = addition.add(multiplication(arg1!!, Cos.cos(arg2!!)),
-                                                                              BigComplex.I * Sin.sin(arg2) * arg1)!!
+    override operator fun invoke(arg1: Number?, arg2: Number?) = addition.add(multiplication(arg1!!, cos(arg2!!)),
+                                                                              BigComplex.I * sin(arg2) * arg1)!!
 }

@@ -1,13 +1,14 @@
 package core.scm
 
 import core.procedures.math.*
-import core.procedures.math.trigonometry.Atan
 import core.procedures.math.trigonometry.Cos
 import core.procedures.math.trigonometry.Sin
 import core.utils.Utils
 import java.lang.UnsupportedOperationException
 
 import java.math.BigDecimal
+import kotlin.math.PI
+import kotlin.math.atan
 
 /**
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
@@ -27,7 +28,8 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         private val log  = Log()
         private val multiplication = Multiplication()
         private val addition = Addition()
-        private val atan = Atan()
+        private val sin = Sin()
+        private val cos = Cos()
     }
 
     /* Real part */
@@ -82,9 +84,9 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val a = this.re.toDouble()
         val b = this.im.toDouble()
         val signum = this.im.signum()
-        val s = Math.sqrt(a * a + b * b)
-        val gamma = Math.sqrt((s + a) / 2)
-        val delta = signum * Math.sqrt((s - a) / 2)
+        val s = kotlin.math.sqrt(a * a + b * b)
+        val gamma = kotlin.math.sqrt((s + a) / 2)
+        val delta = signum * kotlin.math.sqrt((s - a) / 2)
         return BigComplex(gamma, delta)
     }
 
@@ -133,8 +135,8 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val t = angle()
         val A = multiplication(expt(r, c), exp(multiplication(t, d.negate())))
         val B = addition.add(multiplication(c, t), multiplication(d, log(r)))
-        val re = multiplication(A, Cos.cos(B!!))
-        val im = multiplication(A, Sin.sin(B))
+        val re = multiplication(A, cos(B!!))
+        val im = multiplication(A, sin(B))
         return BigComplex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
     }
 
@@ -165,15 +167,15 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val im = im
         return when {
             re.signum() == 0 -> when {
-                im.signum() > 0 ->  Math.PI / 2
-                im.signum() < 0 -> -Math.PI / 2
+                im.signum() > 0 ->  PI / 2
+                im.signum() < 0 -> -PI / 2
                 else -> throw ArithmeticException("Undefined for 0+0i")
             }
             re.signum() < 0 -> {
-                val atan = atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
-                if (im.signum() >= 0) atan + Math.PI else atan - Math.PI
+                val atan = atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
+                if (im.signum() >= 0) atan + PI else atan - PI
             }
-            else -> atan.atan(im.divide(re, Utils.DEFAULT_CONTEXT))
+            else -> atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
         }
     }
 

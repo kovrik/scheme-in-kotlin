@@ -13,7 +13,6 @@ class Round : AFn<Number?, Number>(name = "round", isPure = true, minArgs = 1, m
 
     override operator fun invoke(arg: Number?) = round(arg!!)!!
 
-    // TODO Round to EVEN ?
     private fun round(number: Number) = when (number) {
         is Long, is Int, is Short, is Byte, is BigInteger -> number
         is BigDecimal -> number.setScale(0, RoundingMode.HALF_EVEN).setScale(1)

@@ -9,7 +9,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
-                mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java), restArgsType = Type.Real::class.java) {
+                               mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java),
+                               restArgsType = Type.Real::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1    -> args[0] as Number?
@@ -17,10 +18,10 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
     }
 
     private fun max(f: Number?, s: Any?): Number? = when {
-        f is Int        && s is Int        -> maxOf(f, s)
-        f is Long       && s is Long       -> maxOf(f, s)
-        f is Float      && s is Float      -> maxOf(f, s)
-        f is Double     && s is Double     -> maxOf(f, s)
+        f is Int        && s is Int        -> kotlin.math.max(f, s)
+        f is Long       && s is Long       -> kotlin.math.max(f, s)
+        f is Float      && s is Float      -> kotlin.math.max(f, s)
+        f is Double     && s is Double     -> kotlin.math.max(f, s)
         f is BigRatio   && s is BigRatio   -> maxOf(f, s)
         f is BigInteger && s is BigInteger -> maxOf(f, s)
         f is BigDecimal && s is BigDecimal -> maxOf(f, s)

@@ -2,51 +2,22 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.scm.BigComplex
-import core.scm.BigRatio
 import core.utils.Utils
-import java.math.BigDecimal
-import java.math.BigInteger
+import kotlin.math.asin
+import kotlin.math.ln
+import kotlin.math.sqrt
 
-class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1,
+                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 0L
-        arg is BigDecimal -> asin(arg)
-        arg is BigInteger -> asin(arg)
         arg is BigComplex -> asin(arg)
-        arg is BigRatio   -> asin(arg.toBigDecimal())
-        else -> {
-            val asin = Math.asin(arg!!.toDouble())
-            when {
-                asin.isNaN() -> asin(BigComplex(arg))
-                else -> asin
+        else -> asin(arg!!.toDouble()).let {
+            when (it.isNaN()) {
+                true -> asin(BigComplex(arg))
+                else -> it
             }
-        }
-    }
-
-    private fun asin(bd: BigDecimal): Number {
-        val v = bd.toDouble()
-        if (!v.isFinite()) {
-            return Double.NaN
-        } else {
-            val asin = Math.asin(v)
-            if (asin.isNaN()) {
-                return asin(BigComplex(bd))
-            }
-            return asin
-        }
-    }
-
-    private fun asin(bi: BigInteger): Number {
-        val v = bi.toDouble()
-        if (!v.isFinite()) {
-            return Double.NaN
-        } else {
-            val asin = Math.asin(v)
-            if (asin.isNaN()) {
-                return asin(BigComplex(bi))
-            }
-            return asin
         }
     }
 
@@ -59,34 +30,34 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, max
         val r = c.re
         val i = c.im
         val signum: Int
-        if (i.signum() == 0) {
-            signum = -r.signum()
+        signum = if (i.signum() == 0) {
+            -r.signum()
         } else {
-            signum = i.signum()
+            i.signum()
         }
         val a = r.toDouble()
-        if (!a.isFinite()) {
-            return Double.NaN
+        if (!Utils.isFinite(a)) {
+            return a
         }
         val b = i.toDouble()
-        if (!b.isFinite()) {
-            return Double.NaN
+        if (!Utils.isFinite(b)) {
+            return b
         }
 
         val b2 = b * b
-        val L = Math.sqrt((1 + a) * (1 + a) + b2)
-        val R = Math.sqrt((1 - a) * (1 - a) + b2)
+        val L = sqrt((1 + a) * (1 + a) + b2)
+        val R = sqrt((1 - a) * (1 - a) + b2)
         val A = (L - R) / 2
         val B = (L + R) / 2
 
-        val re = Math.asin(A)
-        if (!re.isFinite()) {
-            return Double.NaN
+        val re = asin(A)
+        if (!Utils.isFinite(re)) {
+            return re
         }
 
-        val im = Math.log(B + Math.sqrt(B * B - 1))
-        if (!im.isFinite()) {
-            return Double.NaN
+        val im = ln(B + sqrt(B * B - 1))
+        if (!Utils.isFinite(im)) {
+            return im
         }
         return BigComplex(re, signum * im)
     }

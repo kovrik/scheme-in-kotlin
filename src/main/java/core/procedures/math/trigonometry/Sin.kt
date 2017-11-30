@@ -3,45 +3,29 @@ package core.procedures.math.trigonometry
 import core.procedures.AFn
 import core.procedures.math.Multiplication
 import core.scm.BigComplex
-import core.scm.BigRatio
 import core.utils.Utils
-
-import java.math.BigDecimal
-import java.math.BigInteger
+import kotlin.math.cos
+import kotlin.math.cosh
+import kotlin.math.sin
+import kotlin.math.sinh
 
 class Sin : AFn<Number?, Number>(name = "sin", isPure = true, minArgs = 1, maxArgs = 1,
                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?) = sin(arg!!)
+    override operator fun invoke(arg: Number?) = when {
+        Utils.isZero(arg!!) -> 0L
+        arg is BigComplex   -> sin(arg)
+        else                -> sin(arg.toDouble())
+    }
 
     companion object {
 
         private val multiplication = Multiplication()
 
-        fun sin(n: Number) = when {
-            Utils.isZero(n) -> 0L
-            n is BigDecimal -> sin(n)
-            n is BigInteger -> sin(n)
-            n is BigComplex -> sin(n)
-            n is BigRatio   -> sin(n.toBigDecimal())
-            else            -> Math.sin(n.toDouble())
+        fun sin(c: BigComplex): BigComplex {
+            val x = c.re.toDouble()
+            val y = c.im.toDouble()
+            return BigComplex(multiplication(sin(x), cosh(y)), multiplication(cos(x), sinh(y)))
         }
-
-        fun sin(bd: BigDecimal) = bd.toDouble().let {
-            when {
-                !it.isFinite() -> Double.NaN
-                else           -> Math.sin(it)
-            }
-        }
-
-        fun sin(bi: BigInteger) = bi.toDouble().let {
-            when {
-                !it.isFinite() -> Double.NaN
-                else           -> Math.sin(it)
-            }
-        }
-
-        fun sin(c: BigComplex) = BigComplex(multiplication(Sin.sin(c.re), Cosh.cosh(c.im)),
-                                            multiplication(Cos.cos(c.re), Sinh.sinh(c.im)))
     }
 }

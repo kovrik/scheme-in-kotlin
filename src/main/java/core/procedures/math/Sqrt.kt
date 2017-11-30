@@ -2,6 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.scm.BigComplex
+import kotlin.math.sqrt
 
 class Sqrt : AFn<Number?, Number>(name = "sqrt", isPure = true, minArgs = 1, maxArgs = 1,
                                   mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
@@ -11,6 +12,6 @@ class Sqrt : AFn<Number?, Number>(name = "sqrt", isPure = true, minArgs = 1, max
             0    -> invoke(arg.re)
             else -> arg.sqrt()
         }
-        else -> Math.sqrt(arg!!.toDouble())
+        else -> sqrt(arg!!.toDouble())
     }
 }

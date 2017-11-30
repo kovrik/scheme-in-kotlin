@@ -8,6 +8,8 @@ import core.utils.Utils
 import core.writer.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 
 class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
                                   mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
@@ -154,7 +156,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, max
                 var e = ex.toInt()
                 if (e < 0) {
                     isNegative = true
-                    e = Math.abs(e)
+                    e = e.absoluteValue
                 }
                 val result = BigInteger.valueOf(b).pow(e)
                 if (isNegative) {
@@ -164,14 +166,14 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, max
             } else {
                 /* If we came here, then ex is greater than Int.MAX_VALUE */
                 return when {
-                    Math.abs(b) < 1 -> 0L
+                    b.absoluteValue < 1 -> 0L
                     b > 0 -> Double.POSITIVE_INFINITY
                     else -> if (Predicate.IS_ODD(ex)) Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY
                 }
             }
         }
         /* Double */
-        val result = Math.pow(b.toDouble(), ex.toDouble())
+        val result = b.toDouble().pow(ex.toDouble())
         return when {
             result.isNaN() -> BigComplex.of(b).expt(BigComplex.of(ex))
             !result.isFinite() -> Utils.toBigDecimal(b).pow(ex.toInt())

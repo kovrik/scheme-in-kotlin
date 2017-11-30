@@ -7,6 +7,7 @@ import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.absoluteValue
 
 class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.Rational::class.java) {
 
@@ -48,12 +49,12 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     private fun lcm(first: Number, second: Number): Number {
         val (f, s) = Utils.upcast(first, second)
         return when {
-            f is Double     && s is Double     -> lcm(Math.abs(f), Math.abs(s))
-            f is Float      && s is Float      -> lcm(Math.abs(f.toDouble()), Math.abs(s.toDouble()))
+            f is Double     && s is Double     -> lcm(f.absoluteValue, s.absoluteValue)
+            f is Float      && s is Float      -> lcm(f.toDouble().absoluteValue, s.toDouble().absoluteValue)
             f is BigRatio   && s is BigRatio   -> lcm(f, s)
             f is BigDecimal && s is BigDecimal -> lcm(f, s)
             f is BigInteger && s is BigInteger -> lcm(f, s)
-            else                               -> lcm(Math.abs(f.toLong()), Math.abs(s.toLong()))
+            else                               -> lcm(f.toLong().absoluteValue, s.toLong().absoluteValue)
         }
     }
 }

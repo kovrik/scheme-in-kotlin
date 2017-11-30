@@ -28,8 +28,8 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         private val abs       = Abs()
 
         internal fun gcd(a: Long, b: Long): Long {
-            var alocal = Math.abs(a)
-            var blocal = Math.abs(b)
+            var alocal = kotlin.math.abs(a)
+            var blocal = kotlin.math.abs(b)
             while (blocal > 0) {
                 val temp = blocal
                 blocal = alocal % blocal
