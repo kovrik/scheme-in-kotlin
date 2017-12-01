@@ -24,7 +24,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, min
         if (!number.isFinite()) throw ArithmeticException("inexact->exact: no exact representation of: ${Writer.write(number)}")
         /* Check if Double is integral */
         try {
-            val bits = java.lang.Double.doubleToLongBits(number)
+            val bits = number.toBits()
             val sign = bits.ushr(63)
             val exponent = (bits.ushr(52) xor (sign shl 11)) - 1023
             val fraction = bits shl 12

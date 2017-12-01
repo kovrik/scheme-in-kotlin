@@ -334,7 +334,7 @@ object Utils {
         is Int        -> o == 1
         is Short      -> o.toInt() == 1
         is Byte       -> o.toInt() == 1
-        is Float      -> java.lang.Float.floatToRawIntBits(o) == 1
+        is Float      -> o.toRawBits() == 1
         is BigInteger -> o.compareTo(BigInteger.ONE) == 0
         else          -> false
     }
