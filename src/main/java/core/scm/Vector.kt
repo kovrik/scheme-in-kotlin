@@ -27,7 +27,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
-    constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+    constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = emptyArray()
     }
 
@@ -39,22 +39,22 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
     }
 
     constructor(coll: Collection<Any?>) : super(minArgs = 1, maxArgs = 1,
-                                                    mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+                                                mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = coll.toTypedArray()
     }
 
     constructor(elements: Array<out Any?>) : super(minArgs = 1, maxArgs = 1,
-                                                   mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+                                                   mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = Arrays.copyOf(elements, elements.size)
     }
 
     constructor(vector: Vector) : super(minArgs = 1, maxArgs = 1,
-                                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+                                        mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = vector.array.copyOf()
     }
 
     constructor(vector: Vector, fromIndex: Int, toIndex: Int) : super(minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java)) {
+                                              mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = vector.array.copyOfRange(fromIndex, toIndex)
     }
 
