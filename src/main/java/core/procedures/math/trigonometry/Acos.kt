@@ -10,8 +10,9 @@ import kotlin.math.sqrt
 class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1,
                                   mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
-    override operator fun invoke(arg: Number?) = when (arg) {
-        is BigComplex -> acos(arg)
+    override operator fun invoke(arg: Number?) = when {
+        !Utils.isFinite(arg) -> Double.NaN
+        arg is BigComplex -> acos(arg)
         else -> acos(arg!!.toDouble()).let {
             when (it.isNaN()) {
                 true -> acos(BigComplex(arg))

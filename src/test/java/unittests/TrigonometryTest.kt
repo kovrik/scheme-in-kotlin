@@ -99,6 +99,9 @@ class TrigonometryTest : AbstractTest() {
 
     @Test
     fun testAsin() {
+        assertEquals(Double.NaN, eval("(asin -inf.0)", env))
+        assertEquals(Double.NaN, eval("(asin +inf.0)", env))
+        assertEquals(Double.NaN, eval("(asin +nan.0)", env))
         assertEquals(0L, eval("(asin 0)", env))
         assertEquals(1.5707963267948966, eval("(asin 1)", env))
         assertEquals(-1.5707963267948966, eval("(asin -1)", env))
@@ -114,6 +117,9 @@ class TrigonometryTest : AbstractTest() {
 
     @Test
     fun testAcos() {
+        assertEquals(Double.NaN, eval("(acos -inf.0)", env))
+        assertEquals(Double.NaN, eval("(acos +inf.0)", env))
+        assertEquals(Double.NaN, eval("(acos +nan.0)", env))
         assertEquals(1.5707963267948966, eval("(acos 0)", env))
         assertEquals(0.0, eval("(acos 1)", env))
         assertEquals(3.141592653589793, eval("(acos -1)", env))

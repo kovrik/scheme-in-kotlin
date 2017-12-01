@@ -11,6 +11,7 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, max
                                   mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
+        !Utils.isFinite(arg) -> Double.NaN
         Utils.isZero(arg) -> 0L
         arg is BigComplex -> asin(arg)
         else -> asin(arg!!.toDouble()).let {
