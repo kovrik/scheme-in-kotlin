@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class Max : AFn<Any?, Number?>(name = "max", isPure = true, minArgs = 1,
-                               mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java),
+                               mandatoryArgsTypes = arrayOf(Type.Real::class.java),
                                restArgsType = Type.Real::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

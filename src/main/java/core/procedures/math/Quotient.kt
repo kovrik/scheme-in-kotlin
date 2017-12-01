@@ -8,7 +8,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
-                          mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType, Long::class.javaObjectType)) {
+                          mandatoryArgsTypes = arrayOf(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = when {
         Utils.isOne(arg2)  -> Utils.inexactnessTaint(arg1 as Number, arg2 as Number?)

@@ -7,7 +7,7 @@ import java.math.BigDecimal
 import kotlin.math.exp
 
 class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxArgs = 1,
-                                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                 mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     private val E = BigDecimal("2.71828182845904523536028747135266249775724709369995")
 

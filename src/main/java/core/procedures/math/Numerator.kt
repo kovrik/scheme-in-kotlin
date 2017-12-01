@@ -8,7 +8,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 
 class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
-                                       mandatoryArgsTypes = arrayOf<Class<*>>(Type.Rational::class.java)) {
+                                       mandatoryArgsTypes = arrayOf(Type.Rational::class.java)) {
 
     private val toExact = ToExact()
 

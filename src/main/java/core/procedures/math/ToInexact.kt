@@ -8,7 +8,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1,
-                                       mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                       mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {
         is BigComplex -> BigComplex(invoke(arg.re), invoke(arg.im))

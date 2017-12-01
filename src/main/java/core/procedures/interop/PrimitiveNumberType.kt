@@ -3,7 +3,7 @@ package core.procedures.interop
 import core.procedures.AFn
 
 open class PrimitiveNumberType private constructor(override val name: String) :
-        AFn<Number?, Number>(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+        AFn<Number?, Number>(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     companion object {
         val BYTE   = object : PrimitiveNumberType("byte")   { override operator fun invoke(arg: Number?) = arg!!.toByte() }

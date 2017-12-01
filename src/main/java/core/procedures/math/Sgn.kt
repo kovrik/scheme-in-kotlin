@@ -8,7 +8,7 @@ import java.math.BigInteger
 import kotlin.math.sign
 
 class Sgn : AFn<Number?, Number>(name = "sgn", isPure = true, minArgs = 1, maxArgs = 1,
-                                 mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
+                                 mandatoryArgsTypes = arrayOf(Type.Real::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {
         is Long       -> arg.sign

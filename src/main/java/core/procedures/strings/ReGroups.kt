@@ -6,7 +6,7 @@ import core.scm.MutableVector
 import java.util.regex.Matcher
 
 class ReGroups : AFn<Any?, Any?>(name = "re-groups", isPure = true, minArgs = 1, maxArgs = 1,
-                     mandatoryArgsTypes = arrayOf<Class<*>>(Matcher::class.java)) {
+                                 mandatoryArgsTypes = arrayOf(Matcher::class.java)) {
 
     override operator fun invoke(arg: Any?): Any? {
         val matcher = arg!! as Matcher

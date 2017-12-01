@@ -8,7 +8,7 @@ import kotlin.math.ln
 import kotlin.math.sqrt
 
 class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1,
-                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         !Utils.isFinite(arg) -> Double.NaN

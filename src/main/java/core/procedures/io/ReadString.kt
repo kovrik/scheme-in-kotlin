@@ -8,7 +8,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class ReadString : AFn<Any?, String>(name = "read-string", minArgs = 1, maxArgs = 2,
-                                     mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
+                                     mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                      restArgsType = InputPort::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = CharArray((args[0] as Number).toInt()).let {

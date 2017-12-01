@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class Denominator : AFn<Number?, Number>(name = "denominator", isPure = true, minArgs = 1, maxArgs = 1,
-                        mandatoryArgsTypes = arrayOf<Class<*>>(Type.Rational::class.java)) {
+                        mandatoryArgsTypes = arrayOf(Type.Rational::class.java)) {
 
     private val toExact = ToExact()
 

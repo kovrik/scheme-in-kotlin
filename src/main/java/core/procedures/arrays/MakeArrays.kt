@@ -6,8 +6,8 @@ import core.scm.Type
 object MakeArrays {
 
     class MakeBooleans : AFn<Any?, BooleanArray>(name = "make-booleans", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            restArgsType = Boolean::class.java) {
+                                                 mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                                 restArgsType = Boolean::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): BooleanArray {
             val length = (args[0] as Number).toInt()
@@ -17,8 +17,8 @@ object MakeArrays {
     }
 
     class MakeBytes : AFn<Any?, ByteArray>(name = "make-bytes", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                           mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                           lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): ByteArray {
             val length = (args[0] as Number).toInt()
@@ -28,8 +28,8 @@ object MakeArrays {
     }
 
     class MakeChars : AFn<Any?, CharArray>(name = "make-chars", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                           mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                           lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): CharArray {
             val length = (args[0] as Number).toInt()
@@ -39,8 +39,8 @@ object MakeArrays {
     }
 
     class MakeDoubles : AFn<Any?, DoubleArray>(name = "make-doubles", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                               mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                               lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): DoubleArray {
             val length = (args[0] as Number).toInt()
@@ -50,8 +50,8 @@ object MakeArrays {
     }
 
     class MakeFloats : AFn<Any?, FloatArray>(name = "make-floats", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                             mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                             lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): FloatArray {
             val length = (args[0] as Number).toInt()
@@ -61,8 +61,8 @@ object MakeArrays {
     }
 
     class MakeInts : AFn<Any?, IntArray>(name = "make-ints", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                         mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                         lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): IntArray {
             val length = (args[0] as Number).toInt()
@@ -72,8 +72,8 @@ object MakeArrays {
     }
 
     class MakeLongs : AFn<Any?, LongArray>(name = "make-longs", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                           mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                           lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): LongArray {
             val length = (args[0] as Number).toInt()
@@ -83,8 +83,8 @@ object MakeArrays {
     }
 
     class MakeObjects : AFn<Any?, Array<*>>(name = "make-objects", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Any::class.java) {
+                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                            lastArgType = Any::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): Array<*> {
             val length = (args[0] as Number).toInt()
@@ -94,8 +94,8 @@ object MakeArrays {
     }
 
     class MakeShorts : AFn<Any?, ShortArray>(name = "make-shorts", isPure = true, minArgs = 1, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-            lastArgType = Number::class.java) {
+                                             mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                             lastArgType = Number::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): ShortArray {
             val length = (args[0] as Number).toInt()
@@ -105,8 +105,8 @@ object MakeArrays {
     }
 
     class MakeArray : AFn<Any?, Any>(name = "make-array", isPure = true, minArgs = 2,
-            mandatoryArgsTypes = arrayOf<Class<*>>(Class::class.java, Type.ExactNonNegativeInteger::class.java),
-            restArgsType = Type.ExactNonNegativeInteger::class.java) {
+                                     mandatoryArgsTypes = arrayOf(Class::class.java, Type.ExactNonNegativeInteger::class.java),
+                                     restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
         override operator fun invoke(args: Array<out Any?>): Any {
             val clazz = args[0] as Class<*>

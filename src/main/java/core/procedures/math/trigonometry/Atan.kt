@@ -10,7 +10,7 @@ import kotlin.math.atan
 import kotlin.math.ln
 
 class Atan : AFn<Number?, Number>(name = "atan", isPure = true, minArgs = 1, maxArgs = 1,
-                                  mandatoryArgsTypes =  arrayOf<Class<*>>(Number::class.java)) {
+                                  mandatoryArgsTypes =  arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 0L

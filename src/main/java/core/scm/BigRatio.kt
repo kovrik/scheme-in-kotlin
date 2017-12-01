@@ -87,12 +87,12 @@ class BigRatio : Number, Comparable<BigRatio> {
     }
 
     fun ceiling(): BigRatio {
-        val round = if (isPositive) BigDecimal.ROUND_UP else BigDecimal.ROUND_DOWN
+        val round = if (isPositive) RoundingMode.UP else RoundingMode.DOWN
         return BigRatio(BigDecimal(numerator).divide(BigDecimal(denominator), round).toBigInteger())
     }
 
     fun floor(): BigRatio {
-        val round = if (isPositive) BigDecimal.ROUND_DOWN else BigDecimal.ROUND_UP
+        val round = if (isPositive) RoundingMode.DOWN else RoundingMode.UP
         return BigRatio(BigDecimal(numerator).divide(BigDecimal(denominator), round).toBigInteger())
     }
 

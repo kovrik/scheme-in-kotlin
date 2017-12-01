@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.scm.MutableSet
 
 class Intersection : AFn<Any?, Set<*>>(name = "intersection", isPure = true, minArgs = 1,
-                         mandatoryArgsTypes = arrayOf<Class<*>>(Set::class.java), restArgsType = Set::class.java) {
+                                       mandatoryArgsTypes = arrayOf(Set::class.java), restArgsType = Set::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when {
         args.size == 1 -> args[0]!! as Set<*>

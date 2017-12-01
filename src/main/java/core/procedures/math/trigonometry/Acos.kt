@@ -8,7 +8,7 @@ import kotlin.math.ln
 import kotlin.math.sqrt
 
 class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, maxArgs = 1,
-                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         !Utils.isFinite(arg) -> Double.NaN

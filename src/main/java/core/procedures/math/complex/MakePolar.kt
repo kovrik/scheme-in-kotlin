@@ -9,7 +9,7 @@ import core.scm.BigComplex
 import core.scm.Type
 
 class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, minArgs = 2, maxArgs = 2,
-                                       mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java, Type.Real::class.java)) {
+                                       mandatoryArgsTypes = arrayOf(Type.Real::class.java, Type.Real::class.java)) {
 
     private val addition = Addition()
     private val multiplication = Multiplication()

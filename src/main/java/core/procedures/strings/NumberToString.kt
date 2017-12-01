@@ -7,7 +7,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
-                           mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java), restArgsType = Long::class.java) {
+                                         mandatoryArgsTypes = arrayOf(Number::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): String {
         val number = args[0]!! as Number

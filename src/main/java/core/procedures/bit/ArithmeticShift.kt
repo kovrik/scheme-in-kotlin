@@ -5,7 +5,7 @@ import core.scm.Type
 import core.utils.Utils
 
 class ArithmeticShift : AFn<Number?, Long>(name = "arithmetic-shift", isPure = true, minArgs = 2, maxArgs = 2,
-                            mandatoryArgsTypes = arrayOf(Type.BitOp::class.java, Long::class.javaObjectType)) {
+                                           mandatoryArgsTypes = arrayOf(Type.BitOp::class.java, Long::class.javaObjectType)) {
 
     // TODO shifts for big numbers
     override operator fun invoke(arg1: Number?, arg2: Number?) = when {

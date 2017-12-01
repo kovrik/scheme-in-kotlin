@@ -7,8 +7,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArgs = 2, maxArgs = 2,
-                                       mandatoryArgsTypes = arrayOf<Class<*>>(Long::class.javaObjectType,
-                                                                              Long::class.javaObjectType)) {
+                                       mandatoryArgsTypes = arrayOf(Long::class.javaObjectType,
+                                                                    Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Number?, arg2: Number?): Number {
         val (f, s) = Utils.upcast(arg1!!, arg2!!)

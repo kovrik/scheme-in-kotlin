@@ -6,7 +6,7 @@ import core.scm.OutputPort
 import core.writer.Writer
 
 open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
-                                     mandatoryArgsTypes = arrayOf<Class<*>>(Any::class.java),
+                                     mandatoryArgsTypes = arrayOf(Any::class.java),
                                      restArgsType = OutputPort::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

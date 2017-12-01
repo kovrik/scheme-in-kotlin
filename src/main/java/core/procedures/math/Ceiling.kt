@@ -6,10 +6,11 @@ import core.scm.Type
 
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 import kotlin.math.ceil
 
 class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, minArgs = 1, maxArgs = 1,
-                                     mandatoryArgsTypes = arrayOf<Class<*>>(Type.Real::class.java)) {
+                                     mandatoryArgsTypes = arrayOf(Type.Real::class.java)) {
 
     override operator fun invoke(arg: Number?): Number {
         arg!!
@@ -17,7 +18,7 @@ class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, minArgs = 
             is Long, is Int, is Short, is Byte, is BigInteger -> arg
             is Double     -> ceil((arg as Double?)!!)
             is Float      -> ceil((arg as Float?)!!.toDouble())
-            is BigDecimal -> arg.setScale(0, BigDecimal.ROUND_UP)
+            is BigDecimal -> arg.setScale(0, RoundingMode.UP)
             is BigRatio   -> arg.ceiling()
             else          -> ceil(arg.toDouble())
         }

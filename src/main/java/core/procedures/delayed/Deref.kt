@@ -7,7 +7,7 @@ import core.scm.IDeref
 import core.utils.Utils
 
 class Deref : AFn<Any?, Any?>(name = "deref", minArgs = 1, maxArgs = 3,
-                              mandatoryArgsTypes = arrayOf<Class<*>>(IDeref::class.java)) {
+                              mandatoryArgsTypes = arrayOf(IDeref::class.java)) {
 
     override fun invoke(args: Array<out Any?>): Any? {
         if (args.size == 1) {

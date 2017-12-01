@@ -10,7 +10,7 @@ import kotlin.math.ln
 import kotlin.math.pow
 
 class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxArgs = 1,
-                                 mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                 mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     companion object {
         /* If number has 307 digits or less, then can use ln(double) */

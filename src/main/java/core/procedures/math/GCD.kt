@@ -11,7 +11,6 @@ import java.math.BigInteger
 
 class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.Rational::class.java) {
 
-
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         0    -> 0L
         1    -> abs(args[0]!! as Number)

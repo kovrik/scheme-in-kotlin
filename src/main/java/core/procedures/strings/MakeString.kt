@@ -5,8 +5,8 @@ import core.scm.MutableString
 import core.scm.Type
 
 class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true, minArgs = 1, maxArgs = 2,
-                       mandatoryArgsTypes = arrayOf<Class<*>>(Type.ExactNonNegativeInteger::class.java),
-                       restArgsType = Char::class.javaObjectType) {
+                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
+                                            restArgsType = Char::class.javaObjectType) {
 
     override operator fun invoke(args: Array<out Any?>): MutableString {
         val length = (args[0] as Number).toInt()

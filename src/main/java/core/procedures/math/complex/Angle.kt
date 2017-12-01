@@ -5,7 +5,7 @@ import core.scm.BigComplex
 import core.utils.Utils
 
 class Angle : AFn<Number?, Number>(name = "angle", isPure = true, minArgs =  1, maxArgs = 1,
-                                   mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                   mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = angle(arg!!)
 

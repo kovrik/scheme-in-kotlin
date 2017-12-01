@@ -12,7 +12,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
-                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java, Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(Number::class.java, Number::class.java)) {
 
     override operator fun invoke(arg1: Number?, arg2: Number?): Number {
         val base = arg1!!

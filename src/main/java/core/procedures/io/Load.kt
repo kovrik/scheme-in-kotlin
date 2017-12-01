@@ -7,7 +7,7 @@ import core.scm.specialforms.Begin
 import java.io.File
 
 class Load : AFn<CharSequence?, Any>(name = "load", minArgs = 1, maxArgs = 1,
-                                     mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java)) {
+                                     mandatoryArgsTypes = arrayOf(CharSequence::class.java)) {
 
     private val reader = FileReader()
 

@@ -4,7 +4,8 @@ import core.procedures.AFn
 import core.scm.Type
 
 class StringRef : AFn<Any?, Char>(name = "string-ref", isPure = true, minArgs = 2, maxArgs = 2,
-                      mandatoryArgsTypes = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(CharSequence::class.java,
+                                                               Type.ExactNonNegativeInteger::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Char {
         val str = arg1!!.toString()

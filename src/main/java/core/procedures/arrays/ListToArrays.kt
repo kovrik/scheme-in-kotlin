@@ -7,7 +7,7 @@ import core.utils.Utils
 object ListToArrays {
 
     class ListToBooleans : AFn<List<*>?, BooleanArray?>(name = "list->booleans", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                        mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): BooleanArray? {
             if (arg == null) return null
@@ -17,7 +17,7 @@ object ListToArrays {
     }
 
     class ListToBytes : AFn<List<*>?, ByteArray?>(name = "list->bytes", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                  mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): ByteArray? {
             if (arg == null) return null
@@ -27,7 +27,7 @@ object ListToArrays {
     }
 
     class ListToChars : AFn<List<*>?, CharArray?>(name = "list->chars", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                  mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): CharArray? {
             if (arg == null) return null
@@ -37,7 +37,7 @@ object ListToArrays {
     }
 
     class ListToDoubles : AFn<List<*>?, DoubleArray?>(name = "list->doubles", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                      mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): DoubleArray? {
             if (arg == null) return null
@@ -47,7 +47,7 @@ object ListToArrays {
     }
 
     class ListToFloats : AFn<List<*>?, FloatArray?>(name = "list->floats", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                    mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): FloatArray? {
             if (arg == null) return null
@@ -57,7 +57,7 @@ object ListToArrays {
     }
 
     class ListToInts : AFn<List<*>?, IntArray?>(name = "list->ints", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): IntArray? {
             if (arg == null) return null
@@ -67,7 +67,7 @@ object ListToArrays {
     }
 
     class ListToLongs : AFn<List<*>?, LongArray?>(name = "list->longs", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                  mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): LongArray? {
             if (arg == null) return null
@@ -77,7 +77,7 @@ object ListToArrays {
     }
 
     class ListToObjects : AFn<List<*>?, Array<*>?>(name = "list->objects", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                   mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): Array<*>? {
             if (arg == null) return null
@@ -87,7 +87,7 @@ object ListToArrays {
     }
 
     class ListToShorts : AFn<List<*>?, ShortArray?>(name = "list->shorts", isPure = true, minArgs = 1, maxArgs = 1,
-            mandatoryArgsTypes = arrayOf<Class<*>>(List::class.java)) {
+                                                    mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?): ShortArray? {
             if (arg == null) return null

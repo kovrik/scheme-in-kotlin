@@ -6,7 +6,8 @@ import core.reader.Reader
 import core.utils.Utils
 
 class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
-                           mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java), restArgsType = Long::class.java) {
+                                       mandatoryArgsTypes = arrayOf(CharSequence::class.java),
+                                       restArgsType = Long::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): Any? {
         val number = args[0].toString()

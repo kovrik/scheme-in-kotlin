@@ -4,7 +4,7 @@ import core.procedures.AFn
 import java.nio.charset.Charset
 
 class StringToBytes : AFn<Any?, ByteArray?>(name = "string->bytes", isPure = true, minArgs = 1, maxArgs = 2,
-                                            mandatoryArgsTypes = arrayOf<Class<*>>(CharSequence::class.java),
+                                            mandatoryArgsTypes = arrayOf(CharSequence::class.java),
                                             lastArgType = CharSequence::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

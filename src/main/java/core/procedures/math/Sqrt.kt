@@ -5,7 +5,7 @@ import core.scm.BigComplex
 import kotlin.math.sqrt
 
 class Sqrt : AFn<Number?, Number>(name = "sqrt", isPure = true, minArgs = 1, maxArgs = 1,
-                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {
         is BigComplex -> when (arg.im.signum()) {

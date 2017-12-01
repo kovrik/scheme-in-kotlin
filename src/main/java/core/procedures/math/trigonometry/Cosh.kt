@@ -10,7 +10,7 @@ import kotlin.math.sin
 import kotlin.math.sinh
 
 class Cosh : AFn<Number?, Number>(name = "cosh", isPure = true, minArgs = 1, maxArgs = 1,
-                                  mandatoryArgsTypes = arrayOf<Class<*>>(Number::class.java)) {
+                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 1L
