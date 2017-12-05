@@ -478,11 +478,11 @@ object Utils {
 
     fun isEmpty(o: Any?) = when (o) {
         null             -> true
-        is Sequence<*>   -> !o.iterator().hasNext()
-        is Collection<*> ->  o.isEmpty()
-        is CharSequence  ->  o.isEmpty()
-        is Map<*, *>     ->  o.isEmpty()
-        else             ->  false
+        is Sequence<*>   -> o.none()
+        is Collection<*> -> o.isEmpty()
+        is CharSequence  -> o.isEmpty()
+        is Map<*, *>     -> o.isEmpty()
+        else             -> false
     }
 
     fun toAssoc(obj: Any?): IAssoc = when (obj) {
