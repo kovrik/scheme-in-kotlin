@@ -29,8 +29,7 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, minArgs = 1, max
     private fun acos(c: BigComplex): Number {
         val r = c.re
         val i = c.im
-        val signum: Int
-        signum = if (i.signum() == 0) {
+        val signum = if (i.signum() == 0) {
             r.signum()
         } else {
             -i.signum()

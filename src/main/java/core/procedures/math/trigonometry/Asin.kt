@@ -30,8 +30,7 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, max
     private fun asin(c: BigComplex): Number {
         val r = c.re
         val i = c.im
-        val signum: Int
-        signum = if (i.signum() == 0) {
+        val signum = if (i.signum() == 0) {
             -r.signum()
         } else {
             i.signum()

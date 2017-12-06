@@ -9,8 +9,6 @@ import org.junit.Assert.assertEquals
 
 class TrigonometryTest : AbstractTest() {
 
-    // FIXME precision for big numbers
-
     @Test
     fun testSin() {
         assertEquals(0L, eval("(sin 0)", env))
@@ -23,7 +21,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(0.7457052121767203, eval("(sin 2.3)", env))
         assertEquals(BigComplex(BigDecimal("1.2984575814159773"), BigDecimal("0.6349639147847361")), eval("(sin 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-8.471645454300148"), BigDecimal("-5.412680923178193")), eval("(sin -1-3i)", env))
-//            assertEquals(-0.1285197485957309, eval("(sin 99999999999999999999999999999999999999999999999999999999999999)", env))
+        assertEquals(-0.7044620562256781, eval("(sin 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -37,7 +35,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(-0.666276021279824, eval("(cos 2.3)", env) as Double, 0.000000000000001)
         assertEquals(BigComplex(BigDecimal("0.8337300251311492"), BigDecimal("-0.9888977057628651")), eval("(cos 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("5.439580991019764"), BigDecimal("-8.429751080849945")), eval("(cos -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(cos 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(-0.7097416511226389, eval("(cos 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -51,7 +49,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(-1.1192136417341325, eval("(tan 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.2717525853195118"), BigDecimal("1.083923327338694")), eval("(tan 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-0.0045171372766583"), BigDecimal("-1.002054988245812")), eval("(tan -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(tan 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(0.9925612440969053, eval("(tan 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -66,7 +64,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(4.936961805545957, eval("(sinh 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.6349639147847361"), BigDecimal("1.2984575814159773")), eval("(sinh 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("1.1634403637032504"), BigDecimal("-0.21775955162215221")), eval("(sinh -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(sinh 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(Double.POSITIVE_INFINITY, eval("(sinh 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -80,7 +78,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(5.037220649268761, eval("(cosh 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.8337300251311492"), BigDecimal("0.9888977057628651")), eval("(cosh 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-1.5276382501165435"), BigDecimal("0.1658444019189788")), eval("(cosh -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(cosh 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(Double.POSITIVE_INFINITY, eval("(cosh 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -94,7 +92,7 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(0.9800963962661914, eval("(tanh 2.3)", env))
         assertEquals(BigComplex(BigDecimal("1.083923327338694"), BigDecimal("0.2717525853195118")), eval("(tanh 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-0.7680176472869111"), BigDecimal("0.05916853956605073")), eval("(tanh -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(tanh 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(1.0, eval("(tanh 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -112,7 +110,9 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("1.5707963267948966"), BigDecimal("-1.4750447812414251")), eval("(asin 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.6662394324925154"), BigDecimal("1.0612750619050357")), eval("(asin 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-0.3076036495307112"), BigDecimal("-1.8641615441578825")), eval("(asin -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(asin 99999999999999999999999999999999999999999999999999999999999999)", env));
+        // FIXME
+//        assertEquals(BigComplex(BigDecimal("1.5707963267948966"), BigDecimal("-143.45342294619078")),
+//                     eval("(asin 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -129,7 +129,9 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("0"), BigDecimal("1.4750447812414251")), eval("(acos 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.9045568943023813"), BigDecimal("-1.0612750619050357")), eval("(acos 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("1.8783999763256078"), BigDecimal("1.8641615441578825")), eval("(acos -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(acos 99999999999999999999999999999999999999999999999999999999999999)", env));
+        // FIXME
+//        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal("143.45342294619078")),
+//                     eval("(acos 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -143,6 +145,6 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(1.1606689862534056, eval("(atan 2.3)", env))
         assertEquals(BigComplex(BigDecimal("1.0172219678978514"), BigDecimal("0.4023594781085251")), eval("(atan 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-1.4614618538579256"), BigDecimal("-0.305943857905529")), eval("(atan -1-3i)", env))
-        //    assertEquals(-0.1285197485957309, eval("(atan 99999999999999999999999999999999999999999999999999999999999999)", env));
+        assertEquals(1.5707963267948966, eval("(atan 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 }
