@@ -18,7 +18,13 @@ class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, minArgs = 
             is Long, is Int, is Short, is Byte, is BigInteger -> arg
             is Double     -> ceil((arg as Double?)!!)
             is Float      -> ceil((arg as Float?)!!.toDouble())
-            is BigDecimal -> arg.setScale(0, RoundingMode.UP)
+            is BigDecimal -> {
+                val result = arg.setScale(0, RoundingMode.UP)
+                when {
+                    arg.scale() > 0 -> result.setScale(1)
+                    else -> result
+                }
+            }
             is BigRatio   -> arg.ceiling()
             else          -> ceil(arg.toDouble())
         }

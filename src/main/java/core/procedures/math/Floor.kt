@@ -16,7 +16,13 @@ class Floor : AFn<Number?, Number>(name = "floor", isPure = true, minArgs = 1, m
         is Long, is Int, is Short, is Byte, is BigInteger -> arg
         is Double     -> floor((arg as Double?)!!)
         is Float      -> floor((arg as Float?)!!.toDouble())
-        is BigDecimal -> arg.setScale(0, RoundingMode.DOWN)
+        is BigDecimal -> {
+            val result = arg.setScale(0, RoundingMode.DOWN)
+            when {
+                arg.scale() > 0 -> result.setScale(1)
+                else -> result
+            }
+        }
         is BigRatio   -> arg.floor()
         else          -> floor(arg!!.toDouble())
     }!!

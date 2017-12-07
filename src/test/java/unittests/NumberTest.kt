@@ -651,10 +651,10 @@ class NumberTest : AbstractTest() {
         assertEquals(BigInteger("999999999999997000000000000002999999999999999"),
                 eval("(* 999999999999999 999999999999999 999999999999999)", env))
 
-        assertEquals(BigDecimal(big0), eval("(truncate (+ 0.2 $big0))", env))
-        assertEquals(BigDecimal(big0).negate(), eval("(truncate (+ 0.2 -$big0))", env))
-        assertEquals(BigDecimal(big0), eval("(floor (+ 0.2 $big0))", env))
-        assertEquals(BigDecimal(big0).add(BigDecimal.ONE), eval("(ceiling (+ 0.2 $big0))", env))
+        assertEquals(BigDecimal(big0).setScale(1), eval("(truncate (+ 0.2 $big0))", env))
+        assertEquals(BigDecimal(big0).setScale(1).negate(), eval("(truncate (+ 0.2 -$big0))", env))
+        assertEquals(BigDecimal(big0).setScale(1), eval("(floor (+ 0.2 $big0))", env))
+        assertEquals(BigDecimal(big0).setScale(1).add(BigDecimal.ONE), eval("(ceiling (+ 0.2 $big0))", env))
 
         assertEquals(BigInteger(big0), eval("(abs -$big0)", env))
         assertEquals(BigInteger(big0).add(BigInteger.ONE), eval("(max (+ 1 $big0) $big0)", env))
@@ -853,8 +853,8 @@ class NumberTest : AbstractTest() {
         assertEquals(true, eval("(= (quotient 5 4) (// 5 4))", env))
         assertEquals(true, eval("(= (quotient 5 4.0) (// 5 4.0))", env))
         assertEquals(true, eval("(= (quotient -5 4.0) (// -5 4.0))", env))
-        // FIXME
-//        assertEquals(true, eval("(= (quotient -5999999999999999999999999999999999999 4.0) (// -5999999999999999999999999999999999999 4.0))", env))
+        assertEquals(eval("(quotient -5999999999999999999999999999999999999 4.0)", env),
+                     eval("(// -5999999999999999999999999999999999999 4.0)", env))
     }
 
     @Test

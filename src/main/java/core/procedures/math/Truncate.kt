@@ -14,9 +14,15 @@ class Truncate : AFn<Number?, Number>(name = "truncate", isPure = true, minArgs 
     override operator fun invoke(arg: Number?): Number = when (arg) {
         is Double -> truncate(arg)
         is Float  -> truncate(arg)
-        is BigDecimal -> when {
-            arg.signum() < 0 -> arg.setScale(0, RoundingMode.UP)
-            else             -> arg.setScale(0, RoundingMode.DOWN)
+        is BigDecimal -> {
+            val result = when {
+                arg.signum() < 0 -> arg.setScale(0, RoundingMode.UP)
+                else -> arg.setScale(0, RoundingMode.DOWN)
+            }
+            when {
+                arg.scale() > 0 -> result.setScale(1)
+                else -> result
+            }
         }
         is BigRatio -> arg.truncate()
         else -> arg!!
