@@ -22,6 +22,7 @@ object Utils {
     const val DEFAULT_SCALE = 16
     val ROUNDING_MODE = RoundingMode.HALF_EVEN
     val DEFAULT_CONTEXT = MathContext(DEFAULT_SCALE, ROUNDING_MODE)
+    val TWO = BigDecimal("2")
 
     private val HASH_REGEX = ".+(#+\\.?+#?)/?(#+\\.?+#?)?$".toRegex()
 
@@ -382,6 +383,9 @@ object Utils {
     fun isPositiveInfinity(number: Number?) = number == Double.POSITIVE_INFINITY || number == Float.POSITIVE_INFINITY
 
     fun isNegativeInfinity(number: Number?) = number == Double.NEGATIVE_INFINITY || number == Float.NEGATIVE_INFINITY
+
+    /* Return number of digits of a given BigDecimal number */
+    fun integerDigits(n: BigDecimal) = if (n.signum() == 0) 1 else n.precision() - n.scale()
 
     /**
      * Inexactness 'taint'

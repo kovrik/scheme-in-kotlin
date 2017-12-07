@@ -14,7 +14,7 @@ class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxAr
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg!!) -> 1L
-        arg is BigComplex   -> Cos.cos(arg)
+        arg is BigComplex   -> cos(arg)
         else                -> cos(arg.toDouble())
     }
 

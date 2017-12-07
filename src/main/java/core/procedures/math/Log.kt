@@ -32,12 +32,9 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxAr
     private fun logBig(number: BigDecimal) = when {
         number.toDouble().isFinite() -> ln(number.toDouble())
         else -> {
-            val digits = integerDigits(number)
+            val digits = Utils.integerDigits(number)
             val num = number.movePointLeft(digits - digits.rem(MAX_DIGITS))
             (digits / MAX_DIGITS) * VALUE + ln(num.toDouble())
         }
     }
-
-    /* Return number of digits of a given BigDecimal number */
-    private fun integerDigits(n: BigDecimal) = if (n.signum() == 0) 1 else n.precision() - n.scale()
 }

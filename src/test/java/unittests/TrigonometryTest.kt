@@ -110,9 +110,8 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("1.5707963267948966"), BigDecimal("-1.4750447812414251")), eval("(asin 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.6662394324925154"), BigDecimal("1.0612750619050357")), eval("(asin 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("-0.3076036495307112"), BigDecimal("-1.8641615441578825")), eval("(asin -1-3i)", env))
-        // FIXME
-//        assertEquals(BigComplex(BigDecimal("1.5707963267948966"), BigDecimal("-143.45342294619078")),
-//                     eval("(asin 99999999999999999999999999999999999999999999999999999999999999)", env))
+        assertEquals(BigComplex(BigDecimal("1.5707963267948966"), BigDecimal("-143.45342294619078")),
+                     eval("(asin 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
@@ -129,9 +128,8 @@ class TrigonometryTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("0"), BigDecimal("1.4750447812414251")), eval("(acos 2.3)", env))
         assertEquals(BigComplex(BigDecimal("0.9045568943023813"), BigDecimal("-1.0612750619050357")), eval("(acos 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("1.8783999763256078"), BigDecimal("1.8641615441578825")), eval("(acos -1-3i)", env))
-        // FIXME
-//        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal("143.45342294619078")),
-//                     eval("(acos 99999999999999999999999999999999999999999999999999999999999999)", env))
+        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal("143.45342294619078")),
+                     eval("(acos 99999999999999999999999999999999999999999999999999999999999999)", env))
     }
 
     @Test
