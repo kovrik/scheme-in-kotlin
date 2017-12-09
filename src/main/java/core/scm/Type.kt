@@ -6,7 +6,6 @@ import core.utils.Utils
 
 object Type {
 
-    // TODO Get rid of them
     /* Marker objects */
     object ProperList
     object Pair
