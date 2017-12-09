@@ -5,7 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
 import core.scm.Symbol
-import core.utils.Utils
+import core.scm.Type
 import core.writer.Writer
 
 /* Syntax:
@@ -21,8 +21,7 @@ object Dotimes : SpecialForm("dotimes") {
         val s = binding[0] as? Symbol ?: throw WrongTypeException(toString(), "Symbol", binding[0])
 
         val limit = evaluator.eval(binding[1], env)
-        if (!Utils.isReal(limit)) throw WrongTypeException(toString(), "Real", limit)
-
+        Type.assertType(name, limit, Type.Real::class.java)
         val localEnv = Environment(env)
         val body = mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         // TODO What if greater than Long.MAX_VALUE?

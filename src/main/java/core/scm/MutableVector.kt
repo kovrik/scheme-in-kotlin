@@ -1,8 +1,5 @@
 package core.scm
 
-import core.exceptions.WrongTypeException
-import core.utils.Utils
-
 /* Mutable Vector */
 open class MutableVector : Vector {
 
@@ -32,7 +29,7 @@ open class MutableVector : Vector {
     override fun toArray() = array
 
     override fun assoc(key: Any?, value: Any?) = apply {
-        if (!Utils.isInteger(key)) throw WrongTypeException(name, Int::class.java, key)
+        Type.assertType(name, key, Int::class.java)
         set((key as Number).toInt(), value)
     }
 }

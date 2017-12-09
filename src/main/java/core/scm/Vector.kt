@@ -1,8 +1,6 @@
 package core.scm
 
-import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.utils.Utils
 import core.writer.Writer
 import java.util.*
 
@@ -101,14 +99,14 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     override fun equals(other: Any?) = other is Vector && Arrays.equals(array, other.array)
 
-    override fun containsKey(key: Any?) = when {
-        Utils.isInteger(key) -> size > (key as Number).toInt()
-        else -> throw WrongTypeException(name, Int::class.java, key)
+    override fun containsKey(key: Any?): Boolean {
+        Type.assertType(name, key, Int::class.java)
+        return size > (key as Number).toInt()
     }
 
-    override fun getEntry(key: Any?) = when {
-        Utils.isInteger(key) -> (key as Number).toInt().let { MapEntry(it, get(it)) }
-        else -> throw WrongTypeException(name, Int::class.java, key)
+    override fun getEntry(key: Any?): MapEntry? {
+        Type.assertType(name, key, Int::class.java)
+        return (key as Number).toInt().let { MapEntry(it, get(it)) }
     }
 
     override fun assoc(key: Any?, value: Any?): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")

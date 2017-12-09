@@ -2,26 +2,22 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.utils.Utils
+import core.scm.Type
 
 class IndexOf : AFn<Any?, Int>(name = "index-of", isPure = true, minArgs = 2, maxArgs = 3,
                                mandatoryArgsTypes = arrayOf(CharSequence::class.java)) {
 
-    override operator fun invoke(args: Array<out Any?>): Int {
-        if (args[1] !is CharSequence && args[1] !is Char) {
-            throw WrongTypeException(name, "String or Character", args[1])
-        }
-        if (args.size == 3) {
+    override operator fun invoke(args: Array<out Any?>) = when {
+        args[1] !is CharSequence && args[1] !is Char -> throw WrongTypeException(name, "String or Character", args[1])
+        args.size == 3 -> {
             val index = args[2]
-            return when {
-                !Utils.isReal(index) -> throw WrongTypeException(name, "Real", index)
-                args[1] is Char      -> args[0].toString().indexOf(args[1] as Char, (index as Number).toInt())
-                else                 -> args[0].toString().indexOf(args[1].toString(), (index as Number).toInt())
+            Type.assertType(name, index, Type.Real::class.java)
+            when (args[1]) {
+                is Char -> args[0].toString().indexOf(args[1] as Char, (index as Number).toInt())
+                else    -> args[0].toString().indexOf(args[1].toString(), (index as Number).toInt())
             }
         }
-        if (args[1] is Char) {
-            return args[0].toString().indexOf((args[1] as Char))
-        }
-        return args[0].toString().indexOf(args[1].toString())
+        args[1] is Char -> args[0].toString().indexOf((args[1] as Char))
+        else -> args[0].toString().indexOf(args[1].toString())
     }
 }

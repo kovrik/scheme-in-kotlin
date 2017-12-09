@@ -1,7 +1,7 @@
 package core.procedures.seqs
 
-import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.scm.Type
 import core.utils.Utils
 
 class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 3) {
@@ -18,9 +18,7 @@ class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 
             throw IllegalArgumentException("don't know how to create Sequence from ${col?.javaClass}")
         }
         val index = args[1]
-        if (!Utils.isInteger(index)) {
-            throw WrongTypeException(name, Int::class.java, index)
-        }
+        Type.assertType(name, index, Int::class.java)
         val i = (args[1] as Number).toInt()
         if (col !is Sequence<*>) {
             val size = count(col)

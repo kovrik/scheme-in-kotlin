@@ -1,6 +1,5 @@
 package core.procedures.seqs
 
-import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.math.Ceiling
 import core.scm.Type
@@ -12,12 +11,9 @@ class DropLast : AFn<Any?, Sequence<Any?>>(name = "drop-last", isPure = true, mi
 
     override operator fun invoke(args: Array<out Any?>): Sequence<Any?> {
         val n = when (args.size) {
-            2 -> when {
-                !Utils.isReal(args[0]) -> throw WrongTypeException(name, Type.Real::class.java, args[0])
-                else -> when (Utils.isInteger(args[0])) {
-                    true  -> (args[0] as Number).toInt()
-                    false -> ceiling(args[0] as Number).toInt()
-                }
+            2 -> when (Type.assertType(name, args[0], Type.Real::class.java) && Utils.isInteger(args[0])) {
+                true  -> (args[0] as Number).toInt()
+                false -> ceiling(args[0] as Number).toInt()
             }
             else -> 1
         }
