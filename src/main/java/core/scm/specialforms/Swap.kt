@@ -15,12 +15,8 @@ object Swap : SpecialForm("swap!") {
     // TODO Check and optimize. Try to implement as a Procedure
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size < 3) throw ArityException(name, 2, Integer.MAX_VALUE, form.size)
-        val b = evaluator.eval(form[1], env)
-        val box = b as? Box<Any?> ?: throw WrongTypeException(name, "Box", b)
-
-        val f = evaluator.eval(form[2], env)
-        val fn  = f as? IFn<Any?, Any?> ?: throw WrongTypeException(name, "Procedure", f)
-
+        val box = evaluator.eval(form[1], env).let { it as? Box<Any?> ?: throw WrongTypeException(name, "Box", it) }
+        val fn = evaluator.eval(form[2], env).let { it as? IFn<Any?, Any?> ?: throw WrongTypeException(name, "Procedure", it) }
         while (true) {
             val oldVal = box.deref()
             val rest = mutableListOf(oldVal)
