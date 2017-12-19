@@ -47,13 +47,6 @@ object Utils {
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
 
-    /* Threshold after which we switch to BigDecimals */
-    private val RADIX_THRESHOLDS = hashMapOf(2  to 63, 3  to 39, 4  to 31, 5  to 27, 6  to 24, 7  to 22, 8  to 21,
-                                             9  to 19, 10 to 18, 11 to 18, 12 to 17, 13 to 17, 14 to 16, 15 to 16,
-                                             16 to 15, 17 to 15, 18 to 15, 19 to 14, 20 to 14, 21 to 14, 22 to 14,
-                                             23 to 13, 24 to 13, 25 to 13, 26 to 13, 27 to 13, 28 to 13, 29 to 12,
-                                             30 to 12, 31 to 12, 32 to 12, 33 to 12, 34 to 12, 35 to 12, 36 to 12)
-
     private const val alphabet = "23456789abcdefghijklmnopqrstuvwxyz"
     private val RADIX_CHARS = HashMap<Int, String>().apply {
         put(2,  "#+-.01")
@@ -95,14 +88,13 @@ object Utils {
             val split = number.split(exponentMarksRegex).dropLastWhile { it.isEmpty() }.toTypedArray()
             n = split[0]
             exp = try {
-                processNumber(split[1], radix, true, false, null) as? Long ?:
+                processNumber(split[1], radix, true, null) as? Long ?:
                               throw IllegalSyntaxException("read: bad exponent: $number")
             } catch (ex: NumberFormatException) {
                 throw IllegalSyntaxException("read: bad exponent: $number")
             }
         }
         /* Validate all digits */
-        var hasSign = 0
         var hasAtLeastOneDigit = false
         var isIntegral = true
         var hasHashChar = false
@@ -113,8 +105,8 @@ object Utils {
             when (c) {
                 /* Multiple decimal points are not allowed*/
                 '.' -> if (isIntegral) isIntegral = false else return Symbol.intern(number)
-                '+' -> if (i == 0) hasSign = 1 else return Symbol.intern(number)
-                '-' -> if (i == 0) hasSign = 1 else return Symbol.intern(number)
+                '+' -> if (i != 0) return Symbol.intern(number)
+                '-' -> if (i != 0) return Symbol.intern(number)
                 '#' -> when {
                     hasAtLeastOneDigit -> hasHashChar = true
                     else -> return Symbol.intern(number)
@@ -145,14 +137,11 @@ object Utils {
             else -> Reader.isExact(exactness)
         }
         /* Rational and Integral numbers are exact by default */
-        val threshold = RADIX_THRESHOLDS[radix]!!
         if (hasSlash) {
             val (numerator, denominator) = n.split('/')
-            val useBigNum = numerator.length > threshold + hasSign || denominator.length > threshold + hasSign
-            return processRationalNumber(numerator, denominator, radix, exact, useBigNum, exp)
+            return processRationalNumber(numerator, denominator, radix, exact, exp)
         }
-        val useBigNum = n.length > threshold + hasSign
-        return processNumber(n, radix, exact, useBigNum, exp)
+        return processNumber(n, radix, exact, exp)
     }
 
     private fun processComplexNumber(number: String, exactness: Char?, radix: Int): Any? {
@@ -178,13 +167,26 @@ object Utils {
         return if (isZero(re) && isZero(im)) 0L else BigComplex(toBigDecimal(re as Number), toBigDecimal(im as Number))
     }
 
+    // TODO Check & optimize
     /* Parse string into a number */
-    private fun processNumber(number: String, r: Int, exact: Boolean, useBigNum: Boolean, exp: Long?): Number? {
+    private fun processNumber(number: String, r: Int, exact: Boolean, exp: Long?): Number? {
         var result: Number
         val dotPos = number.indexOf('.')
-        if (useBigNum) {
-            if (dotPos < 0) {
-                result = BigInteger(number, r)
+        if (dotPos < 0) {
+            result = try {
+                number.toLong(r)
+            } catch (e: NumberFormatException) {
+                BigInteger(number, r)
+            }
+        } else {
+            val sign = if (number[0].isDigit()) 0 else 1
+            if (dotPos <= 15 + sign) {
+                result = when (r) {
+                    10   -> number.toDouble()
+                    else -> number.replace(".", "").let {
+                        it.toLong(r) / r.toDouble().pow(it.length - dotPos)
+                    }
+                }
             } else {
                 /* Remove dot */
                 val num = number.replace(".", "")
@@ -196,18 +198,6 @@ object Utils {
                     bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE)
                 }
                 result = bigDecimal
-            }
-        } else {
-            result = if (dotPos < 0) {
-                number.toLong(r)
-            } else {
-                if (r == 10) {
-                    number.toDouble()
-                } else {
-                    /* Remove dot */
-                    val num = number.replace(".", "")
-                    num.toLong(r) / r.toDouble().pow(num.length - dotPos)
-                }
             }
         }
         if (exp != null && !isZero(exp)) {
@@ -246,11 +236,10 @@ object Utils {
     }
 
     /* Parse string into a rational number */
-    private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean,
-                                      useBigNum: Boolean, exp: Long?): Number? {
+    private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean, exp: Long?): Number? {
 
-        var number: Number? = BigRatio.valueOf(processNumber(numerator, r, true, useBigNum, null).toString(),
-                                               processNumber(denominator, r, true, useBigNum, null).toString())
+        var number: Number? = BigRatio.valueOf(processNumber(numerator, r, true, null).toString(),
+                                               processNumber(denominator, r, true, null).toString())
         exp?.let { number = multiplication(number, expt(r, exp)) }
         return when {
             exact -> number

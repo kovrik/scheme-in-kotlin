@@ -384,4 +384,25 @@ class ReaderTest : AbstractTest() {
             // success
         }
     }
+
+    @Test
+    fun testReadThresholds() {
+        assertEquals(Long.MAX_VALUE, reader.readOne(Long.MAX_VALUE.toString()))
+        assertEquals(Long.MAX_VALUE, reader.readOne("+" + Long.MAX_VALUE.toString()))
+        assertEquals(Long.MIN_VALUE, reader.readOne(Long.MIN_VALUE.toString()))
+
+        val biMax = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE)
+        val biMin = BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE)
+        assertEquals(biMax, reader.readOne(biMax.toString()))
+        assertEquals(biMax, reader.readOne("+" + biMax.toString()))
+        assertEquals(biMin, reader.readOne(biMin.toString()))
+
+        assertEquals(Double::class.javaObjectType, reader.readOne(" 123456789012345.0")!!::class.java)
+        assertEquals(Double::class.javaObjectType, reader.readOne("+123456789012345.0")!!::class.java)
+        assertEquals(Double::class.javaObjectType, reader.readOne("-123456789012345.0")!!::class.java)
+
+        assertEquals(BigDecimal::class.javaObjectType, reader.readOne(" 1234567890123456.0")!!::class.java)
+        assertEquals(BigDecimal::class.javaObjectType, reader.readOne("+1234567890123456.0")!!::class.java)
+        assertEquals(BigDecimal::class.javaObjectType, reader.readOne("-1234567890123456.0")!!::class.java)
+    }
 }
