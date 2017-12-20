@@ -183,24 +183,26 @@ object Utils {
             if (dotPos <= 15 + sign) {
                 result = when (r) {
                     10   -> number.toDouble()
-                    else -> number.replace(".", "").let {
+                    else -> number.removeRange(dotPos, dotPos + 1).let {
                         it.toLong(r) / r.toDouble().pow(it.length - dotPos)
                     }
                 }
             } else {
                 /* Remove dot */
-                val num = number.replace(".", "")
+                val num = number.removeRange(dotPos, dotPos + 1)
                 /* Process radix */
-                var bigDecimal = if (r == 10) BigDecimal(num) else BigDecimal(BigInteger(num, r))
+                var bigDecimal = when (r) {
+                    10   -> BigDecimal(num).movePointLeft(num.length - dotPos)
+                    else -> BigDecimal(BigInteger(num, r)).divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
+                }
                 /* Process radix for a number with decimal point */
-                bigDecimal = bigDecimal.divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 if (bigDecimal.stripTrailingZeros().scale() == 0) {
                     bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE)
                 }
                 result = bigDecimal
             }
         }
-        if (exp != null && !isZero(exp)) {
+        if (exp != null) {
             if (exp > 999999) {
                 return if (isPositive(result)) Double.POSITIVE_INFINITY else Double.NEGATIVE_INFINITY
             } else if (exp < -999) {
