@@ -191,15 +191,15 @@ object Utils {
                 /* Remove dot */
                 val num = number.removeRange(dotPos, dotPos + 1)
                 /* Process radix */
-                var bigDecimal = when (r) {
+                val bigDecimal = when (r) {
                     10   -> BigDecimal(num).movePointLeft(num.length - dotPos)
                     else -> BigDecimal(BigInteger(num, r)).divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 }
                 /* Process radix for a number with decimal point */
-                if (bigDecimal.stripTrailingZeros().scale() == 0) {
-                    bigDecimal = bigDecimal.setScale(1, ROUNDING_MODE)
+                result = when (bigDecimal.stripTrailingZeros().scale() == 0) {
+                    true  -> bigDecimal.setScale(1, ROUNDING_MODE)
+                    false -> bigDecimal
                 }
-                result = bigDecimal
             }
         }
         if (exp != null) {
