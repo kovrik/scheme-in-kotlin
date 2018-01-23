@@ -47,10 +47,9 @@ object Utils {
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
 
-    private const val alphabet = "23456789abcdefghijklmnopqrstuvwxyz"
-    private val RADIX_CHARS = HashMap<Int, String>().apply {
+    private val RADIX_DIGITS = HashMap<Int, String>().apply {
         put(2,  "#+-.01")
-        alphabet.forEachIndexed { i, c ->
+        "23456789abcdefghijklmnopqrstuvwxyz".forEachIndexed { i, c ->
             put(i + 3, this[i + 2] + c + c.toUpperCase())
         }
     }
@@ -61,7 +60,7 @@ object Utils {
     private val multiplication = Multiplication()
 
     /* Check if digit is valid for a number in a specific radix */
-    fun isValidForRadix(c: Char, radix: Int) = RADIX_CHARS[radix]!!.contains(c)
+    fun isValidForRadix(c: Char, radix: Int) = RADIX_DIGITS[radix]!!.contains(c)
 
     /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
     fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext = when {
