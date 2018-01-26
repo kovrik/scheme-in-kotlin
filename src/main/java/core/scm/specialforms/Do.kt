@@ -38,7 +38,7 @@ object Do : SpecialForm("do") {
             if (tempEnv.containsKey(variable)) {
                 throw IllegalSyntaxException(Let.toString(), Writer.write(form), "duplicate identifier: $variable")
             }
-            tempEnv.put(variable, evaluator.eval(init, tempEnv))
+            tempEnv[variable] = evaluator.eval(init, tempEnv)
         }
 
         val clause = form[2] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
@@ -59,7 +59,9 @@ object Do : SpecialForm("do") {
             }
             /* Evaluate steps */
             val freshLocations = HashMap<Any?, Any?>(steps.size)
-            for (step in steps) { freshLocations.put(step.first, evaluator.eval(step.second, tempEnv)) }
+            for (step in steps) {
+                freshLocations[step.first] = evaluator.eval(step.second, tempEnv)
+            }
             /* Now store results */
             tempEnv.putAll(freshLocations)
         }

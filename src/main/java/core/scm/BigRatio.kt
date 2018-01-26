@@ -72,7 +72,7 @@ class BigRatio : Number, Comparable<BigRatio> {
     fun abs() = BigRatio(numerator.abs(), denominator.abs())
 
     /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
-    fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
+    private fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
         num.divide(den, Utils.getMathContext(num, den))
     } catch (e: ArithmeticException) {
         num.divide(den, Utils.DEFAULT_CONTEXT)

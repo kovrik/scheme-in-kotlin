@@ -7,8 +7,7 @@ import core.writer.Writer
 
 object Unquote : SpecialForm("unquote") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
-        // Implemented in quasiquote
-        throw IllegalSyntaxException(toString(), Writer.write(form), "not in quasiquote")
-    }
+    // Implemented in quasiquote
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) =
+            throw IllegalSyntaxException(toString(), Writer.write(form), "not in quasiquote")
 }

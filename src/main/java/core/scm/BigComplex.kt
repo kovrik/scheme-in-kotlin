@@ -162,21 +162,17 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * -pi/2,          if x = 0 and y <  0
      * undefined,      if x = 0 and y =  0
      */
-    fun angle(): Number {
-        val re = re
-        val im = im
-        return when {
-            re.signum() == 0 -> when {
-                im.signum() > 0 ->  PI / 2
-                im.signum() < 0 -> -PI / 2
-                else -> throw ArithmeticException("Undefined for 0+0i")
-            }
-            re.signum() < 0 -> {
-                val atan = atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
-                if (im.signum() >= 0) atan + PI else atan - PI
-            }
-            else -> atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
+    fun angle() = when {
+        re.signum() == 0 -> when {
+            im.signum() > 0 ->  PI / 2
+            im.signum() < 0 -> -PI / 2
+            else -> throw ArithmeticException("Undefined for 0+0i")
         }
+        re.signum() < 0 -> {
+            val atan = atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
+            if (im.signum() >= 0) atan + PI else atan - PI
+        }
+        else -> atan(im.divide(re, Utils.DEFAULT_CONTEXT).toDouble())
     }
 
     override fun equals(other: Any?) = when {

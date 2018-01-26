@@ -19,7 +19,7 @@ object Writer {
 
     fun write(o: Any?): String = when (o) {
         null                 -> "nil"
-        is Unit              -> "#<void>"
+        Unit                 -> "#<void>"
         is Boolean           -> if (o) "#t" else "#f"
         is Symbol            -> o.write()
         is List<*>           -> o.write()

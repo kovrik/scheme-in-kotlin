@@ -248,7 +248,7 @@ object Utils {
         }
     }
 
-    fun toBigDecimal(number: Number): BigDecimal = when (number) {
+    fun toBigDecimal(number: Any?): BigDecimal = when (number) {
         is BigDecimal -> number
         is Long       -> BigDecimal.valueOf(number)
         is BigInteger -> BigDecimal(number)
@@ -258,7 +258,7 @@ object Utils {
         else          -> BigDecimal(number.toString())
     }
 
-    fun toBigInteger(number: Number): BigInteger = when (number) {
+    fun toBigInteger(number: Any?): BigInteger = when (number) {
         is BigInteger -> number
         is Long       -> BigInteger.valueOf(number)
         is Double     -> BigInteger.valueOf(number.toLong())

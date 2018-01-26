@@ -48,10 +48,10 @@ object Try : SpecialForm("try") {
                         expr.size > 3 -> mutableListOf<Any?>(Begin).apply { addAll(expr.subList(3, expr.size)) }
                         else -> null
                     }
-                    catches.put(clazz, catchExpr)
+                    catches[clazz] = catchExpr
                     val sym = expr[2] as? Symbol ?:
                               throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
-                    catchBindings.put(clazz, sym)
+                    catchBindings[clazz] = sym
                     continue
                 }
             }
@@ -70,7 +70,7 @@ object Try : SpecialForm("try") {
             for (clazz in catches.keys) {
                 if (clazz.isAssignableFrom(e.javaClass)) {
                     /* Bind exception */
-                    env.put(catchBindings[clazz], e)
+                    env[catchBindings[clazz]] = e
                     /* Evaluate corresponding catch block */
                     return evaluator.eval(catches[clazz], env)
                 }

@@ -129,73 +129,67 @@ class Reflector {
     }
 
     /* Java Interop: static fields */
-    fun evalJavaStaticField(s: String): Any? {
-        if (s.contains('/')) {
+    fun evalJavaStaticField(s: String): Any? = when {
+        s.contains('/') -> {
             val classAndField = s.split('/').dropLastWhile(String::isEmpty)
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
             val (className, fieldName) = classAndField
-            val c = getClazz(className)
             try {
+                val c = getClazz(className)
                 val field = c.getField(fieldName)
                 field.isAccessible = true
                 if (!Modifier.isStatic(field.modifiers)) {
                     throw NoSuchFieldException("reflector: unable to find static field $fieldName of $className")
                 }
-                return field.get(c)
+                field.get(c)
             } catch (e: NoSuchFieldException) {
                 throw NoSuchFieldException("reflector: unable to find static field $fieldName in class $className")
             } catch (e: IllegalAccessException) {
                 throw IllegalAccessException("reflector: unable to access static field $fieldName in class $className")
             }
         }
-        throw UndefinedIdentifierException(s)
+        else -> throw UndefinedIdentifierException(s)
     }
 
-    fun evalJavaMethod(method: String, args: Array<out Any?>): Any? {
-        val result: Any?
-        if (method.startsWith(".-")) {
+    fun evalJavaMethod(method: String, args: Array<out Any?>): Any? = when {
+        method.startsWith(".-") -> {
             if (args.isEmpty()) {
                 throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
             }
             val instance = args[0]
-            result = evalJavaInstanceField(method, instance)
-        } else if (method.startsWith('.')) {
+            evalJavaInstanceField(method, instance)
+        }
+        method.startsWith('.') -> {
             if (args.isEmpty()) {
                 throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
             }
             val instance = args[0]
             val rest = args.copyOfRange(1, args.size)
-            result = evalJavaInstanceMethod(method, instance, rest)
-        } else if (method.contains('/')) {
-            result = evalJavaStaticMethod(method, args)
-        } else {
-            throw UndefinedIdentifierException(method)
+            evalJavaInstanceMethod(method, instance, rest)
         }
-        return result
+        method.contains('/') -> evalJavaStaticMethod(method, args)
+        else -> throw UndefinedIdentifierException(method)
     }
 
     /* Java Interop: instance method call: (.toString (new Object)) */
-    private fun evalJavaInstanceMethod(methodName: String, instance: Any?, args: Array<out Any?>): Any? {
-        val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
-            for (i in args.indices) {
-                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
-            }
-        }
-        /* Remove leading . char */
-        return methodName.substring(1).let {
-            val method = getMethod(instance?.javaClass, it, args, argTypes)
-            try {
-                method.isAccessible = true
-                method(instance, *args)
-            } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
-            } catch (e: InvocationTargetException) {
-                when (e.cause) {
-                    null -> throw RuntimeException("reflector: invocation target exception")
-                    else -> throw e.cause as Throwable
+    private fun evalJavaInstanceMethod(methodName: String, instance: Any?, args: Array<out Any?>) = methodName.substring(1).let {
+        try {
+            val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
+                for (i in args.indices) {
+                    set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
                 }
+            }
+            val method = getMethod(instance?.javaClass, it, args, argTypes)
+            method.isAccessible = true
+            method(instance, *args)
+        } catch (e: IllegalAccessException) {
+            throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+        } catch (e: InvocationTargetException) {
+            when (e.cause) {
+                null -> throw RuntimeException("reflector: invocation target exception")
+                else -> throw e.cause as Throwable
             }
         }
     }
