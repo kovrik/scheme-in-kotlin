@@ -118,6 +118,9 @@ class ReaderTest : AbstractTest() {
         assertEquals("test \\u", reader.readOne("\"test \\\\u\""))
         assertEquals("test \\U", reader.readOne("\"test \\\\U\""))
         assertEquals("test \\x", reader.readOne("\"test \\\\x\""))
+        assertEquals("abc", reader.readOne("\"\\u61\\u62\\u63\""))
+        assertEquals("abcd", reader.readOne("\"\\u61\\u62\\U63\\U64\""))
+        assertEquals("జ్ఞ\u200Cా", reader.readOne("\"\\u0c1c\\u0c4d\\u0c1e\\u200c\\u0c3e\""))
         try {
             reader.readOne("\"test \\u\"")
             fail()
@@ -241,6 +244,18 @@ class ReaderTest : AbstractTest() {
         assertEquals('x', reader.readOne("#\\x"))
         assertEquals('X', reader.readOne("#\\X"))
         assertEquals('S', reader.readOne("#\\123"))
+        assertEquals('ÿ', reader.readOne("#\\377"))
+        assertEquals('జ', reader.readOne("#\\u0c1c"))
+        try {
+            reader.readOne("#\\378")
+        } catch (e: IllegalSyntaxException) {
+            // success
+        }
+        try {
+            reader.readOne("#\\999")
+        } catch (e: IllegalSyntaxException) {
+            // success
+        }
     }
 
     @Test
@@ -284,7 +299,6 @@ class ReaderTest : AbstractTest() {
             } catch (e: IllegalSyntaxException) {
                 // expected
             }
-
         }
     }
 
@@ -303,7 +317,7 @@ class ReaderTest : AbstractTest() {
             reader.readOne("\"\\x\"")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: unknown escape sequence \\x in string", e.message)
+            assertEquals("read: no hex digit following \\x in string", e.message)
         }
     }
 

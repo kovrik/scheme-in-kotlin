@@ -3,6 +3,7 @@ package core.reader
 import core.exceptions.IllegalSyntaxException
 import core.procedures.delayed.Deref
 import core.scm.*
+import core.scm.MutableSet
 import core.scm.specialforms.*
 import core.utils.Utils.getRadixByChar
 import core.utils.Utils.isValidForRadix
@@ -27,28 +28,29 @@ open class Reader : IReader {
         private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
         /* <delimiter> --> <whitespace> | ( | ) | " | ; */
         private const val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
+        private const val DELIMITERS_WITH_SLASH = DELIMITERS + '\\'
 
         /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
         private val ESCAPED = hashMapOf('t'  to '\t',
-                                        'b'  to '\b',
-                                        'n'  to '\n',
-                                        'r'  to '\r',
-                                        '"'  to '\"',
-                                        '\\' to '\\')
+                'b'  to '\b',
+                'n'  to '\n',
+                'r'  to '\r',
+                '"'  to '\"',
+                '\\' to '\\')
 
         val NAMED_CHARS: Map<String, Char> = hashMapOf("newline"   to '\n',
-                                                       "linefeed"  to '\n',
-                                                       "space"     to ' ',
-                                                       "tab"       to '\t',
-                                                       "return"    to '\r',
-                                                       "backspace" to '\b',
-                                                       "alarm"     to '\u0007',
-                                                       "vtab"      to '\u000B',
-                                                       "esc"       to '\u001B',
-                                                       "escape"    to '\u001B',
-                                                       "delete"    to '\u007F',
-                                                       "null"      to Character.MIN_VALUE,
-                                                       "nul"       to Character.MIN_VALUE)
+                "linefeed"  to '\n',
+                "space"     to ' ',
+                "tab"       to '\t',
+                "return"    to '\r',
+                "backspace" to '\b',
+                "alarm"     to '\u0007',
+                "vtab"      to '\u000B',
+                "esc"       to '\u001B',
+                "escape"    to '\u001B',
+                "delete"    to '\u007F',
+                "null"      to Character.MIN_VALUE,
+                "nul"       to Character.MIN_VALUE)
 
         private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
         private fun isLineBreak(c: Char) = LINE_BREAKS.contains(c)
@@ -59,9 +61,9 @@ open class Reader : IReader {
     }
 
     @Throws(IOException::class)
-    private fun readUntilDelimiter() = StringBuilder().apply {
+    private fun readUntilDelimiter(delimiters: String = DELIMITERS) = StringBuilder().apply {
         var i = reader.read()
-        while (isValid(i) && !DELIMITERS.contains(i.toChar())) {
+        while (isValid(i) && !delimiters.contains(i.toChar())) {
             append(i.toChar())
             i = reader.read()
         }
@@ -106,9 +108,9 @@ open class Reader : IReader {
             ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
             else -> (c + readUntilDelimiter()).let {
                 when {
-                    /* Decimal number */
+                /* Decimal number */
                     isValidForRadix(c, 10) -> preProcessNumber(it, null, 10)
-                    /* Read true and false as #t and #f */
+                /* Read true and false as #t and #f */
                     it == "true"           -> true
                     it == "false"          -> false
                     it == "nil"            -> null
@@ -162,7 +164,7 @@ open class Reader : IReader {
             }
             /* Check if this is a proper number */
             return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?:
-                                    throw IllegalSyntaxException("read: bad number: $number")
+            throw IllegalSyntaxException("read: bad number: $number")
         }
         /* Bad hash syntax: read token and throw exception */
         StringBuilder("#").let {
@@ -228,18 +230,25 @@ open class Reader : IReader {
             /* Escaping */
             if (c == '\\') {
                 val next = reader.read().toChar()
-                /* Unicode followed by a hexadecimal number */
-                if (next == 'u' || next == 'U') {
-                    reader.unread(next.toInt())
-                    val chr = readCharacter()
-                    when (chr) {
-                        next -> throw IllegalSyntaxException("read: no hex digit following \\u in string")
-                        else -> append(chr)
+                val escaped = ESCAPED[next]
+                when {
+                    escaped != null -> append(escaped)
+                /* Unicode for the octal number specified by three octal digits */
+                    next.isDigit() -> {
+                        reader.unread(next.toInt())
+                        append(readCharacter())
                     }
-                } else {
-                    /* Check that escape sequence is valid */
-                    append(ESCAPED[next] ?:
-                            throw IllegalSyntaxException("read: unknown escape sequence \\$next in string"))
+                /* Unicode followed by a hexadecimal number */
+                    "uUxX".contains(next) -> {
+                        reader.unread(next.toInt())
+                        val chr = readCharacter()
+                        when (chr) {
+                            next -> throw IllegalSyntaxException("read: no hex digit following \\$next in string")
+                            else -> append(chr)
+                        }
+                    }
+                    !Character.isAlphabetic(next.toInt()) -> append(next)
+                    else -> throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
                 }
             } else {
                 append(c)
@@ -276,7 +285,7 @@ open class Reader : IReader {
     @Throws(IOException::class)
     private fun readCharacter(): Char {
         val first = reader.read()
-        var rest = readUntilDelimiter()
+        var rest = readUntilDelimiter(DELIMITERS_WITH_SLASH)
         if (rest.isEmpty()) {
             return first.toChar()
         }
@@ -289,8 +298,10 @@ open class Reader : IReader {
             isCodepoint = true
         }
         if (isCodepoint) {
-            if (!isValidForRadix(rest[0], radix)) throw IllegalSyntaxException("read: no hex digit following \\u in string")
-            val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: no hex digit following \\u in string")
+            if (radix == 16 && !isValidForRadix(rest[0], radix)) {
+                throw IllegalSyntaxException("read: no hex digit following \\${first.toChar()} in string")
+            }
+            val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: bad character constant: #\\$rest")
             return codepoint.toChar()
         }
         /* Must be a named char */
@@ -337,7 +348,7 @@ open class Reader : IReader {
             c = i.toChar()
         }
         return when {
-            /* Was it a proper list or dot is the first element? */
+        /* Was it a proper list or dot is the first element? */
             dotPos < 1 -> list
             else -> {
                 /* Validate dot position */
