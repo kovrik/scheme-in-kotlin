@@ -39,9 +39,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     fun eval(sexp: Any?, env: Environment): Any? = try {
         /* TCO: This is our Trampoline */
         var result = evalIter(sexp, env)
-        while (result is Thunk || result is ThunkSeq<*>) {
+        while (result is Thunk<*> || result is ThunkSeq<*>) {
             when (result) {
-                is Thunk -> result = evalIter(result.expr, result.context ?: env)
+                is Thunk<*> -> result = evalIter(result.expr, result.context ?: env)
                 // TODO more elegant solution?
                 is ThunkSeq<*> -> {
                     /* Evaluate thunk sequence and wrap it in a Caching Seq */
