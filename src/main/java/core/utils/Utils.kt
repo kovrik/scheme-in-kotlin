@@ -147,9 +147,9 @@ object Utils {
         /* Assume that we have a complex number and try to parse it */
         val p = maxOf(number.lastIndexOf('+'), number.lastIndexOf('-'))
         val r = number.substring(0, p)
-        var re: Any? = 0L
-        if (!r.isEmpty()) {
-            re = preProcessNumber(r, exactness, radix)
+        val re = when (!r.isEmpty()) {
+            true  -> preProcessNumber(r, exactness, radix)
+            false -> 0L
         }
         if (!isReal(re)) {
             return Symbol.intern(number)
@@ -216,24 +216,24 @@ object Utils {
         return processExactness(result, exact)
     }
 
-    private fun processExactness(number: Number?, exact: Boolean): Number? {
-        if (!exact) {
-            return toInexact(number)
-        }
+    private fun processExactness(number: Number?, exact: Boolean) = when {
+        !exact -> toInexact(number)
         /* Racket's Reader does not convert into exact numbers 'properly':
          * #e2.3 returns 23/10
          * but (inexact->exact 2.3) returns 2589569785738035/1125899906842624
          * Guile returns 2589569785738035/1125899906842624 in both cases.
          */
-        if (isInexact(number)) {
-            if (number is Double) {
-                val bigDecimal = toBigDecimal(number)
-                val scale = bigDecimal.scale()
-                return BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
+        isInexact(number) -> {
+            when (number) {
+                is Double -> {
+                    val bigDecimal = toBigDecimal(number)
+                    val scale = bigDecimal.scale()
+                    BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
+                }
+                else -> toExact(number)
             }
-            return toExact(number)
         }
-        return number
+        else -> number
     }
 
     /* Parse string into a rational number */
