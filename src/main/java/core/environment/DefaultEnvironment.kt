@@ -696,53 +696,53 @@ class DefaultEnvironment : Environment(null) {
             add("(define (inc  n) (+ n 1))")
             add("(define (dec  n) (- n 1))")
             add("(define (sqr  n) (* n n))")
-            add("(define rationalize" +
-                "  (letrec ((check (lambda (x) " +
-                "                    (when (not (real? x))" +
-                "                      (error (string-append \"Wrong argument type. Expected: Real, actual: \"" +
-                "                                             (->string x))))))" +
-                "           (find-between " +
-                "            (lambda (lo hi)" +
-                "              (if (integer? lo)" +
-                "                  lo" +
-                "                (let ((lo-int (floor lo))" +
-                "                      (hi-int (floor hi)))" +
-                "                  (if (< lo-int hi-int)" +
-                "                      (+ 1 lo-int)" +
-                "                    (+ lo-int" +
-                "                       (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int))))))))))" +
-                "           (do-find-between" +
-                "            (lambda (lo hi)" +
-                "              (cond" +
-                "               ((negative? lo) (- (find-between (- hi) (- lo))))" +
-                "               (else (find-between lo hi))))))" +
-                "    (lambda (x within)" +
-                "      (check x) (check within)" +
-                "      (let* ((delta (abs within))" +
-                "             (lo (- x delta))" +
-                "             (hi (+ x delta)))" +
-                "        (cond" +
-                "         ((equal? x +nan.0) x)" +
-                "         ((or (equal? x +inf.0) " +
-                "              (equal? x -inf.0))" +
-                "          (if (equal? delta +inf.0) +nan.0 x))" +
-                "         ((equal? delta +inf.0) 0.0)" +
-                "         ((not (= x x)) +nan.0)" +
-                "         ((<= lo 0 hi) (if (exact? x) 0 0.0))" +
-                "         ((or (inexact? lo) (inexact? hi))" +
-                "          (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))" +
-                "         (else (do-find-between lo hi)))))))")
+            add("""(define rationalize
+                     (letrec ((check (lambda (x)
+                                       (when (not (real? x))
+                                         (error (string-append "Wrong argument type. Expected: Real, actual: "
+                                                                (->string x))))))
+                              (find-between
+                               (lambda (lo hi)
+                                 (if (integer? lo)
+                                     lo
+                                   (let ((lo-int (floor lo))
+                                         (hi-int (floor hi)))
+                                     (if (< lo-int hi-int)
+                                         (+ 1 lo-int)
+                                       (+ lo-int
+                                          (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int))))))))))
+                              (do-find-between
+                               (lambda (lo hi)
+                                 (cond
+                                  ((negative? lo) (- (find-between (- hi) (- lo))))
+                                  (else (find-between lo hi))))))
+                       (lambda (x within)
+                         (check x) (check within)
+                         (let* ((delta (abs within))
+                                (lo (- x delta))
+                                (hi (+ x delta)))
+                           (cond
+                            ((equal? x +nan.0) x)
+                            ((or (equal? x +inf.0)
+                                 (equal? x -inf.0))
+                             (if (equal? delta +inf.0) +nan.0 x))
+                            ((equal? delta +inf.0) 0.0)
+                            ((not (= x x)) +nan.0)
+                            ((<= lo 0 hi) (if (exact? x) 0 0.0))
+                            ((or (inexact? lo) (inexact? hi))
+                             (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))
+                            (else (do-find-between lo hi)))))))""")
 
             // FIXME naive memoize implementation
-            add("(define (memoize f)" +
-                "  (let ((mem (atom {})))" +
-                "    (fn args" +
-                "      (let ((e (find @mem args)))" +
-                "        (if e" +
-                "          (val e)" +
-                "          (let ((ret (apply f args)))" +
-                "            (swap! mem put args ret)" +
-                "          ret))))))")
+            add("""(define (memoize f)
+                     (let ((mem (atom {})))
+                       (fn args
+                         (let ((e (find @mem args)))
+                           (if e
+                             (val e)
+                             (let ((ret (apply f args)))
+                               (swap! mem put args ret)
+                             ret))))))""")
 
             add("(define (negate f) (fn args (not (apply f args))))")
             add("(define complement negate)")
@@ -752,27 +752,27 @@ class DefaultEnvironment : Environment(null) {
             add("(def (constantly arg) (fn rest arg))")
 
             // TODO Implement these in Kotlin?
-            add("(define (some pred coll)" +
-                "  (if (empty? coll)" +
-                "    null" +
-                "    (or (pred (first coll)) (some pred (rest coll)))))")
+            add("""(define (some pred coll)
+                     (if (empty? coll)
+                       null
+                       (or (pred (first coll)) (some pred (rest coll)))))""")
 
-            add("(define (every? pred coll)" +
-                "  (cond" +
-                "   ((empty? coll) true)" +
-                "   ((pred (first coll)) (every? pred (rest coll)))" +
-                "   (else false))")
+            add("""(define (every? pred coll)
+                     (cond
+                      ((empty? coll) true)
+                      ((pred (first coll)) (every? pred (rest coll)))
+                      (else false))""")
 
-            add("(define (filter pred coll)" +
-                "  (lazy-seq" +
-                "    (let ((s (seq coll)))" +
-                "      (if s" +
-                "          (let ((f (first s))" +
-                "                (r (rest s)))" +
-                "            (if (pred f)" +
-                "                (cons-seq f (filter pred r))" +
-                "                (filter pred r)))" +
-                "          '()))))")
+            add("""(define (filter pred coll)
+                     (lazy-seq
+                       (let ((s (seq coll)))
+                         (if s
+                             (let ((f (first s))
+                                   (r (rest s)))
+                               (if (pred f)
+                                   (cons-seq f (filter pred r))
+                                   (filter pred r)))
+                             '()))))""")
         }
     }
 }
