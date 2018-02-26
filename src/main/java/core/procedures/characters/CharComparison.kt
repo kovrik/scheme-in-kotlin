@@ -3,7 +3,7 @@ package core.procedures.characters
 import core.procedures.AFn
 
 class CharComparison private constructor(override val name: String,
-                                         inline private val predicate: (Char?, Char?) -> Boolean) :
+                                         private inline val predicate: (Char?, Char?) -> Boolean) :
         AFn<Any?, Boolean>(minArgs = 2, isPure = true,
                            mandatoryArgsTypes = arrayOf(Char::class.javaObjectType, Char::class.javaObjectType),
                            restArgsType = Char::class.javaObjectType) {

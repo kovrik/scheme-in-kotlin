@@ -3,7 +3,7 @@ package core.procedures.strings
 import core.procedures.AFn
 
 class StringComparison private constructor(override val name: String,
-                                           inline private val predicate: (String, String) -> Boolean) :
+                                           private inline val predicate: (String, String) -> Boolean) :
         AFn<Any?, Boolean>(isPure = true, restArgsType = CharSequence::class.java) {
 
     companion object {

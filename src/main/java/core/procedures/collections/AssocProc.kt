@@ -11,7 +11,7 @@ import core.writer.Writer
 
 class AssocProc(override val name: String,
                 /* Procedure used to compare objects for equality */
-                inline private val predicate: AFn<Any?, Boolean>) :
+                private inline val predicate: AFn<Any?, Boolean>) :
         AFn<Any?, Any?>(minArgs = 2, maxArgs = 2, mandatoryArgsTypes = arrayOf(Any::class.java)) {
 
     private val car = Car()
