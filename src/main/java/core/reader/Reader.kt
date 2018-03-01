@@ -108,14 +108,14 @@ open class Reader : IReader {
             ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
             else -> (c + readUntilDelimiter()).let {
                 when {
-                /* Decimal number */
+                    /* Decimal number */
                     isValidForRadix(c, 10) -> preProcessNumber(it, null, 10)
-                /* Read true and false as #t and #f */
-                    it == "true"           -> true
-                    it == "false"          -> false
-                    it == "nil"            -> null
-                    it == "null"           -> null
-                    else                   -> Symbol.intern(it)
+                    /* Read true and false as #t and #f */
+                    it == "true"  -> true
+                    it == "false" -> false
+                    it == "nil"   -> null
+                    it == "null"  -> null
+                    else          -> Symbol.intern(it)
                 }
             }
         }
@@ -233,12 +233,12 @@ open class Reader : IReader {
                 val escaped = ESCAPED[next]
                 when {
                     escaped != null -> append(escaped)
-                /* Unicode for the octal number specified by three octal digits */
+                    /* Unicode for the octal number specified by three octal digits */
                     next.isDigit() -> {
                         reader.unread(next.toInt())
                         append(readCharacter())
                     }
-                /* Unicode followed by a hexadecimal number */
+                    /* Unicode followed by a hexadecimal number */
                     "uUxX".contains(next) -> {
                         reader.unread(next.toInt())
                         val chr = readCharacter()
@@ -348,7 +348,7 @@ open class Reader : IReader {
             c = i.toChar()
         }
         return when {
-        /* Was it a proper list or dot is the first element? */
+            /* Was it a proper list or dot is the first element? */
             dotPos < 1 -> list
             else -> {
                 /* Validate dot position */
