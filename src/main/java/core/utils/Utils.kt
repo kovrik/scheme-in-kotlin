@@ -415,9 +415,9 @@ object Utils {
         var x1 = BigDecimal(Math.sqrt(this.toDouble()))
         while (x0 != x1) {
             x0 = x1
-            x1 = this.divide(x0, scale, BigDecimal.ROUND_HALF_UP)
+            x1 = this.divide(x0, scale, RoundingMode.HALF_UP)
             x1 = x1.add(x0)
-            x1 = x1.divide(Utils.TWO, scale, BigDecimal.ROUND_HALF_UP)
+            x1 = x1.divide(Utils.TWO, scale, RoundingMode.HALF_UP)
         }
         return x1
     }
