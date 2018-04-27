@@ -410,6 +410,18 @@ object Utils {
         }
     }
 
+    fun BigDecimal.sqrt(scale: Int): BigDecimal {
+        var x0 = BigDecimal.ZERO
+        var x1 = BigDecimal(Math.sqrt(this.toDouble()))
+        while (x0 != x1) {
+            x0 = x1
+            x1 = this.divide(x0, scale, BigDecimal.ROUND_HALF_UP)
+            x1 = x1.add(x0)
+            x1 = x1.divide(Utils.TWO, scale, BigDecimal.ROUND_HALF_UP)
+        }
+        return x1
+    }
+
     /* Try to downcast Big Integer to a smaller type (if possible) */
     private fun BigInteger.tryDowncast(): Number {
         /* Same checks are performed in longValueExact() method,
