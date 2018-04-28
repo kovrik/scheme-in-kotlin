@@ -1,8 +1,6 @@
-* TODO: [38/48]
-
+* TODO: [38/47]
 ** TODO [#A] Macros
 ** TODO [#A] Modules
-** TODO [#A] Generify Lists, Vectors, Strings as Lazy Sequences
 ** TODO [#A] Expt for big fractional powers
 ** TODO [#B] Expansion Context Levels
 ** TODO [#B] Internal `define`: can be top-form only (+replaced then with LETREC)
@@ -55,7 +53,7 @@ CLOSED: [2016-12-05 Mon 20:46]
 *** TODO Caching
 *** TODO Reduce number of new objects
 *** TODO Inline procedures
-** TODO [#B] Compilation
+** TODO [#B] Compiler
 ** DONE [#A] Math procedures: fix precision loss
 CLOSED: [2017-05-10 Wed 22:37]
 ** DONE [#A] Inexactness taint
