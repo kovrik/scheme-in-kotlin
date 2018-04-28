@@ -410,7 +410,7 @@ open class Reader : IReader {
             while (Character.isWhitespace(c) || c == ',') {
                 c = reader.read().toChar()
             }
-            if (c == '}') break
+            if (c == '}') throw IllegalSyntaxException("Map literal must contain an even number of forms")
             reader.unread(c.toInt())
             val value = nextToken()
 

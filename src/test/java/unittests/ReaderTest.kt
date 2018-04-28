@@ -364,6 +364,16 @@ class ReaderTest : AbstractTest() {
         assertTrue(reader.readOne("  {  1 2,3 4,,,  }  ") is Map<*, *>)
         assertTrue(reader.readOne("  {  1 2,3 4,  , , ,,,4 5  }  ") is Map<*, *>)
         assertEquals(4, (reader.readOne("  {  1 2,3 4, 5 6    ,  7     8  }  ") as Map<*, *>).size.toLong())
+        try {
+            reader.readOne("{1}")
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+        try {
+            reader.readOne("{1 2 3}")
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
     }
 
     @Test
