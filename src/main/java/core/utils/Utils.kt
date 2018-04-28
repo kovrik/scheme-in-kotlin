@@ -179,7 +179,7 @@ object Utils {
             }
         } else {
             val sign = if (number[0].isDigit()) 0 else 1
-            if (dotPos <= 15 + sign) {
+            if (dotPos - sign <= 15) {
                 result = when (r) {
                     10   -> number.toDouble()
                     else -> number.removeRange(dotPos, dotPos + 1).let {
