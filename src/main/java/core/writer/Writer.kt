@@ -157,51 +157,51 @@ object Writer {
 
     private fun Throwable.write() = when (this) {
         is ExInfoException -> toString()
-        else -> "#<error:" + javaClass.name + ":" + (if (message == null) "" else message) + ">"
+        else -> "#<error:" + javaClass.name + (if (message == null) "" else ":$message") + ">"
     }
 
     private fun ByteArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun ShortArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun IntArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun LongArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun DoubleArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun FloatArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun CharArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun BooleanArray.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 
     private fun Array<*>.write() = when {
         isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]")
+        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
     }
 }

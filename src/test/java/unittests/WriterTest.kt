@@ -38,7 +38,52 @@ class WriterTest {
     }
 
     @Test
+    fun testWriteMap() {
+        assertEquals("{}", Writer.write(mapOf<Nothing, Nothing>()))
+        assertEquals("{\"test\" 1}", Writer.write(mapOf(Pair("test", 1))))
+    }
+
+    @Test
+    fun testWriteSet() {
+        assertEquals("#{}", Writer.write(setOf<Nothing>()))
+        assertEquals("#{1}", Writer.write(setOf(1)))
+        assertEquals("#{#\\a}", Writer.write(setOf('a')))
+        assertEquals("#{\"test\"}", Writer.write(setOf("test")))
+        assertEquals("#{nil}", Writer.write(setOf(null, null, null)))
+    }
+
+    @Test
     fun testWriteEscape() {
         assertEquals("\"\\t\\b\\r\\n\\\\\\\"\"", Writer.write("\t\b\r\n\\\""))
     }
+
+    @Test
+    fun testWriteThrowable() {
+        assertEquals("#<error:java.lang.NullPointerException>", Writer.write(NullPointerException()))
+        assertEquals("#<error:java.lang.NullPointerException:BOOM>", Writer.write(NullPointerException("BOOM")))
+    }
+
+    @Test
+    fun testWriteArray() {
+        assertEquals("[]", Writer.write(byteArrayOf()))
+        assertEquals("[]", Writer.write(shortArrayOf()))
+        assertEquals("[]", Writer.write(intArrayOf()))
+        assertEquals("[]", Writer.write(longArrayOf()))
+        assertEquals("[]", Writer.write(doubleArrayOf()))
+        assertEquals("[]", Writer.write(floatArrayOf()))
+        assertEquals("[]", Writer.write(charArrayOf()))
+        assertEquals("[]", Writer.write(booleanArrayOf()))
+        assertEquals("[]", Writer.write(arrayOf<Any?>()))
+        assertEquals("[1, 2, 3]", Writer.write(byteArrayOf(1,2,3)))
+        assertEquals("[1, 2, 3]", Writer.write(shortArrayOf(1,2,3)))
+        assertEquals("[1, 2, 3]", Writer.write(intArrayOf(1,2,3)))
+        assertEquals("[1, 2, 3]", Writer.write(longArrayOf(1L,2L,3L)))
+        assertEquals("[1.0, 2.0, 3.0]", Writer.write(doubleArrayOf(1.0,2.0,3.0)))
+        assertEquals("[1.0, 2.0, 3.0]", Writer.write(floatArrayOf(1.0f,2.0f,3.0f)))
+        assertEquals("[#\\a, #\\b, #\\c]", Writer.write(charArrayOf('a', 'b', 'c')))
+        assertEquals("[#t, #f, #t]", Writer.write(booleanArrayOf(true, false, true)))
+        assertEquals("[nil, nil]", Writer.write(arrayOf<Any?>(null, null)))
+    }
+
+    // TODO Vector, Sequence, Pair, Regex, Thread, Map.Entry, Pattern, CharSequence, Number, Symbol, Keyword, Class, Boolean, Special Cases etc.
 }
