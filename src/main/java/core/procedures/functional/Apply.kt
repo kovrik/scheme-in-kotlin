@@ -9,7 +9,6 @@ import core.utils.Utils
 
 class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
 
-    // TODO Make it work with Sequences!
     override operator fun invoke(args: Array<out Any?>): Any {
         val sexp = mutableListOf(args[0])
         if (args.size > 2) {
