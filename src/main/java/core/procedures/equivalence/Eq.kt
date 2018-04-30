@@ -17,6 +17,6 @@ class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
     private fun eq(first: Any?, second: Any?) = when {
         /* Check if 2 symbols are eq ignoring metadata */
         first is Symbol && second is Symbol -> first == second
-        else -> first === second || empty == first && empty == second
+        else -> first === second || (empty == first && empty == second)
     }
 }
