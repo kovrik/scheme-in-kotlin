@@ -3,7 +3,6 @@ package core
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -12,84 +11,13 @@ import kotlin.text.isEmpty
 class Reflector {
 
     companion object {
+        private val CLASSES = listOf(Boolean::class, Byte::class, Char::class, Short::class, Int::class, Long::class, Float::class, Double::class)
+        private val BOXED = CLASSES.associateBy({ it.java }, { it.javaObjectType })
+        private val UNBOXED = CLASSES.associateBy({ it.javaObjectType }, { it.java })
 
-        private val UNBOXED = hashMapOf(
-                Byte::class.javaObjectType    to Byte::class.java,
-                Short::class.javaObjectType   to Short::class.java,
-                Int::class.javaObjectType     to Int::class.java,
-                Long::class.javaObjectType    to Long::class.java,
-                Float::class.javaObjectType   to Float::class.java,
-                Double::class.javaObjectType  to Double::class.java,
-                Char::class.javaObjectType    to Char::class.java,
-                Boolean::class.javaObjectType to Boolean::class.java
-        )
-
-        /* Some common classes that are not in java.lang. package could be resolved without package name */
-        private val CLASS_PACKAGE_MAPPING = HashMap<String, String>().apply {
-            arrayOf(BigInteger::class.java, BigDecimal::class.java).forEach { put(it.simpleName, it.name) }
-        }
-
-        private val BOXED = HashMap<Class<*>?, Class<*>?>().apply {
-            UNBOXED.forEach { key, value -> put(value, key) }
-        }
+        /* Some common classes are not in java.lang. package, but we don't want to use fully qualified name to use them */
+        private val CLASS_PACKAGE_MAPPING = arrayOf(BigInteger::class.java, BigDecimal::class.java).associateBy({ it.simpleName }, { it.name })
     }
-
-    private fun getMethod(clazz: Class<*>?, name: String, args: Array<out Any?>, types: Array<Class<*>?>): Method {
-        clazz!!
-        try {
-            return clazz.getMethod(name, *types)
-        } catch (e: NoSuchMethodException) {
-            // no exact match found, try to find inexact match
-            // FIXME Workaround: save state before downcasting
-            val argsOld = args.copyOf()
-            val paramsOld = types.copyOf()
-            downcastArgs(args as Array<Any?>, types)
-            try {
-                return clazz.getMethod(name, *types)
-            } catch (ex: NoSuchMethodException) {
-                try {
-                    // FIXME Workaround: restore previous state
-                    // restore saved state
-                    System.arraycopy(argsOld, 0, args, 0, argsOld.size)
-                    System.arraycopy(paramsOld, 0, types, 0, paramsOld.size)
-                    val objectTypes = arrayOfNulls<Class<*>>(types.size).apply { fill(Object::class.java) }
-                    return clazz.getMethod(name, *objectTypes)
-                } catch (ex2: NoSuchMethodException) {
-                    throw NoSuchMethodException("reflector: unable to find matching method $name in class ${clazz.name}")
-                }
-            }
-        }
-    }
-
-    // TODO Delete and use downcastArgsCopy
-    private fun downcastArgs(args: Array<Any?>, types: Array<Class<*>?>) {
-        for (i in types.indices) {
-            types[i]?.let {
-                if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
-                    // cast to int
-                    types[i] = Int::class.java
-                    args[i] = (args[i] as Number).toInt()
-                }
-            }
-        }
-    }
-
-    private fun downcastArgsCopy(args: Array<Any?>, types: Array<Class<*>?>): Pair<Array<Any?>, Array<Class<*>?>> {
-        val newArgs  = args.copyOf()
-        val newTypes = types.copyOf()
-        for (i in types.indices) {
-            types[i]?.let {
-                if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
-                    // cast to int
-                    newTypes[i] = Int::class.java
-                    newArgs[i] = (args[i] as Number).toInt()
-                }
-            }
-        }
-        return Pair(newArgs, newTypes)
-    }
-
-    private fun unboxIfPossible(clazz: Class<*>) = UNBOXED.getOrDefault(clazz, clazz)
 
     fun getClazz(name: String) = getClazzOrNull(name) ?: throw ClassNotFoundException("reflector: class not found: $name")
 
@@ -102,11 +30,11 @@ class Reflector {
         null
     }
 
-    fun newInstance(clazz: String, args: Array<Any?>): Any {
+    fun newInstance(clazz: String, args: Array<out Any?>): Any {
         val c = getClazz(clazz)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
             for (i in args.indices) {
-                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+                set(i, unboxIfPossible(args[i]))
             }
         }
         try {
@@ -116,7 +44,7 @@ class Reflector {
                 ctor.newInstance(*args)
             } catch (e: NoSuchMethodException) {
                 // no exact match found, try to find inexact match
-                val (newArgs, newTypes) = downcastArgsCopy(args, argTypes)
+                val (newArgs, newTypes) = downcastArgs(args, argTypes)
                 val ctor = c.getConstructor(*newTypes)
                 ctor.isAccessible = true
                 ctor.newInstance(*newArgs)
@@ -131,7 +59,7 @@ class Reflector {
     /* Java Interop: static fields */
     fun evalJavaStaticField(s: String): Any? = when {
         s.contains('/') -> {
-            val classAndField = s.split('/').dropLastWhile(String::isEmpty)
+            val classAndField = s.split('/').filterNot(String::isEmpty)
             if (classAndField.size < 2) {
                 throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
@@ -153,39 +81,64 @@ class Reflector {
         else -> throw UndefinedIdentifierException(s)
     }
 
-    fun evalJavaMethod(method: String, args: Array<out Any?>): Any? = when {
-        method.startsWith(".-") -> {
-            if (args.isEmpty()) {
-                throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
-            }
-            val instance = args[0]
-            evalJavaInstanceField(method, instance)
-        }
-        method.startsWith('.') -> {
-            if (args.isEmpty()) {
-                throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
-            }
-            val instance = args[0]
-            val rest = args.copyOfRange(1, args.size)
-            evalJavaInstanceMethod(method, instance, rest)
-        }
+    fun evalJavaMethod(method: String, args: Array<out Any?>) = when {
         method.contains('/') -> evalJavaStaticMethod(method, args)
+        args.isEmpty() -> throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
+        method.startsWith(".-") -> evalJavaInstanceField(method, instance = args[0]!!)
+        method.startsWith('.') -> evalJavaInstanceMethod(method, instance = args[0]!!, args = args.copyOfRange(1, args.size))
         else -> throw UndefinedIdentifierException(method)
     }
 
+    /* Returns Pair(method: Method, args: Array<out Any?>) */
+    private fun getMethodAndArgs(clazz: Class<*>, name: String, args: Array<out Any?>, types: Array<Class<*>?>) = try {
+        Pair(clazz.getMethod(name, *types), args)
+    } catch (e: NoSuchMethodException) {
+        // no exact match found, try to find inexact match
+        val (newArgs, newTypes) = downcastArgs(args, types)
+        try {
+            Pair(clazz.getMethod(name, *newTypes), newArgs)
+        } catch (ex: NoSuchMethodException) {
+            try {
+                Pair(clazz.getMethod(name, *Array(types.size, { Object::class.java })), args)
+            } catch (ex2: NoSuchMethodException) {
+                throw NoSuchMethodException("reflector: unable to find matching method $name in class ${clazz.name}")
+            }
+        }
+    }
+
+    private fun downcastArgs(args: Array<out Any?>, types: Array<out Class<*>?>): Pair<Array<out Any?>, Array<out Class<*>?>> {
+        val newArgs = arrayOfNulls<Any?>(args.size)
+        val newTypes = arrayOfNulls<Class<*>?>(types.size)
+        for (i in types.indices) {
+            types[i]?.let {
+                if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
+                    // downcast to int
+                    newTypes[i] = Int::class.java
+                    newArgs[i] = (args[i] as Number).toInt()
+                } else {
+                    newTypes[i] = types[i]
+                    newArgs[i] = args[i]
+                }
+            }
+        }
+        return Pair(newArgs, newTypes)
+    }
+
+    private fun unboxIfPossible(it: Any?) = it?.let { UNBOXED.getOrDefault(it.javaClass, it.javaClass) }
+
     /* Java Interop: instance method call: (.toString (new Object)) */
-    private fun evalJavaInstanceMethod(methodName: String, instance: Any?, args: Array<out Any?>) = methodName.substring(1).let {
+    private fun evalJavaInstanceMethod(methodName: String, instance: Any, args: Array<out Any?>) = methodName.substring(1).let {
         try {
             val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
                 for (i in args.indices) {
-                    set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+                    set(i, unboxIfPossible(args[i]))
                 }
             }
-            val method = getMethod(instance?.javaClass, it, args, argTypes)
+            val (method, methodArgs) = getMethodAndArgs(instance.javaClass, it, args, argTypes)
             method.isAccessible = true
-            method(instance, *args)
+            method(instance, *methodArgs)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+            throw IllegalAccessException("reflector: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
                 null -> throw RuntimeException("reflector: invocation target exception")
@@ -195,21 +148,21 @@ class Reflector {
     }
 
     /* Java Interop: instance field: (.-x (new java.awt.Point 15 4)) */
-    private fun evalJavaInstanceField(field: String, instance: Any?) = field.substring(2).let {
+    private fun evalJavaInstanceField(field: String, instance: Any) = field.substring(2).let {
         try {
-            val f = instance?.javaClass?.getField(it)
+            val f = instance.javaClass.getField(it)
             f?.isAccessible = true
             f?.get(instance)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access method $it of ${instance?.javaClass?.name}")
+            throw IllegalAccessException("reflector: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: NoSuchFieldException) {
-            throw NoSuchFieldException("reflector: unable to find field $it of ${instance?.javaClass?.name}")
+            throw NoSuchFieldException("reflector: unable to find field $it of ${instance.javaClass.name}")
         }
     }
 
     /* Java Interop: static method call */
     private fun evalJavaStaticMethod(m: String, args: Array<out Any?>): Any? {
-        val classAndMethod = m.split('/').dropLastWhile { it.isEmpty() }
+        val classAndMethod = m.split('/').filterNot(String::isEmpty)
         if (classAndMethod.size < 2) {
             throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
         }
@@ -217,16 +170,16 @@ class Reflector {
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
             for (i in args.indices) {
-                set(i, args[i]?.let { unboxIfPossible(it.javaClass) })
+                set(i, unboxIfPossible(args[i]))
             }
         }
-        val method = getMethod(clazz, methodName, args, argTypes)
+        val (method, methodArgs) = getMethodAndArgs(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
             throw RuntimeException("reflector: unable to find static method $methodName of ${clazz.name}")
         }
         return try {
             method.isAccessible = true
-            method(null, *args)
+            method(null, *methodArgs)
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
