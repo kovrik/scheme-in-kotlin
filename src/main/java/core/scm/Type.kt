@@ -13,6 +13,7 @@ object Type {
     object Rational
     object Real
     object BitOp
+    object BitOpOrBigInt
     object Seqable
 
     private val TYPE_PREDICATES = hashMapOf(
@@ -28,6 +29,7 @@ object Type {
             ExactNonNegativeInteger::class.java to Utils::isExactNonNegativeInteger,
             Real::class.java                    to Utils::isReal,
             BitOp::class.java                   to Utils::isBitOpSupported,
+            BitOpOrBigInt::class.java           to Utils::isBitOpSupportedOrBigInt,
             IAssoc::class.java                  to Utils::isAssoc,
             Byte::class.java                    to Utils::isByte,
             Byte::class.javaObjectType          to Utils::isByte,

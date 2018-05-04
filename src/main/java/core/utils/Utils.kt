@@ -439,11 +439,12 @@ object Utils {
         return this
     }
 
-    fun isBitOpSupported(obj: Any) = if (obj is Byte || obj is Short || obj is Int || obj is Long) {
-        true
-    } else {
-        throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
+    fun isBitOpSupported(obj: Any) = when (obj) {
+        is Byte, is Short, is Int, is Long -> true
+        else -> throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
     }
+
+    fun isBitOpSupportedOrBigInt(obj: Any) = obj is BigInteger || isBitOpSupported(obj)
 
     fun isByte(o: Any?) = (o is Number && isReal(o) && o.toByte().toInt() == o.toInt())
     fun isChar(o: Any?) = (o is Number && isReal(o) && o.toChar().toInt() == o.toInt())

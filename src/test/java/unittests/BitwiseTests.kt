@@ -3,6 +3,7 @@ package unittests
 import org.junit.Test
 
 import org.junit.Assert.assertEquals
+import java.math.BigInteger
 
 class BitwiseTests : AbstractTest() {
 
@@ -61,7 +62,10 @@ class BitwiseTests : AbstractTest() {
     @Test
     fun testBitShiftLeft() {
         assertEquals(1024L, eval("(bit-shift-left 1 10)", env))
-        assertEquals(52L,   eval("(bit-shift-left #b1101 2)", env))
+        assertEquals(18014398509481984L, eval("(bit-shift-left 1 -10)", env))
+        assertEquals(-1024L, eval("(bit-shift-left -1 10)", env))
+        assertEquals(-18014398509481984L, eval("(bit-shift-left -1 -10)", env))
+        assertEquals(52L, eval("(bit-shift-left #b1101 2)", env))
     }
 
     @Test
@@ -71,6 +75,26 @@ class BitwiseTests : AbstractTest() {
         assertEquals(3L,  eval("(bit-shift-right #b1101 2)", env))
         assertEquals(1L,  eval("(bit-shift-right #b1101 3)", env))
         assertEquals(0L,  eval("(bit-shift-right #b1101 4)", env))
+        assertEquals(0L,  eval("(bit-shift-right #b1101 4)", env))
+        assertEquals(0L,  eval("(bit-shift-right 1  10)", env))
+        assertEquals(0L,  eval("(bit-shift-right 1 -10)", env))
+        assertEquals(-1L, eval("(bit-shift-right -1  10)", env))
+        assertEquals(-1L, eval("(bit-shift-right -1 -10)", env))
+    }
+
+    @Test
+    fun testArithmeticShift() {
+        assertEquals(1024L, eval("(arithmetic-shift 1 10)", env))
+        assertEquals(52L,   eval("(arithmetic-shift #b1101 2)", env))
+        assertEquals(0L,    eval("(arithmetic-shift 1 -10)", env))
+        assertEquals(0L,    eval("(arithmetic-shift 1 -10)", env))
+        assertEquals(256L,  eval("(arithmetic-shift 1024 -2)", env))
+        assertEquals(128L,  eval("(arithmetic-shift 1024 -3)", env))
+        assertEquals(0L,    eval("(arithmetic-shift 1024 -30)", env))
+        assertEquals(BigInteger.valueOf(256L),  eval("(arithmetic-shift (bigint 1024) -2)", env))
+        assertEquals(BigInteger.valueOf(128L),  eval("(arithmetic-shift (bigint 1024) -3)", env))
+        assertEquals(BigInteger.valueOf(1024L), eval("(arithmetic-shift (bigint 1)  10)", env))
+        assertEquals(BigInteger.valueOf(0L),    eval("(arithmetic-shift (bigint 1) -10)", env))
     }
 
     @Test
