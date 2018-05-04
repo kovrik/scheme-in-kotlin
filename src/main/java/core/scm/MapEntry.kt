@@ -4,11 +4,11 @@ import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.writer.Writer
 
-class MapEntry(override var key: Any?, override var value: Any?) :
+class MapEntry<K, V>(override var key: K, override var value: V) :
         AFn<Number?, Any?>(minArgs = 1, maxArgs = 1, isPure = true, mandatoryArgsTypes = arrayOf(Int::class.java)),
-        Map.Entry<Any?, Any?>, IAssoc<Number?, Any?>, Sequence<Any?> {
+        Map.Entry<K, V>, IAssoc<Number?, Any?>, Sequence<Any?> {
 
-    constructor(entry: Map.Entry<Any?, Any?>) : this(entry.key, entry.value)
+    constructor(entry: Map.Entry<K, V>) : this(entry.key, entry.value)
 
     override fun containsKey(key: Number?) = when {
         key == null -> false
@@ -24,15 +24,14 @@ class MapEntry(override var key: Any?, override var value: Any?) :
         else -> null
     }
 
-    override fun assoc(key: Number?, value: Any?): MapEntry {
+    override fun assoc(key: Number?, value: Any?): MapEntry<*, *> {
         Type.assertType("Map Entry", key, Int::class.java)
-        when {
+        return when {
             key == null -> throw WrongTypeException("Map Entry", "Integer", key)
-            key.toInt() == 0 -> this.key = value
-            key.toInt() == 1 -> this.value = value
+            key.toInt() == 0 -> MapEntry(value, this.value)
+            key.toInt() == 1 -> MapEntry(this.key, value)
             else -> throw IndexOutOfBoundsException()
         }
-        return this
     }
 
     override operator fun invoke(arg: Number?) = getEntry(arg)
@@ -44,7 +43,7 @@ class MapEntry(override var key: Any?, override var value: Any?) :
     override fun equals(other: Any?) = when {
         this === other -> true
         other == null || javaClass != other.javaClass -> false
-        else -> key == (other as MapEntry).key && value == other.value
+        else -> key == (other as MapEntry<*, *>).key && value == other.value
     }
 
     override fun hashCode() = 31 * (key?.hashCode() ?: 0) + (value?.hashCode() ?: 0)

@@ -499,7 +499,7 @@ object Utils {
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
-    private fun mapIterator(map: Map<*, *>) = object : Iterator<MapEntry> {
+    private fun mapIterator(map: Map<*, *>) = object : Iterator<MapEntry<*, *>> {
         private  val iterator = map.iterator()
         override fun hasNext() = iterator.hasNext()
         override fun next() = MapEntry(iterator.next())
