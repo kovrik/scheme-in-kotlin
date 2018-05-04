@@ -1,19 +1,43 @@
 package core.scm
 
+import core.exceptions.WrongTypeException
+import core.procedures.AFn
 import core.writer.Writer
 
-// TODO implement proper interfaces, refactor
-class MapEntry(key: Any?, value: Any?) : MutableVector(arrayOf(key, value)), Map.Entry<Any?, Any?> {
+class MapEntry(override var key: Any?, override var value: Any?) :
+        AFn<Number?, Any?>(minArgs = 1, maxArgs = 1, isPure = true, mandatoryArgsTypes = arrayOf(Int::class.java)),
+        Map.Entry<Any?, Any?>, IAssoc<Number?, Any?>, Sequence<Any?> {
 
     constructor(entry: Map.Entry<Any?, Any?>) : this(entry.key, entry.value)
 
-    override val name = "map entry"
+    override fun containsKey(key: Number?) = when {
+        key == null -> false
+        key.toInt() == 0 -> true
+        key.toInt() == 1 -> true
+        else -> false
+    }
 
-    override val key: Any?
-        get() = get(0)
+    override fun getEntry(key: Number?) = when {
+        key == null -> null
+        key.toInt() == 0 -> MapEntry(0, this.key)
+        key.toInt() == 1 -> MapEntry(1, this.value)
+        else -> null
+    }
 
-    override val value: Any?
-        get() = get(1)
+    override fun assoc(key: Number?, value: Any?): MapEntry {
+        Type.assertType("Map Entry", key, Int::class.java)
+        when {
+            key == null -> throw WrongTypeException("Map Entry", "Integer", key)
+            key.toInt() == 0 -> this.key = value
+            key.toInt() == 1 -> this.value = value
+            else -> throw IndexOutOfBoundsException()
+        }
+        return this
+    }
+
+    override operator fun invoke(arg: Number?) = getEntry(arg)
+
+    override fun iterator() = sequenceOf(key, value).iterator()
 
     override fun toString() = "[${Writer.write(key)} ${Writer.write(value)}]"
 
