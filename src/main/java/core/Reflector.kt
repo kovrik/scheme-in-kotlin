@@ -19,7 +19,9 @@ class Reflector {
         private val CLASS_PACKAGE_MAPPING = arrayOf(BigInteger::class.java, BigDecimal::class.java).associateBy({ it.simpleName }, { it.name })
     }
 
-    fun getClazz(name: String) = getClazzOrNull(name) ?: throw ClassNotFoundException("reflector: class not found: $name")
+    private val name: String = "reflector"
+
+    fun getClazz(name: String) = getClazzOrNull(name) ?: throw ClassNotFoundException("${this.name}: class not found: $name")
 
     fun getClazzOrNull(name: String): Class<*>? = try {
         when {
@@ -50,9 +52,9 @@ class Reflector {
                 ctor.newInstance(*newArgs)
             }
         } catch (ex: NoSuchMethodException) {
-            throw NoSuchMethodException("reflector: unable to find matching constructor for class ${c.name}")
+            throw NoSuchMethodException("${this.name}: unable to find matching constructor for class ${c.name}")
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access constructor for class $clazz")
+            throw IllegalAccessException("${this.name}: unable to access constructor for class $clazz")
         }
     }
 
@@ -61,7 +63,7 @@ class Reflector {
         s.contains('/') -> {
             val classAndField = s.split('/').filterNot(String::isEmpty)
             if (classAndField.size < 2) {
-                throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
+                throw IllegalSyntaxException("${this.name}: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
             val (className, fieldName) = classAndField
             try {
@@ -69,13 +71,13 @@ class Reflector {
                 val field = c.getField(fieldName)
                 field.isAccessible = true
                 if (!Modifier.isStatic(field.modifiers)) {
-                    throw NoSuchFieldException("reflector: unable to find static field $fieldName of $className")
+                    throw NoSuchFieldException("${this.name}: unable to find static field $fieldName of $className")
                 }
                 field.get(c)
             } catch (e: NoSuchFieldException) {
-                throw NoSuchFieldException("reflector: unable to find static field $fieldName in class $className")
+                throw NoSuchFieldException("${this.name}: unable to find static field $fieldName in class $className")
             } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("reflector: unable to access static field $fieldName in class $className")
+                throw IllegalAccessException("${this.name}: unable to access static field $fieldName in class $className")
             }
         }
         else -> throw UndefinedIdentifierException(s)
@@ -83,7 +85,7 @@ class Reflector {
 
     fun evalJavaMethod(method: String, args: Array<out Any?>) = when {
         method.contains('/') -> evalJavaStaticMethod(method, args)
-        args.isEmpty() -> throw IllegalSyntaxException("reflector: malformed member expression, expecting (.member target ...)")
+        args.isEmpty() -> throw IllegalSyntaxException("${this.name}: malformed member expression, expecting (.member target ...)")
         method.startsWith(".-") -> evalJavaInstanceField(method, instance = args[0]!!)
         method.startsWith('.') -> evalJavaInstanceMethod(method, instance = args[0]!!, args = args.copyOfRange(1, args.size))
         else -> throw UndefinedIdentifierException(method)
@@ -101,7 +103,7 @@ class Reflector {
             try {
                 Pair(clazz.getMethod(name, *Array(types.size, { Object::class.java })), args)
             } catch (ex2: NoSuchMethodException) {
-                throw NoSuchMethodException("reflector: unable to find matching method $name in class ${clazz.name}")
+                throw NoSuchMethodException("${this.name}: unable to find matching method $name in class ${clazz.name}")
             }
         }
     }
@@ -138,10 +140,10 @@ class Reflector {
             method.isAccessible = true
             method(instance, *methodArgs)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access method $it of ${instance.javaClass.name}")
+            throw IllegalAccessException("${this.name}: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
-                null -> throw RuntimeException("reflector: invocation target exception")
+                null -> throw RuntimeException("${this.name}: invocation target exception")
                 else -> throw e.cause as Throwable
             }
         }
@@ -154,9 +156,9 @@ class Reflector {
             f?.isAccessible = true
             f?.get(instance)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access method $it of ${instance.javaClass.name}")
+            throw IllegalAccessException("${this.name}: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: NoSuchFieldException) {
-            throw NoSuchFieldException("reflector: unable to find field $it of ${instance.javaClass.name}")
+            throw NoSuchFieldException("${this.name}: unable to find field $it of ${instance.javaClass.name}")
         }
     }
 
@@ -164,7 +166,7 @@ class Reflector {
     private fun evalJavaStaticMethod(m: String, args: Array<out Any?>): Any? {
         val classAndMethod = m.split('/').filterNot(String::isEmpty)
         if (classAndMethod.size < 2) {
-            throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
+            throw IllegalSyntaxException("${this.name}: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
         }
         val (className, methodName) = classAndMethod
         val clazz = getClazz(className)
@@ -175,16 +177,16 @@ class Reflector {
         }
         val (method, methodArgs) = getMethodAndArgs(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
-            throw RuntimeException("reflector: unable to find static method $methodName of ${clazz.name}")
+            throw RuntimeException("${this.name}: unable to find static method $methodName of ${clazz.name}")
         }
         return try {
             method.isAccessible = true
             method(null, *methodArgs)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("reflector: unable to access static method $methodName of ${clazz.name}")
+            throw IllegalAccessException("${this.name}: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
-                null -> throw RuntimeException("reflector: invocation target exception")
+                null -> throw RuntimeException("${this.name}: invocation target exception")
                 else -> throw e.cause as Throwable
             }
         }
