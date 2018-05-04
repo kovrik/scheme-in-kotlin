@@ -85,7 +85,7 @@ class ReaderTest : AbstractTest() {
                 reader.readOne(bad)
                 fail()
             } catch (e: IllegalSyntaxException) {
-                assertEquals("read: bad number: " + bad, e.message)
+                assertEquals("reader: bad number: " + bad, e.message)
             }
         }
     }
@@ -125,7 +125,7 @@ class ReaderTest : AbstractTest() {
             reader.readOne("\"test \\u\"")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: no hex digit following \\u in string", e.message)
+            assertEquals("reader: no hex digit following \\u in string", e.message)
         }
     }
 
@@ -145,13 +145,13 @@ class ReaderTest : AbstractTest() {
             reader.readOne("#(1 . 2)")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: illegal use of '.'", e.message)
+            assertEquals("reader: illegal use of '.'", e.message)
         }
         try {
             reader.readOne("#(1 2 3 4 5 . 6)")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: illegal use of '.'", e.message)
+            assertEquals("reader: illegal use of '.'", e.message)
         }
     }
 
@@ -164,7 +164,7 @@ class ReaderTest : AbstractTest() {
                 reader.readOne(illegal)
                 fail()
             } catch (e: IllegalSyntaxException) {
-                assertEquals("read: illegal use of '.'", e.message)
+                assertEquals("reader: illegal use of '.'", e.message)
             }
         }
     }
@@ -181,7 +181,7 @@ class ReaderTest : AbstractTest() {
             reader.readOne(")")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: unexpected list terminator: )", e.message)
+            assertEquals("reader: unexpected list terminator: )", e.message)
         }
     }
 
@@ -311,13 +311,13 @@ class ReaderTest : AbstractTest() {
             reader.readOne("\"\\u\"")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: no hex digit following \\u in string", e.message)
+            assertEquals("reader: no hex digit following \\u in string", e.message)
         }
         try {
             reader.readOne("\"\\x\"")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: no hex digit following \\x in string", e.message)
+            assertEquals("reader: no hex digit following \\x in string", e.message)
         }
     }
 
@@ -329,7 +329,7 @@ class ReaderTest : AbstractTest() {
                 reader.readOne(bad)
                 fail()
             } catch (e: IllegalSyntaxException) {
-                assertEquals("read: bad syntax: " + bad, e.message)
+                assertEquals("reader: bad syntax: $bad", e.message)
             }
         }
     }
@@ -340,15 +340,15 @@ class ReaderTest : AbstractTest() {
             reader.readOne("#\\qwerty")
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("read: bad character constant: #\\qwerty", e.message)
+            assertEquals("reader: bad character constant: #\\qwerty", e.message)
         }
         val nohex = arrayOf("ui", "unknown", "uu")
         for (n in nohex) {
             try {
-                reader.readOne("#\\" + n)
+                reader.readOne("#\\$n")
                 fail()
             } catch (e: IllegalSyntaxException) {
-                assertEquals("read: no hex digit following \\u in string", e.message)
+                assertEquals("reader: no hex digit following \\u in string", e.message)
             }
         }
     }

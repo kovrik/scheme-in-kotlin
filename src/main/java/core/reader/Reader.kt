@@ -13,6 +13,8 @@ import java.util.regex.Pattern
 
 open class Reader : IReader {
 
+    private val name: String = "reader"
+
     internal lateinit var reader: PushbackReader
 
     internal constructor()
@@ -103,9 +105,9 @@ open class Reader : IReader {
             ';'  -> readComment()
             '"'  -> readString()
             ':'  -> readKeyword()
-            ')'  -> throw IllegalSyntaxException("read: unexpected list terminator: $c")
-            '}'  -> throw IllegalSyntaxException("read: unexpected terminator: $c")
-            ']'  -> throw IllegalSyntaxException("read: unexpected vector terminator: $c")
+            ')'  -> throw IllegalSyntaxException("$name: unexpected list terminator: $c")
+            '}'  -> throw IllegalSyntaxException("$name: unexpected terminator: $c")
+            ']'  -> throw IllegalSyntaxException("$name: unexpected vector terminator: $c")
             else -> (c + readUntilDelimiter()).let {
                 when {
                     /* Decimal number */
@@ -154,23 +156,23 @@ open class Reader : IReader {
             while (restNumber.length > 1 && restNumber[0] == '#') {
                 val ch = restNumber[1]
                 when {
-                    isExactness(ch) -> exactness = exactness?.let { throw IllegalSyntaxException("read: bad number: $number") } ?: ch
-                    isRadix(ch)     -> radix = radix?.let { throw IllegalSyntaxException("read: bad number: $number") } ?: ch
+                    isExactness(ch) -> exactness = exactness?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
+                    isRadix(ch)     -> radix = radix?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
                 }
                 restNumber = restNumber.drop(2)
             }
             if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
-                throw IllegalSyntaxException("read: bad number: $number")
+                throw IllegalSyntaxException("$name: bad number: $number")
             }
             /* Check if this is a proper number */
             return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?:
-            throw IllegalSyntaxException("read: bad number: $number")
+            throw IllegalSyntaxException("$name: bad number: $number")
         }
         /* Bad hash syntax: read token and throw exception */
         StringBuilder("#").let {
             if (isValid(c.toInt())) { it.append(c) }
             if (!Character.isWhitespace(c)) { it.append(readUntilDelimiter()) }
-            throw IllegalSyntaxException("read: bad syntax: $it")
+            throw IllegalSyntaxException("$name: bad syntax: $it")
         }
     }
 
@@ -196,7 +198,7 @@ open class Reader : IReader {
                     }
                 }
             }
-            else -> throw IllegalSyntaxException("read: unknown quotation type: $c")
+            else -> throw IllegalSyntaxException("$name: unknown quotation type: $c")
         }
         return listOf(quote, read())
     }
@@ -243,12 +245,12 @@ open class Reader : IReader {
                         reader.unread(next.toInt())
                         val chr = readCharacter()
                         when (chr) {
-                            next -> throw IllegalSyntaxException("read: no hex digit following \\$next in string")
+                            next -> throw IllegalSyntaxException("$name: no hex digit following \\$next in string")
                             else -> append(chr)
                         }
                     }
                     !Character.isAlphabetic(next.toInt()) -> append(next)
-                    else -> throw IllegalSyntaxException("read: unknown escape sequence \\$next in string")
+                    else -> throw IllegalSyntaxException("$name: unknown escape sequence \\$next in string")
                 }
             } else {
                 append(c)
@@ -299,14 +301,14 @@ open class Reader : IReader {
         }
         if (isCodepoint) {
             if (radix == 16 && !isValidForRadix(rest[0], radix)) {
-                throw IllegalSyntaxException("read: no hex digit following \\${first.toChar()} in string")
+                throw IllegalSyntaxException("$name: no hex digit following \\${first.toChar()} in string")
             }
-            val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("read: bad character constant: #\\$rest")
+            val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("$name: bad character constant: #\\$rest")
             return codepoint.toChar()
         }
         /* Must be a named char */
         val named = first.toChar() + rest
-        return NAMED_CHARS[named] ?: throw IllegalSyntaxException("read: bad character constant: #\\$named")
+        return NAMED_CHARS[named] ?: throw IllegalSyntaxException("$name: bad character constant: #\\$named")
     }
 
     /**
@@ -333,7 +335,7 @@ open class Reader : IReader {
             /* Check if current token is a dot */
             if (token == Dot.symbol) {
                 if (!allowImproperList || dotPos > -1) {
-                    throw IllegalSyntaxException("read: illegal use of '.'")
+                    throw IllegalSyntaxException("$name: illegal use of '.'")
                 }
                 /* Remember the dot position */
                 dotPos = list.size
@@ -352,7 +354,7 @@ open class Reader : IReader {
             dotPos < 1 -> list
             else -> {
                 /* Validate dot position */
-                if (dotPos != list.size - 1) throw IllegalSyntaxException("read: illegal use of '.'")
+                if (dotPos != list.size - 1) throw IllegalSyntaxException("$name: illegal use of '.'")
                 /* Convert list into cons */
                 var cons = Cons.cons<Any?>(list[list.size - 2], list.last())
                 for (n in list.size - 3 downTo 0) { cons = Cons.cons(list[n], cons) }
@@ -410,7 +412,7 @@ open class Reader : IReader {
             while (Character.isWhitespace(c) || c == ',') {
                 c = reader.read().toChar()
             }
-            if (c == '}') throw IllegalSyntaxException("Map literal must contain an even number of forms")
+            if (c == '}') throw IllegalSyntaxException("$name: map literal must contain an even number of forms")
             reader.unread(c.toInt())
             val value = nextToken()
 
@@ -449,7 +451,7 @@ open class Reader : IReader {
      */
     @Throws(IOException::class)
     private fun readKeyword() = readUntilDelimiter().let {
-        if (it.isEmpty()) throw IllegalSyntaxException("read: illegal use of :")
+        if (it.isEmpty()) throw IllegalSyntaxException("$name: illegal use of :")
         Keyword.intern(it)
     }
 
