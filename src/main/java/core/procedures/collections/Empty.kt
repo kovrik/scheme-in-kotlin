@@ -11,7 +11,7 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArg
         is Set<*>        -> MutableSet<Any?>()
         is Vector        -> Vector.EMPTY
         is MutableVector -> MutableVector.EMPTY
-        is Map<*, *>     -> Hashmap()
+        is Map<*, *>     -> Hashmap<Any?, Any?>()
         is BooleanArray  -> BooleanArray(0)
         is CharArray     -> CharArray(0)
         is ByteArray     -> ByteArray(0)

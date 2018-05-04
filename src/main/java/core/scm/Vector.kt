@@ -6,7 +6,7 @@ import java.util.*
 
 // TODO implement List instead?
 /* Immutable Vector */
-open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
+open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
 
     companion object {
         /* Scheme Vector syntax */
@@ -99,14 +99,14 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc {
 
     override fun equals(other: Any?) = other is Vector && Arrays.equals(array, other.array)
 
-    override fun containsKey(key: Any?): Boolean {
-        Type.assertType(name, key, Int::class.java)
-        return size > (key as Number).toInt()
+    override fun containsKey(key: Any?) = when (key) {
+        is Number -> size > key.toInt()
+        else -> false
     }
 
-    override fun getEntry(key: Any?): MapEntry? {
-        Type.assertType(name, key, Int::class.java)
-        return (key as Number).toInt().let { MapEntry(it, get(it)) }
+    override fun getEntry(key: Any?): MapEntry? = when (key) {
+        is Number -> key.toInt().let { MapEntry(it, get(it)) }
+        else -> null
     }
 
     override fun assoc(key: Any?, value: Any?): Any = throw UnsupportedOperationException("assoc is not supported for immutable vector")

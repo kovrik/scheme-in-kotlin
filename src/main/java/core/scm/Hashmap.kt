@@ -3,17 +3,15 @@ package core.scm
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 
-// TODO generify
-class Hashmap(val map: Map<in Any?, Any?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 2),
-                                             Map<Any?, Any?> by map, IAssoc {
+class Hashmap<K, V>(val map: Map<K, V>) : AFn<K, Any?>(minArgs = 1, maxArgs = 2), Map<K, V> by map, IAssoc<K, V> {
 
     constructor() : this(mapOf())
 
     /* Maps are functions of their keys */
-    override fun invoke(args: Array<out Any?>) = map.getOrDefault(args[0], args.getOrNull(1))
+    override fun invoke(args: Array<out K>) = map.getOrDefault(args[0], args.getOrNull(1))
 
-    override fun getEntry(key: Any?) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
+    override fun getEntry(key: K) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
 
-    override fun assoc(key: Any?, value: Any?) = throw WrongTypeException("assoc", "Mutable Hashmap", this)
+    override fun assoc(key: K, value: V) = throw WrongTypeException("assoc", "Mutable Hashmap", this)
 }
 

@@ -460,7 +460,7 @@ object Utils {
                                obj is Pair<*, *> || obj is MutablePair<*, *> || obj is Map<*, *> || obj is Map.Entry<*, *> ||
                                obj.javaClass.isArray
 
-    fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc
+    fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc<*, *>
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
         null                 -> emptyList<Any?>().asSequence()
@@ -492,10 +492,10 @@ object Utils {
         else             -> false
     }
 
-    fun toAssoc(obj: Any?): IAssoc = when (obj) {
+    fun <K, V> toAssoc(obj: Any?): IAssoc<K, V> = when (obj) {
         null                -> Hashmap()
-        is IAssoc           -> obj
-        is Map.Entry<*, *>  -> MapEntry(obj)
+        is IAssoc<*, *>     -> obj as IAssoc<K, V>
+        is Map.Entry<*, *>  -> MapEntry(obj) as IAssoc<K, V>
         else                -> throw IllegalArgumentException("don't know how to create Map from ${obj.javaClass}")
     }
 
