@@ -13,8 +13,10 @@ abstract class AbstractTest {
     private   val reader = StringReader()
     protected val eval = Evaluator()
     protected val env = DefaultEnvironment().apply {
-        /* Read and Eval library procedures */
-        libraryProcedures.flatMap { reader.read(it)!! }.forEach { eval.macroexpandAndEvaluate(it, this) }
+        /* Eval lib procedures */
+        with (StringReader()) {
+            libraryProcedures.forEach { eval.eval(readOne(it), this@apply) }
+        }
     }
 
     /* Helper method: evaluates first S-expression */
