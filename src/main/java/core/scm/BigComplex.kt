@@ -81,12 +81,9 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
      */
     fun sqrt(): BigComplex {
-        val a = this.re.toDouble()
-        val b = this.im.toDouble()
-        val signum = this.im.signum()
-        val s = kotlin.math.sqrt(a * a + b * b)
-        val gamma = kotlin.math.sqrt((s + a) / 2)
-        val delta = signum * kotlin.math.sqrt((s - a) / 2)
+        val s = (re.multiply(re).add(im.multiply(im))).sqrt(Utils.DEFAULT_CONTEXT)
+        val gamma = (s.add(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT)
+        val delta = (s.minus(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT).multiply(im.signum().toBigDecimal())
         return BigComplex(gamma, delta)
     }
 

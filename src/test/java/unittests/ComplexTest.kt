@@ -56,13 +56,13 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testSqrt() {
-        assertEquals(BigComplex(BigDecimal("1.09868411346781"), BigDecimal("0.4550898605622274")), eval("(sqrt 1+1i)", env))
-        assertEquals(BigComplex(BigDecimal("0.7071067811865476"), BigDecimal("-2.1213203435596424")), eval("(sqrt -4-3i)", env))
+        assertEquals(BigComplex(BigDecimal("1.09868411346781"),   BigDecimal("0.4550898605622273")), eval("(sqrt 1+1i)", env))
+        assertEquals(BigComplex(BigDecimal("0.7071067811865475"), BigDecimal("-2.121320343559643")), eval("(sqrt -4-3i)", env))
     }
 
     @Test
     fun testLog() {
-        assertEquals(BigComplex(BigDecimal("0.3465735902799727"), BigDecimal("0.7853981633974483")), eval("(log  1+1i)", env))
+        assertEquals(BigComplex(BigDecimal("0.3465735902799726"), BigDecimal("0.7853981633974483")), eval("(log  1+1i)", env))
         assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("-2.498091544796509")), eval("(log -4-3i)", env))
         assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("-0.6435011087932844")), eval("(log  4-3i)", env))
         assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("0.6435011087932844")), eval("(log  4+3i)", env))
@@ -72,7 +72,7 @@ class ComplexTest : AbstractTest() {
     @Test
     fun testExpt() {
         // FIXME
-//        assertEquals(BigComplex(BigDecimal("0.2739572538301211"), BigDecimal("0.5837007587586147")), eval("(expt 1+1i 1+1i)", env))
+        assertEquals(BigComplex(BigDecimal("0.2739572538301211"), BigDecimal("0.5837007587586147")), eval("(expt 1+1i 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("0.0004911725350693"), BigDecimal("-0.0007294124825312")), eval("(expt 7+2.3i -4-3i)", env))
         assertEquals(BigComplex(BigDecimal("-345.3968959025678"), BigDecimal("11.028099235573535")), eval("(expt 3.4-5.2i 3.2)", env))
     }
@@ -130,9 +130,9 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testMagnitude() {
-        assertEquals(1.4142135623730951, eval("(magnitude 1+1i)", env))
-        assertEquals(12.780097808702404, eval("(magnitude -3.47-12.3i)", env))
-        assertEquals(5.0, eval("(magnitude 0+5i)", env))
+        assertEquals(BigDecimal("1.414213562373095"), eval("(magnitude 1+1i)", env))
+        assertEquals(BigDecimal("12.7800978087024"), eval("(magnitude -3.47-12.3i)", env))
+        assertEquals(5L.toBigDecimal(), eval("(magnitude 0+5i)", env))
         assertEquals(4L, eval("(magnitude 4)", env))
         assertEquals(1L, eval("(magnitude -1)", env))
         assertEquals(0L, eval("(magnitude 0+0i)", env))
