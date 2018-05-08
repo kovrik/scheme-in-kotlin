@@ -8,9 +8,9 @@ import java.util.concurrent.ThreadLocalRandom
 
 class RandProc : AFn<Any?, Number>(name = "rand", isPure = true, maxArgs = 2, restArgsType = Type.Real::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number = when {
-        args.isEmpty() -> Math.random()
-        args.size == 1 -> {
+    override operator fun invoke(args: Array<out Any?>): Number = when (args.size) {
+        0 -> Math.random()
+        1 -> {
             val bound = (args[0] as Number).toDouble()
             if (Utils.isNegative(bound)) {
                 throw WrongTypeException(name, "non-negative bound", args[0])

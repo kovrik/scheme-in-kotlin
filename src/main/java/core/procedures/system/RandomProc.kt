@@ -8,9 +8,9 @@ import java.util.concurrent.ThreadLocalRandom
 
 class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, maxArgs = 2, restArgsType = Long::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Number = when {
-        args.isEmpty() -> Math.random()
-        args.size == 1 -> {
+    override operator fun invoke(args: Array<out Any?>): Number = when (args.size) {
+        0 -> Math.random()
+        1 -> {
             if (args[0] !is Long || (args[0] as Long) < 0 || args[0] as Long > Int.MAX_VALUE) {
                 throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[0])
             }

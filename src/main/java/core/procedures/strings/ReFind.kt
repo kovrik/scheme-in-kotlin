@@ -10,8 +10,8 @@ class ReFind : AFn<Any?, Any?>(name = "re-find", isPure = true, minArgs = 1, max
 
     private val reGroups = ReGroups()
 
-    override operator fun invoke(args: Array<out Any?>) = when {
-        args.size == 1 -> {
+    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+        1 -> {
             val matcher = args[0] as? Matcher ?: throw WrongTypeException(name, Matcher::class.java, args[0])
             if (matcher.find()) reGroups(args[0]) else null
         }
