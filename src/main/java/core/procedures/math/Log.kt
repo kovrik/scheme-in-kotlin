@@ -14,7 +14,7 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxAr
 
     companion object {
         /* If number has 307 digits or less, then can use ln(double) */
-        private val MAX_DIGITS = 307
+        private const val MAX_DIGITS = 307
         private val VALUE = ln(10.0.pow(MAX_DIGITS.toDouble()))
     }
 
