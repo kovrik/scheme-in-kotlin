@@ -391,7 +391,7 @@ class ListTest : AbstractTest() {
             eval("(assoc)", env)
             fail()
         } catch (e: ArityException) {
-            assertEquals("assoc: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
+            assertEquals("assoc: arity mismatch; the expected number of arguments does not match the given number (expected: at least 2, given: 0)", e.message)
         }
         try {
             eval("(assoc 1 #())", env)
@@ -417,7 +417,7 @@ class ListTest : AbstractTest() {
             eval("(assq)", env)
             fail()
         } catch (e: ArityException) {
-            assertEquals("assq: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
+            assertEquals("assq: arity mismatch; the expected number of arguments does not match the given number (expected: at least 2, given: 0)", e.message)
         }
         try {
             eval("(assq 1 #())", env)
@@ -440,7 +440,7 @@ class ListTest : AbstractTest() {
             eval("(assv)", env)
             fail()
         } catch (e: ArityException) {
-            assertEquals("assv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
+            assertEquals("assv: arity mismatch; the expected number of arguments does not match the given number (expected: at least 2, given: 0)", e.message)
         }
         try {
             eval("(assv 1 #())", env)
