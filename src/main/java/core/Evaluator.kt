@@ -23,7 +23,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     companion object {
         /* Used by gensym to generate unique symbol ids */
         private val id = AtomicInteger(0)
-        internal fun nextID() = id.incrementAndGet()
+        internal val nextID get() = id.incrementAndGet()
 
         /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)

@@ -8,7 +8,7 @@ open class Gensym : AFn<Any?, Symbol>(name = "gensym", isPure = true, minArgs = 
                                       lastArgType = CharSequence::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
-        0    -> Symbol.intern("G__" + Evaluator.nextID())
-        else -> Symbol.intern((args[0] as CharSequence).toString() + Evaluator.nextID())
+        0    -> Symbol.intern("G__" + Evaluator.nextID)
+        else -> Symbol.intern((args[0] as CharSequence).toString() + Evaluator.nextID)
     }
 }
