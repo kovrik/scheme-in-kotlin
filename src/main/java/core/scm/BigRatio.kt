@@ -80,10 +80,8 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun toBigDecimal() = safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
 
-    fun toBigDecimalInexact(): BigDecimal {
-        val bigDecimal = safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
-        val scale = maxOf(1, bigDecimal.scale())
-        return bigDecimal.setScale(scale, Utils.ROUNDING_MODE)
+    fun toBigDecimalInexact(): BigDecimal = safeBigDecimalDivision(numerator.toBigDecimal(), denominator.toBigDecimal()).let {
+        it.setScale(maxOf(1, it.scale()), Utils.ROUNDING_MODE)
     }
 
     fun ceiling(): BigRatio {
