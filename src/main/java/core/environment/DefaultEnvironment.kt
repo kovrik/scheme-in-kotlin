@@ -6,6 +6,7 @@ import core.procedures.bit.*
 import core.procedures.booleans.Not
 import core.procedures.booleans.Xor
 import core.procedures.box.*
+import core.procedures.box.Swap
 import core.procedures.bytes.BytesToString
 import core.procedures.bytes.StringToBytes
 import core.procedures.characters.CharComparison
@@ -50,7 +51,6 @@ import core.procedures.vectors.*
 import core.scm.Symbol
 import core.scm.specialforms.*
 import core.scm.specialforms.SetForm
-import core.scm.specialforms.Swap
 import kotlin.math.E
 import kotlin.math.PI
 
@@ -516,7 +516,7 @@ class DefaultEnvironment : Environment(null) {
                 Reset(),
                 MakeWeakBox(),
                 WeakBoxValue(),
-//                Swap(),
+                Swap(),
 
                 /* Seqs */
                 Butlast(),
@@ -676,7 +676,6 @@ class DefaultEnvironment : Environment(null) {
                 DynamicWind,
                 CallCC,
                 ThunkForm,
-                Swap,
                 SyntaxForm,
                 Locking,
                 // TODO Macros
