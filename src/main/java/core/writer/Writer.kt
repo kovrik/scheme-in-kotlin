@@ -160,48 +160,13 @@ object Writer {
         else -> "#<error:" + javaClass.name + (if (message == null) "" else ":$message") + ">"
     }
 
-    private fun ByteArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun ShortArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun IntArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun LongArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun DoubleArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun FloatArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun CharArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun BooleanArray.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
-
-    private fun Array<*>.write() = when {
-        isEmpty() -> "[]"
-        else -> this@write.joinToString(prefix = "[", separator = ", ", postfix = "]", transform = { write(it) })
-    }
+    private fun ByteArray.write()    = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun ShortArray.write()   = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun IntArray.write()     = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun LongArray.write()    = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun DoubleArray.write()  = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun FloatArray.write()   = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun CharArray.write()    = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun BooleanArray.write() = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
+    private fun Array<*>.write()     = joinToString(prefix = "[", separator = ", ", postfix = "]", transform = Writer::write)
 }
