@@ -11,7 +11,7 @@ class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
         val first = args[0]
         return when (first) {
             is Sequence<*> -> first.plus(args.copyOfRange(1, args.size))
-            is List<*>     -> listOf(first.plus(args.copyOfRange(1, args.size)))
+            is List<*>     -> first.plus(args.copyOfRange(1, args.size)).toList()
             is Set<*>      -> MutableSet(first.plus(args.copyOfRange(1, args.size)))
             is Vector      -> MutableVector(first.plus(args.copyOfRange(1, args.size)))
             is ByteArray   -> ByteArray(first.size + args.size - 1).apply {
