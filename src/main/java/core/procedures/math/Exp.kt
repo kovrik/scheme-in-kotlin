@@ -3,13 +3,12 @@ package core.procedures.math
 import core.procedures.AFn
 import core.scm.BigRatio
 import core.utils.Utils
-import java.math.BigDecimal
 import kotlin.math.exp
 
 class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxArgs = 1,
                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
-    private val E = BigDecimal("2.7182818284590452354")
+    private val E = "2.7182818284590452354".toBigDecimal()
 
     private val expt = Expt()
 

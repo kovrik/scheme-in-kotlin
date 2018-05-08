@@ -22,7 +22,7 @@ object Utils {
     const val DEFAULT_SCALE = 16
     val ROUNDING_MODE = RoundingMode.HALF_EVEN
     val DEFAULT_CONTEXT = MathContext(DEFAULT_SCALE, ROUNDING_MODE)
-    val TWO = BigDecimal("2")
+    val TWO = "2".toBigDecimal()
 
     private val HASH_REGEX = ".+(#+\\.?+#?)/?(#+\\.?+#?)?$".toRegex()
 
