@@ -32,7 +32,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
 
     private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {
         a.signum() == 0 && b.signum() == 0 -> BigDecimal.ZERO
-        maxOf(a.scale(), b.scale()) == 0   -> BigDecimal(lcm(a.toBigInteger(), b.toBigInteger()))
+        maxOf(a.scale(), b.scale()) == 0   -> lcm(a.toBigInteger(), b.toBigInteger()).toBigDecimal()
         else -> toInexact(lcm(toExact(a) as BigDecimal, toExact(b) as BigDecimal))
     }
 

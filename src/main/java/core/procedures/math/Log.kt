@@ -24,7 +24,7 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxAr
         arg is BigComplex                       -> arg.log()
         arg is BigRatio                         -> logBig(arg.toBigDecimal())
         arg is BigDecimal                       -> logBig(arg)
-        arg is BigInteger                       -> logBig(BigDecimal(arg))
+        arg is BigInteger                       -> logBig(arg.toBigDecimal())
         else                                    -> ln(arg!!.toDouble())
     }
 

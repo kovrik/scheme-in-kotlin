@@ -5,8 +5,6 @@ import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
 
-import java.math.BigDecimal
-
 class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
                                        mandatoryArgsTypes = arrayOf(Type.Rational::class.java)) {
 
@@ -19,7 +17,7 @@ class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, minArg
         val exact: Number = if (isIntegerOrRatio) (o as Number) else toExact(o as Number)
         if (exact is BigRatio) {
             if (!isIntegerOrRatio) {
-                return BigDecimal(exact.numerator).setScale(1, Utils.ROUNDING_MODE)
+                return exact.numerator.toBigDecimal().setScale(1, Utils.ROUNDING_MODE)
             }
             return exact.numerator
         }

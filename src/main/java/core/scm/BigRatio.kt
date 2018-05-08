@@ -78,7 +78,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         num.divide(den, Utils.DEFAULT_CONTEXT)
     }
 
-    fun toBigDecimal() = safeBigDecimalDivision(BigDecimal(numerator), BigDecimal(denominator))
+    fun toBigDecimal() = safeBigDecimalDivision(numerator.toBigDecimal(), denominator.toBigDecimal())
 
     fun toBigDecimalInexact(): BigDecimal = safeBigDecimalDivision(numerator.toBigDecimal(), denominator.toBigDecimal()).let {
         it.setScale(maxOf(1, it.scale()), Utils.ROUNDING_MODE)
@@ -86,12 +86,12 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun ceiling(): BigRatio {
         val round = if (isPositive) RoundingMode.UP else RoundingMode.DOWN
-        return BigRatio(BigDecimal(numerator).divide(BigDecimal(denominator), round).toBigInteger())
+        return BigRatio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
     }
 
     fun floor(): BigRatio {
         val round = if (isPositive) RoundingMode.DOWN else RoundingMode.UP
-        return BigRatio(BigDecimal(numerator).divide(BigDecimal(denominator), round).toBigInteger())
+        return BigRatio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
     }
 
     fun round() = BigRatio(toBigDecimal().setScale(0, Utils.ROUNDING_MODE).toBigInteger())
@@ -118,7 +118,7 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     fun reciprocal() = BigRatio(denominator, numerator)
 
-    private fun quotient() = BigDecimal(numerator).divide(BigDecimal(denominator), 32, RoundingMode.HALF_EVEN)
+    private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), 32, RoundingMode.HALF_EVEN)
 
     override fun compareTo(other: BigRatio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
 

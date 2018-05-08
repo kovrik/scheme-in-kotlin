@@ -44,7 +44,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, min
             }
             return BigRatio.valueOf(BigInteger.valueOf(a), BigInteger.valueOf(b))
         } catch (e: ArithmeticException) {
-            return bigDecimalToExact(BigDecimal(number.toString()))
+            return bigDecimalToExact(number.toString().toBigDecimal())
         }
     }
 

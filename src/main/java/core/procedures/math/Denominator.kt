@@ -20,7 +20,7 @@ class Denominator : AFn<Number?, Number>(name = "denominator", isPure = true, mi
         val exact = if (isIntegerOrRatio) (o as Number) else toExact(o as Number)
         if (exact is BigRatio) {
             if (!isIntegerOrRatio) {
-                return BigDecimal(exact.denominator).setScale(1, Utils.ROUNDING_MODE)
+                return exact.denominator.toBigDecimal().setScale(1, Utils.ROUNDING_MODE)
             }
             return exact.denominator
         }

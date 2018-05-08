@@ -45,7 +45,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         }
 
         private fun gcd(a: BigDecimal, b: BigDecimal) = when {
-            maxOf(a.scale(), b.scale()) == 0 -> BigDecimal(a.toBigInteger().gcd(b.toBigInteger()))
+            maxOf(a.scale(), b.scale()) == 0 -> a.toBigInteger().gcd(b.toBigInteger()).toBigDecimal()
             else -> toInexact(gcd(toExact(a), toExact(b)))
         }
 

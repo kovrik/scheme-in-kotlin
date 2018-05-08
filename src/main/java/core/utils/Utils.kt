@@ -42,7 +42,7 @@ object Utils {
                                           'x' to 16, 'X' to 16)
 
     private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>().apply {
-        (Character.MIN_RADIX..Character.MAX_RADIX).forEach { put(it, BigDecimal(it)) }
+        (Character.MIN_RADIX..Character.MAX_RADIX).forEach { put(it, it.toBigDecimal()) }
     }
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
@@ -191,8 +191,8 @@ object Utils {
                 val num = number.removeRange(dotPos, dotPos + 1)
                 /* Process radix */
                 val bigDecimal = when (r) {
-                    10   -> BigDecimal(num).movePointLeft(num.length - dotPos)
-                    else -> BigDecimal(BigInteger(num, r)).divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
+                    10   -> num.toBigDecimal().movePointLeft(num.length - dotPos)
+                    else -> BigInteger(num, r).toBigDecimal().divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 }
                 /* Process radix for a number with decimal point */
                 result = when (bigDecimal.stripTrailingZeros().scale() == 0) {
@@ -250,12 +250,12 @@ object Utils {
 
     fun toBigDecimal(number: Any?): BigDecimal = when (number) {
         is BigDecimal -> number
-        is Long       -> BigDecimal.valueOf(number)
-        is BigInteger -> BigDecimal(number)
-        is Double     -> BigDecimal.valueOf(number)
+        is Long       -> number.toBigDecimal()
+        is BigInteger -> number.toBigDecimal()
+        is Double     -> number.toBigDecimal()
         is BigRatio   -> number.toBigDecimal()
         is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-        else          -> BigDecimal(number.toString())
+        else          -> number.toString().toBigDecimal()
     }
 
     fun toBigInteger(number: Any?): BigInteger = when (number) {
