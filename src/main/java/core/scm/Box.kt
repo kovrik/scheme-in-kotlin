@@ -1,6 +1,6 @@
 package core.scm
 
-import core.writer.Writer
+import core.Writer
 import java.util.concurrent.atomic.AtomicReference
 
 class Box<T>(value: T) : AtomicReference<T>(value), IDeref {

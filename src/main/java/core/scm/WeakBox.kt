@@ -1,6 +1,6 @@
 package core.scm
 
-import core.writer.Writer
+import core.Writer
 import java.lang.ref.WeakReference
 
 class WeakBox<T>(value: T) : WeakReference<T>(value), IDeref {

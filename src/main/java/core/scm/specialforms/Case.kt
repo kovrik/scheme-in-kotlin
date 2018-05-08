@@ -4,7 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.equivalence.Eqv
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (case <key> <clause1> <clause2> ...)

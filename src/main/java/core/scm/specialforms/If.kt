@@ -5,7 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
 import core.utils.Utils
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (if <test> <consequent> <alternate>)

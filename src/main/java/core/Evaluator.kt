@@ -12,7 +12,6 @@ import core.scm.specialforms.New
 import core.scm.specialforms.SpecialForm
 import core.utils.Utils
 import core.utils.cached
-import core.writer.Writer
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong

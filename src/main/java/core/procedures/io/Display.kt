@@ -3,7 +3,7 @@ package core.procedures.io
 import core.Repl
 import core.procedures.AFn
 import core.scm.OutputPort
-import core.writer.Writer
+import core.Writer
 
 open class Display : AFn<Any?, Unit>(name = "display", minArgs = 1, maxArgs = 2,
                                      mandatoryArgsTypes = arrayOf(Any::class.java),

@@ -8,7 +8,7 @@ import core.scm.specialforms.*
 import core.utils.Utils.getRadixByChar
 import core.utils.Utils.isValidForRadix
 import core.utils.Utils.preProcessNumber
-import core.writer.Writer
+import core.Writer
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream

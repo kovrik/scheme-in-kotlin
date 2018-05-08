@@ -3,7 +3,7 @@ package core.exceptions
 import core.procedures.AFn
 import core.procedures.IFn
 import core.scm.*
-import core.writer.Writer
+import core.Writer
 
 class WrongTypeException : IllegalArgumentException {
 

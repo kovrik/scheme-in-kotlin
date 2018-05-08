@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.procedures.predicates.Predicate
 import core.scm.Procedure
 import core.scm.Symbol
-import core.writer.Writer
+import core.Writer
 import java.util.LinkedList
 import kotlin.collections.HashSet
 

@@ -2,7 +2,7 @@ package core.scm
 
 import core.environment.Environment
 import core.Evaluator
-import core.writer.Writer
+import core.Writer
 import java.util.concurrent.FutureTask
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException

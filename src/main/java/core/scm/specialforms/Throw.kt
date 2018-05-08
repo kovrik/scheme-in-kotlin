@@ -4,7 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
-import core.writer.Writer
+import core.Writer
 
 object Throw : SpecialForm("throw") {
 

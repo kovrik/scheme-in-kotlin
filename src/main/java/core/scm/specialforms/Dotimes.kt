@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
 import core.scm.Symbol
 import core.scm.Type
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (dotimes (var limit [result]) <body>...)

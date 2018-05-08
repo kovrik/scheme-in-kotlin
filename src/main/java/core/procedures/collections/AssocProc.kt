@@ -7,7 +7,7 @@ import core.procedures.equivalence.Equal
 import core.procedures.predicates.Predicate
 import core.procedures.seqs.Get
 import core.utils.Utils
-import core.writer.Writer
+import core.Writer
 
 class AssocProc(override val name: String,
                 /* Procedure used to compare objects for equality */

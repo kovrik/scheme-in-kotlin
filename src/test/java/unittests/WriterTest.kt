@@ -3,7 +3,7 @@ package unittests
 import core.environment.Environment
 import core.scm.*
 import core.scm.specialforms.If
-import core.writer.Writer
+import core.Writer
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import java.math.BigDecimal

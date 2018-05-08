@@ -6,7 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.scm.Symbol
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (define <variable> <expression>)

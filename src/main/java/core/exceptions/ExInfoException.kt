@@ -1,6 +1,6 @@
 package core.exceptions
 
-import core.writer.Writer
+import core.Writer
 
 class ExInfoException : RuntimeException {
 

@@ -5,7 +5,7 @@ import core.Evaluator
 import core.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
-import core.writer.Writer
+import core.Writer
 
 object Dot : SpecialForm(".") {
 

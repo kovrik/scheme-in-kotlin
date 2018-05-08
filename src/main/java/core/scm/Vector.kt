@@ -1,7 +1,7 @@
 package core.scm
 
 import core.procedures.AFn
-import core.writer.Writer
+import core.Writer
 import java.util.*
 
 // TODO implement List instead?

@@ -1,4 +1,4 @@
-package core.writer
+package core
 
 import core.exceptions.ExInfoException
 import core.procedures.predicates.Predicate
@@ -68,25 +68,25 @@ object Writer {
         this.isEmpty() -> "()"
         Predicate.isProperList(this) -> StringBuilder("(").apply {
             for (i in 0..this@write.size - 2) {
-                append(if (this@write[i] === this@write) "(this list)" else Writer.write(this@write[i])).append(' ')
+                append(if (this@write[i] === this@write) "(this list)" else write(this@write[i])).append(' ')
             }
-            append(if (this@write.last() === this@write) "(this list)" else Writer.write(this@write.last())).append(')')
+            append(if (this@write.last() === this@write) "(this list)" else write(this@write.last())).append(')')
         }.toString()
         else -> StringBuilder("(").apply {
-            append(Writer.write(this@write.first()))
+            append(write(this@write.first()))
             var cdr = this@write.last()
             while (cdr is Cons<*>) {
-                append(' ').append(Writer.write(cdr.first()))
+                append(' ').append(write(cdr.first()))
                 cdr = cdr.last()
             }
             /* Dotted notation */
-            append(" . ").append(Writer.write(cdr)).append(')')
+            append(" . ").append(write(cdr)).append(')')
         }.toString()
     }
 
-    private fun Pair<*, *>.write() = "(pair ${Writer.write(first)} ${Writer.write(second)})"
+    private fun Pair<*, *>.write() = "(pair ${write(first)} ${write(second)})"
 
-    private fun MutablePair<*, *>.write() = "(mcons ${Writer.write(first)} ${Writer.write(second)})"
+    private fun MutablePair<*, *>.write() = "(mcons ${write(first)} ${write(second)})"
 
     private fun Map.Entry<*, *>.write() = "[${write(key)} ${write(value)}]"
 

@@ -4,7 +4,7 @@ import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Lazy
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (lazy <expression>)

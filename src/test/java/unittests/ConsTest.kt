@@ -4,7 +4,7 @@ import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.cons.ConsProc
 import core.procedures.predicates.Predicate
-import core.writer.Writer
+import core.Writer
 import org.junit.Assert.*
 import org.junit.Test
 

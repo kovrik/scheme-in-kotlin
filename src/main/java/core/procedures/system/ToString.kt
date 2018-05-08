@@ -1,7 +1,7 @@
 package core.procedures.system
 
 import core.procedures.AFn
-import core.writer.Writer
+import core.Writer
 
 open class ToString : AFn<Any?, CharSequence>(name = "->string", isPure = true) {
 

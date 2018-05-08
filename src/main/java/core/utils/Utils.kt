@@ -8,7 +8,7 @@ import core.procedures.math.ToExact
 import core.procedures.math.ToInexact
 import core.reader.Reader
 import core.scm.*
-import core.writer.Writer
+import core.Writer
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

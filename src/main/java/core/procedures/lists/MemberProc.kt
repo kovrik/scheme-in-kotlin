@@ -6,7 +6,7 @@ import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.utils.Utils
-import core.writer.Writer
+import core.Writer
 
 class MemberProc(override val name: String, private inline val predicate: AFn<Any?, Boolean>) :
         AFn<Any?, Any?>(isPure = true, minArgs = 2, maxArgs = 2,

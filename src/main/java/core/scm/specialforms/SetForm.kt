@@ -4,7 +4,7 @@ import core.Evaluator
 import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (set! <variable> <expression>)

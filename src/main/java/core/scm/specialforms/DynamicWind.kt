@@ -5,7 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
 import core.procedures.IFn
-import core.writer.Writer
+import core.Writer
 
 object DynamicWind : SpecialForm("dynamic-wind") {
 

@@ -3,7 +3,7 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.writer.Writer
+import core.Writer
 
 object Else : SpecialForm("else") {
 

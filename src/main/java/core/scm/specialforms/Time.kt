@@ -4,7 +4,7 @@ import core.Repl
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.writer.Writer
+import core.Writer
 
 import java.lang.management.ManagementFactory
 import java.util.concurrent.TimeUnit

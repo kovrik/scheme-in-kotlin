@@ -1,6 +1,6 @@
 package core.scm
 
-import core.writer.Writer
+import core.Writer
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit

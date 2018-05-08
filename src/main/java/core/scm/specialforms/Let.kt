@@ -5,7 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.scm.Thunk
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (let <bindings> <body>)

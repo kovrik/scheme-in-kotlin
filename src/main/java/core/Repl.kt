@@ -10,7 +10,6 @@ import core.scm.Error
 import core.scm.InputPort
 import core.scm.OutputPort
 import core.scm.Symbol
-import core.writer.Writer
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.IOException

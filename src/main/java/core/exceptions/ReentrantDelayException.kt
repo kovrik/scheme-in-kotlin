@@ -1,7 +1,7 @@
 package core.exceptions
 
 import core.scm.Delay
-import core.writer.Writer
+import core.Writer
 
 class ReentrantDelayException(delay: Delay) : RuntimeException("re-entrant delay: ${Writer.write(delay)}", null) {
 

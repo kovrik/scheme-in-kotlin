@@ -13,7 +13,7 @@ import core.procedures.sets.SetProc
 import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Vector
-import core.writer.Writer
+import core.Writer
 
 import kotlin.collections.Set
 

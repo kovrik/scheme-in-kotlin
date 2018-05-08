@@ -5,7 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.IFn
 import core.scm.Symbol
-import core.writer.Writer
+import core.Writer
 
 /* Syntax:
  * (thread <expression>)

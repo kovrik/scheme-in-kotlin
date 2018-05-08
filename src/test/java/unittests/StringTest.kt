@@ -4,7 +4,7 @@ import core.exceptions.WrongTypeException
 import core.scm.MutableString
 import core.scm.Symbol
 import core.scm.Vector
-import core.writer.Writer
+import core.Writer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
