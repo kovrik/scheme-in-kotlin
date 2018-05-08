@@ -7,8 +7,7 @@ class StringToBytes : AFn<Any?, ByteArray?>(name = "string->bytes", isPure = tru
                                             mandatoryArgsTypes = arrayOf(CharSequence::class.java),
                                             lastArgType = CharSequence::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
-        1    -> args[0]?.toString()?.toByteArray(Charsets.UTF_8)
-        else -> args[0]?.toString()?.toByteArray(Charset.forName((args[1] as CharSequence).toString()))
-    }
+    override operator fun invoke(args: Array<out Any?>) = args[0]?.toString()?.toByteArray(
+            Charset.forName((args.getOrElse(1, { "UTF-8" }) as CharSequence).toString())
+    )
 }
