@@ -385,7 +385,17 @@ class ReaderTest : AbstractTest() {
         assertTrue(reader.readOne("  #{  1 2  }  ") is Set<*>)
         assertTrue(reader.readOne("  #{  1 2  }  ") is Set<*>)
         assertTrue(reader.readOne("  #{  1 2 3 4     }  ") is Set<*>)
-        assertTrue(reader.readOne("  #{  1 2 3 4         4 5  }  ") is Set<*>)
+        assertTrue(reader.readOne("  #{  1 2 3          4 5  }  ") is Set<*>)
+        try {
+            reader.readOne("  #{  1 2 3   4      4 5  }  ")
+        } catch (e: IllegalArgumentException) {
+            // expected
+        }
+        try {
+            reader.readOne("  #{  1 1}  ")
+        } catch (e: IllegalArgumentException) {
+            // expected
+        }
     }
 
     @Test

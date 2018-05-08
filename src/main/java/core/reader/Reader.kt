@@ -8,7 +8,12 @@ import core.scm.specialforms.*
 import core.utils.Utils.getRadixByChar
 import core.utils.Utils.isValidForRadix
 import core.utils.Utils.preProcessNumber
-import java.io.*
+import core.writer.Writer
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.PushbackReader
 import java.util.regex.Pattern
 
 open class Reader : IReader {
@@ -438,9 +443,14 @@ open class Reader : IReader {
             }
             if (c == '}') break
             reader.unread(c.toInt())
-            set.add(nextToken())
+
+            val e = nextToken()
             i = reader.read()
             c = i.toChar()
+            while (Character.isWhitespace(c) || c == ',') {
+                c = reader.read().toChar()
+            }
+            if (!set.add(e)) throw IllegalArgumentException("duplicate key: ${Writer.write(e)}")
         }
     }
 
