@@ -10,6 +10,7 @@ import core.utils.Utils
 import core.Writer
 import core.scm.MutableHashmap
 import core.scm.MutableVector
+import core.scm.Vector
 
 class AssocProc(override val name: String,
                 /* Procedure used to compare objects for equality */
@@ -47,14 +48,14 @@ class AssocProc(override val name: String,
             if ((args.size % 2) != 1) throw IllegalArgumentException("$name expects even number of arguments after map/vector, found odd number")
             when (args[0]) {
                 is Map<*, *> -> {
-                    val argMap = args[0] as Map<Any?, Any?>
+                    val argMap = args[0] as Map<*, *>
                     return MutableHashmap<Any?, Any?>(argMap.size).apply { putAll(argMap) }.apply {
                         for (i in 1 until args.size step 2) {
                             put(args[i], args[i + 1])
                         }
                     }
                 }
-                is MutableVector -> return MutableVector(args[0] as MutableVector).apply {
+                is Vector -> return MutableVector(args[0] as Vector).apply {
                     for (i in 1 until args.size step 2) {
                         val index = args[i] as? Number ?: throw WrongTypeException(name, "Integer", args[i])
                         set(index.toInt(), args[i + 1])
