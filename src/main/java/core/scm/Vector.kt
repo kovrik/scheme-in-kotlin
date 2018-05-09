@@ -4,7 +4,6 @@ import core.procedures.AFn
 import core.Writer
 import java.util.*
 
-// TODO implement List instead?
 /* Immutable Vector */
 open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
 
@@ -21,7 +20,6 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
 
     override val name = "vector"
 
-    // TODO Check access and immutability
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
