@@ -123,37 +123,10 @@ object Writer {
     /* Check named characters */
     private fun Char.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
 
-    private fun Map<*, *>.write() = when {
-        isEmpty() -> "{}"
-        else -> StringBuilder("{").apply {
-            var first = true
-            for ((key, value) in this@write) {
-                when {
-                    first -> first = false
-                    else  -> append(", ")
-                }
-                append(if (key === this@write) "(this hashmap)" else write(key))
-                append(' ')
-                append(if (value === this@write) "(this hashmap)" else write(value))
-            }
-            append('}')
-        }.toString()
-    }
+    private fun Map<*, *>.write() = entries.joinToString(prefix = "{", separator = ", ", postfix = "}",
+                                                         transform = { "${Writer.write(it.key)} ${Writer.write(it.value)}" })
 
-    private fun Set<*>.write() = when {
-        isEmpty() -> "#{}"
-        else -> StringBuilder("#{").apply {
-            var first = true
-            for (e in this@write) {
-                when {
-                    first -> first = false
-                    else -> append(' ')
-                }
-                append(if (e === this@write) "(this set)" else write(e))
-            }
-            append('}')
-        }.toString()
-    }
+    private fun Set<*>.write() = joinToString(prefix = "#{", separator = " ", postfix = "}", transform = Writer::write)
 
     private fun Throwable.write() = when (this) {
         is ExInfoException -> toString()
