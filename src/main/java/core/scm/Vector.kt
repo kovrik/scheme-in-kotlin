@@ -70,20 +70,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
         }
     }
 
-    override fun toString() = when {
-        array.isEmpty() -> OPEN + CLOSE
-        else -> StringBuilder(OPEN).apply {
-            val lastIndex = array.size - 1
-            for (i in 0..lastIndex) {
-                val e = array[i]
-                append(if (e === this@Vector) "(this vector)" else Writer.write(e))
-                if (i != lastIndex) {
-                    append(' ')
-                }
-            }
-            append(CLOSE)
-        }.toString()
-    }
+    override fun toString() = joinToString(prefix = OPEN, separator = " ", postfix = CLOSE, transform = Writer::write)
 
     override fun iterator() = array.asList().iterator()
 
