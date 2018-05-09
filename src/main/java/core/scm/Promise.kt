@@ -17,10 +17,7 @@ class Promise : CompletableFuture<Any>(), IDeref {
     }
 
     override fun toString() = when {
-        isDone -> StringBuilder("#<promise!").apply {
-            val value = deref()
-            append(if (value === this) "(this promise)" else Writer.write(value)).append('>')
-        }.toString()
+        isDone                   -> "#<promise!${Writer.write(deref())}>"
         isCompletedExceptionally -> "#<promise!error!>"
         isCancelled              -> "#<promise:cancelled>"
         else                     -> "#<promise:pending>"
