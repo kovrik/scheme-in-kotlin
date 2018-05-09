@@ -8,9 +8,9 @@ class Hashmap<K, V>(val map: Map<K, V>) : AFn<K, Any?>(minArgs = 1, maxArgs = 2)
     constructor() : this(mapOf())
 
     /* Maps are functions of their keys */
-    override fun invoke(args: Array<out K>) = map.getOrDefault(args[0], args.getOrNull(1))
+    override fun invoke(args: Array<out K>) = getOrDefault(args[0], args.getOrNull(1))
 
-    override fun getEntry(key: K) = if (map.containsKey(key)) MapEntry(key, map[key]) else null
+    override fun getEntry(key: K) = if (containsKey(key)) MapEntry(key, this[key]) else null
 
     override fun assoc(key: K, value: V) = throw WrongTypeException("assoc", "Mutable Hashmap", this)
 }
