@@ -14,7 +14,7 @@ open class MapProc : AFn<Any?, Any?>(name = "map", minArgs = 2, mandatoryArgsTyp
         2 -> ThunkSeq(object : Sequence<Any?> {
             override fun iterator(): Iterator<Any?> = object : Iterator<Any?> {
 
-                private val fn = args[0] as? IFn<Any?, Any?> ?: throw WrongTypeException(name, "Procedure", args[0])
+                private val fn = args[0] as? IFn<*, *> ?: throw WrongTypeException(name, "Procedure", args[0])
                 private val iterator = Utils.toSequence(args[1]).iterator()
 
                 override fun hasNext() = iterator.hasNext()
@@ -30,7 +30,7 @@ open class MapProc : AFn<Any?, Any?>(name = "map", minArgs = 2, mandatoryArgsTyp
         else -> ThunkSeq(object : Sequence<Any?> {
             override fun iterator(): Iterator<Any?> = object : Iterator<Any?> {
 
-                private val fn = args[0] as? IFn<Any?, Any?> ?: throw WrongTypeException(name, "Procedure", args[0])
+                private val fn = args[0] as? IFn<*, *> ?: throw WrongTypeException(name, "Procedure", args[0])
                 private val iterators = (1 until args.size).map { Utils.toSequence(args[it]).iterator() }
 
                 override fun hasNext() = iterators.all { it.hasNext() }
