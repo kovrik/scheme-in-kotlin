@@ -234,6 +234,7 @@ class DefaultEnvironment : Environment(null) {
                 /* Delayed */
                 Force(),
                 PromiseProc(),
+                object : PromiseProc() { override val name = "make-promise" },
                 Deliver(),
                 Deref(),
                 FutureCancel(),
