@@ -16,7 +16,7 @@ import java.io.InputStreamReader
 import java.io.PushbackReader
 import java.util.regex.Pattern
 
-open class Reader : IReader {
+open class Reader {
 
     private val name: String = "reader"
 
@@ -79,7 +79,7 @@ open class Reader : IReader {
 
     /* Return next non-null token */
     @Throws(IOException::class)
-    override fun read(): Any? {
+    fun read(): Any? {
         var token = nextToken()
         while (token == Unit) { token = nextToken() }
         return token
