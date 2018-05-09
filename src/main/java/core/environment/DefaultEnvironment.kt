@@ -691,6 +691,10 @@ class DefaultEnvironment : Environment(null) {
             add("(define values list)")
             add("(define (call-with-values producer consumer) (apply consumer (producer)))")
 
+            add("(define (caar p) (car (car p)))")
+            add("(define (cadr p) (car (cdr p)))")
+            add("(define (cdar p) (cdr (car p)))")
+            add("(define (cddr p) (cdr (cdr p)))")
             add("(define (add1 n) (+ n 1))")
             add("(define (sub1 n) (- n 1))")
             add("(define (inc  n) (+ n 1))")
