@@ -74,8 +74,7 @@ object Utils {
         /* First check if it is a special number */
         SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
-        val last = number.last()
-        if ((last == 'i' || last == 'I') && (number.contains('+') || number.contains('-'))) {
+        if (number.endsWith('i', ignoreCase = true) && (number.contains('+') || number.contains('-'))) {
             return processComplexNumber(number, exactness, radix)
         }
         /* Read exponent mark if present */
