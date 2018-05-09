@@ -3,7 +3,6 @@ package unittests
 import core.exceptions.ArityException
 import core.scm.Cons
 import core.scm.Cons.Companion.cons
-import core.scm.MutablePair
 import core.scm.MutableVector
 import core.scm.Symbol
 import org.junit.Assert.*

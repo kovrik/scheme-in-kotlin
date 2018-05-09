@@ -105,7 +105,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
     }
 
     override fun getEntry(key: Any?): MapEntry<Int, Any?>? = when (key) {
-        is Number -> key.toInt().let { MapEntry(it, get(it)) }
+        is Number -> array.getOrNull(key.toInt())?.let { MapEntry<Int, Any?>(key.toInt(), it) }
         else -> null
     }
 
