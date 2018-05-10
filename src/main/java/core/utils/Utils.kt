@@ -225,7 +225,7 @@ object Utils {
         isInexact(number) -> {
             when (number) {
                 is Double -> {
-                    val bigDecimal = toBigDecimal(number)
+                    val bigDecimal = number.toBigDecimal()
                     val scale = bigDecimal.scale()
                     BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
                 }
