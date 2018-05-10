@@ -83,7 +83,7 @@ object Utils {
         var exp: Long? = null
         var n = number
         if (exponentRegex.matches(number)) {
-            val split = number.split(exponentMarksRegex).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val split = number.split(exponentMarksRegex).dropLastWhile(String::isEmpty)
             n = split[0]
             exp = try {
                 processNumber(split[1], radix, true, null) as? Long ?:
@@ -102,22 +102,13 @@ object Utils {
             i += 1
             when (c) {
                 /* Multiple decimal points are not allowed*/
-                '.' -> if (isIntegral) isIntegral = false else return Symbol.intern(number)
-                '+' -> if (i != 0) return Symbol.intern(number)
-                '-' -> if (i != 0) return Symbol.intern(number)
-                '#' -> when {
-                    hasAtLeastOneDigit -> hasHashChar = true
-                    else -> return Symbol.intern(number)
-                }
+                '.'  -> if (isIntegral) isIntegral = false else return Symbol.intern(number)
+                '+'  -> if (i != 0) return Symbol.intern(number)
+                '-'  -> if (i != 0) return Symbol.intern(number)
+                '#'  -> hasHashChar = true
                 /* Check if it is a rational number and if it is valid */
-                '/' -> when {
-                    hasSlash || !isIntegral -> return Symbol.intern(number)
-                    else -> hasSlash = true
-                }
-                else -> when {
-                    isValidForRadix(c, radix) -> hasAtLeastOneDigit = true
-                    else -> return Symbol.intern(number)
-                }
+                '/'  -> if (!hasSlash && isIntegral) hasSlash = true else return Symbol.intern(number)
+                else -> if (isValidForRadix(c, radix)) hasAtLeastOneDigit = true else return Symbol.intern(number)
             }
         }
         if (!hasAtLeastOneDigit) {
@@ -395,18 +386,16 @@ object Utils {
     }
 
     /* Try to downcast Big Decimal to a smaller type (if possible) */
-    private fun BigDecimal.tryDowncast(): Number {
-        /* Same checks are performed in longValueExact() method,
-         * but we don't want exception to be thrown, just return the number */
-        if (!isInteger(this)) {
-            return this
-        }
-        return try {
-            this.longValueExact()
+    /* Same checks are performed in longValueExact() method,
+     * but we don't want exception to be thrown, just return the number */
+    private fun BigDecimal.tryDowncast() = when {
+        isInteger(this) -> try {
+            longValueExact()
         } catch (e: ArithmeticException) {
             /* Down-casting has failed, ignore and cast to BigInteger then */
-            this.toBigInteger()
+            toBigInteger() as Number
         }
+        else -> this
     }
 
 //    fun BigDecimal.sqrt(scale: Int): BigDecimal {
@@ -422,21 +411,15 @@ object Utils {
 //    }
 
     /* Try to downcast Big Integer to a smaller type (if possible) */
-    private fun BigInteger.tryDowncast(): Number {
-        /* Same checks are performed in longValueExact() method,
-         * but we don't want exception to be thrown, just return the this */
-        if (this.bitLength() <= 63) {
-            return this.toLong()
-        }
-        if (isInteger(this)) {
-            try {
-                return this.longValueExact()
-            } catch (e: ArithmeticException) {
-                /* Down-casting has failed, ignore and return the original this */
-            }
-        }
-        return this
+    /* Same checks are performed in longValueExact() method,
+     * but we don't want exception to be thrown, just return the this */
+    private fun BigInteger.tryDowncast() = try {
+        longValueExact()
+    } catch (e: ArithmeticException) {
+        /* Down-casting has failed, ignore and return the original this */
+        this as Number
     }
+
 
     fun isBitOpSupported(obj: Any) = when (obj) {
         is Byte, is Short, is Int, is Long -> true
