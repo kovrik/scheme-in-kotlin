@@ -174,7 +174,7 @@ object Utils {
             result = try {
                 number.toLong(r)
             } catch (e: NumberFormatException) {
-                BigInteger(number, r)
+                number.toBigInteger(r)
             }
         } else {
             val sign = if (number[0].isDigit()) 0 else 1
@@ -191,7 +191,7 @@ object Utils {
                 /* Process radix */
                 val bigDecimal = when (r) {
                     10   -> num.toBigDecimal().movePointLeft(num.length - dotPos)
-                    else -> BigInteger(num, r).toBigDecimal().divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
+                    else -> num.toBigInteger(r).toBigDecimal().divide(BIG_DECIMAL_RADICES[r]!!.pow(num.length - dotPos), MathContext.UNLIMITED)
                 }
                 /* Process radix for a number with decimal point */
                 result = when (bigDecimal.stripTrailingZeros().scale() == 0) {
@@ -262,7 +262,7 @@ object Utils {
         is Long       -> BigInteger.valueOf(number)
         is Double     -> BigInteger.valueOf(number.toLong())
         is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-        else          -> BigInteger(number.toString())
+        else          -> number.toString().toBigInteger()
     }
 
     private fun toBigRatio(number: Number) = when (number) {
