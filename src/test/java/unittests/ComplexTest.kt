@@ -71,7 +71,6 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testExpt() {
-        // FIXME
         assertEquals(BigComplex(BigDecimal("0.2739572538301211"), BigDecimal("0.5837007587586147")), eval("(expt 1+1i 1+1i)", env))
         assertEquals(BigComplex(BigDecimal("0.0004911725350693"), BigDecimal("-0.0007294124825312")), eval("(expt 7+2.3i -4-3i)", env))
         assertEquals(BigComplex(BigDecimal("-345.3968959025678"), BigDecimal("11.028099235573535")), eval("(expt 3.4-5.2i 3.2)", env))
