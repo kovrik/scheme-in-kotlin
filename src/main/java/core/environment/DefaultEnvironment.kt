@@ -602,6 +602,7 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_NONNEGATIVE_INTEGER,
                 Predicate.IS_EMPTY,
                 Predicate.IS_INTEGER,
+                Predicate.IS_EXACT_INTEGER,
                 Predicate.IS_POSITIVE,
                 Predicate.IS_POS,
                 Predicate.IS_NEGATIVE,

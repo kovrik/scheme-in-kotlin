@@ -46,6 +46,7 @@ class Predicate private constructor(override val name: String, private inline va
         val IS_OUTPUT_PORT = Predicate("output-port?", { it is OutputPort })
         val IS_NUMBER = Predicate("number?", { it is Number })
         val IS_INTEGER = Predicate("integer?", Utils::isInteger)
+        val IS_EXACT_INTEGER = Predicate("exact-integer?", Utils::isExactInteger)
         val IS_RATIONAL = Predicate("rational?", Utils::isRational)
         val IS_RATIO = Predicate("ratio?", { it is BigRatio })
         val IS_REAL = Predicate("real?", Utils::isReal)

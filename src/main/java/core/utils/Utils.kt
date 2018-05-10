@@ -287,6 +287,7 @@ object Utils {
         is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
         is BigRatio    -> o.isDenominatorEqualToOne
         is Double      -> o == floor(o) && o.isFinite()
+        is Float       -> o == floor(o) && o.isFinite()
         else           -> false
     }
 
