@@ -16,8 +16,8 @@ class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, minArgs = 
         arg!!
         return when (arg) {
             is Long, is Int, is Short, is Byte, is BigInteger -> arg
-            is Double     -> ceil((arg as Double?)!!)
-            is Float      -> ceil((arg as Float?)!!.toDouble())
+            is Double     -> ceil(arg.toDouble())
+            is Float      -> ceil(arg.toDouble())
             is BigDecimal -> {
                 val result = arg.setScale(0, RoundingMode.UP)
                 when {
