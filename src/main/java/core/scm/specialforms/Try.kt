@@ -29,7 +29,7 @@ object Try : SpecialForm("try") {
                 val op = expr[0]
                 if (op == FINALLY) {
                     if (i != form.size - 1) {
-                        throw IllegalSyntaxException("try: finally clause must be last in try expression")
+                        throw IllegalSyntaxException("$name: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
                         fin = mutableListOf<Any?>(Begin).apply { addAll(expr.subList(1, expr.size)) }
@@ -37,7 +37,7 @@ object Try : SpecialForm("try") {
                     continue
                 } else if (op == CATCH) {
                     if (expr.size < 3) {
-                        throw IllegalSyntaxException("catch: bad syntax in form: $expr")
+                        throw IllegalSyntaxException("$CATCH: bad syntax in form: $expr")
                     }
                     hadCatch = true
                     if (catches.isEmpty()) {
@@ -50,13 +50,13 @@ object Try : SpecialForm("try") {
                     }
                     catches[clazz] = catchExpr
                     val sym = expr[2] as? Symbol ?:
-                              throw IllegalSyntaxException("catch: bad binding form, expected Symbol, actual: ${expr[2]}")
+                              throw IllegalSyntaxException("$CATCH: bad binding form, expected Symbol, actual: ${expr[2]}")
                     catchBindings[clazz] = sym
                     continue
                 }
             }
             if (hadCatch) {
-                throw IllegalSyntaxException("try: only catch or finally clause can follow catch in try expression")
+                throw IllegalSyntaxException("$name: only catch or finally clause can follow catch in try expression")
             }
             expressions.add(expr)
         }

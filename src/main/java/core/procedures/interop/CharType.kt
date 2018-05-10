@@ -8,6 +8,6 @@ class CharType : AFn<Any?, Char>(name = "char", isPure = true, minArgs = 1, maxA
     override operator fun invoke(arg: Any?) = when (arg) {
         is Number -> arg.toInt().toChar()
         is Char   -> arg
-        else      -> throw WrongTypeException("char", "Character or Number", arg)
+        else      -> throw WrongTypeException(name, "Character or Number", arg)
     }
 }

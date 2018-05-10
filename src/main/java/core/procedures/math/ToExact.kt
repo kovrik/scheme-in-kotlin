@@ -21,7 +21,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, min
     }
 
     private fun doubleToExact(number: Double): Number {
-        if (!number.isFinite()) throw ArithmeticException("inexact->exact: no exact representation of: ${Writer.write(number)}")
+        if (!number.isFinite()) throw ArithmeticException("$name: no exact representation of: ${Writer.write(number)}")
         /* Check if Double is integral */
         try {
             val bits = number.toBits()

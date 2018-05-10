@@ -118,7 +118,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, max
                     if (Utils.isInexact(base)) {
                         return Double.POSITIVE_INFINITY
                     }
-                    throw ArithmeticException("expt: undefined for $base and ${Writer.write(exponent)}")
+                    throw ArithmeticException("$name: undefined for $base and ${Writer.write(exponent)}")
                 }
                 return 0L
             }

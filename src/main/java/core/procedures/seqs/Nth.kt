@@ -12,10 +12,10 @@ class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 
     override operator fun invoke(args: Array<out Any?>): Any? {
         val col = args[0]
         if (col is Map<*, *>) {
-            throw UnsupportedOperationException("nth not supported on this type: ${col.javaClass}")
+            throw UnsupportedOperationException("$name: not supported on this type: ${col.javaClass}")
         }
         if (!Utils.isSeqable(col)) {
-            throw IllegalArgumentException("don't know how to create Sequence from ${col?.javaClass}")
+            throw IllegalArgumentException("$name: don't know how to create Sequence from ${col?.javaClass}")
         }
         val index = args[1]
         Type.assertType(name, index, Int::class.java)

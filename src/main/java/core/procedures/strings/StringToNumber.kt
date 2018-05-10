@@ -39,7 +39,7 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, m
         if (args.size == 2) {
             val optRadix = (args[1] as Number).toInt()
             if (optRadix < Character.MIN_RADIX || optRadix > Character.MAX_RADIX) {
-                throw IllegalArgumentException(name + ": expected radix from 2 to 36")
+                throw IllegalArgumentException("$name: expected radix from 2 to 36")
             }
             if (!override) {
                 radix = optRadix

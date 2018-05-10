@@ -9,7 +9,7 @@ class Car : AFn<Any?, Any?>(name = "car", isPure = true, minArgs = 1, maxArgs = 
 
     override operator fun invoke(arg: Any?) = when (arg) {
         is Collection<*> -> when {
-            arg.isEmpty() -> throw WrongTypeException("car", Type.Pair::class.java, emptyList<Nothing>())
+            arg.isEmpty() -> throw WrongTypeException(name, Type.Pair::class.java, emptyList<Nothing>())
             else -> arg.first()
         }
         is Pair<*, *> -> arg.first

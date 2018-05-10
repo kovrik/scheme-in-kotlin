@@ -8,7 +8,7 @@ class RandNth : AFn<Any?, Any?>(name = "rand-nth", isPure = true, minArgs = 1, m
 
     override operator fun invoke(arg: Any?): Any? {
         if (arg is Map<*, *>) {
-            throw UnsupportedOperationException("nth not supported on this type: ${arg.javaClass}")
+            throw UnsupportedOperationException("$name: not supported on this type: ${arg.javaClass}")
         }
         val seq = Utils.toSequence(arg)
         if (!seq.iterator().hasNext()) {

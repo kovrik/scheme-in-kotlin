@@ -11,6 +11,6 @@ class HashMapImmutableProc : AFn<Any?, Map<*, *>>(name = "hash-map-immutable", i
                 put(args[i], args[i + 1])
             }
         }.toImmutableMap()
-        else -> throw IllegalArgumentException("hash-map: no value supplied for key: ${args[args.size - 1]}")
+        else -> throw IllegalArgumentException("$name: no value supplied for key: ${args[args.size - 1]}")
     }
 }

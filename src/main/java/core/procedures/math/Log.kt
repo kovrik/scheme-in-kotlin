@@ -19,7 +19,7 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxAr
     }
 
     override operator fun invoke(arg: Number?) = when {
-        Utils.isZero(arg) && Utils.isExact(arg) -> throw ArithmeticException("log: undefined for 0")
+        Utils.isZero(arg) && Utils.isExact(arg) -> throw ArithmeticException("$name: undefined for 0")
         Utils.isOne(arg)  && Utils.isExact(arg) -> 0L
         arg is BigComplex                       -> arg.log()
         arg is BigRatio                         -> logBig(arg.toBigDecimal())

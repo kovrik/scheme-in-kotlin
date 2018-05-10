@@ -13,7 +13,7 @@ class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArg
     override operator fun invoke(arg1: Number?, arg2: Number?): Number {
         val (f, s) = Utils.upcast(arg1!!, arg2!!)
         return when {
-            Utils.isZero(s) -> throw ArithmeticException("remainder: undefined for 0")
+            Utils.isZero(s) -> throw ArithmeticException("$name: undefined for 0")
             Utils.isZero(f) -> Utils.inexactnessTaint(f, s)
             f is BigRatio && s is BigRatio -> f.toBigDecimal().remainder(s.toBigDecimal())
             f is BigDecimal && s is BigDecimal -> f.remainder(s)
