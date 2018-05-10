@@ -12,11 +12,11 @@ class BigRatio : Number, Comparable<BigRatio> {
         val ZERO = BigRatio(BigInteger.ZERO)
         val ONE  = BigRatio(BigInteger.ONE)
 
-        private val CONSTANTS = hashMapOf("-2" to BigInteger("-2"),
-                                          "-1" to BigInteger("-1"),
+        private val CONSTANTS = hashMapOf("-2" to "-2".toBigInteger(),
+                                          "-1" to "-1".toBigInteger(),
                                           "0"  to BigInteger.ZERO,
                                           "1"  to BigInteger.ONE,
-                                          "2"  to BigInteger("2"),
+                                          "2"  to "2".toBigInteger(),
                                           "10" to BigInteger.TEN)
 
         fun valueOf(numerator: String, denominator: String) = valueOf(parseBigInteger(numerator), parseBigInteger(denominator))
@@ -29,7 +29,7 @@ class BigRatio : Number, Comparable<BigRatio> {
             else -> BigRatio(numerator, denominator)
         }
 
-        private fun parseBigInteger(number: String) = CONSTANTS.getOrDefault(number, BigInteger(number))
+        private fun parseBigInteger(number: String) = CONSTANTS.getOrDefault(number, number.toBigInteger())
     }
 
     val numerator: BigInteger
