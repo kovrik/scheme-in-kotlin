@@ -17,7 +17,7 @@ class Swap : AFn<Any?, Any?>(name = "swap!", minArgs = 2, mandatoryArgsTypes = a
     // TODO Check!
     override fun invoke(args: Array<out Any?>): Thunk<Any?> {
         val box = args[0] as Box<Any?>
-        val fn = args[1] as? IFn<Any?, Any?>
+        val fn = args[1] as? IFn<*, *>
         while (true) {
             val oldVal = box.deref()
             val rest = mutableListOf(oldVal)
