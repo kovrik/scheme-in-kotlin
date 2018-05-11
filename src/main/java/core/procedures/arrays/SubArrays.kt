@@ -5,7 +5,7 @@ import core.scm.Type
 
 object SubArrays {
 
-    open class Subbooleans : AFn<Any?, BooleanArray>(name = "subbooleans", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubBooleans : AFn<Any?, BooleanArray>(name = "subbooleans", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(BooleanArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -26,7 +26,7 @@ object SubArrays {
         }
     }
 
-    open class Subbytes : AFn<Any?, ByteArray>(name = "subbytes", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubBytes : AFn<Any?, ByteArray>(name = "subbytes", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(ByteArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -47,7 +47,7 @@ object SubArrays {
         }
     }
 
-    open class Subchars : AFn<Any?, CharArray>(name = "subchars", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubChars : AFn<Any?, CharArray>(name = "subchars", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(CharArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -68,7 +68,7 @@ object SubArrays {
         }
     }
 
-    open class Subdoubles : AFn<Any?, DoubleArray>(name = "subdoubles", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubDoubles : AFn<Any?, DoubleArray>(name = "subdoubles", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(DoubleArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -89,7 +89,7 @@ object SubArrays {
         }
     }
 
-    open class Subfloats : AFn<Any?, FloatArray>(name = "subfloats", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubFloats : AFn<Any?, FloatArray>(name = "subfloats", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(FloatArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -110,7 +110,7 @@ object SubArrays {
         }
     }
 
-    open class Subints : AFn<Any?, IntArray>(name = "subints", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubInts : AFn<Any?, IntArray>(name = "subints", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(IntArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -131,7 +131,7 @@ object SubArrays {
         }
     }
 
-    open class Sublongs : AFn<Any?, LongArray>(name = "sublongs", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubLongs : AFn<Any?, LongArray>(name = "sublongs", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(LongArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -152,7 +152,7 @@ object SubArrays {
         }
     }
 
-    open class Subobjects : AFn<Any?, Array<*>>(name = "subobjects", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubObjects : AFn<Any?, Array<*>>(name = "subobjects", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(Array<Any?>::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
@@ -173,7 +173,7 @@ object SubArrays {
         }
     }
 
-    open class Subshorts : AFn<Any?, ShortArray>(name = "subshorts", isPure = true, minArgs = 2, maxArgs = 3,
+    open class SubShorts : AFn<Any?, ShortArray>(name = "subshorts", isPure = true, minArgs = 2, maxArgs = 3,
             mandatoryArgsTypes = arrayOf(ShortArray::class.java, Type.ExactNonNegativeInteger::class.java),
             restArgsType = Type.ExactNonNegativeInteger::class.java) {
 
