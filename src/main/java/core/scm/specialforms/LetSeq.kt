@@ -22,7 +22,7 @@ object LetSeq : SpecialForm("let*") {
         /* Evaluate inits */
         bindings.forEach {
             if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-            localEnv.put(it[0], evaluator.eval(it[1], localEnv))
+            localEnv[it[0]] = evaluator.eval(it[1], localEnv)
         }
         /* Evaluate body */
         for (i in 2..form.size - 2) { evaluator.eval(form[i], localEnv) }

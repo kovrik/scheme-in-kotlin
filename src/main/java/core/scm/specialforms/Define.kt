@@ -28,7 +28,7 @@ object Define : SpecialForm("define") {
                 if (form.size > 3) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "multiple expressions after identifier")
                 }
-                env.put(id, evaluator.eval(form[2], env))
+                env[id] = evaluator.eval(form[2], env)
             }
             is List<*> -> {
                 /* Procedure definition: (define <id> <proc>) */
@@ -48,7 +48,7 @@ object Define : SpecialForm("define") {
                 // TODO (define ((a n) c) n)
                 id = id[0] as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form),
                                                "not an identifier for procedure name: ${Writer.write(id)}")
-                env.put(id, Lambda.eval(lambda, env, evaluator).apply { name = id.toString() })
+                env[id] = Lambda.eval(lambda, env, evaluator).apply { name = id.toString() }
             }
             else -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }

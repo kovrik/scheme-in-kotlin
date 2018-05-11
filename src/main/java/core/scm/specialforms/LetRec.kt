@@ -29,7 +29,7 @@ object LetRec : SpecialForm("letrec") {
         /* Bind variables to fresh locations holding undefined values */
         bindings.forEach {
             if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-            localEnv.put(it[0], Environment.UNDEFINED)
+            localEnv[it[0]] = Environment.UNDEFINED
         }
         /* Evaluate inits */
         bindings.forEach {

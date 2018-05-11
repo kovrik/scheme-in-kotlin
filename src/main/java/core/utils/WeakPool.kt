@@ -10,6 +10,6 @@ internal class WeakPool<T> {
     operator fun get(obj: T) = pool[obj]?.get()
 
     fun put(obj: T) {
-        pool.put(obj, WeakReference(obj))
+        pool[obj] = WeakReference(obj)
     }
 }

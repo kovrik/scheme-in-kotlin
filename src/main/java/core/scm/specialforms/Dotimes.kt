@@ -26,7 +26,7 @@ object Dotimes : SpecialForm("dotimes") {
         val body = mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         // TODO What if greater than Long.MAX_VALUE?
         for (i in 0 until (limit as Number).toLong()) {
-            localEnv.put(s, i)
+            localEnv[s] = i
             evaluator.eval(body, localEnv)
         }
         return binding.getOrNull(2)?.let { evaluator.eval(it, env) }

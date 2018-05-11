@@ -76,12 +76,12 @@ object Repl {
                 }
                 /* Put result into environment */
                 val id = getNextResID()
-                env.put(id, result)
+                env[id] = result
                 /* Print */
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")
             } catch (e: Throwable) {
                 /* Store caught exception in $e var */
-                env.put(Symbol.intern("\$e"), e)
+                env[Symbol.intern("\$e")] = e
                 error(e)
             }
         }

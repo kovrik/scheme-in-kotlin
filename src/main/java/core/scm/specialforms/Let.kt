@@ -26,13 +26,13 @@ object Let : SpecialForm("let") {
             /* Bind variables to fresh locations holding undefined values */
             bindings.forEach {
                 if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-                localEnv.put(it[0], Environment.UNDEFINED)
+                localEnv[it[0]] = Environment.UNDEFINED
             }
             /* Evaluate inits */
             bindings.forEach {
                 when {
                     it !is List<*> -> throw IllegalSyntaxException(toString(), Writer.write(form))
-                    localEnv[it[0]] === Environment.UNDEFINED -> localEnv.put(it[0], evaluator.eval(it[1], env))
+                    localEnv[it[0]] === Environment.UNDEFINED -> localEnv[it[0]] = evaluator.eval(it[1], env)
                     else -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: ${it[0]}")
                 }
             }
