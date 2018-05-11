@@ -66,12 +66,7 @@ object Writer {
     /* Use this method to print all lists */
     private fun List<*>.write() = when {
         this.isEmpty() -> "()"
-        Predicate.isProperList(this) -> StringBuilder("(").apply {
-            for (i in 0..this@write.size - 2) {
-                append(if (this@write[i] === this@write) "(this list)" else write(this@write[i])).append(' ')
-            }
-            append(if (this@write.last() === this@write) "(this list)" else write(this@write.last())).append(')')
-        }.toString()
+        Predicate.isProperList(this) -> joinToString(prefix = "(", separator = " ", postfix = ")", transform = Writer::write)
         else -> StringBuilder("(").apply {
             append(write(this@write.first()))
             var cdr = this@write.last()
@@ -105,7 +100,7 @@ object Writer {
         else                     -> toString()
     }
 
-    private fun Sequence<*>.write() = toList().write()
+    private fun Sequence<*>.write() = joinToString(prefix = "(", separator = " ", postfix = ")", transform = Writer::write)
 
     private fun CharSequence.write() = StringBuilder(length + 2).apply {
         append('"')
