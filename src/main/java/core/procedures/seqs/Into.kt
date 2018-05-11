@@ -32,7 +32,7 @@ class Into : AFn<Any?, Any?>(name = "into", minArgs = 2, maxArgs = 2) {
                     for (i in 0 until arg1.size)    { this[i] = arg1[i] }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
-                        Type.assertType(name, e, Boolean::class.java)
+                        Type.assertType(name, e, Boolean::class.javaObjectType)
                         this[i] = e as Boolean
                     }
                 }
