@@ -19,12 +19,9 @@ class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 
         }
         val index = args[1]
         Type.assertType(name, index, Int::class.java)
-        val i = (args[1] as Number).toInt()
-        if (col !is Sequence<*>) {
-            val size = count(col)
-            if (size <= i && args.size < 3) {
-                throw IndexOutOfBoundsException("$name: value out of range: $i")
-            }
+        val i = (index as Number).toInt()
+        if (col !is Sequence<*> && count(col) <= i && args.size < 3) {
+            throw IndexOutOfBoundsException("$name: value out of range: $i")
         }
         return get(args)
     }
