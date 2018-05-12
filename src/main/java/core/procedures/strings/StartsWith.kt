@@ -6,5 +6,5 @@ class StartsWith : AFn<CharSequence?, Boolean>(name = "starts-with?", isPure = t
                                                mandatoryArgsTypes = arrayOf(CharSequence::class.java,
                                                                             CharSequence::class.java)) {
 
-    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg1!!.toString().startsWith(arg2!!.toString())
+    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg1!!.startsWith(arg2!!)
 }

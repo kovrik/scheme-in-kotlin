@@ -6,5 +6,5 @@ class EndsWith : AFn<CharSequence?, Boolean>(name = "ends-with?", isPure = true,
                                              mandatoryArgsTypes = arrayOf(CharSequence::class.java,
                                                                           CharSequence::class.java)) {
 
-    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg1!!.toString().endsWith(arg2!!.toString())
+    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg1!!.endsWith(arg2!!)
 }
