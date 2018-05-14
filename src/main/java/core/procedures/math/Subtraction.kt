@@ -13,16 +13,16 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1 -> when {
             args[0] == null -> null
-            Utils.isPositiveInfinity(args[0] as Number) -> Double.NEGATIVE_INFINITY
-            Utils.isNegativeInfinity(args[0] as Number) -> Double.POSITIVE_INFINITY
-            args[0] is BigDecimal -> (args[0] as BigDecimal).negate()
-            args[0] is BigInteger -> (args[0] as BigInteger).negate()
-            args[0] is BigRatio -> -(args[0] as BigRatio)
             args[0] is Long -> try {
                 Math.negateExact(args[0] as Long) as Number
             } catch (e: ArithmeticException) {
-                BigInteger.valueOf(args[0] as Long).negate()
+                -(args[0] as Long).toBigInteger()
             }
+            args[0] is Double -> -(args[0] as Double)
+            args[0] is BigDecimal -> -(args[0] as BigDecimal)
+            args[0] is BigInteger -> -(args[0] as BigInteger)
+            args[0] is BigRatio -> -(args[0] as BigRatio)
+            args[0] is Float -> -(args[0] as Float)
             args[0] is Int -> try {
                 Math.negateExact(args[0] as Int) as Number
             } catch (e: ArithmeticException) {
@@ -42,10 +42,10 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
             !Utils.isFinite(f)                 -> f
             !Utils.isFinite(s)                 -> s
             Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
-            f is BigComplex && s is BigComplex -> f.minus(s)
-            f is BigRatio   && s is BigRatio   -> f.minus(s)
-            f is BigDecimal && s is BigDecimal -> f.subtract(s)
-            f is BigInteger && s is BigInteger -> f.subtract(s)
+            f is BigComplex && s is BigComplex -> f - s
+            f is BigRatio   && s is BigRatio   -> f - s
+            f is BigDecimal && s is BigDecimal -> f - s
+            f is BigInteger && s is BigInteger -> f - s
             f is Double     && s is Double     -> f - s
             f is Float      && s is Float      -> f - s
             else -> {
@@ -54,7 +54,7 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, r
                 return try {
                     Math.subtractExact(fl, sl)
                 } catch (e: ArithmeticException) {
-                    BigInteger.valueOf(fl).subtract(BigInteger.valueOf(sl))
+                    fl.toBigInteger() - sl.toBigInteger()
                 }
             }
         }

@@ -25,10 +25,10 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
             !Utils.isFinite(s)                 -> s
             Utils.isZero(f)                    -> Utils.inexactnessTaint(s, f)
             Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
-            f is BigComplex && s is BigComplex -> f.plus(s)
-            f is BigRatio   && s is BigRatio   -> f.plus(s)
-            f is BigDecimal && s is BigDecimal -> f.add(s)
-            f is BigInteger && s is BigInteger -> f.add(s)
+            f is BigComplex && s is BigComplex -> f + s
+            f is BigRatio   && s is BigRatio   -> f + s
+            f is BigDecimal && s is BigDecimal -> f + s
+            f is BigInteger && s is BigInteger -> f + s
             f is Double     && s is Double     -> f + s
             f is Float      && s is Float      -> f + s
             else -> {
@@ -37,7 +37,7 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
                 return try {
                     Math.addExact(fl, sl)
                 } catch (e: ArithmeticException) {
-                    BigInteger.valueOf(fl).add(BigInteger.valueOf(sl))
+                    fl.toBigInteger() + sl.toBigInteger()
                 }
             }
         }
