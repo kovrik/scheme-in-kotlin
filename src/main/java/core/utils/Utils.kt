@@ -250,8 +250,8 @@ object Utils {
 
     fun toBigInteger(number: Any?): BigInteger = when (number) {
         is BigInteger -> number
-        is Long       -> BigInteger.valueOf(number)
-        is Double     -> BigInteger.valueOf(number.toLong())
+        is Long       -> number.toBigInteger()
+        is Double     -> number.toLong().toBigInteger()
         is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
         else          -> number.toString().toBigInteger()
     }

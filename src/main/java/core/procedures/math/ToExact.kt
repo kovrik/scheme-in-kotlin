@@ -42,7 +42,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, min
             if (sign == 1L) {
                 a = Math.multiplyExact(a, -1)
             }
-            return BigRatio.valueOf(BigInteger.valueOf(a), BigInteger.valueOf(b))
+            return BigRatio.valueOf(a.toBigInteger(), b.toBigInteger())
         } catch (e: ArithmeticException) {
             return bigDecimalToExact(number.toString().toBigDecimal())
         }

@@ -158,7 +158,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, max
                     isNegative = true
                     e = e.absoluteValue
                 }
-                val result = BigInteger.valueOf(b).pow(e)
+                val result = b.toBigInteger().pow(e)
                 if (isNegative) {
                     return BigRatio.valueOf(BigInteger.ONE, result)
                 }
