@@ -13,9 +13,12 @@ import core.Writer
  */
 object ThunkForm : SpecialForm("thunk") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
-        1 -> throw IllegalSyntaxException(toString(), Writer.write(form))
-        2 -> form[1]!!
-        else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
-    }.let { Closure(emptyList<Nothing>(), it, env, false) }
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Closure {
+        val body = when (form.size) {
+            1 -> throw IllegalSyntaxException(toString(), Writer.write(form))
+            2 -> form[1]
+            else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
+        }
+        return Closure(emptyList<Nothing>(), body, env, false)
+    }
 }

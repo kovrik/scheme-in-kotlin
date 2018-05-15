@@ -6,7 +6,7 @@ import core.procedures.AFn
 class Closure(/* Array of arguments the procedure expects */
               private val args: List<Symbol?>,
               /* Body form of the procedure */
-              private val body: Any,
+              private val body: Any?,
               /* Lexical environment */
               private val localEnvironment: Environment,
               private val isVariadic: Boolean) : AFn<Any?, Any?>() {

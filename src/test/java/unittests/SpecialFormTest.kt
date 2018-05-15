@@ -811,6 +811,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(3L, eval("((thunk 1 2 3))", env))
         assertEquals(6L, eval("((thunk (+ 1 2 3)))", env))
         assertEquals(1L, eval("((thunk (define x 1) x)))", env))
+        assertEquals(null, eval("((thunk nil)))", env))
         try {
             eval("(thunk)", env)
             fail()
