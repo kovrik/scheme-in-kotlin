@@ -48,7 +48,7 @@ object Define : SpecialForm("define") {
                 // TODO (define ((a n) c) n)
                 id = id[0] as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form),
                                                "not an identifier for procedure name: ${Writer.write(id)}")
-                env[id] = Lambda.eval(lambda, env, evaluator).apply { name = id.toString() }
+                env[id] = Lambda.eval(lambda, env, evaluator)
             }
             else -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }

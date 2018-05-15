@@ -4,8 +4,7 @@ import core.environment.Environment
 import core.procedures.AFn
 
 /* Lambda */
-class Procedure(override var name: String,
-                /* Array of arguments the procedure expects */
+class Procedure(/* Array of arguments the procedure expects */
                 private val args: Array<Symbol?>,
                 /* Body form of the procedure */
                 private val body: Any,
