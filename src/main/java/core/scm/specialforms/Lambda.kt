@@ -40,8 +40,16 @@ object Lambda : SpecialForm("lambda") {
                     /* args is a proper list, hence non-variadic lambda */
                     args as List<Symbol>
                 }
-                /* Check args for duplicates */
-                validateArgs(params, form)
+                /* Validate args */
+                if (!params.isEmpty()) {
+                    val temp = hashSetOf<Symbol>()
+                    params.forEach {
+                        when {
+                            it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                            !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
+                        }
+                    }
+                }
             }
             is Symbol -> {
                 /* Variadic arity */
@@ -57,18 +65,6 @@ object Lambda : SpecialForm("lambda") {
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
         return Procedure("", params.toTypedArray(), body, env, variadic)
-    }
-
-    private fun validateArgs(params: List<Any?>, form: List<Any?>) {
-        if (!params.isEmpty()) {
-            val temp = hashSetOf<Symbol>()
-            params.forEach {
-                when {
-                    it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
-                    !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
-                }
-            }
-        }
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
