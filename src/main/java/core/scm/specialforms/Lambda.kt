@@ -15,7 +15,7 @@ import java.util.LinkedList
  * <formals>:
  * (<variable1> ...)
  * <variable>
- * (<variable1> ... <variablen> . <variablen+1>)
+ * (<variable1> ... <variableN> . <variableN+1>)
  */
 object Lambda : SpecialForm("lambda") {
 
