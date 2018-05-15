@@ -61,12 +61,11 @@ object Lambda : SpecialForm("lambda") {
 
     private fun validateArgs(params: List<Any?>, form: List<Any?>) {
         if (!params.isEmpty()) {
-            val temp = HashSet<Any?>()
+            val temp = hashSetOf<Symbol>()
             params.forEach {
                 when {
-                    it !is Symbol && !Predicate.isPair(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
-                    temp.contains(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
-                    else -> temp.add(it)
+                    it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                    !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
                 }
             }
         }
