@@ -19,6 +19,6 @@ object ThunkForm : SpecialForm("thunk") {
             2    -> form[1]
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
         }
-        return Closure(emptyArray(), Thunk(body, env), env, false)
+        return Closure(emptyList(), Thunk(body, env), env, false)
     }
 }

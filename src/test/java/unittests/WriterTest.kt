@@ -123,7 +123,7 @@ class WriterTest {
         assertEquals("test", Writer.write(Symbol.intern("test")))
         assertEquals("|'|", Writer.write(Symbol.intern("'")))
         assertEquals("if", Writer.write(If.symbol))
-        assertEquals("#<procedure>", Writer.write(Closure(emptyArray(), Any(), Environment(0, null), true)))
+        assertEquals("#<procedure>", Writer.write(Closure(emptyList(), Any(), Environment(0, null), true)))
     }
 
     @Test

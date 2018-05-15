@@ -63,7 +63,7 @@ object Lambda : SpecialForm("lambda") {
             /* Add implicit `begin` */
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
-        return Closure(params.toTypedArray(), body, env, variadic)
+        return Closure(params, body, env, variadic)
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */

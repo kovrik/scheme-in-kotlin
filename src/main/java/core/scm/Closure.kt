@@ -4,7 +4,7 @@ import core.environment.Environment
 import core.procedures.AFn
 
 class Closure(/* Array of arguments the procedure expects */
-              private val args: Array<Symbol?>,
+              private val args: List<Symbol?>,
               /* Body form of the procedure */
               private val body: Any,
               /* Lexical environment */
