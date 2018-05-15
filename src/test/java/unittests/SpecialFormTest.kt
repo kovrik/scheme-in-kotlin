@@ -88,7 +88,7 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalProcedure() {
-        assertEquals(Procedure::class.java, eval("(lambda () #t)", env)!!.javaClass)
+        assertEquals(Closure::class.java, eval("(lambda () #t)", env)!!.javaClass)
         assertEquals(true, eval("((lambda () #t))", env))
         assertEquals(6L, eval("((lambda (n) (+ n 1)) 5)", env))
 
@@ -567,7 +567,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Boolean::class.javaObjectType, eval("(class-of #t)", env))
         assertEquals(Boolean::class.javaObjectType, eval("(class-of (= 1 2))", env))
         assertEquals(Addition::class.javaObjectType, eval("(class-of +)", env))
-        assertEquals(Procedure::class.javaObjectType, eval("(class-of (lambda (n) n))", env))
+        assertEquals(Closure::class.javaObjectType, eval("(class-of (lambda (n) n))", env))
         assertEquals(Delay::class.javaObjectType, eval("(class-of (delay (+ 1 2)))", env))
         assertEquals(null, eval("(class-of nil)", env))
         assertEquals(null, eval("(class-of (first '(nil)))", env))

@@ -3,7 +3,7 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.scm.Procedure
+import core.scm.Closure
 import core.scm.Thunk
 import core.Writer
 
@@ -19,6 +19,6 @@ object ThunkForm : SpecialForm("thunk") {
             2    -> form[1]
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
         }
-        return Procedure(emptyArray(), Thunk(body, env), env, false)
+        return Closure(emptyArray(), Thunk(body, env), env, false)
     }
 }

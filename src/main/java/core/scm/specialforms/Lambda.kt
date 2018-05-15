@@ -4,11 +4,10 @@ import core.Evaluator
 import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.predicates.Predicate
-import core.scm.Procedure
+import core.scm.Closure
 import core.scm.Symbol
 import core.Writer
 import java.util.LinkedList
-import kotlin.collections.HashSet
 
 /* Syntax:
  * (lambda <formals> <body>)
@@ -20,7 +19,7 @@ import kotlin.collections.HashSet
  */
 object Lambda : SpecialForm("lambda") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Procedure {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Closure {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
@@ -64,7 +63,7 @@ object Lambda : SpecialForm("lambda") {
             /* Add implicit `begin` */
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
-        return Procedure(params.toTypedArray(), body, env, variadic)
+        return Closure(params.toTypedArray(), body, env, variadic)
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */

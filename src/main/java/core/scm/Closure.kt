@@ -3,14 +3,13 @@ package core.scm
 import core.environment.Environment
 import core.procedures.AFn
 
-/* Lambda */
-class Procedure(/* Array of arguments the procedure expects */
-                private val args: Array<Symbol?>,
-                /* Body form of the procedure */
-                private val body: Any,
-                /* Lexical environment */
-                private val localEnvironment: Environment,
-                private val isVariadic: Boolean) : AFn<Any?, Any?>() {
+class Closure(/* Array of arguments the procedure expects */
+              private val args: Array<Symbol?>,
+              /* Body form of the procedure */
+              private val body: Any,
+              /* Lexical environment */
+              private val localEnvironment: Environment,
+              private val isVariadic: Boolean) : AFn<Any?, Any?>() {
 
     init {
         if (isVariadic) {
