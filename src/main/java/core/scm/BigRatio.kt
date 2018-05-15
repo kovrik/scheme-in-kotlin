@@ -112,6 +112,8 @@ class BigRatio : Number, Comparable<BigRatio> {
 
     operator fun div(other: BigRatio) = times(other.reciprocal())
 
+    operator fun rem(other: BigRatio) = this.toBigDecimal() % other.toBigDecimal()
+
     operator fun unaryMinus() = BigRatio(numerator.negate(), denominator)
 
     fun signum() = numerator.signum() * denominator.signum()

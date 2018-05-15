@@ -15,7 +15,7 @@ class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArg
         return when {
             Utils.isZero(s) -> throw ArithmeticException("$name: undefined for 0")
             Utils.isZero(f) -> Utils.inexactnessTaint(f, s)
-            f is BigRatio && s is BigRatio -> f.toBigDecimal() % s.toBigDecimal()
+            f is BigRatio && s is BigRatio -> f % s
             f is BigDecimal && s is BigDecimal -> f % s
             f is BigInteger && s is BigInteger -> f % s
             Utils.isExact(f) && Utils.isExact(s) -> f.toLong() % s.toLong()
