@@ -24,7 +24,7 @@ object ArraysFill {
     }
 
     class CharsFill : AFn<Any?, CharArray>(name = "chars-fill!", isPure = true, minArgs = 2, maxArgs = 2,
-            mandatoryArgsTypes = arrayOf(CharArray::class.java, Char::class.java)) {
+            mandatoryArgsTypes = arrayOf(CharArray::class.java, Char::class.javaObjectType)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as CharArray).apply { fill(arg2 as Char) }
     }
