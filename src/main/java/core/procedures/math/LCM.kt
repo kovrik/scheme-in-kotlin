@@ -37,7 +37,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     }
 
     private fun lcm(a: Long, b: Long) = when {
-        a.toInt() == 0 && b.toInt() == 0 -> 0L
+        a == 0L && b == 0L -> 0L
         else -> a / GCD.gcd(a, b) * b
     }
 
