@@ -1,10 +1,11 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.Repeat
 import core.scm.Type
 
-class RepeatProc : AFn<Any?, Any?>(name = "repeat", minArgs = 1, maxArgs = 2) {
+class RepeatProc : AFn<Any?, Any?>(name = "repeat", arity = Range(1, 2)) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1    -> Repeat(args[0])

@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -8,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
+class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, arity = AtLeast(1), restArgsType = Number::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1 -> when {

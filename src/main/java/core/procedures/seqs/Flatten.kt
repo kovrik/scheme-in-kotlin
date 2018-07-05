@@ -1,10 +1,11 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.utils.Utils
 import java.util.*
 
-class Flatten : AFn<Any?, Any?>(name = "flatten", minArgs = 1, maxArgs = 1) {
+class Flatten : AFn<Any?, Any?>(name = "flatten", arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?) = flatten(Utils.toSequence(arg))
 

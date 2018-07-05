@@ -5,6 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Closure
 import core.Writer
+import core.procedures.Arity.Exactly
 
 /* Syntax:
  * (thunk <body> ...)
@@ -19,6 +20,6 @@ object ThunkForm : SpecialForm("thunk") {
             2 -> form[1]
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
         }
-        return Closure(emptyList<Nothing>(), body, env, false)
+        return Closure(emptyList<Nothing>(), body, env, Exactly(0))
     }
 }

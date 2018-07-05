@@ -1,8 +1,9 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 
-class Identical : AFn<Any?, Boolean>(name = "identical?", isPure = true, minArgs = 2) {
+class Identical : AFn<Any?, Boolean>(name = "identical?", isPure = true, arity = AtLeast(2)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = arg1 === arg2
 

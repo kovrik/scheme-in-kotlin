@@ -1,10 +1,11 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.utils.Utils
 
-class Angle : AFn<Number?, Number>(name = "angle", isPure = true, minArgs =  1, maxArgs = 1,
+class Angle : AFn<Number?, Number>(name = "angle", isPure = true, arity = Exactly(1),
                                    mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = angle(arg!!)

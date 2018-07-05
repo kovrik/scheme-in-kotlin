@@ -1,11 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.MutableVector
 
 import java.util.regex.Matcher
 
-class ReGroups : AFn<Any?, Any?>(name = "re-groups", isPure = true, minArgs = 1, maxArgs = 1,
+class ReGroups : AFn<Any?, Any?>(name = "re-groups", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Matcher::class.java)) {
 
     override operator fun invoke(arg: Any?): Any? {

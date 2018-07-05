@@ -1,10 +1,11 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.Type
 import core.utils.Utils
 
-class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, minArgs = 2, maxArgs = 3) {
+class Nth : AFn<Any?, Any?>(name = "nth", isPure = true, arity = Range(2, 3)) {
 
     private val count = Count()
     private val get = Get()

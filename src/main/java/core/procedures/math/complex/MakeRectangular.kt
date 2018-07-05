@@ -1,10 +1,11 @@
 package core.procedures.math.complex
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.scm.Type
 
-class MakeRectangular : AFn<Number?, Number>(name = "make-rectangular", isPure = true, minArgs = 2, maxArgs = 2,
+class MakeRectangular : AFn<Number?, Number>(name = "make-rectangular", isPure = true, arity = Exactly(2),
                             mandatoryArgsTypes = arrayOf(Type.Real::class.java, Type.Real::class.java)) {
 
     /* (+ x (* y 0+1i)) */

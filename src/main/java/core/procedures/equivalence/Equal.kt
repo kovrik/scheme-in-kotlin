@@ -1,10 +1,11 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.Cons
 import core.scm.MutableString
 
-class Equal : AFn<Any?, Boolean>(name = "equal?", isPure = true, minArgs = 2) {
+class Equal : AFn<Any?, Boolean>(name = "equal?", isPure = true, arity = AtLeast(2)) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         2    -> equal(args[0], args[1])

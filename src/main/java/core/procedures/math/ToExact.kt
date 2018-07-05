@@ -5,10 +5,11 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import core.Writer
+import core.procedures.Arity.Exactly
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, minArgs = 1, maxArgs = 1,
+class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, arity = Exactly(1),
                                      mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when {

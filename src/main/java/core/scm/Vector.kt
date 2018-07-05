@@ -2,6 +2,7 @@ package core.scm
 
 import core.procedures.AFn
 import core.Writer
+import core.procedures.Arity.Exactly
 import java.util.*
 
 /* Immutable Vector */
@@ -23,7 +24,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
     /* Contents of Vector: plain Java array */
     internal val array: Array<Any?>
 
-    constructor() : super(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
+    constructor() : super(arity = Exactly(1), mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = emptyArray()
     }
 
@@ -34,22 +35,22 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
         array.fill(init)
     }
 
-    constructor(coll: Collection<Any?>) : super(minArgs = 1, maxArgs = 1,
+    constructor(coll: Collection<Any?>) : super(arity = Exactly(1),
                                                 mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = coll.toTypedArray()
     }
 
-    constructor(elements: Array<out Any?>) : super(minArgs = 1, maxArgs = 1,
+    constructor(elements: Array<out Any?>) : super(arity = Exactly(1),
                                                    mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = Arrays.copyOf(elements, elements.size)
     }
 
-    constructor(vector: Vector) : super(minArgs = 1, maxArgs = 1,
+    constructor(vector: Vector) : super(arity = Exactly(1),
                                         mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = vector.array.copyOf()
     }
 
-    constructor(vector: Vector, fromIndex: Int, toIndex: Int) : super(minArgs = 1, maxArgs = 1,
+    constructor(vector: Vector, fromIndex: Int, toIndex: Int) : super(arity = Exactly(1),
                                               mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java)) {
         array = vector.array.copyOfRange(fromIndex, toIndex)
     }

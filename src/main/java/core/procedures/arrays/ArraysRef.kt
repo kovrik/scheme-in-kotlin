@@ -1,11 +1,12 @@
 package core.procedures.arrays
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.Type
 
 object ArraysRef {
 
-    class BytesRef : AFn<Any?, Byte>(name = "bytes-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class BytesRef : AFn<Any?, Byte>(name = "bytes-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(ByteArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as ByteArray).let {
@@ -15,7 +16,7 @@ object ArraysRef {
         }
     }
 
-    class BooleansRef : AFn<Any?, Boolean>(name = "booleans-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class BooleansRef : AFn<Any?, Boolean>(name = "booleans-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(BooleanArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as BooleanArray).let {
@@ -25,7 +26,7 @@ object ArraysRef {
         }
     }
 
-    class CharsRef : AFn<Any?, Char>(name = "chars-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class CharsRef : AFn<Any?, Char>(name = "chars-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(CharArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as CharArray).let {
@@ -35,7 +36,7 @@ object ArraysRef {
         }
     }
 
-    class DoublesRef : AFn<Any?, Double>(name = "doubles-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class DoublesRef : AFn<Any?, Double>(name = "doubles-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(DoubleArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as DoubleArray).let {
@@ -45,7 +46,7 @@ object ArraysRef {
         }
     }
 
-    class FloatsRef : AFn<Any?, Float>(name = "floats-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class FloatsRef : AFn<Any?, Float>(name = "floats-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(FloatArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as FloatArray).let {
@@ -55,7 +56,7 @@ object ArraysRef {
         }
     }
 
-    class IntsRef : AFn<Any?, Int>(name = "ints-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class IntsRef : AFn<Any?, Int>(name = "ints-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(IntArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as IntArray).let {
@@ -65,7 +66,7 @@ object ArraysRef {
         }
     }
 
-    class LongsRef : AFn<Any?, Long>(name = "longs-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class LongsRef : AFn<Any?, Long>(name = "longs-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(LongArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as LongArray).let {
@@ -75,7 +76,7 @@ object ArraysRef {
         }
     }
 
-    class ObjectsRef : AFn<Any?, Any?>(name = "objects-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class ObjectsRef : AFn<Any?, Any?>(name = "objects-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(Array<Any?>::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as Array<*>).let {
@@ -85,7 +86,7 @@ object ArraysRef {
         }
     }
 
-    class ShortsRef : AFn<Any?, Short>(name = "shorts-ref", isPure = true, minArgs = 2, maxArgs = 2,
+    class ShortsRef : AFn<Any?, Short>(name = "shorts-ref", isPure = true, arity = Exactly(2),
             mandatoryArgsTypes = arrayOf(ShortArray::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?) = (arg1 as ShortArray).let {

@@ -1,9 +1,10 @@
 package core.procedures.sets
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.MutableSet
 
-class Difference : AFn<Any?, Set<*>>(name = "difference", isPure = true, minArgs = 1,
+class Difference : AFn<Any?, Set<*>>(name = "difference", isPure = true, arity = AtLeast(1),
                                      mandatoryArgsTypes = arrayOf(Set::class.java), restArgsType = Set::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

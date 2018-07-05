@@ -1,8 +1,9 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 
-class StartsWith : AFn<CharSequence?, Boolean>(name = "starts-with?", isPure = true, minArgs = 2, maxArgs = 2,
+class StartsWith : AFn<CharSequence?, Boolean>(name = "starts-with?", isPure = true, arity = Exactly(2),
                                                mandatoryArgsTypes = arrayOf(CharSequence::class.java,
                                                                             CharSequence::class.java)) {
 

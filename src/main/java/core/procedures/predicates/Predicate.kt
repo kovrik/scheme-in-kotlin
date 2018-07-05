@@ -2,6 +2,8 @@ package core.procedures.predicates
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity
+import core.procedures.Arity.Exactly
 import core.procedures.IFn
 import core.procedures.math.Remainder
 import core.scm.*
@@ -12,7 +14,7 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class Predicate private constructor(override val name: String, private inline val predicate: (Any?) -> Boolean) :
-        AFn<Any?, Boolean>(isPure = true, minArgs = 1, maxArgs = 1) {
+        AFn<Any?, Boolean>(isPure = true, arity = Exactly(1)) {
 
     companion object {
         val IS_NULL = Predicate("null?", Objects::isNull)
@@ -102,6 +104,7 @@ class Predicate private constructor(override val name: String, private inline va
         val IS_SEQUENCE = Predicate("sequence?", { it is Sequence<*> })
         val IS_SEQ = Predicate("seq?", { Utils.isSeqable(it) })
         val IS_SEQABLE = Predicate("seqable?", { Utils.isSeqable(it) })
+        val IS_ARITY = Predicate("arity?", { it is Arity })
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 

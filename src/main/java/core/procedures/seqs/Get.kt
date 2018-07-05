@@ -1,9 +1,10 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.utils.Utils
 
-class Get : AFn<Any?, Any?>(name = "get", isPure = true, minArgs = 2, maxArgs = 3) {
+class Get : AFn<Any?, Any?>(name = "get", isPure = true, arity = Range(2, 3)) {
 
     override operator fun invoke(args: Array<out Any?>) = invoke(args[0], args[1], args.getOrNull(2))
 

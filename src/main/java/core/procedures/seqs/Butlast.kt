@@ -1,9 +1,10 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.utils.Utils
 
-class Butlast : AFn<Any?, Sequence<Any?>?>(name = "butlast", isPure = true, minArgs = 1, maxArgs = 1) {
+class Butlast : AFn<Any?, Sequence<Any?>?>(name = "butlast", isPure = true, arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?): Sequence<Any?>? {
         val seq = Utils.toSequence(arg)

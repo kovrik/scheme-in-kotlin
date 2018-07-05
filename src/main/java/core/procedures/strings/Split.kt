@@ -1,11 +1,12 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 
 import core.scm.Vector
 import java.util.regex.Pattern
 
-class Split : AFn<Any?, Vector>(name = "split", isPure = true, minArgs = 2, maxArgs = 3,
+class Split : AFn<Any?, Vector>(name = "split", isPure = true, arity = Range(2, 3),
                                 mandatoryArgsTypes = arrayOf(CharSequence::class.java, Pattern::class.java),
                                 restArgsType = Long::class.java) {
 

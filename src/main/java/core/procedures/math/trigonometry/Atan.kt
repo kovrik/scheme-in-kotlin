@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.utils.Utils
 
@@ -9,7 +10,7 @@ import kotlin.math.PI
 import kotlin.math.atan
 import kotlin.math.ln
 
-class Atan : AFn<Number?, Number>(name = "atan", isPure = true, minArgs = 1, maxArgs = 1,
+class Atan : AFn<Number?, Number>(name = "atan", isPure = true, arity = Exactly(1),
                                   mandatoryArgsTypes =  arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {

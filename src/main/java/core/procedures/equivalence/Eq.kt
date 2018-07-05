@@ -1,9 +1,10 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.Symbol
 
-class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, minArgs = 2) {
+class Eq : AFn<Any?, Boolean>(name = "eq?", isPure = true, arity = AtLeast(2)) {
 
     private val empty = emptyList<Nothing>()
 

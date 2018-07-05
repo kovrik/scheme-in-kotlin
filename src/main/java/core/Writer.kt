@@ -1,6 +1,7 @@
 package core
 
 import core.exceptions.ExInfoException
+import core.procedures.Arity
 import core.procedures.predicates.Predicate
 import core.reader.Reader
 import core.scm.Cons
@@ -46,6 +47,7 @@ object Writer {
         is BooleanArray      -> o.write()
         is Array<*>          -> o.write()
         is Thread            -> o.write()
+        is Arity             -> o.write()
         else                 -> o.toString()
     }
 
@@ -58,6 +60,8 @@ object Writer {
         name.isEmpty() -> "#<thread>"
         else           -> "#<thread:$name>"
     }
+
+    private fun Arity.write() = "#<arity:${javaClass.simpleName}(${toString()})>"
 
     private fun Pattern.write() = "#\"${this}\""
 

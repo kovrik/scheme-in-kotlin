@@ -2,10 +2,11 @@ package core.procedures.strings
 
 import core.exceptions.IllegalSyntaxException
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.reader.Reader
 import core.utils.Utils
 
-class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, minArgs = 1, maxArgs = 2,
+class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, arity = Range(1, 2),
                                        mandatoryArgsTypes = arrayOf(CharSequence::class.java),
                                        restArgsType = Long::class.java) {
 

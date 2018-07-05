@@ -34,6 +34,7 @@ import core.procedures.lists.*
 import core.procedures.math.*
 import core.procedures.math.complex.*
 import core.procedures.math.trigonometry.*
+import core.procedures.meta.ArityProc
 import core.procedures.meta.MetaProc
 import core.procedures.meta.WIthMeta
 import core.procedures.predicates.Predicate
@@ -480,6 +481,9 @@ class DefaultEnvironment : Environment(null) {
                 MetaProc(),
                 WIthMeta(),
 
+                /* Arity */
+                ArityProc(),
+
                 /* Exceptions */
                 ExData(),
                 ExInfo(),
@@ -636,7 +640,8 @@ class DefaultEnvironment : Environment(null) {
                 Predicate.IS_SYNTAX,
                 Predicate.IS_SEQUENCE,
                 Predicate.IS_SEQ,
-                Predicate.IS_SEQABLE)
+                Predicate.IS_SEQABLE,
+                Predicate.IS_ARITY)
 
         private val SPECIAL_FORMS = arrayOf(
                 ThreadForm,

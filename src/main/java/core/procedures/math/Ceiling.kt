@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.scm.Type
 
@@ -9,7 +10,7 @@ import java.math.BigInteger
 import java.math.RoundingMode
 import kotlin.math.ceil
 
-class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, minArgs = 1, maxArgs = 1,
+class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, arity = Exactly(1),
                                      mandatoryArgsTypes = arrayOf(Type.Real::class.java)) {
 
     override operator fun invoke(arg: Number?): Number {

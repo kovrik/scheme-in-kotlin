@@ -1,11 +1,12 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.procedures.math.Ceiling
 import core.scm.Type
 import core.utils.Utils
 
-class TakeLast : AFn<Any?, Any?>(name = "take-last", isPure = true, minArgs = 1, maxArgs = 2) {
+class TakeLast : AFn<Any?, Any?>(name = "take-last", isPure = true, arity = Range(1, 2)) {
 
     private val ceiling = Ceiling()
 

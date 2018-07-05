@@ -3,9 +3,10 @@ package core.scm
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.Writer
+import core.procedures.Arity.Exactly
 
 class MapEntry<K, V>(override var key: K, override var value: V) :
-        AFn<Number?, Any?>(minArgs = 1, maxArgs = 1, isPure = true, mandatoryArgsTypes = arrayOf(Int::class.java)),
+        AFn<Number?, Any?>(arity = Exactly(1), isPure = true, mandatoryArgsTypes = arrayOf(Int::class.java)),
         Map.Entry<K, V>, IAssoc<Number?, Any?>, Sequence<Any?> {
 
     constructor(entry: Map.Entry<K, V>) : this(entry.key, entry.value)

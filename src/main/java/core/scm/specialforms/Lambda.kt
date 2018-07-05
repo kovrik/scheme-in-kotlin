@@ -7,6 +7,8 @@ import core.procedures.predicates.Predicate
 import core.scm.Closure
 import core.scm.Symbol
 import core.Writer
+import core.procedures.Arity.AtLeast
+import core.procedures.Arity.Exactly
 import java.util.LinkedList
 
 /* Syntax:
@@ -63,7 +65,11 @@ object Lambda : SpecialForm("lambda") {
             /* Add implicit `begin` */
             else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
         }
-        return Closure(params, body, env, variadic)
+        val arity = when (variadic) {
+            true  -> AtLeast(0)
+            false -> Exactly(params.size)
+        }
+        return Closure(params, body, env, arity)
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */

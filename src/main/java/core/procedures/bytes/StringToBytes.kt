@@ -1,9 +1,10 @@
 package core.procedures.bytes
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import java.nio.charset.Charset
 
-class StringToBytes : AFn<Any?, ByteArray?>(name = "string->bytes", isPure = true, minArgs = 1, maxArgs = 2,
+class StringToBytes : AFn<Any?, ByteArray?>(name = "string->bytes", isPure = true, arity = Range(1, 2),
                                             mandatoryArgsTypes = arrayOf(CharSequence::class.java),
                                             lastArgType = CharSequence::class.java) {
 

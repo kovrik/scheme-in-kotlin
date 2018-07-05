@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.utils.Utils
 import java.math.BigDecimal
@@ -9,7 +10,7 @@ import kotlin.math.asin
 import kotlin.math.ln
 import kotlin.math.sqrt
 
-class Asin : AFn<Number?, Number>(name = "asin", isPure = true, minArgs = 1, maxArgs = 1,
+class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(1),
                                   mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {

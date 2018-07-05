@@ -7,9 +7,10 @@ import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.utils.Utils
 import core.Writer
+import core.procedures.Arity.Exactly
 
 class MemberProc(override val name: String, private inline val predicate: AFn<Any?, Boolean>) :
-        AFn<Any?, Any?>(isPure = true, minArgs = 2, maxArgs = 2,
+        AFn<Any?, Any?>(isPure = true, arity = Exactly(2),
                         mandatoryArgsTypes = arrayOf(Any::class.java, List::class.java)) {
 
     private val car = Car()

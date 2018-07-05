@@ -2,9 +2,10 @@ package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.*
 
-class Conj : AFn<Any?, Any?>(name = "conj", minArgs = 1) {
+class Conj : AFn<Any?, Any?>(name = "conj", arity = AtLeast(1)) {
 
     override operator fun invoke(args: Array<out Any?>): Any? {
         if (args.size == 1) return args[0]

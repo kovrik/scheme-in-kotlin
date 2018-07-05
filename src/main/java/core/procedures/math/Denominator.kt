@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
@@ -8,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Denominator : AFn<Number?, Number>(name = "denominator", isPure = true, minArgs = 1, maxArgs = 1,
+class Denominator : AFn<Number?, Number>(name = "denominator", isPure = true, arity = Exactly(1),
                         mandatoryArgsTypes = arrayOf(Type.Rational::class.java)) {
 
     private val toExact = ToExact()

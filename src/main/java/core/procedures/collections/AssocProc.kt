@@ -8,6 +8,7 @@ import core.procedures.predicates.Predicate
 import core.procedures.seqs.Get
 import core.utils.Utils
 import core.Writer
+import core.procedures.Arity.AtLeast
 import core.scm.MutableHashmap
 import core.scm.MutableVector
 import core.scm.Vector
@@ -15,7 +16,7 @@ import core.scm.Vector
 class AssocProc(override val name: String,
                 /* Procedure used to compare objects for equality */
                 private inline val predicate: AFn<Any?, Boolean>) :
-        AFn<Any?, Any?>(minArgs = 2, mandatoryArgsTypes = arrayOf(Any::class.java)) {
+        AFn<Any?, Any?>(arity = AtLeast(2), mandatoryArgsTypes = arrayOf(Any::class.java)) {
 
     private val car = Car()
     private val get = Get()

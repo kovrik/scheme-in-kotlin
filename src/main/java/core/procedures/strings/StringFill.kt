@@ -1,9 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.MutableString
 
-class StringFill : AFn<Any?, MutableString>(name = "string-fill!", minArgs = 2, maxArgs = 2,
+class StringFill : AFn<Any?, MutableString>(name = "string-fill!", arity = Exactly(2),
                                             mandatoryArgsTypes = arrayOf(MutableString::class.java,
                                                                          Char::class.javaObjectType)) {
 

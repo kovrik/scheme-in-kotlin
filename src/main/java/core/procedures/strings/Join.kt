@@ -1,9 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.utils.Utils
 
-class Join : AFn<Any?, String>(name = "join", isPure = true, minArgs = 1, maxArgs = 2,
+class Join : AFn<Any?, String>(name = "join", isPure = true, arity = Range(1, 2),
                                mandatoryArgsTypes = arrayOf(CharSequence::class.java)) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

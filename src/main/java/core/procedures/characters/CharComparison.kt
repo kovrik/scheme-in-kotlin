@@ -1,10 +1,11 @@
 package core.procedures.characters
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 
 class CharComparison private constructor(override val name: String,
                                          private inline val predicate: (Char, Char) -> Boolean) :
-        AFn<Any?, Boolean>(minArgs = 2, isPure = true,
+        AFn<Any?, Boolean>(arity = AtLeast(2), isPure = true,
                            mandatoryArgsTypes = arrayOf(Char::class.javaObjectType, Char::class.javaObjectType),
                            restArgsType = Char::class.javaObjectType) {
 

@@ -1,9 +1,10 @@
 package core.procedures.sets
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.MutableSet
 
-class Intersection : AFn<Any?, Set<*>>(name = "intersection", isPure = true, minArgs = 1,
+class Intersection : AFn<Any?, Set<*>>(name = "intersection", isPure = true, arity = AtLeast(1),
                                        mandatoryArgsTypes = arrayOf(Set::class.java), restArgsType = Set::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

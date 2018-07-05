@@ -1,13 +1,14 @@
 package core.procedures.functional
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.procedures.IFn
 import core.scm.Symbol
 import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-class Apply : AFn<Any?, Any>(name = "apply", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
+class Apply : AFn<Any?, Any>(name = "apply", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
 
     override operator fun invoke(args: Array<out Any?>): Any {
         val sexp = mutableListOf(args[0])

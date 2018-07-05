@@ -1,10 +1,11 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.MutableString
 import core.scm.Type
 
-class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true, minArgs = 1, maxArgs = 2,
+class MakeString : AFn<Any?, MutableString>(name = "make-string", isPure = true, arity = Range(1, 2),
                                             mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                             restArgsType = Char::class.javaObjectType) {
 

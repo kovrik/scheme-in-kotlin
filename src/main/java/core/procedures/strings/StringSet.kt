@@ -1,10 +1,11 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.MutableString
 import core.scm.Type
 
-class StringSet : AFn<Any?, Unit>(name = "string-set!", minArgs = 3, maxArgs = 3,
+class StringSet : AFn<Any?, Unit>(name = "string-set!", arity = Exactly(3),
                                   mandatoryArgsTypes = arrayOf(MutableString::class.java,
                                                                Type.ExactNonNegativeInteger::class.java,
                                                                Char::class.javaObjectType)) {

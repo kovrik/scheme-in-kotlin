@@ -1,11 +1,12 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.utils.Utils
 import kotlin.math.exp
 
-class Exp : AFn<Number?, Number>(name = "exp", isPure = true, minArgs = 1, maxArgs = 1,
+class Exp : AFn<Number?, Number>(name = "exp", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     private val E = "2.7182818284590452354".toBigDecimal()

@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
@@ -8,7 +9,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Min : AFn<Any?, Number?>(name = "min", isPure = true, minArgs = 1,
+class Min : AFn<Any?, Number?>(name = "min", isPure = true, arity = AtLeast(1),
                                mandatoryArgsTypes = arrayOf(Type.Real::class.java),
                                restArgsType = Type.Real::class.java) {
 

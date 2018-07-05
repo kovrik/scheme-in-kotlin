@@ -2,8 +2,9 @@ package core.procedures.interop
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 
-class CharType : AFn<Any?, Char>(name = "char", isPure = true, minArgs = 1, maxArgs = 1) {
+class CharType : AFn<Any?, Char>(name = "char", isPure = true, arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         is Number -> arg.toInt().toChar()

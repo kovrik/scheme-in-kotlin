@@ -19,6 +19,6 @@ interface IFn<in T, out R> : () -> R,
 
     /* Check args types */
     fun checkArgs(args: Array<out T>)
-    fun checkArity(args: Array<out T>)
-    fun arity(): Int
+    fun checkArity(args: Array<out T>): Arity
+    fun arity(): Arity
 }

@@ -4,6 +4,7 @@ import core.environment.Environment
 import core.scm.*
 import core.scm.specialforms.If
 import core.Writer
+import core.procedures.Arity.AtLeast
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import java.math.BigDecimal
@@ -123,7 +124,7 @@ class WriterTest {
         assertEquals("test", Writer.write(Symbol.intern("test")))
         assertEquals("|'|", Writer.write(Symbol.intern("'")))
         assertEquals("if", Writer.write(If.symbol))
-        assertEquals("#<procedure>", Writer.write(Closure(emptyList(), Any(), Environment(0, null), true)))
+        assertEquals("#<procedure>", Writer.write(Closure(emptyList(), Any(), Environment(0, null))))
     }
 
     @Test

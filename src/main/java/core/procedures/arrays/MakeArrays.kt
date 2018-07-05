@@ -1,11 +1,13 @@
 package core.procedures.arrays
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
+import core.procedures.Arity.Range
 import core.scm.Type
 
 object MakeArrays {
 
-    class MakeBooleans : AFn<Any?, BooleanArray>(name = "make-booleans", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeBooleans : AFn<Any?, BooleanArray>(name = "make-booleans", isPure = true, arity = Range(1, 2),
                                                  mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                                  lastArgType = Boolean::class.javaObjectType) {
 
@@ -14,7 +16,7 @@ object MakeArrays {
         })
     }
 
-    class MakeBytes : AFn<Any?, ByteArray>(name = "make-bytes", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeBytes : AFn<Any?, ByteArray>(name = "make-bytes", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
@@ -23,7 +25,7 @@ object MakeArrays {
         })
     }
 
-    class MakeChars : AFn<Any?, CharArray>(name = "make-chars", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeChars : AFn<Any?, CharArray>(name = "make-chars", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
@@ -32,7 +34,7 @@ object MakeArrays {
         })
     }
 
-    class MakeDoubles : AFn<Any?, DoubleArray>(name = "make-doubles", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeDoubles : AFn<Any?, DoubleArray>(name = "make-doubles", isPure = true, arity = Range(1, 2),
                                                mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                                lastArgType = Type.Real::class.java) {
 
@@ -41,7 +43,7 @@ object MakeArrays {
         })
     }
 
-    class MakeFloats : AFn<Any?, FloatArray>(name = "make-floats", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeFloats : AFn<Any?, FloatArray>(name = "make-floats", isPure = true, arity = Range(1, 2),
                                              mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                              lastArgType = Type.Real::class.java) {
 
@@ -50,7 +52,7 @@ object MakeArrays {
         })
     }
 
-    class MakeInts : AFn<Any?, IntArray>(name = "make-ints", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeInts : AFn<Any?, IntArray>(name = "make-ints", isPure = true, arity = Range(1, 2),
                                          mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                          lastArgType = Type.Real::class.java) {
 
@@ -59,7 +61,7 @@ object MakeArrays {
         })
     }
 
-    class MakeLongs : AFn<Any?, LongArray>(name = "make-longs", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeLongs : AFn<Any?, LongArray>(name = "make-longs", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
@@ -68,7 +70,7 @@ object MakeArrays {
         })
     }
 
-    class MakeShorts : AFn<Any?, ShortArray>(name = "make-shorts", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeShorts : AFn<Any?, ShortArray>(name = "make-shorts", isPure = true, arity = Range(1, 2),
                                              mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                              lastArgType = Type.Real::class.java) {
 
@@ -77,7 +79,7 @@ object MakeArrays {
         })
     }
 
-    class MakeObjects : AFn<Any?, Array<*>>(name = "make-objects", isPure = true, minArgs = 1, maxArgs = 2,
+    class MakeObjects : AFn<Any?, Array<*>>(name = "make-objects", isPure = true, arity = Range(1, 2),
             mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
             lastArgType = Any::class.java) {
 
@@ -86,7 +88,7 @@ object MakeArrays {
         })
     }
 
-    class MakeArray : AFn<Any?, Any>(name = "make-array", isPure = true, minArgs = 2,
+    class MakeArray : AFn<Any?, Any>(name = "make-array", isPure = true, arity = AtLeast(2),
                                      mandatoryArgsTypes = arrayOf(Class::class.java, Type.ExactNonNegativeInteger::class.java),
                                      restArgsType = Type.ExactNonNegativeInteger::class.java) {
 

@@ -2,11 +2,12 @@ package core.procedures.arrays
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.utils.Utils
 
 object ListToArrays {
 
-    class ListToBooleans : AFn<List<*>?, BooleanArray?>(name = "list->booleans", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToBooleans : AFn<List<*>?, BooleanArray?>(name = "list->booleans", isPure = true, arity = Exactly(1),
                                                         mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -16,7 +17,7 @@ object ListToArrays {
         }
     }
 
-    class ListToBytes : AFn<List<*>?, ByteArray?>(name = "list->bytes", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToBytes : AFn<List<*>?, ByteArray?>(name = "list->bytes", isPure = true, arity = Exactly(1),
                                                   mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -26,7 +27,7 @@ object ListToArrays {
         }
     }
 
-    class ListToChars : AFn<List<*>?, CharArray?>(name = "list->chars", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToChars : AFn<List<*>?, CharArray?>(name = "list->chars", isPure = true, arity = Exactly(1),
                                                   mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -36,7 +37,7 @@ object ListToArrays {
         }
     }
 
-    class ListToDoubles : AFn<List<*>?, DoubleArray?>(name = "list->doubles", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToDoubles : AFn<List<*>?, DoubleArray?>(name = "list->doubles", isPure = true, arity = Exactly(1),
                                                       mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -46,7 +47,7 @@ object ListToArrays {
         }
     }
 
-    class ListToFloats : AFn<List<*>?, FloatArray?>(name = "list->floats", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToFloats : AFn<List<*>?, FloatArray?>(name = "list->floats", isPure = true, arity = Exactly(1),
                                                     mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -56,7 +57,7 @@ object ListToArrays {
         }
     }
 
-    class ListToInts : AFn<List<*>?, IntArray?>(name = "list->ints", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToInts : AFn<List<*>?, IntArray?>(name = "list->ints", isPure = true, arity = Exactly(1),
                                                 mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -66,7 +67,7 @@ object ListToArrays {
         }
     }
 
-    class ListToLongs : AFn<List<*>?, LongArray?>(name = "list->longs", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToLongs : AFn<List<*>?, LongArray?>(name = "list->longs", isPure = true, arity = Exactly(1),
                                                   mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {
@@ -76,7 +77,7 @@ object ListToArrays {
         }
     }
 
-    class ListToObjects : AFn<List<*>?, Array<*>?>(name = "list->objects", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToObjects : AFn<List<*>?, Array<*>?>(name = "list->objects", isPure = true, arity = Exactly(1),
                                                    mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when (arg) {
@@ -85,7 +86,7 @@ object ListToArrays {
         }
     }
 
-    class ListToShorts : AFn<List<*>?, ShortArray?>(name = "list->shorts", isPure = true, minArgs = 1, maxArgs = 1,
+    class ListToShorts : AFn<List<*>?, ShortArray?>(name = "list->shorts", isPure = true, arity = Exactly(1),
                                                     mandatoryArgsTypes = arrayOf(List::class.java)) {
 
         override operator fun invoke(arg: List<*>?) = when {

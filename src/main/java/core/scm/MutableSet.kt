@@ -1,9 +1,10 @@
 package core.scm
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import kotlin.collections.MutableSet
 
-class MutableSet<T>(val set: MutableSet<T?>) : AFn<Any?, Any?>(minArgs = 1, maxArgs = 1), MutableSet<T?> by set {
+class MutableSet<T>(val set: MutableSet<T?>) : AFn<Any?, Any?>(arity = Exactly(1)), MutableSet<T?> by set {
 
     constructor() : this(mutableSetOf())
 

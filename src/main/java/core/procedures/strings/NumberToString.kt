@@ -1,12 +1,13 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true, minArgs = 1, maxArgs = 2,
+class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true, arity = Range(1, 2),
                                          mandatoryArgsTypes = arrayOf(Number::class.java), restArgsType = Long::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): String {

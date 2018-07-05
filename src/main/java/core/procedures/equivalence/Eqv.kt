@@ -1,8 +1,9 @@
 package core.procedures.equivalence
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 
-class Eqv : AFn<Any?, Boolean>(name = "eqv?", isPure = true, minArgs = 2) {
+class Eqv : AFn<Any?, Boolean>(name = "eqv?", isPure = true, arity = AtLeast(2)) {
 
     fun eqv(first: Any?, second: Any?) = when {
         first is List<*> && first.isEmpty() && second is List<*> && second.isEmpty() -> true

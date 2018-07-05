@@ -2,9 +2,10 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.Type
 
-class IndexOf : AFn<Any?, Int>(name = "index-of", isPure = true, minArgs = 2, maxArgs = 3,
+class IndexOf : AFn<Any?, Int>(name = "index-of", isPure = true, arity = Range(2, 3),
                                mandatoryArgsTypes = arrayOf(CharSequence::class.java)) {
 
     override operator fun invoke(args: Array<out Any?>) = when {

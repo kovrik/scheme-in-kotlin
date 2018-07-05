@@ -1,8 +1,9 @@
 package core.scm
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 
-class MutableHashmap<K, V>(val map: MutableMap<K, V>) : AFn<K, Any?>(minArgs = 1, maxArgs = 2),
+class MutableHashmap<K, V>(val map: MutableMap<K, V>) : AFn<K, Any?>(arity = Range(1, 2)),
                                                         MutableMap<K, V> by map, IAssoc<K, V> {
 
     constructor() : this(mutableMapOf())

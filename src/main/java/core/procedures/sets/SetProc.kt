@@ -2,9 +2,10 @@ package core.procedures.sets
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.MutableSet
 
-class SetProc : AFn<Any?, Set<*>>(name = "set", isPure = true, minArgs = 1, maxArgs = 1) {
+class SetProc : AFn<Any?, Set<*>>(name = "set", isPure = true, arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
         is Collection<*> -> MutableSet(arg)

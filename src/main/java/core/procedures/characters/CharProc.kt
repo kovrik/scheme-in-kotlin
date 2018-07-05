@@ -1,9 +1,10 @@
 package core.procedures.characters
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 
 class CharProc private constructor(override val name: String, private val function: (Char) -> Any) :
-        AFn<Char?, Any?>(minArgs = 1, maxArgs = 1, mandatoryArgsTypes = arrayOf(Char::class.javaObjectType)) {
+        AFn<Char?, Any?>(arity = Exactly(1), mandatoryArgsTypes = arrayOf(Char::class.javaObjectType)) {
 
     companion object {
         val CHAR_TO_INTEGER = CharProc("char->integer", Char::toLong)

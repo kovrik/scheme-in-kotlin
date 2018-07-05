@@ -1,6 +1,7 @@
 package core.procedures.box
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.procedures.IFn
 import core.procedures.functional.Apply
 import core.scm.Box
@@ -9,7 +10,7 @@ import core.scm.Thunk
 import core.scm.specialforms.Let
 import core.scm.specialforms.Quote
 
-class Swap : AFn<Any?, Any?>(name = "swap!", minArgs = 2, mandatoryArgsTypes = arrayOf(Box::class.java, IFn::class.java)) {
+class Swap : AFn<Any?, Any?>(name = "swap!", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(Box::class.java, IFn::class.java)) {
 
     private val apply = Apply()
     private val setBox = SetBox()

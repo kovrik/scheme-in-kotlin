@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.procedures.math.Multiplication
 import core.scm.BigComplex
 import core.utils.Utils
@@ -9,7 +10,7 @@ import kotlin.math.cosh
 import kotlin.math.sin
 import kotlin.math.sinh
 
-class Cos : AFn<Number?, Number>(name = "cos", isPure = true, minArgs = 1, maxArgs = 1,
+class Cos : AFn<Number?, Number>(name = "cos", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {

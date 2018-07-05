@@ -1,12 +1,13 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 
-class Division : AFn<Any?, Number?>(name = "/", isPure = true, minArgs = 1, restArgsType = Number::class.java) {
+class Division : AFn<Any?, Number?>(name = "/", isPure = true, arity = AtLeast(1), restArgsType = Number::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1    -> invoke(1L, args[0]!! as Number)

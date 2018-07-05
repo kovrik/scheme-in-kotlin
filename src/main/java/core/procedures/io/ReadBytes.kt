@@ -2,12 +2,13 @@ package core.procedures.io
 
 import core.Repl
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.InputPort
 import core.scm.Type
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ReadBytes : AFn<Any?, ByteArray>(name = "read-bytes", minArgs = 1, maxArgs = 2,
+class ReadBytes : AFn<Any?, ByteArray>(name = "read-bytes", arity = Range(1, 2),
                                        mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                        restArgsType = InputPort::class.java) {
 

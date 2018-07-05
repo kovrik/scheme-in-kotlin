@@ -1,9 +1,10 @@
 package core.procedures.collections
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.*
 
-class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, minArgs = 1, maxArgs = 1) {
+class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?): Any? = when (arg) {
         is Sequence<*>   -> emptySequence<Nothing>()

@@ -2,9 +2,10 @@ package core.procedures.io
 
 import core.Repl
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.OutputPort
 
-class WriteChar : AFn<Any?, Unit>(name = "write-char", minArgs = 1, maxArgs = 2,
+class WriteChar : AFn<Any?, Unit>(name = "write-char", arity = Range(1, 2),
                                   mandatoryArgsTypes = arrayOf(Char::class.javaObjectType),
                                   restArgsType = OutputPort::class.java) {
 

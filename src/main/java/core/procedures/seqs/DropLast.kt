@@ -1,11 +1,12 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity
 import core.procedures.math.Ceiling
 import core.scm.Type
 import core.utils.Utils
 
-class DropLast : AFn<Any?, Sequence<Any?>>(name = "drop-last", isPure = true, minArgs = 1, maxArgs = 2) {
+class DropLast : AFn<Any?, Sequence<Any?>>(name = "drop-last", isPure = true, arity = Arity.Range(1, 2)) {
 
     private val ceiling = Ceiling()
 

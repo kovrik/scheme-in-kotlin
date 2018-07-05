@@ -2,13 +2,14 @@ package core.procedures.functional
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.procedures.IFn
 import core.scm.Symbol
 import core.scm.ThunkSeq
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-open class MapProc : AFn<Any?, Any?>(name = "map", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java)) {
+open class MapProc : AFn<Any?, Any?>(name = "map", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java)) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         2 -> ThunkSeq(object : Sequence<Any?> {

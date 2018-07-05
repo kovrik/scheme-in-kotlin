@@ -1,11 +1,12 @@
 package core.procedures.arrays
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.Type
 
 object ArraysSet {
 
-    class BytesSet : AFn<Any?, Unit>(name = "bytes-set!", minArgs = 3, maxArgs = 3,
+    class BytesSet : AFn<Any?, Unit>(name = "bytes-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(ByteArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -13,7 +14,7 @@ object ArraysSet {
         }
     }
 
-    class BooleansSet : AFn<Any?, Unit>(name = "booleans-set!", minArgs = 3, maxArgs = 3,
+    class BooleansSet : AFn<Any?, Unit>(name = "booleans-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(BooleanArray::class.java, Type.ExactNonNegativeInteger::class.java, Boolean::class.javaObjectType)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -21,7 +22,7 @@ object ArraysSet {
         }
     }
 
-    class CharsSet : AFn<Any?, Unit>(name = "chars-set!", minArgs = 3, maxArgs = 3,
+    class CharsSet : AFn<Any?, Unit>(name = "chars-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(CharArray::class.java, Type.ExactNonNegativeInteger::class.java, Char::class.javaObjectType)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -29,7 +30,7 @@ object ArraysSet {
         }
     }
 
-    class DoublesSet : AFn<Any?, Unit>(name = "doubles-set!", minArgs = 3, maxArgs = 3,
+    class DoublesSet : AFn<Any?, Unit>(name = "doubles-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(DoubleArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -37,7 +38,7 @@ object ArraysSet {
         }
     }
 
-    class FloatsSet : AFn<Any?, Unit>(name = "floats-set!", minArgs = 3, maxArgs = 3,
+    class FloatsSet : AFn<Any?, Unit>(name = "floats-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(FloatArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -45,7 +46,7 @@ object ArraysSet {
         }
     }
 
-    class IntsSet : AFn<Any?, Unit>(name = "ints-set!", minArgs = 3, maxArgs = 3,
+    class IntsSet : AFn<Any?, Unit>(name = "ints-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(IntArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -53,7 +54,7 @@ object ArraysSet {
         }
     }
 
-    class LongsSet : AFn<Any?, Unit>(name = "longs-set!", minArgs = 3, maxArgs = 3,
+    class LongsSet : AFn<Any?, Unit>(name = "longs-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(LongArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -61,7 +62,7 @@ object ArraysSet {
         }
     }
 
-    class ShortsSet : AFn<Any?, Unit>(name = "shorts-set!", minArgs = 3, maxArgs = 3,
+    class ShortsSet : AFn<Any?, Unit>(name = "shorts-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(ShortArray::class.java, Type.ExactNonNegativeInteger::class.java, Number::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {
@@ -69,7 +70,7 @@ object ArraysSet {
         }
     }
 
-    class ObjectsSet : AFn<Any?, Unit>(name = "objects-set!", minArgs = 3, maxArgs = 3,
+    class ObjectsSet : AFn<Any?, Unit>(name = "objects-set!", arity = Exactly(3),
             mandatoryArgsTypes = arrayOf(Array<Any?>::class.java, Type.ExactNonNegativeInteger::class.java, Any::class.java)) {
 
         override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) {

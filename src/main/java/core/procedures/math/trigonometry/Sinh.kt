@@ -1,6 +1,7 @@
 package core.procedures.math.trigonometry
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -10,7 +11,7 @@ import kotlin.math.cosh
 import kotlin.math.sin
 import kotlin.math.sinh
 
-class Sinh : AFn<Number?, Number>(name = "sinh", isPure = true, minArgs = 1, maxArgs = 1,
+class Sinh : AFn<Number?, Number>(name = "sinh", isPure = true, arity = Exactly(1),
                                   mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when {

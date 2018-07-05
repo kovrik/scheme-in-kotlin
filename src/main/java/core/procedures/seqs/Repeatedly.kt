@@ -1,11 +1,12 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.procedures.IFn
 import core.scm.ThunkSeq
 import core.scm.Type
 
-class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = true, minArgs = 1, maxArgs = 2,
+class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = true, arity = Range(1, 2),
                                           lastArgType = IFn::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {

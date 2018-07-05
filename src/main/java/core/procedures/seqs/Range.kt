@@ -1,6 +1,7 @@
 package core.procedures.seqs
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
 import core.scm.BigRatio
@@ -9,7 +10,7 @@ import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Range : AFn<Any?, Any?>(name = "range", isPure = true, maxArgs = 3, restArgsType = Type.Real::class.java) {
+class Range : AFn<Any?, Any?>(name = "range", isPure = true, arity = Range(0, 3), restArgsType = Type.Real::class.java) {
 
     private val addition = Addition()
 

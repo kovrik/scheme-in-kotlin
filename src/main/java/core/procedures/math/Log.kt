@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
@@ -9,7 +10,7 @@ import java.math.BigInteger
 import kotlin.math.ln
 import kotlin.math.pow
 
-class Log : AFn<Number?, Number>(name = "log", isPure = true, minArgs = 1, maxArgs = 1,
+class Log : AFn<Number?, Number>(name = "log", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     companion object {

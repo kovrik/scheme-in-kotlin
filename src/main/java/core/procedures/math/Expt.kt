@@ -6,12 +6,13 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import core.Writer
+import core.procedures.Arity.Exactly
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-class Expt : AFn<Number?, Number>(name = "expt", isPure = true, minArgs = 2, maxArgs = 2,
+class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(2),
                                   mandatoryArgsTypes = arrayOf(Number::class.java, Number::class.java)) {
 
     override operator fun invoke(arg1: Number?, arg2: Number?): Number {

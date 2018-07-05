@@ -2,11 +2,12 @@ package core.procedures.system
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import java.util.*
 
 import java.util.concurrent.ThreadLocalRandom
 
-class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, maxArgs = 2, restArgsType = Long::class.java) {
+class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, arity = Range(0, 2), restArgsType = Long::class.java) {
 
     override operator fun invoke(args: Array<out Any?>): Number = when (args.size) {
         0 -> Math.random()

@@ -1,12 +1,13 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, minArgs = 2, maxArgs = 2,
+class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, arity = Exactly(2),
                                        mandatoryArgsTypes = arrayOf(Long::class.javaObjectType,
                                                                     Long::class.javaObjectType)) {
 

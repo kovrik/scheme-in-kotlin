@@ -1,11 +1,12 @@
 package core.procedures.lists
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.procedures.cons.Car
 import core.procedures.predicates.Predicate
 import core.scm.Type
 
-class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, minArgs = 2, maxArgs = 2,
+class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, arity = Exactly(2),
                     mandatoryArgsTypes = arrayOf(Type.Pair::class.java, Type.ExactNonNegativeInteger::class.java)) {
 
     private val car = Car()

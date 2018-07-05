@@ -1,13 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, minArgs = 2, maxArgs = 2,
+open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, arity = Exactly(2),
                           mandatoryArgsTypes = arrayOf(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = when {

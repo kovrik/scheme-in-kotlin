@@ -1,9 +1,10 @@
 package core.procedures.strings
 
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.scm.Type
 
-open class Substring : AFn<Any?, String>(name = "substring", isPure = true, minArgs = 2, maxArgs = 3,
+open class Substring : AFn<Any?, String>(name = "substring", isPure = true, arity = Range(2, 3),
                            mandatoryArgsTypes = arrayOf(CharSequence::class.java, Type.ExactNonNegativeInteger::class.java),
                            restArgsType = Type.ExactNonNegativeInteger::class.java) {
 

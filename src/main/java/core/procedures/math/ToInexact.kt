@@ -1,13 +1,14 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, minArgs = 1, maxArgs = 1,
+class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, arity = Exactly(1),
                                        mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {

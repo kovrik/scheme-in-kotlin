@@ -1,11 +1,12 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.scm.Type
 import core.utils.Utils
 
-class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, minArgs = 1, maxArgs = 1,
+class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, arity = Exactly(1),
                                        mandatoryArgsTypes = arrayOf(Type.Rational::class.java)) {
 
     private val toExact = ToExact()

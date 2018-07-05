@@ -1,11 +1,12 @@
 package core.procedures.bit
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.Type
 import core.utils.Utils
 import java.math.BigInteger
 
-class ArithmeticShift : AFn<Number?, Number>(name = "arithmetic-shift", isPure = true, minArgs = 2, maxArgs = 2,
+class ArithmeticShift : AFn<Number?, Number>(name = "arithmetic-shift", isPure = true, arity = Exactly(2),
                                              mandatoryArgsTypes = arrayOf(Type.BitOpOrBigInt::class.java, Long::class.javaObjectType)) {
 
     override operator fun invoke(arg1: Number?, arg2: Number?): Number = when {

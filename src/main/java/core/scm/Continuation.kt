@@ -1,11 +1,12 @@
 package core.scm
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 
 /*
  * "Upward" one-shot continuation
  */
-class Continuation : AFn<Any?, Unit>(name = "continuation", minArgs = 1, maxArgs = 1) {
+class Continuation : AFn<Any?, Unit>(name = "continuation", arity = Exactly(1)) {
 
     var isInvoked = false
         internal set

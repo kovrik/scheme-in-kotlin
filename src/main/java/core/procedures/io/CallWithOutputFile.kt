@@ -1,6 +1,7 @@
 package core.procedures.io
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.procedures.IFn
 import core.scm.OutputPort
 import core.scm.Thunk
@@ -8,7 +9,7 @@ import core.scm.specialforms.Try
 
 import java.io.FileOutputStream
 
-class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", minArgs = 2, maxArgs = 2,
+class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", arity = Exactly(2),
                                           mandatoryArgsTypes = arrayOf(CharSequence::class.java, IFn::class.java)) {
 
     /* (try (proc out) (finally (close-output-port out)))*/

@@ -2,6 +2,8 @@ package core.scm
 
 import core.environment.Environment
 import core.procedures.AFn
+import core.procedures.Arity
+import core.procedures.Arity.AtLeast
 
 class Closure(/* Array of arguments the procedure expects */
               private val args: List<Symbol?>,
@@ -9,17 +11,7 @@ class Closure(/* Array of arguments the procedure expects */
               private val body: Any?,
               /* Lexical environment */
               private val localEnvironment: Environment,
-              private val isVariadic: Boolean) : AFn<Any?, Any?>() {
-
-    init {
-        if (isVariadic) {
-            /* Do not count `rest` arg */
-            this.minArgs = this.args.size - 1
-        } else {
-            this.minArgs = this.args.size
-            this.maxArgs = this.args.size
-        }
-    }
+              override var arity: Arity = AtLeast(0)) : AFn<Any?, Any?>(arity = arity) {
 
     override operator fun invoke() = Thunk(body, Environment(0, localEnvironment))
 
@@ -47,13 +39,18 @@ class Closure(/* Array of arguments the procedure expects */
 
     private fun bindArgs(values: Array<out Any?>) = Environment(values.size, localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
-        for (i in 0 until minArgs) {
-            put(args[i], values[i])
-        }
-        if (isVariadic) {
-            /* Optional params: pass them as a list bound to the last param.
-             * Everything AFTER mandatory params goes to that list. */
-            put(args[minArgs], values.copyOfRange(minArgs, values.size).asList())
+        when (arity) {
+            is Arity.AtLeast -> {
+                for (i in 0 until args.size - 1) {
+                    put(args[i], values[i])
+                }
+                /* Optional params: pass them as a list bound to the last param.
+                 * Everything AFTER mandatory params goes to that list. */
+                put(args[args.size - 1], values.copyOfRange(args.size - 1, values.size).asList())
+            }
+            else -> for (i in 0 until args.size) {
+                put(args[i], values[i])
+            }
         }
     }
 

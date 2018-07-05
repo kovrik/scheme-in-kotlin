@@ -1,6 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.scm.Type
 import java.math.BigDecimal
@@ -8,7 +9,7 @@ import java.math.BigInteger
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-class Abs : AFn<Number?, Number>(name = "abs", isPure = true, minArgs = 1, maxArgs = 1,
+class Abs : AFn<Number?, Number>(name = "abs", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Type.Real::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {

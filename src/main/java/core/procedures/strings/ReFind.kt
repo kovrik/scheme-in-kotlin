@@ -2,11 +2,12 @@ package core.procedures.strings
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Range
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class ReFind : AFn<Any?, Any?>(name = "re-find", isPure = true, minArgs = 1, maxArgs = 2) {
+class ReFind : AFn<Any?, Any?>(name = "re-find", isPure = true, arity = Range(1, 2)) {
 
     private val reGroups = ReGroups()
 

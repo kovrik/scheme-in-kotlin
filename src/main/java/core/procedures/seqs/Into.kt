@@ -2,12 +2,13 @@ package core.procedures.seqs
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.scm.MutableVector
 import core.scm.Type
 import core.scm.Vector
 import core.utils.Utils
 
-class Into : AFn<Any?, Any?>(name = "into", minArgs = 2, maxArgs = 2) {
+class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         return when (arg1) {

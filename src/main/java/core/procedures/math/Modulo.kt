@@ -1,15 +1,16 @@
 package core.procedures.math
 
 import core.procedures.AFn
+import core.procedures.Arity.Exactly
 import core.utils.Utils
 
 import java.math.BigDecimal
 import java.math.BigInteger
 
-open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, minArgs = 2, maxArgs = 2,
+open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, arity = Exactly(2),
                         mandatoryArgsTypes = arrayOf(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
-    private val REM = Remainder()
+    private val rem = Remainder()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Number? = when {
         Utils.isZero(arg2!!) -> throw ArithmeticException("$name: undefined for 0")
@@ -39,7 +40,7 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, minArgs =
             f is BigDecimal && s is BigDecimal -> return invoke(f, s)
             f is BigInteger && s is BigInteger -> return invoke(f, s)
         }
-        val m = REM(f, s)
+        val m = rem(f, s)
         return when {
             m.toInt() == 0                   -> m
             f.toLong() > 0 == s.toLong() > 0 -> m

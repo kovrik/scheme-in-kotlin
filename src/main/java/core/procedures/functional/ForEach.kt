@@ -1,11 +1,12 @@
 package core.procedures.functional
 
 import core.procedures.AFn
+import core.procedures.Arity.AtLeast
 import core.procedures.IFn
 import core.scm.Thunk
 
 /* For-each is the same as `map`, but ignores the result: Void (ignore) results: (void <map-results>) */
-class ForEach : AFn<Any?, Any?>(name = "for-each", minArgs = 2, mandatoryArgsTypes = arrayOf(IFn::class.java)) {
+class ForEach : AFn<Any?, Any?>(name = "for-each", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java)) {
 
     private object MAP : MapProc() { override val name = "for-each" }
 
