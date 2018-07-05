@@ -101,7 +101,7 @@ class Reflector {
             Pair(clazz.getMethod(name, *newTypes), newArgs)
         } catch (ex: NoSuchMethodException) {
             try {
-                Pair(clazz.getMethod(name, *Array(types.size, { Object::class.java })), args)
+                Pair(clazz.getMethod(name, *Array(types.size) { Object::class.java }), args)
             } catch (ex2: NoSuchMethodException) {
                 throw NoSuchMethodException("${this.name}: unable to find matching method $name in class ${clazz.name}")
             }

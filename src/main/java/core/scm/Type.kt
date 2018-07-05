@@ -40,7 +40,7 @@ object Type {
         o == null -> true
         expected == o.javaClass -> true
         expected.isAssignableFrom(o.javaClass) -> true
-        TYPE_PREDICATES.getOrDefault(expected, { false })(o) -> true
+        TYPE_PREDICATES.getOrDefault(expected) { false }(o) -> true
         else -> throw WrongTypeException(name, expected, o)
     }
 }

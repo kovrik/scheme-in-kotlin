@@ -10,16 +10,16 @@ class CharComparison private constructor(override val name: String,
                            restArgsType = Char::class.javaObjectType) {
 
     companion object {
-        val CHAR_EQ          = CharComparison("char=?",     { f, s -> f == s })
-        val CHAR_LE          = CharComparison("char<?",     { f, s -> f <  s })
-        val CHAR_GR          = CharComparison("char>?",     { f, s -> f >  s })
-        val CHAR_LE_OR_EQ    = CharComparison("char<=?",    { f, s -> f <= s })
-        val CHAR_GR_OR_EQ    = CharComparison("char>=?",    { f, s -> f >= s })
-        val CHAR_EQ_CI       = CharComparison("char-ci=?",  { f, s -> f.toLowerCase() == s.toLowerCase() })
-        val CHAR_LE_CI       = CharComparison("char-ci<?",  { f, s -> f.toLowerCase() <  s.toLowerCase() })
-        val CHAR_GR_CI       = CharComparison("char-ci>?",  { f, s -> f.toLowerCase() >  s.toLowerCase() })
-        val CHAR_LE_OR_EQ_CI = CharComparison("char-ci<=?", { f, s -> f.toLowerCase() <= s.toLowerCase() })
-        val CHAR_GR_OR_EQ_CI = CharComparison("char-ci>=?", { f, s -> f.toLowerCase() >= s.toLowerCase() })
+        val CHAR_EQ          = CharComparison("char=?") { f, s -> f == s }
+        val CHAR_LE          = CharComparison("char<?") { f, s -> f <  s }
+        val CHAR_GR          = CharComparison("char>?") { f, s -> f >  s }
+        val CHAR_LE_OR_EQ    = CharComparison("char<=?") { f, s -> f <= s }
+        val CHAR_GR_OR_EQ    = CharComparison("char>=?") { f, s -> f >= s }
+        val CHAR_EQ_CI       = CharComparison("char-ci=?") { f, s -> f.toLowerCase() == s.toLowerCase() }
+        val CHAR_LE_CI       = CharComparison("char-ci<?") { f, s -> f.toLowerCase() <  s.toLowerCase() }
+        val CHAR_GR_CI       = CharComparison("char-ci>?") { f, s -> f.toLowerCase() >  s.toLowerCase() }
+        val CHAR_LE_OR_EQ_CI = CharComparison("char-ci<=?") { f, s -> f.toLowerCase() <= s.toLowerCase() }
+        val CHAR_GR_OR_EQ_CI = CharComparison("char-ci>=?") { f, s -> f.toLowerCase() >= s.toLowerCase() }
     }
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = predicate(arg1!! as Char, arg2!! as Char)

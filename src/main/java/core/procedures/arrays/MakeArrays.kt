@@ -11,81 +11,81 @@ object MakeArrays {
                                                  mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                                  lastArgType = Boolean::class.javaObjectType) {
 
-        override operator fun invoke(args: Array<out Any?>) = BooleanArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = BooleanArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Boolean) ?: false
-        })
+        }
     }
 
     class MakeBytes : AFn<Any?, ByteArray>(name = "make-bytes", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = ByteArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = ByteArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toByte() ?: Byte.MIN_VALUE
-        })
+        }
     }
 
     class MakeChars : AFn<Any?, CharArray>(name = "make-chars", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = CharArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = CharArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toChar() ?: Character.MIN_VALUE
-        })
+        }
     }
 
     class MakeDoubles : AFn<Any?, DoubleArray>(name = "make-doubles", isPure = true, arity = Range(1, 2),
                                                mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                                lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = DoubleArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = DoubleArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toDouble() ?: Double.MIN_VALUE
-        })
+        }
     }
 
     class MakeFloats : AFn<Any?, FloatArray>(name = "make-floats", isPure = true, arity = Range(1, 2),
                                              mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                              lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = FloatArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = FloatArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toFloat() ?: Float.MIN_VALUE
-        })
+        }
     }
 
     class MakeInts : AFn<Any?, IntArray>(name = "make-ints", isPure = true, arity = Range(1, 2),
                                          mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                          lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = IntArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = IntArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toInt() ?: Int.MIN_VALUE
-        })
+        }
     }
 
     class MakeLongs : AFn<Any?, LongArray>(name = "make-longs", isPure = true, arity = Range(1, 2),
                                            mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                            lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = LongArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = LongArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toLong() ?: Long.MIN_VALUE
-        })
+        }
     }
 
     class MakeShorts : AFn<Any?, ShortArray>(name = "make-shorts", isPure = true, arity = Range(1, 2),
                                              mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
                                              lastArgType = Type.Real::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = ShortArray((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = ShortArray((args[0] as Number).toInt()) {
             (args.getOrNull(1) as? Number)?.toShort() ?: Short.MIN_VALUE
-        })
+        }
     }
 
     class MakeObjects : AFn<Any?, Array<*>>(name = "make-objects", isPure = true, arity = Range(1, 2),
             mandatoryArgsTypes = arrayOf(Type.ExactNonNegativeInteger::class.java),
             lastArgType = Any::class.java) {
 
-        override operator fun invoke(args: Array<out Any?>) = Array((args[0] as Number).toInt(), {
+        override operator fun invoke(args: Array<out Any?>) = Array((args[0] as Number).toInt()) {
             args.getOrNull(1)
-        })
+        }
     }
 
     class MakeArray : AFn<Any?, Any>(name = "make-array", isPure = true, arity = AtLeast(2),

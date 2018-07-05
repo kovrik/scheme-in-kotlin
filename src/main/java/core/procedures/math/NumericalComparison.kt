@@ -12,11 +12,11 @@ class NumericalComparison private constructor(override val name: String,
                            restArgsType = Type.Real::class.java) {
 
     companion object {
-        val EQUAL         = NumericalComparison("=",  { f, s -> f == s } )
-        val LESS          = NumericalComparison("<",  { f, s -> f <  s } )
-        val GREATER       = NumericalComparison(">",  { f, s -> f >  s } )
-        val LESS_EQUAL    = NumericalComparison("<=", { f, s -> f <= s } )
-        val GREATER_EQUAL = NumericalComparison(">=", { f, s -> f >= s } )
+        val EQUAL         = NumericalComparison("=") { f, s -> f == s }
+        val LESS          = NumericalComparison("<") { f, s -> f <  s }
+        val GREATER       = NumericalComparison(">") { f, s -> f >  s }
+        val LESS_EQUAL    = NumericalComparison("<=") { f, s -> f <= s }
+        val GREATER_EQUAL = NumericalComparison(">=") { f, s -> f >= s }
     }
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Boolean {

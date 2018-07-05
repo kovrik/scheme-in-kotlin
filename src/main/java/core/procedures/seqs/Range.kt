@@ -81,57 +81,57 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, arity = Range(0, 3)
         if (!pred(start, end)) {
             return emptySequence()
         }
-        return generateSequence(start, {
+        return generateSequence(start) {
             val result = addition.add(it, step)
             when {
                 pred(result, end) -> result
                 else -> null
             }
-        })
+        }
     }
 
     private fun rangeLong(start: Long = 0L, end: Long = 1L, step: Long = 1L) = when (step > 0) {
         true -> when (start < end) {
-            true -> generateSequence(start, {
+            true -> generateSequence(start) {
                 val result = it + step
                 when (result < end) {
                     true  -> result
                     false -> null
                 }
-            })
+            }
             else -> emptySequence()
         }
         false -> when (start > end) {
-            true -> generateSequence(start, {
+            true -> generateSequence(start) {
                 val result = it + step
                 when (result > end) {
                     true  -> result
                     false -> null
                 }
-            })
+            }
             else -> emptySequence()
         }
     }
 
     private fun rangeDouble(start: Double = 0.0, end: Double = 1.0, step: Double = 1.0) = when (step > 0) {
         true -> when (start < end) {
-            true -> generateSequence(start, {
+            true -> generateSequence(start) {
                 val result = it + step
                 when (result < end) {
                     true  -> result
                     false -> null
                 }
-            })
+            }
             else -> emptySequence()
         }
         false -> when (start > end) {
-            true -> generateSequence(start, {
+            true -> generateSequence(start) {
                 val result = it + step
                 when (result > end) {
                     true  -> result
                     false -> null
                 }
-            })
+            }
             else -> emptySequence()
         }
     }
