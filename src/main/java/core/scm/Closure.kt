@@ -39,18 +39,14 @@ class Closure(/* Array of arguments the procedure expects */
 
     private fun bindArgs(values: Array<out Any?>) = Environment(values.size, localEnvironment).apply {
         /* Evaluate mandatory params and put values into new local environment */
-        when (arity) {
-            is Arity.AtLeast -> {
-                for (i in 0 until args.size - 1) {
-                    put(args[i], values[i])
-                }
-                /* Optional params: pass them as a list bound to the last param.
-                 * Everything AFTER mandatory params goes to that list. */
-                put(args[args.size - 1], values.copyOfRange(args.size - 1, values.size).asList())
-            }
-            else -> for (i in 0 until args.size) {
-                put(args[i], values[i])
-            }
+        for (i in 0 until args.size - 1) {
+            put(args[i], values[i])
+        }
+        when (arity is Arity.AtLeast) {
+            /* Optional params: pass them as a list bound to the last param.
+             * Everything AFTER mandatory params goes to that list. */
+            true  -> put(args[args.size - 1], values.copyOfRange(args.size - 1, values.size).asList())
+            false -> put(args[args.size - 1], values[args.size - 1])
         }
     }
 
