@@ -44,13 +44,7 @@ abstract class AFn<T, out R>(open var arity: Arity = Arity.AtLeast(0),
         false -> "#<procedure:$name>"
     }
 
-    override fun checkArity(args: Array<out T>): Arity {
-        val arity = arity()
-        return when {
-            arity.check(args.size) -> arity
-            else -> throw ArityException(name, arity, args.size)
-        }
-    }
+    override fun checkArity(size: Int) = arity().apply { if (!check(size)) throw ArityException(name, arity, size) }
 
     /* Check args types */
     override fun checkArgs(args: Array<out T>) {
@@ -71,7 +65,7 @@ abstract class AFn<T, out R>(open var arity: Arity = Arity.AtLeast(0),
      */
     companion object {
         fun <T, R> invokeN(fn: IFn<*, *>, args: Array<out T>): R = with(fn as IFn<T, R>) {
-            val arity = checkArity(args)
+            val arity = checkArity(args.size)
             checkArgs(args)
             return when (arity) {
                 is Arity.Exactly -> when (arity.arity) {
