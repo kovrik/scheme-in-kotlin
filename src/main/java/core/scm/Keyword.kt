@@ -2,6 +2,7 @@ package core.scm
 
 import core.exceptions.ArityException
 import core.procedures.AFn
+import core.procedures.Arity.Range
 import core.utils.InternPool
 
 class Keyword private constructor(override val name: String) :
@@ -17,7 +18,7 @@ class Keyword private constructor(override val name: String) :
     override fun toString() = ":$name"
 
     override operator fun invoke(args: Array<out Any?>) = when {
-        args.isEmpty() || args.size > 2 -> throw ArityException(toString() + " Keyword", 1, 2, args.size)
+        args.isEmpty() || args.size > 2 -> throw ArityException(toString() + " Keyword", Range(1, 2), args.size)
         else -> (args[0] as Map<*, *>).getOrDefault(this, args.getOrNull(1))
     }
 
