@@ -26,8 +26,11 @@ class Evaluator(private val reflector: Reflector = Reflector(),
 
         /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)
-        @Volatile var executor = Executors.newFixedThreadPool(2 + Runtime.getRuntime().availableProcessors()
-        ) { Thread(it, "executor-thread-${threadCounter.getAndIncrement()}") }!!
+
+        @Volatile
+        var executor = Executors.newCachedThreadPool {
+            Thread(it, "executor-thread-${threadCounter.getAndIncrement()}")
+        }!!
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
