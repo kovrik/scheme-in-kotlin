@@ -107,8 +107,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                     /* Special case: constructor call If Symbol ends with . */
                     val symbolName = (this[0] as Symbol).name
                     if (symbolName.endsWith('.')) {
-                        val form = mutableListOf<Any?>(New, Symbol.intern(symbolName.dropLast(1)))
-                        for (i in 1 until size) { form.add(this[i]) }
+                        val form = listOf(New, Symbol.intern(symbolName.dropLast(1))).plus(this.drop(1))
                         return New.eval(form, env, this@Evaluator)
                     }
                     op = object : AFn<Any?, Any?>() {
