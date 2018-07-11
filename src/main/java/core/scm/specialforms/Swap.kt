@@ -20,11 +20,9 @@ object Swap : SpecialForm("swap!") {
         val fn = evaluator.eval(form[2], env).let { it as? IFn<Any?, Any?> ?: throw WrongTypeException(name, "Procedure", it) }
         while (true) {
             val oldVal = box.deref()
-            val rest = mutableListOf(oldVal)
-            if (form.size > 3) {
-                for (i in 3 until form.size) {
-                    rest.add(evaluator.eval(form[i], env))
-                }
+            val rest = when (form.size > 3) {
+                true  -> listOf(oldVal).plus(form.drop(3).map { evaluator.eval(it, env) })
+                false -> listOf(oldVal)
             }
             val applyForm  = listOf(apply, fn, listOf(Quote, rest))
             val newVal = evaluator.eval(applyForm, env)

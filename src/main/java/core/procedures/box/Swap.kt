@@ -21,11 +21,9 @@ class Swap : AFn<Any?, Any?>(name = "swap!", arity = AtLeast(2), mandatoryArgsTy
         val fn = args[1] as? IFn<*, *>
         while (true) {
             val oldVal = box.deref()
-            val rest = mutableListOf(oldVal)
-            if (args.size > 2) {
-                for (i in 2 until args.size) {
-                    rest.add(args[i])
-                }
+            val rest = when (args.size > 2) {
+                true  -> listOf(oldVal).plus(args.drop(2))
+                false -> listOf(oldVal)
             }
             val newVal = Symbol.intern("newVal")
             val thunk = Thunk(listOf(Let, listOf(listOf(newVal, listOf(apply, fn, Quote.quote(rest)))), listOf(setBox, box, newVal), newVal))
