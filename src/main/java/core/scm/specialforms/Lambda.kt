@@ -63,7 +63,7 @@ object Lambda : SpecialForm("lambda") {
         val body = when {
             form.size == 3 -> form[2]!!
             /* Add implicit `begin` */
-            else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(2, form.size)) }
+            else -> listOf(Begin).plus(form.drop(2))
         }
         val arity = when (variadic) {
             true  -> AtLeast(0)

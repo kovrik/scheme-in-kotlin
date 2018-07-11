@@ -42,7 +42,7 @@ object Define : SpecialForm("define") {
                     }
                 }
                 /* Construct lambda form: (lambda (args) body) */
-                val lambda = mutableListOf(Lambda, cdr(id)).apply { addAll(form.subList(2, form.size)) }
+                val lambda = listOf(Lambda, cdr(id)).plus(form.drop(2))
                 /* Get procedure's name */
                 // TODO (define (((a))) 1)
                 // TODO (define ((a n) c) n)

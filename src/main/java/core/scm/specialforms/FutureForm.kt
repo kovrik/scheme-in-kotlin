@@ -14,6 +14,6 @@ object FutureForm : SpecialForm("future") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
         1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
         2    -> form[1]
-        else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
+        else -> listOf(Begin).plus(form.drop(1))
     }.let { Future(it, env, evaluator).apply { Evaluator.executor.submit(this) } }
 }

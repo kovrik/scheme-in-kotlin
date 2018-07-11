@@ -67,7 +67,7 @@ object Quasiquote : SpecialForm("quasiquote") {
     // TODO Optimize and simplify
     private fun quasiquoteList(depth: Int, expr: List<*>, env: Environment, evaluator: Evaluator): Any? {
         val isList = Predicate.isProperList(expr)
-        var result: Any? = mutableListOf<Any>()
+        var result: Any? = listOf<Any>()
         for (i in expr.indices) {
             val o = expr[i]
             /* Append quoted forms recursively */
@@ -86,12 +86,12 @@ object Quasiquote : SpecialForm("quasiquote") {
                     throw IllegalSyntaxException(UnquoteSplicing.toString(), Writer.write(expr), "invalid context within quasiquote")
                 }
                 /* Otherwise, just append the element wrapped with LIST */
-                result = append(result, mutableListOf(o))
+                result = append(result, listOf(o))
             } else {
                 val op = o[0]
                 if (op == Quasiquote.symbol) {
                     /* Increase depth of quasiquotation */
-                    result = append(result, mutableListOf(quasiquoteList(depth + 1, o, env, evaluator)))
+                    result = append(result, listOf(quasiquoteList(depth + 1, o, env, evaluator)))
                 } else if (op == Unquote.symbol || op == UnquoteSplicing.symbol) {
                     if (o.size != 2) {
                         throw IllegalSyntaxException(op.toString(), Writer.write(expr), "expects exactly one expression")
@@ -100,24 +100,29 @@ object Quasiquote : SpecialForm("quasiquote") {
                         /* Level of quasiquotation is 0 - evaluate! */
                         val eval = evaluator.eval(o[1], env)
                         if (op == UnquoteSplicing.symbol) {
-                            /* Unquote Splicing: splice and append elements into resulting list */
-                            /* `(,@(list 1 2 3)) => `(1 2 3) */
-                            when (eval) {
-                                is Sequence<*>   -> (result as MutableList<Any?>).addAll((eval.toList()))
-                                is Collection<*> -> (result as MutableList<Any?>).addAll((eval as Collection<*>?)!!)
-                                else -> result = eval
+                            result = when (op) {
+                                /* Unquote Splicing: splice and append elements into resulting list */
+                                /* `(,@(list 1 2 3)) => `(1 2 3) */
+                                UnquoteSplicing.symbol -> when (eval) {
+                                    is Sequence<*>   -> (result as List<*>).plus(eval)
+                                    is Collection<*> -> (result as List<*>).plus(eval)
+                                    else -> eval
+                                }
+                                /* Unquote: append list with results */
+                                /* `(,(list 1 2 3)) => `((1 2 3)) */
+                                else -> append(result, listOf(eval))
                             }
                         } else {
                             /* Unquote: append list with results */
                             /* `(,(list 1 2 3)) => `((1 2 3)) */
-                            result = append(result, mutableListOf(eval))
+                            result = append(result, listOf(eval))
                         }
                     } else {
                         /* Decrease depth of quasiquotation */
-                        result = append(result, mutableListOf(quasiquoteList(depth - 1, o, env, evaluator)))
+                        result = append(result, listOf(quasiquoteList(depth - 1, o, env, evaluator)))
                     }
                 } else {
-                    result = append(result, mutableListOf(quasiquoteList(depth, o, env, evaluator)))
+                    result = append(result, listOf(quasiquoteList(depth, o, env, evaluator)))
                 }
             }
         }

@@ -58,10 +58,9 @@ object Let : SpecialForm("let") {
             }
             val lambdaBody = form[3]
             val lambda = listOf(Lambda, lambdaArgs, lambdaBody)
-            val l = mutableListOf<List<*>>().apply { add(listOf(name, lambda)) }
-            val body = mutableListOf<Any?>(name).apply { addAll(initValues) }
+            val body = listOf(name).plus(initValues)
             /* Named let is implemented via letrec (letrec has TCO) */
-            return LetRec.eval(listOf(LetRec, l, body), Environment(env), evaluator)
+            return LetRec.eval(listOf(LetRec, listOf(listOf(name, lambda)), body), Environment(env), evaluator)
         }
         throw IllegalSyntaxException(toString(), Writer.write(form))
     }

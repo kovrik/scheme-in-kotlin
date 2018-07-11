@@ -691,22 +691,22 @@ class DefaultEnvironment : Environment(null) {
                 LetRecSyntax,
                 SyntaxRules)
 
-        private val LIBRARY_PROCEDURES = mutableListOf<String>().apply {
+        private val LIBRARY_PROCEDURES = listOf(
             /* Naive implementations (not via Continuations) */
             // TODO attach Metadata and mark these as pure?
-            add("(define values list)")
-            add("(define (call-with-values producer consumer) (apply consumer (producer)))")
+            "(define values list)",
+            "(define (call-with-values producer consumer) (apply consumer (producer)))",
 
-            add("(define (caar p) (car (car p)))")
-            add("(define (cadr p) (car (cdr p)))")
-            add("(define (cdar p) (cdr (car p)))")
-            add("(define (cddr p) (cdr (cdr p)))")
-            add("(define (add1 n) (+ n 1))")
-            add("(define (sub1 n) (- n 1))")
-            add("(define (inc  n) (+ n 1))")
-            add("(define (dec  n) (- n 1))")
-            add("(define (sqr  n) (* n n))")
-            add("""(define rationalize
+            "(define (caar p) (car (car p)))",
+            "(define (cadr p) (car (cdr p)))",
+            "(define (cdar p) (cdr (car p)))",
+            "(define (cddr p) (cdr (cdr p)))",
+            "(define (add1 n) (+ n 1))",
+            "(define (sub1 n) (- n 1))",
+            "(define (inc  n) (+ n 1))",
+            "(define (dec  n) (- n 1))",
+            "(define (sqr  n) (* n n))",
+            """(define rationalize
                      (letrec ((check (lambda (x)
                                        (when (not (real? x))
                                          (error (string-append "Wrong argument type. Expected: Real, actual: "
@@ -741,10 +741,10 @@ class DefaultEnvironment : Environment(null) {
                             ((<= lo 0 hi) (if (exact? x) 0 0.0))
                             ((or (inexact? lo) (inexact? hi))
                              (exact->inexact (do-find-between (inexact->exact lo) (inexact->exact hi))))
-                            (else (do-find-between lo hi)))))))""")
+                            (else (do-find-between lo hi)))))))""",
 
             // FIXME naive memoize implementation
-            add("""(define (memoize f)
+            """(define (memoize f)
                      (let ((mem (atom {})))
                        (fn args
                          (let ((e (find @mem args)))
@@ -752,28 +752,28 @@ class DefaultEnvironment : Environment(null) {
                              (val e)
                              (let ((ret (apply f args)))
                                (swap! mem put args ret)
-                             ret))))))""")
+                             ret))))))""",
 
-            add("(define (negate f) (fn args (not (apply f args))))")
-            add("(define complement negate)")
+            "(define (negate f) (fn args (not (apply f args))))",
+            "(define complement negate)",
 
-            add("(def (partial f . args1) (fn args2 (apply f (append args1 args2))))")
-            add("(def (const arg) (fn rest arg))")
-            add("(def (constantly arg) (fn rest arg))")
+            "(def (partial f . args1) (fn args2 (apply f (append args1 args2))))",
+            "(def (const arg) (fn rest arg))",
+            "(def (constantly arg) (fn rest arg))",
 
             // TODO Implement these in Kotlin?
-            add("""(define (some pred coll)
+            """(define (some pred coll)
                      (if (empty? coll)
                        null
-                       (or (pred (first coll)) (some pred (rest coll)))))""")
+                       (or (pred (first coll)) (some pred (rest coll)))))""",
 
-            add("""(define (every? pred coll)
+            """(define (every? pred coll)
                      (cond
                       ((empty? coll) true)
                       ((pred (first coll)) (every? pred (rest coll)))
-                      (else false))""")
+                      (else false))""",
 
-            add("""(define (filter pred coll)
+            """(define (filter pred coll)
                      (lazy-seq
                        (let ((s (seq coll)))
                          (if s
@@ -783,6 +783,5 @@ class DefaultEnvironment : Environment(null) {
                                    (cons-seq f (filter pred r))
                                    (filter pred r)))
                              '()))))""")
-        }
     }
 }

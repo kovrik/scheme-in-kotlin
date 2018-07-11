@@ -12,7 +12,5 @@ class Load : AFn<CharSequence?, Any>(name = "load", arity = Exactly(1),
 
     private val reader = FileReader()
 
-    override operator fun invoke(arg: CharSequence?) = Thunk(mutableListOf<Any?>(Begin).apply {
-        addAll(reader.read(File(arg.toString())))
-    })
+    override operator fun invoke(arg: CharSequence?) = Thunk(listOf(Begin).plus(reader.read(File(arg.toString()))))
 }

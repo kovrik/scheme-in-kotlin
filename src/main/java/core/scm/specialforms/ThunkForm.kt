@@ -18,7 +18,7 @@ object ThunkForm : SpecialForm("thunk") {
         val body = when (form.size) {
             1 -> throw IllegalSyntaxException(toString(), Writer.write(form))
             2 -> form[1]
-            else -> mutableListOf<Any?>(Begin).apply { addAll(form.subList(1, form.size)) }
+            else -> listOf(Begin).plus(form.drop(1))
         }
         return Closure(emptyList<Nothing>(), body, env, Exactly(0))
     }
