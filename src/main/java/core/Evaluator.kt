@@ -43,8 +43,8 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                 // TODO more elegant solution?
                 is ThunkSeq<*> -> {
                     /* Evaluate thunk sequence and wrap it in a Caching Seq */
-                    val thunks = result
-                    result = thunks.map { eval(it, thunks.context ?: env) }.cached()
+                    val context = result.context ?: env
+                    result = result.map { eval(it, context) }.cached()
                 }
             }
         }
