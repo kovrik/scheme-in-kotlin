@@ -68,8 +68,8 @@ open class Delay(private val expr: Any?, private val env: Environment, private v
             }
             append(if (value === this) "(this delay)" else Writer.write(value)).append('>')
         }.toString()
-        isDone       -> StringBuilder("#<delay!").append(if (value === this) "(this delay)" else Writer.write(value)).append('>').toString()
         isCancelled  -> "#<delay:cancelled>"
+        isDone       -> StringBuilder("#<delay!").append(if (value === this) "(this delay)" else Writer.write(value)).append('>').toString()
         forced.get() -> "#<delay:running>"
         else         -> "#<delay:pending>"
     }

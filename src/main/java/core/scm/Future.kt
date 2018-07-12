@@ -19,6 +19,7 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
     }
 
     override fun toString() = when {
+        isCancelled -> "#<future:cancelled>"
         isDone -> StringBuilder("#<future!").apply {
             try {
                 deref().let { append(if (it == this) "(this future)" else Writer.write(it)) }
@@ -26,7 +27,6 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
                 append("error!").append(e)
             }
         }.append('>').toString()
-        isCancelled -> "#<future:cancelled>"
         else        -> "#<future:pending>"
     }
 }
