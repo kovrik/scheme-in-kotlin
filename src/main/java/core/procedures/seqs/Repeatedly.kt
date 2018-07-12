@@ -10,14 +10,12 @@ class Repeatedly : AFn<Any?, Sequence<*>>(name = "repeatedly", isPure = true, ar
                                           lastArgType = IFn::class.java) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
-        1 -> ThunkSeq(generateSequence<Any>(Unit) {
-            AFn.invokeN<Any?, Any?>((args[0] as IFn<*, *>), emptyArray())
-        }.drop(1))
+        1 -> ThunkSeq(generateSequence { AFn.invokeN<Any?, Any?>((args[0] as IFn<*, *>), emptyArray()) })
         else -> {
             Type.assertType(name, args[0], Type.Real::class.java)
-            ThunkSeq(generateSequence<Any>(Unit) {
+            ThunkSeq(generateSequence {
                 AFn.invokeN<Any?, Any?>(args[1] as IFn<*, *>, emptyArray())
-            }).drop(1).take((args[0] as Number).toInt())
+            }).take((args[0] as Number).toInt())
         }
     }
 }
