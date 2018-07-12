@@ -7,6 +7,8 @@ import core.reader.Reader
 import core.scm.Cons
 import core.scm.MutablePair
 import core.scm.Symbol
+import kotlinx.coroutines.experimental.AbstractCoroutine
+import kotlinx.coroutines.experimental.Deferred
 import java.util.*
 import java.util.regex.Pattern
 
@@ -19,36 +21,38 @@ object Writer {
     private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
 
     fun write(o: Any?): String = when (o) {
-        null                 -> "nil"
-        Unit                 -> "#<void>"
-        is Boolean           -> if (o) "#t" else "#f"
-        is Symbol            -> o.write()
-        is List<*>           -> o.write()
-        is Class<*>          -> o.write()
-        is Pair<*, *>        -> o.write()
-        is MutablePair<*, *> -> o.write()
-        is Number            -> o.write()
-        is Sequence<*>       -> o.write()
-        is CharSequence      -> o.write()
-        is Char              -> o.write()
-        is Pattern           -> o.write()
-        is Regex             -> o.write()
-        is Throwable         -> o.write()
-        is Map<*, *>         -> o.write()
-        is Map.Entry<*, *>   -> o.write()
-        is Set<*>            -> o.write()
-        is ByteArray         -> o.write()
-        is ShortArray        -> o.write()
-        is IntArray          -> o.write()
-        is LongArray         -> o.write()
-        is DoubleArray       -> o.write()
-        is FloatArray        -> o.write()
-        is CharArray         -> o.write()
-        is BooleanArray      -> o.write()
-        is Array<*>          -> o.write()
-        is Thread            -> o.write()
-        is Arity             -> o.write()
-        else                 -> o.toString()
+        null                    -> "nil"
+        Unit                    -> "#<void>"
+        is Boolean              -> if (o) "#t" else "#f"
+        is Symbol               -> o.write()
+        is List<*>              -> o.write()
+        is Class<*>             -> o.write()
+        is Pair<*, *>           -> o.write()
+        is MutablePair<*, *>    -> o.write()
+        is Number               -> o.write()
+        is Sequence<*>          -> o.write()
+        is CharSequence         -> o.write()
+        is Char                 -> o.write()
+        is Pattern              -> o.write()
+        is Regex                -> o.write()
+        is Throwable            -> o.write()
+        is Map<*, *>            -> o.write()
+        is Map.Entry<*, *>      -> o.write()
+        is Set<*>               -> o.write()
+        is ByteArray            -> o.write()
+        is ShortArray           -> o.write()
+        is IntArray             -> o.write()
+        is LongArray            -> o.write()
+        is DoubleArray          -> o.write()
+        is FloatArray           -> o.write()
+        is CharArray            -> o.write()
+        is BooleanArray         -> o.write()
+        is Array<*>             -> o.write()
+        is Thread               -> o.write()
+        is AbstractCoroutine<*> -> o.write()
+        is Deferred<*>          -> o.write()
+        is Arity                -> o.write()
+        else                    -> o.toString()
     }
 
     private fun Class<*>.write() = when {
@@ -59,6 +63,20 @@ object Writer {
     private fun Thread.write() = when {
         name.isEmpty() -> "#<thread>"
         else           -> "#<thread:$name>"
+    }
+
+    private fun AbstractCoroutine<*>.write() = when {
+        isCompletedExceptionally -> "#<coroutine!error!>"
+        isActive -> "#<coroutine:active>"
+        isCancelled -> "#<coroutine:cancelled>"
+        else -> "#<coroutine:done>"
+    }
+
+    private fun Deferred<*>.write() = when {
+        isCompletedExceptionally -> "#<deferred!error!${Writer.write(getCompletionExceptionOrNull())}>"
+        isActive -> "#<deferred:active>"
+        isCancelled -> "#<deferred:cancelled>"
+        else -> "#<deferred:done(${Writer.write(getCompleted())})>"
     }
 
     private fun Arity.write() = "#<arity:${javaClass.simpleName}(${toString()})>"

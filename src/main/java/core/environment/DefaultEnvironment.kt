@@ -52,6 +52,9 @@ import core.scm.Symbol
 import core.scm.specialforms.*
 import core.scm.specialforms.SetForm
 import core.scm.specialforms.Swap
+import core.scm.specialforms.coroutines.Async
+import core.scm.specialforms.coroutines.Launch
+import core.scm.specialforms.coroutines.RunBlocking
 import kotlin.math.E
 import kotlin.math.PI
 
@@ -685,6 +688,10 @@ class DefaultEnvironment : Environment(null) {
                 SyntaxForm,
                 Locking,
                 Swap,
+                /* Coroutines */
+                Async,
+                Launch,
+                RunBlocking,
                 // TODO Macros
                 DefineSyntax,
                 LetSyntax,
