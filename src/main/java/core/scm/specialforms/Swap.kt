@@ -24,7 +24,7 @@ object Swap : SpecialForm("swap!") {
                 true  -> listOf(oldVal).plus(form.drop(3).map { evaluator.eval(it, env) })
                 false -> listOf(oldVal)
             }
-            val applyForm  = listOf(apply, fn, listOf(Quote, rest))
+            val applyForm = listOf(apply, fn, Quote.quote(rest))
             val newVal = evaluator.eval(applyForm, env)
             if (box.compareAndSet(oldVal, newVal)) {
                 return newVal
