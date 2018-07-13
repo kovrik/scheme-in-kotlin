@@ -14,7 +14,7 @@ object SetForm : SpecialForm("set!") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) {
         when {
             form.size != 3 -> throw IllegalSyntaxException(toString(), Writer.write(form), "has ${form.size - 1} parts after keyword")
-            form[1] is Symbol -> env.findAndPut(form[1], evaluator.eval(form[2], env))
+            form[1] is Symbol -> env.findAndSet(form[1], evaluator.eval(form[2], env))
             else -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: `${form[1]}`")
         }
     }

@@ -6,6 +6,7 @@ import core.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.Writer
+import core.scm.Type
 
 object Dot : SpecialForm(".") {
 
@@ -17,10 +18,14 @@ object Dot : SpecialForm(".") {
             throw IllegalSyntaxException(toString(), Writer.write(form), "has ${size - 1} parts after keyword")
         }
         // FIXME Optimize and cleanup
-        val first = if (form[1] is Symbol) {
-            env.findOrDefault(form[1], evaluator.eval(form[1], env))
-        } else {
-            evaluator.eval(form[1], env)
+        val first = when (form[1]) {
+            is Symbol -> env.resolve(form[1]).let {
+                when (it) {
+                    is Type.Undefined -> evaluator.eval(form[1], env)
+                    else -> it
+                }
+            }
+            else -> evaluator.eval(form[1], env)
         }
         if (first is Class<*>) {
             val statik = "${form[1]}/${form[2]}"

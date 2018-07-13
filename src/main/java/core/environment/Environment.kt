@@ -1,11 +1,9 @@
 package core.environment
 
 import core.exceptions.UndefinedIdentifierException
+import core.scm.Type
 
 open class Environment : HashMap<Any?, Any?> {
-
-    /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
-    companion object { val UNDEFINED = object : Any() { override fun toString() = "#<undefined>" } }
 
     private val outer: Environment?
 
@@ -17,16 +15,16 @@ open class Environment : HashMap<Any?, Any?> {
         this.outer = outer
     }
 
-    fun findOrDefault(key: Any?, defaultValue: Any?): Any? {
+    fun resolve(key: Any?): Any? {
         var current = this
         while (true) {
             if (current.containsKey(key)) return current[key]
-            if (current.outer == null) return defaultValue
+            if (current.outer == null) return Type.Undefined
             current = current.outer as Environment
         }
     }
 
-    fun findAndPut(key: Any?, value: Any?): Any? {
+    fun findAndSet(key: Any?, value: Any?): Any? {
         var current = this
         while (true) {
             if (current.containsKey(key)) return current.put(key, value)

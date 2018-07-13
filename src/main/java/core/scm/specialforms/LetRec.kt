@@ -5,6 +5,7 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
 import core.Writer
+import core.scm.Type
 
 /* Syntax:
  * (letrec <bindings> <body>)
@@ -29,7 +30,7 @@ object LetRec : SpecialForm("letrec") {
         /* Bind variables to fresh locations holding undefined values */
         bindings.forEach {
             if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-            localEnv[it[0]] = Environment.UNDEFINED
+            localEnv[it[0]] = Type.Undefined
         }
         /* Evaluate inits */
         bindings.forEach {

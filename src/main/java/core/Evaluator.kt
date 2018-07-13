@@ -78,11 +78,11 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate Symbol */
-    private fun Symbol.eval(env: Environment) = env.findOrDefault(this, Environment.UNDEFINED).let {
+    private fun Symbol.eval(env: Environment) = env.resolve(this).let {
         when (it) {
             is SpecialForm -> throw IllegalSyntaxException(it.toString(), Writer.write(this))
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            Environment.UNDEFINED -> when (Character.isJavaIdentifierStart(name[0])) {
+            Type.Undefined -> when (Character.isJavaIdentifierStart(name[0])) {
                 true  -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
                 false -> throw UndefinedIdentifierException(name)
             }
@@ -101,11 +101,11 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             is List<*>, is Map<*, *>, is Vector -> op = eval(op, env)
             is Symbol -> {
                 /* Lookup symbol */
-                op = env.findOrDefault(op, Environment.UNDEFINED)
+                op = env.resolve(op)
                 /* Inline Special Forms and Pure functions
                  * Doesn't help much, so commenting it out for now
                  * if (op is SpecialForm || (op is AFn<*, *> && op.isPure)) { this[0] = op } else */
-                if (op === Environment.UNDEFINED) {
+                if (op === Type.Undefined) {
                     // TODO implement as a macro
                     /* Special case: constructor call If Symbol ends with . */
                     val symbolName = (this[0] as Symbol).name

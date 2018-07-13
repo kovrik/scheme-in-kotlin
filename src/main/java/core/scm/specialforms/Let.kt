@@ -6,6 +6,7 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.scm.Thunk
 import core.Writer
+import core.scm.Type
 
 /* Syntax:
  * (let <bindings> <body>)
@@ -26,13 +27,13 @@ object Let : SpecialForm("let") {
             /* Bind variables to fresh locations holding undefined values */
             bindings.forEach {
                 if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-                localEnv[it[0]] = Environment.UNDEFINED
+                localEnv[it[0]] = Type.Undefined
             }
             /* Evaluate inits */
             bindings.forEach {
                 when {
                     it !is List<*> -> throw IllegalSyntaxException(toString(), Writer.write(form))
-                    localEnv[it[0]] === Environment.UNDEFINED -> localEnv[it[0]] = evaluator.eval(it[1], env)
+                    localEnv[it[0]] === Type.Undefined -> localEnv[it[0]] = evaluator.eval(it[1], env)
                     else -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: ${it[0]}")
                 }
             }
