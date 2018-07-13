@@ -27,13 +27,13 @@ object DynamicWind : SpecialForm("dynamic-wind") {
             throw WrongTypeException(toString(), "Procedure", post)
         }
         /* Evaluate before-thunk first */
-        evaluator.eval(listOf<Any>(pre), env)
+        evaluator.eval(listOf(pre), env)
         try {
             /* Evaluate and return value-thunk */
-            return evaluator.eval(listOf<Any>(value), env)
+            return evaluator.eval(listOf(value), env)
         } finally {
             /* Finally, evaluate post-thunk */
-            evaluator.eval(listOf<Any>(post), env)
+            evaluator.eval(listOf(post), env)
         }
     }
 }
