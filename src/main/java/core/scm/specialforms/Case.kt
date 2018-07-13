@@ -16,7 +16,7 @@ import core.Writer
  */
 object Case : SpecialForm("case") {
 
-    val eqv = Eqv()
+    private val eqv = Eqv()
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         /* Save string representation of form before evaluation */
