@@ -7,16 +7,16 @@ import core.utils.Utils
 object Type {
 
     /* Marker objects */
-    object ProperList
-    object Pair
-    object ExactNonNegativeInteger
-    object Rational
-    object Real
-    object BitOp
-    object BitOpOrBigInt
-    object Seqable
+    internal object ProperList
+    internal object Pair
+    internal object ExactNonNegativeInteger
+    internal object Rational
+    internal object Real
+    internal object BitOp
+    internal object BitOpOrBigInt
+    internal object Seqable
     /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
-    object Undefined { override fun toString() = "#<undefined>" }
+    internal object Undefined { override fun toString() = "#<undefined>" }
 
     private val TYPE_PREDICATES = hashMapOf(
             String::class.java                  to { o: Any? -> o is CharSequence },
