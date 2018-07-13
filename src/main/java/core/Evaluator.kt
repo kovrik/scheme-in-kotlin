@@ -148,9 +148,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate hash map */
-    private fun Map<*, *>.eval(env: Environment) = MutableHashmap<Any?, Any?>(size).apply {
-        this@eval.forEach { k, v -> put(eval(k, env), eval(v, env)) }
-    }
+    private fun Map<*, *>.eval(env: Environment) = entries.associateTo(MutableHashmap()) { eval(it.key, env) to eval(it.value, env) }
 
     /* Evaluate vector */
     private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
