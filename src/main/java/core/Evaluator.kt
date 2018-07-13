@@ -82,10 +82,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         when (it) {
             is SpecialForm -> throw IllegalSyntaxException(it.toString(), Writer.write(this))
             /* Check if it is a Java class. If not found, then assume it is a static field */
-            Type.Undefined -> when (Character.isJavaIdentifierStart(name[0])) {
-                true  -> reflector.getClazzOrNull(name) ?: reflector.evalJavaStaticField(toString())
-                false -> throw UndefinedIdentifierException(name)
-            }
+            Type.Undefined -> evalReflection(name)
             else -> it
         }
     }
@@ -132,6 +129,22 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
         }
+    }
+
+    private fun evalReflection(name: String): Any? {
+        if (Character.isJavaIdentifierStart(name[0])) {
+            val clazz = reflector.getClazzOrNull(name)
+            if (clazz != null) {
+                return clazz
+            }
+            if (name.contains('/')) {
+                val (className, fieldName) = name.split('/').filterNot(String::isEmpty).apply {
+                    if (size < 2) throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
+                }
+                return reflector.evalJavaStaticField(className, fieldName)
+            }
+        }
+        throw UndefinedIdentifierException(name)
     }
 
     /* Evaluate hash map */

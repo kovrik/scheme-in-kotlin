@@ -21,7 +21,7 @@ class Reflector {
 
     private val name: String = "reflector"
 
-    fun getClazz(name: String) = getClazzOrNull(name) ?: throw ClassNotFoundException("${this.name}: class not found: $name")
+    fun getClazz(className: String) = getClazzOrNull(className) ?: throw ClassNotFoundException("$name: class not found: $className")
 
     fun getClazzOrNull(name: String): Class<*>? = try {
         when {
@@ -32,8 +32,8 @@ class Reflector {
         null
     }
 
-    fun newInstance(clazz: String, args: Array<out Any?>): Any {
-        val c = getClazz(clazz)
+    fun newInstance(className: String, args: Array<out Any?>): Any {
+        val c = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
             for (i in args.indices) {
                 set(i, unboxIfPossible(args[i]))
@@ -52,58 +52,53 @@ class Reflector {
                 ctor.newInstance(*newArgs)
             }
         } catch (ex: NoSuchMethodException) {
-            throw NoSuchMethodException("${this.name}: unable to find matching constructor for class ${c.name}")
+            throw NoSuchMethodException("$name: unable to find matching constructor for class ${c.name}")
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("${this.name}: unable to access constructor for class $clazz")
+            throw IllegalAccessException("$name: unable to access constructor for class $className")
         }
     }
 
     /* Java Interop: static fields */
-    fun evalJavaStaticField(s: String): Any? = when {
-        s.contains('/') -> {
-            val classAndField = s.split('/').filterNot(String::isEmpty)
-            if (classAndField.size < 2) {
-                throw IllegalSyntaxException("${this.name}: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
-            }
-            val (className, fieldName) = classAndField
-            try {
-                val c = getClazz(className)
-                val field = c.getField(fieldName)
-                field.isAccessible = true
-                if (!Modifier.isStatic(field.modifiers)) {
-                    throw NoSuchFieldException("${this.name}: unable to find static field $fieldName of $className")
-                }
-                field.get(c)
-            } catch (e: NoSuchFieldException) {
-                throw NoSuchFieldException("${this.name}: unable to find static field $fieldName in class $className")
-            } catch (e: IllegalAccessException) {
-                throw IllegalAccessException("${this.name}: unable to access static field $fieldName in class $className")
-            }
+    fun evalJavaStaticField(className: String, fieldName: String): Any? = try {
+        val c = getClazz(className)
+        val field = c.getField(fieldName)
+        field.isAccessible = true
+        if (!Modifier.isStatic(field.modifiers)) {
+            throw NoSuchFieldException("$name: unable to find static field $fieldName of $className")
         }
-        else -> throw UndefinedIdentifierException(s)
+        field.get(c)
+    } catch (e: NoSuchFieldException) {
+        throw NoSuchFieldException("$name: unable to find static field $fieldName in class $className")
+    } catch (e: IllegalAccessException) {
+        throw IllegalAccessException("$name: unable to access static field $fieldName in class $className")
     }
 
-    fun evalJavaMethod(method: String, args: Array<out Any?>) = when {
-        method.contains('/') -> evalJavaStaticMethod(method, args)
-        args.isEmpty() -> throw IllegalSyntaxException("${this.name}: malformed member expression, expecting (.member target ...)")
-        method.startsWith(".-") -> evalJavaInstanceField(method, instance = args[0]!!)
-        method.startsWith('.') -> evalJavaInstanceMethod(method, instance = args[0]!!, args = args.copyOfRange(1, args.size))
-        else -> throw UndefinedIdentifierException(method)
+    fun evalJavaMethod(methodString: String, args: Array<out Any?>) = when {
+        methodString.contains('/') -> methodString.split('/').filterNot(String::isEmpty).let {
+            when (it.size > 1) {
+                true  -> evalJavaStaticMethod(it[0], it[1], args)
+                false -> throw IllegalSyntaxException("$name: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
+            }
+        }
+        args.isEmpty() -> throw IllegalSyntaxException("$name: malformed member expression, expecting (.member target ...)")
+        methodString.startsWith(".-") -> evalJavaInstanceField(methodString.drop(2), instance = args[0]!!)
+        methodString.startsWith('.')  -> evalJavaInstanceMethod(methodString.drop(1), instance = args[0]!!, args = args.copyOfRange(1, args.size))
+        else -> throw UndefinedIdentifierException(methodString)
     }
 
     /* Returns Pair(method: Method, args: Array<out Any?>) */
-    private fun getMethodAndArgs(clazz: Class<*>, name: String, args: Array<out Any?>, types: Array<Class<*>?>) = try {
-        Pair(clazz.getMethod(name, *types), args)
+    private fun getMethodAndArgs(clazz: Class<*>, methodName: String, args: Array<out Any?>, types: Array<Class<*>?>) = try {
+        Pair(clazz.getMethod(methodName, *types), args)
     } catch (e: NoSuchMethodException) {
         // no exact match found, try to find inexact match
         val (newArgs, newTypes) = downcastArgs(args, types)
         try {
-            Pair(clazz.getMethod(name, *newTypes), newArgs)
+            Pair(clazz.getMethod(methodName, *newTypes), newArgs)
         } catch (ex: NoSuchMethodException) {
             try {
-                Pair(clazz.getMethod(name, *Array(types.size) { Object::class.java }), args)
+                Pair(clazz.getMethod(methodName, *Array(types.size) { Object::class.java }), args)
             } catch (ex2: NoSuchMethodException) {
-                throw NoSuchMethodException("${this.name}: unable to find matching method $name in class ${clazz.name}")
+                throw NoSuchMethodException("$name: unable to find matching method $methodName in class ${clazz.name}")
             }
         }
     }
@@ -129,7 +124,7 @@ class Reflector {
     private fun unboxIfPossible(it: Any?) = it?.let { UNBOXED.getOrDefault(it.javaClass, it.javaClass) }
 
     /* Java Interop: instance method call: (.toString (new Object)) */
-    private fun evalJavaInstanceMethod(methodName: String, instance: Any, args: Array<out Any?>) = methodName.substring(1).let {
+    fun evalJavaInstanceMethod(methodName: String, instance: Any, args: Array<out Any?>): Any? = methodName.let {
         try {
             val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
                 for (i in args.indices) {
@@ -140,35 +135,30 @@ class Reflector {
             method.isAccessible = true
             method(instance, *methodArgs)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("${this.name}: unable to access method $it of ${instance.javaClass.name}")
+            throw IllegalAccessException("$name: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
-                null -> throw RuntimeException("${this.name}: invocation target exception")
+                null -> throw RuntimeException("$name: invocation target exception")
                 else -> throw e.cause as Throwable
             }
         }
     }
 
     /* Java Interop: instance field: (.-x (new java.awt.Point 15 4)) */
-    private fun evalJavaInstanceField(field: String, instance: Any) = field.substring(2).let {
+    private fun evalJavaInstanceField(fieldName: String, instance: Any) = fieldName.let {
         try {
             val f = instance.javaClass.getField(it)
             f?.isAccessible = true
             f?.get(instance)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("${this.name}: unable to access method $it of ${instance.javaClass.name}")
+            throw IllegalAccessException("$name: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: NoSuchFieldException) {
-            throw NoSuchFieldException("${this.name}: unable to find field $it of ${instance.javaClass.name}")
+            throw NoSuchFieldException("$name: unable to find field $it of ${instance.javaClass.name}")
         }
     }
 
     /* Java Interop: static method call */
-    private fun evalJavaStaticMethod(m: String, args: Array<out Any?>): Any? {
-        val classAndMethod = m.split('/').filterNot(String::isEmpty)
-        if (classAndMethod.size < 2) {
-            throw IllegalSyntaxException("${this.name}: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
-        }
-        val (className, methodName) = classAndMethod
+    fun evalJavaStaticMethod(className: String, methodName: String, args: Array<out Any?>): Any? {
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
             for (i in args.indices) {
@@ -177,16 +167,16 @@ class Reflector {
         }
         val (method, methodArgs) = getMethodAndArgs(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
-            throw RuntimeException("${this.name}: unable to find static method $methodName of ${clazz.name}")
+            throw RuntimeException("$name: unable to find static method $methodName of ${clazz.name}")
         }
         return try {
             method.isAccessible = true
             method(null, *methodArgs)
         } catch (e: IllegalAccessException) {
-            throw IllegalAccessException("${this.name}: unable to access static method $methodName of ${clazz.name}")
+            throw IllegalAccessException("$name: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
             when (e.cause) {
-                null -> throw RuntimeException("${this.name}: invocation target exception")
+                null -> throw RuntimeException("$name: invocation target exception")
                 else -> throw e.cause as Throwable
             }
         }
