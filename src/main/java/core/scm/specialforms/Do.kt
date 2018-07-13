@@ -32,7 +32,7 @@ object Do : SpecialForm("do") {
             val (variable, init) = binding
             if (binding.size == 3) {
                 /* Put pair of Var and Step */
-                steps.add(Pair(variable, binding[2]))
+                steps.add(variable to binding[2])
             }
             /* Check that we have no duplicates among variables */
             if (tempEnv.containsKey(variable)) {

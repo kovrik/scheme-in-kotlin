@@ -491,28 +491,28 @@ object Utils {
     /**
      * Up-cast two numbers to the same type
      */
-    fun upcast(f: Number, s: Number): Pair<Number, Number> = when {
-        f.javaClass == s.javaClass   -> Pair(f, s)
-        !isFinite(f) || !isFinite(s) -> Pair(f, s)
+    fun upcast(f: Number, s: Number) = when {
+        f.javaClass == s.javaClass   -> f to s
+        !isFinite(f) || !isFinite(s) -> f to s
         isInexact(f) || isInexact(s) -> when {
-            f is BigComplex || s is BigComplex -> Pair(BigComplex.of(f), BigComplex.of(s))
-            f is BigRatio   || s is BigRatio   -> Pair(f.toDouble(),     s.toDouble())
-            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f),  toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> Pair(toBigDecimal(f),  toBigDecimal(s))
-            f is Double     || s is Double     -> Pair(f.toDouble(),     s.toDouble())
-            f is Float      || s is Float      -> Pair(f.toFloat(),      s.toFloat())
-            else                               -> Pair(f, s)
+            f is BigComplex || s is BigComplex -> BigComplex.of(f) to BigComplex.of(s)
+            f is BigRatio   || s is BigRatio   -> f.toDouble()     to s.toDouble()
+            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
+            f is BigInteger || s is BigInteger -> toBigDecimal(f)  to toBigDecimal(s)
+            f is Double     || s is Double     -> f.toDouble()     to s.toDouble()
+            f is Float      || s is Float      -> f.toFloat( )     to s.toFloat()
+            else                               -> f to s
         }
         else -> when {
-            f is BigComplex || s is BigComplex -> Pair(BigComplex.of(f), BigComplex.of(s))
-            f is BigRatio   || s is BigRatio   -> Pair(toBigRatio(f),    toBigRatio(s))
-            f is BigDecimal || s is BigDecimal -> Pair(toBigDecimal(f),  toBigDecimal(s))
-            f is BigInteger || s is BigInteger -> Pair(toBigInteger(f),  toBigInteger(s))
-            f is Long       || s is Long       -> Pair(f.toLong(),       s.toLong())
-            f is Int        || s is Int        -> Pair(f.toInt(),        s.toInt())
-            f is Short      || s is Short      -> Pair(f.toShort(),      s.toShort())
-            f is Byte       || s is Byte       -> Pair(f.toByte(),       s.toByte())
-            else                               -> Pair(f, s)
+            f is BigComplex || s is BigComplex -> BigComplex.of(f) to BigComplex.of(s)
+            f is BigRatio   || s is BigRatio   -> toBigRatio(f)    to toBigRatio(s)
+            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
+            f is BigInteger || s is BigInteger -> toBigInteger(f)  to toBigInteger(s)
+            f is Long       || s is Long       -> f.toLong()       to s.toLong()
+            f is Int        || s is Int        -> f.toInt()        to s.toInt()
+            f is Short      || s is Short      -> f.toShort()      to s.toShort()
+            f is Byte       || s is Byte       -> f.toByte()       to s.toByte()
+            else                               -> f to s
         }
     }
 }
