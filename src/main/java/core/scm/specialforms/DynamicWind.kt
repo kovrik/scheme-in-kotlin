@@ -10,9 +10,8 @@ import core.Writer
 object DynamicWind : SpecialForm("dynamic-wind") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        val size = form.size
-        if (size != 4) {
-            throw IllegalSyntaxException(toString(), Writer.write(form), "has ${size - 1} parts after keyword")
+        if (form.size != 4) {
+            throw IllegalSyntaxException(toString(), Writer.write(form), "has ${form.size - 1} parts after keyword")
         }
         val pre = evaluator.eval(form[1], env)
         if (pre !is IFn<*, *>) {
