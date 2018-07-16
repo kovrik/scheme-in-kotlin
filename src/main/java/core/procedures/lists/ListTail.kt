@@ -13,22 +13,19 @@ class ListTail : AFn<Any?, Any?>(name = "list-tail", arity = Exactly(2),
     private val cdr = Cdr()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
-        val p = (arg2 as Number).toLong()
-        if (p == 0L) {
+        val p = (arg2 as Number).toInt()
+        if (p == 0) {
             return arg1
         }
         val list = arg1 as? List<*> ?: throw WrongTypeException(name, "List", arg1)
-        if (p >= list.size + 1) {
-            throw IndexOutOfBoundsException("$name: value out of range: $p")
-        }
+        return when {
+            p > list.size -> throw IndexOutOfBoundsException("$name: value out of range: $p")
+            Predicate.isProperList(list) -> list.drop(p)
         /* Cons cell */
-        if (!Predicate.isProperList(list)) {
-            if (p == 1L) {
-                return cdr(list)
-            } else {
-                throw IndexOutOfBoundsException("$name: value out of range: $p")
+            else -> when (p == 1) {
+                true -> cdr(list)
+                false -> throw IndexOutOfBoundsException("$name: value out of range: $p")
             }
         }
-        return list.subList(p.toInt(), list.size)
     }
 }
