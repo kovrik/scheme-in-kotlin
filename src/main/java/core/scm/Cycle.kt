@@ -6,13 +6,7 @@ class Cycle<T> constructor(private val sequence : Sequence<T>) : Sequence<T> {
 
         @Volatile private var iterator = sequence.iterator()
 
-        override fun next(): T {
-            val result = iterator.next()
-            if (!iterator.hasNext()) {
-                iterator = sequence.iterator()
-            }
-            return result
-        }
+        override fun next() = iterator.next().also { if (!iterator.hasNext()) { iterator = sequence.iterator() } }
 
         override fun hasNext() = iterator.hasNext()
     }
