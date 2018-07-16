@@ -10,8 +10,8 @@ class Cdr : AFn<Any?, Any?>(name = "cdr", isPure = true, arity = Exactly(1),
                             mandatoryArgsTypes = arrayOf(Type.Pair::class.java)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
-        is Cons<*>     -> if (Predicate.isProperList(arg)) arg.subList(1, arg.size) else (arg.last() as Any)
+        is Cons<*>     -> if (Predicate.isProperList(arg)) arg.drop(1) else (arg.last() as Any)
         is Pair<*, *>  -> arg.second
-        else           -> (arg as List<*>).subList(1, arg.size)
+        else           -> (arg as List<*>).drop(1)
     }
 }

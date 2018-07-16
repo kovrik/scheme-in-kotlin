@@ -36,7 +36,7 @@ object Define : SpecialForm("define") {
                  * form = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
                  *              |   0   | 1 definition           | 3 body      |
                  */
-                id.subList(1, id.size).forEach {
+                id.forEach {
                     if (!(it is Symbol || Predicate.isPair(it))) {
                         throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                     }

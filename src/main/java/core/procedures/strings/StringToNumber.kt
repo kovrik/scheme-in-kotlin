@@ -29,7 +29,7 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, a
                 radixChar = ch
                 override = true
             }
-            restNumber = restNumber.substring(2)
+            restNumber = restNumber.drop(2)
             continue
         }
         if (restNumber.isEmpty()) {
