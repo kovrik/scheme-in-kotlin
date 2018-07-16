@@ -89,12 +89,10 @@ object Repl {
 
     @Throws(IOException::class)
     private fun error(e: Throwable) = when (e) {
-        is Error -> "Error: ${e.message}"
+        is Error -> e.toString()
         is ExInfoException -> e.toString()
         else -> StringBuilder(e.javaClass.simpleName).apply {
-            e.message?.let {
-                append(": ").append(e.message)
-            }
+            e.message?.let { append(": $it") }
             filterStackTrace(e.stackTrace)?.let {
                 append(" (").append(it.fileName ?: "NO_SOURCE_FILE").append(':').append(it.lineNumber).append(')')
             }
