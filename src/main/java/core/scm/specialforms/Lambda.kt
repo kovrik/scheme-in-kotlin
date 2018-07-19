@@ -25,44 +25,22 @@ object Lambda : SpecialForm("lambda") {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
-        val params: List<Symbol?>
-        val variadic: Boolean
         /* Check if args is a List or not */
         val args = form[1]
-        when (args) {
-            is List<*> -> {
-                variadic = !Predicate.isProperList(args)
-                params = if (variadic) {
-                    /* (lambda (arg-id ...+ . rest-id) body ...+) */
-                    /* args is an improper list, hence variadic lambda */
-                    flatten(args as List<Symbol>)
-                } else {
-                    /* (lambda (arg-id ...+) body ...+) OR */
-                    /* args is a proper list, hence non-variadic lambda */
-                    args as List<Symbol>
-                }
-                /* Validate args */
-                if (!params.isEmpty()) {
-                    val temp = hashSetOf<Symbol>()
-                    params.forEach {
-                        when {
-                            it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
-                            !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
-                        }
-                    }
-                }
+        val variadic = args is Symbol || !Predicate.isProperList(args)
+        val params = when (args) {
+            is List<*> -> when (variadic) {
+                true  -> validateParamsList(flatten(args), form)
+                false -> validateParamsList(args, form)
             }
-            is Symbol -> {
-                /* Variadic arity */
-                /* (lambda rest-id body ...+) */
-                params = listOf(args)
-                variadic = true
-            }
+        /* Variadic arity */
+        /* (lambda rest-id body ...+) */
+            is Symbol -> listOf(args)
             else -> throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)")
         }
         val body = when {
             form.size == 3 -> form[2]!!
-            /* Add implicit `begin` */
+        /* Add implicit `begin` */
             else -> listOf(Begin).plus(form.drop(2))
         }
         val arity = when (variadic) {
@@ -70,6 +48,20 @@ object Lambda : SpecialForm("lambda") {
             false -> Exactly(params.size)
         }
         return Closure(params, body, env, arity)
+    }
+
+    /* Validate args */
+    private fun validateParamsList(list: List<*>, form: List<Any?>): List<Symbol?> {
+        if (!list.isEmpty()) {
+            val temp = hashSetOf<Symbol>()
+            list.forEach {
+                when {
+                    it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                    !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
+                }
+            }
+        }
+        return list as List<Symbol?>
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
