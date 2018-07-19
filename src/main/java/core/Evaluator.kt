@@ -58,7 +58,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     } catch (cc: CalledContinuation) {
         /* We have one-shot continuations only, not full continuations.
          * It means that we can't use the same continuation multiple times. */
-        if (cc.continuation.isInvoked) throw ReentrantContinuationException()
+        if (cc.continuation.invoked) throw ReentrantContinuationException()
         /* Continuation is still valid, rethrow it further (should be caught by callcc)  */
         throw cc
     }

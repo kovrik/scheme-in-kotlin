@@ -2,6 +2,8 @@ package core.scm.specialforms
 
 import core.environment.Environment
 import core.Evaluator
+import core.Writer
+import core.exceptions.IllegalSyntaxException
 import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.scm.CalledContinuation
@@ -11,6 +13,9 @@ object CallCC : SpecialForm("call-with-current-continuation") {
 
     /* Actual call-with-current-continuation */
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+        if (form.size != 2) {
+            throw IllegalSyntaxException(toString(), Writer.write(this))
+        }
         val proc = evaluator.eval(form[1], env)
         if (proc !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", proc)
@@ -28,7 +33,7 @@ object CallCC : SpecialForm("call-with-current-continuation") {
             ex.value
         } finally {
             /* One-shot continuations cannot be used more than once */
-            cont.isInvoked = true
+            cont.invoked = true
         }
     }
 }
