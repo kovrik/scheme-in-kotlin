@@ -4,6 +4,7 @@ import core.Repl
 import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
+import core.exceptions.WrongTypeException
 import core.procedures.io.Display
 import core.procedures.math.Addition
 import core.scm.*
@@ -183,19 +184,29 @@ class SpecialFormTest : AbstractTest() {
 
     @Test
     fun testEvalLambda() {
-        val f1 = "(lambda ())"
         try {
-            eval(f1, env)
+            eval("(lambda ())", env)
             fail()
         } catch (e: IllegalSyntaxException) {
-            assertEquals("lambda: bad syntax in form: " + f1, e.message)
+            assertEquals("lambda: bad syntax in form: (lambda ())", e.message)
         }
-        val f2 = "(lambda 1 2 3 4)"
         try {
-            eval(f2, env)
+            eval("(lambda 1 2 3 4)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
             assertEquals("lambda: bad syntax (bad argument sequence: (1)) in form: (lambda 1 2 3 4)", e.message)
+        }
+        try {
+            eval("(lambda (1 2) 1)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("lambda: bad syntax (not an identifier: 1) in form: (lambda (1 2) 1)", e.message)
+        }
+        try {
+            eval("(lambda (a a) 1)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("lambda: bad syntax (duplicate argument name: a) in form: (lambda (a a) 1)", e.message)
         }
     }
 
@@ -816,6 +827,29 @@ class SpecialFormTest : AbstractTest() {
             eval("(thunk)", env)
             fail()
         } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+    }
+
+    @Test
+    fun testCallCCForm() {
+        assertTrue(eval("(call/cc identity)", env) is Continuation)
+        try {
+            eval("(call/cc)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+        try {
+            eval("(call/cc 1 2)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+        try {
+            eval("(call/cc 1)", env)
+            fail()
+        } catch (e: WrongTypeException) {
             // expected
         }
     }
