@@ -5,6 +5,7 @@ import core.environment.DefaultEnvironment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
 import core.exceptions.WrongTypeException
+import core.procedures.AFn
 import core.procedures.io.Display
 import core.procedures.math.Addition
 import core.scm.*
@@ -853,4 +854,22 @@ class SpecialFormTest : AbstractTest() {
             // expected
         }
     }
+
+    @Test
+    fun testQuoteForm() {
+        assertTrue(eval("(quote identity)", env) is AFn<*, *>)
+        try {
+            eval("(quote)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+        try {
+            eval("(quote 1 2)", env)
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            // expected
+        }
+    }
 }
+
