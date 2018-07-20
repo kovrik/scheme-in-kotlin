@@ -37,7 +37,7 @@ object Define : SpecialForm("define") {
                  *              |   0   | 1 definition           | 3 body      |
                  */
                 id.forEach {
-                    if (!(it is Symbol || Predicate.isPair(it))) {
+                    if (it !is Symbol && !Predicate.isPair(it)) {
                         throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                     }
                 }

@@ -33,20 +33,14 @@ object Lambda : SpecialForm("lambda") {
                 true  -> validateParamsList(flatten(args), form)
                 false -> validateParamsList(args, form)
             }
-        /* Variadic arity */
-        /* (lambda rest-id body ...+) */
+            /* Variadic arity */
+            /* (lambda rest-id body ...+) */
             is Symbol -> listOf(args)
             else -> throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)")
         }
-        val body = when {
-            form.size == 3 -> form[2]!!
-        /* Add implicit `begin` */
-            else -> listOf(Begin).plus(form.drop(2))
-        }
-        val arity = when (variadic) {
-            true  -> AtLeast(0)
-            false -> Exactly(params.size)
-        }
+        /* Get the body and add implicit Begin if multiple body forms */
+        val body  = if (form.size == 3) form[2] else listOf(Begin).plus(form.drop(2))
+        val arity = if (variadic) AtLeast(0) else Exactly(params.size)
         return Closure(params, body, env, arity)
     }
 
@@ -56,21 +50,22 @@ object Lambda : SpecialForm("lambda") {
             val temp = hashSetOf<Symbol>()
             list.forEach {
                 when {
-                    it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: $it")
+                    it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                     !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
                 }
             }
         }
+        @Suppress("UNCHECKED_CAST")
         return list as List<Symbol?>
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
-    private fun <E> flatten(list: List<E>) = mutableListOf<E>().apply {
+    private fun flatten(list: List<*>) = mutableListOf<Any?>().apply {
         val queue = LinkedList(list)
         while (!queue.isEmpty()) {
             val e = queue.remove()
             when (e) {
-                is List<*> -> queue.addAll(e as List<E>)
+                is List<*> -> queue.addAll(e)
                 else -> add(e)
             }
         }
