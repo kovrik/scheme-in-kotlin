@@ -17,7 +17,7 @@ object Dotimes : SpecialForm("dotimes") {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
-        val binding = form[1] as List<*>
+        val binding = form[1] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
         val s = binding[0] as? Symbol ?: throw WrongTypeException(toString(), "Symbol", binding[0])
 
         val limit = evaluator.eval(binding[1], env)
