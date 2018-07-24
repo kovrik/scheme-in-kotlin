@@ -221,7 +221,10 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(Symbol.intern("yes"), eval("(if (> 3 2) 'yes 'no)", env))
         assertEquals(Symbol.intern("no"), eval("(if (> 2 3) 'yes 'no)", env))
         assertEquals(1L, eval("(if (> 3 2)(- 3 2)(+ 3 2))", env))
+        assertEquals(10L, eval("(when #t 10)", env))
         assertEquals(Unit, eval("(when #f 5)", env))
+        assertEquals(null, eval("(when #f)", env))
+        assertEquals(null, eval("(when 5)", env))
         try {
             eval("(if)", env)
             fail()
