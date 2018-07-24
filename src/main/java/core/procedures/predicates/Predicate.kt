@@ -117,7 +117,7 @@ class Predicate private constructor(override val name: String, private inline va
         }
 
         private fun isRealized(o: Any?) = when (o) {
-            is LazySeq -> o.isRealized()
+            is LazySeq -> o.realized
             is java.util.concurrent.Future<*> -> o.isDone
             else -> throw WrongTypeException("realized?", "Delay or Promise or Future or LazySeq", o)
         }

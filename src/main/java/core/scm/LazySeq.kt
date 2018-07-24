@@ -7,9 +7,7 @@ import core.utils.cached
 
 class LazySeq(private val form: List<Any?>, private val env: Environment, private val evaluator: Evaluator) : Sequence<Any?> {
 
-    private var realized = false
-
-    fun isRealized() = realized
+    internal var realized = false
 
     override fun iterator() = seq.cached().iterator()
 
