@@ -12,7 +12,7 @@ class MutableSet<T>(val set: MutableSet<T?>) : AFn<Any?, Any?>(arity = Exactly(1
 
     constructor(coll: Collection<T>) : this(HashSet(coll))
 
-    override fun invoke(arg: Any?) = when (set.contains(arg)) {
+    override fun invoke(arg: Any?) = when (arg in set) {
         true -> arg
         else -> null
     }

@@ -60,8 +60,8 @@ open class Reader {
                 "nul"       to Character.MIN_VALUE)
 
         private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
-        private fun isLineBreak(c: Char) = LINE_BREAKS.contains(c)
-        fun isRadix(c: Char)     = "bodxBODX".contains(c)
+        private fun isLineBreak(c: Char) = c in LINE_BREAKS
+        fun isRadix(c: Char)     = c in "bodxBODX"
         fun isExact(c: Char)     = c == 'e'  || c == 'E'
         fun isInexact(c: Char)   = c == 'i'  || c == 'I'
         fun isExactness(c: Char) = isExact(c) || isInexact(c)
@@ -70,7 +70,7 @@ open class Reader {
     @Throws(IOException::class)
     private fun readUntilDelimiter(delimiters: String = DELIMITERS) = StringBuilder().apply {
         var i = reader.read()
-        while (isValid(i) && !delimiters.contains(i.toChar())) {
+        while (isValid(i) && i.toChar() !in delimiters) {
             append(i.toChar())
             i = reader.read()
         }
@@ -246,7 +246,7 @@ open class Reader {
                         append(readCharacter())
                     }
                     /* Unicode followed by a hexadecimal number */
-                    "uUxX".contains(next) -> {
+                    next in "uUxX" -> {
                         reader.unread(next.toInt())
                         val chr = readCharacter()
                         when (chr) {

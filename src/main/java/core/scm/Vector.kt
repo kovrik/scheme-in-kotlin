@@ -58,7 +58,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
     override val size: Int
         get() = array.size
 
-    override fun contains(element: Any?) = array.contains(element)
+    override fun contains(element: Any?) = element in array
 
     operator fun get(index: Int) = array[index]
 

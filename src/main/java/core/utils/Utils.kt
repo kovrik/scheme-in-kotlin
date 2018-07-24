@@ -60,7 +60,7 @@ object Utils {
     private val multiplication = Multiplication()
 
     /* Check if digit is valid for a number in a specific radix */
-    fun isValidForRadix(c: Char, radix: Int) = RADIX_DIGITS[radix]!!.contains(c)
+    fun isValidForRadix(c: Char, radix: Int) = c in RADIX_DIGITS[radix]!!
 
     /* Coerce to DECIMAL64 context if one of the numbers has non-zero scale */
     fun getMathContext(first: BigDecimal, second: BigDecimal): MathContext = when {
@@ -74,7 +74,7 @@ object Utils {
         /* First check if it is a special number */
         SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
-        if (number.endsWith('i', ignoreCase = true) && (number.contains('+') || number.contains('-'))) {
+        if (number.endsWith('i', ignoreCase = true) && ('+' in number || '-' in number)) {
             return processComplexNumber(number, exactness, radix)
         }
         /* Read exponent mark if present */

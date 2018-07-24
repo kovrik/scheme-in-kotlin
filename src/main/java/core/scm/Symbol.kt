@@ -30,7 +30,7 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
         when {
             name.isEmpty() || Character.isDigit(name[0]) -> true
             name[0] == '#' && (name.length == 1 || name[1] != '%') -> true
-            else -> name.toCharArray().any { Character.isWhitespace(it) || SPECIAL_CHARS.contains(it) }
+            else -> name.toCharArray().any { Character.isWhitespace(it) || it in SPECIAL_CHARS }
         }
     }
 

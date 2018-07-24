@@ -25,7 +25,7 @@ class Reflector {
 
     fun getClazzOrNull(name: String): Class<*>? = try {
         when {
-            name.contains('.') -> Class.forName(name)
+            '.' in name -> Class.forName(name)
             else -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
         }
     } catch (e: ClassNotFoundException) {
@@ -74,7 +74,7 @@ class Reflector {
     }
 
     fun evalJavaMethod(methodString: String, args: Array<out Any?>) = when {
-        methodString.contains('/') -> methodString.split('/').filterNot(String::isEmpty).let {
+        '/' in methodString -> methodString.split('/').filterNot(String::isEmpty).let {
             when (it.size > 1) {
                 true  -> evalJavaStaticMethod(it[0], it[1], args)
                 false -> throw IllegalSyntaxException("$name: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")

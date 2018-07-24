@@ -137,7 +137,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             if (clazz != null) {
                 return clazz
             }
-            if (name.contains('/')) {
+            if ('/' in name) {
                 val (className, fieldName) = name.split('/').filterNot(String::isEmpty).apply {
                     if (size < 2) throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
                 }

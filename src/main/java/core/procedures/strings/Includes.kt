@@ -7,5 +7,5 @@ class Includes : AFn<CharSequence?, Boolean>(name = "includes?", isPure = true, 
                                              mandatoryArgsTypes = arrayOf(CharSequence::class.java,
                                                                           CharSequence::class.java)) {
 
-    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg1!!.contains(arg2!!)
+    override operator fun invoke(arg1: CharSequence?, arg2: CharSequence?) = arg2!! in arg1!!
 }

@@ -51,7 +51,7 @@ object Let : SpecialForm("let") {
             val bindings = form[2] as List<*>
             for (binding in bindings) {
                 val (arg, init) = binding as List<*>
-                if (lambdaArgs.contains(arg)) {
+                if (arg in lambdaArgs) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: $arg")
                 }
                 lambdaArgs.add(arg)
