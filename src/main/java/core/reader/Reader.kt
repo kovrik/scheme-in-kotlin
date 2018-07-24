@@ -218,7 +218,7 @@ open class Reader {
      * Comments are ignored, always return Unit
      */
     @Throws(IOException::class)
-    private fun readComment() = Unit.apply {
+    private fun readComment() = let {
         /* Read everything until line break */
         var i = reader.read()
         while (isValid(i) && !isLineBreak(i.toChar())) { i = reader.read() }
