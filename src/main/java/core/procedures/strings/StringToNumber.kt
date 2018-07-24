@@ -16,13 +16,13 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, a
         /* Read radix and/or exactness and a number */
         var override = false
         var radixChar: Char? = null
-        var exactness: Char? = null
+        var exact: Boolean? = null
         var restNumber = number
         while (restNumber.length > 1 && restNumber[0] == '#') {
             val ch = restNumber[1]
             if (Reader.isExactness(ch)) {
-                exactness?.let { return false }
-                exactness = ch
+                exact?.let { return false }
+                exact = Reader.isExact(ch)
             }
             if (Reader.isRadix(ch)) {
                 radixChar?.let { return false }
@@ -48,7 +48,7 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, a
         }
         /* Read number */
         return try {
-            Utils.preProcessNumber(restNumber, exactness, radix) as? Number ?: false
+            Utils.preProcessNumber(restNumber, exact, radix) as? Number ?: false
         } catch (e: IllegalSyntaxException) {
             false
         }

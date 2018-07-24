@@ -32,10 +32,13 @@ open class Reader {
         private val deref = Deref()
 
         private const val LINE_BREAKS = "\n\r"
-        private const val WHITESPACES = LINE_BREAKS + "\u000B \t"
+        private const val WHITESPACES = "$LINE_BREAKS\u000B \t"
         /* <delimiter> --> <whitespace> | ( | ) | " | ; */
-        private const val DELIMITERS = WHITESPACES + ":;(){}[],\"\u0000\uffff"
+        private const val DELIMITERS = "$WHITESPACES:;(){}[],\"\u0000\uffff"
         private const val DELIMITERS_WITH_SLASH = DELIMITERS + '\\'
+        private const val RADICES = "bodxBODX"
+        private const val EXACT = "eE"
+        private const val INEXACT = "iI"
 
         /* Allowed escape sequences. See: https://docs.oracle.com/javase/tutorial/java/data/characters.html */
         private val ESCAPED = hashMapOf('t'  to '\t',
@@ -61,10 +64,9 @@ open class Reader {
 
         private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
         private fun isLineBreak(c: Char) = c in LINE_BREAKS
-        fun isRadix(c: Char)     = c in "bodxBODX"
-        fun isExact(c: Char)     = c == 'e'  || c == 'E'
-        fun isInexact(c: Char)   = c == 'i'  || c == 'I'
-        fun isExactness(c: Char) = isExact(c) || isInexact(c)
+        fun isRadix(c: Char)     = c in RADICES
+        fun isExact(c: Char)     = c in EXACT
+        fun isExactness(c: Char) = c in EXACT + INEXACT
     }
 
     @Throws(IOException::class)
@@ -156,12 +158,12 @@ open class Reader {
             val number = "#" + c + readUntilDelimiter()
             /* Read radix and/or exactness and a number */
             var radix: Char? = null
-            var exactness: Char? = null
+            var exact: Boolean? = null
             var restNumber = number
             while (restNumber.length > 1 && restNumber[0] == '#') {
                 val ch = restNumber[1]
                 when {
-                    isExactness(ch) -> exactness = exactness?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
+                    isExactness(ch) -> exact = exact?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: isExact(ch)
                     isRadix(ch)     -> radix = radix?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
                 }
                 restNumber = restNumber.drop(2)
@@ -170,7 +172,7 @@ open class Reader {
                 throw IllegalSyntaxException("$name: bad number: $number")
             }
             /* Check if this is a proper number */
-            return preProcessNumber(restNumber, exactness, getRadixByChar(radix)) as? Number ?:
+            return preProcessNumber(restNumber, exact, getRadixByChar(radix)) as? Number ?:
             throw IllegalSyntaxException("$name: bad number: $number")
         }
         /* Bad hash syntax: read token and throw exception */
@@ -308,7 +310,7 @@ open class Reader {
             if (radix == 16 && !isValidForRadix(rest[0], radix)) {
                 throw IllegalSyntaxException("$name: no hex digit following \\${first.toChar()} in string")
             }
-            val codepoint = preProcessNumber(rest, 'e', radix) as? Number ?: throw IllegalSyntaxException("$name: bad character constant: #\\$rest")
+            val codepoint = preProcessNumber(rest, true, radix) as? Number ?: throw IllegalSyntaxException("$name: bad character constant: #\\$rest")
             return codepoint.toChar()
         }
         /* Must be a named char */

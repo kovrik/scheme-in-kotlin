@@ -68,7 +68,7 @@ object Utils {
 
     // FIXME Simplify and cleanup!
     /* Check if string represents a valid number and process it */
-    fun preProcessNumber(number: String, exactness: Char?, radix: Int): Any? {
+    fun preProcessNumber(number: String, exactness: Boolean?, radix: Int): Any? {
         /* First check if it is a special number */
         SPECIAL_NUMBERS[number]?.let { return it }
         /* Check if that is a complex number (ends with `i` or `I`) */
@@ -121,7 +121,7 @@ object Utils {
         }
         val exact = when (exactness) {
             null -> exp == null && !hasHashChar && (hasSlash || isIntegral)
-            else -> Reader.isExact(exactness)
+            else -> exactness
         }
         /* Rational and Integral numbers are exact by default */
         if (hasSlash) {
@@ -131,7 +131,7 @@ object Utils {
         return processNumber(n, radix, exact, exp)
     }
 
-    private fun processComplexNumber(number: String, exactness: Char?, radix: Int): Any? {
+    private fun processComplexNumber(number: String, exactness: Boolean?, radix: Int): Any? {
         /* Assume that we have a complex number and try to parse it */
         val p = maxOf(number.lastIndexOf('+'), number.lastIndexOf('-'))
         val r = number.take(p)
