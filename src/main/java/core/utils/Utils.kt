@@ -41,9 +41,7 @@ object Utils {
                                           'd' to 10, 'D' to 10,
                                           'x' to 16, 'X' to 16)
 
-    private val BIG_DECIMAL_RADICES = HashMap<Int, BigDecimal>().apply {
-        (Character.MIN_RADIX..Character.MAX_RADIX).forEach { put(it, it.toBigDecimal()) }
-    }
+    private val BIG_DECIMAL_RADICES = (Character.MIN_RADIX..Character.MAX_RADIX).associateBy({ it }, { it.toBigDecimal() })
 
     fun getRadixByChar(radixChar: Char?) = NAMED_RADICES[radixChar] ?: 10
 
