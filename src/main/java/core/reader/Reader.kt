@@ -150,7 +150,7 @@ open class Reader {
         } else if (c == 'f' || c == 'F') {
             return false
         } else if (c == '"') {
-            return readRegex()
+            return readPattern()
         } else if (c == '\'') {
             return readSyntax()
         } else if (isRadix(c) || isExactness(c)) {
@@ -269,21 +269,18 @@ open class Reader {
     }.toString().intern()
 
     @Throws(IOException::class)
-    private fun readRegex(): Pattern {
-        val regex = StringBuilder().apply {
-            var i = reader.read()
-            var c = i.toChar()
-            while (isValid(i) && c != '"') {
-                append(c)
-                if (c == '\\') {
-                    append(reader.read().toChar())
-                }
-                i = reader.read()
-                c = i.toChar()
+    private fun readPattern() = StringBuilder().apply {
+        var i = reader.read()
+        var c = i.toChar()
+        while (isValid(i) && c != '"') {
+            append(c)
+            if (c == '\\') {
+                append(reader.read().toChar())
             }
-        }.toString()
-        return Pattern.compile(regex)
-    }
+            i = reader.read()
+            c = i.toChar()
+        }
+    }.toString().toPattern()
 
     /**
      * Read a Character
