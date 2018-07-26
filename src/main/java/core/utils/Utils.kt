@@ -437,13 +437,14 @@ object Utils {
      */
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
-    fun isSeqable(obj: Any?) = obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
+    fun isSeqable(obj: Any?) = obj === Unit ||  obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
                                obj is Pair<*, *> || obj is MutablePair<*, *> || obj is Map<*, *> || obj is Map.Entry<*, *> ||
                                obj.javaClass.isArray
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc<*, *>
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
+        Unit                 -> emptyList<Any?>().asSequence()
         null                 -> emptyList<Any?>().asSequence()
         is Sequence<*>       -> obj
         is Iterable<*>       -> obj.asSequence()
