@@ -28,9 +28,9 @@ class Symbol (override val name: String, private val meta: Map<*, *>? = null) : 
     /* Check if Symbol has Special Characters and needs to be escaped */
     internal val escape: Boolean by lazy {
         when {
-            name.isEmpty() || Character.isDigit(name[0]) -> true
+            name.isEmpty() || name[0].isDigit() -> true
             name[0] == '#' && (name.length == 1 || name[1] != '%') -> true
-            else -> name.toCharArray().any { Character.isWhitespace(it) || it in SPECIAL_CHARS }
+            else -> name.toCharArray().any { it.isWhitespace() || it in SPECIAL_CHARS }
         }
     }
 

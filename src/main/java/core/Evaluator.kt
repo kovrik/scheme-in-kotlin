@@ -132,7 +132,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     private fun evalReflection(name: String): Any? {
-        if (Character.isJavaIdentifierStart(name[0])) {
+        if (name[0].isJavaIdentifierStart()) {
             val clazz = reflector.getClazzOrNull(name)
             if (clazz != null) {
                 return clazz

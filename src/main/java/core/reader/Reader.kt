@@ -95,7 +95,7 @@ open class Reader {
         val i = reader.read()
         var c = i.toChar()
         /* Skip whitespaces until line break */
-        while (isValid(c.toInt()) && Character.isWhitespace(c) && !isLineBreak(c)) { c = reader.read().toChar() }
+        while (isValid(c.toInt()) && c.isWhitespace() && !isLineBreak(c)) { c = reader.read().toChar() }
         /* Check if there is anything to read */
         if (!isValid(c.toInt()) || isLineBreak(c)) {
             return Unit
@@ -178,7 +178,7 @@ open class Reader {
         /* Bad hash syntax: read token and throw exception */
         StringBuilder("#").let {
             if (isValid(c.toInt())) { it.append(c) }
-            if (!Character.isWhitespace(c)) { it.append(readUntilDelimiter()) }
+            if (!c.isWhitespace()) { it.append(readUntilDelimiter()) }
             throw IllegalSyntaxException("$name: bad syntax: $it")
         }
     }
@@ -256,7 +256,7 @@ open class Reader {
                             else -> append(chr)
                         }
                     }
-                    !Character.isAlphabetic(next.toInt()) -> append(next)
+                    !next.isLetter() -> append(next)
                     else -> throw IllegalSyntaxException("$name: unknown escape sequence \\$next in string")
                 }
             } else {
@@ -298,7 +298,7 @@ open class Reader {
         /* Check if it is a codepoint */
         var radix = 16
         var isCodepoint = first.toChar() == 'u' || first.toChar() == 'U'
-        if (Character.isDigit(first.toChar())) {
+        if (first.toChar().isDigit()) {
             radix = 8
             rest = first.toChar() + rest
             isCodepoint = true
@@ -327,12 +327,12 @@ open class Reader {
         var i = reader.read()
         var c = i.toChar()
         /* Skip whitespaces */
-        while (Character.isWhitespace(c)) { c = reader.read().toChar() }
+        while (c.isWhitespace()) { c = reader.read().toChar() }
         if (c == terminator) return emptyList<Nothing>()
         val list = mutableListOf<Any?>()
         while (isValid(i) && c != terminator) {
             /* Skip whitespaces */
-            while (Character.isWhitespace(c)) { c = reader.read().toChar() }
+            while (c.isWhitespace()) { c = reader.read().toChar() }
             if (c == terminator) break
             reader.unread(c.toInt())
             val token = read()
@@ -404,7 +404,7 @@ open class Reader {
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c) || c == ',') {
+            while (c.isWhitespace() || c == ',') {
                 c = reader.read().toChar()
             }
             if (c == '}') break
@@ -413,7 +413,7 @@ open class Reader {
 
             /* Skip whitespaces and commas */
             c = reader.read().toChar()
-            while (Character.isWhitespace(c) || c == ',') {
+            while (c.isWhitespace() || c == ',') {
                 c = reader.read().toChar()
             }
             if (c == '}') throw IllegalSyntaxException("$name: map literal must contain an even number of forms")
@@ -437,7 +437,7 @@ open class Reader {
         var c = i.toChar()
         while (isValid(i) && c != '}') {
             /* Skip whitespaces and commas */
-            while (Character.isWhitespace(c) || c == ',') {
+            while (c.isWhitespace() || c == ',') {
                 c = reader.read().toChar()
             }
             if (c == '}') break
@@ -446,7 +446,7 @@ open class Reader {
             val e = nextToken()
             i = reader.read()
             c = i.toChar()
-            while (Character.isWhitespace(c) || c == ',') {
+            while (c.isWhitespace() || c == ',') {
                 c = reader.read().toChar()
             }
             if (!set.add(e)) throw IllegalArgumentException("duplicate key: ${Writer.write(e)}")
