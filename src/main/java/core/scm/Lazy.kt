@@ -16,10 +16,12 @@ class Lazy(private val expr: Any?, private val env: Environment, private val eva
         !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
         else -> try {
             /* Always run delay in the current thread */
-            var value = evaluator.eval(expr, env)
-            /* If result is a Delay, then force it */
-            if (value is Delay) {
-                value = value.deref()
+            val value = evaluator.eval(expr, env).let {
+                /* If result is a Delay, then force it */
+                when (it) {
+                    is Delay -> it.deref()
+                    else -> it
+                }
             }
             complete(value)
             get()
