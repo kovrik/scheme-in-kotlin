@@ -16,20 +16,17 @@ import core.Writer
  */
 object Cond : SpecialForm("cond") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
-        for (i in 1 until form.size) {
-            val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form), "invalid clause in subform")
-            val clause = subform[0]
-            if (Else.symbol == clause) {
-                if (i != form.size - 1) {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = (1 until form.size).forEach {
+        val subform = form[it] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form), "invalid clause in subform")
+        val clause = subform[0]
+        when {
+            Else.symbol == clause -> {
+                if (it != form.size - 1) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "else must be the last clause in subform")
                 }
                 return Begin.eval(subform, env, evaluator)
             }
-            if (Utils.toBoolean(evaluator.eval(clause, env))) {
-                return Begin.eval(subform, env, evaluator)
-            }
+            Utils.toBoolean(evaluator.eval(clause, env)) -> return Begin.eval(subform, env, evaluator)
         }
-        return Unit
     }
 }
