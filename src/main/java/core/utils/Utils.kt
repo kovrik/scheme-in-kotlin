@@ -95,14 +95,12 @@ object Utils {
         var isIntegral = true
         var hasHashChar = false
         var hasSlash = false
-        var i = -1
-        for (c in n) {
-            i += 1
+        for ((index, c) in n.withIndex()) {
             when (c) {
                 /* Multiple decimal points are not allowed*/
                 '.'  -> if (isIntegral) isIntegral = false else return Symbol.intern(number)
-                '+'  -> if (i != 0) return Symbol.intern(number)
-                '-'  -> if (i != 0) return Symbol.intern(number)
+                '+'  -> if (index != 0) return Symbol.intern(number)
+                '-'  -> if (index != 0) return Symbol.intern(number)
                 '#'  -> hasHashChar = true
                 /* Check if it is a rational number and if it is valid */
                 '/'  -> if (!hasSlash && isIntegral) hasSlash = true else return Symbol.intern(number)
