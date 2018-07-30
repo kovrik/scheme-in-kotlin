@@ -14,7 +14,7 @@ class ReFind : AFn<Any?, Any?>(name = "re-find", isPure = true, arity = Range(1,
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1 -> {
             val matcher = args[0] as? Matcher ?: throw WrongTypeException(name, Matcher::class.java, args[0])
-            if (matcher.find()) reGroups(args[0]) else null
+            if (matcher.find()) reGroups(matcher) else null
         }
         else -> {
             val pattern = args[0] as? Pattern ?: throw WrongTypeException(name, Pattern::class.java, args[0])
