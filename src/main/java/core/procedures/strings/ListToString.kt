@@ -10,10 +10,8 @@ class ListToString : AFn<List<*>?, String>(name = "list->string", isPure = true,
 
     override operator fun invoke(arg: List<*>?) = when {
         arg!!.isEmpty() -> ""
-        else -> StringBuilder(arg.size).apply {
-            for (c in arg) {
-                append(c as? Char ?: throw WrongTypeException(name, "Character", c))
-            }
-        }.toString()
+        else -> arg.joinToString(separator = "") {
+            (it as? Char)?.toString() ?: throw WrongTypeException(name, "Character", it)
+        }
     }
 }
