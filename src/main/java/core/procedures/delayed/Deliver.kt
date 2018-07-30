@@ -9,10 +9,5 @@ import java.util.concurrent.CompletableFuture
 class Deliver : AFn<Any?, CompletableFuture<Any>?>(name = "deliver", arity = Exactly(2),
                                                    mandatoryArgsTypes = arrayOf(Promise::class.java, Any::class.java)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Promise? = (arg1!! as Promise).apply {
-        when {
-            isDone || isCompletedExceptionally -> return null
-            else -> complete(arg2)
-        }
-    }
+    override operator fun invoke(arg1: Any?, arg2: Any?): Promise? = (arg1!! as Promise).apply { complete(arg2) }
 }
