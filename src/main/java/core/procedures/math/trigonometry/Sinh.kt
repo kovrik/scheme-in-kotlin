@@ -3,7 +3,6 @@ package core.procedures.math.trigonometry
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
 import core.scm.BigComplex
-import core.scm.BigRatio
 import core.utils.Utils
 
 import kotlin.math.cos
@@ -26,12 +25,14 @@ class Sinh : AFn<Number?, Number>(name = "sinh", isPure = true, arity = Exactly(
             val x = c.re.toDouble()
             val y = c.im.toDouble()
             val re = sinh(x) * cos(y)
-            val im = cosh(x) * sin(y)
-            return when {
-                !re.isFinite() -> Double.NaN
-                !im.isFinite() -> Double.NaN
-                else -> BigComplex(re, im)
+            if (!re.isFinite()) {
+                return Double.NaN
             }
+            val im = cosh(x) * sin(y)
+            if (!im.isFinite()) {
+                return Double.NaN
+            }
+            return BigComplex(re, im)
         }
     }
 }

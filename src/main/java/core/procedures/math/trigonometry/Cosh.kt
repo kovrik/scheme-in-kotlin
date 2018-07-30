@@ -25,12 +25,14 @@ class Cosh : AFn<Number?, Number>(name = "cosh", isPure = true, arity = Exactly(
             val x = c.re.toDouble()
             val y = c.im.toDouble()
             val re = cosh(x) * cos(y)
-            val im = sinh(x) * sin(y)
-            return when {
-                !re.isFinite() -> Double.NaN
-                !im.isFinite() -> Double.NaN
-                else -> BigComplex(re, im)
+            if (!re.isFinite()) {
+                return Double.NaN
             }
+            val im = sinh(x) * sin(y)
+            if (!im.isFinite()) {
+                return Double.NaN
+            }
+            return BigComplex(re, im)
         }
     }
 }
