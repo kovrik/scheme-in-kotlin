@@ -10,6 +10,8 @@ package core.scm
  */
 class MutableString(val string: StringBuilder) : CharSequence by string, Appendable by string {
 
+    constructor() : this(StringBuilder())
+
     constructor(string: String) : this(StringBuilder(string))
 
     constructor(length: Int) : this(StringBuilder(length))
