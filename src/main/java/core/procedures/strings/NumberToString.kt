@@ -18,12 +18,10 @@ class NumberToString : AFn<Any?, String>(name = "number->string", isPure = true,
                 throw IllegalArgumentException("$name: bad radix (must be from 2 to 36 inclusive): $o1")
             }
         }
-        val radix = if (o1 != null) (o1 as Number).toInt() else 10
-        if (Utils.isInexact(number)) {
-            if (radix != 10) {
-                throw IllegalArgumentException("$name: inexact numbers can only be printed in base 10")
+        val radix = ((args.getOrElse(1) { 10 } as Number).toInt()).apply {
+            if (this !in Character.MIN_RADIX..Character.MAX_RADIX) {
+                throw IllegalArgumentException("$name: bad radix (must be from 2 to 36 inclusive): $this")
             }
-            return number.toString()
         }
         if (number is BigDecimal) {
             return when {
