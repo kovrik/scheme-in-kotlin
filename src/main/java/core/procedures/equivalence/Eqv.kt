@@ -6,7 +6,7 @@ import core.procedures.Arity.AtLeast
 class Eqv : AFn<Any?, Boolean>(name = "eqv?", isPure = true, arity = AtLeast(2)) {
 
     fun eqv(first: Any?, second: Any?) = when {
-        first is List<*> && first.isEmpty() && second is List<*> && second.isEmpty() -> true
+        first is Collection<*> && first.isEmpty() && second is Collection<*> && second.isEmpty() -> true
         first is Char && second is Char -> first == second
         first is Number && second is Number -> first == second
         else -> first === second
