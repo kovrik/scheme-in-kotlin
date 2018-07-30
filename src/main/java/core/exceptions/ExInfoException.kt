@@ -2,17 +2,7 @@ package core.exceptions
 
 import core.Writer
 
-class ExInfoException : RuntimeException {
-
-    val info: Map<*, *>
-
-    constructor(message: String, info: Map<*, *>) : super(message) {
-        this.info = info
-    }
-
-    constructor(message: String, info: Map<*, *>, cause: Throwable) : super(message, cause) {
-        this.info = info
-    }
+class ExInfoException(message: String, val info: Map<*, *>, cause: Throwable?) : RuntimeException(message, cause) {
 
     @Synchronized override fun fillInStackTrace() = null
 
