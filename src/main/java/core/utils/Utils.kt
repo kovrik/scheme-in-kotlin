@@ -96,7 +96,7 @@ object Utils {
         var hasHashChar = false
         var hasSlash = false
         var i = -1
-        for (c in n.toCharArray()) {
+        for (c in n) {
             i += 1
             when (c) {
                 /* Multiple decimal points are not allowed*/
