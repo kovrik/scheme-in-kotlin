@@ -21,7 +21,7 @@ sealed class Arity {
 
     data class OneOf(val arities: List<Arity>) : Arity() {
         override fun check(size: Int) = arities.any { it.check(size) }
-        override fun toString() = arities.joinToString(separator = " or ", transform = { it.toString() })
+        override fun toString() = arities.joinToString(separator = " or ", transform = Arity::toString)
     }
 }
 

@@ -96,14 +96,14 @@ class Predicate private constructor(override val name: String, private inline va
         val IS_LONGS = Predicate("longs?") { it is LongArray }
         val IS_SHORTS = Predicate("shorts?") { it is ShortArray }
         val IS_OBJECTS = Predicate("objects?") { it is Array<*> }
-        val IS_VOID = Predicate("void?") { it is Unit }
+        val IS_VOID = Predicate("void?") { it === Unit }
         val IS_THREAD = Predicate("thread?") { it is Thread }
         val IS_THREAD_RUNNING = Predicate("thread-running?") { Type.assertType("thread-running?", it, Thread::class.java) && (it as Thread).isAlive }
         val IS_THREAD_DEAD = Predicate("thread-dead?") { Type.assertType("thread-dead?", it, Thread::class.java) && !(it as Thread).isAlive }
         val IS_SYNTAX = Predicate("syntax?") { it is Syntax }
         val IS_SEQUENCE = Predicate("sequence?") { it is Sequence<*> }
-        val IS_SEQ = Predicate("seq?") { Utils.isSeqable(it) }
-        val IS_SEQABLE = Predicate("seqable?") { Utils.isSeqable(it) }
+        val IS_SEQ = Predicate("seq?", Utils::isSeqable)
+        val IS_SEQABLE = Predicate("seqable?", Utils::isSeqable)
         val IS_ARITY = Predicate("arity?") { it is Arity }
 
         private fun isMutable(o: Any?) = !isImmutable(o)
