@@ -45,12 +45,12 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
             val L = r.add(BigDecimal.ONE).multiply(r.add(BigDecimal.ONE)).add(b2).sqrt(context)
             val R = r.subtract(BigDecimal.ONE).multiply(r.subtract(BigDecimal.ONE)).add(b2).sqrt(context)
             val A = L.subtract(R).divide(Utils.TWO)
-            val B = L.add(R).divide(Utils.TWO)
 
             val re = asin(A.toDouble())
             if (!Utils.isFinite(re)) {
                 return re
             }
+            val B = L.add(R).divide(Utils.TWO)
             val im = ln(B.add(B.multiply(B).subtract(BigDecimal.ONE).sqrt(context)).toDouble())
             if (!Utils.isFinite(im)) {
                 return im
@@ -70,12 +70,12 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
             val L = sqrt((1 + a) * (1 + a) + b2)
             val R = sqrt((1 - a) * (1 - a) + b2)
             val A = (L - R) / 2
-            val B = (L + R) / 2
 
             val re = asin(A)
             if (!Utils.isFinite(re)) {
                 return re
             }
+            val B = (L + R) / 2
             val im = ln(B + sqrt(B * B - 1))
             if (!Utils.isFinite(im)) {
                 return im
