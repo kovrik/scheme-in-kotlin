@@ -35,7 +35,7 @@ object Case : SpecialForm("case") {
                     }
                     return Begin.eval(subform, env, evaluator)
                 }
-                is List<*> -> datum.firstOrNull { eqv.eqv(key, it) }?.let { return Begin.eval(subform, env, evaluator) }
+                is List<*> -> datum.firstOrNull { eqv(key, it) }?.let { return Begin.eval(subform, env, evaluator) }
                 else       -> throw IllegalSyntaxException(toString(), exprString, "invalid clause in subform")
             }
         }
