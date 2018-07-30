@@ -25,6 +25,7 @@ import core.procedures.functional.ForEach
 import core.procedures.functional.MapProc
 import core.procedures.functional.VoidProc
 import core.procedures.collections.*
+import core.procedures.exceptions.ErrorProc
 import core.procedures.hashmaps.*
 import core.procedures.interop.*
 import core.procedures.io.*

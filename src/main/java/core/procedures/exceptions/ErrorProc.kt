@@ -1,4 +1,4 @@
-package core.procedures.system
+package core.procedures.exceptions
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
