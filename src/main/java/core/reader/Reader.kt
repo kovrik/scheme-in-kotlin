@@ -375,7 +375,7 @@ open class Reader {
     private fun readVectorMutable(terminator: Char) = readList(false, terminator).let {
         when {
             it.isEmpty() -> MutableVector.EMPTY
-            else -> MutableVector(it.toTypedArray())
+            else -> MutableVector(it)
         }
     }
 
@@ -388,7 +388,7 @@ open class Reader {
     private fun readVectorImmutable(terminator: Char) = readList(false, terminator).let {
         when {
             it.isEmpty() -> Vector.EMPTY
-            else -> Vector(it.toTypedArray())
+            else -> Vector(it)
         }
     }
 

@@ -8,7 +8,7 @@ import core.scm.MutableVector
 class Vec : AFn<Any?, MutableVector>(name = "vec", isPure = true, arity = Exactly(1)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
-        is Collection<*> -> MutableVector(arg.toTypedArray())
+        is Collection<*> -> MutableVector(arg)
         is CharSequence -> MutableVector(arg.length, null).apply {
             for (i in 0 until arg.length) {
                 this[i] = arg[i]
