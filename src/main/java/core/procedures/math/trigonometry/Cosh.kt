@@ -26,11 +26,11 @@ class Cosh : AFn<Number?, Number>(name = "cosh", isPure = true, arity = Exactly(
             val y = c.im.toDouble()
             val re = cosh(x) * cos(y)
             if (!re.isFinite()) {
-                return Double.NaN
+                return re
             }
             val im = sinh(x) * sin(y)
             if (!im.isFinite()) {
-                return Double.NaN
+                return im
             }
             return BigComplex(re, im)
         }

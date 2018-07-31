@@ -26,11 +26,11 @@ class Sinh : AFn<Number?, Number>(name = "sinh", isPure = true, arity = Exactly(
             val y = c.im.toDouble()
             val re = sinh(x) * cos(y)
             if (!re.isFinite()) {
-                return Double.NaN
+                return re
             }
             val im = cosh(x) * sin(y)
             if (!im.isFinite()) {
-                return Double.NaN
+                return im
             }
             return BigComplex(re, im)
         }
