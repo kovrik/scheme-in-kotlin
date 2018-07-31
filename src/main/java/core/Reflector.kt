@@ -41,15 +41,11 @@ class Reflector {
         }
         try {
             return try {
-                val ctor = c.getConstructor(*argTypes)
-                ctor.isAccessible = true
-                ctor.newInstance(*args)
+                c.getConstructor(*argTypes).apply { isAccessible = true }.newInstance(*args)
             } catch (e: NoSuchMethodException) {
                 // no exact match found, try to find inexact match
                 val (newArgs, newTypes) = downcastArgs(args, argTypes)
-                val ctor = c.getConstructor(*newTypes)
-                ctor.isAccessible = true
-                ctor.newInstance(*newArgs)
+                c.getConstructor(*newTypes).apply { isAccessible = true }.newInstance(*newArgs)
             }
         } catch (ex: NoSuchMethodException) {
             throw NoSuchMethodException("$name: unable to find matching constructor for class ${c.name}")
@@ -61,12 +57,12 @@ class Reflector {
     /* Java Interop: static fields */
     fun evalJavaStaticField(className: String, fieldName: String): Any? = try {
         val c = getClazz(className)
-        val field = c.getField(fieldName)
-        field.isAccessible = true
-        if (!Modifier.isStatic(field.modifiers)) {
-            throw NoSuchFieldException("$name: unable to find static field $fieldName of $className")
-        }
-        field.get(c)
+        c.getField(fieldName).apply {
+            isAccessible = true
+            if (!Modifier.isStatic(modifiers)) {
+                throw NoSuchFieldException("$name: unable to find static field $fieldName of $className")
+            }
+        }.get(c)
     } catch (e: NoSuchFieldException) {
         throw NoSuchFieldException("$name: unable to find static field $fieldName in class $className")
     } catch (e: IllegalAccessException) {
@@ -132,8 +128,7 @@ class Reflector {
                 }
             }
             val (method, methodArgs) = getMethodAndArgs(instance.javaClass, it, args, argTypes)
-            method.isAccessible = true
-            method(instance, *methodArgs)
+            method.apply { isAccessible = true }(instance, *methodArgs)
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("$name: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: InvocationTargetException) {
@@ -147,9 +142,7 @@ class Reflector {
     /* Java Interop: instance field: (.-x (new java.awt.Point 15 4)) */
     private fun evalJavaInstanceField(fieldName: String, instance: Any) = fieldName.let {
         try {
-            val f = instance.javaClass.getField(it)
-            f?.isAccessible = true
-            f?.get(instance)
+            instance.javaClass.getField(it).apply { isAccessible = true }.get(instance)
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("$name: unable to access method $it of ${instance.javaClass.name}")
         } catch (e: NoSuchFieldException) {
@@ -170,8 +163,7 @@ class Reflector {
             throw RuntimeException("$name: unable to find static method $methodName of ${clazz.name}")
         }
         return try {
-            method.isAccessible = true
-            method(null, *methodArgs)
+            method.apply { isAccessible = true }(null, *methodArgs)
         } catch (e: IllegalAccessException) {
             throw IllegalAccessException("$name: unable to access static method $methodName of ${clazz.name}")
         } catch (e: InvocationTargetException) {
