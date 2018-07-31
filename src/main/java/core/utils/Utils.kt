@@ -155,7 +155,7 @@ object Utils {
     // TODO Check & optimize
     /* Parse string into a number */
     private fun processNumber(number: String, r: Int, exact: Boolean, exp: Long?): Number? {
-        var result: Number
+        val result: Number
         val dotPos = number.indexOf('.')
         if (dotPos < 0) {
             result = try {
@@ -187,19 +187,13 @@ object Utils {
                 }
             }
         }
-        if (exp != null) {
-            if (exp > 999999) {
-                return if (isPositive(result)) Double.POSITIVE_INFINITY else Double.NEGATIVE_INFINITY
-            } else if (exp < -999) {
-                return if (isPositive(result)) 0.0 else -0.0
-            }
-            if (r == 10 && !exact) {
-                return (result.toString() + "E" + exp).toDouble()
-            } else {
-                result = multiplication(result, expt(r.toLong(), exp))
-            }
+        return when {
+            exp == null -> processExactness(result, exact)
+            exp > 999999 -> if (isPositive(result)) Double.POSITIVE_INFINITY else Double.NEGATIVE_INFINITY
+            exp < -999 -> if (isPositive(result)) 0.0 else -0.0
+            r == 10 && !exact -> "${result}E$exp".toDouble()
+            else -> processExactness(multiplication(result, expt(r.toLong(), exp)), exact)
         }
-        return processExactness(result, exact)
     }
 
     private fun processExactness(number: Number?, exact: Boolean) = when {
