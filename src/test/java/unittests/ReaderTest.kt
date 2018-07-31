@@ -6,6 +6,7 @@ import core.scm.BigComplex
 import core.scm.BigRatio
 import core.scm.Keyword
 import core.scm.MutableVector
+import core.scm.Symbol
 import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
 import org.junit.Assert.*
@@ -106,6 +107,7 @@ class ReaderTest : AbstractTest() {
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
         assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
         assertEquals(BigComplex(BigDecimal("255.0"), BigDecimal("2987.9375")), reader.readOne("#x#iFf+BaB.fI"))
+        assertTrue(reader.readOne("1+2i+2i") is Symbol)
     }
 
     @Test
