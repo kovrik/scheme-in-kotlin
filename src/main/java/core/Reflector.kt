@@ -35,9 +35,7 @@ class Reflector {
     fun newInstance(className: String, args: Array<out Any?>): Any {
         val c = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
-            for (i in args.indices) {
-                set(i, unboxIfPossible(args[i]))
-            }
+            args.forEachIndexed { index, arg -> set(index, unboxIfPossible(arg)) }
         }
         try {
             return try {
@@ -123,9 +121,7 @@ class Reflector {
     fun evalJavaInstanceMethod(methodName: String, instance: Any, args: Array<out Any?>): Any? = methodName.let {
         try {
             val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
-                for (i in args.indices) {
-                    set(i, unboxIfPossible(args[i]))
-                }
+                args.forEachIndexed { index, arg -> set(index, unboxIfPossible(arg)) }
             }
             val (method, methodArgs) = getMethodAndArgs(instance.javaClass, it, args, argTypes)
             method.apply { isAccessible = true }(instance, *methodArgs)
@@ -154,9 +150,7 @@ class Reflector {
     fun evalJavaStaticMethod(className: String, methodName: String, args: Array<out Any?>): Any? {
         val clazz = getClazz(className)
         val argTypes = arrayOfNulls<Class<*>>(args.size).apply {
-            for (i in args.indices) {
-                set(i, unboxIfPossible(args[i]))
-            }
+            args.forEachIndexed { index, arg -> set(index, unboxIfPossible(arg)) }
         }
         val (method, methodArgs) = getMethodAndArgs(clazz, methodName, args, argTypes)
         if (!Modifier.isStatic(method.modifiers)) {
