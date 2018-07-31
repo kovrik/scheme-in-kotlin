@@ -80,7 +80,7 @@ object Utils {
         val exponentMarksRegex = if (radix == 16) EXPONENT16_MARKS_REGEX else EXPONENT_MARKS_REGEX
         var exp: Long? = null
         var n = number
-        if (exponentRegex.matches(number)) {
+        if (exponentRegex matches number) {
             val split = number.split(exponentMarksRegex).dropLastWhile(String::isEmpty)
             n = split[0]
             exp = try {
@@ -111,7 +111,7 @@ object Utils {
             return Symbol.intern(number)
         }
         if (hasHashChar) {
-            if (HASH_REGEX.matches(n)) {
+            if (HASH_REGEX matches n) {
                 n = n.replace('#', '0')
             } else {
                 return Symbol.intern(number)
