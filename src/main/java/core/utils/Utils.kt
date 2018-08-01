@@ -6,7 +6,6 @@ import core.procedures.math.Expt
 import core.procedures.math.Multiplication
 import core.procedures.math.ToExact
 import core.procedures.math.ToInexact
-import core.reader.Reader
 import core.scm.*
 import core.Writer
 import java.math.BigDecimal

@@ -34,7 +34,6 @@ open class Reader {
         private const val WHITESPACES = "$LINE_BREAKS\u000B \t"
         /* <delimiter> --> <whitespace> | ( | ) | " | ; */
         private const val DELIMITERS = "$WHITESPACES:;(){}[],\"\u0000\uffff"
-        private const val DELIMITERS_WITH_SLASH = DELIMITERS + '\\'
         private const val RADICES = "bodxBODX"
         private const val EXACT = "eE"
         private const val INEXACT = "iI"
@@ -61,7 +60,7 @@ open class Reader {
                 "null"      to Character.MIN_VALUE,
                 "nul"       to Character.MIN_VALUE)
 
-        private fun isValid(i: Int) = (i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt())
+        private fun isValid(i: Int) = i > Character.MIN_VALUE.toInt() && i < Character.MAX_VALUE.toInt()
         private fun isLineBreak(c: Char) = c in LINE_BREAKS
         fun isRadix(c: Char)     = c in RADICES
         fun isExact(c: Char)     = c in EXACT
@@ -290,7 +289,7 @@ open class Reader {
     @Throws(IOException::class)
     private fun readCharacter(): Char {
         val first = reader.read()
-        var rest = readUntilDelimiter(DELIMITERS_WITH_SLASH)
+        var rest = readUntilDelimiter(DELIMITERS + '\\')
         if (rest.isEmpty()) {
             return first.toChar()
         }
