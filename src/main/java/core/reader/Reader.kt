@@ -129,55 +129,49 @@ open class Reader {
     }
 
     @Throws(IOException::class)
-    private fun readHash(): Any {
-        val c = reader.read().toChar()
-        if (c == '(') {
+    private fun readHash() = reader.read().toChar().let {
+        when {
             /* Read Quoted Immutable Vector #(...) */
-            return readVectorImmutable(')').let {
+            it == '(' -> readVectorImmutable(')').let {
                 when {
                     it.isEmpty() -> it
                     else -> Quote.quote(it)
                 }
             }
-        } else if (c == '{') {
-            return readSet()
-        } else if (c == '\\') {
-            return readCharacter()
-        } else if (c == 't' || c == 'T') {
-            return true
-        } else if (c == 'f' || c == 'F') {
-            return false
-        } else if (c == '"') {
-            return readPattern()
-        } else if (c == '\'') {
-            return readSyntax()
-        } else if (isRadix(c) || isExactness(c)) {
-            /* Read identifier, not a number */
-            val number = "#" + c + readUntilDelimiter()
-            /* Read radix and/or exactness and a number */
-            var radix: Char? = null
-            var exact: Boolean? = null
-            var restNumber = number
-            while (restNumber.length > 1 && restNumber[0] == '#') {
-                val ch = restNumber[1]
-                when {
-                    isExactness(ch) -> exact = exact?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: isExact(ch)
-                    isRadix(ch)     -> radix = radix?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
+            it == '{' -> readSet()
+            it == '\\' -> readCharacter()
+            it == 't' || it == 'T' -> true
+            it == 'f' || it == 'F' -> false
+            it == '"' -> readPattern()
+            it == '\'' -> readSyntax()
+            isRadix(it) || isExactness(it) -> {
+                /* Read identifier, not a number */
+                val number = "#" + it + readUntilDelimiter()
+                /* Read radix and/or exactness and a number */
+                var radix: Char? = null
+                var exact: Boolean? = null
+                var restNumber = number
+                while (restNumber.length > 1 && restNumber[0] == '#') {
+                    val ch = restNumber[1]
+                    when {
+                        isExactness(ch) -> exact = exact?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: isExact(ch)
+                        isRadix(ch) -> radix = radix?.let { throw IllegalSyntaxException("$name: bad number: $number") } ?: ch
+                    }
+                    restNumber = restNumber.drop(2)
                 }
-                restNumber = restNumber.drop(2)
+                if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
+                    throw IllegalSyntaxException("$name: bad number: $number")
+                }
+                /* Check if this is a proper number */
+                preProcessNumber(restNumber, exact, getRadixByChar(radix)) as? Number
+                ?: throw IllegalSyntaxException("$name: bad number: $number")
             }
-            if (restNumber.isEmpty() || "+" == restNumber || "-" == restNumber) {
-                throw IllegalSyntaxException("$name: bad number: $number")
+            /* Bad hash syntax: read token and throw exception */
+            else -> StringBuilder("#").apply {
+                if (isValid(it.toInt())) { append(it) }
+                if (!it.isWhitespace()) { append(readUntilDelimiter()) }
+                throw IllegalSyntaxException("$name: bad syntax: $this")
             }
-            /* Check if this is a proper number */
-            return preProcessNumber(restNumber, exact, getRadixByChar(radix)) as? Number ?:
-            throw IllegalSyntaxException("$name: bad number: $number")
-        }
-        /* Bad hash syntax: read token and throw exception */
-        StringBuilder("#").let {
-            if (isValid(c.toInt())) { it.append(c) }
-            if (!c.isWhitespace()) { it.append(readUntilDelimiter()) }
-            throw IllegalSyntaxException("$name: bad syntax: $it")
         }
     }
 
