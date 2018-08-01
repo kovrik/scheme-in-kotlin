@@ -108,11 +108,16 @@ class Predicate private constructor(override val name: String, private inline va
 
         private fun isMutable(o: Any?) = !isImmutable(o)
 
-        private fun isImmutable(o: Any?) = when {
-            Pair::class.java    == o?.javaClass -> true
-            Vector::class.java  == o?.javaClass -> true
-            String::class.java  == o?.javaClass -> true
-            Hashmap::class.java == o?.javaClass -> true
+        private fun isImmutable(o: Any?) = when (o) {
+            is MutableHashmap<*, *> -> false
+            is MutablePair<*, *> -> false
+            is MutableSet<*> -> false
+            is MutableVector -> false
+            is MutableString -> false
+            is Pair<*, *> -> true
+            is Vector -> true
+            is String -> true
+            is Hashmap<*, *> -> true
             else -> false
         }
 
