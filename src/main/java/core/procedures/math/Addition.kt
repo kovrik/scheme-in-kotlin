@@ -4,6 +4,7 @@ import core.procedures.AFn
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -23,8 +24,8 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
             Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> Double.NaN
             !Utils.isFinite(f)                 -> f
             !Utils.isFinite(s)                 -> s
-            Utils.isZero(f)                    -> Utils.inexactnessTaint(s, f)
-            Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
+            Utils.isZero(f)                    -> f taint s
+            Utils.isZero(s)                    -> s taint f
             f is BigComplex && s is BigComplex -> f + s
             f is BigRatio   && s is BigRatio   -> f + s
             f is BigDecimal && s is BigDecimal -> f + s

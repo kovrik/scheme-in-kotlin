@@ -5,6 +5,7 @@ import core.procedures.predicates.Predicate
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 import core.Writer
 import core.procedures.Arity.Exactly
 import java.math.BigDecimal
@@ -46,7 +47,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
             return Double.NaN
         }
         if (Utils.isZero(base) && Utils.isZero(exponent)) {
-            return Utils.inexactnessTaint(1L, exponent)
+            return exponent taint 1L
         }
         if (Utils.isZero(base) && Utils.isFinite(exponent)) {
             if (base == -0.0) {
@@ -62,10 +63,10 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
             return if (Utils.isNegative(exponent))
                 Double.POSITIVE_INFINITY
             else
-                Utils.inexactnessTaint(0L, base)
+                base taint 0L
         }
         if (Utils.isOne(base)) {
-            return Utils.inexactnessTaint(base, exponent)
+            return exponent taint base
         }
         if (Utils.isZero(exponent)) {
             return 1L

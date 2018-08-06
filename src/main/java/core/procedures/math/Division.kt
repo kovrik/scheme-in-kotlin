@@ -5,6 +5,7 @@ import core.procedures.Arity.AtLeast
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 import java.math.BigDecimal
 
 class Division : AFn<Any?, Number?>(name = "/", isPure = true, arity = AtLeast(1), restArgsType = Number::class.java) {
@@ -20,7 +21,7 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, arity = AtLeast(1
             Utils.isZero(d)  && Utils.isExact(d) -> throw ArithmeticException("Division by zero")
             Utils.isPositiveInfinity(d)          ->  0.0
             Utils.isNegativeInfinity(d)          -> -0.0
-            Utils.isZero(n)  && Utils.isExact(n) -> Utils.inexactnessTaint(n, d)
+            Utils.isZero(n)  && Utils.isExact(n) -> d taint n
             n is BigComplex  && d is BigComplex  -> n / d
             n is BigRatio    && d is BigRatio    -> n / d
             n is BigDecimal  && d is BigDecimal  -> n.divide(d)

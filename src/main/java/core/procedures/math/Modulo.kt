@@ -3,6 +3,7 @@ package core.procedures.math
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
 import core.utils.Utils
+import core.utils.Utils.taint
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -36,7 +37,7 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, arity = E
     private operator fun invoke(first: Number, second: Number): Number? {
         val (f, s) = Utils.upcast(first, second)
         when {
-            Utils.isZero(f)                    -> return Utils.inexactnessTaint(f, s)
+            Utils.isZero(f)                    -> return s taint f
             f is BigDecimal && s is BigDecimal -> return invoke(f, s)
             f is BigInteger && s is BigInteger -> return invoke(f, s)
         }

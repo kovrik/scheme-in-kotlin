@@ -4,6 +4,7 @@ import core.procedures.AFn
 import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 import kotlin.math.exp
 
 class Exp : AFn<Number?, Number>(name = "exp", isPure = true, arity = Exactly(1),
@@ -14,7 +15,7 @@ class Exp : AFn<Number?, Number>(name = "exp", isPure = true, arity = Exactly(1)
     private val expt = Expt()
 
     override operator fun invoke(arg: Number?) = when {
-        Utils.isZero(arg) -> Utils.inexactnessTaint(1L, arg)
+        Utils.isZero(arg) -> arg!! taint 1L
         arg is Double || arg is Float -> when {
             Utils.isNegativeInfinity(arg) -> 0L
             !Utils.isFinite(arg)          -> arg

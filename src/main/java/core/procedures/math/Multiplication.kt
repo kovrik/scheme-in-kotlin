@@ -4,6 +4,7 @@ import core.procedures.AFn
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -21,15 +22,15 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
         return when {
             Utils.isZero(f) -> when {
                 !Utils.isFinite(s) && Utils.isInexact(f) -> Double.NaN
-                else -> Utils.inexactnessTaint(f, s)
+                else -> s taint f
             }
             Utils.isZero(s) -> when {
                 !Utils.isFinite(f) && Utils.isInexact(s) -> Double.NaN
-                else -> Utils.inexactnessTaint(s, f)
+                else -> f taint s
             }
             else -> when {
-                Utils.isOne(f) -> Utils.inexactnessTaint(s, f)
-                Utils.isOne(s) -> Utils.inexactnessTaint(f, s)
+                Utils.isOne(f) -> f taint s
+                Utils.isOne(s) -> s taint f
                 f is BigComplex && s is BigComplex -> f * s
                 f is BigRatio   && s is BigRatio   -> f * s
                 f is BigDecimal && s is BigDecimal -> f * s

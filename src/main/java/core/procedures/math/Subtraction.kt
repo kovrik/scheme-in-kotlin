@@ -5,6 +5,7 @@ import core.procedures.Arity.AtLeast
 import core.scm.BigComplex
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
 
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -42,7 +43,7 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, arity = AtLeas
             Utils.isPositiveInfinity(s) && Utils.isNegativeInfinity(f) -> Double.NaN
             !Utils.isFinite(f)                 -> f
             !Utils.isFinite(s)                 -> s
-            Utils.isZero(s)                    -> Utils.inexactnessTaint(f, s)
+            Utils.isZero(s)                    -> s taint f
             f is BigComplex && s is BigComplex -> f - s
             f is BigRatio   && s is BigRatio   -> f - s
             f is BigDecimal && s is BigDecimal -> f - s

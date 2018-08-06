@@ -4,6 +4,8 @@ import core.procedures.AFn
 import core.procedures.Arity.Exactly
 import core.scm.BigRatio
 import core.utils.Utils
+import core.utils.Utils.taint
+
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -15,7 +17,7 @@ class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, arity 
         val (f, s) = Utils.upcast(arg1!!, arg2!!)
         return when {
             Utils.isZero(s) -> throw ArithmeticException("$name: undefined for 0")
-            Utils.isZero(f) -> Utils.inexactnessTaint(f, s)
+            Utils.isZero(f) -> s taint f
             f is BigRatio && s is BigRatio -> f % s
             f is BigDecimal && s is BigDecimal -> f % s
             f is BigInteger && s is BigInteger -> f % s
