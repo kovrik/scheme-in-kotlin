@@ -15,6 +15,6 @@ class CallWithInputFile : AFn<Any?, Any>(name = "call-with-input-file", arity = 
     /* (try (proc in) (finally (close-input-port in)))*/
     override operator fun invoke(arg1: Any?, arg2: Any?) = InputPort(FileInputStream(arg1!!.toString())).let {
         Thunk(listOf(Try, listOf(arg2, it),
-              listOf(Try.FINALLY, listOf(CloseInputPort(), it))))
+              listOf(Try.Finally, listOf(CloseInputPort(), it))))
     }
 }

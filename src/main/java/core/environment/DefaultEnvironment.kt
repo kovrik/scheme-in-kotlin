@@ -683,6 +683,8 @@ class DefaultEnvironment : Environment(null) {
                 Dot,
                 Throw,
                 Try,
+                Try.Catch,
+                Try.Finally,
                 DynamicWind,
                 CallCC,
                 ThunkForm,

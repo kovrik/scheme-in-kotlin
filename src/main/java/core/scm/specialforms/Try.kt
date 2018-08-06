@@ -3,13 +3,23 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.Reflector
+import core.Writer
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 
 object Try : SpecialForm("try") {
 
-    private  val CATCH = Symbol.intern("catch")
-    internal val FINALLY = Symbol.intern("finally")
+    object Catch : SpecialForm("catch") {
+        override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
+            throw IllegalSyntaxException(toString(), Writer.write(form), "not allowed as an expression")
+        }
+    }
+
+    object Finally : SpecialForm("finally") {
+        override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
+            throw IllegalSyntaxException(toString(), Writer.write(form), "not allowed as an expression")
+        }
+    }
 
     private val reflector = Reflector()
 
@@ -26,8 +36,8 @@ object Try : SpecialForm("try") {
         for (i in 1 until form.size) {
             val expr = form[i]
             if (expr is List<*> && !expr.isEmpty()) {
-                val op = expr[0]
-                if (op == FINALLY) {
+                val op = env.resolve(expr.first())
+                if (op == Finally) {
                     if (i != form.size - 1) {
                         throw IllegalSyntaxException("$name: finally clause must be last in try expression")
                     }
@@ -35,9 +45,9 @@ object Try : SpecialForm("try") {
                         fin = listOf(Begin).plus(expr.drop(1))
                     }
                     continue
-                } else if (op == CATCH) {
+                } else if (op === Catch) {
                     if (expr.size < 3) {
-                        throw IllegalSyntaxException("$CATCH: bad syntax in form: $expr")
+                        throw IllegalSyntaxException("$Catch: bad syntax in form: $expr")
                     }
                     hadCatch = true
                     if (catches.isEmpty()) {
@@ -50,7 +60,7 @@ object Try : SpecialForm("try") {
                     }
                     catches[clazz] = catchExpr
                     val sym = expr[2] as? Symbol ?:
-                              throw IllegalSyntaxException("$CATCH: bad binding form, expected Symbol, actual: ${expr[2]}")
+                              throw IllegalSyntaxException("$Catch: bad binding form, expected Symbol, actual: ${expr[2]}")
                     catchBindings[clazz] = sym
                     continue
                 }

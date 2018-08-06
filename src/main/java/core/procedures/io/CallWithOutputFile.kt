@@ -15,6 +15,6 @@ class CallWithOutputFile : AFn<Any?, Any>(name = "call-with-output-file", arity 
     /* (try (proc out) (finally (close-output-port out)))*/
     override operator fun invoke(arg1: Any?, arg2: Any?) = OutputPort(FileOutputStream(arg1!!.toString())).let {
         Thunk(listOf(Try, listOf(arg2, it),
-              listOf(Try.FINALLY, listOf(CloseOutputPort(), it))))
+              listOf(Try.Finally, listOf(CloseOutputPort(), it))))
     }
 }
