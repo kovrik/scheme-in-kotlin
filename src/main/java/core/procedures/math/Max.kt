@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.AtLeast
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 
@@ -24,7 +24,7 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, arity = AtLeast(1),
         f is Long       && s is Long       -> max(f, s)
         f is Float      && s is Float      -> max(f, s)
         f is Double     && s is Double     -> max(f, s)
-        f is BigRatio   && s is BigRatio   -> maxOf(f, s)
+        f is Ratio   && s is Ratio   -> maxOf(f, s)
         f is BigInteger && s is BigInteger -> maxOf(f, s)
         f is BigDecimal && s is BigDecimal -> maxOf(f, s)
         f is BigDecimal && s is Number     -> maxOf(f, Utils.toBigDecimal(s))

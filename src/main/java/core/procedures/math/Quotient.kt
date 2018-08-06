@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 
@@ -35,7 +35,7 @@ open class Quotient : AFn<Any?, Number?>(name = "quotient", isPure = true, arity
             f is Float      && s is Float  && Utils.isInteger(f) && Utils.isInteger(s) -> (f.toLong() / s.toLong()).toDouble()
             f is Double     && s is Double     -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
             f is Float      && s is Float      -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
-            f is BigRatio   && s is BigRatio   -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
+            f is Ratio   && s is Ratio   -> invoke(Utils.toBigDecimal(f), Utils.toBigDecimal(s))
             else                               -> f.toLong() / s.toLong()
         }
     }

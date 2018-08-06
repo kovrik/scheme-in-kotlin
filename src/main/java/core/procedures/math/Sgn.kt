@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -18,7 +18,7 @@ class Sgn : AFn<Number?, Number>(name = "sgn", isPure = true, arity = Exactly(1)
         is Float      -> arg.sign
         is BigInteger -> arg.signum()
         is BigDecimal -> arg.signum()
-        is BigRatio   -> arg.signum()
+        is Ratio   -> arg.signum()
         else          -> arg!!.toLong().sign
     }
 }

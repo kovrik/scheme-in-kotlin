@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 
@@ -51,7 +51,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
 
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
 
-        private fun gcd(first: BigRatio, second: BigRatio) = BigRatio.valueOf(first.numerator.gcd(second.numerator),
+        private fun gcd(first: Ratio, second: Ratio) = Ratio.valueOf(first.numerator.gcd(second.numerator),
                                                                               lcm.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
@@ -59,7 +59,7 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
             return when {
                 f is Double     && s is Double     -> gcd(f, s)
                 f is Float      && s is Float      -> gcd(f.toDouble(), s.toDouble())
-                f is BigRatio   && s is BigRatio   -> gcd(f, s)
+                f is Ratio   && s is Ratio   -> gcd(f, s)
                 f is BigDecimal && s is BigDecimal -> gcd(f, s)
                 f is BigInteger && s is BigInteger -> gcd(f, s)
                 else                               -> gcd(f.toLong(), s.toLong())

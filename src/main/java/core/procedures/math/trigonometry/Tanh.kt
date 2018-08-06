@@ -2,7 +2,7 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigComplex
+import core.scm.Complex
 import core.utils.Utils
 
 class Tanh : AFn<Number?, Number>(name = "tanh", isPure = true, arity = Exactly(1),
@@ -10,11 +10,11 @@ class Tanh : AFn<Number?, Number>(name = "tanh", isPure = true, arity = Exactly(
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 0L
-        arg is BigComplex -> tanh(arg)
+        arg is Complex -> tanh(arg)
         else              -> kotlin.math.tanh(arg!!.toDouble())
     }
 
-    private fun tanh(c: BigComplex): Number {
+    private fun tanh(c: Complex): Number {
         val sinh = Sinh.sinh(c)
         if (!Utils.isFinite(sinh)) {
             return sinh
@@ -23,6 +23,6 @@ class Tanh : AFn<Number?, Number>(name = "tanh", isPure = true, arity = Exactly(
         if (!Utils.isFinite(cosh)) {
             return cosh
         }
-        return (sinh as BigComplex) / cosh
+        return (sinh as Complex) / cosh
     }
 }

@@ -2,8 +2,8 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.AtLeast
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 
@@ -23,7 +23,7 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, arity = AtLeas
             args[0] is Double -> -(args[0] as Double)
             args[0] is BigDecimal -> -(args[0] as BigDecimal)
             args[0] is BigInteger -> -(args[0] as BigInteger)
-            args[0] is BigRatio -> -(args[0] as BigRatio)
+            args[0] is Ratio -> -(args[0] as Ratio)
             args[0] is Float -> -(args[0] as Float)
             args[0] is Int -> try {
                 Math.negateExact(args[0] as Int) as Number
@@ -44,8 +44,8 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, arity = AtLeas
             !Utils.isFinite(f)                 -> f
             !Utils.isFinite(s)                 -> s
             Utils.isZero(s)                    -> s taint f
-            f is BigComplex && s is BigComplex -> f - s
-            f is BigRatio   && s is BigRatio   -> f - s
+            f is Complex && s is Complex -> f - s
+            f is Ratio   && s is Ratio   -> f - s
             f is BigDecimal && s is BigDecimal -> f - s
             f is BigInteger && s is BigInteger -> f - s
             f is Double     && s is Double     -> f - s

@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 
 import java.math.BigDecimal
@@ -25,7 +25,7 @@ class Truncate : AFn<Number?, Number>(name = "truncate", isPure = true, arity = 
                 else -> result
             }
         }
-        is BigRatio -> arg.truncate()
+        is Ratio -> arg.truncate()
         else -> arg!!
     }
 }

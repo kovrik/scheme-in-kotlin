@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 
@@ -14,9 +14,9 @@ class Numerator : AFn<Number?, Number>(name = "numerator", isPure = true, arity 
     override operator fun invoke(arg: Number?) = numerator(arg!!)
 
     private fun numerator(o: Any): Number {
-        val isIntegerOrRatio = o is BigRatio || Utils.isInteger(o)
+        val isIntegerOrRatio = o is Ratio || Utils.isInteger(o)
         val exact: Number = if (isIntegerOrRatio) (o as Number) else toExact(o as Number)
-        if (exact is BigRatio) {
+        if (exact is Ratio) {
             if (!isIntegerOrRatio) {
                 return exact.numerator.toBigDecimal().setScale(1, Utils.ROUNDING_MODE)
             }

@@ -4,7 +4,6 @@ import core.environment.Environment
 import core.scm.*
 import core.scm.specialforms.If
 import core.Writer
-import core.procedures.Arity.AtLeast
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import java.math.BigDecimal
@@ -178,11 +177,11 @@ class WriterTest {
         assertEquals("-1.0", Writer.write(-1.0f))
         assertEquals("10", Writer.write(BigDecimal.TEN))
         assertEquals("10", Writer.write(BigInteger.TEN))
-        assertEquals("0", Writer.write(BigRatio.ZERO))
-        assertEquals("1", Writer.write(BigRatio.ONE))
-        assertEquals("1/2", Writer.write(BigRatio.valueOf("4", "8")))
-        assertEquals("-1/2", Writer.write(BigRatio.valueOf("-4", "8")))
-        assertEquals("0+1i", Writer.write(BigComplex.I))
-        assertEquals("-1+0i", Writer.write(BigComplex.I.times(BigComplex.I)))
+        assertEquals("0", Writer.write(Ratio.ZERO))
+        assertEquals("1", Writer.write(Ratio.ONE))
+        assertEquals("1/2", Writer.write(Ratio.valueOf("4", "8")))
+        assertEquals("-1/2", Writer.write(Ratio.valueOf("-4", "8")))
+        assertEquals("0+1i", Writer.write(Complex.I))
+        assertEquals("-1+0i", Writer.write(Complex.I.times(Complex.I)))
     }
 }

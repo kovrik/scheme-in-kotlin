@@ -148,7 +148,7 @@ object Utils {
         if (!isReal(im)) {
             return Symbol.intern(number)
         }
-        return if (isZero(re) && isZero(im)) 0L else BigComplex(toBigDecimal(re as Number), toBigDecimal(im as Number))
+        return if (isZero(re) && isZero(im)) 0L else Complex(toBigDecimal(re as Number), toBigDecimal(im as Number))
     }
 
     // TODO Check & optimize
@@ -207,7 +207,7 @@ object Utils {
                 is Double -> {
                     val bigDecimal = number.toBigDecimal()
                     val scale = bigDecimal.scale()
-                    BigRatio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
+                    Ratio.valueOf(bigDecimal.movePointRight(scale).toBigInteger(), BigInteger.TEN.pow(scale))
                 }
                 else -> toExact(number)
             }
@@ -218,7 +218,7 @@ object Utils {
     /* Parse string into a rational number */
     private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean, exp: Long?): Number? {
 
-        var number: Number? = BigRatio.valueOf(processNumber(numerator, r, true, null).toString(),
+        var number: Number? = Ratio.valueOf(processNumber(numerator, r, true, null).toString(),
                                                processNumber(denominator, r, true, null).toString())
         exp?.let { number = multiplication(number, expt(r, exp)) }
         return when {
@@ -232,8 +232,8 @@ object Utils {
         is Long       -> number.toBigDecimal()
         is BigInteger -> number.toBigDecimal()
         is Double     -> number.toBigDecimal()
-        is BigRatio   -> number.toBigDecimal()
-        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+        is Ratio   -> number.toBigDecimal()
+        is Complex -> throw UnsupportedOperationException("undefined for complex!")
         else          -> number.toString().toBigDecimal()
     }
 
@@ -241,20 +241,20 @@ object Utils {
         is BigInteger -> number
         is Long       -> number.toBigInteger()
         is Double     -> number.toLong().toBigInteger()
-        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
+        is Complex -> throw UnsupportedOperationException("undefined for complex!")
         else          -> number.toString().toBigInteger()
     }
 
     private fun toBigRatio(number: Number) = when (number) {
-        is BigRatio   -> number
-        is BigInteger -> BigRatio.valueOf(toBigInteger(number), BigInteger.ONE)
-        is BigComplex -> throw UnsupportedOperationException("undefined for complex!")
-        else          -> BigRatio.valueOf(number.toString(), "1")
+        is Ratio   -> number
+        is BigInteger -> Ratio.valueOf(toBigInteger(number), BigInteger.ONE)
+        is Complex -> throw UnsupportedOperationException("undefined for complex!")
+        else          -> Ratio.valueOf(number.toString(), "1")
     }
 
     fun isRational(o: Any?) = when (o) {
         !is Number     -> false
-        is BigComplex  -> false
+        is Complex  -> false
         is Double      -> o.isFinite()
         is Float       -> o.isFinite()
         else           -> true
@@ -262,9 +262,9 @@ object Utils {
 
     fun isExact(o: Any?): Boolean = when (o) {
         null          -> false
-        is Long, is BigRatio, is Int, is BigInteger, is Short, is Byte -> true
+        is Long, is Ratio, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal -> o.scale() == 0
-        is BigComplex -> isExact(o.re) && isExact(o.im)
+        is Complex -> isExact(o.re) && isExact(o.im)
         else          -> false
     }
 
@@ -274,7 +274,7 @@ object Utils {
         null           -> false
         is Long, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
-        is BigRatio    -> o.isDenominatorEqualToOne
+        is Ratio    -> o.isDenominatorEqualToOne
         is Double      -> o == floor(o) && o.isFinite()
         is Float       -> o == floor(o) && o.isFinite()
         else           -> false
@@ -286,7 +286,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == 0
         is Double     -> o.sign == 0.0
-        is BigRatio   -> o.signum() == 0
+        is Ratio   -> o.signum() == 0
         is BigDecimal -> o.signum() == 0
         is Int        -> o.sign == 0
         is Short      -> o.toInt().sign == 0
@@ -300,7 +300,7 @@ object Utils {
         null          -> false
         is Long       -> o == 1L
         is Double     -> o == 1
-        is BigRatio   -> o.isOne
+        is Ratio   -> o.isOne
         is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
         is Int        -> o == 1
         is Short      -> o.toInt() == 1
@@ -314,7 +314,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == 1
         is Double     -> o.sign == 1.0
-        is BigRatio   -> o.signum() == 1
+        is Ratio   -> o.signum() == 1
         is BigDecimal -> o.signum() == 1
         is Int        -> o.sign == 1
         is Short      -> o.toInt().sign == 1
@@ -328,7 +328,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == -1
         is Double     -> o.sign == -1.0
-        is BigRatio   -> o.signum() == -1
+        is Ratio   -> o.signum() == -1
         is BigDecimal -> o.signum() == -1
         is Int        -> o.sign == -1
         is Short      -> o.toInt().sign == -1
@@ -340,7 +340,7 @@ object Utils {
 
     fun isExactNonNegativeInteger(o: Any?) = isExact(o) && isInteger(o) && !isNegative(o)
 
-    fun isReal(o: Any?) = o is Number && o !is BigComplex
+    fun isReal(o: Any?) = o is Number && o !is Complex
 
     fun isFinite(number: Number?) = when (number) {
         is Double -> number.isFinite()
@@ -369,7 +369,7 @@ object Utils {
     }
 
     fun downcastNumber(number: Number) = when {
-        number is BigRatio && number.isDenominatorEqualToOne -> number.numerator.tryDowncast()
+        number is Ratio && number.isDenominatorEqualToOne -> number.numerator.tryDowncast()
         number is BigDecimal -> number.tryDowncast()
         number is BigInteger -> number.tryDowncast()
         else                 -> number
@@ -485,8 +485,8 @@ object Utils {
         f.javaClass == s.javaClass   -> f to s
         !isFinite(f) || !isFinite(s) -> f to s
         isInexact(f) || isInexact(s) -> when {
-            f is BigComplex || s is BigComplex -> BigComplex.of(f) to BigComplex.of(s)
-            f is BigRatio   || s is BigRatio   -> f.toDouble()     to s.toDouble()
+            f is Complex || s is Complex -> Complex.of(f) to Complex.of(s)
+            f is Ratio   || s is Ratio   -> f.toDouble()     to s.toDouble()
             f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
             f is BigInteger || s is BigInteger -> toBigDecimal(f)  to toBigDecimal(s)
             f is Double     || s is Double     -> f.toDouble()     to s.toDouble()
@@ -494,8 +494,8 @@ object Utils {
             else                               -> f to s
         }
         else -> when {
-            f is BigComplex || s is BigComplex -> BigComplex.of(f) to BigComplex.of(s)
-            f is BigRatio   || s is BigRatio   -> toBigRatio(f)    to toBigRatio(s)
+            f is Complex || s is Complex -> Complex.of(f) to Complex.of(s)
+            f is Ratio   || s is Ratio   -> toBigRatio(f)    to toBigRatio(s)
             f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
             f is BigInteger || s is BigInteger -> toBigInteger(f)  to toBigInteger(s)
             f is Long       || s is Long       -> f.toLong()       to s.toLong()

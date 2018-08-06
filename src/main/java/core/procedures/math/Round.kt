@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 
 import java.math.BigDecimal
@@ -17,7 +17,7 @@ class Round : AFn<Number?, Number>(name = "round", isPure = true, arity = Exactl
     private fun round(number: Number) = when (number) {
         is Long, is Int, is Short, is Byte, is BigInteger -> number
         is BigDecimal -> number.setScale(0, RoundingMode.HALF_EVEN).setScale(1)
-        is BigRatio   -> number.round()
+        is Ratio   -> number.round()
         else          -> Math.rint(number.toDouble())
     }
 }

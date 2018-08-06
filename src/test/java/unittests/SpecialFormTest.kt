@@ -572,7 +572,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(BigDecimal::class.javaObjectType, eval("(class-of 9999999999999999999999999999999999.000)", env))
         assertEquals(BigDecimal::class.javaObjectType, eval("(class-of 9999999999999999999999999999999999.430)", env))
         assertEquals(Long::class.javaObjectType, eval("(class-of 1/1)", env))
-        assertEquals(BigRatio::class.javaObjectType, eval("(class-of -2341/345)", env))
+        assertEquals(Ratio::class.javaObjectType, eval("(class-of -2341/345)", env))
         assertEquals(String::class.javaObjectType, eval("(class-of \"test\")", env))
         assertEquals(MutableString::class.javaObjectType, eval("(class-of (string #\\a))", env))
         assertEquals(Char::class.javaObjectType, eval("(class-of #\\A)", env))

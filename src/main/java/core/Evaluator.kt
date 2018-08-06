@@ -41,7 +41,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         when (it) {
             /* Eagerly evaluate thunks */
             is Thunk<*> -> it.eval(it.context ?: env)
-            is BigRatio -> Utils.downcastNumber(it)
+            is Ratio -> Utils.downcastNumber(it)
             else        -> it
         }
     }

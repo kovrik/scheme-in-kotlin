@@ -1,8 +1,8 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 import java.math.BigDecimal
@@ -26,8 +26,8 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
             !Utils.isFinite(s)                 -> s
             Utils.isZero(f)                    -> f taint s
             Utils.isZero(s)                    -> s taint f
-            f is BigComplex && s is BigComplex -> f + s
-            f is BigRatio   && s is BigRatio   -> f + s
+            f is Complex && s is Complex -> f + s
+            f is Ratio   && s is Ratio   -> f + s
             f is BigDecimal && s is BigDecimal -> f + s
             f is BigInteger && s is BigInteger -> f + s
             f is Double     && s is Double     -> f + s

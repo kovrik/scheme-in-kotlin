@@ -6,7 +6,7 @@ import core.procedures.math.Addition
 import core.procedures.math.Multiplication
 import core.procedures.math.trigonometry.Cos
 import core.procedures.math.trigonometry.Sin
-import core.scm.BigComplex
+import core.scm.Complex
 import core.scm.Type
 
 class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, arity = Exactly(2),
@@ -19,5 +19,5 @@ class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, arity
 
     /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
     override operator fun invoke(arg1: Number?, arg2: Number?) = addition.add(multiplication(arg1!!, cos(arg2!!)),
-                                                                              BigComplex.I * sin(arg2) * arg1)!!
+                                                                              Complex.I * sin(arg2) * arg1)!!
 }

@@ -1,7 +1,7 @@
 package unittests
 
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -11,31 +11,31 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testAddition() {
-        assertEquals(BigComplex(BigDecimal("4.75"), BigDecimal("2.0")), eval("(+ 1 3/4 2.5 -2.5+6i 3-4i)", env))
+        assertEquals(Complex(BigDecimal("4.75"), BigDecimal("2.0")), eval("(+ 1 3/4 2.5 -2.5+6i 3-4i)", env))
         assertEquals(0.0, eval("(+ 0 0/4 0.0 -000+0i 0-0i)", env))
-        assertEquals(BigComplex(BigDecimal("0"), BigDecimal("0")), eval("(+ 1+1i -1-1i)", env))
+        assertEquals(Complex(BigDecimal("0"), BigDecimal("0")), eval("(+ 1+1i -1-1i)", env))
     }
 
     @Test
     fun testSubtraction() {
-        assertEquals(BigComplex(BigDecimal("-2.75"), BigDecimal("-2.0")), eval("(- 1 3/4 2.5 -2.5+6i 3-4i)", env))
+        assertEquals(Complex(BigDecimal("-2.75"), BigDecimal("-2.0")), eval("(- 1 3/4 2.5 -2.5+6i 3-4i)", env))
         assertEquals(0.0, eval("(- 0 0/4 0.0 -000+0i 0-0i)", env))
-        assertEquals(BigComplex(BigDecimal("2"), BigDecimal("2")), eval("(- 1+1i -1-1i)", env))
+        assertEquals(Complex(BigDecimal("2"), BigDecimal("2")), eval("(- 1+1i -1-1i)", env))
     }
 
     @Test
     fun testMultiplication() {
-        assertEquals(BigComplex(BigDecimal("30.9375"), BigDecimal("52.5")), eval("(* 1 3/4 2.5 -2.5+6i 3-4i)", env))
+        assertEquals(Complex(BigDecimal("30.9375"), BigDecimal("52.5")), eval("(* 1 3/4 2.5 -2.5+6i 3-4i)", env))
         assertEquals(0.0, eval("(* 0 0/4 0.0 -000+0i 0-0i)", env))
-        assertEquals(BigComplex(BigDecimal("0"), BigDecimal("-2")), eval("(* 1+1i -1-1i)", env))
+        assertEquals(Complex(BigDecimal("0"), BigDecimal("-2")), eval("(* 1+1i -1-1i)", env))
     }
 
     @Test
     fun testDivision() {
-        assertEquals(BigComplex(BigDecimal("0.0083313609467456"), BigDecimal("-0.0141380670611440")),
+        assertEquals(Complex(BigDecimal("0.0083313609467456"), BigDecimal("-0.0141380670611440")),
                 eval("(/ 1 3/4 2.5 -2.5+6i 3-4i)", env))
 
-        assertEquals(BigComplex(BigDecimal("-1"), BigDecimal("0")), eval("(/ 1+1i -1-1i)", env))
+        assertEquals(Complex(BigDecimal("-1"), BigDecimal("0")), eval("(/ 1+1i -1-1i)", env))
     }
 
     @Test
@@ -56,24 +56,24 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testSqrt() {
-        assertEquals(BigComplex(BigDecimal("1.09868411346781"),   BigDecimal("0.4550898605622273")), eval("(sqrt 1+1i)", env))
-        assertEquals(BigComplex(BigDecimal("0.7071067811865475"), BigDecimal("-2.121320343559643")), eval("(sqrt -4-3i)", env))
+        assertEquals(Complex(BigDecimal("1.09868411346781"),   BigDecimal("0.4550898605622273")), eval("(sqrt 1+1i)", env))
+        assertEquals(Complex(BigDecimal("0.7071067811865475"), BigDecimal("-2.121320343559643")), eval("(sqrt -4-3i)", env))
     }
 
     @Test
     fun testLog() {
-        assertEquals(BigComplex(BigDecimal("0.3465735902799726"), BigDecimal("0.7853981633974483")), eval("(log  1+1i)", env))
-        assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("-2.498091544796509")), eval("(log -4-3i)", env))
-        assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("-0.6435011087932844")), eval("(log  4-3i)", env))
-        assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("0.6435011087932844")), eval("(log  4+3i)", env))
-        assertEquals(BigComplex(BigDecimal("1.6094379124341003"), BigDecimal("2.498091544796509")), eval("(log -4+3i)", env))
+        assertEquals(Complex(BigDecimal("0.3465735902799726"), BigDecimal("0.7853981633974483")), eval("(log  1+1i)", env))
+        assertEquals(Complex(BigDecimal("1.6094379124341003"), BigDecimal("-2.498091544796509")), eval("(log -4-3i)", env))
+        assertEquals(Complex(BigDecimal("1.6094379124341003"), BigDecimal("-0.6435011087932844")), eval("(log  4-3i)", env))
+        assertEquals(Complex(BigDecimal("1.6094379124341003"), BigDecimal("0.6435011087932844")), eval("(log  4+3i)", env))
+        assertEquals(Complex(BigDecimal("1.6094379124341003"), BigDecimal("2.498091544796509")), eval("(log -4+3i)", env))
     }
 
     @Test
     fun testExpt() {
-        assertEquals(BigComplex(BigDecimal("0.2739572538301211"), BigDecimal("0.5837007587586147")), eval("(expt 1+1i 1+1i)", env))
-        assertEquals(BigComplex(BigDecimal("0.0004911725350693"), BigDecimal("-0.0007294124825312")), eval("(expt 7+2.3i -4-3i)", env))
-        assertEquals(BigComplex(BigDecimal("-345.3968959025678"), BigDecimal("11.028099235573535")), eval("(expt 3.4-5.2i 3.2)", env))
+        assertEquals(Complex(BigDecimal("0.2739572538301211"), BigDecimal("0.5837007587586147")), eval("(expt 1+1i 1+1i)", env))
+        assertEquals(Complex(BigDecimal("0.0004911725350693"), BigDecimal("-0.0007294124825312")), eval("(expt 7+2.3i -4-3i)", env))
+        assertEquals(Complex(BigDecimal("-345.3968959025678"), BigDecimal("11.028099235573535")), eval("(expt 3.4-5.2i 3.2)", env))
     }
 
     @Test
@@ -84,7 +84,7 @@ class ComplexTest : AbstractTest() {
         assertEquals(BigDecimal.valueOf(0L), eval("(real-part 0+1i)", env))
         assertEquals(1L, eval("(real-part 1)", env))
         assertEquals(-2.5, eval("(real-part -2.5)", env))
-        assertEquals(BigRatio.valueOf("3", "4"), eval("(real-part 3/4)", env))
+        assertEquals(Ratio.valueOf("3", "4"), eval("(real-part 3/4)", env))
     }
 
     @Test
@@ -100,16 +100,16 @@ class ComplexTest : AbstractTest() {
 
     @Test
     fun testMakePolar() {
-        assertEquals(BigComplex(BigDecimal("-1.960930862590836"), BigDecimal("-2.2704074859237846")), eval("(make-polar 3 4)", env))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-polar 0 0)", env))
-        assertEquals(BigComplex(BigDecimal("-0.8775825618903728"), BigDecimal("-0.479425538604203")), eval("(make-polar -1 0.5)", env))
+        assertEquals(Complex(BigDecimal("-1.960930862590836"), BigDecimal("-2.2704074859237846")), eval("(make-polar 3 4)", env))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-polar 0 0)", env))
+        assertEquals(Complex(BigDecimal("-0.8775825618903728"), BigDecimal("-0.479425538604203")), eval("(make-polar -1 0.5)", env))
     }
 
     @Test
     fun testMakeRectangular() {
-        assertEquals(BigComplex(BigDecimal("3"), BigDecimal("4")), eval("(make-rectangular 3 4)", env))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-rectangular 0 0)", env))
-        assertEquals(BigComplex(BigDecimal("-1"), BigDecimal("0.5")), eval("(make-rectangular -1 0.5)", env))
+        assertEquals(Complex(BigDecimal("3"), BigDecimal("4")), eval("(make-rectangular 3 4)", env))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal.ZERO), eval("(make-rectangular 0 0)", env))
+        assertEquals(Complex(BigDecimal("-1"), BigDecimal("0.5")), eval("(make-rectangular -1 0.5)", env))
     }
 
     @Test

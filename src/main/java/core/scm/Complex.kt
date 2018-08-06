@@ -13,14 +13,14 @@ import kotlin.math.atan
 /**
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
  */
-class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
+class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
 
     companion object {
         /* Imaginary unit (i) */
-        val I = BigComplex(BigDecimal.ZERO, BigDecimal.ONE)
+        val I = Complex(BigDecimal.ZERO, BigDecimal.ONE)
 
         /* Convert Number to BigComplex */
-        fun of(number: Number) = number as? BigComplex ?: BigComplex(number)
+        fun of(number: Number) = number as? Complex ?: Complex(number)
 
         private val sqrt = Sqrt()
         private val expt = Expt()
@@ -51,27 +51,27 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
 
     /* Addition */
     operator fun plus(other: Number) = when (other) {
-        is BigComplex -> BigComplex(re.add(other.re), im.add(other.im))
-        else -> BigComplex(re.add(Utils.toBigDecimal(other)), im)
+        is Complex -> Complex(re.add(other.re), im.add(other.im))
+        else -> Complex(re.add(Utils.toBigDecimal(other)), im)
     }
 
     /* Subtraction */
     operator fun minus(other: Number) = when (other) {
-        is BigComplex -> BigComplex(re.subtract(other.re), im.subtract(other.im))
-        else -> BigComplex(re.subtract(Utils.toBigDecimal(other)), im)
+        is Complex -> Complex(re.subtract(other.re), im.subtract(other.im))
+        else -> Complex(re.subtract(Utils.toBigDecimal(other)), im)
     }
 
     /**
      * Multiplication
      * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
      */
-    operator fun times(other: Number): BigComplex {
+    operator fun times(other: Number): Complex {
         val o = of(other)
         val a = this.re
         val b = this.im
         val c = o.re
         val d = o.im
-        return BigComplex(a.multiply(c).subtract(b.multiply(d)), b.multiply(c).add(a.multiply(d)))
+        return Complex(a.multiply(c).subtract(b.multiply(d)), b.multiply(c).add(a.multiply(d)))
     }
 
     /**
@@ -80,11 +80,11 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * gamma = sqrt((a + sqrt(a*a + b*b))/2)
      * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
      */
-    fun sqrt(): BigComplex {
+    fun sqrt(): Complex {
         val s = (re.multiply(re).add(im.multiply(im))).sqrt(Utils.DEFAULT_CONTEXT)
         val gamma = (s.add(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT)
         val delta = (s.minus(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT).multiply(im.signum().toBigDecimal())
-        return BigComplex(gamma, delta)
+        return Complex(gamma, delta)
     }
 
     /**
@@ -93,7 +93,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * ------ =  ----------  + --------- i
      * c + di    c*c + d*d     c*c + d*d
      */
-    operator fun div(other: Number): BigComplex {
+    operator fun div(other: Number): Complex {
         val o = of(other)
         val a = this.re
         val b = this.im
@@ -102,7 +102,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val real  = a.multiply(c).add(b.multiply(d))
         val imag  = b.multiply(c).subtract(a.multiply(d))
         val denom = c.multiply(c).add(d.multiply(d))
-        return BigComplex(real.divide(denom, Utils.DEFAULT_CONTEXT), imag.divide(denom, Utils.DEFAULT_CONTEXT))
+        return Complex(real.divide(denom, Utils.DEFAULT_CONTEXT), imag.divide(denom, Utils.DEFAULT_CONTEXT))
     }
 
     /**
@@ -118,10 +118,10 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * c: z2.re
      * d: z2.im
      */
-    fun expt(e: Number): BigComplex {
+    fun expt(e: Number): Complex {
         val c: BigDecimal
         val d: BigDecimal
-        if (e is BigComplex) {
+        if (e is Complex) {
             c = e.re
             d = e.im
         } else {
@@ -134,14 +134,14 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val B = addition.add(multiplication(c, t), multiplication(d, log(r)))
         val re = multiplication(A, cos(B!!))
         val im = multiplication(A, sin(B))
-        return BigComplex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
+        return Complex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
     }
 
     /**
      * Natural logarithm of Complex number
      * lnz = log(a + ib) = log(|a+bi|) + i*arg(a+bi)
      */
-    fun log(): BigComplex = BigComplex(log(magnitude()), angle())
+    fun log(): Complex = Complex(log(magnitude()), angle())
 
     /**
      * Magnitude (Absolute value, Modulus) of Complex number
@@ -175,7 +175,7 @@ class BigComplex(tre: BigDecimal, tim: BigDecimal) : Number() {
     override fun equals(other: Any?) = when {
         this === other -> true
         other == null || javaClass != other.javaClass -> false
-        else -> re == (other as BigComplex).re && im == other.im
+        else -> re == (other as Complex).re && im == other.im
     }
 
     override fun hashCode() = 31 * re.hashCode() + (im.hashCode())

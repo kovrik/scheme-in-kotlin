@@ -2,7 +2,7 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigComplex
+import core.scm.Complex
 import core.utils.Utils
 
 import java.math.BigDecimal
@@ -15,11 +15,11 @@ class Atan : AFn<Number?, Number>(name = "atan", isPure = true, arity = Exactly(
 
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) -> 0L
-        arg is BigComplex -> atan(arg)
+        arg is Complex -> atan(arg)
         else              -> atan(arg!!.toDouble())
     }
 
-    private fun atan(c: BigComplex): Number {
+    private fun atan(c: Complex): Number {
         val r = c.re
         val i = c.im
         val a = r.toDouble()
@@ -55,6 +55,6 @@ class Atan : AFn<Number?, Number>(name = "atan", isPure = true, arity = Exactly(
         if (!Utils.isFinite(im)) {
             return im
         }
-        return BigComplex(re, im)
+        return Complex(re, im)
     }
 }

@@ -2,7 +2,7 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigComplex
+import core.scm.Complex
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.MathContext
@@ -15,10 +15,10 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, arity = Exactly(
 
     override operator fun invoke(arg: Number?) = when {
         !Utils.isFinite(arg) -> Double.NaN
-        arg is BigComplex -> acos(arg)
+        arg is Complex -> acos(arg)
         else -> acos(arg!!.toDouble()).let {
             when (it.isNaN()) {
-                true -> acos(BigComplex(arg))
+                true -> acos(Complex(arg))
                 else -> it
             }
         }
@@ -29,7 +29,7 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, arity = Exactly(
      * A = (sqrt((1+a)^2 + b^2) - sqrt((1-a)^2 + b^2))/2
      * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
      **/
-    private fun acos(c: BigComplex): Number {
+    private fun acos(c: Complex): Number {
         val r = c.re
         val i = c.im
         val signum = if (i.signum() == 0) {
@@ -54,7 +54,7 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, arity = Exactly(
             if (!Utils.isFinite(im)) {
                 return im
             }
-            return BigComplex(re, signum * im)
+            return Complex(re, signum * im)
         } else {
             val a = r.toDouble()
             if (!Utils.isFinite(a)) {
@@ -79,7 +79,7 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, arity = Exactly(
             if (!Utils.isFinite(im)) {
                 return im
             }
-            return BigComplex(re, signum * im)
+            return Complex(re, signum * im)
         }
     }
 }

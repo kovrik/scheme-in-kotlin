@@ -23,7 +23,7 @@ class WrongTypeException : IllegalArgumentException {
         private val CUSTOM_TYPE_NAMES = hashMapOf(Int::class.javaObjectType   to "Integer",
                                                   Long::class.javaObjectType  to "Integer",
                                                   Type.Rational::class.java   to "Rational",
-                                                  BigComplex::class.java      to "Complex",
+                                                  Complex::class.java      to "Complex",
                                                   CharSequence::class.java    to "String",
                                                   StringBuilder::class.java   to "Mutable String",
                                                   MutableString::class.java   to "Mutable String",

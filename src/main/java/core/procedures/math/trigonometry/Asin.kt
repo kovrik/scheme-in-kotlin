@@ -2,7 +2,7 @@ package core.procedures.math.trigonometry
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigComplex
+import core.scm.Complex
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.MathContext
@@ -16,10 +16,10 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
     override operator fun invoke(arg: Number?) = when {
         !Utils.isFinite(arg) -> Double.NaN
         Utils.isZero(arg) -> 0L
-        arg is BigComplex -> asin(arg)
+        arg is Complex -> asin(arg)
         else -> asin(arg!!.toDouble()).let {
             when (it.isNaN()) {
-                true -> asin(BigComplex(arg))
+                true -> asin(Complex(arg))
                 else -> it
             }
         }
@@ -30,7 +30,7 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
      * A = (sqrt((1+a)^2 + b^2) - sqrt((1-a)^2 + b^2))/2
      * B = (sqrt((1+a)^2 + b^2) + sqrt((1-a)^2 + b^2))/2
      **/
-    private fun asin(c: BigComplex): Number {
+    private fun asin(c: Complex): Number {
         val r = c.re
         val i = c.im
         val signum = if (i.signum() == 0) {
@@ -55,7 +55,7 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
             if (!Utils.isFinite(im)) {
                 return im
             }
-            return BigComplex(re, signum * im)
+            return Complex(re, signum * im)
         } else {
             val a = r.toDouble()
             if (!Utils.isFinite(a)) {
@@ -80,7 +80,7 @@ class Asin : AFn<Number?, Number>(name = "asin", isPure = true, arity = Exactly(
             if (!Utils.isFinite(im)) {
                 return im
             }
-            return BigComplex(re, signum * im)
+            return Complex(re, signum * im)
         }
     }
 }

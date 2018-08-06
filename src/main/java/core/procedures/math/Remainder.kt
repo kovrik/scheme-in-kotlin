@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 
@@ -18,7 +18,7 @@ class Remainder : AFn<Number?, Number>(name = "remainder", isPure = true, arity 
         return when {
             Utils.isZero(s) -> throw ArithmeticException("$name: undefined for 0")
             Utils.isZero(f) -> s taint f
-            f is BigRatio && s is BigRatio -> f % s
+            f is Ratio && s is Ratio -> f % s
             f is BigDecimal && s is BigDecimal -> f % s
             f is BigInteger && s is BigInteger -> f % s
             Utils.isExact(f) && Utils.isExact(s) -> f.toLong() % s.toLong()

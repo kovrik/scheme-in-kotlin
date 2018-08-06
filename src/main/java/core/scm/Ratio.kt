@@ -5,12 +5,12 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 
-class BigRatio : Number, Comparable<BigRatio> {
+class Ratio : Number, Comparable<Ratio> {
 
     companion object {
 
-        val ZERO = BigRatio(BigInteger.ZERO)
-        val ONE  = BigRatio(BigInteger.ONE)
+        val ZERO = Ratio(BigInteger.ZERO)
+        val ONE  = Ratio(BigInteger.ONE)
 
         private val CONSTANTS = hashMapOf("-2" to "-2".toBigInteger(),
                                           "-1" to "-1".toBigInteger(),
@@ -25,8 +25,8 @@ class BigRatio : Number, Comparable<BigRatio> {
             BigInteger.ZERO == denominator -> throw ArithmeticException("Division by zero")
             BigInteger.ZERO == numerator -> ZERO
             BigInteger.ONE  == numerator && BigInteger.ONE == denominator -> ONE
-            BigInteger.ONE  == denominator -> BigRatio(numerator)
-            else -> BigRatio(numerator, denominator)
+            BigInteger.ONE  == denominator -> Ratio(numerator)
+            else -> Ratio(numerator, denominator)
         }
 
         private fun parseBigInteger(number: String) = CONSTANTS.getOrDefault(number, number.toBigInteger())
@@ -69,7 +69,7 @@ class BigRatio : Number, Comparable<BigRatio> {
     val isNegative: Boolean
         get() = signum() == -1
 
-    fun abs() = BigRatio(numerator.abs(), denominator.abs())
+    fun abs() = Ratio(numerator.abs(), denominator.abs())
 
     /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
     private fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
@@ -84,45 +84,45 @@ class BigRatio : Number, Comparable<BigRatio> {
         it.setScale(maxOf(1, it.scale()), Utils.ROUNDING_MODE)
     }
 
-    fun ceiling(): BigRatio {
+    fun ceiling(): Ratio {
         val round = if (isPositive) RoundingMode.UP else RoundingMode.DOWN
-        return BigRatio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
+        return Ratio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
     }
 
-    fun floor(): BigRatio {
+    fun floor(): Ratio {
         val round = if (isPositive) RoundingMode.DOWN else RoundingMode.UP
-        return BigRatio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
+        return Ratio(numerator.toBigDecimal().divide(denominator.toBigDecimal(), round).toBigInteger())
     }
 
-    fun round() = BigRatio(toBigDecimal().setScale(0, Utils.ROUNDING_MODE).toBigInteger())
+    fun round() = Ratio(toBigDecimal().setScale(0, Utils.ROUNDING_MODE).toBigInteger())
 
     fun truncate() = if (isNegative) ceiling() else floor()
 
-    operator fun times(other: BigRatio) = BigRatio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
+    operator fun times(other: Ratio) = Ratio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
 
-    operator fun times(other: BigInteger) = BigRatio(numerator.multiply(other), denominator)
+    operator fun times(other: BigInteger) = Ratio(numerator.multiply(other), denominator)
 
-    operator fun plus(other: BigRatio): BigRatio {
+    operator fun plus(other: Ratio): Ratio {
         val numerator = numerator.multiply(other.denominator).add(other.numerator.multiply(denominator))
         val denominator = denominator.multiply(other.denominator)
-        return BigRatio(numerator, denominator)
+        return Ratio(numerator, denominator)
     }
 
-    operator fun minus(other: BigRatio) = plus(-other)
+    operator fun minus(other: Ratio) = plus(-other)
 
-    operator fun div(other: BigRatio) = times(other.reciprocal())
+    operator fun div(other: Ratio) = times(other.reciprocal())
 
-    operator fun rem(other: BigRatio) = this.toBigDecimal() % other.toBigDecimal()
+    operator fun rem(other: Ratio) = this.toBigDecimal() % other.toBigDecimal()
 
-    operator fun unaryMinus() = BigRatio(numerator.negate(), denominator)
+    operator fun unaryMinus() = Ratio(numerator.negate(), denominator)
 
     fun signum() = numerator.signum() * denominator.signum()
 
-    fun reciprocal() = BigRatio(denominator, numerator)
+    fun reciprocal() = Ratio(denominator, numerator)
 
     private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), 32, RoundingMode.HALF_EVEN)
 
-    override fun compareTo(other: BigRatio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
+    override fun compareTo(other: Ratio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
 
     override fun hashCode() = this.toString().hashCode()
 
@@ -130,7 +130,7 @@ class BigRatio : Number, Comparable<BigRatio> {
         other === this -> true
         other == null -> false
         other.javaClass != this.javaClass -> false
-        else -> compareTo(other as BigRatio) == 0
+        else -> compareTo(other as Ratio) == 0
     }
 
     override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else "$numerator/$denominator"

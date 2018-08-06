@@ -1,8 +1,8 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.utils.Utils
 import core.Writer
 import core.procedures.Arity.Exactly
@@ -17,7 +17,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, ari
         arg is Float      -> doubleToExact(arg.toDouble())
         arg is Double     -> doubleToExact(arg)
         arg is BigDecimal -> bigDecimalToExact(arg)
-        arg is BigComplex -> BigComplex(invoke(arg.re), invoke(arg.im))
+        arg is Complex -> Complex(invoke(arg.re), invoke(arg.im))
         else              -> arg as Number
     }
 
@@ -43,7 +43,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, ari
             if (sign == 1L) {
                 a = Math.multiplyExact(a, -1)
             }
-            return BigRatio.valueOf(a.toBigInteger(), b.toBigInteger())
+            return Ratio.valueOf(a.toBigInteger(), b.toBigInteger())
         } catch (e: ArithmeticException) {
             return bigDecimalToExact(number.toBigDecimal())
         }
@@ -51,7 +51,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, ari
 
     // FIXME Use the same algorithm as for Doubles!
     private fun bigDecimalToExact(number: BigDecimal) = when {
-        number.scale() > 0 -> BigRatio.valueOf(number.unscaledValue(), BigInteger.TEN.pow(number.scale()))
-        else -> BigRatio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-number.scale())), BigInteger.ONE)
+        number.scale() > 0 -> Ratio.valueOf(number.unscaledValue(), BigInteger.TEN.pow(number.scale()))
+        else -> Ratio.valueOf(number.unscaledValue().multiply(BigInteger.TEN.pow(-number.scale())), BigInteger.ONE)
     }
 }

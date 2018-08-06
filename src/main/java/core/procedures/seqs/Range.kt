@@ -4,7 +4,7 @@ import core.procedures.AFn
 import core.procedures.Arity.Range
 import core.procedures.math.Addition
 import core.procedures.math.NumericalComparison
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 import java.math.BigDecimal
@@ -18,11 +18,11 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, arity = Range(0, 3)
         if (args.isEmpty()) {
             return range()
         }
-        var fraction = args[0] is BigRatio
+        var fraction = args[0] is Ratio
         if (args.size == 3) {
-            fraction = fraction || args[2] is BigRatio
+            fraction = fraction || args[2] is Ratio
         }
-        val big = args.any { it is BigDecimal || it is BigInteger || it is BigRatio }
+        val big = args.any { it is BigDecimal || it is BigInteger || it is Ratio }
         if (fraction || big) {
             return when (args.size) {
                 1    -> range(0L, args[0] as Number)

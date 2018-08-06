@@ -2,8 +2,8 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.predicates.Predicate
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 import core.Writer
@@ -112,7 +112,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
          *  z is greater than 1.0 — +inf.0
          */
         if (exponent == Double.POSITIVE_INFINITY || exponent == Double.NEGATIVE_INFINITY) {
-            if (base is BigComplex) {
+            if (base is Complex) {
                 return Double.NaN
             }
             if (Utils.isZero(base)) {
@@ -140,7 +140,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
         }
         val (b, ex) = Utils.upcast(base, exponent)
         /* Complex numbers */
-        if (b is BigComplex && ex is BigComplex) {
+        if (b is Complex && ex is Complex) {
             return b.expt(ex)
         }
         /* BigIntegers */
@@ -162,7 +162,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
                 }
                 val result = b.toBigInteger().pow(e)
                 if (isNegative) {
-                    return BigRatio.valueOf(BigInteger.ONE, result)
+                    return Ratio.valueOf(BigInteger.ONE, result)
                 }
                 return Utils.downcastNumber(result)
             } else {
@@ -177,7 +177,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
         /* Double */
         val result = b.toDouble().pow(ex.toDouble())
         return when {
-            result.isNaN() -> BigComplex.of(b).expt(BigComplex.of(ex))
+            result.isNaN() -> Complex.of(b).expt(Complex.of(ex))
             !result.isFinite() -> Utils.toBigDecimal(b).pow(ex.toInt())
             else -> result
         }

@@ -3,8 +3,8 @@ package unittests
 import core.exceptions.ArityException
 import core.exceptions.UndefinedIdentifierException
 import core.exceptions.WrongTypeException
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import org.junit.Assert.*
 import org.junit.Test
 import java.math.BigDecimal
@@ -45,17 +45,17 @@ class NumberTest : AbstractTest() {
         assertEquals(150.0, eval("+15#", env))
         assertEquals(100L, eval("#e#d10#", env))
         assertEquals(150L, eval("#e15#", env))
-        assertEquals(BigRatio.valueOf("101", "10"), eval("#e#d10.1", env))
+        assertEquals(Ratio.valueOf("101", "10"), eval("#e#d10.1", env))
 
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(2)), eval("1+2i", env))
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(-2)), eval("1-2i", env))
-        assertEquals(BigComplex(BigDecimal(-1), BigDecimal(2)), eval("-1+2i", env))
-        assertEquals(BigComplex(BigDecimal(-1), BigDecimal(-2)), eval("-1-2i", env))
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(2)), eval("#e1+2i", env))
-        assertEquals(BigComplex(BigDecimal("1.0"), BigDecimal("2.0")), eval("#i1+2i", env))
-        assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
-        assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
-        assertEquals(BigComplex(BigDecimal("255.0"), BigDecimal("2987.9375")), eval("#x#iFf+BaB.fI", env))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(2)), eval("1+2i", env))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(-2)), eval("1-2i", env))
+        assertEquals(Complex(BigDecimal(-1), BigDecimal(2)), eval("-1+2i", env))
+        assertEquals(Complex(BigDecimal(-1), BigDecimal(-2)), eval("-1-2i", env))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(2)), eval("#e1+2i", env))
+        assertEquals(Complex(BigDecimal("1.0"), BigDecimal("2.0")), eval("#i1+2i", env))
+        assertEquals(Complex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
+        assertEquals(Complex(BigDecimal("5"), BigDecimal("29")), eval("#e#b101+11101i", env))
+        assertEquals(Complex(BigDecimal("255.0"), BigDecimal("2987.9375")), eval("#x#iFf+BaB.fI", env))
 
         arrayOf("+#", "1e1/2", "1e#", "1e.", "1..", "/1", "+1#1", "__1", "--", "-#.1", "1/2/3").forEach {
             try {
@@ -78,28 +78,28 @@ class NumberTest : AbstractTest() {
         assertEquals(-2L,  eval("(- 0 2)", env))
         assertEquals(-2.0, eval("(- 0 2.0)", env))
         assertEquals(BigInteger("-2"), eval("(- 0 (bigint 2))", env))
-        assertEquals(BigRatio.valueOf("-1", "2"), eval("(- 0 1/2)", env))
+        assertEquals(Ratio.valueOf("-1", "2"), eval("(- 0 1/2)", env))
         assertEquals(5.5,  eval("(/ (+ 1 2 3 (- (* 2 2.5 2) 5)) 2)", env))
         assertEquals(5.0,  eval("(/ 10.0 2)", env))
-        assertEquals(BigRatio.valueOf("1", "10"), eval("(/ 10)", env))
-        assertEquals(BigRatio.valueOf("13", "4"), eval("(/ 13 4)", env))
+        assertEquals(Ratio.valueOf("1", "10"), eval("(/ 10)", env))
+        assertEquals(Ratio.valueOf("13", "4"), eval("(/ 13 4)", env))
         assertEquals(2L, eval("(/ 10 5)", env))
         assertEquals(2.0, eval("(/ 10.0 5)", env))
         assertEquals(2.0, eval("(/ 10 5.0)", env))
         assertEquals(BigInteger("18446744073709551614"), eval("(+ Long/MAX_VALUE Long/MAX_VALUE)", env))
         assertEquals(BigInteger("18446744073709551615"), eval("(- Long/MAX_VALUE Long/MIN_VALUE)", env))
         assertEquals(BigInteger("-85070591730234615856620279821087277056"), eval("(* Long/MAX_VALUE Long/MIN_VALUE)", env))
-        assertEquals(BigRatio.valueOf("9223372036854775807", "-9223372036854775808"), eval("(/ Long/MAX_VALUE Long/MIN_VALUE)", env))
+        assertEquals(Ratio.valueOf("9223372036854775807", "-9223372036854775808"), eval("(/ Long/MAX_VALUE Long/MIN_VALUE)", env))
 
         assertEquals(1L, eval("(/ -5 -5)", env))
         assertEquals(3L, eval("(/ -15 -5)", env))
-        assertEquals(BigRatio.valueOf("1", "3"), eval("(/ -5 -15)", env))
+        assertEquals(Ratio.valueOf("1", "3"), eval("(/ -5 -15)", env))
 
         assertEquals(5L, eval("(abs 5)", env))
         assertEquals(5L, eval("(abs -5)", env))
 
-        assertEquals(BigRatio.valueOf("9999", "3332"), eval("(/ 3332/9999)", env))
-        assertEquals(BigRatio.valueOf("9999", "3332"), eval("(/ 1 3332/9999)", env))
+        assertEquals(Ratio.valueOf("9999", "3332"), eval("(/ 3332/9999)", env))
+        assertEquals(Ratio.valueOf("9999", "3332"), eval("(/ 1 3332/9999)", env))
         assertEquals(3.0009003601440574, eval("(/ 1.0 3332/9999)", env))
         try {
             eval("(+ nil nil)", env)
@@ -132,11 +132,11 @@ class NumberTest : AbstractTest() {
         assertEquals(3.0, eval("(sqrt 9.0)", env))
         assertTrue((eval("(sqrt -5)", env) as Double).isNaN())
 
-        assertEquals(BigRatio.valueOf("1", "100"), eval("(/ 1 10 10)", env))
-        assertEquals(BigRatio.valueOf("26", "5"), eval("(+ 1/5 (short 5))", env))
-        assertEquals(BigRatio.valueOf("-71", "12"), eval("(- 1/12 (short 6))", env))
-        assertEquals(BigRatio.valueOf("5", "23"), eval("(* 1/23 (short 5))", env))
-        assertEquals(BigRatio.valueOf("1", "115"), eval("(/ 1/23 (short 5))", env))
+        assertEquals(Ratio.valueOf("1", "100"), eval("(/ 1 10 10)", env))
+        assertEquals(Ratio.valueOf("26", "5"), eval("(+ 1/5 (short 5))", env))
+        assertEquals(Ratio.valueOf("-71", "12"), eval("(- 1/12 (short 6))", env))
+        assertEquals(Ratio.valueOf("5", "23"), eval("(* 1/23 (short 5))", env))
+        assertEquals(Ratio.valueOf("1", "115"), eval("(/ 1/23 (short 5))", env))
     }
 
     @Test
@@ -600,11 +600,11 @@ class NumberTest : AbstractTest() {
         assertEquals(Double.NEGATIVE_INFINITY, eval("(expt -2 2147483647", env))
         assertEquals(Double.POSITIVE_INFINITY, eval("(expt -2 2147483648", env))
         assertEquals(9.610000000000001, eval("(expt -3.1 2)", env))
-        assertEquals(BigComplex(BigDecimal("-0.0029666184064708"), BigDecimal("0.0009639127514694")),
+        assertEquals(Complex(BigDecimal("-0.0029666184064708"), BigDecimal("0.0009639127514694")),
                 eval("(expt -3.1 -5.1)", env))
-        assertEquals(BigComplex(BigDecimal("-0.0007509092057438"), BigDecimal("-0.0001938306001686")),
+        assertEquals(Complex(BigDecimal("-0.0007509092057438"), BigDecimal("-0.0001938306001686")),
                 eval("(expt -3.1 2+3i)", env))
-        assertEquals(BigComplex(BigDecimal("-2.4728383E-9"), BigDecimal("9.0752993E-9")),
+        assertEquals(Complex(BigDecimal("-2.4728383E-9"), BigDecimal("9.0752993E-9")),
                 eval("(expt -2.3-3.4i -4.5-5.6i)", env))
         assertEquals(244140625L, eval("(expt 5 12)", env))
         assertEquals(244140625.0, eval("(expt 5.0 12)", env))
@@ -965,7 +965,7 @@ class NumberTest : AbstractTest() {
         assertEquals(1.0, eval("(denominator -1234.0)", env))
         assertEquals(BigInteger.valueOf(4L), eval("(denominator 17/4)", env))
         assertEquals(BigDecimal("1125899906842624.0"), eval("(denominator 2.3)", env))
-        assertEquals(BigRatio.valueOf("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", "10000000000"),
+        assertEquals(Ratio.valueOf("9347593487539475934753495739845734957349857349573495873459374589347593475394857393453454353", "10000000000"),
                      eval("(inexact->exact 934759348753947593475349573984573495734985734957349587345937458934759347539485739.3453454353)", env))
     }
 
@@ -1020,13 +1020,13 @@ class NumberTest : AbstractTest() {
                 "        (+ lo-int" +
                 "           (/ (find-between (/ (- hi lo-int)) (/ (- lo lo-int)))))))))"
         eval(findBetween, env)
-        assertEquals(BigRatio.valueOf("1", "3"), eval("(find-between 3332/9999 3334/9999)", env))
+        assertEquals(Ratio.valueOf("1", "3"), eval("(find-between 3332/9999 3334/9999)", env))
     }
 
     @Test
     fun testRationalize() {
         assertEquals(0L, eval("(rationalize 1/3 1/3)", env))
-        assertEquals(BigRatio.valueOf("1", "3"), eval("(rationalize 1/3 1/9999)", env))
+        assertEquals(Ratio.valueOf("1", "3"), eval("(rationalize 1/3 1/9999)", env))
         assertEquals(0L, eval("(rationalize 2/3 1)", env))
         assertEquals(2333L, eval("(rationalize 2335 2)", env))
         assertEquals(-2L, eval("(rationalize -5 3)", env))

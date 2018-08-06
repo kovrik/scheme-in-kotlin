@@ -2,7 +2,7 @@ package core.procedures.math.complex
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigComplex
+import core.scm.Complex
 import core.utils.Utils
 
 class Angle : AFn<Number?, Number>(name = "angle", isPure = true, arity = Exactly(1),
@@ -12,6 +12,6 @@ class Angle : AFn<Number?, Number>(name = "angle", isPure = true, arity = Exactl
 
     private fun angle(number: Number) = when {
         Utils.isZero(number) -> throw ArithmeticException("$name: undefined for 0")
-        else -> BigComplex.of(number).angle()
+        else -> Complex.of(number).angle()
     }
 }

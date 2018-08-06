@@ -1,8 +1,8 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.utils.Utils
 import core.utils.Utils.taint
 
@@ -31,8 +31,8 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
             else -> when {
                 Utils.isOne(f) -> f taint s
                 Utils.isOne(s) -> s taint f
-                f is BigComplex && s is BigComplex -> f * s
-                f is BigRatio   && s is BigRatio   -> f * s
+                f is Complex && s is Complex -> f * s
+                f is Ratio   && s is Ratio   -> f * s
                 f is BigDecimal && s is BigDecimal -> f * s
                 f is BigInteger && s is BigInteger -> f * s
                 f is Double     && s is Double     -> f * s

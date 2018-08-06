@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.AtLeast
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 
@@ -24,7 +24,7 @@ class Min : AFn<Any?, Number?>(name = "min", isPure = true, arity = AtLeast(1),
         f is Long       && s is Long       -> min(f, s)
         f is Float      && s is Float      -> min(f, s)
         f is Double     && s is Double     -> min(f, s)
-        f is BigRatio   && s is BigRatio   -> minOf(f, s)
+        f is Ratio   && s is Ratio   -> minOf(f, s)
         f is BigInteger && s is BigInteger -> minOf(f, s)
         f is BigDecimal && s is BigDecimal -> minOf(f, s)
         f is BigDecimal && s is Number     -> minOf(f, Utils.toBigDecimal(s))

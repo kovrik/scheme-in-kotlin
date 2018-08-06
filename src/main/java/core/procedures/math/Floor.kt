@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 
 import java.math.BigDecimal
@@ -24,7 +24,7 @@ class Floor : AFn<Number?, Number>(name = "floor", isPure = true, arity = Exactl
                 else -> result
             }
         }
-        is BigRatio   -> arg.floor()
+        is Ratio   -> arg.floor()
         else          -> floor(arg!!.toDouble())
     }!!
 }

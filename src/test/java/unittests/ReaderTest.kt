@@ -2,8 +2,8 @@ package unittests
 
 import core.exceptions.IllegalSyntaxException
 import core.reader.StringReader
-import core.scm.BigComplex
-import core.scm.BigRatio
+import core.scm.Complex
+import core.scm.Ratio
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.Symbol
@@ -35,8 +35,8 @@ class ReaderTest : AbstractTest() {
         assertEquals(-1235.0, reader.readOne("-1235."))
         assertEquals(.5, reader.readOne(".5"))
         assertEquals(-.5, reader.readOne("-.5"))
-        assertEquals(BigRatio.valueOf("-1", "2"), reader.readOne("#e#d-.5"))
-        assertEquals(BigRatio.valueOf("-1", "2"), reader.readOne("#E#d-.5"))
+        assertEquals(Ratio.valueOf("-1", "2"), reader.readOne("#e#d-.5"))
+        assertEquals(Ratio.valueOf("-1", "2"), reader.readOne("#E#d-.5"))
         assertEquals(+4.5, reader.readOne("#i#d+4.5"))
         assertEquals(4999999.5, reader.readOne("#i#d+4999999.5"))
         assertEquals(5L, reader.readOne("#e#b101"))
@@ -63,22 +63,22 @@ class ReaderTest : AbstractTest() {
         assertEquals(1500.0, reader.readOne("#i15##"))
         assertEquals(1500.0, reader.readOne("#I15##.####"))
         assertEquals(1500.0, reader.readOne("#I15##"))
-        assertEquals(BigRatio.valueOf("500", "1"), reader.readOne("#e5###/1#"))
-        assertEquals(BigRatio.valueOf("500", "1"), reader.readOne("#E5###/1#"))
+        assertEquals(Ratio.valueOf("500", "1"), reader.readOne("#e5###/1#"))
+        assertEquals(Ratio.valueOf("500", "1"), reader.readOne("#E5###/1#"))
         assertEquals(BigDecimal("500.0"), reader.readOne(" 5###/1#"))
-        assertEquals(BigRatio.valueOf("1500", "1"), reader.readOne("#e15##.####"))
+        assertEquals(Ratio.valueOf("1500", "1"), reader.readOne("#e15##.####"))
         assertEquals(BigDecimal("0.75"), reader.readOne("#i3/4"))
-        assertEquals(BigRatio.valueOf("3", "4"), reader.readOne("#e3/4"))
+        assertEquals(Ratio.valueOf("3", "4"), reader.readOne("#e3/4"))
         assertEquals(1500.0, reader.readOne("15e2"))
         assertEquals(15000.0, reader.readOne("15e3"))
-        assertEquals(BigRatio.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
+        assertEquals(Ratio.valueOf("999999999999999999999999999999999999999999999999999999999999999999999999", "1000"),
                      reader.readOne("#e999999999999999999999999999999999999999999999999999999999999999999999.999"))
         assertEquals(BigDecimal("500.0"), reader.readOne("1/2e3"))
         assertEquals(BigDecimal("500.0"), reader.readOne("5/10e3"))
-        assertEquals(BigRatio.valueOf("-6000", "7"), reader.readOne("#e-12/14e3"))
-        assertEquals(BigRatio.valueOf("1000000", "1"), reader.readOne("#e+12/12e6"))
+        assertEquals(Ratio.valueOf("-6000", "7"), reader.readOne("#e-12/14e3"))
+        assertEquals(Ratio.valueOf("1000000", "1"), reader.readOne("#e+12/12e6"))
         assertEquals(BigDecimal("0.08333333333333333"), reader.readOne("1/12e0"))
-        assertEquals(BigRatio.valueOf("1", "12"), reader.readOne("#e+1/12e0"))
+        assertEquals(Ratio.valueOf("1", "12"), reader.readOne("#e+1/12e0"))
 
         val badNumbers = arrayOf("#o9999", "#df999", "#xz999", "#b2222", "#d+5+5", "#e##", "#e#e", "#e#I", "#ee##",
                                  "#e#i1", "#b#d#e12", "#b#d", "#i#o#I1", "#B#", "#B#B#B", "#ez#1", "#e_", "#D-", "#o++", "#o#b+1")
@@ -95,19 +95,19 @@ class ReaderTest : AbstractTest() {
     @Test
     fun testReadComplex() {
         assertEquals(0L, reader.readOne("0+0i"))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("0+i"))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("-0+i"))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("+i"))
-        assertEquals(BigComplex(BigDecimal.ZERO, BigDecimal(-1)), reader.readOne("-i"))
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(2)), reader.readOne("1+2i"))
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(-2)), reader.readOne("1-2i"))
-        assertEquals(BigComplex(BigDecimal(-1), BigDecimal(2)), reader.readOne("-1+2i"))
-        assertEquals(BigComplex(BigDecimal(-1), BigDecimal(-2)), reader.readOne("-1-2i"))
-        assertEquals(BigComplex(BigDecimal.ONE, BigDecimal(2)), reader.readOne("#e1+2i"))
-        assertEquals(BigComplex(BigDecimal("1.0"), BigDecimal("2.0")), reader.readOne("#i1+2i"))
-        assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
-        assertEquals(BigComplex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
-        assertEquals(BigComplex(BigDecimal("255.0"), BigDecimal("2987.9375")), reader.readOne("#x#iFf+BaB.fI"))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("0+i"))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("-0+i"))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal.ONE), reader.readOne("+i"))
+        assertEquals(Complex(BigDecimal.ZERO, BigDecimal(-1)), reader.readOne("-i"))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(2)), reader.readOne("1+2i"))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(-2)), reader.readOne("1-2i"))
+        assertEquals(Complex(BigDecimal(-1), BigDecimal(2)), reader.readOne("-1+2i"))
+        assertEquals(Complex(BigDecimal(-1), BigDecimal(-2)), reader.readOne("-1-2i"))
+        assertEquals(Complex(BigDecimal.ONE, BigDecimal(2)), reader.readOne("#e1+2i"))
+        assertEquals(Complex(BigDecimal("1.0"), BigDecimal("2.0")), reader.readOne("#i1+2i"))
+        assertEquals(Complex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
+        assertEquals(Complex(BigDecimal("5"), BigDecimal("29")), reader.readOne("#e#b101+11101i"))
+        assertEquals(Complex(BigDecimal("255.0"), BigDecimal("2987.9375")), reader.readOne("#x#iFf+BaB.fI"))
         assertTrue(reader.readOne("1+2i+2i") is Symbol)
     }
 
@@ -300,7 +300,7 @@ class ReaderTest : AbstractTest() {
 
     @Test
     fun testScientificNotation() {
-        assertEquals(BigRatio.valueOf("23", "1"), reader.readOne("#e2.3e1"))
+        assertEquals(Ratio.valueOf("23", "1"), reader.readOne("#e2.3e1"))
         assertEquals(230L,    reader.readOne("#e23e1"))
         assertEquals(2.3e-5,  reader.readOne("#i2.3e-5"))
         assertEquals(2.3e-51, reader.readOne("#i2.3e-51"))

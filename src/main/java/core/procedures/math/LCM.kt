@@ -1,7 +1,7 @@
 package core.procedures.math
 
 import core.procedures.AFn
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import core.utils.Utils
 
@@ -21,7 +21,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
         else -> args.fold(args[0]!! as Number) { r, n -> lcm(r, n!! as Number) }
     }
 
-    private fun lcm(first: BigRatio, second: BigRatio) = BigRatio.valueOf(lcm(first.numerator, second.numerator),
+    private fun lcm(first: Ratio, second: Ratio) = Ratio.valueOf(lcm(first.numerator, second.numerator),
                                                                           GCD.gcd(first.denominator, second.denominator))
 
     fun lcm(first: BigInteger, second: BigInteger): BigInteger {
@@ -51,7 +51,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
         return when {
             f is Double     && s is Double     -> lcm(f.absoluteValue, s.absoluteValue)
             f is Float      && s is Float      -> lcm(f.toDouble().absoluteValue, s.toDouble().absoluteValue)
-            f is BigRatio   && s is BigRatio   -> lcm(f, s)
+            f is Ratio   && s is Ratio   -> lcm(f, s)
             f is BigDecimal && s is BigDecimal -> lcm(f, s)
             f is BigInteger && s is BigInteger -> lcm(f, s)
             else                               -> lcm(f.toLong().absoluteValue, s.toLong().absoluteValue)

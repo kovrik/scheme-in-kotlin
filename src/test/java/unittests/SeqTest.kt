@@ -1,7 +1,7 @@
 package unittests
 
 import core.exceptions.WrongTypeException
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Keyword
 import core.scm.MutableVector
 import org.junit.Test
@@ -140,7 +140,7 @@ class SeqTest : AbstractTest() {
         assertEquals(listOf(0.0, 2.5),           eval("(into '() (range 0 5 2.5))", env))
         assertEquals(listOf(0.0, 1.0, 2.0, 3.0), eval("(into '() (range 0 4 1.0))", env))
         assertEquals(listOf(0.0, 0.3, 0.6, 0.8999999999999999), eval("(into '() (range 0 1 0.3))", env))
-        assertEquals(listOf(0L, BigRatio.valueOf("1", "2"), BigRatio.ONE, BigRatio.valueOf("3", "2")),
+        assertEquals(listOf(0L, Ratio.valueOf("1", "2"), Ratio.ONE, Ratio.valueOf("3", "2")),
                      eval("(into '() (range 0 2 1/2))", env))
         assertEquals(listOf(1L, 2L),    eval("(into '() (take 2 (range 1 (/ (expt 123 123) (expt 33 123)))))", env))
         assertEquals(listOf<Nothing>(), eval("(into '() (range 0))", env))

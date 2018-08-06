@@ -2,7 +2,7 @@ package core.procedures.math
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.scm.BigRatio
+import core.scm.Ratio
 import core.scm.Type
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -19,7 +19,7 @@ class Abs : AFn<Number?, Number>(name = "abs", isPure = true, arity = Exactly(1)
         is Float      -> arg.absoluteValue
         is BigInteger -> arg.abs()
         is BigDecimal -> arg.abs()
-        is BigRatio   -> arg.abs()
+        is Ratio   -> arg.abs()
         else          -> abs(arg!!.toLong())
     }
 }
