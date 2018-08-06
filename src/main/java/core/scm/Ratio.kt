@@ -133,7 +133,7 @@ class Ratio : Number, Comparable<Ratio> {
         else -> compareTo(other as Ratio) == 0
     }
 
-    override fun toString() = if (denominator == BigInteger.ONE) numerator.toString() else "$numerator/$denominator"
+    override fun toString() = "$numerator/$denominator"
 
     override fun toInt()    = quotient().toInt()
     override fun toLong()   = quotient().toLong()
