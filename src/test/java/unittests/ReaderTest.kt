@@ -124,6 +124,13 @@ class ReaderTest : AbstractTest() {
         assertEquals("abc", reader.readOne("\"\\u61\\u62\\u63\""))
         assertEquals("abcd", reader.readOne("\"\\u61\\u62\\U63\\U64\""))
         assertEquals("జ్ఞ\u200Cా", reader.readOne("\"\\u0c1c\\u0c4d\\u0c1e\\u200c\\u0c3e\""))
+        assertEquals("SS", reader.readOne("\"\\123\\123\""))
+        try {
+            reader.readOne("\"\\zzzz\"")
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("reader: unknown escape sequence \\z in string", e.message)
+        }
         try {
             reader.readOne("\"test \\u\"")
             fail()
