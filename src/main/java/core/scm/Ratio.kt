@@ -13,14 +13,7 @@ class Ratio : Number, Comparable<Ratio> {
         val ZERO = Ratio(BigInteger.ZERO)
         val ONE  = Ratio(BigInteger.ONE)
 
-        private val CONSTANTS = hashMapOf("-2" to "-2".toBigInteger(),
-                                          "-1" to "-1".toBigInteger(),
-                                          "0"  to BigInteger.ZERO,
-                                          "1"  to BigInteger.ONE,
-                                          "2"  to "2".toBigInteger(),
-                                          "10" to BigInteger.TEN)
-
-        fun valueOf(numerator: String, denominator: String) = valueOf(parseBigInteger(numerator), parseBigInteger(denominator))
+        fun valueOf(numerator: String, denominator: String) = valueOf(numerator.toBigInteger(), denominator.toBigInteger())
 
         fun valueOf(numerator: BigInteger, denominator: BigInteger) = when {
             BigInteger.ZERO == denominator -> throw ArithmeticException("Division by zero")
@@ -29,8 +22,6 @@ class Ratio : Number, Comparable<Ratio> {
             BigInteger.ONE  == denominator -> Ratio(numerator)
             else -> Ratio(numerator, denominator)
         }
-
-        private fun parseBigInteger(number: String) = CONSTANTS.getOrDefault(number, number.toBigInteger())
     }
 
     val numerator: BigInteger
@@ -70,7 +61,7 @@ class Ratio : Number, Comparable<Ratio> {
     val isNegative: Boolean
         get() = signum() == -1
 
-    fun abs() = Ratio(numerator.abs(), denominator.abs())
+    fun abs() = valueOf(numerator.abs(), denominator.abs())
 
     /* Rolls back to DEFAULT_CONTEXT if result cannot be represented with UNLIMITED precision */
     private fun safeBigDecimalDivision(num: BigDecimal, den: BigDecimal): BigDecimal = try {
@@ -99,14 +90,14 @@ class Ratio : Number, Comparable<Ratio> {
 
     fun truncate() = if (isNegative) ceiling() else floor()
 
-    operator fun times(other: Ratio) = Ratio(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
+    operator fun times(other: Ratio) = valueOf(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
 
-    operator fun times(other: BigInteger) = Ratio(numerator.multiply(other), denominator)
+    operator fun times(other: BigInteger) = valueOf(numerator.multiply(other), denominator)
 
     operator fun plus(other: Ratio): Ratio {
         val numerator = numerator.multiply(other.denominator).add(other.numerator.multiply(denominator))
         val denominator = denominator.multiply(other.denominator)
-        return Ratio(numerator, denominator)
+        return valueOf(numerator, denominator)
     }
 
     operator fun minus(other: Ratio) = plus(-other)
@@ -115,11 +106,11 @@ class Ratio : Number, Comparable<Ratio> {
 
     operator fun rem(other: Ratio) = this.toBigDecimal() % other.toBigDecimal()
 
-    operator fun unaryMinus() = Ratio(numerator.negate(), denominator)
+    operator fun unaryMinus() = valueOf(numerator.negate(), denominator)
 
     fun signum() = numerator.signum() * denominator.signum()
 
-    fun reciprocal() = Ratio(denominator, numerator)
+    fun reciprocal() = valueOf(denominator, numerator)
 
     private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), MathContext.DECIMAL128)
 
