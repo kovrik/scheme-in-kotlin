@@ -7,6 +7,7 @@ import core.scm.BigRatio
 import core.scm.Keyword
 import core.scm.MutableVector
 import core.scm.Symbol
+import core.scm.Syntax
 import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
 import org.junit.Assert.*
@@ -452,5 +453,11 @@ class ReaderTest : AbstractTest() {
         assertEquals(BigDecimal::class.javaObjectType, reader.readOne(" 1234567890123456.0")!!::class.java)
         assertEquals(BigDecimal::class.javaObjectType, reader.readOne("+1234567890123456.0")!!::class.java)
         assertEquals(BigDecimal::class.javaObjectType, reader.readOne("-1234567890123456.0")!!::class.java)
+    }
+
+    @Test
+    fun testReadSyntax() {
+        assertTrue(reader.readOne("#'1") is Syntax)
+        assertEquals(1L, (reader.readOne("#'1") as Syntax).template)
     }
 }
