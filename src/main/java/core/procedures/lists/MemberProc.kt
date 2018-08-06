@@ -5,7 +5,6 @@ import core.procedures.AFn
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
-import core.utils.Utils
 import core.Writer
 import core.procedures.Arity.Exactly
 
@@ -24,7 +23,7 @@ class MemberProc(override val name: String, private inline val predicate: AFn<An
         var p = 0
         var cons: Any? = list
         while (cons is List<*> && !cons.isEmpty()) {
-            if (Utils.toBoolean(predicate(arg1, car(cons)))) {
+            if (predicate(arg1, car(cons))) {
                 return cons
             }
             cons = cdr(cons)
