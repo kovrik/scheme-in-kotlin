@@ -127,9 +127,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
             /* Op is a valid invokable object (procedure)
              * Scheme has applicative order, so evaluate all arguments first
              * and then invoke operator (IFn) via helper method */
-            is IFn<*, *> -> AFn.invokeN(op, arrayOfNulls<Any>(size - 1).apply {
-                for (i in 0 until size) { set(i, eval(this@eval[i + 1], env)) }
-            })
+            is IFn<*, *> -> AFn.invokeN(op, drop(1).map { eval(it, env) }.toTypedArray())
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
         }
