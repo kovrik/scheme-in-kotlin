@@ -5,14 +5,14 @@ import core.procedures.AFn
 import core.procedures.Arity.AtLeast
 import core.procedures.IFn
 import core.scm.Symbol
-import core.scm.ThunkSeq
+import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-open class MapProc : AFn<Any?, Any?>(name = "map", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java)) {
+open class MapProc : AFn<Any?, Thunk<*>>(name = "map", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java)) {
 
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
-        2 -> ThunkSeq(object : Sequence<Any?> {
+        2 -> Thunk(object : Sequence<Any?> {
             override fun iterator(): Iterator<Any?> = object : Iterator<Any?> {
 
                 private val fn = args[0] as? IFn<*, *> ?: throw WrongTypeException(name, "Procedure", args[0])
@@ -28,7 +28,7 @@ open class MapProc : AFn<Any?, Any?>(name = "map", arity = AtLeast(2), mandatory
                 }
             }
         })
-        else -> ThunkSeq(object : Sequence<Any?> {
+        else -> Thunk(object : Sequence<Any?> {
             override fun iterator(): Iterator<Any?> = object : Iterator<Any?> {
 
                 private val fn = args[0] as? IFn<*, *> ?: throw WrongTypeException(name, "Procedure", args[0])

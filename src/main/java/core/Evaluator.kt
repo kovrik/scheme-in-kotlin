@@ -37,23 +37,29 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     fun macroexpandAndEvaluate(sexp: Any?, env: Environment) = eval(macroexpander.expand(sexp), env)
 
     /* Main eval */
-    fun eval(sexp: Any?, env: Environment): Any? = try {
-        /* TCO: This is our Trampoline */
-        var result = evalIter(sexp, env)
-        while (result is Thunk<*> || result is ThunkSeq<*>) {
-            when (result) {
-                is Thunk<*> -> result = evalIter(result.expr, result.context ?: env)
-                // TODO more elegant solution?
-                is ThunkSeq<*> -> {
-                    /* Evaluate thunk sequence and wrap it in a Caching Seq */
-                    val context = result.context ?: env
-                    result = result.map { eval(it, context) }.cached()
-                }
-            }
+    fun eval(sexp: Any?, env: Environment): Any? = evalIter(sexp, env).let {
+        when (it) {
+            /* Eagerly evaluate thunks */
+            is Thunk<*> -> it.eval(it.context ?: env)
+            is BigRatio -> Utils.downcastNumber(it)
+            else        -> it
         }
-        when (result) {
-            is BigRatio -> Utils.downcastNumber(result)
-            else -> result
+    }
+
+    /**
+     * One iteration of evaluation.
+     * Returns the end result or a Thunk object.
+     * If Thunk is returned, then eval() method (trampoline) continues evaluation.
+     */
+    private fun evalIter(sexp: Any?, env: Environment) = try {
+        when (sexp) {
+            is Symbol      -> sexp.eval(env)
+            is List<*>     -> sexp.eval(env)
+            is Map<*, *>   -> sexp.eval(env)
+            is Vector      -> sexp.eval(env)
+            is Set<*>      -> sexp.eval(env)
+            is Sequence<*> -> sexp.eval(env)
+            else           -> sexp
         }
     } catch (cc: CalledContinuation) {
         /* We have one-shot continuations only, not full continuations.
@@ -63,19 +69,17 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         throw cc
     }
 
-    /**
-     * One iteration of evaluation.
-     * Returns the end result or a Thunk object.
-     * If Thunk is returned, then eval() method (trampoline) continues evaluation.
-     */
-    private fun evalIter(sexp: Any?, env: Environment) = when (sexp) {
-        is Symbol    -> sexp.eval(env)
-        is List<*>   -> sexp.eval(env)
-        is Map<*, *> -> sexp.eval(env)
-        is Vector    -> sexp.eval(env)
-        is Set<*>    -> sexp.eval(env)
-        else         -> sexp
+    /* Evaluate Thunk */
+    private tailrec fun Thunk<*>.eval(env: Environment): Any? {
+        val result = evalIter(expr, context ?: env)
+        return when (result) {
+            is Thunk<*> -> result.eval(env)
+            else -> result
+        }
     }
+
+    /* Evaluate Sequence */
+    private fun Sequence<*>.eval(env: Environment) = map { eval(it, env) }.cached()
 
     /* Evaluate Symbol */
     private fun Symbol.eval(env: Environment) = env.resolve(this).let {
