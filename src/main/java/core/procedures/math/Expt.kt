@@ -177,7 +177,7 @@ class Expt : AFn<Number?, Number>(name = "expt", isPure = true, arity = Exactly(
         /* Double */
         val result = b.toDouble().pow(ex.toDouble())
         return when {
-            result.isNaN() -> Complex.of(b).expt(Complex.of(ex))
+            result.isNaN() -> Complex.valueOf(b).expt(Complex.valueOf(ex))
             !result.isFinite() -> Utils.toBigDecimal(b).pow(ex.toInt())
             else -> result
         }

@@ -22,7 +22,7 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, arity = E
         when {
             it.signum() == 0 -> it
             first.signum() > 0 == second.signum() > 0 -> it
-            else -> second.add(it)
+            else -> second + it
         }
     }
 
@@ -30,7 +30,7 @@ open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, arity = E
         when {
             it.signum() == 0 -> it
             first.signum() > 0 == second.signum() > 0 -> it
-            else -> second.add(it)
+            else -> second + it
         }
     }
 

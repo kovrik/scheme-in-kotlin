@@ -40,16 +40,16 @@ class Acos : AFn<Number?, Number>(name = "acos", isPure = true, arity = Exactly(
         val precision = Math.max(Utils.integerDigits(r), Utils.integerDigits(i))
         if (precision >= Utils.DEFAULT_SCALE) {
             val context = MathContext(precision)
-            val b2 = i.multiply(i)
-            val L = r.add(BigDecimal.ONE).multiply(r.add(BigDecimal.ONE)).add(b2).sqrt(context)
-            val R = r.subtract(BigDecimal.ONE).multiply(r.subtract(BigDecimal.ONE)).add(b2).sqrt(context)
-            val A = L.subtract(R).divide(Utils.TWO)
+            val b2 = i * i
+            val L = (((r + BigDecimal.ONE) * (r + BigDecimal.ONE)) + b2).sqrt(context)
+            val R = (((r - BigDecimal.ONE) * (r - BigDecimal.ONE)) + b2).sqrt(context)
+            val A = (L - R).divide(Utils.TWO)
 
             val re = acos(A.toDouble())
             if (!Utils.isFinite(re)) {
                 return re
             }
-            val B = L.add(R).divide(Utils.TWO)
+            val B = (L + R).divide(Utils.TWO)
             val im = ln(B.add(B.multiply(B).subtract(BigDecimal.ONE).sqrt(context)).toDouble())
             if (!Utils.isFinite(im)) {
                 return im

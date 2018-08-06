@@ -8,7 +8,7 @@ class Conjugate : AFn<Number?, Number?>(name = "conjugate", isPure = true, arity
                                         mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?) = when (arg) {
-        is Complex -> Complex(arg.re, arg.im.negate())
+        is Complex -> Complex(arg.re, -arg.im)
         else -> arg
     }
 }

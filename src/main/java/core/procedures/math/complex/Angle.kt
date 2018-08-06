@@ -12,6 +12,6 @@ class Angle : AFn<Number?, Number>(name = "angle", isPure = true, arity = Exactl
 
     private fun angle(number: Number) = when {
         Utils.isZero(number) -> throw ArithmeticException("$name: undefined for 0")
-        else -> Complex.of(number).angle()
+        else -> Complex.valueOf(number).angle()
     }
 }

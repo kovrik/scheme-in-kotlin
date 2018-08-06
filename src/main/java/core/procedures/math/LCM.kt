@@ -27,7 +27,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     fun lcm(first: BigInteger, second: BigInteger): BigInteger {
         val f = first.abs()
         val s = second.abs()
-        return f.multiply(s.divide(GCD.gcd(f, s)))
+        return f * s.divide(GCD.gcd(f, s))
     }
 
     private fun lcm(a: BigDecimal, b: BigDecimal): Number = when {

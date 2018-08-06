@@ -485,7 +485,7 @@ object Utils {
         f.javaClass == s.javaClass   -> f to s
         !isFinite(f) || !isFinite(s) -> f to s
         isInexact(f) || isInexact(s) -> when {
-            f is Complex || s is Complex -> Complex.of(f) to Complex.of(s)
+            f is Complex || s is Complex -> Complex.valueOf(f) to Complex.valueOf(s)
             f is Ratio   || s is Ratio   -> f.toDouble()     to s.toDouble()
             f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
             f is BigInteger || s is BigInteger -> toBigDecimal(f)  to toBigDecimal(s)
@@ -494,7 +494,7 @@ object Utils {
             else                               -> f to s
         }
         else -> when {
-            f is Complex || s is Complex -> Complex.of(f) to Complex.of(s)
+            f is Complex || s is Complex -> Complex.valueOf(f) to Complex.valueOf(s)
             f is Ratio   || s is Ratio   -> toBigRatio(f)    to toBigRatio(s)
             f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
             f is BigInteger || s is BigInteger -> toBigInteger(f)  to toBigInteger(s)

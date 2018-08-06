@@ -5,6 +5,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
+import kotlin.math.max
 
 class Ratio : Number, Comparable<Ratio> {
 
@@ -35,13 +36,13 @@ class Ratio : Number, Comparable<Ratio> {
         }
         // reduce fraction
         val g = numerator.gcd(denominator)
-        val den = denominator.divide(g)
+        val den = denominator / g
         // to ensure invariant that denominator is positive
         if (den.signum() < 0) {
-            this.numerator = numerator.divide(g).negate()
-            this.denominator = den.negate()
+            this.numerator = -numerator / g
+            this.denominator = -den
         } else {
-            this.numerator = numerator.divide(g)
+            this.numerator = numerator / g
             this.denominator = den
         }
     }
@@ -73,7 +74,7 @@ class Ratio : Number, Comparable<Ratio> {
     fun toBigDecimal() = safeBigDecimalDivision(numerator.toBigDecimal(), denominator.toBigDecimal())
 
     fun toBigDecimalInexact(): BigDecimal = safeBigDecimalDivision(numerator.toBigDecimal(), denominator.toBigDecimal()).let {
-        it.setScale(maxOf(1, it.scale()), Utils.ROUNDING_MODE)
+        it.setScale(max(1, it.scale()), Utils.ROUNDING_MODE)
     }
 
     fun ceiling(): Ratio {
@@ -90,15 +91,11 @@ class Ratio : Number, Comparable<Ratio> {
 
     fun truncate() = if (isNegative) ceiling() else floor()
 
-    operator fun times(other: Ratio) = valueOf(numerator.multiply(other.numerator), denominator.multiply(other.denominator))
+    operator fun times(other: Ratio) = valueOf(numerator * other.numerator, denominator * other.denominator)
 
-    operator fun times(other: BigInteger) = valueOf(numerator.multiply(other), denominator)
+    operator fun times(other: BigInteger) = valueOf(numerator * other, denominator)
 
-    operator fun plus(other: Ratio): Ratio {
-        val numerator = numerator.multiply(other.denominator).add(other.numerator.multiply(denominator))
-        val denominator = denominator.multiply(other.denominator)
-        return valueOf(numerator, denominator)
-    }
+    operator fun plus(other: Ratio) = valueOf(numerator * other.denominator + other.numerator * denominator, denominator * other.denominator)
 
     operator fun minus(other: Ratio) = plus(-other)
 
@@ -106,7 +103,7 @@ class Ratio : Number, Comparable<Ratio> {
 
     operator fun rem(other: Ratio) = this.toBigDecimal() % other.toBigDecimal()
 
-    operator fun unaryMinus() = valueOf(numerator.negate(), denominator)
+    operator fun unaryMinus() = valueOf(-numerator, denominator)
 
     fun signum() = numerator.signum() * denominator.signum()
 
@@ -114,7 +111,7 @@ class Ratio : Number, Comparable<Ratio> {
 
     private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), MathContext.DECIMAL128)
 
-    override fun compareTo(other: Ratio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
+    override fun compareTo(other: Ratio) = (numerator * other.denominator).compareTo(denominator * other.numerator)
 
     override fun hashCode() = this.toString().hashCode()
 

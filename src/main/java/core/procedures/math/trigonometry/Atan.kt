@@ -34,10 +34,10 @@ class Atan : AFn<Number?, Number>(name = "atan", isPure = true, arity = Exactly(
         val b2 = b * b
         val re = when {
             /* when x = 0 and -1 < y < 1 */
-            r.signum() == 0 && i > BigDecimal.ONE.negate() && i < BigDecimal.ONE -> 0.0
+            r.signum() == 0 && i > -BigDecimal.ONE && i < BigDecimal.ONE -> 0.0
             /* when x = 0 and 1 < y^2
              * re(arctan(x + iy)) = pi/2 */
-            r.signum() == 0 && i.multiply(i) > BigDecimal.ONE -> PI / 2
+            r.signum() == 0 && i * i > BigDecimal.ONE -> PI / 2
             /* when x > 0
              * re(arctan(x + iy)) = pi/4 - (1/2) arctan ( (1 - x^2 - y^2)/(2x) ) */
             r.signum() > 0 -> PI / 4 - 0.5 * atan((1.0 - a2 - b2) / (2 * a))

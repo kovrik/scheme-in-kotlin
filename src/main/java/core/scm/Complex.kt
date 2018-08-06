@@ -9,6 +9,7 @@ import java.lang.UnsupportedOperationException
 import java.math.BigDecimal
 import kotlin.math.PI
 import kotlin.math.atan
+import kotlin.math.max
 
 /**
  * TODO Implement rational Real and Imaginary parts: 1/2+3/4i
@@ -20,7 +21,7 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val I = Complex(BigDecimal.ZERO, BigDecimal.ONE)
 
         /* Convert Number to BigComplex */
-        fun of(number: Number) = number as? Complex ?: Complex(number)
+        fun valueOf(number: Number) = number as? Complex ?: Complex(number)
 
         private val sqrt = Sqrt()
         private val expt = Expt()
@@ -41,8 +42,8 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val minScale = if (tre.scale() > 0 || tim.scale() > 0) 1 else 0
         val reScaleStripped = tre.stripTrailingZeros().scale()
         val imScaleStripped = tim.stripTrailingZeros().scale()
-        val reScale = minOf(Utils.DEFAULT_SCALE, maxOf(minScale, reScaleStripped))
-        val imScale = minOf(Utils.DEFAULT_SCALE, maxOf(minScale, imScaleStripped))
+        val reScale = minOf(Utils.DEFAULT_SCALE, max(minScale, reScaleStripped))
+        val imScale = minOf(Utils.DEFAULT_SCALE, max(minScale, imScaleStripped))
         this.re = if (reScaleStripped > 0) tre.setScale(reScale, Utils.ROUNDING_MODE).stripTrailingZeros() else tre.setScale(reScale, Utils.ROUNDING_MODE)
         this.im = if (imScaleStripped > 0) tim.setScale(imScale, Utils.ROUNDING_MODE).stripTrailingZeros() else tim.setScale(imScale, Utils.ROUNDING_MODE)
     }
@@ -51,27 +52,22 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
 
     /* Addition */
     operator fun plus(other: Number) = when (other) {
-        is Complex -> Complex(re.add(other.re), im.add(other.im))
-        else -> Complex(re.add(Utils.toBigDecimal(other)), im)
+        is Complex -> Complex(re + other.re, im + other.im)
+        else -> Complex(re + Utils.toBigDecimal(other), im)
     }
 
     /* Subtraction */
     operator fun minus(other: Number) = when (other) {
-        is Complex -> Complex(re.subtract(other.re), im.subtract(other.im))
-        else -> Complex(re.subtract(Utils.toBigDecimal(other)), im)
+        is Complex -> Complex(re - other.re, im - other.im)
+        else -> Complex(re - Utils.toBigDecimal(other), im)
     }
 
     /**
      * Multiplication
      * (a + bi)(c + di) = (ac - bd) + (bc + ad)i
      */
-    operator fun times(other: Number): Complex {
-        val o = of(other)
-        val a = this.re
-        val b = this.im
-        val c = o.re
-        val d = o.im
-        return Complex(a.multiply(c).subtract(b.multiply(d)), b.multiply(c).add(a.multiply(d)))
+    operator fun times(other: Number) = valueOf(other).let {
+        Complex(re * it.re - im * it.im, im * it.re + re * it.im)
     }
 
     /**
@@ -81,9 +77,9 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * delta = sign(b) * sqrt((-a + (a*a + b*b)/2)
      */
     fun sqrt(): Complex {
-        val s = (re.multiply(re).add(im.multiply(im))).sqrt(Utils.DEFAULT_CONTEXT)
-        val gamma = (s.add(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT)
-        val delta = (s.minus(re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT)).sqrt(Utils.DEFAULT_CONTEXT).multiply(im.signum().toBigDecimal())
+        val s = (re * re + im * im).sqrt(Utils.DEFAULT_CONTEXT)
+        val gamma = (s + re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT).sqrt(Utils.DEFAULT_CONTEXT)
+        val delta = (s - re).divide(Utils.TWO, Utils.DEFAULT_CONTEXT).sqrt(Utils.DEFAULT_CONTEXT).multiply(im.signum().toBigDecimal())
         return Complex(gamma, delta)
     }
 
@@ -94,14 +90,10 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * c + di    c*c + d*d     c*c + d*d
      */
     operator fun div(other: Number): Complex {
-        val o = of(other)
-        val a = this.re
-        val b = this.im
-        val c = o.re
-        val d = o.im
-        val real  = a.multiply(c).add(b.multiply(d))
-        val imag  = b.multiply(c).subtract(a.multiply(d))
-        val denom = c.multiply(c).add(d.multiply(d))
+        val o = valueOf(other)
+        val real  = re * o.re + im * o.im
+        val imag  = im * o.re - re * o.im
+        val denom = o.re * o.re + o.im * o.im
         return Complex(real.divide(denom, Utils.DEFAULT_CONTEXT), imag.divide(denom, Utils.DEFAULT_CONTEXT))
     }
 
@@ -130,7 +122,7 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
         }
         val r = magnitude()
         val t = angle()
-        val A = multiplication(expt(r, c), exp(multiplication(t, d.negate())))
+        val A = multiplication(expt(r, c), exp(multiplication(t, -d)))
         val B = addition.add(multiplication(c, t), multiplication(d, log(r)))
         val re = multiplication(A, cos(B!!))
         val im = multiplication(A, sin(B))
@@ -147,7 +139,7 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
      * Magnitude (Absolute value, Modulus) of Complex number
      * r = |z| = |a+bi| = sqrt(a^2 + b^2)
      */
-    fun magnitude() = sqrt(addition.add(re.multiply(re), im.multiply(im)))
+    fun magnitude() = sqrt(re * re + im * im)
 
     /**
      * Angle (Argument, Phase) of Complex number
@@ -178,10 +170,10 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
         else -> re == (other as Complex).re && im == other.im
     }
 
-    override fun hashCode() = 31 * re.hashCode() + (im.hashCode())
+    override fun hashCode() = 31 * re.hashCode() + im.hashCode()
 
     override fun toString() = when {
-        im.signum() < 0 -> "$re-${im.negate()}i"
+        im.signum() < 0 -> "$re-${-im}i"
         else            -> "$re+${im}i"
     }
 
