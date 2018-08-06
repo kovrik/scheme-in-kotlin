@@ -3,6 +3,7 @@ package core.scm
 import core.utils.Utils
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.MathContext
 import java.math.RoundingMode
 
 class Ratio : Number, Comparable<Ratio> {
@@ -120,7 +121,7 @@ class Ratio : Number, Comparable<Ratio> {
 
     fun reciprocal() = Ratio(denominator, numerator)
 
-    private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), 32, RoundingMode.HALF_EVEN)
+    private fun quotient() = numerator.toBigDecimal().divide(denominator.toBigDecimal(), MathContext.DECIMAL128)
 
     override fun compareTo(other: Ratio) = numerator.multiply(other.denominator).compareTo(denominator.multiply(other.numerator))
 
