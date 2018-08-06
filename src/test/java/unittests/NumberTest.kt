@@ -137,6 +137,10 @@ class NumberTest : AbstractTest() {
         assertEquals(Ratio.valueOf("-71", "12"), eval("(- 1/12 (short 6))", env))
         assertEquals(Ratio.valueOf("5", "23"), eval("(* 1/23 (short 5))", env))
         assertEquals(Ratio.valueOf("1", "115"), eval("(/ 1/23 (short 5))", env))
+        assertEquals(9L  , eval("(floor    9999999999999/1000000000000)", env))
+        assertEquals(-10L, eval("(floor   -9999999999999/1000000000000)", env))
+        assertEquals(10L,  eval("(ceiling  9999999999999/1000000000000)", env))
+        assertEquals(-9L,  eval("(ceiling -9999999999999/1000000000000)", env))
     }
 
     @Test
