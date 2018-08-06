@@ -185,6 +185,18 @@ class ReaderTest : AbstractTest() {
         } catch (e: IllegalSyntaxException) {
             assertEquals("reader: unexpected list terminator: )", e.message)
         }
+        try {
+            reader.readOne("}")
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("reader: unexpected terminator: }", e.message)
+        }
+        try {
+            reader.readOne("]")
+            fail()
+        } catch (e: IllegalSyntaxException) {
+            assertEquals("reader: unexpected vector terminator: ]", e.message)
+        }
     }
 
     @Test
