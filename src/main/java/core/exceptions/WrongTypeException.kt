@@ -20,7 +20,9 @@ class WrongTypeException : IllegalArgumentException {
 
     companion object {
         /* Override type names for some classes */
-        private val CUSTOM_TYPE_NAMES = hashMapOf(Int::class.javaObjectType   to "Integer",
+        private val CUSTOM_TYPE_NAMES = hashMapOf(Int::class.java             to "Integer",
+                                                  Int::class.javaObjectType   to "Integer",
+                                                  Long::class.java            to "Integer",
                                                   Long::class.javaObjectType  to "Integer",
                                                   Type.Rational::class.java   to "Rational",
                                                   Complex::class.java      to "Complex",
