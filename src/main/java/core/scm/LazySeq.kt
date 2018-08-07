@@ -3,13 +3,12 @@ package core.scm
 import core.Evaluator
 import core.environment.Environment
 import core.utils.Utils
-import core.utils.cached
 
 class LazySeq(private val form: List<Any?>, private val env: Environment, private val evaluator: Evaluator) : Sequence<Any?> {
 
     internal var realized = false
 
-    override fun iterator() = seq.cached().iterator()
+    override fun iterator() = seq.iterator()
 
     private val seq: Sequence<Any?> by lazy {
         realized = true
