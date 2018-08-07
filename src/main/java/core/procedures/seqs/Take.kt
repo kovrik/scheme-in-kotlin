@@ -7,8 +7,10 @@ import core.utils.Utils
 class Take : AFn<Any?, Any?>(name = "take", isPure = true, arity = Exactly(2),
                              mandatoryArgsTypes = arrayOf(Int::class.javaObjectType)) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?) = when {
-        ((arg1 as Number).toInt()) > 0 -> Utils.toSequence(arg2).take(arg1.toInt())
-        else -> emptySequence()
+    override operator fun invoke(arg1: Any?, arg2: Any?) = with(arg1!! as Number) {
+        when (toInt() > 0) {
+            true  -> Utils.toSequence(arg2).take(toInt())
+            false -> emptySequence()
+        }
     }
 }

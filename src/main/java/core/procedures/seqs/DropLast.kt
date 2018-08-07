@@ -12,7 +12,7 @@ class DropLast : AFn<Any?, Sequence<Any?>>(name = "drop-last", isPure = true, ar
 
     override operator fun invoke(args: Array<out Any?>): Sequence<Any?> {
         val n = when (args.size) {
-            2 -> when (Type.assertType(name, args[0], Type.Real::class.java) && Utils.isInteger(args[0])) {
+            2 -> when (Type.assertType(name, args[0], Int::class.java)) {
                 true  -> (args[0] as Number).toInt()
                 false -> ceiling(args[0] as Number).toInt()
             }

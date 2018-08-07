@@ -6,5 +6,5 @@ import core.utils.Utils
 
 class Last : AFn<Any?, Any?>(name = "last", isPure = true, arity = Exactly(1)) {
 
-    override operator fun invoke(arg: Any?): Any? = Utils.toSequence(arg).let { if (it.iterator().hasNext()) it.last() else null }
+    override operator fun invoke(arg: Any?) = Utils.toSequence(arg).lastOrNull()
 }
