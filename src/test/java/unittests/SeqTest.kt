@@ -280,5 +280,10 @@ class SeqTest : AbstractTest() {
                               "       (work (map (lambda (n) (swap! b inc)) [nil])))" +
                               "  (str work) (str work) (str work)" +
                               "  @b)", env))
+
+        assertEquals(3L, eval("(let* ((b (atom 0))" +
+                              "       (work (map (lambda (n) (swap! b inc)) [nil nil nil])))" +
+                              "  (str work) (str work) (str work)" +
+                              "  @b)", env))
     }
 }
