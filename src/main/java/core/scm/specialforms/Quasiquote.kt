@@ -14,6 +14,7 @@ import core.procedures.vectors.ListToVector
 import core.procedures.vectors.VectorToList
 import core.scm.Vector
 import core.Writer
+import core.scm.MutableVector
 
 import kotlin.collections.Set
 
@@ -24,9 +25,6 @@ import kotlin.collections.Set
 object Quasiquote : SpecialForm("quasiquote") {
 
     private val setProc      = SetProc()
-    private val listToVector = ListToVector()
-    private val vectorToList = VectorToList()
-    private val first        = First()
     private val car          = Car()
     private val cdr          = Cdr()
     private val cons         = ConsProc()
@@ -57,8 +55,28 @@ object Quasiquote : SpecialForm("quasiquote") {
             2    -> evaluator.eval(expr[1], env)
             else -> throw IllegalSyntaxException(Unquote.toString(), Writer.write(expr), "unquote expects exactly one expression")
         }
-        expr is Vector  -> quasiquoteVector(expr, env, evaluator)
-        expr is Set<*>  -> quasiquoteSet(expr, env, evaluator)
+        expr is Vector -> {
+            if (expr.first() == Unquote.symbol || expr.first() == UnquoteSplicing.symbol) {
+                throw IllegalSyntaxException(expr.first().toString(), Writer.write(expr), "invalid context within quasiquote")
+            }
+            quasiquoteList(0, expr.toList(), env, evaluator).let {
+                when {
+                    !Predicate.isProperList(it) -> throw IllegalSyntaxException("read: illegal use of '.'")
+                    else -> MutableVector(it as List<*>)
+                }
+            }
+        }
+        expr is Set<*> -> {
+            if (expr.first() == Unquote.symbol || expr.first() == UnquoteSplicing.symbol) {
+                throw IllegalSyntaxException(expr.first().toString(), Writer.write(expr), "invalid context within quasiquote")
+            }
+            quasiquoteList(0, expr.toList(), env, evaluator).let {
+                when {
+                    !Predicate.isProperList(it) -> throw IllegalSyntaxException("read: illegal use of '.'")
+                    else -> setProc(it)
+                }
+            }
+        }
         expr is List<*> -> quasiquoteList(0, expr, env, evaluator)
         /* (quasiquote datum) => (quote datum) */
         else -> expr
@@ -137,35 +155,5 @@ object Quasiquote : SpecialForm("quasiquote") {
             }
         }
         return result
-    }
-
-    // TODO Optimize vector->list and list-<vector conversions
-    private fun quasiquoteVector(expr: Vector, env: Environment, evaluator: Evaluator): Any {
-        /* `#(unquote 1)  syntax is not valid */
-        /* `,@#(list 1 2) syntax is not valid */
-        if (expr[0] == Unquote.symbol || expr[0] == UnquoteSplicing.symbol) {
-            throw IllegalSyntaxException(expr[0]!!.toString(), Writer.write(expr), "invalid context within quasiquote")
-        }
-        val result = quasiquoteList(0, vectorToList(expr), env, evaluator)
-        // FIXME throw "illegal use of '.'" in Reader instead
-        if (!Predicate.isProperList(result)) {
-            throw IllegalSyntaxException("read: illegal use of '.'")
-        }
-        return listToVector(result as List<*>)
-    }
-
-    private fun quasiquoteSet(expr: Set<*>, env: Environment, evaluator: Evaluator): Any {
-        /* `#(unquote 1)  syntax is not valid */
-        /* `,@#(list 1 2) syntax is not valid */
-        val first = first(expr)
-        if (first == Unquote.symbol || first == UnquoteSplicing.symbol) {
-            throw IllegalSyntaxException(first.toString(), Writer.write(expr), "invalid context within quasiquote")
-        }
-        val result = quasiquoteList(0, listOf(expr), env, evaluator)
-        // FIXME throw "illegal use of '.'" in Reader instead
-        if (!Predicate.isProperList(result)) {
-            throw IllegalSyntaxException("read: illegal use of '.'")
-        }
-        return setProc(result)
     }
 }
