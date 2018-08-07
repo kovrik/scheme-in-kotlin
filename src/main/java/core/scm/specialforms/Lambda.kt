@@ -39,7 +39,7 @@ object Lambda : SpecialForm("lambda") {
             else -> throw IllegalSyntaxException(toString(), Writer.write(form), "bad argument sequence: ($args)")
         }
         /* Get the body and add implicit Begin if multiple body forms */
-        val body  = if (form.size == 3) form[2] else listOf(Begin).plus(form.drop(2))
+        val body  = if (form.size == 3) form[2] else listOf(Begin) + form.drop(2)
         val arity = if (variadic) AtLeast(0) else Exactly(params.size)
         return Closure(params, body, env, arity)
     }

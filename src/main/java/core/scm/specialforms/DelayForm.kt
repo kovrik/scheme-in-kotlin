@@ -14,6 +14,6 @@ object DelayForm : SpecialForm("delay") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
         1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
         2    -> Delay(form[1], env, evaluator)
-        else -> Delay(listOf(Begin).plus(form.drop(1)), env, evaluator)
+        else -> Delay(listOf(Begin) + form.drop(1), env, evaluator)
     }
 }

@@ -16,6 +16,6 @@ object Launch : SpecialForm("launch") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
         1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
         2    -> launch { evaluator.eval(form[1], env) }
-        else -> launch { evaluator.eval(listOf(Begin).plus(form.drop(1)), env) }
+        else -> launch { evaluator.eval(listOf(Begin) + form.drop(1), env) }
     }
 }

@@ -14,6 +14,6 @@ object LazyForm : SpecialForm("lazy") {
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
         1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
         2    -> Lazy(form[1], env, evaluator)
-        else -> Lazy(listOf(Begin).plus(form.drop(1)), env, evaluator)
+        else -> Lazy(listOf(Begin) + form.drop(1), env, evaluator)
     }
 }

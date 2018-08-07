@@ -122,8 +122,8 @@ object Quasiquote : SpecialForm("quasiquote") {
                                 /* Unquote Splicing: splice and append elements into resulting list */
                                 /* `(,@(list 1 2 3)) => `(1 2 3) */
                                 UnquoteSplicing.symbol -> when (eval) {
-                                    is Sequence<*>   -> (result as List<*>).plus(eval)
-                                    is Collection<*> -> (result as List<*>).plus(eval)
+                                    is Sequence<*>   -> (result as List<*>) + eval
+                                    is Collection<*> -> (result as List<*>) + eval
                                     else -> eval
                                 }
                                 /* Unquote: append list with results */

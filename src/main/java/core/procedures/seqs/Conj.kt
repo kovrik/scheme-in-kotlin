@@ -11,10 +11,10 @@ class Conj : AFn<Any?, Any?>(name = "conj", arity = AtLeast(1)) {
         if (args.size == 1) return args[0]
         val first = args[0]
         return when (first) {
-            is Sequence<*> -> first.plus(args.copyOfRange(1, args.size))
-            is List<*>     -> first.plus(args.copyOfRange(1, args.size)).toList()
-            is Set<*>      -> MutableSet(first.plus(args.copyOfRange(1, args.size)))
-            is Vector      -> MutableVector(first.plus(args.copyOfRange(1, args.size)))
+            is Sequence<*> -> first + args.copyOfRange(1, args.size)
+            is List<*>     -> (first + args.copyOfRange(1, args.size)).toList()
+            is Set<*>      -> MutableSet(first + args.copyOfRange(1, args.size))
+            is Vector      -> MutableVector(first + args.copyOfRange(1, args.size))
             is BooleanArray -> BooleanArray(first.size + args.size - 1).apply {
                 for (i in 0 until first.size) { this[i] = first[i] }
                 for (i in 1 until args.size) {

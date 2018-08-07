@@ -59,7 +59,7 @@ object Let : SpecialForm("let") {
             }
             val lambdaBody = form[3]
             val lambda = listOf(Lambda, lambdaArgs, lambdaBody)
-            val body = listOf(name).plus(initValues)
+            val body = listOf(name) + initValues
             /* Named let is implemented via letrec (letrec has TCO) */
             return LetRec.eval(listOf(LetRec, listOf(listOf(name, lambda)), body), Environment(env), evaluator)
         }

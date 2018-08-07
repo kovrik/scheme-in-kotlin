@@ -6,7 +6,7 @@ import core.utils.Utils
 class ConsSeq(first: Any?, rest: Any?) : Sequence<Any?> {
 
     private val seq = when {
-        Utils.isSeqable(rest) -> sequenceOf(first).plus(Utils.toSequence(rest))
+        Utils.isSeqable(rest) -> sequenceOf(first) + Utils.toSequence(rest)
         else -> sequenceOf(first, rest)
     }
 

@@ -42,7 +42,7 @@ object Try : SpecialForm("try") {
                         throw IllegalSyntaxException("$name: finally clause must be last in try expression")
                     }
                     if (expr.size > 1) {
-                        fin = listOf(Begin).plus(expr.drop(1))
+                        fin = listOf(Begin) + expr.drop(1)
                     }
                     continue
                 } else if (op === Catch) {
@@ -55,7 +55,7 @@ object Try : SpecialForm("try") {
                     }
                     val clazz = reflector.getClazz(expr[1].toString())
                     val catchExpr = when {
-                        expr.size > 3 -> listOf(Begin).plus(expr.drop(3))
+                        expr.size > 3 -> listOf(Begin) + expr.drop(3)
                         else -> null
                     }
                     catches[clazz] = catchExpr

@@ -21,7 +21,7 @@ object Swap : SpecialForm("swap!") {
         while (true) {
             val oldVal = box.deref()
             val rest = when (form.size > 3) {
-                true  -> listOf(oldVal).plus(form.drop(3).map { evaluator.eval(it, env) })
+                true  -> listOf(oldVal) + form.drop(3).map { evaluator.eval(it, env) }
                 false -> listOf(oldVal)
             }
             val applyForm = listOf(apply, fn, Quote.quote(rest))

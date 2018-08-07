@@ -22,7 +22,7 @@ class Swap : AFn<Any?, Any?>(name = "swap!", arity = AtLeast(2), mandatoryArgsTy
         while (true) {
             val oldVal = box.deref()
             val rest = when (args.size > 2) {
-                true  -> listOf(oldVal).plus(args.drop(2))
+                true  -> listOf(oldVal) + args.drop(2)
                 false -> listOf(oldVal)
             }
             val newVal = Symbol.intern("newVal")

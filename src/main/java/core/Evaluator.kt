@@ -111,7 +111,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                     /* Special case: constructor call If Symbol ends with . */
                     val symbolName = (this[0] as Symbol).name
                     if (symbolName.endsWith('.')) {
-                        val form = listOf(New, Symbol.intern(symbolName.dropLast(1))).plus(this.drop(1))
+                        val form = listOf(New, Symbol.intern(symbolName.dropLast(1))) + drop(1)
                         return New.eval(form, env, this@Evaluator)
                     }
                     op = object : AFn<Any?, Any?>() {

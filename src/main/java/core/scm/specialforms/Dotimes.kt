@@ -23,7 +23,7 @@ object Dotimes : SpecialForm("dotimes") {
         val limit = evaluator.eval(binding[1], env)
         Type.assertType(name, limit, Type.Real::class.java)
         val localEnv = Environment(env)
-        val body = listOf(Begin).plus(form.drop(2))
+        val body = listOf(Begin) + form.drop(2)
         // TODO What if greater than Long.MAX_VALUE?
         for (i in 0 until (limit as Number).toLong()) {
             localEnv[s] = i

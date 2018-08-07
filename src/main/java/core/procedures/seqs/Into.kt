@@ -12,10 +12,10 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
         return when (arg1) {
-            is Sequence<*> -> arg1.plus(Utils.toSequence(arg2))
-            is List<*>     -> Utils.toSequence(arg1).plus(Utils.toSequence(arg2)).toList()
-            is Set<*>      -> Utils.toSequence(arg1).plus(Utils.toSequence(arg2)).toSet()
-            is Vector      -> MutableVector(Utils.toSequence(arg1).plus(Utils.toSequence(arg2)).toList())
+            is Sequence<*> -> arg1 + Utils.toSequence(arg2)
+            is List<*>     -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList()
+            is Set<*>      -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toSet()
+            is Vector      -> MutableVector((Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList())
             is ByteArray -> {
                 val seq = Utils.toSequence(arg2)
                 ByteArray(arg1.size + seq.count()).apply {
