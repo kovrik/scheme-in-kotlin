@@ -35,7 +35,7 @@ class Subtraction : AFn<Any?, Number?>(name = "-", isPure = true, arity = AtLeas
         else -> args.reduce { f, s -> subtract(f!! as Number, s!! as Number) } as Number
     }
 
-    private fun subtract(first: Number, second: Number): Number? {
+    private fun subtract(first: Number, second: Number): Number {
         val (f, s) = Utils.upcast(first, second)
         return when {
             /* Special cases */

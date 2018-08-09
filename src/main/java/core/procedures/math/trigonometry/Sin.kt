@@ -26,7 +26,7 @@ class Sin : AFn<Number?, Number>(name = "sin", isPure = true, arity = Exactly(1)
         fun sin(c: Complex): Complex {
             val x = c.re.toDouble()
             val y = c.im.toDouble()
-            return Complex(multiplication(sin(x), cosh(y)), multiplication(cos(x), sinh(y)))
+            return Complex(multiplication.invoke(sin(x), cosh(y)), multiplication.invoke(cos(x), sinh(y)))
         }
     }
 }

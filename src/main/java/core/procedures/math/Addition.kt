@@ -13,10 +13,10 @@ class Addition : AFn<Any?, Number?>(name = "+", isPure = true, restArgsType = Nu
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         0    -> 0L
         1    -> args[0] as Number?
-        else -> args.reduce { f, s -> add(f!! as Number, s!! as Number) } as Number
+        else -> args.reduce { f, s -> invoke(f!! as Number, s!! as Number) } as Number
     }
 
-    fun add(first: Number?, second: Number?): Number? {
+    operator fun invoke(first: Number?, second: Number?): Number {
         val (f, s) = Utils.upcast(first!!, second!!)
         return when {
             /* Special cases */

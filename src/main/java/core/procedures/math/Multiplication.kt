@@ -28,23 +28,21 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
                 !Utils.isFinite(f) && Utils.isInexact(s) -> Double.NaN
                 else -> f taint s
             }
-            else -> when {
-                Utils.isOne(f) -> f taint s
-                Utils.isOne(s) -> s taint f
-                f is Complex && s is Complex -> f * s
-                f is Ratio   && s is Ratio   -> f * s
-                f is BigDecimal && s is BigDecimal -> f * s
-                f is BigInteger && s is BigInteger -> f * s
-                f is Double     && s is Double     -> f * s
-                f is Float      && s is Float      -> f * s
-                else -> {
-                    val fl = f.toLong()
-                    val sl = s.toLong()
-                    return try {
-                        Math.multiplyExact(fl, sl)
-                    } catch (e: ArithmeticException) {
-                        fl.toBigInteger() * sl.toBigInteger()
-                    }
+            Utils.isOne(f) -> f taint s
+            Utils.isOne(s) -> s taint f
+            f is Complex && s is Complex -> f * s
+            f is Ratio   && s is Ratio   -> f * s
+            f is BigDecimal && s is BigDecimal -> f * s
+            f is BigInteger && s is BigInteger -> f * s
+            f is Double     && s is Double     -> f * s
+            f is Float      && s is Float      -> f * s
+            else -> {
+                val fl = f.toLong()
+                val sl = s.toLong()
+                return try {
+                    Math.multiplyExact(fl, sl)
+                } catch (e: ArithmeticException) {
+                    fl.toBigInteger() * sl.toBigInteger()
                 }
             }
         }

@@ -123,8 +123,8 @@ class Complex(tre: BigDecimal, tim: BigDecimal) : Number() {
         val r = magnitude()
         val t = angle()
         val A = multiplication(expt(r, c), exp(multiplication(t, -d)))
-        val B = addition.add(multiplication(c, t), multiplication(d, log(r)))
-        val re = multiplication(A, cos(B!!))
+        val B = addition(multiplication(c, t), multiplication(d, log(r)))
+        val re = multiplication(A, cos(B))
         val im = multiplication(A, sin(B))
         return Complex(Utils.toBigDecimal(re), Utils.toBigDecimal(im))
     }

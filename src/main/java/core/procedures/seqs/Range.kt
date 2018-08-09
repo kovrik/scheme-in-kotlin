@@ -59,13 +59,13 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, arity = Range(0, 3)
             override fun next(): Number {
                 val result = next
                 next = if (big) {
-                    addition.add(next, 1L)!!
+                    addition(next, 1L)
                 } else {
                     try {
                         Math.addExact(next.toLong(), 1L)
                     } catch (e: ArithmeticException) {
                         big = true
-                        addition.add(next, 1L)!!
+                        addition(next, 1L)
                     }
                 }
                 return result
@@ -82,7 +82,7 @@ class Range : AFn<Any?, Any?>(name = "range", isPure = true, arity = Range(0, 3)
             return emptySequence()
         }
         return generateSequence(start) {
-            val result = addition.add(it, step)
+            val result = addition(it, step)
             when {
                 pred(result, end) -> result
                 else -> null

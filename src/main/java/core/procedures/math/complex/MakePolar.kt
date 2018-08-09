@@ -18,6 +18,6 @@ class MakePolar : AFn<Number?, Number>(name = "make-polar", isPure = true, arity
     private val cos = Cos()
 
     /* (+ (* magnitude (cos angle)) (* magnitude (sin angle) 0+1i)) */
-    override operator fun invoke(arg1: Number?, arg2: Number?) = addition.add(multiplication(arg1!!, cos(arg2!!)),
-                                                                              Complex.I * sin(arg2) * arg1)!!
+    override operator fun invoke(arg1: Number?, arg2: Number?) = addition(multiplication(arg1!!, cos(arg2!!)),
+                                                                          Complex.I * sin(arg2) * arg1)
 }

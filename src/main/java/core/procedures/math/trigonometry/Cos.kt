@@ -26,7 +26,7 @@ class Cos : AFn<Number?, Number>(name = "cos", isPure = true, arity = Exactly(1)
         fun cos(c: Complex): Complex {
             val x = c.re.toDouble()
             val y = c.im.toDouble()
-            return Complex(multiplication(cos(x), cosh(y)), multiplication(-1.0, multiplication(sin(x), sinh(y))))
+            return Complex(multiplication.invoke(cos(x), cosh(y)), multiplication.invoke(-1.0, multiplication.invoke(sin(x), sinh(y))))
         }
     }
 }
