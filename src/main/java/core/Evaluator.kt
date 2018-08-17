@@ -92,7 +92,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate list */
-    private fun List<Any?>.eval(env: Environment): Any? {
+    private fun List<*>.eval(env: Environment): Any? {
         if (isEmpty()) throw IllegalSyntaxException("eval", Writer.write(this), "illegal empty application")
         /* Improper lists are not allowed */
         if (!Predicate.isProperList(this)) throw IllegalSyntaxException("eval", Writer.write(this))
