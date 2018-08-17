@@ -1,5 +1,6 @@
 package unittests
 
+import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantDelayException
 import core.exceptions.WrongTypeException
 import core.scm.Keyword
@@ -19,8 +20,8 @@ class DelayedTest : AbstractTest() {
         try {
             eval("((delay (* (+ 2 3) 4)))", env)
             fail()
-        } catch (e: IllegalArgumentException) {
-            assertTrue(e.message!!.startsWith("wrong type to apply"))
+        } catch (e: IllegalSyntaxException) {
+            assertTrue(e.message!!.contains("wrong type to apply"))
         }
     }
 

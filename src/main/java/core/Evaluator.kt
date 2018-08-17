@@ -132,7 +132,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
              * and then invoke operator (IFn) via helper method */
             is IFn<*, *> -> AFn.invokeN(op, drop(1).map { eval(it, env) }.toTypedArray())
             /* If operator is not invokable, then raise an error */
-            else -> throw IllegalArgumentException("wrong type to apply: ${Writer.write(op)}")
+            else -> throw IllegalSyntaxException("eval", Writer.write(this), "wrong type to apply")
         }
     }
 
