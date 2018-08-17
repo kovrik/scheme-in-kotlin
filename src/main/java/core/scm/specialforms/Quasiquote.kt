@@ -8,10 +8,7 @@ import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.cons.ConsProc
 import core.procedures.predicates.Predicate
-import core.procedures.seqs.First
 import core.procedures.sets.SetProc
-import core.procedures.vectors.ListToVector
-import core.procedures.vectors.VectorToList
 import core.scm.Vector
 import core.Writer
 import core.scm.MutableVector
