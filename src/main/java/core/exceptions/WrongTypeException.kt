@@ -10,7 +10,7 @@ class WrongTypeException : IllegalArgumentException {
     constructor(message: String) : super(message)
 
     // TODO create separate FiniteSeq class?
-    constructor(name: String, expected: String, given: Any?) : super((if (name.isEmpty()) "#<procedure>" else name) +
+    constructor(name: String, expected: String, given: Any?) : super((name.ifEmpty { "#<procedure>" }) +
             ": type mismatch; (expected: $expected," +
             " given: ${if (given is Sequence<*>) "Sequence" else Writer.write(given)})", null)
 

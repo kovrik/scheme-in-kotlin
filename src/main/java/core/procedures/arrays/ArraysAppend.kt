@@ -6,21 +6,13 @@ object ArraysAppend {
 
     class BooleansAppend : AFn<Any?, BooleanArray>(name = "booleans-append", isPure = true, restArgsType = BooleanArray::class.java) {
         override operator fun invoke(args: Array<out Any?>) = mutableListOf<Boolean>().apply {
-            for (arr in args) {
-                for (b in (arr as BooleanArray)) {
-                    add(b)
-                }
-            }
+            args.forEach { arr -> (arr as BooleanArray).forEach { add(it) } }
         }.toBooleanArray()
     }
 
     class BytesAppend : AFn<Any?, ByteArray>(name = "bytes-append", isPure = true, restArgsType = ByteArray::class.java) {
         override operator fun invoke(args: Array<out Any?>) = mutableListOf<Byte>().apply {
-            for (arr in args) {
-                for (b in (arr as ByteArray)) {
-                    add(b)
-                }
-            }
+            args.forEach { arr -> (arr as ByteArray).forEach { add(it) } }
         }.toByteArray()
     }
 

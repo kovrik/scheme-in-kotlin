@@ -9,13 +9,11 @@ import java.util.regex.Matcher
 class ReGroups : AFn<Matcher?, Any?>(name = "re-groups", isPure = true, arity = Exactly(1),
                                      mandatoryArgsTypes = arrayOf(Matcher::class.java)) {
 
-    override operator fun invoke(arg: Matcher?): Any? = arg!!.groupCount().let {
-        when (it) {
-            0 -> arg.group()
-            else -> MutableVector(it + 1, null).apply {
-                for (c in 0..it) {
-                    array[c] = arg.group(c)
-                }
+    override operator fun invoke(arg: Matcher?): Any? = when (val count = arg!!.groupCount()) {
+        0 -> arg.group()
+        else -> MutableVector(count + 1, null).apply {
+            for (c in 0..count) {
+                array[c] = arg.group(c)
             }
         }
     }

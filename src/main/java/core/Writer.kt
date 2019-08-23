@@ -7,8 +7,8 @@ import core.reader.Reader
 import core.scm.Cons
 import core.scm.MutablePair
 import core.scm.Symbol
-import kotlinx.coroutines.experimental.AbstractCoroutine
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
 import java.util.*
 import java.util.regex.Pattern
 
@@ -49,7 +49,7 @@ object Writer {
         is BooleanArray         -> o.write()
         is Array<*>             -> o.write()
         is Thread               -> o.write()
-        is AbstractCoroutine<*> -> o.write()
+        is Job                  -> o.write()
         is Deferred<*>          -> o.write()
         is Arity                -> o.write()
         else                    -> o.toString()
@@ -65,18 +65,16 @@ object Writer {
         else           -> "#<thread:$name>"
     }
 
-    private fun AbstractCoroutine<*>.write() = when {
-        isCompletedExceptionally -> "#<coroutine!error!>"
-        isActive -> "#<coroutine:active>"
+    private fun Job.write() = when {
+        isActive    -> "#<coroutine:active>"
         isCancelled -> "#<coroutine:cancelled>"
-        else -> "#<coroutine:done>"
+        else        -> "#<coroutine:done>"
     }
 
     private fun Deferred<*>.write() = when {
-        isCompletedExceptionally -> "#<deferred!error!${Writer.write(getCompletionExceptionOrNull())}>"
-        isActive -> "#<deferred:active>"
-        isCancelled -> "#<deferred:cancelled>"
-        else -> "#<deferred:done(${Writer.write(getCompleted())})>"
+        isActive    -> "#<coroutine:active>"
+        isCancelled -> "#<coroutine:cancelled>"
+        else        -> "#<coroutine:done(${Writer.write(getCompleted())})>"
     }
 
     private fun Arity.write() = "#<arity:${javaClass.simpleName}(${toString()})>"
@@ -124,18 +122,15 @@ object Writer {
 
     private fun Sequence<*>.write() = joinToString(prefix = "(", separator = " ", postfix = ")", transform = Writer::write)
 
-    private fun CharSequence.write() = StringBuilder(length + 2).apply {
-        append('"')
-        for (i in 0 until this@write.length) {
-            val c = this@write[i]
-            val character = UNESCAPED[c]
-            when (character) {
+    private fun CharSequence.write() = StringBuilder(length + 2).append('"').apply {
+        (0 until this@write.length).forEach {
+            val c = this@write[it]
+            when (val character = UNESCAPED[c]) {
                 null -> append(c)
                 else -> append('\\').append(character)
             }
         }
-        append('"')
-    }.toString()
+    }.append('"').toString()
 
     /* Check named characters */
     private fun Char.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"

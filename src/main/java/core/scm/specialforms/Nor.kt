@@ -15,8 +15,8 @@ object Nor : SpecialForm("nor") {
 
     override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
         if (form.size > 1) {
-            for (i in 1..form.size - 2) {
-                val result = evaluator.eval(form[i], env)
+            (1..form.size - 2).forEach {
+                val result = evaluator.eval(form[it], env)
                 if (Utils.toBoolean(result)) {
                     return false
                 }

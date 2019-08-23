@@ -27,8 +27,7 @@ object Case : SpecialForm("case") {
         val key = evaluator.eval(form[1], env)
         for (i in 2 until form.size) {
             val subform = form[i] as? List<*> ?: throw IllegalSyntaxException(toString(), exprString, "invalid clause in subform")
-            val datum = subform[0]
-            when (datum) {
+            when (val datum = subform.first()) {
                 Else.symbol -> {
                     if (i != form.size - 1) {
                         throw IllegalSyntaxException(toString(), exprString, "else must be the last clause in subform")

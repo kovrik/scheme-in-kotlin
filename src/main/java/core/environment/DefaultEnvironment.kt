@@ -54,6 +54,7 @@ import core.scm.specialforms.*
 import core.scm.specialforms.SetForm
 import core.scm.specialforms.Swap
 import core.scm.specialforms.coroutines.Async
+import core.scm.specialforms.coroutines.Await
 import core.scm.specialforms.coroutines.Launch
 import core.scm.specialforms.coroutines.RunBlocking
 import kotlin.math.E
@@ -693,6 +694,7 @@ class DefaultEnvironment : Environment(null) {
                 Swap,
                 /* Coroutines */
                 Async,
+                Await,
                 Launch,
                 RunBlocking,
                 // TODO Macros

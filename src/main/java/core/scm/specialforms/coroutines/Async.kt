@@ -6,16 +6,19 @@ import core.Writer
 import core.exceptions.IllegalSyntaxException
 import core.scm.specialforms.Begin
 import core.scm.specialforms.SpecialForm
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 /* Syntax:
  * (async <expr1> ...)
  */
 object Async : SpecialForm("async") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
-        1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
-        2    -> async { evaluator.eval(form[1], env) }
-        else -> async { evaluator.eval(listOf(Begin) + form.drop(1), env) }
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = runBlocking {
+        when (form.size) {
+            1 -> throw IllegalSyntaxException(toString(), Writer.write(form))
+            2 -> async { evaluator.eval(form[1], env) }
+            else -> async { evaluator.eval(listOf(Begin) + form.drop(1), env) }
+        }
     }
 }

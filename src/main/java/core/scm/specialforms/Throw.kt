@@ -12,5 +12,4 @@ object Throw : SpecialForm("throw") {
         true  -> throw IllegalSyntaxException(toString(), Writer.write(form))
         false -> evaluator.eval(form[1], env).let { throw it as? Throwable ?: WrongTypeException(toString(), "Throwable", it) }
     }
-
 }

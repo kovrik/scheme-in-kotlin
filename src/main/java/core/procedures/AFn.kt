@@ -48,11 +48,11 @@ abstract class AFn<T, out R>(open var arity: Arity = Arity.AtLeast(0),
 
     /* Check args types */
     override fun checkArgs(args: Array<out T>) {
-        for (i in 0 until mandatoryArgsTypes.size) { Type.assertType(name, args[i], mandatoryArgsTypes[i]) }
-        for (i in mandatoryArgsTypes.size until args.size) {
+        (0 until mandatoryArgsTypes.size).forEach { Type.assertType(name, args[it], mandatoryArgsTypes[it]) }
+        (mandatoryArgsTypes.size until args.size).forEach {
             when {
-                lastArgType  != null && i == args.size - 1 -> Type.assertType(name, args[i], lastArgType)
-                restArgsType != null                       -> Type.assertType(name, args[i], restArgsType)
+                lastArgType  != null && it == args.size - 1 -> Type.assertType(name, args[it], lastArgType)
+                restArgsType != null                        -> Type.assertType(name, args[it], restArgsType)
             }
         }
     }

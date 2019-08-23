@@ -38,7 +38,7 @@ object Let : SpecialForm("let") {
                 }
             }
             /* Evaluate body */
-            for (i in 2..form.size - 2) { evaluator.eval(form[i], localEnv) }
+            (2..form.size - 2).forEach { evaluator.eval(form[it], localEnv) }
             return Thunk(form[form.size - 1], localEnv)
         } else if (form[1] is Symbol) {
             // TODO Optimize and cleanup
@@ -49,7 +49,7 @@ object Let : SpecialForm("let") {
             val lambdaArgs = mutableListOf<Any?>()
             val initValues = mutableListOf<Any?>()
             val bindings = form[2] as List<*>
-            for (binding in bindings) {
+            bindings.forEach { binding ->
                 val (arg, init) = binding as List<*>
                 if (arg in lambdaArgs) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: $arg")

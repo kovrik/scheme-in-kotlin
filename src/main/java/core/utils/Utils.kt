@@ -219,7 +219,7 @@ object Utils {
     private fun processRationalNumber(numerator: String, denominator: String, r: Int, exact: Boolean, exp: Long?): Number? {
 
         var number: Number? = Ratio.valueOf(processNumber(numerator, r, true, null).toString(),
-                                               processNumber(denominator, r, true, null).toString())
+                                            processNumber(denominator, r, true, null).toString())
         exp?.let { number = multiplication(number, expt(r, exp)) }
         return when {
             exact -> number
@@ -232,8 +232,8 @@ object Utils {
         is Long       -> number.toBigDecimal()
         is BigInteger -> number.toBigDecimal()
         is Double     -> number.toBigDecimal()
-        is Ratio   -> number.toBigDecimal()
-        is Complex -> throw UnsupportedOperationException("undefined for complex!")
+        is Ratio      -> number.toBigDecimal()
+        is Complex    -> throw UnsupportedOperationException("undefined for complex!")
         else          -> number.toString().toBigDecimal()
     }
 
@@ -241,12 +241,12 @@ object Utils {
         is BigInteger -> number
         is Long       -> number.toBigInteger()
         is Double     -> number.toLong().toBigInteger()
-        is Complex -> throw UnsupportedOperationException("undefined for complex!")
+        is Complex    -> throw UnsupportedOperationException("undefined for complex!")
         else          -> number.toString().toBigInteger()
     }
 
     private fun toBigRatio(number: Number) = when (number) {
-        is Ratio   -> number
+        is Ratio      -> number
         is BigInteger -> Ratio.valueOf(toBigInteger(number), BigInteger.ONE)
         is Complex -> throw UnsupportedOperationException("undefined for complex!")
         else          -> Ratio.valueOf(number.toString(), "1")
@@ -254,7 +254,7 @@ object Utils {
 
     fun isRational(o: Any?) = when (o) {
         !is Number     -> false
-        is Complex  -> false
+        is Complex     -> false
         is Double      -> o.isFinite()
         is Float       -> o.isFinite()
         else           -> true
@@ -264,7 +264,7 @@ object Utils {
         null          -> false
         is Long, is Ratio, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal -> o.scale() == 0
-        is Complex -> isExact(o.re) && isExact(o.im)
+        is Complex    -> isExact(o.re) && isExact(o.im)
         else          -> false
     }
 
@@ -274,7 +274,7 @@ object Utils {
         null           -> false
         is Long, is Int, is BigInteger, is Short, is Byte -> true
         is BigDecimal  -> o.signum() == 0 || o.scale() <= 0 || o.stripTrailingZeros().scale() <= 0
-        is Ratio    -> o.isDenominatorEqualToOne
+        is Ratio       -> o.isDenominatorEqualToOne
         is Double      -> o == floor(o) && o.isFinite()
         is Float       -> o == floor(o) && o.isFinite()
         else           -> false
@@ -286,7 +286,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == 0
         is Double     -> o.sign == 0.0
-        is Ratio   -> o.signum() == 0
+        is Ratio      -> o.signum() == 0
         is BigDecimal -> o.signum() == 0
         is Int        -> o.sign == 0
         is Short      -> o.toInt().sign == 0
@@ -300,7 +300,7 @@ object Utils {
         null          -> false
         is Long       -> o == 1L
         is Double     -> o == 1
-        is Ratio   -> o.isOne
+        is Ratio      -> o.isOne
         is BigDecimal -> o.compareTo(BigDecimal.ONE) == 0
         is Int        -> o == 1
         is Short      -> o.toInt() == 1
@@ -314,7 +314,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == 1
         is Double     -> o.sign == 1.0
-        is Ratio   -> o.signum() == 1
+        is Ratio      -> o.signum() == 1
         is BigDecimal -> o.signum() == 1
         is Int        -> o.sign == 1
         is Short      -> o.toInt().sign == 1
@@ -328,7 +328,7 @@ object Utils {
         null          -> false
         is Long       -> o.sign == -1
         is Double     -> o.sign == -1.0
-        is Ratio   -> o.signum() == -1
+        is Ratio      -> o.signum() == -1
         is BigDecimal -> o.signum() == -1
         is Int        -> o.sign == -1
         is Short      -> o.toInt().sign == -1
@@ -485,23 +485,23 @@ object Utils {
         f.javaClass == s.javaClass   -> f to s
         !isFinite(f) || !isFinite(s) -> f to s
         isInexact(f) || isInexact(s) -> when {
-            f is Complex || s is Complex -> Complex.valueOf(f) to Complex.valueOf(s)
-            f is Ratio   || s is Ratio   -> f.toDouble()     to s.toDouble()
-            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
-            f is BigInteger || s is BigInteger -> toBigDecimal(f)  to toBigDecimal(s)
-            f is Double     || s is Double     -> f.toDouble()     to s.toDouble()
-            f is Float      || s is Float      -> f.toFloat( )     to s.toFloat()
+            f is Complex    || s is Complex    -> Complex.valueOf(f) to Complex.valueOf(s)
+            f is Ratio      || s is Ratio      -> f.toDouble()       to s.toDouble()
+            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)    to toBigDecimal(s)
+            f is BigInteger || s is BigInteger -> toBigDecimal(f)    to toBigDecimal(s)
+            f is Double     || s is Double     -> f.toDouble()       to s.toDouble()
+            f is Float      || s is Float      -> f.toFloat( )       to s.toFloat()
             else                               -> f to s
         }
         else -> when {
-            f is Complex || s is Complex -> Complex.valueOf(f) to Complex.valueOf(s)
-            f is Ratio   || s is Ratio   -> toBigRatio(f)    to toBigRatio(s)
-            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)  to toBigDecimal(s)
-            f is BigInteger || s is BigInteger -> toBigInteger(f)  to toBigInteger(s)
-            f is Long       || s is Long       -> f.toLong()       to s.toLong()
-            f is Int        || s is Int        -> f.toInt()        to s.toInt()
-            f is Short      || s is Short      -> f.toShort()      to s.toShort()
-            f is Byte       || s is Byte       -> f.toByte()       to s.toByte()
+            f is Complex    || s is Complex    -> Complex.valueOf(f) to Complex.valueOf(s)
+            f is Ratio      || s is Ratio      -> toBigRatio(f)      to toBigRatio(s)
+            f is BigDecimal || s is BigDecimal -> toBigDecimal(f)    to toBigDecimal(s)
+            f is BigInteger || s is BigInteger -> toBigInteger(f)    to toBigInteger(s)
+            f is Long       || s is Long       -> f.toLong()         to s.toLong()
+            f is Int        || s is Int        -> f.toInt()          to s.toInt()
+            f is Short      || s is Short      -> f.toShort()        to s.toShort()
+            f is Byte       || s is Byte       -> f.toByte()         to s.toByte()
             else                               -> f to s
         }
     }

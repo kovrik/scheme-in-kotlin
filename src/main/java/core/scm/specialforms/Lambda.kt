@@ -63,8 +63,7 @@ object Lambda : SpecialForm("lambda") {
     private fun flatten(list: List<*>) = mutableListOf<Any?>().apply {
         val queue = LinkedList(list)
         while (!queue.isEmpty()) {
-            val e = queue.remove()
-            when (e) {
+            when (val e = queue.remove()) {
                 is List<*> -> queue.addAll(e)
                 else -> add(e)
             }

@@ -15,9 +15,9 @@ object Quote : SpecialForm("quote") {
 
     fun quote(obj: Any) = listOf(this, obj)
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
-        2 -> form[1]
-        else -> throw IllegalSyntaxException(toString(), Writer.write(form))
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size == 2) {
+        true  -> form[1]
+        false -> throw IllegalSyntaxException(toString(), Writer.write(form))
     }
 
 }

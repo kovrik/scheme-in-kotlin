@@ -8,9 +8,8 @@ import core.scm.*
 class Conj : AFn<Any?, Any?>(name = "conj", arity = AtLeast(1)) {
 
     override operator fun invoke(args: Array<out Any?>): Any? {
-        if (args.size == 1) return args[0]
-        val first = args[0]
-        return when (first) {
+        if (args.size == 1) return args.first()
+        return when (val first = args.first()) {
             is Sequence<*> -> first + args.copyOfRange(1, args.size)
             is List<*>     -> (first + args.copyOfRange(1, args.size)).toList()
             is Set<*>      -> MutableSet(first + args.copyOfRange(1, args.size))

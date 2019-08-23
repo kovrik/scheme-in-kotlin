@@ -6,7 +6,7 @@ import core.Writer
 import core.exceptions.IllegalSyntaxException
 import core.scm.specialforms.Begin
 import core.scm.specialforms.SpecialForm
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 
 /* Syntax:
  * (run-blocking <expr1> ...)

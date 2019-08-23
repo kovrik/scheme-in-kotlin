@@ -14,8 +14,7 @@ open class Display : AFn<Any?, Unit>(name = "display", arity = Range(1, 2),
         1    -> Repl.currentOutputPort
         else -> args[1]!! as OutputPort
     }.let {
-        val arg = args[0]!!
-        when (arg) {
+        when (val arg = args[0]) {
             is CharSequence, is Char -> it.write(arg.toString())
             else -> it.write(Writer.write(arg))
         }

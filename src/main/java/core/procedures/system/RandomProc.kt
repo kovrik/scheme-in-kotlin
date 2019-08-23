@@ -15,8 +15,7 @@ class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, arity = Ran
             if (args[0] !is Long || (args[0] as Long) < 0 || args[0] as Long > Int.MAX_VALUE) {
                 throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[0])
             }
-            val bound = (args[0] as Long).toInt()
-            when (bound) {
+            when (val bound = (args[0] as Long).toInt()) {
                 0 -> 0
                 else -> Random().nextInt(bound).toLong()
             }
@@ -28,9 +27,8 @@ class RandomProc : AFn<Any?, Number>(name = "random", isPure = true, arity = Ran
             if (args[1] !is Long || (args[1] as Long) < 0 || args[1] as Long > Int.MAX_VALUE) {
                 throw WrongTypeException(name, "Integer (0 to ${Int.MAX_VALUE})", args[1])
             }
-            val origin = (args[0] as Long).toInt()
             val bound  = (args[1] as Long).toInt()
-            when (origin) {
+            when (val origin = (args[0] as Long).toInt()) {
                 bound -> origin
                 else  -> ThreadLocalRandom.current().nextInt(origin, bound).toLong()
             }

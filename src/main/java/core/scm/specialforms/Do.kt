@@ -42,20 +42,20 @@ object Do : SpecialForm("do") {
         }
 
         val clause = form[2] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
-        if (clause.isEmpty()) {
-            throw IllegalSyntaxException(toString(), Writer.write(form))
-        }
+        clause.ifEmpty { throw IllegalSyntaxException(toString(), Writer.write(form)) }
         /* While test evaluates to #f */
         while (!Utils.toBoolean(evaluator.eval(clause[0], tempEnv))) {
             /* Evaluate command expressions */
-            for (e in form.drop(3)) {
+            form.drop(3).forEach { f ->
                 /* Each iteration establishes bindings to fresh locations
                  * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
-                val freshLocations = Environment(env).apply { putAll(tempEnv) }
-                /* Evaluate using new fresh environment */
-                evaluator.eval(e, freshLocations)
-                /* THen put results into tempEnv */
-                tempEnv.putAll(freshLocations)
+                Environment(env).apply {
+                    putAll(tempEnv)
+                    /* Evaluate using new fresh environment */
+                    evaluator.eval(f, this)
+                    /* THen put results into tempEnv */
+                    tempEnv.putAll(this)
+                }
             }
             /* Evaluate steps and now store results */
             tempEnv.putAll(steps.entries.associate { it.key to evaluator.eval(it.value, tempEnv) })

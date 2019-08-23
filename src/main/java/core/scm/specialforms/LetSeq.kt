@@ -25,7 +25,7 @@ object LetSeq : SpecialForm("let*") {
             localEnv[it[0]] = evaluator.eval(it[1], localEnv)
         }
         /* Evaluate body */
-        for (i in 2..form.size - 2) { evaluator.eval(form[i], localEnv) }
+        (2..form.size - 2).forEach { evaluator.eval(form[it], localEnv) }
         return Thunk(form[form.size - 1], localEnv)
     }
 }

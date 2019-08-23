@@ -8,7 +8,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.text.isEmpty
 
-class Reflector {
+class Reflector(private val name: String = "reflector") {
 
     companion object {
         private val CLASSES = listOf(Boolean::class, Byte::class, Char::class, Short::class, Int::class, Long::class, Float::class, Double::class)
@@ -19,12 +19,11 @@ class Reflector {
         private val CLASS_PACKAGE_MAPPING = arrayOf(BigInteger::class.java, BigDecimal::class.java).associateBy({ it.simpleName }, { it.name })
     }
 
-    private val name: String = "reflector"
-
     fun getClazz(className: String) = getClazzOrNull(className) ?: throw ClassNotFoundException("$name: class not found: $className")
 
     fun getClazzOrNull(name: String): Class<*>? = try {
         when {
+            !name[0].isJavaIdentifierStart() -> throw UndefinedIdentifierException(name)
             '.' in name -> Class.forName(name)
             else -> Class.forName(CLASS_PACKAGE_MAPPING.getOrDefault(name, "java.lang.$name"))
         }
@@ -74,6 +73,8 @@ class Reflector {
                 false -> throw IllegalSyntaxException("$name: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
         }
+        /* Special case: constructor call */
+        methodString.endsWith('.')    -> newInstance(methodString.dropLast(1), args)
         args.isEmpty() -> throw IllegalSyntaxException("$name: malformed member expression, expecting (.member target ...)")
         methodString.startsWith(".-") -> evalJavaInstanceField(methodString.drop(2), instance = args[0]!!)
         methodString.startsWith('.')  -> evalJavaInstanceMethod(methodString.drop(1), instance = args[0]!!, args = args.copyOfRange(1, args.size))
@@ -100,7 +101,7 @@ class Reflector {
     private fun downcastArgs(args: Array<out Any?>, types: Array<out Class<*>?>): Pair<Array<out Any?>, Array<out Class<*>?>> {
         val newArgs = arrayOfNulls<Any?>(args.size)
         val newTypes = arrayOfNulls<Class<*>?>(types.size)
-        for (i in types.indices) {
+        types.indices.forEach { i ->
             types[i]?.let {
                 if (Number::class.java.isAssignableFrom(BOXED.getOrDefault(it, it))) {
                     // downcast to int

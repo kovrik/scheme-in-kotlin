@@ -36,9 +36,7 @@ object Time : SpecialForm("time") {
 
         val nanos = System.nanoTime()
 
-        for (i in 1..form.size - 2) {
-            evaluator.eval(form[i], env)
-        }
+        (1..form.size - 2).forEach { evaluator.eval(form[it], env) }
         val result = evaluator.eval(form[form.size - 1], env)
 
         var gcCountEnd = 0L

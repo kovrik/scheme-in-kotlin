@@ -242,8 +242,7 @@ open class Reader {
                     /* Unicode followed by a hexadecimal number */
                     next in "uUxX" -> {
                         reader.unread(next.toInt())
-                        val chr = readCharacter()
-                        when (chr) {
+                        when (val chr = readCharacter()) {
                             next -> throw IllegalSyntaxException("$name: no hex digit following \\$next in string")
                             else -> append(chr)
                         }
@@ -452,7 +451,7 @@ open class Reader {
      */
     @Throws(IOException::class)
     private fun readKeyword() = readUntilDelimiter().let {
-        if (it.isEmpty()) throw IllegalSyntaxException("$name: illegal use of :")
+        it.ifEmpty { throw IllegalSyntaxException("$name: illegal use of :") }
         Keyword.intern(it)
     }
 

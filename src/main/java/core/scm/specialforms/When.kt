@@ -16,7 +16,7 @@ object When : SpecialForm("when") {
         form.size == 2 -> null
         form.size < 2 -> throw IllegalSyntaxException(toString(), Writer.write(form), "has ${form.size - 1} parts after keyword")
         Utils.toBoolean(evaluator.eval(form[1], env)) -> {
-            for (i in 2..form.size - 2) { evaluator.eval(form[i], env) }
+            (2..form.size - 2).forEach { evaluator.eval(form[it], env) }
             Thunk(form[form.size - 1], env)
         }
         else -> Unit
