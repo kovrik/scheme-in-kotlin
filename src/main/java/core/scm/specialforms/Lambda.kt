@@ -46,7 +46,7 @@ object Lambda : SpecialForm("lambda") {
 
     /* Validate args */
     private fun validateParamsList(list: List<*>, form: List<Any?>): List<Symbol?> {
-        if (!list.isEmpty()) {
+        if (list.isNotEmpty()) {
             val temp = hashSetOf<Symbol>()
             list.forEach {
                 when {

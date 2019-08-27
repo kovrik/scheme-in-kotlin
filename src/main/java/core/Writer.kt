@@ -15,7 +15,7 @@ import java.util.regex.Pattern
 object Writer {
 
     private val CODEPOINTS = HashMap<Char, String>().apply {
-        Reader.NAMED_CHARS.forEach { key, value -> put(value, key) }.apply { put('\n', "newline") }
+        Reader.NAMED_CHARS.forEach { (key, value) -> put(value, key) }.apply { put('\n', "newline") }
     }
 
     private val UNESCAPED = hashMapOf('\t' to 't', '\b' to 'b', '\r' to 'r', '\n' to 'n', '\"' to '"', '\\' to '\\')
@@ -74,7 +74,7 @@ object Writer {
     private fun Deferred<*>.write() = when {
         isActive    -> "#<coroutine:active>"
         isCancelled -> "#<coroutine:cancelled>"
-        else        -> "#<coroutine:done(${Writer.write(getCompleted())})>"
+        else        -> "#<coroutine:done(${write(getCompleted())})>"
     }
 
     private fun Arity.write() = "#<arity:${javaClass.simpleName}(${toString()})>"
@@ -136,7 +136,7 @@ object Writer {
     private fun Char.write() = CODEPOINTS[this]?.let { "#\\$it" } ?: "#\\$this"
 
     private fun Map<*, *>.write() = entries.joinToString(prefix = "{", separator = ", ", postfix = "}",
-                                                         transform = { "${Writer.write(it.key)} ${Writer.write(it.value)}" })
+                                                         transform = { "${write(it.key)} ${write(it.value)}" })
 
     private fun Set<*>.write() = joinToString(prefix = "#{", separator = " ", postfix = "}", transform = Writer::write)
 

@@ -27,7 +27,7 @@ object Dot : SpecialForm(".") {
         }
         val methodArgs = arrayOfNulls<Any>(form.size - 3)
         /* Add rest args (if any) */
-        (0 until methodArgs.size).forEach { methodArgs[it] = evaluator.eval(form[it + 3], env) }
+        methodArgs.indices.forEach { methodArgs[it] = evaluator.eval(form[it + 3], env) }
         if (first is Class<*>) {
             /* (. Classname-symbol member-symbol) */
             /* try static field first */
