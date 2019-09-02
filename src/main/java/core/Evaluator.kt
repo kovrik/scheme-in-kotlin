@@ -57,6 +57,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                 is Vector      -> sexp.eval(env)
                 is Set<*>      -> sexp.eval(env)
                 is Sequence<*> -> sexp.eval(env)
+                is Pair<*, *>  -> throw IllegalSyntaxException("eval", Writer.write(sexp), "wrong type to apply")
                 else           -> sexp
             }
         } catch (cc: CalledContinuation) {

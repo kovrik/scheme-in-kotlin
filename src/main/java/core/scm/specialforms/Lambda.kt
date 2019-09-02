@@ -9,6 +9,7 @@ import core.scm.Symbol
 import core.Writer
 import core.procedures.Arity.AtLeast
 import core.procedures.Arity.Exactly
+import core.utils.Utils
 import java.util.LinkedList
 
 /* Syntax:
@@ -29,9 +30,9 @@ object Lambda : SpecialForm("lambda") {
         val args = form[1]
         val variadic = args is Symbol || !Predicate.isProperList(args)
         val params = when (args) {
-            is List<*> -> when (variadic) {
-                true  -> validateParamsList(flatten(args), form)
-                false -> validateParamsList(args, form)
+            is List<*>, is Pair<*, *> -> when (variadic) {
+                true  -> validateParamsList(flatten(Utils.toSequence(args)).asSequence(), form)
+                false -> validateParamsList(Utils.toSequence(args), form)
             }
             /* Variadic arity */
             /* (lambda rest-id body ...+) */
@@ -45,10 +46,10 @@ object Lambda : SpecialForm("lambda") {
     }
 
     /* Validate args */
-    private fun validateParamsList(list: List<*>, form: List<Any?>): List<Symbol?> {
-        if (list.isNotEmpty()) {
+    private fun validateParamsList(seq: Sequence<*>, form: List<Any?>): List<Symbol?> {
+        if (seq.any()) {
             val temp = hashSetOf<Symbol>()
-            list.forEach {
+            seq.forEach {
                 when {
                     it !is Symbol -> throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                     !temp.add(it) -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate argument name: $it")
@@ -56,14 +57,18 @@ object Lambda : SpecialForm("lambda") {
             }
         }
         @Suppress("UNCHECKED_CAST")
-        return list as List<Symbol?>
+        return (seq as Sequence<Symbol?>).toList()
     }
 
     /* Non-recursively flatten a list (or a chain of conses) */
-    private fun flatten(list: List<*>) = mutableListOf<Any?>().apply {
-        val queue = LinkedList(list)
+    private fun flatten(seq: Sequence<*>) = mutableListOf<Any?>().apply {
+        val queue = LinkedList(seq.toList())
         while (!queue.isEmpty()) {
             when (val e = queue.remove()) {
+                is Pair<*, *> -> queue.apply {
+                    add(e.first)
+                    add(e.second)
+                }
                 is List<*> -> queue.addAll(e)
                 else -> add(e)
             }

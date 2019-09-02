@@ -410,7 +410,6 @@ object Utils {
         this as Number
     }
 
-
     fun isBitOpSupported(obj: Any) = when (obj) {
         is Byte, is Short, is Int, is Long -> true
         else -> throw WrongTypeException("bit operation not supported for: ${Writer.write(obj)}")
@@ -476,6 +475,20 @@ object Utils {
         private  val iterator = map.iterator()
         override fun hasNext() = iterator.hasNext()
         override fun next() = MapEntry(iterator.next())
+    }
+
+    fun cons(elements: List<Any?>): Any? = when (elements.size) {
+        0 -> throw IllegalArgumentException("don't know how to create Pair from ${Writer.write(elements)}")
+        /* (cons* 1) => 1 ; see SRFI-1 */
+        1 -> elements.first()
+        /* Convert list into cons */
+        else -> {
+            var pair = Pair(elements[elements.size - 2], elements.last())
+            for (n in elements.size - 3 downTo 0) {
+                pair = Pair(elements[n], pair)
+            }
+            pair
+        }
     }
 
     /**

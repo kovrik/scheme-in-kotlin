@@ -22,7 +22,7 @@ class Predicate private constructor(override val name: String, private inline va
         val IS_EOF = Predicate("eof-object?", Objects::isNull)
         val IS_SOME = Predicate("some?", Objects::nonNull)
         val IS_EMPTY = Predicate("empty?", Utils::isEmpty)
-        val IS_PAIR = Predicate("pair?", this::isPair)
+        val IS_PAIR = Predicate("pair?", this::isPairOrNonEmptyList)
         val IS_MPAIR = Predicate("mpair?") { it is MutablePair<*, *> }
         val IS_LIST = Predicate("list?", this::isProperList)
         val IS_PROMISE = Predicate("promise?") { it is CompletableFuture<*> || Delay::class.java == it!!.javaClass }
@@ -132,13 +132,13 @@ class Predicate private constructor(override val name: String, private inline va
 
         private val remainder = Remainder()
 
-        fun isPair(o: Any?) = o is Pair<*, *> || o is List<*> && !o.isEmpty()
+        fun isPairOrNonEmptyList(o: Any?) = o is List<*> && !o.isEmpty() || o is Pair<*, *> || o is Sequence<*> && o.any()
 
         /* Return true if o is a Proper List */
-        fun isProperList(o: Any?) = when (o) {
-            is Pair<*, *> -> false
-            is MutablePair<*, *> -> false
-            else -> o is List<*> && o !is Cons<*> || o is Cons<*> && o.isProperList || o is Sequence<*>
+        fun isProperList(o: Any?): Boolean = when (o) {
+            is Sequence<*> -> true
+            is List<*> -> true
+            else -> false
         }
     }
 

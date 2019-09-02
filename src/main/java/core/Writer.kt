@@ -2,9 +2,7 @@ package core
 
 import core.exceptions.ExInfoException
 import core.procedures.Arity
-import core.procedures.predicates.Predicate
 import core.reader.Reader
-import core.scm.Cons
 import core.scm.MutablePair
 import core.scm.Symbol
 import kotlinx.coroutines.Deferred
@@ -84,22 +82,18 @@ object Writer {
     private fun Regex.write() = "#\"${this}\""
 
     /* Use this method to print all lists */
-    private fun List<*>.write() = when {
-        this.isEmpty() -> "()"
-        Predicate.isProperList(this) -> joinToString(prefix = "(", separator = " ", postfix = ")", transform = Writer::write)
-        else -> StringBuilder("(").apply {
-            append(write(this@write.first()))
-            var cdr = this@write.last()
-            while (cdr is Cons<*>) {
-                append(' ').append(write(cdr.first()))
-                cdr = cdr.last()
-            }
-            /* Dotted notation */
-            append(" . ").append(write(cdr)).append(')')
-        }.toString()
-    }
+    private fun List<*>.write() = joinToString(prefix = "(", separator = " ", postfix = ")", transform = Writer::write)
 
-    private fun Pair<*, *>.write() = "(pair ${write(first)} ${write(second)})"
+    private fun Pair<*, *>.write() = StringBuilder("(").apply {
+        append(write(this@write.first))
+        var cdr = this@write.second
+        while (cdr is Pair<*, *>) {
+            append(' ').append(write(cdr.first))
+            cdr = cdr.second
+        }
+        /* Dotted notation */
+        append(" . ").append(write(cdr)).append(')')
+    }.toString()
 
     private fun MutablePair<*, *>.write() = "(mcons ${write(first)} ${write(second)})"
 

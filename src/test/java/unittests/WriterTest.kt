@@ -155,7 +155,7 @@ class WriterTest {
 
     @Test
     fun testWritePair() {
-        assertEquals("(pair 1 #t)", Writer.write(Pair(1, true)))
+        assertEquals("(1 . #t)", Writer.write(Pair(1, true)))
         assertEquals("(mcons 1 #t)", Writer.write(MutablePair(1, true)))
     }
 

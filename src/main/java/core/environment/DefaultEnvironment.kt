@@ -36,7 +36,7 @@ import core.procedures.math.complex.*
 import core.procedures.math.trigonometry.*
 import core.procedures.meta.ArityProc
 import core.procedures.meta.MetaProc
-import core.procedures.meta.WIthMeta
+import core.procedures.meta.WithMeta
 import core.procedures.predicates.Predicate
 import core.procedures.seqs.*
 import core.procedures.sets.*
@@ -484,7 +484,7 @@ class DefaultEnvironment : Environment(null) {
 
                 /* Meta */
                 MetaProc(),
-                WIthMeta(),
+                WithMeta(),
 
                 /* Arity */
                 ArityProc(),

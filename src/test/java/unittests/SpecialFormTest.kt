@@ -9,7 +9,6 @@ import core.procedures.AFn
 import core.procedures.io.Display
 import core.procedures.math.Addition
 import core.scm.*
-import core.scm.Cons.Companion.cons
 import core.scm.specialforms.Quasiquote
 import core.scm.specialforms.Quote
 import core.scm.specialforms.Unquote
@@ -258,9 +257,10 @@ class SpecialFormTest : AbstractTest() {
     @Test
     fun testEvalDottedPair() {
         assertEquals(2L, eval("(car (cdr '(1 2 3 . (2 3 4))))", env))
-        assertEquals(cons(1L, 2L), eval("'(1 . 2)", env))
-        assertEquals(cons(1L, cons(2L, cons(3L, 4L))), eval("'(1 2 3 . 4)", env))
+        assertEquals(Pair(1L, 2L), eval("'(1 . 2)", env))
+        assertEquals(Pair(1L, Pair(2L, Pair(3L, 4L))), eval("'(1 2 3 . 4)", env))
         assertEquals(6L, eval("(+ . (1 2 3))", env))
+        assertEquals(8L, eval("(+ . (2 (+ . (1 2 3))))", env))
         assertEquals(6L, eval("(+ . (1 . (2 3)))", env))
         assertEquals(6L, eval("(+ . (1 . (2 . (3))))", env))
         assertEquals(6L, eval("(+ . (1 . (2 . (3 . ()))))", env))
@@ -644,7 +644,7 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(listOf(Symbol.intern("a"), 3L, 4L, 5L, 6L, Symbol.intern("b")),
                 eval("`(a ,(+ 1 2) ,@(map abs '(4 -5 6)) b)", env))
 
-        assertEquals(cons(listOf(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
+        assertEquals(Pair(listOf(Symbol.intern("foo"), 7L), Symbol.intern("cons")), eval("`((foo ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons)))", env))
         assertEquals(5L, eval("`,(+ 2 3)", env))
 
         assertEquals(listOf(1L, 2L, 3L), eval("`(1 ,@(list 2 3))", env))
@@ -655,13 +655,10 @@ class SpecialFormTest : AbstractTest() {
         assertEquals(listOf(Symbol.intern("+"), 1L, 2L), eval("`,`,`,`,`,`(+ 1 2)", env))
 
         assertEquals(MutableVector(arrayOf(1L, 5L)), eval("`[1 ,(+ 2 3)]", env))
-        assertEquals(MutableVector(arrayOf(1L, listOf(Quasiquote.symbol, listOf(
-                Unquote.symbol, listOf(1L, 5L))))),
-                eval("`[1 `,(1 ,(+ 2 3))]", env))
+        assertEquals(MutableVector(arrayOf(1L, listOf(Quasiquote.symbol, listOf(Unquote.symbol, listOf(1L, 5L))))), eval("`[1 `,(1 ,(+ 2 3))]", env))
 
-        assertEquals(eval("'foo", env), eval("`(,@'() . foo)", env))
-        assertEquals(cons(UnquoteSplicing.symbol, Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
-        assertEquals(cons(Unquote.symbol, cons(1L, 2L)), eval("`(unquote 1 . 2)", env))
+        assertEquals(Pair(UnquoteSplicing.symbol, Symbol.intern("foo")), eval("`(unquote-splicing . foo)", env))
+        assertEquals(Pair(Unquote.symbol, Pair(1L, 2L)), eval("`(unquote 1 . 2)", env))
 
         assertEquals(emptyList<Nothing>(), eval("`()", env))
         assertEquals(MutableVector(), eval("`#()", env))

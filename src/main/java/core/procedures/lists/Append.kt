@@ -4,8 +4,8 @@ import core.procedures.AFn
 import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
-import core.scm.Cons
 import core.scm.Type
+import core.utils.Utils
 
 class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::class.java, lastArgType = Any::class.java) {
 
@@ -14,8 +14,14 @@ class Append : AFn<Any?, Any?>(name = "append", restArgsType = Type.ProperList::
 
     override operator fun invoke(args: Array<out Any?>) = args.fold(emptyList<Nothing>() as Any?, this::invoke)
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? = when {
-        Predicate.isPair(arg1) -> Cons.cons(car(arg1), invoke(cdr(arg1), arg2))
-        else -> arg2
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any? = when (!Utils.isEmpty(arg1)) {
+        true -> {
+            val cdr = invoke(cdr(arg1), arg2)
+            when (Predicate.isProperList(cdr)) {
+                true  -> listOf(car(arg1)) + Utils.toSequence(cdr)
+                false -> Pair(car(arg1), cdr)
+            }
+        }
+        false -> arg2
     }
 }

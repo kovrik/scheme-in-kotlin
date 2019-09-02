@@ -7,6 +7,7 @@ import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.scm.Symbol
 import core.Writer
+import core.utils.Utils
 
 /* Syntax:
  * (define <variable> <expression>)
@@ -30,14 +31,15 @@ object Define : SpecialForm("define") {
                 }
                 env[id] = evaluator.eval(form[2], env)
             }
-            is List<*> -> {
+            is List<*>, is Pair<*, *> -> {
                 /* Procedure definition: (define <id> <proc>) */
                 /* Function shorthand definition
                  * form = (define (name a1 a2 ... an [. ar]) f1 f2 ... fn)
                  *              |   0   | 1 definition           | 3 body      |
                  */
-                id.forEach {
-                    if (it !is Symbol && !Predicate.isPair(it)) {
+                val seq = Utils.toSequence(id)
+                seq.forEach {
+                    if (it !is Symbol && !Predicate.isPairOrNonEmptyList(it)) {
                         throw IllegalSyntaxException(toString(), Writer.write(form), "not an identifier: ${Writer.write(it)}")
                     }
                 }
@@ -46,8 +48,8 @@ object Define : SpecialForm("define") {
                 /* Get procedure's name */
                 // TODO (define (((a))) 1)
                 // TODO (define ((a n) c) n)
-                id = id[0] as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form),
-                                               "not an identifier for procedure name: ${Writer.write(id)}")
+                id = seq.first() as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form),
+                        "not an identifier for procedure name: ${Writer.write(id)}")
                 env[id] = Lambda.eval(lambda, env, evaluator)
             }
             else -> throw IllegalSyntaxException(toString(), Writer.write(form))

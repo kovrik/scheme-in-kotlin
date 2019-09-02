@@ -8,7 +8,7 @@ object Type {
 
     /* Marker objects */
     internal object ProperList
-    internal object Pair
+    internal object PairOrNonEmptyList
     internal object ExactNonNegativeInteger
     internal object Rational
     internal object Real
@@ -22,7 +22,7 @@ object Type {
             String::class.java                  to { o: Any? -> o is CharSequence },
             MutableString::class.java           to { o: Any? -> o is StringBuilder || o is MutableString },
             ProperList::class.java              to Predicate.Companion::isProperList,
-            Pair::class.java                    to Predicate.Companion::isPair,
+            PairOrNonEmptyList::class.java      to Predicate.Companion::isPairOrNonEmptyList,
             Rational::class.java                to Utils::isRational,
             Long::class.java                    to Utils::isInteger,
             Long::class.javaObjectType          to Utils::isInteger,

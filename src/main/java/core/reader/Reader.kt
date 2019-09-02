@@ -9,6 +9,7 @@ import core.utils.Utils.getRadixByChar
 import core.utils.Utils.isValidForRadix
 import core.utils.Utils.preProcessNumber
 import core.Writer
+import core.utils.Utils
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -312,7 +313,7 @@ open class Reader {
      * <list> -> (<list_contents>)
      */
     @Throws(IOException::class)
-    private fun readList(allowImproperList: Boolean, terminator: Char): List<*> {
+    private fun readList(allowImproperList: Boolean, terminator: Char): Any? {
         /* Remember position of a dot (if we meet it) */
         var dotPos = -1
         var i = reader.read()
@@ -344,16 +345,21 @@ open class Reader {
             i = reader.read()
             c = i.toChar()
         }
-        return when {
-            /* Was it a proper list or dot is the first element? */
-            dotPos < 1 -> list
-            else -> {
+        /* Was it a proper list or dot is the first element? */
+        return when (dotPos < 1) {
+            true  -> list
+            false -> {
                 /* Validate dot position */
                 if (dotPos != list.size - 1) throw IllegalSyntaxException("$name: illegal use of '.'")
-                /* Convert list into cons */
-                var cons = Cons.cons<Any?>(list[list.size - 2], list.last())
-                for (n in list.size - 3 downTo 0) { cons = Cons.cons(list[n], cons) }
-                cons
+                val last = list.last()
+                /* If we met dot, but cdr is a proper list, then it is a list */
+                when (last is List<*> ) {
+                    true -> mutableListOf<Any?>().apply {
+                        addAll(list.dropLast(1))
+                        addAll(last)
+                    }
+                    false -> Utils.cons(list)
+                }
             }
         }
     }
@@ -365,9 +371,12 @@ open class Reader {
      */
     @Throws(IOException::class)
     private fun readVectorMutable(terminator: Char) = readList(false, terminator).let {
-        when {
-            it.isEmpty() -> MutableVector.EMPTY
-            else -> MutableVector(it)
+        when (it is List<*>) {
+            true -> when {
+                it.isEmpty() -> MutableVector.EMPTY
+                else -> MutableVector(it)
+            }
+            false -> throw IllegalStateException("$name: expected List, actual: ${Writer.write(it)}")
         }
     }
 
@@ -378,9 +387,12 @@ open class Reader {
      */
     @Throws(IOException::class)
     private fun readVectorImmutable(terminator: Char) = readList(false, terminator).let {
-        when {
-            it.isEmpty() -> Vector.EMPTY
-            else -> Vector(it)
+        when (it is List<*>) {
+            true -> when {
+                it.isEmpty() -> Vector.EMPTY
+                else -> Vector(it)
+            }
+            false -> throw IllegalStateException("$name: expected List, actual: ${Writer.write(it)}")
         }
     }
 

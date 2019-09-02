@@ -27,7 +27,7 @@ open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
                 append("error!").append(e)
             }
         }.append('>').toString()
-        else        -> "#<future:pending>"
+        else -> "#<future:pending>"
     }
 }
 

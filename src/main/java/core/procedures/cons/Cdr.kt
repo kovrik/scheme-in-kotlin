@@ -1,17 +1,17 @@
 package core.procedures.cons
 
+import core.exceptions.WrongTypeException
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.procedures.predicates.Predicate
-import core.scm.Cons
 import core.scm.Type
 
 class Cdr : AFn<Any?, Any?>(name = "cdr", isPure = true, arity = Exactly(1),
-                            mandatoryArgsTypes = arrayOf(Type.Pair::class.java)) {
+                            mandatoryArgsTypes = arrayOf(Type.PairOrNonEmptyList::class.java)) {
 
     override operator fun invoke(arg: Any?) = when (arg) {
-        is Cons<*>     -> if (Predicate.isProperList(arg)) arg.drop(1) else (arg.last() as Any)
+        is Sequence<*> -> arg.drop(1)
         is Pair<*, *>  -> arg.second
-        else           -> (arg as List<*>).drop(1)
+        is List<*>     -> arg.drop(1)
+        else           -> throw WrongTypeException(name, Type.ProperList::class.java, arg)
     }
 }

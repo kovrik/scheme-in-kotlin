@@ -1,8 +1,6 @@
 package unittests
 
 import core.exceptions.ArityException
-import core.scm.Cons
-import core.scm.Cons.Companion.cons
 import core.scm.MutableVector
 import core.scm.Symbol
 import org.junit.Assert.*
@@ -74,8 +72,8 @@ class ListTest : AbstractTest() {
         eval("(define conslist '(3))", env)
         eval("(cons 1 conslist)", env)
         assertEquals(true, eval("(equal? '(3) conslist))", env))
-        assertEquals(Cons.cons(null, 1L),   eval("(cons nil 1)",   env))
-        assertEquals(Cons.cons(null, null), eval("(cons nil nil)", env))
+        assertEquals(Pair(null, 1L), eval("(cons nil 1)", env))
+        assertEquals(Pair(null, null), eval("(cons nil nil)", env))
         assertEquals(listOf(listOf(0L), 0L, 1L, 2L, 3L, 4L), eval("(cons '(0) (range 5))", env))
     }
 
@@ -104,13 +102,13 @@ class ListTest : AbstractTest() {
             eval("(car '())", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("car: type mismatch; (expected: Pair, given: ())", e.message)
+            assertEquals("car: type mismatch; (expected: PairOrNonEmptyList, given: ())", e.message)
         }
         try {
             eval("(car 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("car: type mismatch; (expected: Pair, given: 1)", e.message)
+            assertEquals("car: type mismatch; (expected: PairOrNonEmptyList, given: 1)", e.message)
         }
     }
 
@@ -118,7 +116,7 @@ class ListTest : AbstractTest() {
     fun testCdr() {
         assertEquals(2L, eval("(cdr (cons 1 2))", env))
         assertEquals("test", eval("(cdr (cons 2 \"test\"))", env))
-        assertEquals(cons(2L, 3L), eval("(cdr (cons 1 (cons 2 3)))", env))
+        assertEquals(Pair(2L, 3L), eval("(cdr (cons 1 (cons 2 3)))", env))
         assertEquals(listOf(2L, 3L), eval("(cdr '(1 2 3))", env))
         assertEquals(emptyList<Nothing>(), eval("(cdr '(1))", env))
         assertEquals(emptyList<Nothing>(), eval("(cdr (list 1))", env))
@@ -126,13 +124,13 @@ class ListTest : AbstractTest() {
             eval("(cdr '())", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("cdr: type mismatch; (expected: Pair, given: ())", e.message)
+            assertEquals("cdr: type mismatch; (expected: PairOrNonEmptyList, given: ())", e.message)
         }
         try {
             eval("(cdr 1)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("cdr: type mismatch; (expected: Pair, given: 1)", e.message)
+            assertEquals("cdr: type mismatch; (expected: PairOrNonEmptyList, given: 1)", e.message)
         }
     }
 
@@ -181,13 +179,13 @@ class ListTest : AbstractTest() {
     fun testAppend() {
         assertEquals("test", eval("(append '() \"test\")", env))
         assertEquals(5L, eval("(append '() 5)", env))
-        assertEquals(cons(1L, 5L), eval("(append '(1) 5)", env))
+        assertEquals(Pair(1L, 5L), eval("(append '(1) 5)", env))
         assertEquals(listOf(1L, 2L, 3L), eval("(append '(1) '(2 3))", env))
         assertEquals(listOf(1L, 2L, 2L, 3L), eval("(append '(1 2) '(2 3))", env))
         assertEquals(listOf(1L, 2L, 3L, 4L, 5L), eval("(append '(1) '(2) '(3 4) '(5))", env))
-        assertEquals(cons(1L, 2L), eval("(append '() (cons 1 2))", env))
-        assertEquals(cons(1L, cons(1L, 2L)), eval("(append '(1) (cons 1 2))", env))
-        assertEquals(cons(1L, cons(1L, cons(1L, 2L))), eval("(append '(1 1) (cons 1 2))", env))
+        assertEquals(Pair(1L, 2L), eval("(append '() (cons 1 2))", env))
+        assertEquals(Pair(1L, Pair(1L, 2L)), eval("(append '(1) (cons 1 2))", env))
+        assertEquals(Pair(1L, Pair(1L, Pair(1L, 2L))), eval("(append '(1 1) (cons 1 2))", env))
         assertEquals(emptyList<Nothing>(), eval("(append '() '() '() '())", env))
         try {
             eval("(append 1 '())", env)
@@ -225,13 +223,13 @@ class ListTest : AbstractTest() {
 
     @Test
     fun testListTail() {
-        assertEquals(listOf(3L, 4L), eval("(list-tail (list 1 2 3 4) 2)", env))
+        assertEquals(listOf(3L, 4L), (eval("(list-tail (list 1 2 3 4) 2)", env) as Sequence<*>).toList())
         assertEquals(2L, eval("(list-tail (cons 1 2) 1)", env))
         assertEquals(Symbol.intern("not-a-pair"), eval("(list-tail 'not-a-pair 0)", env))
 
         eval("(define a '(1 2 3 4))", env)
         eval("(define b (list-tail (cdr a) 2))", env)
-        assertEquals(listOf(4L), eval("b", env))
+        assertEquals(listOf(4L), (eval("b", env) as Sequence<*>).toList())
         try {
             eval("(list-tail 1 2)", env)
             fail()
@@ -246,13 +244,13 @@ class ListTest : AbstractTest() {
         assertEquals(3L, eval("(list-ref '(1 2 3) 2)", env))
         assertEquals(1L, eval("(list-ref (cons 1 2) 0)", env))
         assertEquals(Symbol.intern("c"), eval("(list-ref (list 'a 'b 'c) 2)", env))
-        assertEquals(cons(1L, 2L), eval("(list-ref '(1 2 (1 . 2)) 2)", env))
+        assertEquals(Pair(1L, 2L), eval("(list-ref (list 1 2 (cons 1 2)) 2)", env))
         assertEquals(listOf(1L, 2L), eval("(list-ref '(1 2 (1 2)) 2)", env))
         try {
             eval("(list-ref 1 2)", env)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertEquals("list-ref: type mismatch; (expected: Pair, given: 1)", e.message)
+            assertEquals("list-ref: type mismatch; (expected: PairOrNonEmptyList, given: 1)", e.message)
         }
         try {
             eval("(list-ref '(1 2) 2.5)", env)
@@ -306,22 +304,17 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(member 0 '(1 2 3))", env))
         assertEquals(false, eval("(member \"test\" '(1 2 3))", env))
 
-        assertEquals(listOf(1L, 2L, 3L), eval("(member 1 '(1 2 3))", env))
-        assertEquals(listOf(2L, 3L), eval("(member 2 '(1 2 3))", env))
-        assertEquals(listOf(3L), eval("(member 3 '(1 2 3))", env))
-        assertEquals(listOf(listOf(Symbol.intern("a")), Symbol.intern("c")), eval("(member (list 'a) '(b (a) c))", env))
+        assertEquals(listOf(1L, 2L, 3L), (eval("(member 1 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(2L, 3L), (eval("(member 2 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(3L), (eval("(member 3 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(listOf(Symbol.intern("a")), Symbol.intern("c")), (eval("(member (list 'a) '(b (a) c))", env) as Sequence<*>).toList())
         try {
             eval("(member)", env)
             fail()
         } catch (e: ArityException) {
             assertEquals("member: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-        try {
-            eval("(member 1 #())", env)
-            fail()
-        } catch (e: IllegalArgumentException) {
-            assertTrue(e.message!!.startsWith("member: type mismatch; (expected: List, given:"))
-        }
+        assertEquals(false, eval("(member 1 #())", env))
     }
 
     @Test
@@ -330,13 +323,13 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(memq 0 '(1 2 3))", env))
         assertEquals(false, eval("(memq \"test\" '(1 2 3))", env))
 
-        assertEquals(listOf(1L, 2L, 3L), eval("(memq 1 '(1 2 3))", env))
-        assertEquals(listOf(2L, 3L), eval("(memq 2 '(1 2 3))", env))
-        assertEquals(listOf(3L), eval("(memq 3 '(1 2 3))", env))
+        assertEquals(listOf(1L, 2L, 3L), (eval("(memq 1 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(2L, 3L), (eval("(memq 2 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(3L), (eval("(memq 3 '(1 2 3))", env) as Sequence<*>).toList())
         assertEquals(false, eval("(memq (list 'a) '(b (a) c))", env))
 
-        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'a '(a b c))", env))
-        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), eval("(memq 'b '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), (eval("(memq 'a '(a b c))", env) as Sequence<*>).toList())
+        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), (eval("(memq 'b '(a b c))", env) as Sequence<*>).toList())
         assertEquals(false, eval("(memq 'a '(b c d))", env))
         try {
             eval("(memq)", env)
@@ -344,12 +337,7 @@ class ListTest : AbstractTest() {
         } catch (e: ArityException) {
             assertEquals("memq: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-        try {
-            eval("(memq 1 #())", env)
-            fail()
-        } catch (e: IllegalArgumentException) {
-            assertTrue(e.message!!.startsWith("memq: type mismatch; (expected: List, given:"))
-        }
+        assertEquals(false, eval("(memq 1 #())", env))
     }
 
     @Test
@@ -358,28 +346,23 @@ class ListTest : AbstractTest() {
         assertEquals(false, eval("(memv 0 '(1 2 3))", env))
         assertEquals(false, eval("(memv \"test\" '(1 2 3))", env))
 
-        assertEquals(listOf(1L, 2L, 3L), eval("(memv 1 '(1 2 3))", env))
-        assertEquals(listOf(2L, 3L), eval("(memv 2 '(1 2 3))", env))
-        assertEquals(listOf(3L), eval("(memv 3 '(1 2 3))", env))
+        assertEquals(listOf(1L, 2L, 3L), (eval("(memv 1 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(2L, 3L), (eval("(memv 2 '(1 2 3))", env) as Sequence<*>).toList())
+        assertEquals(listOf(3L), (eval("(memv 3 '(1 2 3))", env) as Sequence<*>).toList())
         assertEquals(false, eval("(memv (list 'a) '(b (a) c))", env))
 
-        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'a '(a b c))", env))
-        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), eval("(memv 'b '(a b c))", env))
+        assertEquals(listOf(Symbol.intern("a"), Symbol.intern("b"), Symbol.intern("c")), (eval("(memv 'a '(a b c))", env) as Sequence<*>).toList())
+        assertEquals(listOf(Symbol.intern("b"), Symbol.intern("c")), (eval("(memv 'b '(a b c))", env) as Sequence<*>).toList())
         assertEquals(false, eval("(memv 'a '(b c d))", env))
 
-        assertEquals(listOf(101L, 102L), eval("(memv 101 '(100 101 102))", env))
+        assertEquals(listOf(101L, 102L), (eval("(memv 101 '(100 101 102))", env) as Sequence<*>).toList())
         try {
             eval("(memv)", env)
             fail()
         } catch (e: ArityException) {
             assertEquals("memv: arity mismatch; the expected number of arguments does not match the given number (expected: 2, given: 0)", e.message)
         }
-        try {
-            eval("(memv 1 #())", env)
-            fail()
-        } catch (e: IllegalArgumentException) {
-            assertTrue(e.message!!.startsWith("memv: type mismatch; (expected: List, given:"))
-        }
+        assertEquals(false, eval("(memv 1 #())", env))
     }
 
     @Test

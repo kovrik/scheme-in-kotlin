@@ -82,7 +82,7 @@ class ConsTest {
     fun testLength() {
         assertEquals(0, listOf<Any>().size.toLong())
         assertEquals(1, listOf(1).size.toLong())
-        assertEquals(2, listOf<List<*>>(emptyList<Nothing>(), cons(emptyList<Nothing>(), emptyList<Nothing>())).size.toLong())
+        assertEquals(2, listOf(emptyList<Nothing>(), cons(emptyList<Nothing>(), emptyList<Nothing>())).size.toLong())
         assertEquals(3, listOf(1, emptyList<Nothing>(), 3).size.toLong())
     }
 
@@ -130,8 +130,8 @@ class ConsTest {
         assertEquals(true,  Predicate.IS_LIST(listOf(1, 2, 3)))
         assertEquals(true,  Predicate.IS_LIST(listOf(1, 2, 3, 4)))
         assertEquals(true,  Predicate.IS_LIST(listOf(1, 2, emptyList<Nothing>())))
-        assertEquals(true,  Predicate.IS_LIST(cons(null, null)))
-        assertEquals(true,  Predicate.IS_LIST(cons(1, null)))
+        assertEquals(false, Predicate.IS_LIST(cons(null, null)))
+        assertEquals(false, Predicate.IS_LIST(cons(1, null)))
         assertEquals(false, Predicate.IS_LIST(cons(1, 2)))
         assertEquals(false, Predicate.IS_LIST(cons(1, cons(2, cons(3, 4)))))
         assertEquals(true,  Predicate.IS_LIST(cons(1, cons(2, cons(3, emptyList<Nothing>())))))

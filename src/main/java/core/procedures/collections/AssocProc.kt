@@ -29,7 +29,7 @@ class AssocProc(override val name: String,
                 for (n in list!!.indices) {
                     val pair = list[n]
                     when {
-                        Predicate.isPair(pair) -> if (Utils.toBoolean(predicate(args[0], car(pair)))) {
+                        Predicate.isPairOrNonEmptyList(pair) -> if (Utils.toBoolean(predicate(args[0], car(pair)))) {
                             return pair
                         }
                         else -> throw WrongTypeException("$name: wrong type argument in position $n (expecting association list): ${Writer.write(list)}")

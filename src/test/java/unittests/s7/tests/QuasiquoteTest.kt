@@ -2,7 +2,6 @@ package unittests.s7.tests
 
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.UndefinedIdentifierException
-import core.procedures.cons.ConsProc
 import core.scm.Vector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
@@ -10,10 +9,6 @@ import org.junit.Test
 import unittests.AbstractTest
 
 class QuasiquoteTest : AbstractTest() {
-
-    companion object {
-        private val cons = ConsProc()
-    }
 
     @Test
     fun testQuasiquote() {
@@ -27,8 +22,9 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(listOf(1L, 2L, 81L, 3L, 4L), eval("`(1 2 ,(* 9 9) 3 4)", env))
         assertEquals(listOf(1L, 2L, 3L), eval("`(1 ,(+ 1 1) 3)", env))
         assertEquals(listOf(3L), eval("`(,(+ 1 2))", env))
-        assertEquals(cons(s("a"), s("b")), eval("`(,'a . ,'b)", env))
+        assertEquals(Pair(s("a"), s("b")), eval("`(,'a . ,'b)", env))
         assertEquals(s("foo"), eval("`(,@'() . foo)", env))
+        assertEquals(s("foo"), eval("(quasiquote (,@'() . foo))", env))
         assertEquals(listOf(1L, 2L), eval("`(1 , 2)", env))
         assertEquals(listOf(1L, 2L, 3L), eval("`(1 ,@ (list 2 3))", env))
         assertEquals(listOf(1L), eval("`(1 ,@(list))", env))
@@ -48,7 +44,6 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(listOf(1L, 2L, 81L, 3L, 4L), eval("(quasiquote (1 2 ,(* 9 9) 3 4))", env))
         assertEquals(listOf(1L, 2L, 3L), eval("(quasiquote (1 ,(+ 1 1) 3))", env))
         assertEquals(listOf(3L), eval("(quasiquote (,(+ 1 2)))", env))
-        assertEquals(s("foo"), eval("(quasiquote (,@'() . foo))", env))
         assertEquals(listOf(1L, 2L), eval("(quasiquote (1 , 2))", env))
         assertEquals(listOf(1L, 1L), eval("(quasiquote (,1 ,1))", env))
         assertEquals(listOf(1L, 1L), eval("(quasiquote (,1 ,(quasiquote ,1)))", env))
@@ -57,6 +52,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals(1L, eval("`(,@1)", env))
         assertEquals("String", eval("`(,@\"String\")", env))
         assertEquals(Vector(arrayOf(1L)), eval("`[,1]", env))
+        assertEquals(listOf(listOf(s("quasiquote"), listOf(1L, s("unquote"), 2L))), eval("`(`(1 unquote 2))", env))
         try {
             eval("`(1 , %(list 2 3))", env)
             fail()
@@ -64,7 +60,8 @@ class QuasiquoteTest : AbstractTest() {
             // expected
         }
 
-        val illegals = arrayOf("`,@#(list 1 2)", ",(1 (unquote 1 2 3))", "`((unquote (+ 1 2) (+3 4)))", "`[unquote 1]")
+        val illegals = arrayOf("`,@#(list 1 2)", ",(1 (unquote 1 2 3))", "`((unquote (+ 1 2) (+3 4)))", "`[unquote 1]",
+                               "(quasiquote 1 2)", "`(1 unquote 2 3)")
         for (s in illegals) {
             try {
                 eval(s, env)
