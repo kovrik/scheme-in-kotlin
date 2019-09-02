@@ -119,11 +119,9 @@ object Quasiquote : SpecialForm("quasiquote") {
         return result
     }
 
-    private fun quasiquotePair(depth: Int, expr: Pair<*, *>, env: Environment, evaluator: Evaluator): Any? {
-        val result = quasiquoteList(depth, expr.toList(), env, evaluator, true)
-        return when (result) {
-            is List<*> -> Utils.cons(result)
-            else -> result
-        }
-    }
+    private fun quasiquotePair(depth: Int, expr: Pair<*, *>, env: Environment, evaluator: Evaluator) =
+            when (val result = quasiquoteList(depth, expr.toList(), env, evaluator, true)) {
+                is List<*> -> Utils.cons(result)
+                else -> result
+            }
 }
