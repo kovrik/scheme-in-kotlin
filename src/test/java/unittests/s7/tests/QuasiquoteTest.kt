@@ -53,6 +53,7 @@ class QuasiquoteTest : AbstractTest() {
         assertEquals("String", eval("`(,@\"String\")", env))
         assertEquals(Vector(arrayOf(1L)), eval("`[,1]", env))
         assertEquals(listOf(listOf(s("quasiquote"), listOf(1L, s("unquote"), 2L))), eval("`(`(1 unquote 2))", env))
+        assertEquals(listOf(s("quasiquote"), Pair(listOf(s("unquote")), 2L)), eval("``(,,@'() . 2)", env))
         try {
             eval("`(1 , %(list 2 3))", env)
             fail()

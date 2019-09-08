@@ -434,8 +434,8 @@ object Utils {
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc<*, *>
 
     fun toSequence(obj: Any?): Sequence<*> = when (obj) {
-        Unit                 -> emptyList<Any?>().asSequence()
-        null                 -> emptyList<Any?>().asSequence()
+        Unit                 -> emptySequence<Nothing>()
+        null                 -> emptySequence<Nothing>()
         is Sequence<*>       -> obj
         is Iterable<*>       -> obj.asSequence()
         is CharSequence      -> obj.asSequence()
@@ -458,9 +458,9 @@ object Utils {
     fun isEmpty(o: Any?) = when (o) {
         null             -> true
         is Sequence<*>   -> o.none()
-        is Collection<*> -> o.isEmpty()
-        is CharSequence  -> o.isEmpty()
-        is Map<*, *>     -> o.isEmpty()
+        is Collection<*> -> o.none()
+        is CharSequence  -> o.none()
+        is Map<*, *>     -> o.none()
         else             -> false
     }
 
