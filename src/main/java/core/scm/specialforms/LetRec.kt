@@ -5,7 +5,6 @@ import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
 import core.Writer
-import core.scm.Type
 
 /**
  * Syntax:
