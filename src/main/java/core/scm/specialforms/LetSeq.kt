@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Thunk
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (let* <bindings> <body>)
  *
  * <bindings>: ((<variable1> <init1>) ...)

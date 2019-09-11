@@ -6,7 +6,8 @@ import core.procedures.booleans.Not
 import core.scm.Thunk
 import core.utils.Utils
 
-/* Syntax:
+/**
+ * Syntax:
  * (nor <test1> ...)
  */
 object Nor : SpecialForm("nor") {

@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Lazy
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (lazy <expression>)
  */
 object LazyForm : SpecialForm("lazy") {

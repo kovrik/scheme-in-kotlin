@@ -9,7 +9,8 @@ import core.scm.specialforms.SpecialForm
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-/* Syntax:
+/**
+ * Syntax:
  * (launch <expr1> ...)
  */
 object Launch : SpecialForm("launch") {

@@ -5,7 +5,8 @@ import core.Evaluator
 import core.scm.Thunk
 import core.utils.Utils
 
-/* Syntax:
+/**
+ * Syntax:
  * (or <test1> ...)
  */
 object Or : SpecialForm("or") {

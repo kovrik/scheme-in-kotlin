@@ -8,7 +8,8 @@ import core.scm.Symbol
 import core.scm.Type
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (dotimes (var limit [result]) <body>...)
  */
 object Dotimes : SpecialForm("dotimes") {

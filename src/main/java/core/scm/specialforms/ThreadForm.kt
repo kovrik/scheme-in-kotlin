@@ -8,7 +8,8 @@ import core.scm.Symbol
 import core.Writer
 import kotlin.concurrent.thread
 
-/* Syntax:
+/**
+ * Syntax:
  * (thread <expression>)
  */
 object ThreadForm : SpecialForm("thread") {

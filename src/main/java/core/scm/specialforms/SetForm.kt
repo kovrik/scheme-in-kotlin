@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (set! <variable> <expression>)
  */
 object SetForm : SpecialForm("set!") {

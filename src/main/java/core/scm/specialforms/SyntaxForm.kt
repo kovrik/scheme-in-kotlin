@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Syntax
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (syntax <template>)
  */
 object SyntaxForm : SpecialForm("syntax") {

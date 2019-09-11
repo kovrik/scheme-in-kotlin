@@ -9,7 +9,8 @@ import core.scm.Symbol
 import core.Writer
 import core.utils.Utils
 
-/* Syntax:
+/**
+ * Syntax:
  * (define <variable> <expression>)
  * (define (<variable> <formals>) <body>)
  * (define (<variable> . <formal>) <body>)

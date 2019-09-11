@@ -9,7 +9,8 @@ import core.scm.specialforms.SpecialForm
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.runBlocking
 
-/* Syntax:
+/**
+ * Syntax:
  * (await <deferred1>)
  */
 object Await : SpecialForm("await") {

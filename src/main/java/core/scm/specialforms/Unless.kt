@@ -7,7 +7,8 @@ import core.scm.Thunk
 import core.utils.Utils
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (unless <test> body...)
  */
 object Unless : SpecialForm("unless") {

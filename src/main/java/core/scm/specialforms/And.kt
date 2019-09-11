@@ -5,7 +5,8 @@ import core.Evaluator
 import core.scm.Thunk
 import core.utils.Utils
 
-/* Syntax:
+/**
+ * Syntax:
  * (and <test1> ...)
  */
 object And : SpecialForm("and") {

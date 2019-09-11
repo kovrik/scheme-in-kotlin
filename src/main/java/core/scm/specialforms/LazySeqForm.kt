@@ -4,7 +4,8 @@ import core.Evaluator
 import core.environment.Environment
 import core.scm.LazySeq
 
-/* Syntax:
+/**
+ * Syntax:
  * (lazy-seq <body> ...)
  */
 object LazySeqForm : SpecialForm("lazy-seq") {

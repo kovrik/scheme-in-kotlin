@@ -9,7 +9,8 @@ import core.scm.specialforms.SpecialForm
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-/* Syntax:
+/**
+ * Syntax:
  * (async <expr1> ...)
  */
 object Async : SpecialForm("async") {

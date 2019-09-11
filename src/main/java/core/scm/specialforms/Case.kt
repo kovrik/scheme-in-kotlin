@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.procedures.equivalence.Eqv
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (case <key> <clause1> <clause2> ...)
  *
  * <clause>: ((<datum1> ...) <expression1> <expression2> ...)

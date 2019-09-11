@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Future
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (future <expression>)
  */
 object FutureForm : SpecialForm("future") {

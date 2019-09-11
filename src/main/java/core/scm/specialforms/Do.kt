@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (do <bindings> <clause> <body>)
  *
  * <bindings>: ((<variable 1> <init 1> <step 1>) ...),

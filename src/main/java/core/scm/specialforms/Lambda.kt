@@ -12,7 +12,8 @@ import core.procedures.Arity.Exactly
 import core.utils.Utils
 import java.util.LinkedList
 
-/* Syntax:
+/**
+ * Syntax:
  * (lambda <formals> <body>)
  *
  * <formals>:

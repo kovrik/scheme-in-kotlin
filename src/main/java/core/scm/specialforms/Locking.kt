@@ -5,7 +5,8 @@ import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (locking <lock> <body> ...)
  */
 object Locking : SpecialForm("locking") {

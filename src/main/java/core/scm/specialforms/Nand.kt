@@ -6,7 +6,8 @@ import core.procedures.booleans.Not
 import core.scm.Thunk
 import core.utils.Utils
 
-/* Syntax:
+/**
+ * Syntax:
  * (nand <test1> ...)
  */
 object Nand : SpecialForm("nand") {

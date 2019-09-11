@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (cond <clause1> <clause2> ...)
  *
  * <clause>: (<test> <expression1> ...)

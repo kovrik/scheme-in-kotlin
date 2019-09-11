@@ -8,7 +8,8 @@ import core.scm.specialforms.Begin
 import core.scm.specialforms.SpecialForm
 import kotlinx.coroutines.runBlocking
 
-/* Syntax:
+/**
+ * Syntax:
  * (run-blocking <expr1> ...)
  */
 object RunBlocking : SpecialForm("run-blocking") {

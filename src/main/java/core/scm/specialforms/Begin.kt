@@ -4,7 +4,8 @@ import core.environment.Environment
 import core.Evaluator
 import core.scm.Thunk
 
-/* Syntax:
+/**
+ * Syntax:
  * (begin <expression1> <expression2> ...)
  *
  * NB:

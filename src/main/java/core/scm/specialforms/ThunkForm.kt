@@ -7,7 +7,8 @@ import core.scm.Closure
 import core.Writer
 import core.procedures.Arity.Exactly
 
-/* Syntax:
+/**
+ * Syntax:
  * (thunk <body> ...)
  *
  * Returns a nullary function (lambda) that evaluates the given body.

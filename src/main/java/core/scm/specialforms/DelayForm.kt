@@ -6,7 +6,8 @@ import core.exceptions.IllegalSyntaxException
 import core.scm.Delay
 import core.Writer
 
-/* Syntax:
+/**
+ * Syntax:
  * (delay <expression>)
  */
 object DelayForm : SpecialForm("delay") {

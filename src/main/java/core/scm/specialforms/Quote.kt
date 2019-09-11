@@ -5,7 +5,7 @@ import core.Evaluator
 import core.Writer
 import core.exceptions.IllegalSyntaxException
 
-/* Literal expressions
+/**
  * Syntax:
  * (quote <datum>)
  * '<datum>
@@ -19,5 +19,4 @@ object Quote : SpecialForm("quote") {
         true  -> form[1]
         false -> throw IllegalSyntaxException(toString(), Writer.write(form))
     }
-
 }
