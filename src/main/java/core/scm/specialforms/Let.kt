@@ -8,7 +8,8 @@ import core.scm.Thunk
 import core.Writer
 import core.scm.Type
 
-/* Syntax:
+/**
+ * Syntax:
  * (let <bindings> <body>)
  *
  * <bindings>: ((<variable1> <init1>) ...)
