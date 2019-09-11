@@ -6,7 +6,6 @@ import core.Reflector
 import core.exceptions.IllegalSyntaxException
 import core.scm.Symbol
 import core.Writer
-import core.scm.Type
 
 object Dot : SpecialForm(".") {
 
@@ -19,7 +18,7 @@ object Dot : SpecialForm(".") {
         val first = when (form[1]) {
             is Symbol -> env.resolve(form[1]).let {
                 when (it) {
-                    is Type.Undefined -> evaluator.eval(form[1], env)
+                    is Unit -> evaluator.eval(form[1], env)
                     else -> it
                 }
             }

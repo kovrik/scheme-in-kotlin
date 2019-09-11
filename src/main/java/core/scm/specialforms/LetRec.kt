@@ -30,7 +30,7 @@ object LetRec : SpecialForm("letrec") {
         /* Bind variables to fresh locations holding undefined values */
         bindings.forEach {
             if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-            localEnv[it[0]] = Type.Undefined
+            localEnv[it[0]] = Unit
         }
         /* Evaluate inits */
         bindings.forEach {

@@ -1,7 +1,6 @@
 package core.environment
 
 import core.exceptions.UndefinedIdentifierException
-import core.scm.Type
 
 open class Environment : HashMap<Any?, Any?> {
 
@@ -19,7 +18,7 @@ open class Environment : HashMap<Any?, Any?> {
         var current = this
         while (true) {
             if (current.containsKey(key)) return current[key]
-            if (current.outer == null) return Type.Undefined
+            if (current.outer == null) return Unit
             current = current.outer as Environment
         }
     }

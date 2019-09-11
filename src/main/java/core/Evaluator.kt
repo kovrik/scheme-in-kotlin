@@ -6,7 +6,6 @@ import core.exceptions.ReentrantContinuationException
 import core.exceptions.UndefinedIdentifierException
 import core.procedures.AFn
 import core.procedures.IFn
-import core.procedures.predicates.Predicate
 import core.scm.*
 import core.scm.specialforms.SpecialForm
 import core.utils.Utils
@@ -17,7 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class Evaluator(private val reflector: Reflector = Reflector(),
-                private val macroexpander: Macroexpander = Macroexpander()) {
+                private val macroexpander: Macroexpander = Macroexpander(),
+                private val name: String = "eval") {
 
     companion object {
         /* Used by gensym to generate unique symbol ids */
@@ -57,7 +57,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
                 is Vector      -> sexp.eval(env)
                 is Set<*>      -> sexp.eval(env)
                 is Sequence<*> -> sexp.eval(env)
-                is Pair<*, *>  -> throw IllegalSyntaxException("eval", Writer.write(sexp), "wrong type to apply")
+                is Pair<*, *>  -> throw IllegalSyntaxException(name, Writer.write(sexp), "wrong type to apply")
                 else           -> sexp
             }
         } catch (cc: CalledContinuation) {
@@ -81,18 +81,16 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     private fun Symbol.eval(env: Environment) = when (val result = env.resolve(this)) {
         is SpecialForm -> throw IllegalSyntaxException(result.toString(), Writer.write(this))
         /* Assume it is a Java static field */
-        Type.Undefined -> evalJavaStaticField(name)
+        Unit -> evalJavaStaticField(name)
         else -> result
     }
 
     /* Evaluate list */
     private fun List<*>.eval(env: Environment): Any? {
-        ifEmpty { throw IllegalSyntaxException("eval", Writer.write(this), "illegal empty application")  }
-        /* Improper lists are not allowed */
-        if (!Predicate.isProperList(this)) throw IllegalSyntaxException("eval", Writer.write(this))
-        val op = first().let {
-            /* Evaluate operator */
+        /* Evaluate operator */
+        val op = firstOrNull().let {
             when (it) {
+                null -> throw IllegalSyntaxException(name, Writer.write(this), "illegal empty application")
                 is List<*>, is Map<*, *>, is Vector -> eval(it, env)
                 is Symbol -> env.resolve(it)
                 else -> it
@@ -107,9 +105,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
              * and then invoke operator (IFn) via helper method */
             is IFn<*, *> -> AFn.invokeN(op, drop(1).map { eval(it, env) }.toTypedArray())
             // TODO implement as a macro
-            is Type.Undefined -> reflector.evalJavaMethod((this[0] as Symbol).name, drop(1).map { eval(it, env) }.toTypedArray())
+            is Unit -> reflector.evalJavaMethod((this[0] as Symbol).name, drop(1).map { eval(it, env) }.toTypedArray())
             /* If operator is not invokable, then raise an error */
-            else -> throw IllegalSyntaxException("eval", Writer.write(this), "wrong type to apply")
+            else -> throw IllegalSyntaxException(name, Writer.write(this), "wrong type to apply")
         }
     }
 

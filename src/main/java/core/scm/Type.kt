@@ -15,8 +15,6 @@ object Type {
     internal object BitOp
     internal object BitOpOrBigInt
     internal object Seqable
-    /* Value for undefined identifiers. Required to distinguish undefined and nil bindings */
-    internal object Undefined { override fun toString() = "#<undefined>" }
 
     private val TYPE_PREDICATES = hashMapOf(
             String::class.java                  to { o: Any? -> o is CharSequence },
