@@ -12,14 +12,14 @@ The goal is to have +some fun+ Scheme implementation which is as close to R5RS a
 On the other hand, this is a sandbox project where I'm trying different techniques and doing some experiments (for learning purposes mostly).
 Also, I'm trying to make code simple, readable and easily understandable.
 
-See TODO list for things already implementeted (and not yet).
+See TODO.org list additional information.
 
 *Known issues/Not implemented yet*
 
-1. Big numbers are slow (because Java's BigDecimals are quite slow and expensive)
-2. Cons lists are not proper cons lists
+1. No compiler yet
+2. No macros yet
 3. One-shot continuations only
-4. No macros yet
+4. Various bugs and issues
 
 *Useful links*
 
