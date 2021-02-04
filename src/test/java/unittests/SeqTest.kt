@@ -301,4 +301,32 @@ class SeqTest : AbstractTest() {
             )
         )
     }
+
+    @Test
+    fun testContains() {
+        assertEquals(false, eval("(contains? []  1)", env))
+        assertEquals(false, eval("(contains? '() 1)", env))
+        assertEquals(false, eval("(contains? #() 1)", env))
+        assertEquals(false, eval("(contains? (cons 1 2) 3)", env))
+        assertEquals(true, eval("(contains? [1]  1)", env))
+        assertEquals(true, eval("(contains? '(1) 1)", env))
+        assertEquals(true, eval("(contains? #(1) 1)", env))
+        assertEquals(true, eval("(contains? (cons 1 2) 1)", env))
+        assertEquals(true, eval("(contains? [1 2 3 4 5]  4)", env))
+        assertEquals(true, eval("(contains? '(1 2 3 4 5) 4)", env))
+        assertEquals(true, eval("(contains? #(1 2 3 4 5) 4)", env))
+        assertEquals(false, eval("(contains? [1 2 3 4 5]  :a)", env))
+        assertEquals(false, eval("(contains? '(1 2 3 4 5) :a)", env))
+        assertEquals(false, eval("(contains? #(1 2 3 4 5) :a)", env))
+        assertEquals(true, eval("(contains? '(nil) nil)", env))
+        assertEquals(true, eval("(contains? '(()) '())", env))
+    }
+
+    @Test
+    fun testDistinct() {
+        assertEquals(listOf<Any?>(), eval("(into '() (distinct '()))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(into '() (distinct '(1 2 3)))", env))
+        assertEquals(listOf(1L, 2L, 3L), eval("(into '() (distinct '(1 1 2 2 3 3)))", env))
+        assertEquals(listOf(true, false), eval("(into '() (distinct '(#t #t #f #f)))", env))
+    }
 }

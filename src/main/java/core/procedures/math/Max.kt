@@ -19,12 +19,12 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, arity = AtLeast(1),
         else -> args.fold(args[0] as Number?, this::invoke)
     }
 
-    override operator fun invoke(f: Any?, s: Any?): Number? = when {
+    override operator fun invoke(f: Any?, s: Any?): Number = when {
         f is Int        && s is Int        -> max(f, s)
         f is Long       && s is Long       -> max(f, s)
         f is Float      && s is Float      -> max(f, s)
         f is Double     && s is Double     -> max(f, s)
-        f is Ratio   && s is Ratio   -> maxOf(f, s)
+        f is Ratio      && s is Ratio      -> maxOf(f, s)
         f is BigInteger && s is BigInteger -> maxOf(f, s)
         f is BigDecimal && s is BigDecimal -> maxOf(f, s)
         f is BigDecimal && s is Number     -> maxOf(f, Utils.toBigDecimal(s))

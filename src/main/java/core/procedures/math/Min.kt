@@ -19,12 +19,12 @@ class Min : AFn<Any?, Number?>(name = "min", isPure = true, arity = AtLeast(1),
         else -> args.fold(args[0] as Number?, this::invoke)
     }
 
-    override operator fun invoke(f: Any?, s: Any?): Number? = when {
+    override operator fun invoke(f: Any?, s: Any?): Number = when {
         f is Int        && s is Int        -> min(f, s)
         f is Long       && s is Long       -> min(f, s)
         f is Float      && s is Float      -> min(f, s)
         f is Double     && s is Double     -> min(f, s)
-        f is Ratio   && s is Ratio   -> minOf(f, s)
+        f is Ratio      && s is Ratio      -> minOf(f, s)
         f is BigInteger && s is BigInteger -> minOf(f, s)
         f is BigDecimal && s is BigDecimal -> minOf(f, s)
         f is BigDecimal && s is Number     -> minOf(f, Utils.toBigDecimal(s))

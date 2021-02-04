@@ -10,7 +10,7 @@ import kotlin.math.exp
 class Exp : AFn<Number?, Number>(name = "exp", isPure = true, arity = Exactly(1),
                                  mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
-    private val E = "2.7182818284590452354".toBigDecimal()
+    private val E = Math.E.toBigDecimal()
 
     private val expt = Expt()
 
