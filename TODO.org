@@ -1,5 +1,6 @@
-* TODO: [38/47]
+* TODO: [38/48]
 ** TODO [#A] Macros
+** TODO [#A] Compiler
 ** TODO [#A] Modules
 ** TODO [#A] Expt for big fractional powers
 ** TODO [#B] Expansion Context Levels
