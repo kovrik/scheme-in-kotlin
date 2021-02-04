@@ -8,18 +8,23 @@ import core.scm.Type
 import core.scm.Vector
 import core.utils.Utils
 
-class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
+class Into : AFn<Any?, Any>(
+    name = "into", arity = Exactly(2),
+    mandatoryArgsTypes = arrayOf(Type.Seqable::class.java, Type.Seqable::class.java)
+) {
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         return when (arg1) {
             is Sequence<*> -> arg1 + Utils.toSequence(arg2)
-            is List<*>     -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList()
-            is Set<*>      -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toSet()
-            is Vector      -> MutableVector((Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList())
+            is List<*> -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList()
+            is Set<*> -> (Utils.toSequence(arg1) + Utils.toSequence(arg2)).toSet()
+            is Vector -> MutableVector((Utils.toSequence(arg1) + Utils.toSequence(arg2)).toList())
             is ByteArray -> {
                 val seq = Utils.toSequence(arg2)
                 ByteArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Byte::class.java)
@@ -30,7 +35,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is BooleanArray -> {
                 val seq = Utils.toSequence(arg2)
                 BooleanArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Boolean::class.javaObjectType)
@@ -41,7 +48,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is CharArray -> {
                 val seq = Utils.toSequence(arg2)
                 CharArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Char::class.java)
@@ -52,7 +61,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is ShortArray -> {
                 val seq = Utils.toSequence(arg2)
                 ShortArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Short::class.java)
@@ -63,7 +74,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is IntArray -> {
                 val seq = Utils.toSequence(arg2)
                 IntArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Int::class.java)
@@ -74,7 +87,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is LongArray -> {
                 val seq = Utils.toSequence(arg2)
                 LongArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Long::class.java)
@@ -85,7 +100,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is DoubleArray -> {
                 val seq = Utils.toSequence(arg2)
                 DoubleArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Double::class.java)
@@ -96,7 +113,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is FloatArray -> {
                 val seq = Utils.toSequence(arg2)
                 FloatArray(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         Type.assertType(name, e, Float::class.java)
@@ -107,7 +126,9 @@ class Into : AFn<Any?, Any?>(name = "into", arity = Exactly(2)) {
             is Array<*> -> {
                 val seq = Utils.toSequence(arg2)
                 arrayOfNulls<Any?>(arg1.size + seq.count()).apply {
-                    for (i in 0 until arg1.size)    { this[i] = arg1[i] }
+                    for (i in 0 until arg1.size) {
+                        this[i] = arg1[i]
+                    }
                     for (i in arg1.size until size) {
                         val e = seq.elementAt(i)
                         this[i] = e

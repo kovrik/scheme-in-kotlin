@@ -13,6 +13,7 @@ class Equal : AFn<Any?, Boolean>(name = "equal?", isPure = true, arity = AtLeast
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = when {
         arg1 is CharSequence && arg2 is MutableString -> arg2 == arg1
+        // Utils.isSeqable(arg1) && Utils.isSeqable(arg2) -> Utils.toSequence(arg1).toList() == Utils.toSequence(arg2).toList()
         else -> arg1 == arg2
     }
 }

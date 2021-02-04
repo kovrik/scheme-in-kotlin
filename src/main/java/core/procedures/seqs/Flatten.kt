@@ -2,10 +2,14 @@ package core.procedures.seqs
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
+import core.scm.Type
 import core.utils.Utils
 import java.util.*
 
-class Flatten : AFn<Any?, Any?>(name = "flatten", arity = Exactly(1)) {
+class Flatten : AFn<Any?, Any?>(
+    name = "flatten", arity = Exactly(1),
+    mandatoryArgsTypes = arrayOf(Type.Seqable::class.java)
+) {
 
     override operator fun invoke(arg: Any?) = flatten(Utils.toSequence(arg))
 
@@ -17,7 +21,7 @@ class Flatten : AFn<Any?, Any?>(name = "flatten", arity = Exactly(1)) {
                 while (!queue.isEmpty()) {
                     val e = queue.pop()
                     when (Utils.isSeqable(e)) {
-                        true  -> queue.addAll(flatten(e))
+                        true -> queue.addAll(flatten(e))
                         false -> add(e)
                     }
                 }

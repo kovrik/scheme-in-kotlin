@@ -27,7 +27,7 @@ class Ceiling : AFn<Number?, Number>(name = "ceiling", isPure = true, arity = Ex
                 }
             }
             is Ratio   -> arg.ceiling()
-            else          -> ceil(arg.toDouble())
+            else       -> ceil(arg.toDouble())
         }
     }
 }

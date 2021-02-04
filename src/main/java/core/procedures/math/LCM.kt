@@ -22,7 +22,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
     }
 
     private fun lcm(first: Ratio, second: Ratio) = Ratio.valueOf(lcm(first.numerator, second.numerator),
-                                                                          GCD.gcd(first.denominator, second.denominator))
+                                                                     GCD.gcd(first.denominator, second.denominator))
 
     fun lcm(first: BigInteger, second: BigInteger): BigInteger {
         val f = first.abs()
@@ -51,7 +51,7 @@ class LCM : AFn<Any?, Number>(name = "lcm", isPure = true, restArgsType = Type.R
         return when {
             f is Double     && s is Double     -> lcm(f.absoluteValue, s.absoluteValue)
             f is Float      && s is Float      -> lcm(f.toDouble().absoluteValue, s.toDouble().absoluteValue)
-            f is Ratio   && s is Ratio   -> lcm(f, s)
+            f is Ratio      && s is Ratio      -> lcm(f, s)
             f is BigDecimal && s is BigDecimal -> lcm(f, s)
             f is BigInteger && s is BigInteger -> lcm(f, s)
             else                               -> lcm(f.toLong().absoluteValue, s.toLong().absoluteValue)

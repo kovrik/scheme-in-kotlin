@@ -19,7 +19,7 @@ class Abs : AFn<Number?, Number>(name = "abs", isPure = true, arity = Exactly(1)
         is Float      -> arg.absoluteValue
         is BigInteger -> arg.abs()
         is BigDecimal -> arg.abs()
-        is Ratio   -> arg.abs()
+        is Ratio      -> arg.abs()
         else          -> abs(arg!!.toLong())
     }
 }

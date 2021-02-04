@@ -9,7 +9,7 @@ class Get : AFn<Any?, Any?>(name = "get", isPure = true, arity = Range(2, 3)) {
     override operator fun invoke(args: Array<out Any?>) = invoke(args[0], args[1], args.getOrNull(2))
 
     override operator fun invoke(arg1: Any?, arg2: Any?, arg3: Any?) = when {
-        arg1 is Map<*, *> -> arg1.getOrDefault(arg2, arg3)
+        arg1 is Map<*, *> -> (arg1 as Map<Any?, Any?>).getOrDefault(arg2, arg3)
         Utils.isSeqable(arg1) -> when {
             Utils.isExactNonNegativeInteger(arg2) -> Utils.toSequence(arg1).elementAtOrNull((arg2 as Number).toInt()) ?: arg3
             else -> arg2

@@ -8,6 +8,6 @@ import core.scm.Thunk
 class Iterate : AFn<Any?, Thunk<*>>(name = "iterate", isPure = true, arity = Exactly(2), mandatoryArgsTypes = arrayOf(IFn::class.java)) {
 
     override operator fun invoke(arg1: Any?, arg2: Any?) = Thunk(generateSequence(arg2) {
-        AFn.invokeN((arg1 as IFn<*, *>), arrayOf(it))
+        invokeN((arg1 as IFn<*, *>), arrayOf(it))
     })
 }

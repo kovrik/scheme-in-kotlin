@@ -24,7 +24,7 @@ class Floor : AFn<Number?, Number>(name = "floor", isPure = true, arity = Exactl
                 else -> result
             }
         }
-        is Ratio   -> arg.floor()
-        else          -> floor(arg!!.toDouble())
+        is Ratio -> arg.floor()
+        else     -> floor(arg!!.toDouble())
     }!!
 }

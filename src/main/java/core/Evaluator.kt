@@ -24,9 +24,9 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         private val id = AtomicInteger(0)
         internal val nextID get() = id.incrementAndGet()
 
-        /* Executor Service for Futures */
         private val threadCounter = AtomicLong(0)
 
+        /* Executor Service for Futures */
         @Volatile
         var executor: ExecutorService = Executors.newCachedThreadPool {
             Thread(it, "executor-thread-${threadCounter.getAndIncrement()}")
@@ -39,9 +39,10 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     /* Main eval */
     fun eval(sexp: Any?, env: Environment): Any? = when (val result = evalIter(sexp, env)) {
         /* Eagerly evaluate thunks */
-        is Thunk<*> -> result.eval(env)
-        is Ratio    -> Utils.downcastNumber(result)
-        else        -> result
+        is Thunk<*>    -> result.eval(env)
+        is Ratio       -> Utils.downcastNumber(result)
+        is SpecialForm -> throw IllegalSyntaxException(result.toString(), Writer.write(sexp))
+        else           -> result
     }
 
     /**
@@ -79,7 +80,6 @@ class Evaluator(private val reflector: Reflector = Reflector(),
 
     /* Evaluate Symbol */
     private fun Symbol.eval(env: Environment) = when (val result = env.resolve(this)) {
-        is SpecialForm -> throw IllegalSyntaxException(result.toString(), Writer.write(this))
         /* Assume it is a Java static field */
         Unit -> evalJavaStaticField(name)
         else -> result
@@ -114,7 +114,7 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     private fun evalJavaStaticField(name: String) = reflector.getClazzOrNull(name) ?: when {
         '/' in name -> {
             val (className, fieldName) = name.split('/').filterNot(String::isEmpty).apply {
-                if (size < 2) throw IllegalSyntaxException("reflector: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
+                if (size < 2) throw IllegalSyntaxException("${reflector}: malformed expression, expecting (Class/staticField) or (Class/staticMethod ...)")
             }
             reflector.evalJavaStaticField(className, fieldName)
         }

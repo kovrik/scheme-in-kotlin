@@ -14,7 +14,7 @@ class Max : AFn<Any?, Number?>(name = "max", isPure = true, arity = AtLeast(1),
                                mandatoryArgsTypes = arrayOf(Type.Real::class.java),
                                restArgsType = Type.Real::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>) = when (args.size) {
+    override operator fun invoke(args: Array<out Any?>): Number? = when (args.size) {
         1    -> args[0] as Number?
         else -> args.fold(args[0] as Number?, this::invoke)
     }

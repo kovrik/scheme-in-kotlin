@@ -385,7 +385,7 @@ class SpecialFormTest : AbstractTest() {
              "    ((= i pos) (cons (car lst) lst))" +
              "    (else (cons (car lst) (dup (+ i 1) (cdr lst)))))))", env)
         assertEquals(listOf("apple", "cheese burger!", "cheese burger!", "banana"),
-                     eval("(duplicate 1 (list \"apple\" \"cheese burger!\" \"banana\"))", env))
+                     eval("""(into '() (duplicate 1 (list "apple" "cheese burger!" "banana")))""", env))
     }
 
     @Test

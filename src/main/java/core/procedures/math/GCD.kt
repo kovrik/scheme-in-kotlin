@@ -52,14 +52,14 @@ class GCD : AFn<Any?, Number>(name = "gcd", isPure = true, restArgsType = Type.R
         internal fun gcd(a: BigInteger, b: BigInteger) = a.gcd(b)
 
         private fun gcd(first: Ratio, second: Ratio) = Ratio.valueOf(first.numerator.gcd(second.numerator),
-                                                                              lcm.lcm(first.denominator, second.denominator))
+                                                                     lcm.lcm(first.denominator, second.denominator))
 
         fun gcd(first: Number, second: Number): Number {
             val (f, s) = Utils.upcast(first, second)
             return when {
                 f is Double     && s is Double     -> gcd(f, s)
                 f is Float      && s is Float      -> gcd(f.toDouble(), s.toDouble())
-                f is Ratio   && s is Ratio   -> gcd(f, s)
+                f is Ratio      && s is Ratio      -> gcd(f, s)
                 f is BigDecimal && s is BigDecimal -> gcd(f, s)
                 f is BigInteger && s is BigInteger -> gcd(f, s)
                 else                               -> gcd(f.toLong(), s.toLong())

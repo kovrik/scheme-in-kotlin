@@ -128,7 +128,7 @@ object Utils {
         return processNumber(n, radix, exact, exp)
     }
 
-    private fun processComplexNumber(number: String, exactness: Boolean?, radix: Int): Any? {
+    private fun processComplexNumber(number: String, exactness: Boolean?, radix: Int): Any {
         /* Assume that we have a complex number and try to parse it */
         val p = maxOf(number.lastIndexOf('+'), number.lastIndexOf('-'))
         val r = number.take(p)

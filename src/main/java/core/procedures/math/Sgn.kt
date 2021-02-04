@@ -18,7 +18,7 @@ class Sgn : AFn<Number?, Number>(name = "sgn", isPure = true, arity = Exactly(1)
         is Float      -> arg.sign
         is BigInteger -> arg.signum()
         is BigDecimal -> arg.signum()
-        is Ratio   -> arg.signum()
+        is Ratio      -> arg.signum()
         else          -> arg!!.toLong().sign
     }
 }

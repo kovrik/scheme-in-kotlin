@@ -20,7 +20,7 @@ object ThreadForm : SpecialForm("thread") {
         }
         val body = evaluator.eval(form[1], env)
         val runnable: () -> Unit = when (body) {
-            is IFn<*, *> -> ({ evaluator.eval(listOf(body), env) })
+            is IFn<*, *> -> { -> evaluator.eval(listOf(body), env) }
             else         -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         return when (form[1]) {

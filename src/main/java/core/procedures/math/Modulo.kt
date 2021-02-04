@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 open class Modulo : AFn<Any?, Number?>(name = "modulo", isPure = true, arity = Exactly(2),
-                        mandatoryArgsTypes = arrayOf(Long::class.javaObjectType, Long::class.javaObjectType)) {
+                                       mandatoryArgsTypes = arrayOf(Long::class.javaObjectType, Long::class.javaObjectType)) {
 
     private val rem = Remainder()
 

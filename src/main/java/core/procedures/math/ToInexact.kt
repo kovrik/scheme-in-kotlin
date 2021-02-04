@@ -12,8 +12,8 @@ class ToInexact : AFn<Number?, Number>(name = "exact->inexact", isPure = true, a
                                        mandatoryArgsTypes = arrayOf(Number::class.java)) {
 
     override operator fun invoke(arg: Number?): Number = when (arg) {
-        is Complex -> Complex(invoke(arg.re), invoke(arg.im))
-        is Ratio   -> arg.toBigDecimalInexact()
+        is Complex    -> Complex(invoke(arg.re), invoke(arg.im))
+        is Ratio      -> arg.toBigDecimalInexact()
         is BigInteger -> arg.toBigDecimal().setScale(1, Utils.ROUNDING_MODE)
         is BigDecimal -> arg.setScale(maxOf(1, arg.scale()), Utils.ROUNDING_MODE)
         else          -> arg!!.toDouble()

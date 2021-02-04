@@ -22,8 +22,8 @@ class Log : AFn<Number?, Number>(name = "log", isPure = true, arity = Exactly(1)
     override operator fun invoke(arg: Number?) = when {
         Utils.isZero(arg) && Utils.isExact(arg) -> throw ArithmeticException("$name: undefined for 0")
         Utils.isOne(arg)  && Utils.isExact(arg) -> 0L
-        arg is Complex                       -> arg.log()
-        arg is Ratio                         -> logBig(arg.toBigDecimal())
+        arg is Complex                          -> arg.log()
+        arg is Ratio                            -> logBig(arg.toBigDecimal())
         arg is BigDecimal                       -> logBig(arg)
         arg is BigInteger                       -> logBig(arg.toBigDecimal())
         else                                    -> ln(arg!!.toDouble())

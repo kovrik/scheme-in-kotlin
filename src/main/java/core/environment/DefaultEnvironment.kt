@@ -537,6 +537,7 @@ class DefaultEnvironment : Environment(null) {
                 object : Count() { override val name = "length" },
                 Drop(),
                 DropLast(),
+                Every(),
                 First(),
                 Flatten(),
                 Get(),
@@ -553,7 +554,7 @@ class DefaultEnvironment : Environment(null) {
                 Second(),
                 Seq(),
                 Sort(),
-//                Some(),
+                Some(),
                 Take(),
                 TakeLast(),
 
@@ -774,17 +775,6 @@ class DefaultEnvironment : Environment(null) {
             "(def (constantly arg) (fn rest arg))",
 
             // TODO Implement these in Kotlin?
-            """(define (some pred coll)
-                     (if (empty? coll)
-                       null
-                       (or (pred (first coll)) (some pred (rest coll)))))""",
-
-            """(define (every? pred coll)
-                     (cond
-                      ((empty? coll) true)
-                      ((pred (first coll)) (every? pred (rest coll)))
-                      (else false))""",
-
             """(define (filter pred coll)
                      (lazy-seq
                        (let ((s (seq coll)))

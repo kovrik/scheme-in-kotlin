@@ -17,7 +17,7 @@ class ToExact : AFn<Number?, Number>(name = "inexact->exact", isPure = true, ari
         arg is Float      -> doubleToExact(arg.toDouble())
         arg is Double     -> doubleToExact(arg)
         arg is BigDecimal -> bigDecimalToExact(arg)
-        arg is Complex -> Complex(invoke(arg.re), invoke(arg.im))
+        arg is Complex    -> Complex(invoke(arg.re), invoke(arg.im))
         else              -> arg as Number
     }
 

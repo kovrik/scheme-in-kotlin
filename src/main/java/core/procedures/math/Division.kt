@@ -22,8 +22,8 @@ class Division : AFn<Any?, Number?>(name = "/", isPure = true, arity = AtLeast(1
             Utils.isPositiveInfinity(d)          ->  0.0
             Utils.isNegativeInfinity(d)          -> -0.0
             Utils.isZero(n)  && Utils.isExact(n) -> d taint n
-            n is Complex  && d is Complex  -> n / d
-            n is Ratio    && d is Ratio    -> n / d
+            n is Complex     && d is Complex     -> n / d
+            n is Ratio       && d is Ratio       -> n / d
             n is BigDecimal  && d is BigDecimal  -> n.divide(d)
             n is Double      && d is Double      -> n / d
             n is Float       && d is Float       -> n / d

@@ -20,7 +20,7 @@ open class MapProc : AFn<Any?, Thunk<*>>(name = "map", arity = AtLeast(2), manda
 
                 override fun hasNext() = iterator.hasNext()
 
-                override fun next() = AFn.invokeN<Any?, Any?>(fn, arrayOf(iterator.next())).let {
+                override fun next() = invokeN<Any?, Any?>(fn, arrayOf(iterator.next())).let {
                     when (it) {
                         is List<*>, is Symbol -> Quote.quote(it)
                         else -> it
@@ -36,7 +36,7 @@ open class MapProc : AFn<Any?, Thunk<*>>(name = "map", arity = AtLeast(2), manda
 
                 override fun hasNext() = iterators.all { it.hasNext() }
 
-                override fun next() = AFn.invokeN<Any?, Any?>(fn, iterators.map { it.next() }.toTypedArray()).let {
+                override fun next() = invokeN<Any?, Any?>(fn, iterators.map { it.next() }.toTypedArray()).let {
                     when (it) {
                         is List<*>, is Symbol -> Quote.quote(it)
                         else -> it

@@ -30,8 +30,8 @@ class Multiplication : AFn<Any?, Number?>(name = "*", isPure = true, restArgsTyp
             }
             Utils.isOne(f) -> f taint s
             Utils.isOne(s) -> s taint f
-            f is Complex && s is Complex -> f * s
-            f is Ratio   && s is Ratio   -> f * s
+            f is Complex    && s is Complex    -> f * s
+            f is Ratio      && s is Ratio      -> f * s
             f is BigDecimal && s is BigDecimal -> f * s
             f is BigInteger && s is BigInteger -> f * s
             f is Double     && s is Double     -> f * s
