@@ -13,7 +13,7 @@ import core.Writer
  */
 object Unless : SpecialForm("unless") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = when {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = when {
         form.size < 3 -> throw IllegalSyntaxException(name, Writer.write(form), "has ${form.size - 1} parts after keyword")
         !Utils.toBoolean(evaluator.eval(form[1], env)) -> {
             (2..form.size - 2).forEach { evaluator.eval(form[it], env) }

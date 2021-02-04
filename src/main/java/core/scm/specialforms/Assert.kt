@@ -10,7 +10,7 @@ object Assert : SpecialForm("assert") {
 
     private val EMPTY = emptyArray<StackTraceElement>()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         val message = when (form.size) {
             2 -> "assert failed"
             3 -> "assert failed: \"${evaluator.eval(form[2], env) as? CharSequence ?:

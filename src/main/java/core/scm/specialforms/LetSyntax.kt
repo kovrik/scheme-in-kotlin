@@ -1,4 +1,9 @@
 package core.scm.specialforms
 
-// TODO
-object LetSyntax : SpecialForm("let-syntax")
+import core.Evaluator
+import core.environment.Environment
+
+object LetSyntax : SpecialForm("let-syntax") {
+
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = TODO("Not implemented yet")
+}

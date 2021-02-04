@@ -19,7 +19,7 @@ object Define : SpecialForm("define") {
 
     private val cdr = Cdr()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }

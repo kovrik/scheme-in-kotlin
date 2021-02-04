@@ -25,7 +25,7 @@ import core.scm.Thunk
  */
 object Begin : SpecialForm("begin") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = when (form.size <= 1) {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = when (form.size <= 1) {
         true  -> Unit
         false -> (1..form.size - 2).forEach { evaluator.eval(form[it], env) }.let { Thunk(form[form.size - 1], env) }
     }

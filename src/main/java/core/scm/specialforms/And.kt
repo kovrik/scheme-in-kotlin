@@ -11,7 +11,7 @@ import core.utils.Utils
  */
 object And : SpecialForm("and") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = when {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = when {
         form.size > 1 -> {
             (1..form.size - 2).forEach {
                 if (!Utils.toBoolean(evaluator.eval(form[it], env))) {

@@ -3,9 +3,9 @@ package core.scm.specialforms
 import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
-import core.exceptions.WrongTypeException
 import core.procedures.IFn
 import core.Writer
+import core.scm.Type
 
 object DynamicWind : SpecialForm("dynamic-wind") {
 
@@ -14,17 +14,14 @@ object DynamicWind : SpecialForm("dynamic-wind") {
             throw IllegalSyntaxException(toString(), Writer.write(form), "has ${form.size - 1} parts after keyword")
         }
         val pre = evaluator.eval(form[1], env)
-        if (pre !is IFn<*, *>) {
-            throw WrongTypeException(toString(), "Procedure", pre)
-        }
+        Type.assertType("Procedure", pre, IFn::class.java)
+
         val value = evaluator.eval(form[2], env)
-        if (value !is IFn<*, *>) {
-            throw WrongTypeException(toString(), "Procedure", value)
-        }
+        Type.assertType("Procedure", value, IFn::class.java)
+
         val post = evaluator.eval(form[3], env)
-        if (post !is IFn<*, *>) {
-            throw WrongTypeException(toString(), "Procedure", post)
-        }
+        Type.assertType("Procedure", post, IFn::class.java)
+
         /* Evaluate before-thunk first */
         evaluator.eval(listOf(pre), env)
         try {

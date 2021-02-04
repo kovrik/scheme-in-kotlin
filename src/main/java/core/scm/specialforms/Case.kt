@@ -19,7 +19,7 @@ object Case : SpecialForm("case") {
 
     private val eqv = Eqv()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
         /* Save string representation of form before evaluation */
         val exprString = Writer.write(form)
         if (form.size <= 1) {

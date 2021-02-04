@@ -14,7 +14,7 @@ import core.Writer
  */
 object If : SpecialForm("if") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = when {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = when {
         form.size != 4 -> throw IllegalSyntaxException(toString(), Writer.write(form), "has ${form.size - 1} parts after keyword")
         else -> when {
             Utils.toBoolean(evaluator.eval(form[1], env)) -> Thunk(form[2], env)

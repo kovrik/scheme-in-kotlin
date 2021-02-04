@@ -17,7 +17,7 @@ import core.Writer
  */
 object Cond : SpecialForm("cond") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? = (1 until form.size).forEach {
+    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = (1 until form.size).forEach {
         val subform = form[it] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form), "invalid clause in subform")
         val clause = subform[0]
         when {
