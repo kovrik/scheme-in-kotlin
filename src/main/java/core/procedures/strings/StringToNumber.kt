@@ -10,7 +10,7 @@ class StringToNumber : AFn<Any?, Any?>(name = "string->number", isPure = true, a
                                        mandatoryArgsTypes = arrayOf(CharSequence::class.java),
                                        restArgsType = Long::class.java) {
 
-    override operator fun invoke(args: Array<out Any?>): Any? {
+    override operator fun invoke(args: Array<out Any?>): Any {
         val number = args[0].toString()
         /* Check if we should override optional radix */
         /* Read radix and/or exactness and a number */

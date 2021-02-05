@@ -16,7 +16,7 @@ class MemberProc(override val name: String, private inline val predicate: AFn<An
     private val car = Car()
     private val cdr = Cdr()
 
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         val search = when (arg1 is Sequence<*>) {
             true  -> arg1.toList()
             false -> arg1
