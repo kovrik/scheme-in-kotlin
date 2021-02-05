@@ -1,5 +1,6 @@
 package core.scm
 
+import core.Writer
 import core.procedures.AFn
 import core.procedures.Arity.Range
 

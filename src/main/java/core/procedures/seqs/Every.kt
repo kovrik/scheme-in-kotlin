@@ -24,7 +24,7 @@ class Every : AFn<Any?, Any?>(
     override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         val seq = Utils.toSequence(arg2)
         return when {
-            Utils.isEmpty(seq) -> true
+            seq.none() -> true
             else -> Thunk(listOf(And, listOf(arg1, listOf(first, seq)), listOf(this, arg1, listOf(rest, seq))))
         }
     }

@@ -11,15 +11,14 @@ class RandNth : AFn<Any?, Any?>(
     mandatoryArgsTypes = arrayOf(Type.Seqable::class.java)
 ) {
 
-    override operator fun invoke(arg: Any?): Any? {
-        if (arg is Map<*, *>) {
-            throw UnsupportedOperationException("$name: not supported on this type: ${arg.javaClass}")
+    override operator fun invoke(arg: Any?) = when (arg) {
+        is Map<*, *> -> throw UnsupportedOperationException("$name: not supported on this type: ${arg.javaClass}")
+        else -> Utils.toSequence(arg).let {
+            when {
+                it.none() -> throw IndexOutOfBoundsException()
+                else -> it.elementAt(Random().nextInt(it.count()))
+            }
         }
-        val seq = Utils.toSequence(arg)
-        if (!seq.iterator().hasNext()) {
-            throw IndexOutOfBoundsException()
-        }
-        return seq.elementAt(Random().nextInt(seq.count()))
     }
 }
 

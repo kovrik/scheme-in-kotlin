@@ -1,5 +1,6 @@
 package core.procedures.hashmaps
 
+import core.Writer
 import core.procedures.AFn
 import core.scm.MutableHashmap
 
@@ -11,6 +12,6 @@ class HashMapProc : AFn<Any?, Map<*, *>>(name = "hash-map", isPure = true) {
                 put(args[i], args[i + 1])
             }
         }
-        else -> throw IllegalArgumentException("$name: no value supplied for key: ${args[args.size - 1]}")
+        else -> throw IllegalArgumentException("$name: no value supplied for key: ${Writer.write(args[args.size - 1])}")
     }
 }

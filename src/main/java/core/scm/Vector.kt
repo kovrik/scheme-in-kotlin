@@ -83,7 +83,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
 
     override fun hashCode() = array.hashCode()
 
-    override fun equals(other: Any?) = other is Vector && Arrays.equals(array, other.array)
+    override fun equals(other: Any?) = other is Vector && array.contentEquals(other.array)
 
     override fun containsKey(key: Any?) = when (key) {
         is Number -> size > key.toInt()
@@ -91,7 +91,7 @@ open class Vector : AFn<Number?, Any?>, Collection<Any?>, IAssoc<Any?, Any?> {
     }
 
     override fun getEntry(key: Any?): MapEntry<Int, Any?>? = when (key) {
-        is Number -> array.getOrNull(key.toInt())?.let { MapEntry<Int, Any?>(key.toInt(), it) }
+        is Number -> array.getOrNull(key.toInt())?.let { MapEntry(key.toInt(), it) }
         else -> null
     }
 

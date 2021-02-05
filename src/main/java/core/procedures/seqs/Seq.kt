@@ -10,5 +10,5 @@ class Seq : AFn<Any?, Any?>(
     mandatoryArgsTypes = arrayOf(Type.Seqable::class.java)
 ) {
 
-    override operator fun invoke(arg: Any?) = Utils.toSequence(arg).let { if (it.iterator().hasNext()) it else null }
+    override operator fun invoke(arg: Any?) = Utils.toSequence(arg).let { if (it.any()) it else null }
 }

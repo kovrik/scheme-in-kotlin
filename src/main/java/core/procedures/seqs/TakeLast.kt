@@ -22,7 +22,7 @@ class TakeLast : AFn<Any?, Any?>(name = "take-last", isPure = true, arity = Rang
         val seq = Utils.toSequence(args.last())
         val count = seq.count()
         val result = seq.filterIndexed { index, e -> count - index <= n }
-        return when (result.iterator().hasNext()) {
+        return when (result.any()) {
             true  -> result
             false -> null
         }

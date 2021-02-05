@@ -482,13 +482,7 @@ object Utils {
         /* (cons* 1) => 1 ; see SRFI-1 */
         1 -> elements.first()
         /* Convert list into cons */
-        else -> {
-            var pair = Pair(elements[elements.size - 2], elements.last())
-            for (n in elements.size - 3 downTo 0) {
-                pair = Pair(elements[n], pair)
-            }
-            pair
-        }
+        else -> elements.reversed().stream().reduce { a, b -> Pair(b, a) }.get()
     }
 
     /**
