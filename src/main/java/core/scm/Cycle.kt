@@ -12,3 +12,6 @@ class Cycle<T> constructor(private val sequence : Sequence<T>) : Sequence<T> {
     }
 }
 
+/* Create cycled version of sequence */
+fun Sequence<*>.cycled() = Cycle(this)
+

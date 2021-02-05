@@ -1,4 +1,4 @@
-package core.utils
+package core.scm
 
 /* Sequence wrapper that caches results */
 class CachingSeq<out T> private constructor(private val source: Iterator<T>,
