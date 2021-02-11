@@ -348,7 +348,11 @@ object Utils {
         else      -> true
     }
 
-    fun isNaN(number: Number?) = number == Double.NaN || number == Float.NaN
+    fun isNaN(number: Number?) = when (number) {
+        is Double -> number.isNaN()
+        is Float -> number.isNaN()
+        else -> false
+    }
 
     fun isPositiveInfinity(number: Number?) = number == Double.POSITIVE_INFINITY || number == Float.POSITIVE_INFINITY
 
