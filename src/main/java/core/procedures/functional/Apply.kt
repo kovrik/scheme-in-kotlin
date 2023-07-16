@@ -8,9 +8,12 @@ import core.scm.Thunk
 import core.scm.specialforms.Quote
 import core.utils.Utils
 
-class Apply : AFn<Any?, Any>(name = "apply", arity = AtLeast(2), mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)) {
+class Apply : AFn<Any?, Thunk<Any?>>(
+    name = "apply", arity = AtLeast(2),
+    mandatoryArgsTypes = arrayOf(IFn::class.java, Any::class.java)
+) {
 
-    override operator fun invoke(args: Array<out Any?>): Any {
+    override operator fun invoke(args: Array<out Any?>): Thunk<Any?> {
         val sexp = mutableListOf(args[0])
         if (args.size > 2) {
             sexp.addAll(args.copyOfRange(1, args.size - 1))

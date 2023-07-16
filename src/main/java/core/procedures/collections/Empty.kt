@@ -10,8 +10,8 @@ class Empty : AFn<Any?, Any?>(name = "empty", isPure = true, arity = Exactly(1))
         is Sequence<*>   -> emptySequence<Nothing>()
         is List<*>       -> mutableListOf<Nothing>()
         is Set<*>        -> MutableSet<Nothing>()
-        is Vector        -> Vector.EMPTY
         is MutableVector -> MutableVector.EMPTY
+        is Vector        -> Vector.EMPTY
         is Map<*, *>     -> Hashmap<Nothing, Nothing>()
         is CharSequence  -> MutableString(0)
         is BooleanArray  -> BooleanArray(0)

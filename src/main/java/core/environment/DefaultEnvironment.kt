@@ -70,7 +70,7 @@ class DefaultEnvironment : Environment(null) {
         SPECIAL_FORMS.forEach { put(Symbol.intern(it.toString()), it) }
         /* Standard Procedures */
         STANDARD_PROCEDURES.forEach { put(Symbol.intern(it.name), it) }
-        /* Constants and special cases, synonyms*/
+        /* Constants and special cases, synonyms */
         put(Symbol.intern("pi"),        PI)
         put(Symbol.intern("euler.0"),   E)
         put(Symbol.intern("phi.0"),     1.618033988749895)
@@ -534,7 +534,7 @@ class DefaultEnvironment : Environment(null) {
                 ConsSeqProc(),
                 Contains(),
                 Count(),
-                CycleProc(),
+                Cycle(),
                 object : Count() { override val name = "length" },
                 Distinct(),
                 Drop(),

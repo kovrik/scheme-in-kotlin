@@ -2,8 +2,6 @@ package core.procedures.lists
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.cons.Car
-import core.procedures.cons.Cdr
 import core.Writer
 import core.procedures.Arity.Exactly
 import core.scm.Type
@@ -12,9 +10,6 @@ import core.utils.Utils
 class MemberProc(override val name: String, private inline val predicate: AFn<Any?, Boolean>) :
         AFn<Any?, Any?>(isPure = true, arity = Exactly(2),
                         mandatoryArgsTypes = arrayOf(Any::class.java, Type.Seqable::class.java)) {
-
-    private val car = Car()
-    private val cdr = Cdr()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any {
         val search = when (arg1 is Sequence<*>) {
@@ -27,11 +22,11 @@ class MemberProc(override val name: String, private inline val predicate: AFn<An
                 var p = 0
                 var cur = arg2
                 while (cur is Pair<*, *>) {
-                    if (predicate(search, car(cur))) {
+                    if (predicate(search, cur.first)) {
                         return cur
                     }
                     p += 1
-                    cur = cdr(cur)
+                    cur = cur.second
                 }
                 throw WrongTypeException("$name: wrong type argument in position $p (expecting list): ${Writer.write(arg2)}")
             }

@@ -10,7 +10,7 @@ class Difference : AFn<Any?, Set<*>>(name = "difference", isPure = true, arity =
     override operator fun invoke(args: Array<out Any?>) = when (args.size) {
         1    -> args[0]!! as Set<*>
         else -> MutableSet(args[0]!! as Set<*>).apply {
-            for (i in (1 until args.size)) {
+            for (i in 1 until args.size) {
                 removeAll(args[i]!! as Set<*>)
             }
         }

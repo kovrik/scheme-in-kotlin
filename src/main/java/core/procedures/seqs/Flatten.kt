@@ -3,30 +3,30 @@ package core.procedures.seqs
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
 import core.scm.Type
+import core.scm.cached
 import core.utils.Utils
-import java.util.*
 
 class Flatten : AFn<Any?, Any?>(
     name = "flatten", arity = Exactly(1),
     mandatoryArgsTypes = arrayOf(Type.Seqable::class.java)
 ) {
 
-    override operator fun invoke(arg: Any?) = flatten(Utils.toSequence(arg))
+    override operator fun invoke(arg: Any?): Sequence<Any?> = FlatteningIterator(Utils.toSequence(arg)).asSequence().cached()
 
-    // TODO Check, optimize and simplify
-    private fun flatten(obj: Any?): List<Any?> = mutableListOf<Any?>().apply {
-        when (Utils.isSeqable(obj)) {
-            true -> {
-                val queue = LinkedList<Any?>().apply { addAll(Utils.toSequence(obj)) }
-                while (!queue.isEmpty()) {
-                    val e = queue.pop()
-                    when (Utils.isSeqable(e)) {
-                        true -> queue.addAll(flatten(e))
-                        false -> add(e)
-                    }
+    private class FlatteningIterator(private var queue: Sequence<Any?>) : Iterator<Any?> {
+
+        override fun hasNext() = queue.any()
+
+        override tailrec fun next(): Any? {
+            val obj = queue.first()
+            queue = queue.drop(1)
+            return when (Utils.isSeqable(obj)) {
+                true -> {
+                    queue = Utils.toSequence(obj) + queue
+                    next()
                 }
+                false -> obj
             }
-            false -> add(obj)
         }
     }
 }

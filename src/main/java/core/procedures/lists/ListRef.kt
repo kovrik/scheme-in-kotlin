@@ -2,7 +2,6 @@ package core.procedures.lists
 
 import core.procedures.AFn
 import core.procedures.Arity.Exactly
-import core.procedures.cons.Car
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
 import core.scm.Type
@@ -12,7 +11,6 @@ class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, arity = Exactl
                                 mandatoryArgsTypes = arrayOf(Type.PairOrNonEmptyList::class.java,
                                                              Type.ExactNonNegativeInteger::class.java)) {
 
-    private val car = Car()
     private val cdr = Cdr()
 
     override operator fun invoke(arg1: Any?, arg2: Any?): Any? {
@@ -22,9 +20,9 @@ class ListRef : AFn<Any?, Any?>(name = "list-ref", isPure = true, arity = Exactl
             !Predicate.isProperList(arg1) -> {
                 var cur = arg1
                 var i = 0L
-                while (!Predicate.isProperList(arg1)) {
+                while (Predicate.isPairOrNonEmptyList(cur) && !Predicate.isProperList(cur)) {
                     if (p == i) {
-                        return car(cur)
+                        return Utils.toSequence(cur).first()
                     }
                     cur = cdr(cur)
                     i += 1

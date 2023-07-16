@@ -2,7 +2,6 @@ package core.procedures.collections
 
 import core.exceptions.WrongTypeException
 import core.procedures.AFn
-import core.procedures.cons.Car
 import core.procedures.equivalence.Equal
 import core.procedures.predicates.Predicate
 import core.procedures.seqs.Get
@@ -18,7 +17,6 @@ class AssocProc(override val name: String,
                 private inline val predicate: AFn<Any?, Boolean>) :
         AFn<Any?, Any?>(arity = AtLeast(2), mandatoryArgsTypes = arrayOf(Any::class.java)) {
 
-    private val car = Car()
     private val get = Get()
 
     override operator fun invoke(args: Array<out Any?>): Any? {
@@ -29,7 +27,7 @@ class AssocProc(override val name: String,
                 for (n in list!!.indices) {
                     val pair = list[n]
                     when {
-                        Predicate.isPairOrNonEmptyList(pair) -> if (Utils.toBoolean(predicate(args[0], car(pair)))) {
+                        Predicate.isPairOrNonEmptyList(pair) -> if (Utils.toBoolean(predicate(args[0], Utils.toSequence(pair).first()))) {
                             return pair
                         }
                         else -> throw WrongTypeException("$name: wrong type argument in position $n (expecting association list): ${Writer.write(list)}")

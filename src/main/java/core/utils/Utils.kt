@@ -431,9 +431,9 @@ object Utils {
      */
     fun toBoolean(value: Any?) = value as? Boolean ?: (value != null)
 
-    fun isSeqable(obj: Any?) = obj === Unit ||  obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is CharSequence ||
-                               obj is Pair<*, *> || obj is MutablePair<*, *> || obj is Map<*, *> || obj is Map.Entry<*, *> ||
-                               obj.javaClass.isArray
+    fun isSeqable(obj: Any?) = obj === Unit ||  obj == null || obj is Sequence<*> || obj is Iterable<*> || obj is Iterator<*> ||
+                               obj is CharSequence || obj is Pair<*, *> || obj is MutablePair<*, *> || obj is Map<*, *> ||
+                               obj is Map.Entry<*, *> || obj.javaClass.isArray
 
     fun isAssoc(obj: Any?) = obj == null || obj is Map<*, *> || obj is Map.Entry<*, *> || obj is IAssoc<*, *>
 
@@ -441,6 +441,7 @@ object Utils {
         Unit                 -> emptySequence<Nothing>()
         null                 -> emptySequence<Nothing>()
         is Sequence<*>       -> obj
+        is Iterator<*>       -> obj.asSequence().cached()
         is Iterable<*>       -> obj.asSequence()
         is CharSequence      -> obj.asSequence()
         is Pair<*, *>        -> sequenceOf(obj.first, obj.second)
@@ -462,6 +463,8 @@ object Utils {
     fun isEmpty(o: Any?) = when (o) {
         null             -> true
         is Sequence<*>   -> o.none()
+        is Iterator<*>   -> !o.hasNext()
+        is Iterable<*>   -> !o.iterator().hasNext()
         is Collection<*> -> o.none()
         is CharSequence  -> o.none()
         is Map<*, *>     -> o.none()

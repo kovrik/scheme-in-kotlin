@@ -18,14 +18,10 @@ class Every : AFn<Any?, Any?>(
     mandatoryArgsTypes = arrayOf(IFn::class.java, Type.Seqable::class.java)
 ) {
 
-    private val first = First()
-    private val rest = Rest()
-
-    override operator fun invoke(arg1: Any?, arg2: Any?): Any {
-        val seq = Utils.toSequence(arg2)
-        return when {
-            seq.none() -> true
-            else -> Thunk(listOf(And, listOf(arg1, listOf(first, seq)), listOf(this, arg1, listOf(rest, seq))))
+    override operator fun invoke(arg1: Any?, arg2: Any?): Any = Utils.toSequence(arg2).apply {
+        return@invoke when (any()) {
+            true -> Thunk(listOf(And, listOf(arg1, firstOrNull()), listOf(this@Every, arg1, drop(1))))
+            false -> true
         }
     }
 }
