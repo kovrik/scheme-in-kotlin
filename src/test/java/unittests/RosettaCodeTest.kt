@@ -33,7 +33,7 @@ class RosettaCodeTest : AbstractTest() {
                     "               nonneg" +
                     "               (cons (car numbers) neg)))))"
 
-        assertEquals(listOf(listOf(6L, 1L, 3L), listOf(-5L, -2L)), eval(group, env))
+        assertEquals(listOf(listOf(6L, 1L, 3L), listOf(-5L, -2L)), eval(group))
     }
 
     @Test
@@ -44,8 +44,8 @@ class RosettaCodeTest : AbstractTest() {
                       "          ((not (pair? x)) (list x))" +
                       "          (else (append (flatten (car x))" +
                       "                        (flatten (cdr x))))))"
-        eval(flatten, env)
-        assertEquals(listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L), eval("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))", env))
+        eval(flatten)
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L), eval("(flatten '((1) 2 ((3 4) 5) ((())) (((6))) 7 8 ()))"))
     }
 
     @Test
@@ -72,9 +72,9 @@ class RosettaCodeTest : AbstractTest() {
                     "                          (list (car l))" +
                     "                          (quicksort high gt?))))))"
 
-        eval(splitby, env)
-        eval(quick, env)
-        assertEquals(listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L), eval("(quicksort '(1 3 5 7 9 8 6 4 2) >)", env))
+        eval(splitby)
+        eval(quick)
+        assertEquals(listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L), eval("(quicksort '(1 3 5 7 9 8 6 4 2) >)"))
     }
 
     @Test
@@ -92,11 +92,11 @@ class RosettaCodeTest : AbstractTest() {
                     "              (if (empty? (cdr p))" +
                     "                  (gnome (list next-pot) (cons prev-pot (cdr n)))" +
                     "                  (gnome (cdr p) (cons next-pot (cons prev-pot (cdr n))))))))))"
-        eval(gnome, env)
+        eval(gnome)
 
         val test = "(gnome-sort-compar <= '(98 36 2 78 5 81 32 90 73 21 94 28 53 25 10 99))"
         val sorted = listOf(2L, 5L, 10L, 21L, 25L, 28L, 32L, 36L, 53L, 73L, 78L, 81L, 90L, 94L, 98L, 99L)
-        assertEquals(sorted, eval(test, env))
+        assertEquals(sorted, eval(test))
     }
 
     @Test
@@ -116,9 +116,9 @@ class RosettaCodeTest : AbstractTest() {
                            "      (let ((h (hailstone-length i)))" +
                            "        (if (> h k) (aux (+ i 1) i h) (aux (+ i 1) j k))))))"
 
-        eval(hailstone, env)
-        eval(hailstoneLength, env)
-        eval(hailstoneMax, env)
+        eval(hailstone)
+        eval(hailstoneLength)
+        eval(hailstoneMax)
 
         val seq = listOf(27L, 82L, 41L, 124L, 62L, 31L, 94L, 47L, 142L, 71L, 214L, 107L, 322L, 161L, 484L, 242L, 121L,
                          364L, 182L, 91L, 274L, 137L, 412L, 206L, 103L, 310L, 155L, 466L, 233L, 700L, 350L, 175L, 526L,
@@ -128,11 +128,11 @@ class RosettaCodeTest : AbstractTest() {
                          9232L, 4616L, 2308L, 1154L, 577L, 1732L, 866L, 433L, 1300L, 650L, 325L, 976L, 488L, 244L, 122L,
                          61L, 184L, 92L, 46L, 23L, 70L, 35L, 106L, 53L, 160L, 80L, 40L, 20L, 10L, 5L, 16L, 8L, 4L, 2L, 1L)
 
-        val res = eval("(hailstone 27)", env) as List<Number>
+        val res = eval("(hailstone 27)") as List<Number>
         for (i in seq.indices) {
             assertEquals(seq[i], res[i].toLong())
         }
-        assertEquals(112L, eval("(hailstone-length 27)", env))
+        assertEquals(112L, eval("(hailstone-length 27)"))
     }
 
     @Test
@@ -143,8 +143,8 @@ class RosettaCodeTest : AbstractTest() {
                    "        acc" +
                    "        (*horner (cdr lst) x (+ (* acc x) (car lst)))))" +
                    "  (*horner (reverse lst) x 0))"
-        eval(horner, env)
-        assertEquals(128L, eval("(horner '(-19 7 -4 6) 3)", env))
+        eval(horner)
+        assertEquals(128L, eval("(horner '(-19 7 -4 6) 3)"))
     }
 
     @Test
@@ -160,8 +160,8 @@ class RosettaCodeTest : AbstractTest() {
                         "   (remainder (+ 5 day (quotient (* (+ 1 month) 13) 5) " +
                         "                 year (quotient year 4) (* (quotient year 100) 6) (quotient year 400)) " +
                         "              7)))"
-        eval(dayOfWeek, env)
-        assertEquals(3L, eval("(day-of-week 2016 6 29)", env))
+        eval(dayOfWeek)
+        assertEquals(3L, eval("(day-of-week 2016 6 29)"))
 
         // test Today
         val calendar = Calendar.getInstance()
@@ -172,7 +172,7 @@ class RosettaCodeTest : AbstractTest() {
         val y = calendar.get(Calendar.YEAR)
         val m = calendar.get(Calendar.MONTH) + 1
         val d = calendar.get(Calendar.DAY_OF_MONTH)
-        assertEquals(dw!!.toLong(), eval("(day-of-week $y $m $d)", env))
+        assertEquals(dw!!.toLong(), eval("(day-of-week $y $m $d)"))
     }
 
     @Test
@@ -184,7 +184,7 @@ class RosettaCodeTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
+        tempEnv.libraryProcedures.forEach { eval(it) }
         tempEnv.put(Symbol.intern("display"), Display())
         tempEnv.put(Symbol.intern("newline"), Newline())
 
@@ -199,8 +199,8 @@ class RosettaCodeTest : AbstractTest() {
                     "      (newline)" +
                     "      (hanoi (- n 1) c b a))" +
                     " #t))"
-        eval(hanoi, tempEnv)
-        eval("(hanoi 4 1 2 3)", tempEnv)
+        eval(hanoi)
+        eval("(hanoi 4 1 2 3)")
 
         val solution = "Move disk from pole 1 to pole 3" + LS +
                        "Move disk from pole 1 to pole 2" + LS +
@@ -225,8 +225,7 @@ class RosettaCodeTest : AbstractTest() {
     @Test
     fun testIntegerRoots() {
 
-        val tempEnv = DefaultEnvironment().apply { libraryProcedures.forEach { eval(it, this) } }
-        eval("(define // quotient)", tempEnv)
+        eval("(define // quotient)")
         eval("(define (root a b)" +
              "  (if (< b 2)" +
              "      b" +
@@ -234,20 +233,20 @@ class RosettaCodeTest : AbstractTest() {
              "           (c 1)" +
              "           (d (// (+ (* a1 c) (// b (expt c a1))) a))" +
              "           (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
-             "      (y a a1 b c d e))))", tempEnv)
+             "      (y a a1 b c d e))))")
 
         eval("(define (y a a1 b c d e)" +
              "  (if (or (= c d) (= c e))" +
              "      (min d e)" +
              "    (y a a1 b d e (// (+ (* a1 e)" +
-             "                         (// b (expt e a1))) a))))", tempEnv)
+             "                         (// b (expt e a1))) a))))")
 
-        assertEquals(2L, eval("(root 3 25)", tempEnv))
-        assertEquals(125L, eval("(root 3 (* 2 (expt 1000 2)))", tempEnv))
-        assertEquals(BigInteger.valueOf(10000000L), eval("(root 3 (expt 1000 7))", tempEnv))
-        assertEquals(BigInteger("125992104989487316476"), eval("(root 3 (* 2 (expt 1000 20)))", tempEnv))
+        assertEquals(2L, eval("(root 3 25)"))
+        assertEquals(125L, eval("(root 3 (* 2 (expt 1000 2)))"))
+        assertEquals(BigInteger.valueOf(10000000L), eval("(root 3 (expt 1000 7))"))
+        assertEquals(BigInteger("125992104989487316476"), eval("(root 3 (* 2 (expt 1000 20)))"))
         assertEquals(BigInteger("125992104989487316476721060727822835057025146470150798008197511215529967651395948372939656243625509415431025603561566525939902404061373722845911030426935524696064261662500097747452656548030686718540551"),
-                eval("(root 3 (* 2 (expt 1000 200)))", tempEnv))
+                eval("(root 3 (* 2 (expt 1000 200)))"))
 
 //      assertEquals(BigInteger("12599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606426166250009774745265654803068671854055186892458725167641993737096950983827831613991551293136953661839474634485765703031190958959847411059811629070535908164780114735213254847712978802422085820532579725266622026690056656081994715628176405060664826773572670419486207621442965694205079319172441480920448232840127470321964282081201905714188996459998317503801888689594202055922021154729973848802607363697417887792157984675099539630078260959624203483238660139857363433909737126527995991969968377913168168154428850279651529278107679714002040605674803938561251718357006907984996341976291474044834540269715476228513178020643878047649322579052898467085805286258130005429388560720609747223040631357234936458406575916916916727060124402896700001069081035313852902700415084232336239889386496782194149838027072957176812879001445746227147702348357151905506"),
 //                   eval("(root 3 (* 2 (expt 1000 1000)))", tempEnv))
@@ -265,7 +264,7 @@ class RosettaCodeTest : AbstractTest() {
                    "       (e (// (+ (* a1 d) (// b (expt d a1))) a)))" +
                    "   e)"
 
-        assertEquals(BigInteger("2366310230048836102686780"), eval(code, env))
+        assertEquals(BigInteger("2366310230048836102686780"), eval(code))
     }
 
     @Test
@@ -277,12 +276,12 @@ class RosettaCodeTest : AbstractTest() {
 
         val tempEnv = DefaultEnvironment()
         /* Eval lib procedures */
-        tempEnv.libraryProcedures.forEach { eval(it, tempEnv) }
+        tempEnv.libraryProcedures.forEach { eval(it) }
         tempEnv.put(Symbol.intern("display"), Display())
 
         val quine = "((lambda (s) (display (list s (list (quote quote) s))))" +
                     " (quote (lambda (s) (display (list s (list (quote quote) s))))))"
-        eval(quine, tempEnv)
+        eval(quine)
         assertEquals(quine, baos.toString().trim { it <= ' ' })
 
         Repl.currentOutputPort = old
@@ -297,23 +296,23 @@ class RosettaCodeTest : AbstractTest() {
                 "  (if (<= k 0)" +
                 "      (+ (x4) (x5))" +
                 "    (B)))"
-        eval(A, env)
+        eval(A)
 
         val code = "(A 10 (lambda () 1) (lambda () -1) (lambda () -1) (lambda () 1) (lambda () 0))"
-        assertEquals(-67L, eval(code, env))
+        assertEquals(-67L, eval(code))
     }
 
     @Test
     fun testHaversineFormula() {
-        eval("(define earth-radius 6371)", env)
+        eval("(define earth-radius 6371)")
         eval("(define (distance lat1 long1 lat2 long2)" +
              "  (define (h a b) (expt (sin (/ (- b a) 2)) 2))" +
              "  (* 2 earth-radius " +
              "     (asin (sqrt (+ (h lat1 lat2) " +
-             "                    (* (cos lat1) (cos lat2) (h long1 long2)))))))", env)
-        eval("(define (deg-to-rad d m s) " + "  (* (/ pi 180) (+ d (/ m 60) (/ s 3600))))", env)
+             "                    (* (cos lat1) (cos lat2) (h long1 long2)))))))")
+        eval("(define (deg-to-rad d m s) " + "  (* (/ pi 180) (+ d (/ m 60) (/ s 3600))))")
         assertEquals(2886.444442837984,
                 eval("(distance (deg-to-rad 36  7.2 0) (deg-to-rad  86 40.2 0)" +
-                     "          (deg-to-rad 33 56.4 0) (deg-to-rad 118 24.0 0))", env))
+                     "          (deg-to-rad 33 56.4 0) (deg-to-rad 118 24.0 0))"))
     }
 }

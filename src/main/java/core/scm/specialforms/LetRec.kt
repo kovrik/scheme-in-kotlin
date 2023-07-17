@@ -21,25 +21,25 @@ import core.Writer
  */
 object LetRec : SpecialForm("letrec") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any {
         if (form.size < 3 || form[1] !is List<*>) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
-        val localEnv = Environment(env)
+        val localEvaluator = Evaluator(Environment(evaluator.env))
         val bindings = form[1] as List<*>
         /* Bind variables to fresh locations holding undefined values */
         bindings.forEach {
             if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-            localEnv[it[0]] = Unit
+            localEvaluator.env[it[0]] = Unit
         }
         /* Evaluate inits */
         bindings.forEach {
-            with (it as List<*>) { localEnv.put(it[0], evaluator.eval(it[1], localEnv)) }
+            with (it as List<*>) { localEvaluator.env.put(it[0], localEvaluator.eval(it[1])) }
         }
         /* Evaluate body */
         for (i in 2..form.size - 2) {
-            evaluator.eval(form[i], localEnv)
+            localEvaluator.eval(form[i])
         }
-        return Thunk(form[form.size - 1], localEnv)
+        return Thunk(form[form.size - 1], localEvaluator.env)
     }
 }

@@ -1,5 +1,6 @@
 package core
 
+import core.environment.DefaultEnvironment
 import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.exceptions.ReentrantContinuationException
@@ -14,7 +15,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
-class Evaluator(private val reflector: Reflector = Reflector(),
+class Evaluator(val env: Environment = DefaultEnvironment(),
+                private val reflector: Reflector = Reflector(),
                 private val macroexpander: Macroexpander = Macroexpander(),
                 private val name: String = "eval") {
 
@@ -33,12 +35,12 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Macroexpand S-expression, evaluate it and then return the result */
-    fun macroexpandAndEvaluate(sexp: Any?, env: Environment) = eval(macroexpander.expand(sexp), env)
+    fun macroexpandAndEvaluate(sexp: Any?) = eval(macroexpander.expand(sexp))
 
     /* Main eval */
-    fun eval(sexp: Any?, env: Environment): Any? = when (val result = evalIter(sexp, env)) {
+    fun eval(sexp: Any?): Any? = when (val result = evalIter(sexp)) {
         /* Eagerly evaluate thunks */
-        is Thunk<*>    -> result.eval(env)
+        is Thunk<*>    -> result.eval()
         is Ratio       -> Utils.downcastNumber(result)
         is SpecialForm -> throw IllegalSyntaxException(result.toString(), Writer.write(sexp))
         else           -> result
@@ -49,14 +51,14 @@ class Evaluator(private val reflector: Reflector = Reflector(),
      * Returns the end result or a Thunk object.
      * If Thunk is returned, then eval() method (trampoline) continues evaluation.
      */
-    private fun evalIter(sexp: Any?, env: Environment) = try {
+    private fun evalIter(sexp: Any?) = try {
             when (sexp) {
-                is Symbol      -> sexp.eval(env)
-                is List<*>     -> sexp.eval(env)
-                is Map<*, *>   -> sexp.eval(env)
-                is Vector      -> sexp.eval(env)
-                is Set<*>      -> sexp.eval(env)
-                is Sequence<*> -> sexp.eval(env)
+                is Symbol      -> sexp.eval()
+                is List<*>     -> sexp.eval()
+                is Map<*, *>   -> sexp.eval()
+                is Vector      -> sexp.eval()
+                is Set<*>      -> sexp.eval()
+                is Sequence<*> -> sexp.eval()
                 is Pair<*, *>  -> throw IllegalSyntaxException(name, Writer.write(sexp), "wrong type to apply")
                 else           -> sexp
             }
@@ -69,28 +71,34 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         }
 
     /* Evaluate Thunk */
-    private tailrec fun Thunk<*>.eval(env: Environment): Any? = when (val result = evalIter(expr, context ?: env)) {
-        is Thunk<*> -> result.eval(env)
+    private tailrec fun Thunk<*>.eval(): Any? = when (val result = Evaluator(context ?: env).evalIter(expr)) {
+        is Thunk<*> -> result.eval()
         else -> result
     }
 
+    /* Evaluate Thunk */
+//    override tailrec fun visitThunk(thunk: Thunk<*>): Any? = when (val result = Evaluator(thunk.context ?: env).evalIter(thunk.expr)) {
+//        is Thunk<*> -> visitThunk(result)
+//        else -> result
+//    }
+
     /* Evaluate Sequence */
-    private fun Sequence<*>.eval(env: Environment) = map { eval(it, env) }.cached()
+    private fun Sequence<*>.eval() = map { eval(it) }.cached()
 
     /* Evaluate Symbol */
-    private fun Symbol.eval(env: Environment) = when (val result = env.resolve(this)) {
+    private fun Symbol.eval() = when (val result = env.resolve(this)) {
         /* Assume it is a Java static field */
         Unit -> evalJavaStaticField(name)
         else -> result
     }
 
     /* Evaluate list */
-    private fun List<*>.eval(env: Environment): Any? {
+    private fun List<*>.eval(): Any? {
         /* Evaluate operator */
         val op = firstOrNull().let {
             when (it) {
                 null -> throw IllegalSyntaxException(name, Writer.write(this), "illegal empty application")
-                is List<*>, is Map<*, *>, is Vector -> eval(it, env)
+                is List<*>, is Map<*, *>, is Vector -> eval(it)
                 is Symbol -> env.resolve(it)
                 else -> it
             }
@@ -98,13 +106,13 @@ class Evaluator(private val reflector: Reflector = Reflector(),
         /* Now decide how to evaluate everything else */
         return when (op) {
             /* Special Forms have special evaluation rules */
-            is SpecialForm -> op.eval(this, env, this@Evaluator)
+            is SpecialForm -> op.eval(this, this@Evaluator)
             /* Op is a valid invokable object (procedure)
              * Scheme has applicative order, so evaluate all arguments first
              * and then invoke operator (IFn) via helper method */
-            is IFn<*, *> -> AFn.invokeN(op, drop(1).map { eval(it, env) }.toTypedArray())
+            is IFn<*, *> -> AFn.invokeN(op, drop(1).map { eval(it) }.toTypedArray())
             // TODO implement as a macro
-            is Unit -> reflector.evalJavaMethod((this[0] as Symbol).name, drop(1).map { eval(it, env) }.toTypedArray())
+            is Unit -> reflector.evalJavaMethod((this[0] as Symbol).name, drop(1).map { eval(it) }.toTypedArray())
             /* If operator is not invokable, then raise an error */
             else -> throw IllegalSyntaxException(name, Writer.write(this), "wrong type to apply")
         }
@@ -121,11 +129,11 @@ class Evaluator(private val reflector: Reflector = Reflector(),
     }
 
     /* Evaluate hash map */
-    private fun Map<*, *>.eval(env: Environment) = entries.associateTo(MutableHashmap()) { eval(it.key, env) to eval(it.value, env) }
+    private fun Map<*, *>.eval() = entries.associateTo(MutableHashmap()) { eval(it.key) to eval(it.value) }
 
     /* Evaluate vector */
-    private fun Vector.eval(env: Environment) = apply { indices.forEach { array[it] = eval(array[it], env) } }
+    private fun Vector.eval() = apply { indices.forEach { array[it] = eval(array[it]) } }
 
     /* Evaluate set */
-    private fun Set<*>.eval(env: Environment) = mapTo(MutableSet(size)) { eval(it, env) }
+    private fun Set<*>.eval() = mapTo(MutableSet(size)) { eval(it) }
 }

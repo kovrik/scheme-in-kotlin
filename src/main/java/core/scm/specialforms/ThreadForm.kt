@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.IFn
@@ -14,13 +13,13 @@ import kotlin.concurrent.thread
  */
 object ThreadForm : SpecialForm("thread") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Thread {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Thread {
         if (form.size != 2) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
-        val body = evaluator.eval(form[1], env)
+        val body = evaluator.eval(form[1])
         val runnable: () -> Unit = when (body) {
-            is IFn<*, *> -> { -> evaluator.eval(listOf(body), env) }
+            is IFn<*, *> -> { -> evaluator.eval(listOf(body)) }
             else         -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         return when (form[1]) {

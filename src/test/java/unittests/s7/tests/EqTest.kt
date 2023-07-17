@@ -18,7 +18,7 @@ class EqTest : AbstractTest() {
                 "(eq? '() (list))", "(eq? '#f #f)", "(eq? '#f '#f)", "(eq? #f '  #f)", "(eq? '()'())", "(eq? 'if 'if)",
                 "(eq? (list) (list))", "(eq? (list) '())", "(eq? :test :test)", "(eq? :test (keyword \"test\"))",
                 "(eq? '+ '+)", "(eq? 'test (symbol \"test\"))")
-        assertAllEqual(true, trues, env)
+        assertAllEqual(true, trues)
 
         val falses = arrayOf(
                 "(let ((x (lambda () 1))) (let ((y (lambda () 1))) (eq? x y)))", "(eq? (when #f 1) 1)", "(eq? ''#\\a '#\\a)",
@@ -28,22 +28,22 @@ class EqTest : AbstractTest() {
                 "(eq? '(1) '(1))", "(eq? '(#f) '(#f))", "(eq? #\\a #\\b)", "(eq? #f #t)", "(eq? 'a 'b)", "(eq? (cons 'a 'b) (cons 'a 'b))",
                 "(eq? \"abc\" \"cba\")", "(eq? (string #\\h #\\i) (string #\\h #\\i))", "(eq? '#(a) '#(b))",
                 "(eq? (vector 'a) (vector 'a))", "(eq? car cdr)")
-        assertAllEqual(false, falses, env)
+        assertAllEqual(false, falses)
 
         eval("(define (counter count)" +
                 "  (lambda ()" +
                 "    (set! count (+ 1 count))" +
-                "    count))", env)
-        eval("(define c1 (counter 0))", env)
-        eval("(define c2 (counter 0))", env)
-        assertEquals(false, eval("(eq? c1 c2)", env))
-        assertEquals(true, eval("(eq? c1 c1)", env))
-        assertEquals(true, eval("(eq? c2 c2)", env))
+                "    count))")
+        eval("(define c1 (counter 0))")
+        eval("(define c2 (counter 0))")
+        assertEquals(false, eval("(eq? c1 c2)"))
+        assertEquals(true, eval("(eq? c1 c1)"))
+        assertEquals(true, eval("(eq? c2 c2)"))
 
-        eval("(define sym1 'test", env)
-        eval("(define sym2 'test", env)
-        eval("(define sym3 (with-meta sym2 {:test #t}))", env)
-        assertEquals(true, eval("(eq? sym1 sym2 sym3)", env))
-        assertEquals(false, eval("(identical? sym1 sym2 sym3)", env))
+        eval("(define sym1 'test")
+        eval("(define sym2 'test")
+        eval("(define sym3 (with-meta sym2 {:test #t}))")
+        assertEquals(true, eval("(eq? sym1 sym2 sym3)"))
+        assertEquals(false, eval("(identical? sym1 sym2 sym3)"))
     }
 }

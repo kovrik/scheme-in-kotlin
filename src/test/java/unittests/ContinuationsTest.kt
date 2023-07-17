@@ -23,18 +23,18 @@ class ContinuationsTest : AbstractTest() {
                       "       (cond ((pair? lst) (cons (add1 (car lst)) (loop (cdr lst))))" +
                       "             ((empty? lst) '())" +
                       "             (else (exit #f)))))))"
-        eval(listadd, env)
-        assertEquals(listOf(2L, 3L, 4L), eval("(into '() (lstadd1 '(1 2 3)))", env))
-        assertEquals(false, eval("(lstadd1 '(1 2 . 3))", env))
+        eval(listadd)
+        assertEquals(listOf(2L, 3L, 4L), eval("(into '() (lstadd1 '(1 2 3)))"))
+        assertEquals(false, eval("(lstadd1 '(1 2 . 3))"))
     }
 
     @Test
     fun testCC() {
         val cc = "(define (cc) (call-with-current-continuation (lambda (cc) (cc cc))))"
-        eval(cc, env)
-        assertEquals(Continuation::class.java, eval("(class-of (cc))", env))
+        eval(cc)
+        assertEquals(Continuation::class.java, eval("(class-of (cc))"))
         try {
-            eval("((cc) display)", env)
+            eval("((cc) display)")
             fail()
         } catch (e: ReentrantContinuationException) {
             // success
@@ -51,7 +51,7 @@ class ContinuationsTest : AbstractTest() {
                        "       (yang ((lambda (cc) (display #\\*) cc) (call-with-current-continuation (lambda (c) c)))))" +
                        "    (yin yang))"
         try {
-            eval(yingyang, env)
+            eval(yingyang)
             fail()
         } catch (ex: ReentrantContinuationException) {
             assertEquals("@*", baos.toString().trim { it <= ' ' })
@@ -69,9 +69,9 @@ class ContinuationsTest : AbstractTest() {
                       "  (return 2)" +
                       "  3)"
 
-        eval(example, env)
-        eval("(display (f (lambda (x) x))) ; displays 3", env)
-        eval("(display (call-with-current-continuation f)) ; displays 2", env)
+        eval(example)
+        eval("(display (f (lambda (x) x))) ; displays 3")
+        eval("(display (call-with-current-continuation f)) ; displays 2")
         assertEquals("32", baos.toString().trim { it <= ' ' })
 
         Repl.currentOutputPort = old
@@ -90,7 +90,7 @@ class ContinuationsTest : AbstractTest() {
                        "          (c 0))" +
                        "        (+ x y))))"
         try {
-            eval(example, env)
+            eval(example)
             fail()
         } catch (ex: ReentrantContinuationException) {
             // success
@@ -99,7 +99,7 @@ class ContinuationsTest : AbstractTest() {
 
     @Test
     fun testDynamicWind() {
-        eval("(define x 'normal-binding)", env)
+        eval("(define x 'normal-binding)")
         val dw = "(define a-cont" +
                  "  (call-with-current-continuation" +
                  "   (lambda (escape)" +
@@ -116,12 +116,12 @@ class ContinuationsTest : AbstractTest() {
         val old = Repl.currentOutputPort
         Repl.currentOutputPort = OutputPort(PrintStream(baos))
 
-        eval(dw, env)
+        eval(dw)
         assertEquals("special-binding", baos.toString().trim { it <= ' ' })
-        assertEquals(Continuation::class.java, eval("(class-of a-cont)", env))
-        assertEquals(Symbol.intern("normal-binding"), eval("x", env))
+        assertEquals(Continuation::class.java, eval("(class-of a-cont)"))
+        assertEquals(Symbol.intern("normal-binding"), eval("x"))
         try {
-            eval("(a-cont #f)", env)
+            eval("(a-cont #f)")
             fail()
         } catch (e: ReentrantContinuationException) {
             // success

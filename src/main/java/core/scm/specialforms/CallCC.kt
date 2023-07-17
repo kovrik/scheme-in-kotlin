@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.Writer
 import core.exceptions.IllegalSyntaxException
@@ -12,18 +11,18 @@ import core.scm.Continuation
 object CallCC : SpecialForm("call-with-current-continuation") {
 
     /* Actual call-with-current-continuation */
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any? {
         if (form.size != 2) {
             throw IllegalSyntaxException(toString(), Writer.write(this))
         }
-        val proc = evaluator.eval(form[1], env)
+        val proc = evaluator.eval(form[1])
         if (proc !is IFn<*, *>) {
             throw WrongTypeException(toString(), "Procedure", proc)
         }
         val cont = Continuation()
         return try {
             /* Pass Continuation to the Procedure: (proc cont) */
-            evaluator.eval(listOf(proc, cont), env)
+            evaluator.eval(listOf(proc, cont))
         } catch (ex: CalledContinuation) {
             if (ex.continuation != cont) {
                 /* Not our continuation, throw it further */

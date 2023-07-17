@@ -1,10 +1,9 @@
 package core.scm
 
 import core.Evaluator
-import core.environment.Environment
 import core.utils.Utils
 
-class LazySeq(private val form: List<Any?>, private val env: Environment, private val evaluator: Evaluator) : Sequence<Any?> {
+class LazySeq(private val form: List<Any?>, private val evaluator: Evaluator) : Sequence<Any?> {
 
     internal var realized = false
 
@@ -15,8 +14,8 @@ class LazySeq(private val form: List<Any?>, private val env: Environment, privat
         when (form.size) {
             1 -> emptySequence<Nothing>()
             else -> (1..form.size - 2).forEach {
-                evaluator.eval(form[it], env)
-            }.let { Utils.toSequence(evaluator.eval(form.last(), env)) }
+                evaluator.eval(form[it])
+            }.let { Utils.toSequence(evaluator.eval(form.last())) }
         }
     }
 }

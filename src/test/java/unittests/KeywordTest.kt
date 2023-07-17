@@ -8,31 +8,31 @@ class KeywordTest : AbstractTest() {
 
     @Test
     fun testEvalIsKeyword() {
-        assertEquals(true,  eval("(keyword? :test)", env))
-        assertEquals(true,  eval("(keyword? :a)", env))
-        assertEquals(true,  eval("(keyword? :_)", env))
-        assertEquals(true,  eval("(keyword? (keyword \"test\")", env))
-        assertEquals(true,  eval("(keyword? (keyword \"a\"))", env))
-        assertEquals(true,  eval("(keyword? (keyword \"_\"))", env))
-        assertEquals(false, eval("(keyword? \"test\")", env))
-        assertEquals(false, eval("(keyword? #\\a)", env))
-        assertEquals(false, eval("(keyword? '())", env))
-        assertEquals(false, eval("(keyword? [])", env))
-        assertEquals(false, eval("(keyword? {})", env))
+        assertEquals(true,  eval("(keyword? :test)"))
+        assertEquals(true,  eval("(keyword? :a)"))
+        assertEquals(true,  eval("(keyword? :_)"))
+        assertEquals(true,  eval("(keyword? (keyword \"test\")"))
+        assertEquals(true,  eval("(keyword? (keyword \"a\"))"))
+        assertEquals(true,  eval("(keyword? (keyword \"_\"))"))
+        assertEquals(false, eval("(keyword? \"test\")"))
+        assertEquals(false, eval("(keyword? #\\a)"))
+        assertEquals(false, eval("(keyword? '())"))
+        assertEquals(false, eval("(keyword? [])"))
+        assertEquals(false, eval("(keyword? {})"))
     }
 
     @Test
     fun testEvalKeywords() {
-        assertEquals(Keyword.intern("a"), eval(":a", env))
-        assertEquals(Keyword.intern("test"), eval(":test", env))
-        assertEquals(Keyword.intern("_"), eval(":_", env))
+        assertEquals(Keyword.intern("a"), eval(":a"))
+        assertEquals(Keyword.intern("test"), eval(":test"))
+        assertEquals(Keyword.intern("_"), eval(":_"))
     }
 
     @Test
     fun testEvalKeywordsAsFunctions() {
-        assertEquals(1L,   eval("(:a {:a 1})", env))
-        assertEquals(null, eval("(:c {:a 1})", env))
-        assertEquals(2L,   eval("(:c {:a 1} 2)", env))
-        assertEquals(9L,   eval("(:c {:a 1, :c 9} 123)", env))
+        assertEquals(1L,   eval("(:a {:a 1})"))
+        assertEquals(null, eval("(:c {:a 1})"))
+        assertEquals(2L,   eval("(:c {:a 1} 2)"))
+        assertEquals(9L,   eval("(:c {:a 1, :c 9} 123)"))
     }
 }

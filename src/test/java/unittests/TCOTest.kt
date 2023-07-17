@@ -15,21 +15,21 @@ class TCOTest : AbstractTest() {
                          (if (zero? n)
                            "DONE"
                            (recur (- n 1))))"""
-        eval(recur, env)
-        assertEquals("DONE", eval("(time (recur $iterations))", env))
+        eval(recur)
+        assertEquals("DONE", eval("(time (recur $iterations))"))
     }
 
     @Test
     fun testOrTCO() {
         val recursive = "(define (recOr n) (or (zero? n) (recOr (- n 1))))"
-        eval(recursive, env)
-        assertEquals(true, eval("(recOr $iterations)", env))
+        eval(recursive)
+        assertEquals(true, eval("(recOr $iterations)"))
     }
 
     @Test
     fun testDefineAndBeginTCO() {
         val recursive = "(define (foo n) (if (= n $iterations) n (foo (+ n 1)))"
-        eval(recursive, env)
-        assertEquals(iterations, eval("(foo 5)", env))
+        eval(recursive)
+        assertEquals(iterations, eval("(foo 5)"))
     }
 }

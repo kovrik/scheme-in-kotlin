@@ -1,14 +1,13 @@
 package core.scm
 
-import core.environment.Environment
 import core.Evaluator
 import core.Writer
 import java.util.concurrent.FutureTask
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-open class Future(expr: Any?, env: Environment, evaluator: Evaluator) :
-        FutureTask<Any?>({ evaluator.eval(expr, env) }), IDeref {
+open class Future(expr: Any?, evaluator: Evaluator) :
+        FutureTask<Any?>({ evaluator.eval(expr) }), IDeref {
 
     override fun deref() = get()
 

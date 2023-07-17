@@ -1,6 +1,5 @@
 package core.scm
 
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.ReentrantDelayException
 import core.Writer
@@ -11,7 +10,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
 
-open class Delay(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) :
+open class Delay(private val expr: Any?, private val evaluator: Evaluator) :
            CompletableFuture<Any>(), IDeref {
 
     private val forced = AtomicBoolean(false)
@@ -25,7 +24,7 @@ open class Delay(private val expr: Any?, private val env: Environment, private v
         !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
         else -> try {
             /* Always run delay in the current thread */
-            complete(evaluator.eval(expr, env))
+            complete(evaluator.eval(expr))
             get()
         } catch (e: Throwable) {
             completeExceptionally(e)
@@ -40,7 +39,7 @@ open class Delay(private val expr: Any?, private val env: Environment, private v
         !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
         else -> try {
             /* Always run delay in the current thread */
-            complete(evaluator.eval(expr, env))
+            complete(evaluator.eval(expr))
             get(timeout, TimeUnit.MILLISECONDS)
         } catch (e: TimeoutException) {
             timeoutVal

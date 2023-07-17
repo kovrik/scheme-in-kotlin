@@ -1,7 +1,6 @@
 package core.scm.specialforms
 
 import core.Evaluator
-import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.cons.Cdr
 import core.procedures.predicates.Predicate
@@ -19,7 +18,7 @@ object Define : SpecialForm("define") {
 
     private val cdr = Cdr()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
@@ -30,7 +29,7 @@ object Define : SpecialForm("define") {
                 if (form.size > 3) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "multiple expressions after identifier")
                 }
-                env[id] = evaluator.eval(form[2], env)
+                evaluator.env[id] = evaluator.eval(form[2])
             }
             is List<*>, is Pair<*, *> -> {
                 /* Procedure definition: (define <id> <proc>) */
@@ -51,7 +50,7 @@ object Define : SpecialForm("define") {
                 // TODO (define ((a n) c) n)
                 id = seq.first() as? Symbol ?: throw IllegalSyntaxException(toString(), Writer.write(form),
                         "not an identifier for procedure name: ${Writer.write(id)}")
-                env[id] = Lambda.eval(lambda, env, evaluator)
+                evaluator.env[id] = Lambda.eval(lambda, evaluator)
             }
             else -> throw IllegalSyntaxException(toString(), Writer.write(form))
         }

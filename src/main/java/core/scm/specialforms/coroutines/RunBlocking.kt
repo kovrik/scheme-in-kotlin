@@ -1,6 +1,5 @@
 package core.scm.specialforms.coroutines
 
-import core.environment.Environment
 import core.Evaluator
 import core.Writer
 import core.exceptions.IllegalSyntaxException
@@ -14,9 +13,9 @@ import kotlinx.coroutines.runBlocking
  */
 object RunBlocking : SpecialForm("run-blocking") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
+    override fun eval(form: List<Any?>, evaluator: Evaluator) = when (form.size) {
         1    -> throw IllegalSyntaxException(toString(), Writer.write(form))
-        2    -> runBlocking { evaluator.eval(form[1], env) }
-        else -> runBlocking { evaluator.eval(listOf(Begin) + form.drop(1), env) }
+        2    -> runBlocking { evaluator.eval(form[1]) }
+        else -> runBlocking { evaluator.eval(listOf(Begin) + form.drop(1)) }
     }
 }

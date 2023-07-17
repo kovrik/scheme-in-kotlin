@@ -22,11 +22,10 @@ object Repl {
     private const val PROMPT = "> "
 
     private val resCounter = AtomicInteger(0)
-    private val evaluator = Evaluator()
-    private val environment = DefaultEnvironment().apply {
-        /* Eval lib procedures */
+    private val environment = DefaultEnvironment()
+    private val evaluator = Evaluator(environment).apply {
         with (StringReader()) {
-            libraryProcedures.forEach { evaluator.eval(readOne(it), this@apply) }
+            environment.libraryProcedures.forEach { this@apply.eval(readOne(it)) }
         }
     }
 
@@ -42,29 +41,29 @@ object Repl {
 
     @Throws(IOException::class)
     @JvmStatic fun main(args: Array<String>) = when {
-        args.isEmpty() -> repl(WELCOME, PROMPT, environment)
-        else           -> evaluateFile(args[0], environment)
+        args.isEmpty() -> repl(WELCOME, PROMPT)
+        else           -> evaluateFile(args[0])
     }
 
     /**
      * Read and evaluate a file and then exit
      */
     @Throws(IOException::class)
-    private fun evaluateFile(filename: String, env: Environment) = FileReader().read(File(filename)).forEach {
-        evaluator.macroexpandAndEvaluate(it, env)
+    private fun evaluateFile(filename: String) = FileReader().read(File(filename)).forEach {
+        evaluator.macroexpandAndEvaluate(it)
     }
 
     /**
      * Run REPL and evaluate user inputs
      */
     @Throws(IOException::class)
-    private fun repl(welcomeMessage: String, prompt: String, env: Environment) {
+    private fun repl(welcomeMessage: String, prompt: String) {
         currentOutputPort.writeln(welcomeMessage)
         while (true) {
             try {
                 currentOutputPort.write(prompt)
                 /* Read, macroexpand and then Evaluate each S-expression */
-                val result = evaluator.macroexpandAndEvaluate(reader.read(), env)
+                val result = evaluator.macroexpandAndEvaluate(reader.read())
                 /* Do not print and do not store void results */
                 if (result === Unit) {
                     continue
@@ -76,12 +75,12 @@ object Repl {
                 }
                 /* Put result into environment */
                 val id = getNextResID()
-                env[id] = result
+                evaluator.env[id] = result
                 /* Print */
                 currentOutputPort.writeln("$id = ${Writer.write(result)}")
             } catch (e: Throwable) {
                 /* Store caught exception in $e var */
-                env[Symbol.intern("\$e")] = e
+                evaluator.env[Symbol.intern("\$e")] = e
                 error(e)
             }
         }

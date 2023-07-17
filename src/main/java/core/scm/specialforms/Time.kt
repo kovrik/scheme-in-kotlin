@@ -1,7 +1,6 @@
 package core.scm.specialforms
 
 import core.Repl
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.Writer
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit
  */
 object Time : SpecialForm("time") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any? {
         if (form.size < 2) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
@@ -36,8 +35,8 @@ object Time : SpecialForm("time") {
 
         val nanos = System.nanoTime()
 
-        (1..form.size - 2).forEach { evaluator.eval(form[it], env) }
-        val result = evaluator.eval(form[form.size - 1], env)
+        (1..form.size - 2).forEach { evaluator.eval(form[it]) }
+        val result = evaluator.eval(form[form.size - 1])
 
         var gcCountEnd = 0L
         var gcTimeMillisEnd = 0L

@@ -1,11 +1,10 @@
 package core.scm
 
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.ReentrantDelayException
 import java.util.concurrent.atomic.AtomicBoolean
 
-class Lazy(private val expr: Any?, private val env: Environment, private val evaluator: Evaluator) : Delay(expr, env, evaluator) {
+class Lazy(private val expr: Any?, private val evaluator: Evaluator) : Delay(expr, evaluator) {
 
     private val forced = AtomicBoolean(false)
 
@@ -16,7 +15,7 @@ class Lazy(private val expr: Any?, private val env: Environment, private val eva
         !forced.compareAndSet(false, true) -> throw ReentrantDelayException(this)
         else -> try {
             /* Always run delay in the current thread */
-            val value = evaluator.eval(expr, env).let {
+            val value = evaluator.eval(expr).let {
                 /* If result is a Delay, then force it */
                 when (it) {
                     is Delay -> it.deref()

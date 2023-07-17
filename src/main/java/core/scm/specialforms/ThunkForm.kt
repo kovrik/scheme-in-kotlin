@@ -15,12 +15,12 @@ import core.procedures.Arity.Exactly
  */
 object ThunkForm : SpecialForm("thunk") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Closure {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Closure {
         val body = when (form.size) {
             1 -> throw IllegalSyntaxException(toString(), Writer.write(form))
             2 -> form[1]
             else -> listOf(Begin) + form.drop(1)
         }
-        return Closure(emptyList<Nothing>(), body, env, Exactly(0))
+        return Closure(emptyList<Nothing>(), body, evaluator.env, Exactly(0))
     }
 }

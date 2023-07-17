@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.procedures.lists.Append
@@ -26,10 +25,10 @@ object Quasiquote : SpecialForm("quasiquote") {
     private val first  = First()
     private val second  = Second()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = when (form.size) {
+    override fun eval(form: List<Any?>, evaluator: Evaluator) = when (form.size) {
         2 -> when (isUnquoteSplicing(form[1]) && form[1] !is Pair<*, *>) {
             true -> throw IllegalSyntaxException(UnquoteSplicing.toString(), Writer.write(form), "invalid context within quasiquote")
-            false -> qq(0, form[1]!!, env, evaluator)
+            false -> qq(0, form[1]!!, evaluator)
         }
         else -> throw IllegalSyntaxException(toString(), Writer.write(form))
     }
@@ -45,19 +44,19 @@ object Quasiquote : SpecialForm("quasiquote") {
      *
      * http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf
      */
-    private fun qq(depth: Int, expr: Any?, env: Environment, evaluator: Evaluator): Any? = when {
+    private fun qq(depth: Int, expr: Any?, evaluator: Evaluator): Any? = when {
         Utils.isEmpty(expr) -> expr
         expr is List<*> -> when {
             isQuasiquote(expr) -> when (expr.size == 2) {
-                true -> listOf(Quasiquote.symbol, qq(depth + 1, second(expr), env, evaluator))
+                true -> listOf(Quasiquote.symbol, qq(depth + 1, second(expr), evaluator))
                 false -> throw IllegalSyntaxException(toString(), Writer.write(expr))
             }
             isUnquote(expr) -> when (expr.size == 2) {
                 true -> when (depth == 0) {
-                    true -> evaluator.eval(second(expr), env)
+                    true -> evaluator.eval(second(expr))
                     false -> when (depth == 1 && isUnquoteSplicing(second(expr))) {
-                        true  -> append(listOf(Unquote.symbol), evaluator.eval(second(second(expr)), env))
-                        false -> listOf(Unquote.symbol, qq(depth - 1, second(expr), env, evaluator))
+                        true  -> append(listOf(Unquote.symbol), evaluator.eval(second(second(expr))))
+                        false -> listOf(Unquote.symbol, qq(depth - 1, second(expr), evaluator))
                     }
                 }
                 false -> throw IllegalSyntaxException(Unquote.toString(), Writer.write(expr), "unquote expects exactly one expression")
@@ -68,17 +67,17 @@ object Quasiquote : SpecialForm("quasiquote") {
                 loop@ for ((index, it) in expr.withIndex()) {
                     when  {
                         isUnquoteSplicing(it) -> expanded = when (depth == 0) {
-                            true  -> append(expanded, evaluator.eval(second(it), env))
-                            false -> append(expanded, qq(depth - 1, second(), env, evaluator))
+                            true  -> append(expanded, evaluator.eval(second(it)))
+                            false -> append(expanded, qq(depth - 1, second(), evaluator))
                         }
                         it == Unquote.symbol && depth == 0 -> when (index == expr.size - 2) {
                             true -> {
-                                expanded = append(expanded, evaluator.eval(expr.last(), env))
+                                expanded = append(expanded, evaluator.eval(expr.last()))
                                 break@loop
                             }
                             false -> throw IllegalSyntaxException(Unquote.toString(), Writer.write(it), "expects exactly one expression")
                         }
-                        else -> expanded = append(expanded, listOf(qq(depth, it!!, env, evaluator)))
+                        else -> expanded = append(expanded, listOf(qq(depth, it!!, evaluator)))
                     }
                 }
                 expanded
@@ -88,7 +87,7 @@ object Quasiquote : SpecialForm("quasiquote") {
             if (expr.first() == Unquote.symbol || expr.first() == UnquoteSplicing.symbol) {
                 throw IllegalSyntaxException(expr.first().toString(), Writer.write(expr), "invalid context within quasiquote")
             } else {
-                qq(depth, expr.toList(), env, evaluator).let {
+                qq(depth, expr.toList(), evaluator).let {
                     when {
                         !Predicate.isProperList(it) -> throw IllegalSyntaxException("read: illegal use of '.'")
                         else -> MutableVector(it as List<*>)
@@ -100,7 +99,7 @@ object Quasiquote : SpecialForm("quasiquote") {
             if (expr.first() == Unquote.symbol || expr.first() == UnquoteSplicing.symbol) {
                 throw IllegalSyntaxException(expr.first().toString(), Writer.write(expr), "invalid context within quasiquote")
             } else {
-                qq(depth, expr.toList(), env, evaluator).let {
+                qq(depth, expr.toList(), evaluator).let {
                     when (it is Collection<*> && Predicate.isProperList(it)) {
                         true -> MutableSet(it)
                         false -> throw IllegalSyntaxException("read: illegal use of '.'")
@@ -110,11 +109,11 @@ object Quasiquote : SpecialForm("quasiquote") {
         }
         expr is Pair<*, *> -> when {
             isUnquote(expr) -> when (depth == 1 && isUnquoteSplicing(expr.second)) {
-                true -> Pair(Unquote.symbol, evaluator.eval(second(second(expr)), env))
-                false -> Pair(Unquote.symbol, qq(depth, expr.second, env, evaluator))
+                true -> Pair(Unquote.symbol, evaluator.eval(second(second(expr))))
+                false -> Pair(Unquote.symbol, qq(depth, expr.second, evaluator))
             }
-            isUnquoteSplicing(expr.first) && depth == 0 -> append(evaluator.eval(second(expr.first), env), qq(depth, expr.second, env, evaluator))
-            else -> Pair(qq(depth, expr.first, env, evaluator), qq(depth, expr.second, env, evaluator))
+            isUnquoteSplicing(expr.first) && depth == 0 -> append(evaluator.eval(second(expr.first)), qq(depth, expr.second, evaluator))
+            else -> Pair(qq(depth, expr.first, evaluator), qq(depth, expr.second, evaluator))
         }
         else -> expr
     }

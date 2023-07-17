@@ -23,21 +23,21 @@ class IsCharTest : AbstractTest() {
                 "(char? #\\nul)", "(char? #\\linefeed)", "(char? #\\tab)", "(char? #\\space)", "(char=? #\\null #\\nul)",
                 "(char=? #\\newline #\\linefeed)", "(char? #\\backspace)", "(char? #\\escape)", "(char? #\\alarm)",
                 "(char? #\\delete)")
-        assertAllEqual(true, trues, env)
+        assertAllEqual(true, trues)
 
         val falses = arrayOf(
                 "(char=? #\\delete #\\backspace)", "(char? '1e311)", "(char? #e1)", "(char? #b101)", "(char? #o73)",
                 "(char? #x73)", "(char? 'a)", "(char? 97)", "(char? \"a\")", "(char? 'begin)")
-        assertAllEqual(false, falses, env)
+        assertAllEqual(false, falses)
 
         try {
-            eval("(char?) 'error)", env)
+            eval("(char?) 'error)")
             fail()
         } catch (e: ArityException) {
             assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 0)", e.message)
         }
         try {
-            eval("(char? #\\a #\\b)", env)
+            eval("(char? #\\a #\\b)")
             fail()
         } catch (e: ArityException) {
             assertEquals("char?: arity mismatch; the expected number of arguments does not match the given number (expected: 1, given: 2)", e.message)

@@ -10,5 +10,5 @@ import core.scm.LazySeq
  */
 object LazySeqForm : SpecialForm("lazy-seq") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = LazySeq(form, env, evaluator)
+    override fun eval(form: List<Any?>, evaluator: Evaluator) = LazySeq(form, evaluator)
 }

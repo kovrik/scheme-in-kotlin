@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 
 /**
@@ -11,5 +10,5 @@ import core.Evaluator
  */
 object Comment : SpecialForm("comment") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator) = Unit
+    override fun eval(form: List<Any?>, evaluator: Evaluator) = Unit
 }

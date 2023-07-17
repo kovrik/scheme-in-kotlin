@@ -1,7 +1,6 @@
 package core.scm.specialforms
 
 import core.Evaluator
-import core.environment.Environment
 import core.exceptions.IllegalSyntaxException
 import core.procedures.predicates.Predicate
 import core.scm.Closure
@@ -23,7 +22,7 @@ import java.util.LinkedList
  */
 object Lambda : SpecialForm("lambda") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Closure {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Closure {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
@@ -43,7 +42,7 @@ object Lambda : SpecialForm("lambda") {
         /* Get the body and add implicit Begin if multiple body forms */
         val body  = if (form.size == 3) form[2] else listOf(Begin) + form.drop(2)
         val arity = if (variadic) AtLeast(0) else Exactly(params.size)
-        return Closure(params, body, env, arity)
+        return Closure(params, body, evaluator.env, arity)
     }
 
     /* Validate args */

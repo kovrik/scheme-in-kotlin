@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.Reflector
 import core.Writer
@@ -10,20 +9,20 @@ import core.scm.Symbol
 object Try : SpecialForm("try") {
 
     object Catch : SpecialForm("catch") {
-        override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
+        override fun eval(form: List<Any?>, evaluator: Evaluator): Nothing {
             throw IllegalSyntaxException(toString(), Writer.write(form), "not allowed as an expression")
         }
     }
 
     object Finally : SpecialForm("finally") {
-        override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Nothing {
+        override fun eval(form: List<Any?>, evaluator: Evaluator): Nothing {
             throw IllegalSyntaxException(toString(), Writer.write(form), "not allowed as an expression")
         }
     }
 
     private val reflector = Reflector()
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any? {
         if (form.isEmpty()) {
             return null
         }
@@ -36,7 +35,7 @@ object Try : SpecialForm("try") {
         for (i in 1 until form.size) {
             val expr = form[i]
             if (expr is List<*> && !expr.isEmpty()) {
-                val op = env.resolve(expr.first())
+                val op = evaluator.env.resolve(expr.first())
                 if (op == Finally) {
                     if (i != form.size - 1) {
                         throw IllegalSyntaxException("$name: finally clause must be last in try expression")
@@ -73,23 +72,23 @@ object Try : SpecialForm("try") {
         /* Now Evaluate everything */
         try {
             var result: Any? = null
-            expressions.forEach { result = evaluator.eval(it, env) }
+            expressions.forEach { result = evaluator.eval(it) }
             return result
         } catch (e: Throwable) {
             /* Check if we had catch block for that type of exception (OR for any superclass) */
             for (clazz in catches.keys) {
                 if (clazz.isAssignableFrom(e.javaClass)) {
                     /* Bind exception */
-                    env[catchBindings[clazz]] = e
+                    evaluator.env[catchBindings[clazz]] = e
                     /* Evaluate corresponding catch block */
-                    return evaluator.eval(catches[clazz], env)
+                    return evaluator.eval(catches[clazz])
                 }
             }
             /* Unexpected exception, re-throw it */
             throw e
         } finally {
             /* And finally, evaluate finally block (if present) */
-            fin?.let { evaluator.eval(fin, env) }
+            fin?.let { evaluator.eval(fin) }
         }
     }
 }

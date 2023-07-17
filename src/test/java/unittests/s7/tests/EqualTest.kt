@@ -33,7 +33,7 @@ class EqualTest : AbstractTest() {
                 "(equal? 'let 'let)", "(equal? 'define 'define)", "(equal? + ((lambda (a) a) +))",
                 "(let ((x \"hi\")) (define (hi) x) (equal? (hi) (hi)))", "(equal? 'a (string->symbol \"a\"))", "(equal? 3-4i 3-4i))",
                 "(equal? 0+0i 0+0i))", "(equal? 3/4 3/4))", "(equal? 30/40 3/4))")
-        assertAllEqual(true, trues, env)
+        assertAllEqual(true, trues)
 
         val falses = arrayOf(
                 "(equal? 1+3i 2+4i))", "(equal? 31/40 3/4))", "(equal? 'a 3)", "(equal? #t 't)", "(equal? \"abs\" 'abc)",
@@ -43,6 +43,6 @@ class EqualTest : AbstractTest() {
                 "(equal? 9223372036854775807 9223372036854775806)", "(equal? 9223372036854775807 -9223372036854775808)",
                 "(equal? 3 3.0)", "(let hiho ((i 0)) (let hoho ((i 0)) (equal? hiho hoho)))", "(equal? + *)",
                 "(equal? 'let 'letrec)", "(equal? #()'())", "(equal? '()\"\")")
-        assertAllEqual(false, falses, env)
+        assertAllEqual(false, falses)
     }
 }

@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.scm.Thunk
 import core.utils.Utils
@@ -11,15 +10,15 @@ import core.utils.Utils
  */
 object Or : SpecialForm("or") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any? {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any? {
         if (form.size > 1) {
             (1..form.size - 2).forEach {
-                val result = evaluator.eval(form[it], env)
+                val result = evaluator.eval(form[it])
                 if (Utils.toBoolean(result)) {
                     return result
                 }
             }
-            return Thunk(form[form.size - 1], env)
+            return Thunk(form[form.size - 1], evaluator.env)
         }
         return false
     }

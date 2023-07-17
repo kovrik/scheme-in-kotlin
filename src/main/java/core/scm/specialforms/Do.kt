@@ -15,14 +15,14 @@ import core.Writer
  **/
 object Do : SpecialForm("do") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         // TODO Replace with call to LET
         /* Init bindings */
         val bs = form[1] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
-        val tempEnv = Environment(env)
+        val tempEvaluator = Evaluator(Environment(evaluator.env))
         val steps = hashMapOf<Any?, Any?>()
         for (b in bs) {
             val binding = b as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
@@ -36,32 +36,31 @@ object Do : SpecialForm("do") {
                 steps[variable] = binding[2]
             }
             /* Check that we have no duplicates among variables */
-            if (tempEnv.containsKey(variable)) {
+            if (tempEvaluator.env.containsKey(variable)) {
                 throw IllegalSyntaxException(Let.toString(), Writer.write(form), "duplicate identifier: $variable")
             }
-            tempEnv[variable] = evaluator.eval(init, tempEnv)
+            tempEvaluator.env[variable] = tempEvaluator.eval(init)
         }
 
         val clause = form[2] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form))
         clause.ifEmpty { throw IllegalSyntaxException(toString(), Writer.write(form)) }
         /* While test evaluates to #f */
-        while (!Utils.toBoolean(evaluator.eval(clause[0], tempEnv))) {
+        while (!Utils.toBoolean(tempEvaluator.eval(clause[0]))) {
             /* Evaluate command expressions */
             form.drop(3).forEach { f ->
                 /* Each iteration establishes bindings to fresh locations
                  * See https://www.gnu.org/software/guile/manual/html_node/while-do.html */
-                Environment(env).apply {
-                    putAll(tempEnv)
-                    /* Evaluate using new fresh environment */
-                    evaluator.eval(f, this)
-                    /* THen put results into tempEnv */
-                    tempEnv.putAll(this)
-                }
+                val fresh = Environment(evaluator.env)
+                fresh.putAll(tempEvaluator.env)
+                /* Evaluate using new fresh environment */
+                Evaluator(fresh).eval(f)
+                /* Then put results into tempEnv */
+                tempEvaluator.env.putAll(fresh)
             }
             /* Evaluate steps and now store results */
-            tempEnv.putAll(steps.entries.associate { it.key to evaluator.eval(it.value, tempEnv) })
+            tempEvaluator.env.putAll(steps.entries.associate { it.key to tempEvaluator.eval(it.value) })
         }
         /* Test evaluated to #f */
-        return Begin.eval(clause, tempEnv, evaluator)
+        return Begin.eval(clause, tempEvaluator)
     }
 }

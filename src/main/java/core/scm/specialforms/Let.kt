@@ -15,31 +15,31 @@ import core.Writer
  */
 object Let : SpecialForm("let") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any {
         if (form.size < 3) {
             throw IllegalSyntaxException(toString(), Writer.write(form))
         }
         /* Normal let:
          * (let ((id expr) ...) body ...+) */
         if (form[1] is List<*>) {
-            val localEnv = Environment(env)
+            val localEvaluator = Evaluator(Environment(evaluator.env))
             val bindings = form[1] as List<*>
             /* Bind variables to fresh locations holding undefined values */
             bindings.forEach {
                 if (it !is List<*>) throw IllegalSyntaxException(toString(), Writer.write(form))
-                localEnv[it[0]] = Unit
+                localEvaluator.env[it[0]] = Unit
             }
             /* Evaluate inits */
             bindings.forEach {
                 when {
                     it !is List<*> -> throw IllegalSyntaxException(toString(), Writer.write(form))
-                    localEnv[it[0]] === Unit-> localEnv[it[0]] = evaluator.eval(it[1], env)
+                    localEvaluator.env[it[0]] === Unit -> localEvaluator.env[it[0]] = evaluator.eval(it[1])
                     else -> throw IllegalSyntaxException(toString(), Writer.write(form), "duplicate identifier: ${it[0]}")
                 }
             }
             /* Evaluate body */
-            (2..form.size - 2).forEach { evaluator.eval(form[it], localEnv) }
-            return Thunk(form[form.size - 1], localEnv)
+            (2..form.size - 2).forEach { localEvaluator.eval(form[it]) }
+            return Thunk(form[form.size - 1], localEvaluator.env)
         } else if (form[1] is Symbol) {
             // TODO Optimize and cleanup
             /* Named let:
@@ -61,7 +61,7 @@ object Let : SpecialForm("let") {
             val lambda = listOf(Lambda, lambdaArgs, lambdaBody)
             val body = listOf(name) + initValues
             /* Named let is implemented via letrec (letrec has TCO) */
-            return LetRec.eval(listOf(LetRec, listOf(listOf(name, lambda)), body), Environment(env), evaluator)
+            return LetRec.eval(listOf(LetRec, listOf(listOf(name, lambda)), body), Evaluator(Environment(evaluator.env)))
         }
         throw IllegalSyntaxException(toString(), Writer.write(form))
     }

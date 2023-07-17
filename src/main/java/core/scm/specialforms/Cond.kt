@@ -1,6 +1,5 @@
 package core.scm.specialforms
 
-import core.environment.Environment
 import core.Evaluator
 import core.exceptions.IllegalSyntaxException
 import core.utils.Utils
@@ -17,7 +16,7 @@ import core.Writer
  */
 object Cond : SpecialForm("cond") {
 
-    override fun eval(form: List<Any?>, env: Environment, evaluator: Evaluator): Any = (1 until form.size).forEach {
+    override fun eval(form: List<Any?>, evaluator: Evaluator): Any = (1 until form.size).forEach {
         val subform = form[it] as? List<*> ?: throw IllegalSyntaxException(toString(), Writer.write(form), "invalid clause in subform")
         val clause = subform[0]
         when {
@@ -25,9 +24,9 @@ object Cond : SpecialForm("cond") {
                 if (it != form.size - 1) {
                     throw IllegalSyntaxException(toString(), Writer.write(form), "else must be the last clause in subform")
                 }
-                return Begin.eval(subform, env, evaluator)
+                return Begin.eval(subform, evaluator)
             }
-            Utils.toBoolean(evaluator.eval(clause, env)) -> return Begin.eval(subform, env, evaluator)
+            Utils.toBoolean(evaluator.eval(clause)) -> return Begin.eval(subform, evaluator)
         }
     }
 }
