@@ -1,7 +1,5 @@
 package core.scm
 
-import core.Expression
-import core.Visitor
 import core.environment.Environment
 
 /**
@@ -11,7 +9,4 @@ import core.environment.Environment
  * Ideally, we should just return a Continuation, but Full Continuations are not implemented.
  * See https://groups.csail.mit.edu/mac/ftpdir/scheme-reports/r5rs-html.old/r5rs_22.html
  */
-data class Thunk<out T> @JvmOverloads constructor(val expr: T, val context: Environment? = null) : Expression {
-
-    override fun <R> acceptVisitor(visitor: Visitor<R>): R = visitor.visitThunk(this)
-}
+data class Thunk<out T> @JvmOverloads constructor(val expr: T, val context: Environment? = null)
